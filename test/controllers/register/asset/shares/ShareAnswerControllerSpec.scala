@@ -51,7 +51,7 @@ class ShareAnswerControllerSpec extends RegistrationSpecBase {
         .set(AssetStatus(index), Completed).success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -95,7 +95,7 @@ class ShareAnswerControllerSpec extends RegistrationSpecBase {
           .set(SharePortfolioValueInTrustPage(index), "20").success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(

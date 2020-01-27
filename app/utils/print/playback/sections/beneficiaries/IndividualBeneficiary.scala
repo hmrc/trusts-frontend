@@ -71,7 +71,8 @@ object IndividualBeneficiary {
           case RoleInCompany.NA => HtmlFormat.escape("Not a Director or Employee")
           case _ => HtmlFormat.escape(x.toString)
         },
-        None
+        None,
+        canEdit = false
       )
     }
   }

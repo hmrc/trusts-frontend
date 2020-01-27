@@ -70,7 +70,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorAddressYesNoPage(index), false).success.value
 
         val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -124,7 +124,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorAddressYesNoPage(index), false).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -182,7 +182,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -242,7 +242,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -304,7 +304,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             .set(SettlorIndividualIDCardPage(index), passportOrIDCardDetails).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(

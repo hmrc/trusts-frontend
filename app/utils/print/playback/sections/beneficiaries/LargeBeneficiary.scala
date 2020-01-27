@@ -55,7 +55,8 @@ object LargeBeneficiary {
       AnswerRow(
         messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
         description(x),
-        None
+        None,
+        canEdit = false
       )
     }
   }

@@ -55,7 +55,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
 
         val countryOptions = application.injector.instanceOf[CountryOptions]
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -107,7 +107,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
 
         val countryOptions = application.injector.instanceOf[CountryOptions]
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -159,7 +159,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
 
         val countryOptions = application.injector.instanceOf[CountryOptions]
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -211,7 +211,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
 
         val countryOptions = application.injector.instanceOf[CountryOptions]
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -264,7 +264,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
 
         val countryOptions = application.injector.instanceOf[CountryOptions]
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -319,7 +319,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
 
         val countryOptions = application.injector.instanceOf[CountryOptions]
 
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(

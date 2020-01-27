@@ -51,7 +51,7 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
 
       val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -95,7 +95,7 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(

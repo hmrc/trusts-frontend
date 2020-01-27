@@ -17,7 +17,6 @@
 package utils.print.playback.sections
 
 import mapping.DeedOfVariation
-import mapping.DeedOfVariation.ReplacedWill
 import models.playback.UserAnswers
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type._
@@ -54,7 +53,8 @@ object TrustType {
         AnswerRow(
           messages(s"${labelKey}.checkYourAnswersLabel", messageArg),
           HtmlFormat.escape(deedOfVariation(answer, messages)),
-          None
+          None,
+          canEdit = false
         )
     }
 

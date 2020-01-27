@@ -53,7 +53,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
       val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
@@ -108,7 +108,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val trusteeIndividualOrBusinessMessagePrefix = "trusteeIndividualOrBusiness"
       val trusteeFullNameMessagePrefix = "trusteesName"

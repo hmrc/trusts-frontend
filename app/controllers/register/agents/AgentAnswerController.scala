@@ -49,7 +49,7 @@ class AgentAnswerController @Inject()(
   def onPageLoad(draftId: String)= actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
 
       val sections = Seq(
         AnswerSection(

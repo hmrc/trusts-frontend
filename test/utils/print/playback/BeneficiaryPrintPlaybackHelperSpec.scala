@@ -72,22 +72,22 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Charity beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None),
-            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = charityBen1Name),
-            AnswerRow(label = "charityBeneficiaryShareOfIncome.checkYourAnswersLabel", answer = Html("98%"), changeUrl = None, labelArg = charityBen1Name),
-            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name),
-            AnswerRow(label = "charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name),
-            AnswerRow(label = "charityBeneficiaryAddress.checkYourAnswersLabel", answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None, labelArg = charityBen1Name)
+            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Red Cross Ltd."), changeUrl = None, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = charityBen1Name, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryShareOfIncome.checkYourAnswersLabel", answer = Html("98%"), changeUrl = None, labelArg = charityBen1Name, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen1Name, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryAddress.checkYourAnswersLabel", answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None, labelArg = charityBen1Name, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Charity beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None),
-            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen2Name),
-            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = charityBen2Name),
-            AnswerRow(label = "charityBeneficiaryUtr.checkYourAnswersLabel", answer = Html("1234567890"), changeUrl = None, labelArg = charityBen2Name)
+            AnswerRow(label = "charityBeneficiaryName.checkYourAnswersLabel", answer = Html("Bernardos"), changeUrl = None, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", answer = Html("Yes"), changeUrl = None, labelArg = charityBen2Name, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryAddressYesNo.checkYourAnswersLabel", answer = Html("No"), changeUrl = None, labelArg = charityBen2Name, canEdit = false),
+            AnswerRow(label = "charityBeneficiaryUtr.checkYourAnswersLabel", answer = Html("1234567890"), changeUrl = None, labelArg = charityBen2Name, canEdit = false)
           ),
           sectionKey = None
         )
@@ -141,45 +141,45 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Individual beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = messages("individualBeneficiaryName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryRoleInCompany.checkYourAnswersLabel", name1), answer = Html("Director"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryDateOfBirth.checkYourAnswersLabel", name1), answer = Html("3 February 1996"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryIncome.checkYourAnswersLabel", name1), answer = Html("98%"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel", name1), answer = Html("JB  1 2  34  5 6  C"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None)
+            AnswerRow(label = messages("individualBeneficiaryName.checkYourAnswersLabel"), answer = Html(name1), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryRoleInCompany.checkYourAnswersLabel", name1), answer = Html("Director"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryDateOfBirth.checkYourAnswersLabel", name1), answer = Html("3 February 1996"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryIncome.checkYourAnswersLabel", name1), answer = Html("98%"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel", name1), answer = Html("JB  1 2  34  5 6  C"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name1), answer = Html("Yes"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Individual beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = messages("individualBeneficiaryName.checkYourAnswersLabel"), answer = Html(name2), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryRoleInCompany.checkYourAnswersLabel", name2), answer = Html("Employee"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name2), answer = Html("Yes"), changeUrl = None)
+            AnswerRow(label = messages("individualBeneficiaryName.checkYourAnswersLabel"), answer = Html(name2), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryRoleInCompany.checkYourAnswersLabel", name2), answer = Html("Employee"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", name2), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name2), answer = Html("Yes"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Individual beneficiary 3"),
           rows = Seq(
-            AnswerRow(label = messages("individualBeneficiaryName.checkYourAnswersLabel"), answer = Html(name3), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryRoleInCompany.checkYourAnswersLabel", name3), answer = Html("Not a Director or Employee"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", name3), answer = Html("line 1<br />line 2<br />NE11NE"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryPassportIDCardYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryPassportIDCard.checkYourAnswersLabel", name3), answer = Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"), changeUrl = None),
-            AnswerRow(label = messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None)
+            AnswerRow(label = messages("individualBeneficiaryName.checkYourAnswersLabel"), answer = Html(name3), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryRoleInCompany.checkYourAnswersLabel", name3), answer = Html("Not a Director or Employee"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", name3), answer = Html("line 1<br />line 2<br />NE11NE"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryPassportIDCardYesNo.checkYourAnswersLabel", name3), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryPassportIDCard.checkYourAnswersLabel", name3), answer = Html("Germany<br />KSJDFKSDHF6456545147852369QWER<br />2 February 2020"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", name3), answer = Html("No"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         )
@@ -222,22 +222,22 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Company beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = messages("companyBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryShareOfIncome.checkYourAnswersLabel", companyBen1Name), answer = Html("98%"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryAddressUKYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryAddress.checkYourAnswersLabel", companyBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
+            AnswerRow(label = messages("companyBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryShareOfIncome.checkYourAnswersLabel", companyBen1Name), answer = Html("98%"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryAddressUKYesNo.checkYourAnswersLabel", companyBen1Name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryAddress.checkYourAnswersLabel", companyBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Company beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = messages("companyBeneficiaryName.checkYourAnswersLabel", companyBen2Name), answer = Html("Apple"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("companyBeneficiaryUtr.checkYourAnswersLabel", companyBen2Name), answer = Html("1234567890"), changeUrl = None)
+            AnswerRow(label = messages("companyBeneficiaryName.checkYourAnswersLabel", companyBen2Name), answer = Html("Apple"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryAddressYesNo.checkYourAnswersLabel", companyBen2Name), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("companyBeneficiaryUtr.checkYourAnswersLabel", companyBen2Name), answer = Html("1234567890"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         )
@@ -280,22 +280,22 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Trust beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = messages("trustBeneficiaryName.checkYourAnswersLabel"), answer = Html("Trust of Adam"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", trustBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryShareOfIncome.checkYourAnswersLabel",trustBen1Name), answer = Html("98%"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryAddress.checkYourAnswersLabel",trustBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
+            AnswerRow(label = messages("trustBeneficiaryName.checkYourAnswersLabel"), answer = Html("Trust of Adam"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", trustBen1Name), answer = Html("No"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryShareOfIncome.checkYourAnswersLabel",trustBen1Name), answer = Html("98%"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel",trustBen1Name), answer = Html("Yes"), changeUrl = None, canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryAddress.checkYourAnswersLabel",trustBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None, canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Trust beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = messages("trustBeneficiaryName.checkYourAnswersLabel"), answer = Html("Grandchildren of Adam"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("trustBeneficiaryUtr.checkYourAnswersLabel",trustBen2Name), answer = Html("1234567890"), changeUrl = None)
+            AnswerRow(label = messages("trustBeneficiaryName.checkYourAnswersLabel"), answer = Html("Grandchildren of Adam"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("Yes"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryAddressYesNo.checkYourAnswersLabel",trustBen2Name), answer = Html("No"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("trustBeneficiaryUtr.checkYourAnswersLabel",trustBen2Name), answer = Html("1234567890"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         )
@@ -340,23 +340,23 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Employment related beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryAddressUKYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryAddress.checkYourAnswersLabel", largeBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryDescription.checkYourAnswersLabel", largeBen1Name), answer = Html("Description"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel", largeBen1Name), answer = Html("1"), changeUrl = None)
+            AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel"), answer = Html("Amazon"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryAddressUKYesNo.checkYourAnswersLabel", largeBen1Name), answer = Html("Yes"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryAddress.checkYourAnswersLabel", largeBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryDescription.checkYourAnswersLabel", largeBen1Name), answer = Html("Description"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel", largeBen1Name), answer = Html("1"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Employment related beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel", largeBen2Name), answer = Html("Apple"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen2Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryUtr.checkYourAnswersLabel", largeBen2Name), answer = Html("1234567890"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryDescription.checkYourAnswersLabel", largeBen2Name), answer = Html("Description"), changeUrl = None),
-            AnswerRow(label = messages("largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel", largeBen2Name), answer = Html("1"), changeUrl = None)
+            AnswerRow(label = messages("largeBeneficiaryName.checkYourAnswersLabel", largeBen2Name), answer = Html("Apple"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryAddressYesNo.checkYourAnswersLabel", largeBen2Name), answer = Html("No"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryUtr.checkYourAnswersLabel", largeBen2Name), answer = Html("1234567890"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryDescription.checkYourAnswersLabel", largeBen2Name), answer = Html("Description"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("largeBeneficiaryNumberOfBeneficiaries.checkYourAnswersLabel", largeBen2Name), answer = Html("1"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         )
@@ -398,21 +398,21 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Other beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Dog"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", otherBen1Name), answer = Html("No"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryShareOfIncome.checkYourAnswersLabel",otherBen1Name), answer = Html("98%"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryAddressUKYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryAddress.checkYourAnswersLabel",otherBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None)
+            AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Dog"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel", otherBen1Name), answer = Html("No"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("otherBeneficiaryShareOfIncome.checkYourAnswersLabel",otherBen1Name), answer = Html("98%"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("otherBeneficiaryAddressUKYesNo.checkYourAnswersLabel",otherBen1Name), answer = Html("Yes"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("otherBeneficiaryAddress.checkYourAnswersLabel",otherBen1Name), answer = Html("line1<br />line2<br />line3<br />line4<br />NE981ZZ"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Other beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Cat"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("Yes"), changeUrl = None),
-            AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("No"), changeUrl = None)
+            AnswerRow(label = messages("otherBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Cat"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("otherBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("Yes"), changeUrl = None,canEdit = false),
+            AnswerRow(label = messages("otherBeneficiaryAddressYesNo.checkYourAnswersLabel",otherBen2Name), answer = Html("No"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         )
@@ -438,14 +438,14 @@ class BeneficiaryPrintPlaybackHelperSpec extends PlaybackSpecBase {
         AnswerSection(
           headingKey = Some("Class of beneficiary 1"),
           rows = Seq(
-            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Grandchildren"), changeUrl = None)
+            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Grandchildren"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         ),
         AnswerSection(
           headingKey = Some("Class of beneficiary 2"),
           rows = Seq(
-            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Spouses"), changeUrl = None)
+            AnswerRow(label = messages("classBeneficiaryDescription.checkYourAnswersLabel"), answer = Html("Spouses"), changeUrl = None,canEdit = false)
           ),
           sectionKey = None
         )
