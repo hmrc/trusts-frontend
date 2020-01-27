@@ -56,7 +56,7 @@
 
    <p>@messages("informationMaintainingThisTrust.paragraph3")</p>
 
-    @if(appConfig.playbackEnabled) {
+    @if(appConfig.declarationEnabled) {
         @components.button_link(messages("site.onlyContinue"), controllers.playback.routes.DeclarationWhatNextController.onPageLoad().url)
     }
 
