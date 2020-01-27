@@ -23,39 +23,89 @@ import views.html.playback.InformationMaintainingThisTrustView
 
 class InformationMaintainingThisTrustViewSpec extends ViewBehaviours {
 
-  "InformationMaintainingThisTrust view" must {
+  "InformationMaintainingThisTrust view" when {
 
-    val utr = "1234545678"
+    "declaration enabled" must {
 
-    val view = viewFor[InformationMaintainingThisTrustView](Some(emptyUserAnswers))
+      val utr = "1234545678"
 
-    val applyView = view.apply(utr)(fakeRequest, messages)
+      val application = applicationBuilder(Some(emptyUserAnswers))
+        .configure(Seq(
+          "microservice.services.features.declare.enabled" -> true
+        ): _*)
+        .build()
 
-    val config = app.injector.instanceOf[FrontendAppConfig]
+      val view = application.injector.instanceOf[InformationMaintainingThisTrustView]
 
-    "Have a dynamic utr in the subheading" in {
-      val doc = asDocument(applyView)
-      assertContainsText(doc, s"This trust’s UTR: $utr")
+      application.stop()
+
+      val applyView = view.apply(utr)(fakeRequest, messages)
+
+      "Have a dynamic utr in the subheading" in {
+        val doc = asDocument(applyView)
+        assertContainsText(doc, s"This trust’s UTR: $utr")
+      }
+
+      behave like normalPage(applyView, "informationMaintainingThisTrust",
+        "warning",
+        "h3",
+        "paragraph1",
+        "list1",
+        "list2",
+        "printsave.link",
+        "list3",
+        "list4",
+        "h2",
+        "paragraph2",
+        "paragraph3"
+      )
+
+      behave like pageWithBackLink(applyView)
+
+      behave like pageWithContinueButton(applyView, routes.DeclarationWhatNextController.onPageLoad().url)
     }
 
-    behave like normalPage(applyView, "informationMaintainingThisTrust",
-      "warning",
-      "h3",
-      "paragraph1",
-      "list1",
-      "list2",
-      "printsave.link",
-      "list3",
-      "list4",
-      "h2",
-      "paragraph2",
-      "paragraph3"
-    )
+    "declaration disabled" must {
 
-    behave like pageWithBackLink(applyView)
+      val utr = "1234545678"
 
-    if (config.playbackEnabled) {
-      behave like pageWithContinueButton(applyView, routes.DeclarationWhatNextController.onPageLoad().url)
+      val application = applicationBuilder(Some(emptyUserAnswers))
+        .configure(Seq(
+          "microservice.services.features.declare.enabled" -> false
+        ): _*)
+        .build()
+
+      val view = application.injector.instanceOf[InformationMaintainingThisTrustView]
+
+      application.stop()
+
+      val applyView = view.apply(utr)(fakeRequest, messages)
+
+      "Have a dynamic utr in the subheading" in {
+        val doc = asDocument(applyView)
+        assertContainsText(doc, s"This trust’s UTR: $utr")
+      }
+
+      "not have a continue button" in {
+        val doc = asDocument(applyView)
+        assertNotRenderedById(doc, "button")
+      }
+
+      behave like normalPage(applyView, "informationMaintainingThisTrust",
+        "warning",
+        "h3",
+        "paragraph1",
+        "list1",
+        "list2",
+        "printsave.link",
+        "list3",
+        "list4",
+        "h2",
+        "paragraph2",
+        "paragraph3"
+      )
+
+      behave like pageWithBackLink(applyView)
     }
 
   }

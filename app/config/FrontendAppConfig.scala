@@ -107,6 +107,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val playbackEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.playback.enabled")
 
+  lazy val declarationEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declare.enabled")
+
   lazy val declarationEmailEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")
 
   lazy val useMaintainFrontend : Boolean =
