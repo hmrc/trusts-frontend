@@ -20,13 +20,12 @@ import models.core.pages.FullName
 import play.twirl.api.HtmlFormat
 import utils.AccessibilityHelper._
 import views.behaviours.ViewBehaviours
-import views.html.register.{ConfirmationAgentView, ConfirmationIndividualView}
+import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
 
 class ConfirmationViewSpec extends ViewBehaviours {
 
   val refNumber = "XC TRN 00 00 00 49 11"
   val accessibleRefNumber = formatReferenceNumber(refNumber)
-  val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
   val name = "John Smith"
 
@@ -106,9 +105,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(
       draftId = fakeDraftId,
-      isExistingTrust = false,
       refNumber = refNumber,
-      postHMRC = postHMRC,
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
@@ -118,16 +115,15 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
   "Confirmation view for an existing trust" must {
 
-    val messageKeyPrefix = "confirmationIndividualPage"
+    val messageKeyPrefix = "confirmationExistingPage"
 
-    val view = viewFor[ConfirmationIndividualView](Some(emptyUserAnswers))
+    val view = viewFor[ConfirmationExistingView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
       draftId = fakeDraftId,
-      isExistingTrust = true,
+      isAgent = false,
       refNumber = refNumber,
-      postHMRC = postHMRC,
-      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
+      leadTrusteeName = FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
 
@@ -141,10 +137,8 @@ class ConfirmationViewSpec extends ViewBehaviours {
     val view = viewForAgent[ConfirmationAgentView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
-      isExistingTrust = false,
       draftId = fakeDraftId,
       refNumber = refNumber,
-      postHMRC = postHMRC,
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)

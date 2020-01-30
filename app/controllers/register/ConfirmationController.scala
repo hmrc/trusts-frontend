@@ -31,7 +31,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.{ConfirmationIndividualView, ConfirmationAgentView}
+import views.html.register.{ConfirmationIndividualView, ConfirmationAgentView, ConfirmationExistingView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,6 +44,7 @@ class ConfirmationController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
                                         viewIndividual: ConfirmationIndividualView,
                                         viewAgent: ConfirmationAgentView,
+                                        viewExisting: ConfirmationExistingView,
                                         errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -51,16 +52,18 @@ class ConfirmationController @Inject()(
 
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
 
-    val postHMRC = config.posthmrc
+    val isAgent = request.affinityGroup == Agent
 
     trustees.find(_.isLead) match {
       case Some(lt : LeadTrusteeIndividual) =>
 
         userAnswers.get(TrustHaveAUTRPage) match {
-          case Some(isExistingTrust) if request.affinityGroup == Agent =>
-            Future.successful(Ok(viewAgent(draftId, isExistingTrust, trn, postHMRC, lt.name)))
-          case Some(isExistingTrust) =>
-            Future.successful(Ok(viewIndividual(draftId, isExistingTrust, trn, postHMRC, lt.name)))
+          case Some(true) =>
+            Future.successful(Ok(viewExisting(draftId, isAgent, trn, lt.name)))
+          case Some(false) if isAgent =>
+            Future.successful(Ok(viewAgent(draftId, trn, lt.name)))
+          case Some(false) =>
+            Future.successful(Ok(viewIndividual(draftId, trn, lt.name)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
         }

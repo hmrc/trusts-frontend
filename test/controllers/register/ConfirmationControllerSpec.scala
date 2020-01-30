@@ -58,7 +58,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           content mustEqual
-            view(draftId = fakeDraftId, isExistingTrust = false, "xTRN1234678",postHMRC, FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+            view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
 
           content must include(agentUrl)
 
@@ -85,7 +85,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           content mustEqual
-            view(draftId = fakeDraftId, isExistingTrust = false, "xTRN1234678",postHMRC, FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+            view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
 
           content mustNot include(agentUrl)
 
@@ -111,7 +111,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(draftId = fakeDraftId, isExistingTrust = false, "xTRN1234678",postHMRC, FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+          view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
 
         application.stop()
       }

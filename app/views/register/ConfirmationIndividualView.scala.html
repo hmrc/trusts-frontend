@@ -22,7 +22,7 @@
     main_template: MainTemplate
 )
 
-@(draftId : String, isExistingTrust: Boolean, refNumber: String, postHMRC: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
+@(draftId : String, refNumber: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${messages("confirmationIndividualPage.title", formatReferenceNumber(refNumber))}"
@@ -41,34 +41,19 @@
 
 <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save","confirmationPage.printsave.link", openInNewWindow = true)</p>
 
-    @if(!isExistingTrust) {
+    <h2>@messages("confirmationIndividualPage.subheading1")</h2>
 
-        <h2>@messages("confirmationIndividualPage.subheading1")</h2>
+    <p>@messages("confirmationIndividualPage.paragraph1", leadTrusteeName.toString)</p>
 
-        <p>@messages("confirmationIndividualPage.new.paragraph1", leadTrusteeName.toString)</p>
+    <h2>@messages("confirmationIndividualPage.subheading2")</h2>
 
-        <h2>@messages("confirmationIndividualPage.subheading2")</h2>
+    <p>@messages("confirmationIndividualPage.paragraph2")</p>
+    <p>@messages("confirmationIndividualPage.paragraph3")</p>
 
-        <p>@messages("confirmationIndividualPage.paragraph2")</p>
-        <p>@messages("confirmationIndividualPage.new.paragraph3")</p>
+    <h2>@messages("confirmationIndividualPage.subheading3")</h2>
 
-        <h2>@messages("confirmationIndividualPage.new.subheading3")</h2>
-
-        <p>@messages("confirmationIndividualPage.new.paragraph4")</p>
-        <p>@messages("confirmationIndividualPage.new.paragraph5")</p>
-        <p>@messages("confirmationIndividualPage.new.paragraph6") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank">@messages("confirmationIndividualPage.new.paragraph6.a")</a>.</p>
-
-    } else {
-
-        <h2>@messages("confirmationPage.subheading1")</h2>
-
-        <p>@messages("confirmationPage.existing.paragraph1", leadTrusteeName.toString)</p>
-
-        <h2>@messages("confirmationPage.subheading2")</h2>
-
-        <p>@messages("confirmationPage.existing.paragraph2")</p>
-
-        <p>@messages("confirmationPage.paragraph3") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
-    }
+    <p>@messages("confirmationIndividualPage.paragraph4")</p>
+    <p>@messages("confirmationIndividualPage.paragraph5")</p>
+    <p>@messages("confirmationIndividualPage.paragraph6") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank">@messages("confirmationIndividualPage.new.paragraph6.a")</a>.</p>
 
 }
