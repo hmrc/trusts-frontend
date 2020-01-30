@@ -17,7 +17,6 @@
 package controllers.register
 
 import config.FrontendAppConfig
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
@@ -32,7 +31,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.ConfirmationView
+import views.html.register.{ConfirmationIndividualView, ConfirmationAgentView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -43,22 +42,25 @@ class ConfirmationController @Inject()(
                                         requireData: RegistrationDataRequiredAction,
                                         config: FrontendAppConfig,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: ConfirmationView,
+                                        viewIndividual: ConfirmationIndividualView,
+                                        viewAgent: ConfirmationAgentView,
                                         errorHandler: ErrorHandler
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
     val isAgent = request.affinityGroup == Agent
-    val agentOverviewUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
 
     trustees.find(_.isLead) match {
       case Some(lt : LeadTrusteeIndividual) =>
 
         userAnswers.get(TrustHaveAUTRPage) match {
+          case Some(isExistingTrust) if isAgent =>
+            val postHMRC = config.posthmrc
+            Future.successful(Ok(viewAgent(draftId, isExistingTrust, trn, postHMRC, lt.name)))
           case Some(isExistingTrust) =>
             val postHMRC = config.posthmrc
-            Future.successful(Ok(view(draftId, isExistingTrust, isAgent, trn, postHMRC, agentOverviewUrl, lt.name)))
+            Future.successful(Ok(viewIndividual(draftId, isExistingTrust, trn, postHMRC, lt.name)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
         }

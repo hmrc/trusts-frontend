@@ -22,7 +22,7 @@
     main_template: MainTemplate
 )
 
-@(draftId : String, isExistingTrust: Boolean, isAgent: Boolean, refNumber: String, postHMRC: String, agentOverviewUrl: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
+@(draftId : String, isExistingTrust: Boolean, refNumber: String, postHMRC: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${messages("confirmationPage.title", formatReferenceNumber(refNumber))}"
@@ -66,8 +66,6 @@
         <p>@messages("confirmationPage.paragraph3") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
     }
 
-    @if(isAgent) {
-        <p>@messages("confirmationPage.agent.you.can") @components.link(agentOverviewUrl, "agent-overview", "confirmationPage.agent.link", false).</p>
-    }
+    <p>@messages("confirmationPage.agent.you.can") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "confirmationPage.agent.link", false).</p>
 
 }

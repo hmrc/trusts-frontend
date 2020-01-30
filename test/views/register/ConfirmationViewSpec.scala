@@ -20,7 +20,7 @@ import models.core.pages.FullName
 import play.twirl.api.HtmlFormat
 import utils.AccessibilityHelper._
 import views.behaviours.ViewBehaviours
-import views.html.register.ConfirmationView
+import views.html.register.{ConfirmationAgentView, ConfirmationIndividualView}
 
 class ConfirmationViewSpec extends ViewBehaviours {
 
@@ -81,21 +81,19 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
       val doc = asDocument(view)
       val agentOverviewLink = doc.getElementById("agent-overview")
-      assertAttributeValueForElement(agentOverviewLink, "href", "#")
+      assertAttributeValueForElement(agentOverviewLink, "href", controllers.register.agents.routes.AgentOverviewController.onPageLoad().url)
       assertContainsTextForId(doc, "agent-overview", "return to register and maintain a trust for a client")
     }
   }
 
   "Confirmation view for a new trust" must {
-    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
+    val view = viewFor[ConfirmationIndividualView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
       draftId = fakeDraftId,
       isExistingTrust = false,
-      isAgent = false,
       refNumber = refNumber,
       postHMRC = postHMRC,
-      agentOverviewUrl = "#",
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
@@ -104,15 +102,13 @@ class ConfirmationViewSpec extends ViewBehaviours {
   }
 
   "Confirmation view for an existing trust" must {
-    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
+    val view = viewFor[ConfirmationIndividualView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
       draftId = fakeDraftId,
       isExistingTrust = true,
-      isAgent = false,
       refNumber = refNumber,
       postHMRC = postHMRC,
-      agentOverviewUrl = "#",
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
@@ -121,15 +117,13 @@ class ConfirmationViewSpec extends ViewBehaviours {
   }
 
   "Confirmation view for an agent" must {
-    val view = viewForAgent[ConfirmationView](Some(emptyUserAnswers))
+    val view = viewForAgent[ConfirmationAgentView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
       isExistingTrust = true,
-      isAgent = true,
       draftId = fakeDraftId,
       refNumber = refNumber,
       postHMRC = postHMRC,
-      agentOverviewUrl = "#",
       leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)

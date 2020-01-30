@@ -23,37 +23,98 @@ import models.registration.pages.RegistrationStatus
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
-import views.html.register.ConfirmationView
+import views.html.register.{ConfirmationIndividualView, ConfirmationAgentView}
 
 class ConfirmationControllerSpec extends RegistrationSpecBase {
 
   val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
+  def agentUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
+
   "Confirmation Controller" must {
 
-    "return OK and the correct view for a GET when TRN is available" in {
+    "return OK and the correct view for a GET when TRN is available" when {
+      "registering trust" when {
+        "agent" in {
 
-      val userAnswers = TestUserAnswers.withLeadTrustee(
-        emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-          .set(RegistrationTRNPage, "xTRN1234678").success.value
-          .set(TrustHaveAUTRPage, false).success.value
-      )
+          val userAnswers = TestUserAnswers.withLeadTrustee(
+            emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678").success.value
+              .set(TrustHaveAUTRPage, false).success.value
+          )
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+          val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+          val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
-      val result = route(application, request).value
+          val result = route(application, request).value
 
-      val view = application.injector.instanceOf[ConfirmationView]
+          val view = application.injector.instanceOf[ConfirmationAgentView]
 
-      status(result) mustEqual OK
+          val content = contentAsString(result)
 
-      contentAsString(result) mustEqual
-        view(draftId = fakeDraftId, isExistingTrust = false, isAgent = false, "xTRN1234678",postHMRC, "#",FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+          status(result) mustEqual OK
 
-      application.stop()
+          content mustEqual
+            view(draftId = fakeDraftId, isExistingTrust = false, "xTRN1234678",postHMRC, FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+
+          content must include(agentUrl)
+
+          application.stop()
+        }
+        "org" in {
+
+          val userAnswers = TestUserAnswers.withLeadTrustee(
+            emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678").success.value
+              .set(TrustHaveAUTRPage, false).success.value
+          )
+
+          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+          val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[ConfirmationIndividualView]
+
+          val content = contentAsString(result)
+
+          status(result) mustEqual OK
+
+          content mustEqual
+            view(draftId = fakeDraftId, isExistingTrust = false, "xTRN1234678",postHMRC, FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+
+          content mustNot include(agentUrl)
+
+          application.stop()
+        }
+      }
+      "maintaining trust" in {
+
+        val userAnswers = TestUserAnswers.withLeadTrustee(
+          emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+            .set(RegistrationTRNPage, "xTRN1234678").success.value
+            .set(TrustHaveAUTRPage, false).success.value
+        )
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ConfirmationIndividualView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(draftId = fakeDraftId, isExistingTrust = false, "xTRN1234678",postHMRC, FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
     "return to Task List view  when registration is in progress " in {
