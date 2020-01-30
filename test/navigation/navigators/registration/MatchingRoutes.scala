@@ -139,7 +139,7 @@ trait MatchingRoutes {
         }
       }
 
-      "go to CannotMakeChanges from TrustHaveAUTR when user answers yes when claim is off" in {
+      "go to CannotMakeChanges from TrustHaveAUTR when user answers yes when playback is off" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
@@ -148,7 +148,7 @@ trait MatchingRoutes {
               .set(TrustHaveAUTRPage, true).success.value
 
             val feAppConfig = mock[FrontendAppConfig]
-            when(feAppConfig.claimEnabled).thenReturn(false)
+            when(feAppConfig.playbackEnabled).thenReturn(false)
             val nav = new Navigator(feAppConfig)
 
             nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
@@ -156,7 +156,7 @@ trait MatchingRoutes {
 
         }
       }
-      "go to WhatIsTheUtrVariations from TrustHaveAUTR when user answers yes when claim is on" in {
+      "go to Maintain a trust service from TrustHaveAUTR when user answers yes when playback is on" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
@@ -165,11 +165,14 @@ trait MatchingRoutes {
               .set(TrustHaveAUTRPage, true).success.value
 
             val feAppConfig = mock[FrontendAppConfig]
-            when(feAppConfig.claimEnabled).thenReturn(true)
+
+            when(feAppConfig.playbackEnabled).thenReturn(true)
+
             val nav = new Navigator(feAppConfig)
 
-            nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad())
+            val url = nav.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers).url
+
+            url mustBe feAppConfig.maintainATrustFrontendUrl
         }
       }
     }

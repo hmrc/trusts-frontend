@@ -381,8 +381,8 @@ class Navigator @Inject()(
   }
 
   private def routeToMaintain : Call = {
-    if (config.claimEnabled) {
-      controllers.playback.routes.WhatIsTheUTRVariationsController.onPageLoad()
+    if (config.playbackEnabled) {
+      Call("GET", config.maintainATrustFrontendUrl)
     } else {
       controllers.register.routes.CannotMakeChangesController.onPageLoad()
     }
