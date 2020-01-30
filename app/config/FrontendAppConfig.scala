@@ -103,16 +103,11 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val livingSettlorBusinessEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.journey.livingSettlorBusiness.enabled")
 
-  lazy val claimEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.claim.enabled")
-
   lazy val playbackEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.playback.enabled")
 
   lazy val declarationEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declare.enabled")
 
   lazy val declarationEmailEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")
-
-  lazy val useMaintainFrontend : Boolean =
-    configuration.get[Boolean]("microservice.services.features.useMaintainFrontend.enabled")
 
   lazy val maintainATrustFrontendUrl : String =
     configuration.get[String]("urls.maintainATrust")

@@ -79,11 +79,7 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
           } yield {
-            if(config.useMaintainFrontend) {
-              Redirect(config.maintainATrustFrontendUrl)
-            } else {
               Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup)(updatedAnswers))
-            }
           }
         }
       )
