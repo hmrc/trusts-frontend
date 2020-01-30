@@ -48,18 +48,18 @@ class ConfirmationController @Inject()(
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
+
     val trustees = userAnswers.get(Trustees).getOrElse(Nil)
-    val isAgent = request.affinityGroup == Agent
+
+    val postHMRC = config.posthmrc
 
     trustees.find(_.isLead) match {
       case Some(lt : LeadTrusteeIndividual) =>
 
         userAnswers.get(TrustHaveAUTRPage) match {
-          case Some(isExistingTrust) if isAgent =>
-            val postHMRC = config.posthmrc
+          case Some(isExistingTrust) if request.affinityGroup == Agent =>
             Future.successful(Ok(viewAgent(draftId, isExistingTrust, trn, postHMRC, lt.name)))
           case Some(isExistingTrust) =>
-            val postHMRC = config.posthmrc
             Future.successful(Ok(viewIndividual(draftId, isExistingTrust, trn, postHMRC, lt.name)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
@@ -67,6 +67,7 @@ class ConfirmationController @Inject()(
       case _ =>
         errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
     }
+
   }
 
   def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {

@@ -25,13 +25,13 @@
 @(draftId : String, isExistingTrust: Boolean, refNumber: String, postHMRC: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${messages("confirmationPage.title", formatReferenceNumber(refNumber))}"
+    title = s"${messages("confirmationAgentPage.title", formatReferenceNumber(refNumber))}"
     ) {
 
     <div class="govuk-main-wrapper--l">
         <h1 class="form-title heading-large heading-confirmation ">
-            @messages("confirmationPage.heading1")
-            <span class="reference-text">@messages("confirmationPage.heading2")</span>
+            @messages("confirmationAgentPage.heading1")
+            <span class="reference-text">@messages("confirmationAgentPage.heading2")</span>
             <span id="trusts-registration-number" class="reference-number">
                 <span aria-hidden=true>@refNumber</span>
                 <span class="visually-hidden">@formatReferenceNumber(refNumber)</span>
@@ -43,15 +43,26 @@
 
     @if(!isExistingTrust) {
 
-        <h2>@messages("confirmationPage.subheading1")</h2>
+        <h2>@messages("confirmationAgentPage.subheading1")</h2>
 
-        <p>@messages("confirmationPage.new.paragraph1", leadTrusteeName.toString)</p>
+        <p>@messages("confirmationAgentPage.new.paragraph1", leadTrusteeName.toString)</p>
 
-        <h2>@messages("confirmationPage.subheading2")</h2>
+        <h2>@messages("confirmationAgentPage.subheading2")</h2>
 
-        <p>@messages("confirmationPage.new.paragraph2") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.contacthmrc.link")</a>.</p>
+        <p>@messages("confirmationAgentPage.paragraph2")</p>
+        <p>@messages("confirmationAgentPage.paragraph3")</p>
 
-        <p>@messages("confirmationPage.paragraph3") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
+        <ol class="govuk-list--number">
+            <li class="bold">@messages("confirmationAgentPage.bullet1")</li>
+            <p>@messages("confirmationAgentPage.paragraph4")</p>
+            <p>@messages("confirmationAgentPage.paragraph5") <a href="#" target="_blank">@messages("confirmationAgentPage.paragraph5.a")</a></p>
+            <p>@messages("confirmationAgentPage.paragraph6")</p>
+            <p>@messages("confirmationAgentPage.paragraph7")</p>
+            <li class="bold">@messages("confirmationAgentPage.bullet2")</li>
+            <p>@messages("confirmationAgentPage.paragraph8")</p>
+            <p>@messages("confirmationAgentPage.paragraph9")</p>
+            <p>@messages("confirmationAgentPage.paragraph10") <a href="#" target="_blank">@messages("confirmationAgentPage.paragraph10.a")</a></p>
+        </ol>
 
     } else {
 
@@ -64,8 +75,9 @@
         <p>@messages("confirmationPage.existing.paragraph2")</p>
 
         <p>@messages("confirmationPage.paragraph3") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
+
     }
 
-    <p>@messages("confirmationPage.agent.you.can") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "confirmationPage.agent.link", false).</p>
+    <p>@messages("confirmationAgentPage.agent.you.can") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "confirmationAgentPage.agent.link", false).</p>
 
 }

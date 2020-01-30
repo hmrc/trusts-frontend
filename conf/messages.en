@@ -981,31 +981,79 @@ removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
 removeIndividualBeneficiary.default = the individual beneficiary
 removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
 
-confirmationPage.title = Registration received, your reference is: {0}
-confirmationPage.heading = Registration received Your reference is: {0}
+
 
 confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 
-confirmationPage.heading1 = Registration received
-confirmationPage.heading2 = Your reference is:
+confirmationIndividualPage.heading1 = Registration received
+confirmationIndividualPage.heading2 = Your reference is:
 
-confirmationPage.subheading1 = What happens next
+confirmationIndividualPage.title = Registration received, your reference is: {0}
+confirmationIndividualPage.heading = Registration received Your reference is: {0}
 
-confirmationPage.new.paragraph1 = We will post {0} a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
+confirmationIndividualPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationIndividualPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
+confirmationIndividualPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
+
+confirmationIndividualPage.subheading1 = What happens next
+
+confirmationIndividualPage.new.paragraph1 = We will post {0} a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
+confirmationIndividualPage.existing.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact {0}.
+
+confirmationIndividualPage.subheading2 = What you need to do next
+
+confirmationIndividualPage.paragraph2 = Make a note of your reference number in case you need to contact HMRC.
+confirmationIndividualPage.new.paragraph3 = If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service once the trust’s UTR has been received.
+
+confirmationIndividualPage.new.subheading3 = Where to declare the trust is up to date
+
+confirmationIndividualPage.new.paragraph4 = If the trust has a tax liability, you have a legal responsibility to declare every year that the details we hold are up to date.
+confirmationIndividualPage.new.paragraph5 = You need to make a declaration through the Trust Registration Service and Self Assessment online or the Trust and Estate Tax Return form (SA900).
+confirmationIndividualPage.new.paragraph6 = If you need help with the service
+confirmationIndividualPage.new.paragraph6.a = contact the trusts helpline (opens in a new window or tab)
+
+
+confirmationAgentPage.heading1 = Registration received
+confirmationAgentPage.heading2 = Your reference is:
+
+confirmationAgentPage.title = Registration received, your reference is: {0}
+confirmationAgentPage.heading = Registration received Your reference is: {0}
+
+
+confirmationAgentPage.subheading1 = What happens next
+
+confirmationAgentPage.new.paragraph1 = We will post {0} a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
+confirmationAgentPage.existing.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact {0}.
+
+confirmationAgentPage.subheading2 = What you need to do next
+
+confirmationAgentPage.paragraph2 = Make a note of your reference number in case you need to contact HMRC.
+confirmationAgentPage.paragraph3 = One of the trustees will need to complete the next two steps once the trust’s UTR has been received. You will then be able to maintain the trust online on their behalf.
+
+confirmationAgentPage.bullet1 = Trustee needs to claim the trust
+confirmationAgentPage.paragraph4 = A trustee needs to log onto the Trust Registration Service using their Government Gateway account. The account they use must be an organisation account, not an individual account.
+confirmationAgentPage.paragraph5 = If they do not have an account, they can register for
+confirmationAgentPage.paragraph5.a = one here (opens in a new window or tab)
+confirmationAgentPage.paragraph6 = The trustee needs to correctly answer questions about the trust so HMRC can prove the connection between the trustee and the trust.
+confirmationAgentPage.paragraph7 = The trustee must complete this step before you can request authorisation from them to maintain the trust.
+
+confirmationAgentPage.bullet2 = Trustee needs to authorise your online access to the trust
+confirmationAgentPage.paragraph8 = Through Agent Services you can create an authorisation link to send to the trustee.
+confirmationAgentPage.paragraph9 = The trustee needs to use the same Government Gateway organisation account used to claim the trust to approve your request.
+confirmationAgentPage.paragraph10 = If you need help with the service
+confirmationAgentPage.paragraph10.a = contact the trusts helpline (opens in a new window or tab)
+
+confirmationAgentPage.agent.you.can = You can
+confirmationAgentPage.agent.link = return to register and maintain a trust for a client
+
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
+confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
+
 confirmationPage.existing.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact {0}.
-
-confirmationPage.new.paragraph2 = Make a note of your reference number in case you need to contact HMRC. If you do not get your UTR within 15 working days,
 confirmationPage.existing.paragraph2 = Make a note of your reference number in case you need to contact HMRC.
-
-confirmationPage.subheading2 = What you need to do next
-
-confirmationPage.paragraph3 = You cannot make online changes to the trust. To change the lead trustee or their contact details,
-confirmationPage.paragraph4 = You must keep a record of any other changes until you can change them using the online service.
-
-confirmationPage.agent.you.can = You can
-confirmationPage.agent.link = return to register and maintain a trust for a client
 
 declaration.title = Declaration
 declaration.heading = Declaration

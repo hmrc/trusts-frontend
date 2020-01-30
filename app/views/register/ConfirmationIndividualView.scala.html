@@ -25,13 +25,13 @@
 @(draftId : String, isExistingTrust: Boolean, refNumber: String, postHMRC: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${messages("confirmationPage.title", formatReferenceNumber(refNumber))}"
+    title = s"${messages("confirmationIndividualPage.title", formatReferenceNumber(refNumber))}"
     ) {
 
     <div class="govuk-main-wrapper--l">
         <h1 class="form-title heading-large heading-confirmation ">
-            @messages("confirmationPage.heading1")
-            <span class="reference-text">@messages("confirmationPage.heading2")</span>
+            @messages("confirmationIndividualPage.heading1")
+            <span class="reference-text">@messages("confirmationIndividualPage.heading2")</span>
             <span id="trusts-registration-number" class="reference-number">
                 <span aria-hidden=true>@refNumber</span>
                 <span class="visually-hidden">@formatReferenceNumber(refNumber)</span>
@@ -43,15 +43,20 @@
 
     @if(!isExistingTrust) {
 
-        <h2>@messages("confirmationPage.subheading1")</h2>
+        <h2>@messages("confirmationIndividualPage.subheading1")</h2>
 
-        <p>@messages("confirmationPage.new.paragraph1", leadTrusteeName.toString)</p>
+        <p>@messages("confirmationIndividualPage.new.paragraph1", leadTrusteeName.toString)</p>
 
-        <h2>@messages("confirmationPage.subheading2")</h2>
+        <h2>@messages("confirmationIndividualPage.subheading2")</h2>
 
-        <p>@messages("confirmationPage.new.paragraph2") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.contacthmrc.link")</a>.</p>
+        <p>@messages("confirmationIndividualPage.paragraph2")</p>
+        <p>@messages("confirmationIndividualPage.new.paragraph3")</p>
 
-        <p>@messages("confirmationPage.paragraph3") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" >@messages("confirmationPage.posthmrc.link")</a>. @messages("confirmationPage.paragraph4")</p>
+        <h2>@messages("confirmationIndividualPage.new.subheading3")</h2>
+
+        <p>@messages("confirmationIndividualPage.new.paragraph4")</p>
+        <p>@messages("confirmationIndividualPage.new.paragraph5")</p>
+        <p>@messages("confirmationIndividualPage.new.paragraph6") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank">@messages("confirmationIndividualPage.new.paragraph6.a")</a>.</p>
 
     } else {
 
