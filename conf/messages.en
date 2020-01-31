@@ -1001,7 +1001,8 @@ confirmationIndividualPage.paragraph1 = We will post {0} a Unique Taxpayer Refer
 
 confirmationIndividualPage.subheading2 = What you need to do next
 
-confirmationIndividualPage.paragraph2 = Make a note of your reference number in case you need to contact HMRC.
+confirmationIndividualPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
+
 confirmationIndividualPage.paragraph3 = If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service once the trust’s UTR has been received.
 
 confirmationIndividualPage.subheading3 = Where to declare the trust is up to date
@@ -1024,7 +1025,7 @@ confirmationAgentPage.paragraph1 = We will post {0} a Unique Taxpayer Reference 
 
 confirmationAgentPage.subheading2 = What you need to do next
 
-confirmationAgentPage.paragraph2 = Make a note of your reference number in case you need to contact HMRC.
+confirmationAgentPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
 confirmationAgentPage.paragraph3 = One of the trustees will need to complete the next two steps once the trust’s UTR has been received. You will then be able to maintain the trust online on their behalf.
 
 confirmationAgentPage.bullet1 = Trustee needs to claim the trust
@@ -1054,7 +1055,7 @@ confirmationExistingPage.title = Registration received, your reference is: {0}
 confirmationExistingPage.heading = Registration received Your reference is: {0}
 
 confirmationExistingPage.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact {0}.
-confirmationExistingPage.paragraph2 = Make a note of your reference number in case you need to contact HMRC.
+confirmationExistingPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
 
 declaration.title = Declaration
 declaration.heading = Declaration
