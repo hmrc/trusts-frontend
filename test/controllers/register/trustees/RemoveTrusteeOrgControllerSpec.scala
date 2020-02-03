@@ -36,7 +36,7 @@ class RemoveTrusteeOrgControllerSpec extends RegistrationSpecBase with PropertyC
   lazy val formRoute = routes.RemoveTrusteeOrgController.onSubmit(0, fakeDraftId)
 
   lazy val content : String = "John Smith Org"
-  lazy val defaultContent : String = "the Company Lead Trustee"
+  lazy val defaultContent : String = "the trustee"
 
   val index = 0
 
