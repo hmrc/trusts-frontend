@@ -97,7 +97,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
         val userAnswers = TestUserAnswers.withLeadTrustee(
           emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
             .set(RegistrationTRNPage, "xTRN1234678").success.value
-            .set(TrustHaveAUTRPage, false).success.value
+            .set(TrustHaveAUTRPage, true).success.value
         )
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -111,7 +111,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(draftId = fakeDraftId, false, "", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+          view(draftId = fakeDraftId, false, "xTRN1234678", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
 
         application.stop()
       }
