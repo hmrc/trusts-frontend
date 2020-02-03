@@ -125,7 +125,7 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteesNamePage from TrusteeOrIndividualPage page when answer is Individual" in {
+    "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page when answer is Individual" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
@@ -135,13 +135,13 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteeIndividualOrBusinessPage from TrusteeOrIndividualPage page when answer is Business" in {
+    "go to TrusteeUtrYesNoPage from TrusteeIndividualOrBusinessPage page when answer is Business" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Business).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 

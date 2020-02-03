@@ -454,6 +454,10 @@ trusteeUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Refe
 trusteeUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 
+leadTrusteeUtrYesNo.title = Is this trustee a UK registered company?
+leadTrusteeUtrYesNo.heading = Is this trustee a UK registered company?
+leadTrusteeUtrYesNo.error.required = Select yes if the trustee is a UK registered company
+
 trusteesDateOfBirth.title = What is the trustee’s date of birth?
 trusteesDateOfBirth.heading = What is {0}’s date of birth?
 trusteesDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
