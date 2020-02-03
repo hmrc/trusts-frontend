@@ -1561,3 +1561,7 @@ employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When d
 
 deedOfVariation.replaceAbsoluteInterestOverWill = to replace an absolute interest over a will
 deedOfVariation.replaceWillTrust = to replace a will trust
+
+trusteeOrgAddressUkYesNo.title =
+trusteeOrgAddressUkYesNo.heading =
+
