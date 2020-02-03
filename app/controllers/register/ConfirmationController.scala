@@ -61,9 +61,9 @@ class ConfirmationController @Inject()(
           case Some(true) =>
             Future.successful(Ok(viewExisting(draftId, isAgent, trn, lt.name)))
           case Some(false) if isAgent =>
-            Future.successful(Ok(viewAgent(draftId, trn, lt.name)))
+            Future.successful(Ok(viewAgent(draftId, trn)))
           case Some(false) =>
-            Future.successful(Ok(viewIndividual(draftId, trn, lt.name)))
+            Future.successful(Ok(viewIndividual(draftId, trn)))
           case None =>
             errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
         }

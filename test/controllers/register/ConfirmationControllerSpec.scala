@@ -25,7 +25,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
-import views.html.register.{ConfirmationIndividualView, ConfirmationAgentView}
+import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
 
 class ConfirmationControllerSpec extends RegistrationSpecBase {
 
@@ -58,7 +58,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           content mustEqual
-            view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+            view(draftId = fakeDraftId, "xTRN1234678")(fakeRequest, messages).toString
 
           content must include(agentUrl)
 
@@ -85,7 +85,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           content mustEqual
-            view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+            view(draftId = fakeDraftId, "xTRN1234678")(fakeRequest, messages).toString
 
           content mustNot include(agentUrl)
 
@@ -106,12 +106,12 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ConfirmationIndividualView]
+        val view = application.injector.instanceOf[ConfirmationExistingView]
 
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
+          view(draftId = fakeDraftId, false, "", FullName("first name", None, "Last Name"))(fakeRequest, messages).toString
 
         application.stop()
       }

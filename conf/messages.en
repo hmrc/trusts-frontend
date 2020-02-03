@@ -1001,7 +1001,7 @@ confirmationIndividualPage.contacthmrc.link = contact HMRC to find out why (open
 
 confirmationIndividualPage.subheading1 = What happens next
 
-confirmationIndividualPage.paragraph1 = We will post {0} a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
+confirmationIndividualPage.paragraph1 = We will post the Lead trustee the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
 
 confirmationIndividualPage.subheading2 = What you need to do next
 
@@ -1025,7 +1025,7 @@ confirmationAgentPage.heading = Registration received Your reference is: {0}
 
 confirmationAgentPage.subheading1 = What happens next
 
-confirmationAgentPage.paragraph1 = We will post {0} a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
+confirmationAgentPage.paragraph1 = We will post the Lead trustee the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
 
 confirmationAgentPage.subheading2 = What you need to do next
 
