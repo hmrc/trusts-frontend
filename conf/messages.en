@@ -425,6 +425,11 @@ removeATrustee.heading = Are you sure you want to remove {0}?
 removeATrustee.default = the trustee
 removeATrustee.error.required = Select yes if you want to remove the trustee
 
+removeATrusteeOrg.title = Are you sure you want to remove {0}?
+removeATrusteeOrg.heading = Are you sure you want to remove {0}?
+removeATrusteeOrg.default = the trustee
+removeATrusteeOrg.error.required = Select yes if you want to remove the trustee
+
 removeAsset.title = Are you sure you want to remove this asset?
 removeAsset.heading = Are you sure you want to remove this asset?
 removeAsset.error.required = Select yes if you want to remove this asset
