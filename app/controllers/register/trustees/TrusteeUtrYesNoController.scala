@@ -21,10 +21,9 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import controllers.filters.IndexActionFilterProvider
 import forms.YesNoFormProvider
 import javax.inject.Inject
-import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeUtrYesNoPage}
+import pages.register.trustees.{TrusteeIndividualOrBusinessPage, TrusteeUtrYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -54,7 +53,8 @@ class TrusteeUtrYesNoController @Inject()(
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(TrusteeIndividualOrBusinessPage(index),
+        routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

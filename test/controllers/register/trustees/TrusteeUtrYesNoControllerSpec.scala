@@ -21,8 +21,9 @@ import controllers.IndexValidation
 import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
+import models.core.pages.IndividualOrBusiness
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeUtrYesNoPage}
+import pages.register.trustees.{TrusteeIndividualOrBusinessPage, TrusteeUtrYesNoPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -47,7 +48,7 @@ class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValid
     "return OK and the correct view for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -69,7 +70,7 @@ class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValid
 
       val userAnswers = emptyUserAnswers
         .set(TrusteeUtrYesNoPage(index), true).success.value
-        .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -87,7 +88,7 @@ class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValid
       application.stop()
     }
 
-    "redirect to IsThisLeadTrustee when IsThisLeadTrustee is not answered" in {
+    "redirect to TrusteeIndividualOrBusiness page when TrusteeIndividualOrBusiness is not answered" in {
       val userAnswers = emptyUserAnswers
         .set(TrusteeUtrYesNoPage(index), true).success.value
 
@@ -99,7 +100,7 @@ class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -107,7 +108,7 @@ class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValid
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -129,7 +130,7 @@ class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValid
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
