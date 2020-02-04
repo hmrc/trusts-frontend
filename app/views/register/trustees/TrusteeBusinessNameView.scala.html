@@ -36,6 +36,7 @@
 
         @components.input_text(
           field = form("value"),
+          inputClass = Some("trustee-business-name"),
           label = messages("trusteeBusinessName.heading"),
           labelAsHeading = true,
           hint = if(isUKRegisteredCompany) Some(messages("trusteeBusinessName.hint")) else None,
