@@ -351,7 +351,14 @@ leadTrusteeIndividualOrBusiness.error.required = Select if the lead trustee is a
 trustDetailsAnswerPage.title = Check trust details
 trustDetailsAnswerPage.heading = Check trust details
 
+trusteeBusinessName.heading = What is the business’s name?
+trusteeBusinessName.title = What is the business’s name?
+trusteeBusinessName.hint = Enter the name as it appears on tax returns and other letters about Corporation Tax.
+trusteeBusinessName.error.required = Enter the business name
+trusteeBusinessName.error.length = Business name must be 56 characters or less
+trusteeBusinessName.error.invalidFormat = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trusteeBusinessName.checkYourAnswersLabel = What is the business’s name?
+
 trusteeBusinessAddressInUK.checkYourAnswersLabel = Is {0}’s address in the UK?
 
 trusteesName.title = What is the trustee’s name?
