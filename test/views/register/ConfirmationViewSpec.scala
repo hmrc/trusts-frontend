@@ -40,7 +40,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
       assertRenderedById(doc, "print-and-save")
 
-      assertContainsText(doc, s"We will post the Lead trustee the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
+      assertContainsText(doc, s"We will post $name the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
 
       assertContainsText(doc, "Keep a note of your reference in case you need to contact HMRC.")
       assertContainsText(doc, "If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service once the trust’s UTR has been received.")
@@ -85,6 +85,8 @@ class ConfirmationViewSpec extends ViewBehaviours {
       assertContainsText(doc, "One of the trustees will need to complete the next two steps once the trust’s UTR has been received.")
       assertContainsText(doc, "You will then be able to maintain the trust online on their behalf.")
 
+      assertContainsText(doc, s"We will post $name the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
+
       assertContainsText(doc, "Trustee needs to claim the trust")
       assertContainsText(doc, "A trustee needs to log onto the Trust Registration Service using their Government Gateway account.")
       assertContainsText(doc, "The account they use must be an organisation account, not an individual account.")
@@ -105,7 +107,8 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(
       draftId = fakeDraftId,
-      refNumber = refNumber
+      refNumber = refNumber,
+      FullName("John", None, "Smith")
     )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
@@ -123,7 +126,8 @@ class ConfirmationViewSpec extends ViewBehaviours {
       draftId = fakeDraftId,
       isAgent = false,
       refNumber = refNumber,
-      leadTrusteeName = FullName("John", None, "Smith"))(fakeRequest, messages)
+      leadTrusteeName = FullName("John", None, "Smith")
+    )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
 
@@ -138,7 +142,8 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(
       draftId = fakeDraftId,
-      refNumber = refNumber
+      refNumber = refNumber,
+      leadTrusteeName = FullName("John", None, "Smith")
     )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)

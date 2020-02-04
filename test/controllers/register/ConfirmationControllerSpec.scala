@@ -58,7 +58,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           content mustEqual
-            view(draftId = fakeDraftId, "xTRN1234678")(fakeRequest, messages).toString
+            view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", Some("middle name"), "Last Name"))(fakeRequest, messages).toString
 
           content must include(agentUrl)
 
@@ -85,7 +85,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           content mustEqual
-            view(draftId = fakeDraftId, "xTRN1234678")(fakeRequest, messages).toString
+            view(draftId = fakeDraftId, "xTRN1234678", FullName("first name", Some("middle name"), "Last Name"))(fakeRequest, messages).toString
 
           content mustNot include(agentUrl)
 
