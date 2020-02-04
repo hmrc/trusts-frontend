@@ -632,6 +632,9 @@ POST       /:draftId/trustees/:index/change-trustee-uk-address                  
 GET        /:draftId/trustee/:index/remove                                                          controllers.register.trustees.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/trustee/:index/remove                                                          controllers.register.trustees.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
 
+GET        /:draftId/trustee/:index/remove-organisation                                             controllers.register.trustees.RemoveTrusteeOrgController.onPageLoad(index : Int, draftId: String)
+POST       /:draftId/trustee/:index/remove-organisation                                             controllers.register.trustees.RemoveTrusteeOrgController.onSubmit(index : Int, draftId: String)
+
 GET        /:draftId/trustees-based-in-the-uk                                                       controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trustees-based-in-the-uk                                                       controllers.register.trustees.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
