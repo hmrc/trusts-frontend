@@ -22,11 +22,11 @@ import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeUtrYesNoPage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteeUtrYesNoView
+import views.html.register.trustees.TrusteeOrgAddressUkYesNoView
 
 
 class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with IndexValidation {
@@ -37,17 +37,18 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
   val form = formProvider.withPrefix("trusteeOrgUkYesNo")
 
   val index = 0
-  val emptyTrusteeName = ""
-  val trusteeName = "FirstName LastName"
+  val orgName = "Test"
 
   lazy val trusteeOrgAddressUkYesNoRoute = routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  "TrusteeUtrYesNo Controller" must {
+  "TrusteeOrgAddressUkYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeOrgNamePage(index), "Test").success.value
+
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -55,12 +56,12 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TrusteeUtrYesNoView]
+      val view = application.injector.instanceOf[TrusteeOrgAddressUkYesNoView]
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, orgName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -68,26 +69,45 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteeUtrYesNoPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeOrgNamePage(index), "Test").success.value
+        .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, trusteeOrgAddressUkYesNoRoute)
 
-      val view = application.injector.instanceOf[TrusteeUtrYesNoView]
+      val view = application.injector.instanceOf[TrusteeOrgAddressUkYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, index, orgName)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "redirect to IsThisLeadTrustee when IsThisLeadTrustee is not answered" in {
+      val userAnswers = emptyUserAnswers
+        .set(TrusteeUtrYesNoPage(index), true).success.value
+        .set(TrusteeOrgNamePage(index), "test").success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(GET, trusteeOrgAddressUkYesNoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      application.stop()
+    }
+
+    "redirect to TrusteeOrgNamePage when TrusteeOrgNamePage is not answered" in {
       val userAnswers = emptyUserAnswers
         .set(TrusteeUtrYesNoPage(index), true).success.value
 
@@ -108,6 +128,7 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeOrgNamePage(index), "Test").success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -130,6 +151,7 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteeOrgNamePage(index), "Test").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -139,14 +161,14 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
 
-      val view = application.injector.instanceOf[TrusteeUtrYesNoView]
+      val view = application.injector.instanceOf[TrusteeOrgAddressUkYesNoView]
 
       val result = route(application, request).value
 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, orgName)(fakeRequest, messages).toString
 
       application.stop()
     }

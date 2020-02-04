@@ -23,7 +23,7 @@ import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeOrgAddressUkYesNoPage, TrusteeUtrYesNoPage}
+import pages.register.trustees._
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -53,10 +53,13 @@ class TrusteeOrgAddressUkYesNoController @Inject()(
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId))) andThen
+      requiredAnswer(RequiredAnswer(TrusteeOrgNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
+
+      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get.toString
 
       val form: Form[Boolean] = formProvider.withPrefix("trusteeOrgAddressUkYesNo")
 
@@ -65,17 +68,19 @@ class TrusteeOrgAddressUkYesNoController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, mode, draftId, index, orgName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
+      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get.toString
+
       val form: Form[Boolean] = formProvider.withPrefix("trusteeOrgAddressUkYesNo")
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, orgName))),
 
         value => {
           for {

@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.trustees.TrusteeUtrYesNoView
+import views.html.register.trustees.TrusteeOrgAddressUkYesNoView
 
 class TrusteeOrgAddressUkYesNoViewSpec extends YesNoViewBehaviours {
 
@@ -31,15 +31,19 @@ class TrusteeOrgAddressUkYesNoViewSpec extends YesNoViewBehaviours {
 
   val index = 0
 
+  val orgName = "Test"
+
   "TrusteeOrgAddressUkYesNo view" must {
 
-    val view = viewFor[TrusteeUtrYesNoView](Some(emptyUserAnswers))
+    val view = viewFor[TrusteeOrgAddressUkYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, orgName)(fakeRequest, messages)
+
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, orgName)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq("Test"))
   }
 }
