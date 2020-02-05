@@ -558,11 +558,6 @@ POST       /:draftId/settlors/living/type                                       
 GET        /:draftId/settlors/living/change-type                                                    controllers.register.settlors.living_settlor.KindOfTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/living/change-type                                                    controllers.register.settlors.living_settlor.KindOfTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/settlors/living/holdover-relief                                                controllers.register.settlors.living_settlor.HoldoverReliefYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/settlors/living/holdover-relief                                                controllers.register.settlors.living_settlor.HoldoverReliefYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/settlors/living/change-holdover-relief                                         controllers.register.settlors.living_settlor.HoldoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/settlors/living/change-holdover-relief                                         controllers.register.settlors.living_settlor.HoldoverReliefYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
 ## Trustees
 
 GET        /:draftId/trustees/information-you-need                                                  controllers.register.trustees.TrusteesInfoController.onPageLoad(draftId: String)
@@ -640,7 +635,7 @@ POST       /:draftId/trustees-based-in-the-uk                                   
 GET        /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trustees.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-org-uk-yes-no                                          controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-org-uk-yes-no                                          controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-org-uk-yes-no                                   controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-org-uk-yes-no                                   controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/trustee-org-address-in-uk                                         controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/trustee-org-address-in-uk                                          controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/change-trustee-org-address-in-uk                                    controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/change-trustee-org-address-in-uk                                   controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
