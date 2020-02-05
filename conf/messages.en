@@ -1577,3 +1577,6 @@ deedOfVariation.replaceWillTrust = to replace a will trust
 trusteeOrgAddressUkYesNo.title = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.heading = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.error.required = Select yes if the trustee’s address is in the UK
+
+trusteeOrgAddressInternational.title = What is {0}’s address?
+trusteeOrgAddressInternational.heading = What is {0}’s address?
