@@ -77,8 +77,8 @@ class Navigator @Inject()(
     case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index, draftId)
     case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case TrusteeOrgNamePage(index)  => _ => ua => trusteeBusinessNameRoute(ua, index, draftId)
-    case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId)
-    // TODO: Route to Is The Trustee's address in the UK from TrusteeUtrPage when trustee is a UK registered company" when page is built
+    case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressUkYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
 
     case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index, draftId)
@@ -491,8 +491,7 @@ class Navigator @Inject()(
 
   private def trusteeBusinessNameRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeUtrYesNoPage(index)) match {
     case Some(true) => controllers.register.trustees.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId)
-    case Some(false) => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode,index, draftId)
-    // TODO: Route to Is The Trustee's address in the UK from TrusteeBusinessNamePage when trustee is not a UK registered company" when page is built
+    case Some(false) => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode,index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 

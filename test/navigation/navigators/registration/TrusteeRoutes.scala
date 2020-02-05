@@ -164,7 +164,18 @@ trait TrusteeRoutes {
             .mustBe(routes.TrusteeUtrController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
-    // TODO: "go to Is The Trustee's address in the UK from TrusteeOrgNamePage when trustee is not a UK registered company" when page is built
+
+    "go to TrusteeOrgAddressUkYesNoPage from TrusteeOrgNamePage when trustee is a UK registered company" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(TrusteeUtrYesNoPage(index), false).success.value
+
+          navigator.nextPage(TrusteeOrgNamePage(index), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
 
     "go to TrusteesDateOfBirthPage from TrusteesNamePage page" in {
       forAll(arbitrary[UserAnswers]) {
