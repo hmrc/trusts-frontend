@@ -644,3 +644,8 @@ GET        /:draftId/trustees/:index/trustee-org-uk-address                     
 POST       /:draftId/trustees/:index/trustee-org-uk-address                                         controllers.register.trustees.TrusteesOrgUkAddressController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
 GET        /:draftId/trustees/:index/change-org-trustee-uk-address                                  controllers.register.trustees.TrusteesOrgUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
 POST       /:draftId/trustees/:index/change-org-trustee-uk-address                                  controllers.register.trustees.TrusteesOrgUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/trustees/:index/trustee-org-international-address                              controllers.register.trustees.TrusteeOrgAddressInternationalController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/trustee-org-international-address                              controllers.register.trustees.TrusteeOrgAddressInternationalController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/change-trustee-org-international-address                       controllers.register.trustees.TrusteeOrgAddressInternationalController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/change-trustee-org-international-address                       controllers.register.trustees.TrusteeOrgAddressInternationalController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
