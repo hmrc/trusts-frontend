@@ -75,6 +75,15 @@ class TrusteesAnswerPageController @Inject()(
             checkYourAnswersHelper.isThisLeadTrustee(index),
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
             checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix),
+
+            checkYourAnswersHelper.trusteeUtrYesNo(index),
+            checkYourAnswersHelper.trusteeOrgName(index),
+            checkYourAnswersHelper.trusteeUtr(index),
+            checkYourAnswersHelper.orgAddressInTheUkYesNo(index),
+            checkYourAnswersHelper.trusteesOrgUkAddress(index),
+            checkYourAnswersHelper.trusteeInternationalAddress(index),
+            checkYourAnswersHelper.telephoneNumber(index),
+
             checkYourAnswersHelper.trusteesDateOfBirth(index),
             checkYourAnswersHelper.trusteeAUKCitizen(index),
             checkYourAnswersHelper.trusteesNino(index),

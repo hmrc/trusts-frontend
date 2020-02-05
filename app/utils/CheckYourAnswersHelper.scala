@@ -1132,12 +1132,43 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
+  def trusteeOrgName(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeOrgNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeBusinessName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
   def trusteeIndividualOrBusiness(index: Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteeIndividualOrBusinessPage(index)) map {
     x =>
       AnswerRow(
         s"$messagePrefix.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"individualOrBusiness.$x")),
         Some(controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def trusteeUtrYesNo(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeUtrYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "leadTrusteeUtrYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def trusteeUtr(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesUtrPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeUtr.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(controllers.register.trustees.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId).url),
+        orgName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -1151,6 +1182,39 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         canEdit = canEdit
       )
   }
+
+  def orgAddressInTheUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeAddressInTheUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeOrgAddressUkYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def trusteesOrgUkAddress(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesUkAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteesOrgUkAddress.checkYourAnswersLabel",
+        ukAddress(x),
+        Some(controllers.register.trustees.routes.TrusteesOrgUkAddressController.onPageLoad(NormalMode, index, draftId).url),
+        orgName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def trusteeInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "trusteeOrgAddressInternational.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        Some(controllers.register.trustees.routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode, index, draftId).url),
+        orgName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
 
   def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {
     x =>
