@@ -36,6 +36,7 @@ import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries._
 import pages.register.settlors.{SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
 import pages.register.trustees._
+import play.api.Logger
 import play.api.mvc.Call
 import sections._
 import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
@@ -481,11 +482,24 @@ class Navigator @Inject()(
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
-    case Some(IndividualOrBusiness.Individual) => controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
-    case Some(IndividualOrBusiness.Business) => controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode,index, draftId)
-    case None => routes.SessionExpiredController.onPageLoad()
-  }
+  private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index: Int, draftId: String) = {
+    for {
+      x <- answers.get(IsThisLeadTrusteePage(index))
+      y <- answers.get(TrusteeIndividualOrBusinessPage(index))
+    } yield {
+      (x, y) match {
+        case (_, IndividualOrBusiness.Individual) =>
+        Logger.info("***** INDIVIDUAL *****")
+          controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
+        case (true, IndividualOrBusiness.Business) =>
+          Logger.info("***** LEAD TRUSTEE ORG *****")
+          controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, draftId)
+        case (false, IndividualOrBusiness.Business) =>
+          Logger.info("***** LEAD TRUSTEE INDIVIDUAL *****")
+          controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
+      }
+    }
+  }.getOrElse(routes.SessionExpiredController.onPageLoad())
 
   def nextPage(page: Page, mode: Mode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
     case NormalMode =>
