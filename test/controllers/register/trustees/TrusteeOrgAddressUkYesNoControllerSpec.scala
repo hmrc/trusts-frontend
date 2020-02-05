@@ -69,7 +69,6 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), true).success.value
         .set(TrusteeOrgNamePage(index), "Test").success.value
         .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
 
@@ -89,10 +88,8 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
       application.stop()
     }
 
-    "redirect to IsThisLeadTrustee when IsThisLeadTrustee is not answered" in {
+    "redirect to TrusteeOrgNamePage when TrusteeOrgName is not answered" in {
       val userAnswers = emptyUserAnswers
-        .set(TrusteeUtrYesNoPage(index), true).success.value
-        .set(TrusteeOrgNamePage(index), "test").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -102,24 +99,7 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-      application.stop()
-    }
-
-    "redirect to TrusteeOrgNamePage when TrusteeOrgNamePage is not answered" in {
-      val userAnswers = emptyUserAnswers
-        .set(TrusteeUtrYesNoPage(index), true).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, trusteeOrgAddressUkYesNoRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -127,7 +107,6 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(IsThisLeadTrusteePage(index), true).success.value
         .set(TrusteeOrgNamePage(index), "Test").success.value
 
       val application =
