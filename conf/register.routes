@@ -635,7 +635,7 @@ POST       /:draftId/trustees-based-in-the-uk                                   
 GET        /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trustees.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-org-address-in-uk                                         controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-org-address-in-uk                                          controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-org-address-in-uk                                    controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-org-address-in-uk                                   controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/trustee-org-address-in-uk                                      controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/trustee-org-address-in-uk                                      controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/change-trustee-org-address-in-uk                               controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/change-trustee-org-address-in-uk                               controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)

@@ -58,7 +58,7 @@ class TrusteeOrgAddressUkYesNoController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get.toString
+      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
 
       val form: Form[Boolean] = formProvider.withPrefix("trusteeOrgAddressUkYesNo")
 
@@ -73,7 +73,7 @@ class TrusteeOrgAddressUkYesNoController @Inject()(
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get.toString
+      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
 
       val form: Form[Boolean] = formProvider.withPrefix("trusteeOrgAddressUkYesNo")
 
