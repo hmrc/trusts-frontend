@@ -354,7 +354,7 @@ trustDetailsAnswerPage.heading = Check trust details
 trusteeBusinessName.heading = What is the business’s name?
 trusteeBusinessName.title = What is the business’s name?
 trusteeBusinessName.hint = Enter the name as it appears on tax returns and other letters about Corporation Tax.
-trusteeBusinessName.error.required = Enter the business name
+trusteeBusinessName.error.required = Enter the business’s name
 trusteeBusinessName.error.length = Business name must be 56 characters or less
 trusteeBusinessName.error.invalidFormat = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trusteeBusinessName.checkYourAnswersLabel = What is the business’s name?
@@ -463,9 +463,19 @@ leadTrusteeAUKCitizen.error.required = Select yes if the lead trustee is a UK ci
 
 trusteeDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 trusteeUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-trusteeUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
-leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 
+trusteeUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+trusteeUtr.title = What is the trustee’s Unique Taxpayer Reference?
+trusteeUtr.heading = What is {0} Unique Taxpayer Reference (UTR) number?
+trusteeUtr.error.required = Enter the trustee’s Unique Taxpayer Reference
+trusteeUtr.error.length = Unique Taxpayer Reference must be a 10 digit number
+trusteeUtr.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
+trusteeUtr.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
+trusteeUtr.hint.reader = This is 10 numbers, for example one two three four five six seven eight nine zero. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
+trusteeUtr.p1 = You can
+trusteeUtr.link = find a lost UTR number (opens in a new window or tab)
+
+leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 leadTrusteeUtrYesNo.title = Is this trustee a UK registered company?
 leadTrusteeUtrYesNo.heading = Is this trustee a UK registered company?
 leadTrusteeUtrYesNo.error.required = Select yes if the trustee is a UK registered company

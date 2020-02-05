@@ -77,7 +77,9 @@ class Navigator @Inject()(
     case IsThisLeadTrusteePage(index) => _ =>_ => controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
     case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index, draftId)
     case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
-    case TrusteeOrgNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgNamePage(index)  => _ => ua => trusteeBusinessNameRoute(ua, index, draftId)
+    case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressUkYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
 
     case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index, draftId)
@@ -500,6 +502,12 @@ class Navigator @Inject()(
       }
     }
   }.getOrElse(routes.SessionExpiredController.onPageLoad())
+
+  private def trusteeBusinessNameRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeUtrYesNoPage(index)) match {
+    case Some(true) => controllers.register.trustees.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId)
+    case Some(false) => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode,index, draftId)
+    case None => routes.SessionExpiredController.onPageLoad()
+  }
 
   def nextPage(page: Page, mode: Mode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
     case NormalMode =>
