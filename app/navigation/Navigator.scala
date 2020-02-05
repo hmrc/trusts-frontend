@@ -75,7 +75,8 @@ class Navigator @Inject()(
     //  Trustees
     case IsThisLeadTrusteePage(index) => _ =>_ => controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
     case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index, draftId)
-    case TrusteeUtrYesNoPage(index) => _ => ua => trusteeUtrYesNoRoute(ua, index, draftId)
+    case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
 
     case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index, draftId)
@@ -483,12 +484,6 @@ class Navigator @Inject()(
   private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
     case Some(IndividualOrBusiness.Individual) => controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
     case Some(IndividualOrBusiness.Business) => controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode,index, draftId)
-    case None => routes.SessionExpiredController.onPageLoad()
-  }
-
-  private def trusteeUtrYesNoRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeUtrYesNoPage(index)) match {
-    case Some(true) => controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, draftId)
-    case Some(false) => controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode,index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
