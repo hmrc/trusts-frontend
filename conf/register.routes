@@ -614,6 +614,11 @@ POST       /:draftId/trustees/:index/trustee-business-name                      
 GET        /:draftId/trustees/:index/change-trustee-business-name                                   controllers.register.trustees.TrusteeBusinessNameController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
 POST       /:draftId/trustees/:index/change-trustee-business-name                                   controllers.register.trustees.TrusteeBusinessNameController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
+GET        /:draftId/trustees/:index/trustee-utr                                                   controllers.register.trustees.TrusteeUtrController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/trustee-utr                                                   controllers.register.trustees.TrusteeUtrController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/trustees/:index/change-trustee-utr                                            controllers.register.trustees.TrusteeUtrController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/change-trustee-utr                                            controllers.register.trustees.TrusteeUtrController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
 GET         /:draftId/trustees/:index/live-in-the-uk                                                controllers.register.trustees.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
 POST        /:draftId/trustees/:index/live-in-the-uk                                                controllers.register.trustees.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
 GET         /:draftId/trustees/:index/change-live-in-the-uk                                         controllers.register.trustees.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
