@@ -20,14 +20,12 @@ import models.core.pages.FullName
 import play.twirl.api.HtmlFormat
 import utils.AccessibilityHelper._
 import views.behaviours.ViewBehaviours
-import views.html.register.ConfirmationView
+import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
 
 class ConfirmationViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "confirmationPage"
   val refNumber = "XC TRN 00 00 00 49 11"
   val accessibleRefNumber = formatReferenceNumber(refNumber)
-  val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
   val name = "John Smith"
 
@@ -42,13 +40,16 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
       assertRenderedById(doc, "print-and-save")
 
-      assertContainsText(doc, s"We will post $name a Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
+      assertContainsText(doc, s"We will post $name the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
 
-      assertContainsText(doc, "Make a note of your reference number in case you need to contact HMRC. If you do not get your UTR within 15 working days,")
+      assertContainsText(doc, "Keep a note of your reference in case you need to contact HMRC.")
+      assertContainsText(doc, "If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service once the trust’s UTR has been received.")
 
-      assertContainsText(doc, "You cannot make online changes to the trust.")
+      assertContainsText(doc, "Where to declare the trust is up to date")
 
-      assertContainsText(doc, "You must keep a record of any other changes until you can change them using the online service.")
+      assertContainsText(doc, "If the trust has a tax liability, you have a legal responsibility to declare every year that the details we hold are up to date.")
+      assertContainsText(doc, "You need to make a declaration through the Trust Registration Service and Self Assessment online or the Trust and Estate Tax Return form (SA900).")
+
     }
 
   }
@@ -66,37 +67,49 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
       assertContainsText(doc, s"You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact $name.")
 
-      assertContainsText(doc, "Make a note of your reference number in case you need to contact HMRC.")
+      assertContainsText(doc, "Keep a note of your reference in case you need to contact HMRC.")
 
-      assertContainsText(doc, "You cannot make online changes to the trust.")
-
-      assertContainsText(doc, "You must keep a record of any other changes until you can change them using the online service.")
     }
 
   }
 
   private def confirmationForAgent(view: HtmlFormat.Appendable) : Unit = {
 
-    "display return to agent overview link" in {
+    "assert content for agents" in {
 
       val doc = asDocument(view)
       val agentOverviewLink = doc.getElementById("agent-overview")
-      assertAttributeValueForElement(agentOverviewLink, "href", "#")
-      assertContainsTextForId(doc, "agent-overview", "return to register and maintain a trust for a client")
+
+      assertAttributeValueForElement(agentOverviewLink, "href", controllers.register.agents.routes.AgentOverviewController.onPageLoad().url)
+
+      assertContainsText(doc, "One of the trustees will need to complete the next two steps once the trust’s UTR has been received.")
+      assertContainsText(doc, "You will then be able to maintain the trust online on their behalf.")
+
+      assertContainsText(doc, s"We will post $name the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")
+
+      assertContainsText(doc, "Trustee needs to claim the trust")
+      assertContainsText(doc, "A trustee needs to log onto the Trust Registration Service using their Government Gateway account.")
+      assertContainsText(doc, "The account they use must be an organisation account, not an individual account.")
+      assertContainsText(doc, "The trustee needs to correctly answer questions about the trust so HMRC can prove the connection between the trustee and the trust.")
+      assertContainsText(doc, "The trustee must complete this step before you can request authorisation from them to maintain the trust.")
+
+      assertContainsText(doc, "Trustee needs to authorise your online access to the trust")
+      assertContainsText(doc, "Through Agent Services you can create an authorisation link to send to the trustee.")
+
     }
   }
 
   "Confirmation view for a new trust" must {
-    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
+
+    val messageKeyPrefix = "confirmationIndividualPage"
+
+    val view = viewFor[ConfirmationIndividualView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
       draftId = fakeDraftId,
-      isExistingTrust = false,
-      isAgent = false,
       refNumber = refNumber,
-      postHMRC = postHMRC,
-      agentOverviewUrl = "#",
-      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
+      FullName("John", None, "Smith")
+    )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
 
@@ -104,16 +117,17 @@ class ConfirmationViewSpec extends ViewBehaviours {
   }
 
   "Confirmation view for an existing trust" must {
-    val view = viewFor[ConfirmationView](Some(emptyUserAnswers))
+
+    val messageKeyPrefix = "confirmationExistingPage"
+
+    val view = viewFor[ConfirmationExistingView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
       draftId = fakeDraftId,
-      isExistingTrust = true,
       isAgent = false,
       refNumber = refNumber,
-      postHMRC = postHMRC,
-      agentOverviewUrl = "#",
-      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
+      leadTrusteeName = FullName("John", None, "Smith")
+    )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
 
@@ -121,20 +135,18 @@ class ConfirmationViewSpec extends ViewBehaviours {
   }
 
   "Confirmation view for an agent" must {
-    val view = viewForAgent[ConfirmationView](Some(emptyUserAnswers))
+
+    val messageKeyPrefix = "confirmationAgentPage"
+
+    val view = viewForAgent[ConfirmationAgentView](Some(emptyUserAnswers))
 
     val applyView = view.apply(
-      isExistingTrust = true,
-      isAgent = true,
       draftId = fakeDraftId,
       refNumber = refNumber,
-      postHMRC = postHMRC,
-      agentOverviewUrl = "#",
-      leadTrusteeName= FullName("John", None, "Smith"))(fakeRequest, messages)
+      leadTrusteeName = FullName("John", None, "Smith")
+    )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
-
-    behave like existingTrust(applyView)
 
     behave like confirmationForAgent(applyView)
   }
