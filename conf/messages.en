@@ -121,7 +121,7 @@ entities.no.description.added = No description added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
-entities.trustee.business = Trustee Business
+entities.trustee.business = Trustee Company
 entities.beneficiary.individual = Individual Beneficiary
 entities.beneficiary.class = Class of beneficiaries
 
@@ -423,7 +423,7 @@ addATrustee.add-them-later = Yes, I want to add them later
 addATrustee.no-complete = No, I have added all trustees
 addATrustee.checkYourAnswersLabel = Add A Trustee
 addATrustee.individual = Trustee Individual
-addATrustee.business = Trustee Business
+addATrustee.business = Trustee Company
 addATrustee.error.required = Select yes if you want to add another trustee
 addATrustee.lead-trustee.required = You need to add or nominate a lead trustee.
 

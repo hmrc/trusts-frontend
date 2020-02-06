@@ -42,7 +42,6 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(TrusteesNamePage(index), FullName(str, None, str)).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now()).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), str).success.value
@@ -52,7 +51,6 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
 
         val result = answers.set(TrusteeIndividualOrBusinessPage(index), Business).success.value
 
-        result.get(TrusteesNamePage(index)) mustNot be(defined)
         result.get(TrusteesDateOfBirthPage(index)) mustNot be(defined)
         result.get(TrusteeAUKCitizenPage(index)) mustNot be(defined)
         result.get(TrusteesNinoPage(index)) mustNot be(defined)
