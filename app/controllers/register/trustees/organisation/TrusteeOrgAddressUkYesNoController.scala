@@ -62,7 +62,7 @@ class TrusteeOrgAddressUkYesNoController @Inject()(
 
       val form: Form[Boolean] = formProvider.withPrefix("trusteeOrgAddressUkYesNo")
 
-      val preparedForm = request.userAnswers.get(TrusteeOrgAddressUkYesNoPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeAddressUkYesNoPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }

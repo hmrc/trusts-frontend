@@ -475,12 +475,6 @@ class Navigator @Inject()(
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeAddressUkYesNoPage(index)) match {
-    case Some(true)   => controllers.register.trustees.individual.routes.TrusteesUkAddressController.onPageLoad(NormalMode,index, draftId)
-    case Some(false)  => controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index, draftId)
-    case None         => routes.SessionExpiredController.onPageLoad()
-  }
-
   private def trusteeDateOfBirthRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(IsThisLeadTrusteePage(index)) match {
     case Some(true) => controllers.register.trustees.individual.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId)
     case Some(false) => controllers.register.trustees.routes.TrusteesAnswerPageController.onPageLoad(index, draftId)

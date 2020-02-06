@@ -78,7 +78,7 @@ trait TrusteeRoutes {
 
     }
 
-    "there is atleast one trustee" must {
+    "there is at least one trustee" must {
 
       "go to the next trustee from AddATrusteePage when selected add them now" in {
 
@@ -125,20 +125,24 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page when answer is Individual" in {
+    "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page when answer is Individual for a lead trustee" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
+          val answers = userAnswers
+            .set(IsThisLeadTrusteePage(index), true).success.value
+            .set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
             .mustBe(controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
-    "go to TrusteeUtrYesNoPage from TrusteeIndividualOrBusinessPage page when answer is Business" in {
+    "go to TrusteeUtrYesNoPage from TrusteeIndividualOrBusinessPage page when answer is Business for a lead trustee" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(index), Business).success.value
+          val answers = userAnswers
+            .set(IsThisLeadTrusteePage(index), true).success.value
+            .set(TrusteeIndividualOrBusinessPage(index), Business).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
             .mustBe(controllers.register.trustees.organisation.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
@@ -165,7 +169,7 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteeOrgAddressUkYesNoPage from TrusteeOrgNamePage when trustee is a UK registered company" in {
+    "go to TrusteeAddressUkYesNoPage from TrusteeOrgNamePage when trustee is a UK registered company" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
@@ -187,6 +191,18 @@ trait TrusteeRoutes {
     }
 
     "non lead trustee" must {
+
+      "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page when answer is Individual for a non-lead trustee" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            val answers = userAnswers
+              .set(IsThisLeadTrusteePage(index), false).success.value
+              .set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
+
+            navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
 
       "go to TrusteeAnswersPage from TrusteesDateOfBirthPage" in {
         forAll(arbitrary[UserAnswers]) {
@@ -245,25 +261,55 @@ trait TrusteeRoutes {
         }
       }
 
-      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage when answer is yes" in {
+      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage when answer is yes for an individual" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(TrusteeAddressUkYesNoPage(index), value = true).success.value
+            val answers = userAnswers
+              .set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
+              .set(TrusteeAddressUkYesNoPage(index), value = true).success.value
 
             navigator.nextPage(TrusteeAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(controllers.register.trustees.individual.routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
-      "go to TrusteeLivesInUKPage from TrusteeLivesInUKPage when answer is no" in {
+      "go to TrusteeInternationalAddressPage from TrusteeLivesInUKPage when answer is no for an individual" ignore {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(TrusteeAddressUkYesNoPage(index), value = false).success.value
+            val answers = userAnswers
+              .set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
+              .set(TrusteeAddressUkYesNoPage(index), value = false).success.value
 
             navigator.nextPage(TrusteeAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
               .mustBe(controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to TrusteesUkAddressPage from TrusteeLivesInUKPage when answer is yes for an organisation" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers
+              .set(TrusteeIndividualOrBusinessPage(index), Business).success.value
+              .set(TrusteeAddressUkYesNoPage(index), value = true).success.value
+
+            navigator.nextPage(TrusteeAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.trustees.organisation.routes.TrusteesOrgUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to TrusteeInternationalAddressPage from TrusteeLivesInUKPage when answer is no for an organisation" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers
+              .set(TrusteeIndividualOrBusinessPage(index), Business).success.value
+              .set(TrusteeAddressUkYesNoPage(index), value = false).success.value
+
+            navigator.nextPage(TrusteeAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.trustees.organisation.routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 

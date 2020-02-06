@@ -22,7 +22,7 @@ import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeAddressUkYesNoPage, TrusteeOrgNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -70,7 +70,7 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       val userAnswers = emptyUserAnswers
         .set(TrusteeOrgNamePage(index), "Test").success.value
-        .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
+        .set(TrusteeAddressUkYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -192,7 +192,7 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       validateIndex(
         arbitrary[Boolean],
-        TrusteeOrgAddressUkYesNoPage.apply,
+        TrusteeAddressUkYesNoPage.apply,
         getForIndex
       )
 
@@ -210,7 +210,7 @@ class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with I
 
       validateIndex(
         arbitrary[Boolean],
-        TrusteeOrgAddressUkYesNoPage.apply,
+        TrusteeAddressUkYesNoPage.apply,
         postForIndex
       )
     }
