@@ -60,7 +60,7 @@ trait UserAnswersWriting extends TryValues with ModelGenerators {
     _ <- TrusteeAUKCitizenPage(index) is true
     _ <- TrusteesNinoPage(index) is "AA000000A"
     _ <- TrusteeAddressYesNoPage(index) is true
-    _ <- TrusteeAddressInTheUKPage(index) is true
+    _ <- TrusteeAddressUkYesNoPage(index) is true
     _ <- TrusteesUkAddressPage(index).withArbitraryValue
     _ <- TelephoneNumberPage(index).withArbitraryValue
     _ <- EmailPage(index).withArbitraryValue
@@ -76,7 +76,7 @@ trait UserAnswersWriting extends TryValues with ModelGenerators {
     _ <- TrusteeAUKCitizenPage(index) is false
     _ <- TrusteePassportIDCardYesNoPage(index).withArbitraryValue
     _ <- TrusteePassportIDCardPage(index).withArbitraryValue
-    _ <- TrusteeAddressInTheUKPage(index) is false
+    _ <- TrusteeAddressUkYesNoPage(index) is false
     _ <- TrusteesInternationalAddressPage(index).withArbitraryValue
     _ <- TrusteesNinoPage(index).isRemoved
     _ <- TrusteesUkAddressPage(index).isRemoved

@@ -83,9 +83,9 @@ class TrusteeOrgAddressUkYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrgAddressUkYesNoPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAddressUkYesNoPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeOrgAddressUkYesNoPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeAddressUkYesNoPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

@@ -21,7 +21,7 @@ import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.TrustNamePage
-import pages.register.trustees.{TrusteeAddressInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
+import pages.register.trustees.{TrusteeAddressUkYesNoPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
 import play.api.Logger
 
 class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mapping[Correspondence] {
@@ -41,7 +41,7 @@ class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mappi
 
                 addressMapper.build(
                   userAnswers,
-                  TrusteeAddressInTheUKPage(index),
+                  TrusteeAddressUkYesNoPage(index),
                   TrusteesUkAddressPage(index),
                   TrusteesInternationalAddressPage(index)
                 ) map {

@@ -40,7 +40,7 @@ trait LeadTrustee {
     userAnswers.get(TrusteeAddressPage(index)) match {
       case Some(_) =>
         Seq(
-          yesNoQuestion(TrusteeAddressInTheUKPage(index), userAnswers, addressKey, name),
+          yesNoQuestion(TrusteeAddressUkYesNoPage(index), userAnswers, addressKey, name),
           addressQuestion(TrusteeAddressPage(index), userAnswers, "trusteesUkAddress", name, countryOptions)
         )
       case _ =>

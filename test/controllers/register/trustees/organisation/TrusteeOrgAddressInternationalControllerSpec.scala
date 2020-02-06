@@ -23,7 +23,7 @@ import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.pages.InternationalAddress
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
+import pages.register.trustees.{TrusteeAddressInternationalPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -75,7 +75,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
       val userAnswers = emptyUserAnswers
         .set(TrusteeOrgNamePage(index), "Test").success.value
         .set(TrusteeOrgAddressUkYesNoPage(index), false).success.value
-        .set(TrusteeOrgAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
+        .set(TrusteeAddressInternationalPage(index), InternationalAddress("line 1", "line 2", Some("line 3"), "country")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -202,7 +202,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
 
       validateIndex(
         arbitrary[InternationalAddress],
-        TrusteeOrgAddressInternationalPage.apply,
+        TrusteeAddressInternationalPage.apply,
         getForIndex
       )
 
@@ -221,7 +221,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
 
       validateIndex(
         arbitrary[InternationalAddress],
-        TrusteeOrgAddressInternationalPage.apply,
+        TrusteeAddressInternationalPage.apply,
         postForIndex
       )
     }

@@ -264,11 +264,11 @@ class TrusteesExtractor @Inject() extends PlaybackExtractor[Option[List[Trustees
       case uk: UKAddress =>
         answers.set(TrusteeAddressPage(index), uk)
           .flatMap(_.set(TrusteeAddressYesNoPage(index), true))
-          .flatMap(_.set(TrusteeAddressInTheUKPage(index), true))
+          .flatMap(_.set(TrusteeAddressUkYesNoPage(index), true))
       case nonUk: InternationalAddress =>
         answers.set(TrusteeAddressPage(index), nonUk)
           .flatMap(_.set(TrusteeAddressYesNoPage(index), true))
-          .flatMap(_.set(TrusteeAddressInTheUKPage(index), false))
+          .flatMap(_.set(TrusteeAddressUkYesNoPage(index), false))
     }
   }
 

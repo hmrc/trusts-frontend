@@ -105,7 +105,7 @@ class TrusteeMapperSpec extends FreeSpec with MustMatchers
           .set(TrusteesNamePage(index), FullName("first name", Some("middle name"), "Last Name")).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500, 10, 10)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
-          .set(TrusteeAddressInTheUKPage(index), true).success.value
+          .set(TrusteeAddressUkYesNoPage(index), true).success.value
           .set(TrusteesNinoPage(index), "AB123456C").success.value
           .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value

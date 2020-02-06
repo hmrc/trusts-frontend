@@ -21,7 +21,7 @@ import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeAddressInTheUKPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeAddressUkYesNoPage, TrusteesNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.trustees.individual.TrusteeLiveInTheUKView
@@ -89,7 +89,7 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
 
       val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
-        .set(TrusteeAddressInTheUKPage(index), true).success.value
+        .set(TrusteeAddressUkYesNoPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -112,7 +112,7 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
 
       val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
-        .set(TrusteeAddressInTheUKPage(index), true).success.value
+        .set(TrusteeAddressUkYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -131,7 +131,7 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
 
       val userAnswers = emptyUserAnswers
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
-        .set(TrusteeAddressInTheUKPage(index), true).success.value
+        .set(TrusteeAddressUkYesNoPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
 
 
@@ -156,7 +156,7 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
       "a GET when no name is found" in {
 
         val userAnswers = emptyUserAnswers
-          .set(TrusteeAddressInTheUKPage(index), true).success.value
+          .set(TrusteeAddressUkYesNoPage(index), true).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
         val application =
@@ -175,7 +175,7 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
       "a POST when no name is found" in {
 
         val userAnswers = emptyUserAnswers
-          .set(TrusteeAddressInTheUKPage(index), true).success.value
+          .set(TrusteeAddressUkYesNoPage(index), true).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
         val application =

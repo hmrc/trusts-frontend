@@ -58,14 +58,14 @@ class TrusteeOrgAddressInternationalController @Inject()(
       requireData andThen
       validateIndex(index, Trustees) andThen
       requiredAnswer(RequiredAnswer(TrusteeOrgNamePage(index), routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId))) andThen
-      requiredAnswer(RequiredAnswer(TrusteeOrgAddressUkYesNoPage(index), routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(TrusteeAddressUkYesNoPage(index), routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
 
-      val preparedForm = request.userAnswers.get(TrusteeOrgAddressInternationalPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeAddressInternationalPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -84,9 +84,9 @@ class TrusteeOrgAddressInternationalController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrgAddressInternationalPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAddressInternationalPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeOrgAddressInternationalPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeAddressInternationalPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

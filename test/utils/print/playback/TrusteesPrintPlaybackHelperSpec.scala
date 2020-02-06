@@ -38,7 +38,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         _ <- TrusteesDateOfBirthPage(0) is LocalDate.parse("1975-01-23")
         _ <- TrusteesNinoPage(0) is "AA111111A"
         _ <- TrusteeAddressYesNoPage(0).isRemoved
-        _ <- TrusteeAddressInTheUKPage(0) is true
+        _ <- TrusteeAddressUkYesNoPage(0) is true
         _ <- TrusteesUkAddressPage(0) is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
         _ <- TelephoneNumberPage(0) is "67676767676"
         _ <- TrusteeEmailYesNoPage(0) is true
@@ -108,7 +108,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         _ <- TrusteesDateOfBirthPage(0) is LocalDate.parse("1975-01-23")
         _ <- TrusteesNinoPage(0) is "AA111111A"
         _ <- TrusteeAddressYesNoPage(0).isRemoved
-        _ <- TrusteeAddressInTheUKPage(0).isRemoved
+        _ <- TrusteeAddressUkYesNoPage(0).isRemoved
         _ <- TrusteesUkAddressPage(0).isRemoved
         _ <- CorrespondenceAddressInTheUKPage is true
         _ <- CorrespondenceAddressPage is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
@@ -145,7 +145,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         _ <- TrusteeUtrYesNoPage(0) is true
         _ <- TrusteesUtrPage(0) is "1234567890"
         _ <- TrusteeAddressYesNoPage(0).isRemoved
-        _ <- TrusteeAddressInTheUKPage(0) is true
+        _ <- TrusteeAddressUkYesNoPage(0) is true
         _ <- TrusteesUkAddressPage(0) is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")
         _ <- TrusteeEmailYesNoPage(0) is false
         _ <- TelephoneNumberPage(0) is "67676767676"
@@ -177,7 +177,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
         _ <- TrusteeUtrYesNoPage(0) is true
         _ <- TrusteesUtrPage(0) is "1234567890"
         _ <- TrusteeAddressYesNoPage(0).isRemoved
-        _ <- TrusteeAddressInTheUKPage(0).isRemoved
+        _ <- TrusteeAddressUkYesNoPage(0).isRemoved
         _ <- TrusteesUkAddressPage(0).isRemoved
         _ <- CorrespondenceAddressInTheUKPage is true
         _ <- CorrespondenceAddressPage is UKAddress("Address 1", "Address 2", None, None, "AA11 1AA")

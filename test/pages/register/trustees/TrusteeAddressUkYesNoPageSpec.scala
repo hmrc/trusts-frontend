@@ -21,15 +21,15 @@ import models.core.pages.UKAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 
-class TrusteeAddressInTheUKPageSpec extends PageBehaviours {
+class TrusteeAddressUkYesNoPageSpec extends PageBehaviours {
 
   "TrusteeLiveInTheUKPage" must {
 
-    beRetrievable[Boolean](TrusteeAddressInTheUKPage(0))
+    beRetrievable[Boolean](TrusteeAddressUkYesNoPage(0))
 
-    beSettable[Boolean](TrusteeAddressInTheUKPage(0))
+    beSettable[Boolean](TrusteeAddressUkYesNoPage(0))
 
-    beRemovable[Boolean](TrusteeAddressInTheUKPage(0))
+    beRemovable[Boolean](TrusteeAddressUkYesNoPage(0))
   }
 
 
@@ -38,7 +38,7 @@ class TrusteeAddressInTheUKPageSpec extends PageBehaviours {
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial.set(TrusteesUkAddressPage(index),UKAddress(str, str, Some(str), Some(str), str) ).success.value
-        val result: UserAnswers = answers.set(TrusteeAddressInTheUKPage(index), false).success.value
+        val result: UserAnswers = answers.set(TrusteeAddressUkYesNoPage(index), false).success.value
 
         result.get(TrusteesUkAddressPage(index)) mustNot be(defined)
     }

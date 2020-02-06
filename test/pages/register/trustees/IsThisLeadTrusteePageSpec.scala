@@ -39,7 +39,7 @@ class IsThisLeadTrusteePageSpec extends PageBehaviours {
         val answers: UserAnswers = initial
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), str).success.value
-          .set(TrusteeAddressInTheUKPage(index), true).success.value
+          .set(TrusteeAddressUkYesNoPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress(str, str, None, None, str)).success.value
           .set(TelephoneNumberPage(index), str).success.value
 
@@ -47,7 +47,7 @@ class IsThisLeadTrusteePageSpec extends PageBehaviours {
 
         result.get(TrusteeAUKCitizenPage(index)) mustNot be(defined)
         result.get(TrusteesNinoPage(index)) mustNot be(defined)
-        result.get(TrusteeAddressInTheUKPage(index)) mustNot be(defined)
+        result.get(TrusteeAddressUkYesNoPage(index)) mustNot be(defined)
         result.get(TrusteesUkAddressPage(index)) mustNot be(defined)
         result.get(TelephoneNumberPage(index)) mustNot be(defined)
     }
