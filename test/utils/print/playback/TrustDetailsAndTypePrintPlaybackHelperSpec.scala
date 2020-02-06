@@ -21,11 +21,10 @@ import java.time.LocalDate
 import base.PlaybackSpecBase
 import mapping.DeedOfVariation
 import models.registration.pages.{KindOfTrust, TrusteesBasedInTheUK}
-import pages.register._
+import pages.register.{TrusteesBasedInTheUKPage, _}
 import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.settlors.{SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
-import pages.register.trustees.TrusteesBasedInTheUKPage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 

@@ -18,7 +18,7 @@ package pages.register.trustees
 
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
-import models.core.pages.IndividualOrBusiness.Business
+import models.core.pages.IndividualOrBusiness._
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Trustees
@@ -38,10 +38,19 @@ final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPa
           .flatMap(_.remove(TrusteesDateOfBirthPage(index)))
           .flatMap(_.remove(TrusteeAUKCitizenPage(index)))
           .flatMap(_.remove(TrusteesNinoPage(index)))
-          .flatMap(_.remove(TrusteeAddressUkYesNoPage(index))
+          .flatMap(_.remove(TrusteeAddressUkYesNoPage(index)))
           .flatMap(_.remove(TrusteesUkAddressPage(index)))
+          .flatMap(_.remove(TrusteesInternationalAddressPage(index)))
           .flatMap(_.remove(TelephoneNumberPage(index)))
-          )
+
+      case Some(Individual) =>
+        userAnswers.remove(TrusteeOrgNamePage(index))
+          .flatMap(_.remove(TrusteeUtrYesNoPage(index)))
+          .flatMap(_.remove(TrusteesUtrPage(index)))
+          .flatMap(_.remove(TrusteeAddressUkYesNoPage(index)))
+          .flatMap(_.remove(TrusteesUkAddressPage(index)))
+          .flatMap(_.remove(TrusteesInternationalAddressPage(index)))
+          .flatMap(_.remove(TelephoneNumberPage(index)))
 
       case _ => super.cleanup(value, userAnswers)
     }

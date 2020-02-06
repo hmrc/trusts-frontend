@@ -30,7 +30,7 @@ import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.settlors.deceased_settlor._
 import pages.entitystatus._
-import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, RegistrationSubmissionDatePage, RegistrationTRNPage, TrustNamePage, TrustResidentOffshorePage, WhenTrustSetupPage}
+import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, RegistrationSubmissionDatePage, RegistrationTRNPage, TrustNamePage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.settlors.living_settlor._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}

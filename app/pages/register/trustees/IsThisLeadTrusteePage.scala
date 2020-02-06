@@ -31,12 +31,8 @@ final case class IsThisLeadTrusteePage(index : Int) extends QuestionPage[Boolean
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
-      case Some(false) =>
-        userAnswers.remove(TrusteeAUKCitizenPage(index))
-          .flatMap(_.remove(TrusteesNinoPage(index)))
-          .flatMap(_.remove(TrusteesUkAddressPage(index)))
-          .flatMap(_.remove(TelephoneNumberPage(index)))
-          .flatMap(_.remove(TrusteeAddressUkYesNoPage(index)))
+      case Some(_) =>
+        userAnswers.remove(TrusteeIndividualOrBusinessPage(index))
 
       case _ => super.cleanup(value, userAnswers)
     }

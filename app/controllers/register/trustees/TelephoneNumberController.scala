@@ -24,7 +24,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeIndividualOrBusinessPage, TrusteeOrgNamePage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -54,13 +54,16 @@ class TelephoneNumberController @Inject()(
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId))) andThen
+      requiredAnswer(RequiredAnswer(TrusteeIndividualOrBusinessPage(index), routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
+      val name = (request.userAnswers.get(TrusteesNamePage(index)), request.userAnswers.get(TrusteeOrgNamePage(index))) match {
+        case (Some(name), None) => name.toString
+        case (None, Some(name)) => name
+      }
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
@@ -71,7 +74,7 @@ class TelephoneNumberController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index, messagePrefix, trusteeName))
+      Ok(view(preparedForm, mode, draftId, index, messagePrefix, name))
   }
 
   private def getMessagePrefix(index: Int, request: RegistrationDataRequest[AnyContent]) = {

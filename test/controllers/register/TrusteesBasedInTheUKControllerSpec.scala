@@ -21,7 +21,7 @@ import controllers.register.routes._
 import forms.TrusteesBasedInTheUKFormProvider
 import models.NormalMode
 import models.registration.pages.TrusteesBasedInTheUK
-import pages.register.trustees.TrusteesBasedInTheUKPage
+import pages.register.TrusteesBasedInTheUKPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.TrusteesBasedInTheUKView

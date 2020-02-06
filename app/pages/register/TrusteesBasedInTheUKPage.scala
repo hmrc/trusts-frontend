@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.trustees
+package pages.register
 
 import models.core.UserAnswers
 import models.registration.pages.TrusteesBasedInTheUK
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import pages.register.agents.AgentOtherThanBarristerPage
+import pages.QuestionPage
 import pages.entitystatus.TrustDetailsStatus
+import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.settlors.SettlorsBasedInTheUKPage
-import pages._
-import pages.register.{EstablishedUnderScotsLawPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustPreviouslyResidentPage, TrustResidentOffshorePage}
 import play.api.libs.json.JsPath
 import sections.TrustDetails
 

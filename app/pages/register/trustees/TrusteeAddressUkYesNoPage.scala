@@ -29,9 +29,10 @@ final case class TrusteeAddressUkYesNoPage(index : Int) extends QuestionPage[Boo
 
   override def toString: String = "addressUKYesNo"
 
-  // TODO this is incomplete
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
+      case Some(true) =>
+        userAnswers.remove(TrusteesInternationalAddressPage(index))
       case Some(false) =>
         userAnswers.remove(TrusteesUkAddressPage(index))
       case _ => super.cleanup(value, userAnswers)

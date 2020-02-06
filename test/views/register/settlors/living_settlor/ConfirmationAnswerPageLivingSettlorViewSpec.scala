@@ -27,7 +27,7 @@ import pages._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.entitystatus._
-import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, RegistrationSubmissionDatePage, RegistrationTRNPage, TrustNamePage, TrustResidentOffshorePage, WhenTrustSetupPage}
+import pages.register.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, RegistrationSubmissionDatePage, RegistrationTRNPage, TrustNamePage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.settlors.living_settlor._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
