@@ -479,6 +479,7 @@ leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered comp
 leadTrusteeUtrYesNo.title = Is this trustee a UK registered company?
 leadTrusteeUtrYesNo.heading = Is this trustee a UK registered company?
 leadTrusteeUtrYesNo.error.required = Select yes if the trustee is a UK registered company
+leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 
 trusteesDateOfBirth.title = What is the trustee’s date of birth?
 trusteesDateOfBirth.heading = What is {0}’s date of birth?
@@ -1636,6 +1637,7 @@ deedOfVariation.replaceWillTrust = to replace a will trust
 
 trusteeOrgAddressUkYesNo.title = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.heading = Is {0}’s address in the UK?
+trusteeOrgAddressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.error.required = Select yes if the trustee’s address is in the UK
 
 trusteesOrgUkAddress.title = What is the trustee’s address?
@@ -1644,3 +1646,4 @@ trusteesOrgUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
 trusteeOrgAddressInternational.title = What is {0}’s address?
 trusteeOrgAddressInternational.heading = What is {0}’s address?
+trusteeOrgAddressInternational.checkYourAnswersLabel = What is {0}’s address?
