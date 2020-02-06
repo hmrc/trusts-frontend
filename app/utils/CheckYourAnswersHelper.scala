@@ -1110,6 +1110,17 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
+  def orgTelephoneNumber(index: Int): Option[AnswerRow] = userAnswers.get(TelephoneNumberPage(index)) map {
+    x =>
+      AnswerRow(
+        "telephoneNumber.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(controllers.register.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId).url),
+        orgName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
   def trusteeAUKCitizen(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeAUKCitizenPage(index)) map {
     x =>
       AnswerRow(
@@ -1183,12 +1194,13 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def orgAddressInTheUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeAddressInTheUKPage(index)) map {
+  def orgAddressInTheUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeOrgAddressUkYesNoPage(index)) map {
     x =>
       AnswerRow(
         "trusteeOrgAddressUkYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         Some(controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        orgName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -1204,7 +1216,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def trusteeInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(TrusteesInternationalAddressPage(index)) map {
+  def trusteeInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(TrusteeOrgAddressInternationalPage(index)) map {
     x =>
       AnswerRow(
         "trusteeOrgAddressInternational.checkYourAnswersLabel",

@@ -50,7 +50,6 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
           .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
 
-
       val countryOptions = injector.instanceOf[CountryOptions]
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
@@ -148,13 +147,14 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
 
 
-    "return OK and the correct view (for a trustee uk org with utr) for a GET" in {
+    "return OK and the correct view (for a lead trustee uk org with utr) for a GET" in {
 
       val answers =
         emptyUserAnswers
-          .set(IsThisLeadTrusteePage(index), false).success.value
-          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+          .set(IsThisLeadTrusteePage(index), true).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
           .set(TrusteeUtrYesNoPage(index), true).success.value
+          .set(TrusteeOrgNamePage(index), "Amazon").success.value
           .set(TrusteesUtrPage(index), "1234567890").success.value
           .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
@@ -164,7 +164,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
-      val trusteeIndividualOrBusinessMessagePrefix = "trusteeIndividualOrBusiness"
+      val trusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
 
       val expectedSections = Seq(
         AnswerSection(
@@ -177,7 +177,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
             checkYourAnswersHelper.trusteeUtr(index).value,
             checkYourAnswersHelper.orgAddressInTheUkYesNo(index).value,
             checkYourAnswersHelper.trusteesOrgUkAddress(index).value,
-            checkYourAnswersHelper.telephoneNumber(index).value
+            checkYourAnswersHelper.orgTelephoneNumber(index).value
           )
         )
       )
@@ -198,13 +198,14 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "return OK and the correct view (for a trustee international org with no utr) for a GET" in {
+    "return OK and the correct view (for a lead trustee international org with no utr) for a GET" in {
 
       val answers =
         emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
-          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
           .set(TrusteeUtrYesNoPage(index), false).success.value
+          .set(TrusteeOrgNamePage(index), "Amazon").success.value
           .set(TrusteeOrgAddressUkYesNoPage(index), false).success.value
           .set(TrusteeOrgAddressInternationalPage(index), InternationalAddress("line1", "line2", Some("line3"), "Ukraine")).success.value
           .set(TelephoneNumberPage(index), "1256723389").success.value
@@ -225,7 +226,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
             checkYourAnswersHelper.trusteeOrgName(index).value,
             checkYourAnswersHelper.orgAddressInTheUkYesNo(index).value,
             checkYourAnswersHelper.trusteeInternationalAddress(index).value,
-            checkYourAnswersHelper.telephoneNumber(index).value
+            checkYourAnswersHelper.orgTelephoneNumber(index).value
           )
         )
       )
@@ -246,32 +247,11 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "redirect to TrusteeName on a GET if no name for trustee at index" in {
-      val answers =
-        emptyUserAnswers
-          .set(IsThisLeadTrusteePage(index), false).success.value
-          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-          .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
-          .set(TrusteeAUKCitizenPage(index), true).success.value
-
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
-
-      val request = FakeRequest(GET, routes.TrusteesAnswerPageController.onPageLoad(index, fakeDraftId).url)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-      application.stop()
-    }
-
     "redirect to the next page when valid data is submitted" in {
 
       val answers =
         emptyUserAnswers
-          .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+          .set(TrusteeIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
@@ -288,11 +268,12 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "redirect to TrusteeNamePage when valid data is submitted with no Trustee Name required answer" in {
+
+    "redirect to TrusteeIndividualOrBuisnessPage when valid data is submitted with no business or individual answer" in {
 
       val answers =
         emptyUserAnswers
-          .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(answers))
@@ -305,7 +286,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -314,7 +295,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val answers =
         emptyUserAnswers
-          .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
+          .set(TrusteeIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(answers))
