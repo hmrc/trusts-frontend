@@ -47,8 +47,8 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
     "return OK and the correct view (lead trustee) for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -69,8 +69,8 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
     "return OK and the correct view (trustee) for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -91,9 +91,9 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), true).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -113,8 +113,8 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
     "redirect to TrusteeName when TrusteesName is not answered" in {
       val userAnswers = emptyUserAnswers
-        .set(TrusteeAUKCitizenPage(index), true).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteeAUKCitizenPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -151,9 +151,9 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAUKCitizenPage(index), true).success.value
-        .set(IsThisLeadTrusteePage(index), false).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -174,8 +174,8 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

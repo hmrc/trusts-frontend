@@ -44,8 +44,8 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
     "return OK and the correct view (lead trustee) for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -66,8 +66,8 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
     "return OK and the correct view (trustee) for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -88,9 +88,9 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), true).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAddressInTheUKPage(index), true).success.value
-        .set(IsThisLeadTrusteePage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -130,10 +130,9 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
+        .set(IsThisLeadTrusteePage(index), false).success.value
         .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(TrusteeAddressInTheUKPage(index), true).success.value
-        .set(IsThisLeadTrusteePage(index), false).success.value
-
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -156,8 +155,8 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
       "a GET when no name is found" in {
 
         val userAnswers = emptyUserAnswers
-          .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeAddressInTheUKPage(index), true).success.value
 
         val application =
           applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -175,8 +174,8 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
       "a POST when no name is found" in {
 
         val userAnswers = emptyUserAnswers
-          .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeAddressInTheUKPage(index), true).success.value
 
         val application =
           applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -200,8 +199,8 @@ class TrusteeLiveInTheUKControllerSpec extends RegistrationSpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

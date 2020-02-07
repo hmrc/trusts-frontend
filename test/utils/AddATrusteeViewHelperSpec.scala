@@ -27,12 +27,12 @@ class AddATrusteeViewHelperSpec extends RegistrationSpecBase {
 
   val userAnswersWithTrusteesComplete = emptyUserAnswers
     .set(IsThisLeadTrusteePage(0), true).success.value
-    .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+    .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeStatus(0), Completed).success.value
     .set(IsThisLeadTrusteePage(1), false).success.value
-    .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
+    .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(TrusteeStatus(1), Completed).success.value
 
 
@@ -47,8 +47,8 @@ class AddATrusteeViewHelperSpec extends RegistrationSpecBase {
     .set(IsThisLeadTrusteePage(0), false).success.value
     .set(TrusteesNamePage(0), FullName("First 0", Some("Middle"), "Last 0")).success.value
     .set(IsThisLeadTrusteePage(1), true).success.value
-    .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
+    .set(TrusteesNamePage(1), FullName("First 1", Some("Middle"), "Last 1")).success.value
     .set(TrusteeStatus(1), Completed).success.value
 
   val userAnswersWithNoTrustees = emptyUserAnswers
