@@ -48,7 +48,7 @@ trait TrusteeRoutes {
               .remove(Trustees).success.value
 
             navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, fakeDraftId))
+              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -60,7 +60,7 @@ trait TrusteeRoutes {
                 .remove(Trustees).success.value
 
             navigator.nextPage(AddATrusteeYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, fakeDraftId))
+              .mustBe(routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -83,7 +83,7 @@ trait TrusteeRoutes {
       "go to the next trustee from AddATrusteePage when selected add them now" in {
 
             val answers = emptyUserAnswers
-              .set(IsThisLeadTrusteePage(0), true).success.value
+              .set(IsThisLeadTrusteePage(index), true).success.value
               .set(AddATrusteePage, AddATrustee.YesNow).success.value
 
             navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
@@ -96,7 +96,7 @@ trait TrusteeRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = userAnswers.set(IsThisLeadTrusteePage(0), true).success.value
+          val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
             .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
@@ -108,7 +108,7 @@ trait TrusteeRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = userAnswers.set(IsThisLeadTrusteePage(0), true).success.value
+          val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
           navigator.nextPage(AddATrusteePage, NormalMode, fakeDraftId)(answers)
@@ -125,25 +125,57 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteesNamePage from TrusteeOrIndividualPage page when answer is Individual" in {
+    "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page when answer is Individual" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
+          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
             .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
-    "go to TrusteeIndividualOrBusinessPage from TrusteeOrIndividualPage page when answer is Business" in {
+    "go to TrusteeUtrYesNoPage from TrusteeIndividualOrBusinessPage page when answer is Business" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(0), Business).success.value
+          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(index), Business).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
+
+    "go to TrusteeBusinessNamePage from TrusteeUtrYesNoPage page" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          navigator.nextPage(TrusteeUtrYesNoPage(index), NormalMode, fakeDraftId)(userAnswers)
+            .mustBe(routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
+    "go to TrusteesUtrPage from TrusteeOrgNamePage when trustee is a UK registered company" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(TrusteeUtrYesNoPage(index), true).success.value
+
+          navigator.nextPage(TrusteeOrgNamePage(index), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrusteeUtrController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
+    "go to TrusteeOrgAddressUkYesNoPage from TrusteeOrgNamePage when trustee is a UK registered company" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(TrusteeUtrYesNoPage(index), false).success.value
+
+          navigator.nextPage(TrusteeOrgNamePage(index), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
 
     "go to TrusteesDateOfBirthPage from TrusteesNamePage page" in {
       forAll(arbitrary[UserAnswers]) {

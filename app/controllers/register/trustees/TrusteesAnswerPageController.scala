@@ -21,10 +21,12 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
+import models.core.pages.IndividualOrBusiness
 import models.registration.pages.Status.Completed
+import models.registration.pages.WhatTypeOfBeneficiary.Individual
 import navigation.Navigator
 import pages.entitystatus.TrusteeStatus
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesAnswerPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesAnswerPage, TrusteesNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.RegistrationsRepository
@@ -55,7 +57,7 @@ class TrusteesAnswerPageController @Inject()(
     identify andThen getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteesNamePage(index),routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
+      requiredAnswer(RequiredAnswer(TrusteeIndividualOrBusinessPage(index),routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId))) andThen
       requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(index : Int, draftId: String) = actions(index, draftId) {
@@ -71,19 +73,38 @@ class TrusteesAnswerPageController @Inject()(
       val sections = Seq(
         AnswerSection(
           None,
-          Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index),
-            checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
-            checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix),
-            checkYourAnswersHelper.trusteesDateOfBirth(index),
-            checkYourAnswersHelper.trusteeAUKCitizen(index),
-            checkYourAnswersHelper.trusteesNino(index),
-            checkYourAnswersHelper.trusteeLiveInTheUK(index),
-            checkYourAnswersHelper.trusteesUkAddress(index),
-            checkYourAnswersHelper.telephoneNumber(index)
-          ).flatten
+          request.userAnswers.get(TrusteeIndividualOrBusinessPage(index)) match {
+            case Some(IndividualOrBusiness.Individual) =>
+              Seq(
+                checkYourAnswersHelper.isThisLeadTrustee(index),
+                checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
+                checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix),
+                checkYourAnswersHelper.trusteesDateOfBirth(index),
+                checkYourAnswersHelper.trusteeAUKCitizen(index),
+                checkYourAnswersHelper.trusteesNino(index),
+                checkYourAnswersHelper.trusteeLiveInTheUK(index),
+                checkYourAnswersHelper.trusteesUkAddress(index),
+                checkYourAnswersHelper.telephoneNumber(index)
+              ).flatten
+
+            case Some(IndividualOrBusiness.Business) =>
+              Seq(
+                checkYourAnswersHelper.isThisLeadTrustee(index),
+                checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
+                checkYourAnswersHelper.trusteeUtrYesNo(index),
+                checkYourAnswersHelper.trusteeOrgName(index),
+                checkYourAnswersHelper.trusteeUtr(index),
+                checkYourAnswersHelper.orgAddressInTheUkYesNo(index),
+                checkYourAnswersHelper.trusteesOrgUkAddress(index),
+                checkYourAnswersHelper.trusteeInternationalAddress(index),
+                checkYourAnswersHelper.orgTelephoneNumber(index)
+              ).flatten
+
+              case None =>
+              Nil
+          }
         )
-    )
+      )
 
       Ok(view(index, draftId ,sections))
   }
