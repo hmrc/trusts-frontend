@@ -34,8 +34,7 @@ final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPa
   override def cleanup(value: Option[IndividualOrBusiness], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(Business) =>
-        userAnswers.remove(TrusteesNamePage(index))
-          .flatMap(_.remove(TrusteesDateOfBirthPage(index)))
+        userAnswers.remove(TrusteesDateOfBirthPage(index))
           .flatMap(_.remove(TrusteeAUKCitizenPage(index)))
           .flatMap(_.remove(TrusteesNinoPage(index)))
           .flatMap(_.remove(TrusteeAddressInTheUKPage(index))
