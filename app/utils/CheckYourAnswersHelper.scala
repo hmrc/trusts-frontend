@@ -364,7 +364,14 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
           trusteesNino(index),
           trusteeLiveInTheUK(index),
           trusteesUkAddress(index),
-          telephoneNumber(index)
+          telephoneNumber(index),
+          trusteeUtrYesNo(index),
+          trusteeOrgName(index),
+          trusteeUtr(index),
+          orgAddressInTheUkYesNo(index),
+          trusteesOrgUkAddress(index),
+          trusteeInternationalAddress(index),
+          orgTelephoneNumber(index)
         ).flatten
 
 
