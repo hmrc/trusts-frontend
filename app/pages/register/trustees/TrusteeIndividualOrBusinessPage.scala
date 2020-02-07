@@ -40,6 +40,7 @@ final case class TrusteeIndividualOrBusinessPage(index : Int) extends QuestionPa
           .flatMap(_.remove(TrusteesNinoPage(index)))
           .flatMap(_.remove(TrusteeAddressInTheUKPage(index)))
           .flatMap(_.remove(TrusteesUkAddressPage(index)))
+          .flatMap(_.remove(TrusteesInternationalAddressPage(index)))
           .flatMap(_.remove(TelephoneNumberPage(index)))
 
       case Some(Individual) =>
