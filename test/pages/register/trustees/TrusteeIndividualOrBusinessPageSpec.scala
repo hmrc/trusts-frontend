@@ -19,7 +19,7 @@ package pages.register.trustees
 import java.time.LocalDate
 
 import models.core.UserAnswers
-import models.core.pages.IndividualOrBusiness.Business
+import models.core.pages.IndividualOrBusiness._
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
@@ -36,13 +36,35 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
     beRemovable[IndividualOrBusiness](TrusteeIndividualOrBusinessPage(0))
   }
 
+  "remove relevant data when TrusteeIndividualOrBusinessPage is set to Individual" in {
+    val index = 0
+    forAll(arbitrary[UserAnswers], arbitrary[String]) {
+      (initial, str) =>
+        val answers: UserAnswers = initial
+          .set(TrusteeUtrYesNoPage(index), true).success.value
+          .set(TrusteeOrgNamePage(index), str).success.value
+          .set(TrusteesUtrPage(index), str).success.value
+          .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
+          .set(TrusteeOrgAddressUkPage(index), UKAddress(str, str, None, None, str)).success.value
+          .set(TelephoneNumberPage(index), str).success.value
+
+        val result = answers.set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
+
+        result.get(TrusteeUtrYesNoPage(index)) mustNot be(defined)
+        result.get(TrusteeOrgNamePage(index)) mustNot be(defined)
+        result.get(TrusteesUtrPage(index)) mustNot be(defined)
+        result.get(TrusteeOrgAddressUkYesNoPage(index)) mustNot be(defined)
+        result.get(TrusteeOrgAddressUkPage(index)) mustNot be(defined)
+        result.get(TelephoneNumberPage(index)) mustNot be(defined)
+    }
+  }
+
 
   "remove relevant data when TrusteeIndividualOrBusinessPage is set to Business" in {
     val index = 0
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial
-          .set(TrusteesNamePage(index), FullName(str, None, str)).success.value
           .set(TrusteesDateOfBirthPage(index), LocalDate.now()).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), str).success.value
@@ -52,7 +74,6 @@ class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {
 
         val result = answers.set(TrusteeIndividualOrBusinessPage(index), Business).success.value
 
-        result.get(TrusteesNamePage(index)) mustNot be(defined)
         result.get(TrusteesDateOfBirthPage(index)) mustNot be(defined)
         result.get(TrusteeAUKCitizenPage(index)) mustNot be(defined)
         result.get(TrusteesNinoPage(index)) mustNot be(defined)

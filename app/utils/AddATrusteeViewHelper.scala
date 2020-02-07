@@ -32,7 +32,7 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
     val viewModel = trustee._1
     val index = trustee._2
 
-    val nameOfTrustee = viewModel.name.map(_.toString).getOrElse(messages("entities.no.name.added"))
+    val nameOfTrustee = viewModel.name.getOrElse(messages("entities.no.name.added"))
 
     def renderForLead(message : String) = s"${messages("entities.lead")} $message"
 

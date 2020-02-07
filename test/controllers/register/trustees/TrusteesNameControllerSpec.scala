@@ -190,8 +190,8 @@ class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidati
         val name = FullName("first name", Some("middle name"), "last name")
 
         val userAnswers = emptyUserAnswers
-          .set(TrusteesNamePage(index), name).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteesNamePage(index), name).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -221,8 +221,8 @@ class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidati
           val name = FullName("first name", Some("middle name"), "last name")
 
           val userAnswers = emptyUserAnswers
-            .set(TrusteesNamePage(index), name).success.value
             .set(IsThisLeadTrusteePage(index), false).success.value
+            .set(TrusteesNamePage(index), name).success.value
 
           val application =
             applicationBuilder(userAnswers = Some(userAnswers)).build()

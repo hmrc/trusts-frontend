@@ -24,7 +24,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeOrgNamePage, TrusteesNamePage, TrusteesUkAddressPage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeOrgAddressUkPage, TrusteeOrgNamePage, TrusteesNamePage, TrusteesUkAddressPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -63,7 +63,7 @@ class TrusteesOrgUkAddressController @Inject()(
 
       val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
 
-      val preparedForm = request.userAnswers.get(TrusteesUkAddressPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeOrgAddressUkPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -83,9 +83,9 @@ class TrusteesOrgUkAddressController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesUkAddressPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrgAddressUkPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteesUkAddressPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeOrgAddressUkPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }
