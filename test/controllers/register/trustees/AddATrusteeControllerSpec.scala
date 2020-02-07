@@ -46,11 +46,11 @@ class AddATrusteeControllerSpec extends RegistrationSpecBase {
   )
 
   val userAnswersWithTrusteesComplete = emptyUserAnswers
-    .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+    .set(TrusteesNamePage(0), FullName("First 0", None, "Last 0")).success.value
     .set(TrusteeStatus(0), Completed).success.value
-    .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(TrusteeIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
+    .set(TrusteesNamePage(1), FullName("First 1", None, "Last 1")).success.value
     .set(TrusteeStatus(1), Completed).success.value
 
   "AddATrustee Controller" when {

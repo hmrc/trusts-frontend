@@ -46,9 +46,9 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), "AB123456C").success.value
-          .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
+          .set(TelephoneNumberPage(index), "0191 1111111").success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
@@ -100,10 +100,9 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
           .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteesNinoPage(index), "AB123456C").success.value
-          .set(TelephoneNumberPage(index), "0191 1111111").success.value
           .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
-
+          .set(TelephoneNumberPage(index), "0191 1111111").success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
 
@@ -157,7 +156,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
           .set(TrusteeOrgNamePage(index), "Amazon").success.value
           .set(TrusteesUtrPage(index), "1234567890").success.value
           .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
-          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
+          .set(TrusteeOrgAddressUkPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
           .set(TelephoneNumberPage(index), "1256723389").success.value
 
       val countryOptions = injector.instanceOf[CountryOptions]
@@ -251,8 +250,8 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val answers =
         emptyUserAnswers
-          .set(TrusteeIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
           .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 

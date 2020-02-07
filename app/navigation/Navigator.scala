@@ -78,7 +78,9 @@ class Navigator @Inject()(
     case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case TrusteeOrgNamePage(index)  => _ => ua => trusteeBusinessNameRoute(ua, index, draftId)
     case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
-    case TrusteeOrgAddressUkYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressUkYesNoPage(index) => _ => ua => trusteeOrgAddressUkYesNoRoute(ua, index, draftId)
+    case TrusteeOrgAddressUkPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressInternationalPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
 
     case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index, draftId)
@@ -474,6 +476,12 @@ class Navigator @Inject()(
   private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeAddressInTheUKPage(index)) match {
     case Some(true)   => controllers.register.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode,index, draftId)
     case Some(false)  => controllers.register.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index, draftId)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def trusteeOrgAddressUkYesNoRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeOrgAddressUkYesNoPage(index)) match {
+    case Some(true)   => controllers.register.trustees.routes.TrusteesOrgUkAddressController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => controllers.register.trustees.routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 

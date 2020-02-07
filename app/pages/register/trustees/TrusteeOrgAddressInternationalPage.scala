@@ -25,5 +25,5 @@ final case class TrusteeOrgAddressInternationalPage(index: Int) extends Question
 
   override def path: JsPath = Trustees.path \ index \ toString
 
-  override def toString: String = "trusteeOrgAddress"
+  override def toString: String = "address"
 }

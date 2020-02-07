@@ -18,18 +18,18 @@ package controllers.register.trustees
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.trustees.TelephoneNumberFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteeOrgNamePage, TrusteesNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TelephoneNumberView
-import controllers.register.routes._
 
-class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValidation {
+class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteesTelephoneNumber"
   val trusteeMessagePrefix = "telephoneNumber"
@@ -40,7 +40,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
   val emptyTrusteeName = ""
   val trusteeName = "FirstName LastName"
 
-  lazy val telephoneNumberRoute = routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val telephoneNumberRoute = routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "TelephoneNumber Controller" must {
 
@@ -48,7 +48,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), true).success.value
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteeOrgNamePage(index), "FirstName LastName").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -70,7 +70,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), false).success.value
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteeOrgNamePage(index), "FirstName LastName").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -92,7 +92,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), true).success.value
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteeOrgNamePage(index), "FirstName LastName").success.value
         .set(TelephoneNumberPage(index), "0191 1111111").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -114,7 +114,6 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
     "redirect to TrusteeName when TrusteesName is not answered" in {
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), false).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -124,7 +123,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -132,8 +131,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
     "redirect to IsThisLeadTrustee page when IsThisLeadTrustee is not answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
+        .set(TrusteeOrgNamePage(index), "FirstName LastName").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -152,8 +150,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), false).success.value
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
+        .set(TrusteeOrgNamePage(index), "FirstName LastName").success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -175,7 +172,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
       val userAnswers = emptyUserAnswers
         .set(IsThisLeadTrusteePage(index), false).success.value
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteeOrgNamePage(index), "FirstName LastName").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

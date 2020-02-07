@@ -48,8 +48,8 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
     "return OK and the correct view (lead trustee) for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -70,8 +70,8 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
     "return OK and the correct view (trustee) for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -92,9 +92,9 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNinoPage(index), validAnswer).success.value
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), true).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
+        .set(TrusteesNinoPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -114,8 +114,8 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
 
     "redirect to Trustee Name page when TrusteesName is not answered" in {
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNinoPage(index), validAnswer).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNinoPage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -133,8 +133,8 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -154,8 +154,8 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
         .set(IsThisLeadTrusteePage(index), false).success.value
+        .set(TrusteesNamePage(index), FullName("FirstName", None, "LastName")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
