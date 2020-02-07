@@ -30,7 +30,7 @@ import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteesUkAddressView
 import controllers.register.routes._
 
-class UKAddressControllerSpec extends RegistrationSpecBase with IndexValidation {
+class TrusteesUkAddressControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteeUkAddress"
   val trusteeMessagePrefix = "trusteeUkAddress"

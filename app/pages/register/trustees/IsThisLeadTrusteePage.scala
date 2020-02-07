@@ -34,10 +34,12 @@ final case class IsThisLeadTrusteePage(index : Int) extends QuestionPage[Boolean
       case Some(false) =>
         userAnswers.remove(TrusteeIndividualOrBusinessPage(index))
 
+          .flatMap(_.remove(TrusteesNamePage(index)))
+          .flatMap(_.remove(TrusteesDateOfBirthPage(index)))
           .flatMap(_.remove(TrusteeAUKCitizenPage(index)))
           .flatMap(_.remove(TrusteesNinoPage(index)))
-          .flatMap(_.remove(TrusteesUkAddressPage(index)))
           .flatMap(_.remove(TrusteeAddressInTheUKPage(index)))
+          .flatMap(_.remove(TrusteesUkAddressPage(index)))
 
           .flatMap(_.remove(TrusteeUtrYesNoPage(index)))
           .flatMap(_.remove(TrusteeOrgNamePage(index)))
