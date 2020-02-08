@@ -27,7 +27,7 @@ import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, Trus
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TelephoneNumberView
+import views.html.register.trustees.{TelephoneNumberView, TrusteeOrgTelephoneNumberView}
 
 class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValidation {
 
@@ -56,7 +56,7 @@ class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with 
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TelephoneNumberView]
+      val view = application.injector.instanceOf[TrusteeOrgTelephoneNumberView]
 
       status(result) mustEqual OK
 
@@ -78,7 +78,7 @@ class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with 
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[TelephoneNumberView]
+      val view = application.injector.instanceOf[TrusteeOrgTelephoneNumberView]
 
       status(result) mustEqual OK
 
@@ -99,7 +99,7 @@ class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with 
 
       val request = FakeRequest(GET, telephoneNumberRoute)
 
-      val view = application.injector.instanceOf[TelephoneNumberView]
+      val view = application.injector.instanceOf[TrusteeOrgTelephoneNumberView]
 
       val result = route(application, request).value
 
@@ -182,7 +182,7 @@ class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with 
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[TelephoneNumberView]
+      val view = application.injector.instanceOf[TrusteeOrgTelephoneNumberView]
 
       val result = route(application, request).value
 

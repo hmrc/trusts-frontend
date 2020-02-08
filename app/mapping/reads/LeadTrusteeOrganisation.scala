@@ -16,48 +16,42 @@
 
 package mapping.reads
 
-import java.time.LocalDate
-
-import models.core.pages.IndividualOrBusiness.Individual
-import models.core.pages.{Address, FullName}
+import models.core.pages.Address
+import models.core.pages.IndividualOrBusiness.Business
 import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
-final case class LeadTrusteeIndividual(override val isLead : Boolean = true,
-                                       name: FullName,
-                                       dateOfBirth: LocalDate,
-                                       isUKCitizen : Boolean,
-                                       nino : Option[String],
-                                       passport: Option[String],
+final case class LeadTrusteeOrganisation(override val isLead : Boolean = true,
+                                       name: String,
+                                       isUKBusiness : Boolean,
+                                       utr : Option[String],
                                        liveInUK: Boolean,
                                        address : Address,
                                        telephoneNumber : String
                                       ) extends Trustee
 
-object LeadTrusteeIndividual {
+object LeadTrusteeOrganisation {
 
   import play.api.libs.functional.syntax._
 
-  implicit lazy val reads: Reads[LeadTrusteeIndividual] = {
+  implicit lazy val reads: Reads[LeadTrusteeOrganisation] = {
 
-    val leadTrusteeReads: Reads[LeadTrusteeIndividual] = (
+    val leadTrusteeReads: Reads[LeadTrusteeOrganisation] = (
       (__ \ "isThisLeadTrustee").read[Boolean] and
-        (__ \ "name").read[FullName] and
-        (__ \ "dateOfBirth").read[LocalDate] and
-        (__ \ "isUKCitizen").read[Boolean] and
-        (__ \ "nino").readNullable[String] and
-        (__ \ "passport").readNullable[String] and
+        (__ \ "name").read[String] and
+        (__ \ "isUKBusiness").read[Boolean] and
+        (__ \ "utr").readNullable[String] and
         (__ \ "addressUKYesNo").read[Boolean] and
         (__ \ "address").read[Address] and
         (__ \ "telephoneNumber").read[String]
-      )(LeadTrusteeIndividual.apply _)
+      )(LeadTrusteeOrganisation.apply _)
 
     ((__ \ "isThisLeadTrustee").read[Boolean] and
       (__ \ "individualOrBusiness").read[String]) ((_, _)).flatMap[(Boolean, String)] {
       case (isLead, individualOrBusiness) =>
-        if (individualOrBusiness == Individual.toString && isLead) {
+        if (individualOrBusiness == Business.toString && isLead) {
           Reads(_ => JsSuccess((isLead, individualOrBusiness)))
         } else {
-          Reads(_ => JsError("lead trustee individual must not be a `business` or a normal trustee"))
+          Reads(_ => JsError("lead trustee organisation must not be an `individual` or a normal trustee"))
         }
     }.andKeep(leadTrusteeReads)
 

@@ -17,7 +17,7 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, Trustee, Trustees}
+import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustee, Trustees}
 import mapping._
 import models.core.UserAnswers
 
@@ -33,27 +33,46 @@ class LeadTrusteeMapper @Inject()(
       case Nil => None
       case list =>
         val leadTrusteeOption: Option[Trustee] = list.find(_.isLead)
-        leadTrusteeOption.map {
-          case leadTrustee: LeadTrusteeIndividual => getLeadTrusteeType(leadTrustee)
+        leadTrusteeOption.map { leadTrustee =>
+          getLeadTrusteeType(leadTrustee)
         }
     }
   }
 
-  private def getLeadTrusteeType(leadTrustee: LeadTrusteeIndividual) = {
-    LeadTrusteeType(
-      leadTrusteeInd = Some(
-        LeadTrusteeIndType(
-          name = nameMapper.build(leadTrustee.name),
-          dateOfBirth = leadTrustee.dateOfBirth,
-          phoneNumber = leadTrustee.telephoneNumber,
-          identification = IdentificationType(
-            nino = leadTrustee.nino,
-            passport = None,
-            address = None
+  private def getLeadTrusteeType(leadTrustee: Trustee): LeadTrusteeType = {
+    leadTrustee match {
+      case indLeadTrustee: LeadTrusteeIndividual =>
+        LeadTrusteeType(
+          leadTrusteeInd = Some(
+            LeadTrusteeIndType(
+              name = nameMapper.build(indLeadTrustee.name),
+              dateOfBirth = indLeadTrustee.dateOfBirth,
+              phoneNumber = indLeadTrustee.telephoneNumber,
+              identification = IdentificationType(
+                nino = indLeadTrustee.nino,
+                passport = None,
+                address = addressMapper.build(Some(indLeadTrustee.address))
+              )
+            )
+          ),
+          leadTrusteeOrg = None
+        )
+      case orgLeadTrustee: LeadTrusteeOrganisation =>
+        LeadTrusteeType(
+          leadTrusteeInd = None,
+          leadTrusteeOrg = Some(
+            LeadTrusteeOrgType(
+              name = orgLeadTrustee.name,
+              phoneNumber = orgLeadTrustee.telephoneNumber,
+              email = None,
+              identification = IdentificationOrgType(
+                utr = orgLeadTrustee.utr,
+                address = addressMapper.build(Some(orgLeadTrustee.address))
+              )
+            )
           )
         )
-      ),
-      None
-    )
+    }
+
   }
 }

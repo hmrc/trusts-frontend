@@ -34,17 +34,19 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
 
       "from a trustee individual" in {
 
-        forAll(arbitrary[LocalDate], arbitrary[FullName]) {
-          (date, fullName) =>
+        forAll(arbitrary[LocalDate], arbitrary[FullName], arbitrary[String], arbitrary[UKAddress]) {
+          (date, fullName, str, address) =>
 
             val json = Json.obj(
               "name" -> fullName,
               "dateOfBirth" -> date,
+              "nino" -> str,
+              "address" -> address,
               "isThisLeadTrustee" -> false,
               "individualOrBusiness" -> IndividualOrBusiness.Individual.toString
             )
 
-            json.validate[Trustee] mustEqual JsSuccess(TrusteeIndividual(false,fullName, date))
+            json.validate[Trustee] mustEqual JsSuccess(TrusteeIndividual(false, fullName, Some(date), Some(str), Some(address)))
         }
       }
 
@@ -59,7 +61,7 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
           (date, fullName, address, individual) =>
             val json = Json.obj(
               "nino" -> "QQ12121212",
-              "name"-> fullName,
+              "name" -> fullName,
               "telephoneNumber" -> "+440101010101",
               "dateOfBirth" -> date,
               "isUKCitizen" -> true,
@@ -80,6 +82,58 @@ class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks wi
                 telephoneNumber = "+440101010101",
                 passport = None,
                 address = address
+              )
+            )
+        }
+
+      }
+
+      "from a trustee organisation" in {
+
+        forAll(arbitrary[String], arbitrary[UKAddress]) {
+          (str, address) =>
+
+            val json = Json.obj(
+              "name" -> str,
+              "utr" -> str,
+              "address" -> address,
+              "isThisLeadTrustee" -> false,
+              "individualOrBusiness" -> IndividualOrBusiness.Business.toString
+            )
+
+            json.validate[Trustee] mustEqual JsSuccess(TrusteeOrganisation(false, str, Some(str), Some(address)))
+        }
+      }
+
+      "from a lead trustee organisation" in {
+
+        forAll(
+          arbitrary[String],
+          arbitrary[UKAddress],
+          Gen.const(IndividualOrBusiness.Business)
+        ){
+          (str, address, business) =>
+            val json = Json.obj(
+              "nino" -> "QQ12121212",
+              "name" -> str,
+              "telephoneNumber" -> "+440101010101",
+              "utr" -> str,
+              "isUKBusiness" -> true,
+              "isThisLeadTrustee" -> true,
+              "address" -> address,
+              "addressUKYesNo" -> true,
+              "individualOrBusiness" -> business.toString
+            )
+
+            json.validate[Trustee] mustEqual JsSuccess(
+              LeadTrusteeOrganisation(
+                isLead = true,
+                name = str,
+                isUKBusiness = true,
+                utr = Some(str),
+                liveInUK = true,
+                address = address,
+                telephoneNumber = "+440101010101"
               )
             )
         }

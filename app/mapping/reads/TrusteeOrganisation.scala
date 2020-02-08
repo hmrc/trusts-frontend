@@ -16,37 +16,34 @@
 
 package mapping.reads
 
-import java.time.LocalDate
+import models.core.pages.{Address, IndividualOrBusiness}
+import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 
-import models.core.pages.{Address, FullName, IndividualOrBusiness}
-import play.api.libs.json._
+final case class TrusteeOrganisation(override val isLead : Boolean,
+                                    name: String,
+                                     utr: Option[String],
+                                     address: Option[Address]) extends Trustee
 
-final case class TrusteeIndividual(override val isLead : Boolean,
-                                   name: FullName,
-                                   dateOfBirth: Option[LocalDate],
-                                   nino: Option[String],
-                                   address: Option[Address]) extends Trustee
 
-object TrusteeIndividual {
+object TrusteeOrganisation {
 
   import play.api.libs.functional.syntax._
 
-  implicit lazy val reads: Reads[TrusteeIndividual] = {
+  implicit lazy val reads: Reads[TrusteeOrganisation] = {
 
-    val trusteeReads: Reads[TrusteeIndividual] = (
-      (__ \ "name").read[FullName] and
-        (__ \ "dateOfBirth").readNullable[LocalDate] and
-        (__ \ "nino").readNullable[String] and
+    val trusteeReads: Reads[TrusteeOrganisation] = (
+      (__ \ "name").read[String] and
+        (__ \ "utr").readNullable[String] and
         (__ \ "address").readNullable[Address]
-      )((name, dateOfBirth, nino, address) => TrusteeIndividual(isLead = false, name, dateOfBirth, nino, address))
+      )((name, utr, address) => TrusteeOrganisation(isLead = false, name, utr, address))
 
     ((__ \ "isThisLeadTrustee").read[Boolean] and
       (__ \ "individualOrBusiness").read[IndividualOrBusiness]) ((_, _)).flatMap[(Boolean, IndividualOrBusiness)] {
       case (isLead, individualOrBusiness) =>
-        if (individualOrBusiness == IndividualOrBusiness.Individual && !isLead) {
+        if (individualOrBusiness == IndividualOrBusiness.Business && !isLead) {
           Reads(_ => JsSuccess((isLead, individualOrBusiness)))
         } else {
-          Reads(_ => JsError("trustee individual must not be a `business` or a `lead`"))
+          Reads(_ => JsError("trustee organisation must not be a `individual` or a `lead`"))
         }
     }.andKeep(trusteeReads)
 

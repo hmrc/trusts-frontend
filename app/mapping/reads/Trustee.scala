@@ -16,15 +16,13 @@
 
 package mapping.reads
 
-import models.core.pages.FullName
 import play.api.libs.json.Reads
+
 import scala.language.implicitConversions
 
 trait Trustee {
 
   val isLead : Boolean
-
-  val name : FullName
 
 }
 
@@ -41,7 +39,9 @@ object Trustee {
 
   implicit lazy val reads : Reads[Trustee] = {
     TrusteeIndividual.reads or
-    LeadTrusteeIndividual.reads
+    LeadTrusteeIndividual.reads or
+    TrusteeOrganisation.reads or
+    LeadTrusteeOrganisation.reads
   }
 
 }

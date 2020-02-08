@@ -224,7 +224,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
             checkYourAnswersHelper.trusteeUtrYesNo(index).value,
             checkYourAnswersHelper.trusteeOrgName(index).value,
             checkYourAnswersHelper.orgAddressInTheUkYesNo(index).value,
-            checkYourAnswersHelper.trusteeInternationalAddress(index).value,
+            checkYourAnswersHelper.trusteeOrgInternationalAddress(index).value,
             checkYourAnswersHelper.orgTelephoneNumber(index).value
           )
         )

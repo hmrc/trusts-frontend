@@ -96,7 +96,7 @@ class TrusteesAnswerPageController @Inject()(
                 checkYourAnswersHelper.trusteeUtr(index),
                 checkYourAnswersHelper.orgAddressInTheUkYesNo(index),
                 checkYourAnswersHelper.trusteesOrgUkAddress(index),
-                checkYourAnswersHelper.trusteeInternationalAddress(index),
+                checkYourAnswersHelper.trusteeOrgInternationalAddress(index),
                 checkYourAnswersHelper.orgTelephoneNumber(index)
               ).flatten
 

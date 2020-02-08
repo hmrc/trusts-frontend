@@ -17,39 +17,59 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{Trustee, TrusteeIndividual, Trustees}
+import mapping.reads.{Trustee, TrusteeIndividual, TrusteeOrganisation, Trustees}
 import mapping.Mapping
 import models.core.UserAnswers
 
-
-class TrusteeMapper @Inject()(nameMapper: NameMapper) extends Mapping[List[TrusteeType]] {
+class TrusteeMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[List[TrusteeType]] {
 
   override def build(userAnswers: UserAnswers): Option[List[TrusteeType]] = {
     val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
-    val trusteeIndividualList: List[Trustee] = trustees.filter(!_.isLead)
-    trusteeIndividualList match {
+    val trusteesList: List[Trustee] = trustees.filter(!_.isLead)
+    trusteesList match {
       case Nil => None
       case list =>
-        Some(list.map {
-          case indTrustee: TrusteeIndividual =>
-            getTrusteeType(indTrustee)
+        Some(list.map { trustee =>
+          getTrusteeType(trustee)
         })
-
     }
   }
 
-
-  private def getTrusteeType(indTrustee: TrusteeIndividual): TrusteeType = {
-    TrusteeType(
-      trusteeInd = Some(
-        TrusteeIndividualType(
-          name = nameMapper.build(indTrustee.name),
-          dateOfBirth = Some(indTrustee.dateOfBirth),
-          phoneNumber = None,
-          identification = None
+  private def getTrusteeType(trustee: Trustee): TrusteeType = {
+    trustee match {
+      case indTrustee: TrusteeIndividual =>
+        TrusteeType(
+          trusteeInd = Some(
+            TrusteeIndividualType(
+              name = nameMapper.build(indTrustee.name),
+              dateOfBirth = indTrustee.dateOfBirth,
+              phoneNumber = None,
+              identification = Some(
+                IdentificationType(
+                  nino = indTrustee.nino,
+                  passport = None,
+                  address = addressMapper.build(indTrustee.address)
+                )
+              )
+            )
+          ),
+          trusteeOrg = None
         )
-      ),
-      None
-    )
+      case orgTrustee: TrusteeOrganisation =>
+        TrusteeType(
+          trusteeInd = None,
+          trusteeOrg = Some(
+            TrusteeOrgType(
+              name = orgTrustee.name,
+              phoneNumber = None,
+              email = None,
+              identification = IdentificationOrgType(
+                utr = orgTrustee.utr,
+                address = addressMapper.build(orgTrustee.address)
+              )
+            )
+          )
+        )
+    }
   }
 }
