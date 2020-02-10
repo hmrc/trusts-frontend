@@ -64,7 +64,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
             identification = IdentificationType(
               nino = Some("AB123456C"),
               None,
-              Some(AddressType("line1", "line2", None, None, Some("NE65QA"), "GB"))
+              None
             )
           ))
         )
@@ -89,7 +89,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
             email = None,
             identification = IdentificationOrgType(
               utr = Some("1234567890"),
-              Some(AddressType("line1", "line2", None, None, Some("NE65QA"), "GB"))
+              None
             )
           ))
         )

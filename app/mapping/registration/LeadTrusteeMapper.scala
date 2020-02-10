@@ -22,9 +22,7 @@ import mapping._
 import models.core.UserAnswers
 
 
-class LeadTrusteeMapper @Inject()(
-                                   nameMapper: NameMapper,
-                                   addressMapper: AddressMapper) extends Mapping[LeadTrusteeType] {
+class LeadTrusteeMapper @Inject()(nameMapper: NameMapper) extends Mapping[LeadTrusteeType] {
 
   override def build(userAnswers: UserAnswers): Option[LeadTrusteeType] = {
 
@@ -51,7 +49,7 @@ class LeadTrusteeMapper @Inject()(
               identification = IdentificationType(
                 nino = indLeadTrustee.nino,
                 passport = None,
-                address = addressMapper.build(Some(indLeadTrustee.address))
+                address = None
               )
             )
           ),
@@ -67,7 +65,7 @@ class LeadTrusteeMapper @Inject()(
               email = None,
               identification = IdentificationOrgType(
                 utr = orgLeadTrustee.utr,
-                address = addressMapper.build(Some(orgLeadTrustee.address))
+                address = None
               )
             )
           )
