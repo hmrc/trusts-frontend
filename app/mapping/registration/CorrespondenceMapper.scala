@@ -17,7 +17,7 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, Trustees}
+import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
 import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.TrustNamePage
@@ -35,30 +35,31 @@ class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mappi
           case list =>
             list.find(_.isLead).flatMap {
               case lti: LeadTrusteeIndividual =>
-                val index = list.indexOf(lti)
-                val abroad = !lti.liveInUK
-                val telephone = lti.telephoneNumber
-
-                addressMapper.build(
-                  userAnswers,
-                  TrusteeAddressInTheUKPage(index),
-                  TrusteesUkAddressPage(index),
-                  TrusteesInternationalAddressPage(index)
-                ) map {
-                  address =>
-                    Correspondence(
-                      abroadIndicator = abroad,
-                      name = trustName,
-                      address = address,
-                      phoneNumber = telephone
-                    )
-                }
+                buildAddressMapper(userAnswers, trustName, list.indexOf(lti), !lti.liveInUK, lti.telephoneNumber)
+              case lto: LeadTrusteeOrganisation =>
+                buildAddressMapper(userAnswers, trustName, list.indexOf(lto), !lto.liveInUK, lto.telephoneNumber)
               case _ =>
-                Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to not having a Lead Trustee Individual")
+                Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to unexpected lead trustee type")
                 None
             }
-
         }
+    }
+  }
+
+  private def buildAddressMapper(userAnswers: UserAnswers, trustName: String, index: Int, abroad: Boolean, telephone: String) = {
+    addressMapper.build(
+      userAnswers,
+      TrusteeAddressInTheUKPage(index),
+      TrusteesUkAddressPage(index),
+      TrusteesInternationalAddressPage(index)
+    ) map {
+      address =>
+        Correspondence(
+          abroadIndicator = abroad,
+          name = trustName,
+          address = address,
+          phoneNumber = telephone
+        )
     }
   }
 
