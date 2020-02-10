@@ -21,10 +21,9 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.Mapping
-import models.core.pages.IndividualOrBusiness.Individual
+import models.core.pages.IndividualOrBusiness._
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages._
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
 import pages.register.trustees._
@@ -112,42 +111,113 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
 
       "for an Organisation" - {
 
+        "for a lead trustee individual" - {
 
-        "must not be able to create declaration when lead trustee incomplete and declaration name answered" in {
+          "must not be able to create declaration when lead trustee incomplete and declaration name answered" in {
 
-          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
-          val userAnswers = emptyUserAnswers
-            .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
-            .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
-            .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010,10,10)).success.value
-            .set(TrusteeAUKCitizenPage(0), true).success.value
-            .set(TrusteeAddressInTheUKPage(0), true).success.value
-            .set(TrusteesUkAddressPage(0), address).success.value
+            val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
 
-          declarationMapper.build(userAnswers) mustNot be(defined)
+            val userAnswers = emptyUserAnswers
+              .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+              .set(IsThisLeadTrusteePage(0), true).success.value
+              .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
+              .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
+              .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010,10,10)).success.value
+              .set(TrusteeAUKCitizenPage(0), true).success.value
+              .set(TrusteeAddressInTheUKPage(0), true).success.value
+              .set(TrusteesUkAddressPage(0), address).success.value
+
+            declarationMapper.build(userAnswers) mustNot be(defined)
+
+          }
+
+          "must be able to create declaration when lead trustee UK address and declaration name answered" in {
+
+            val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
+
+            val userAnswers = emptyUserAnswers
+              .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+              .set(IsThisLeadTrusteePage(0), true).success.value
+              .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
+              .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
+              .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010,10,10)).success.value
+              .set(TrusteeAUKCitizenPage(0), true).success.value
+              .set(TrusteeAddressInTheUKPage(0), true).success.value
+              .set(TrusteesUkAddressPage(0), address).success.value
+              .set(TelephoneNumberPage(0), "0191 222222").success.value
+
+            declarationMapper.build(userAnswers).value mustBe Declaration(
+              name = NameType("First", None, "Last"),
+              address = AddressType("First line", "Second line", None, Some("Newcastle"), Some("NE981ZZ"), "GB")
+            )
+
+          }
 
         }
 
-        "must be able to create declaration when lead trustee UK address and declaration name answered" in {
+        "for a lead trustee organisation" - {
 
-          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
-          val userAnswers = emptyUserAnswers
-            .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
-            .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
-            .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010,10,10)).success.value
-            .set(TrusteeAUKCitizenPage(0), true).success.value
-            .set(TrusteeAddressInTheUKPage(0), true).success.value
-            .set(TrusteesUkAddressPage(0), address).success.value
-            .set(TelephoneNumberPage(0), "0191 222222").success.value
+          "must not be able to create declaration when lead trustee incomplete and declaration name answered" in {
 
-          declarationMapper.build(userAnswers).value mustBe Declaration(
-            name = NameType("First", None, "Last"),
-            address = AddressType("First line", "Second line", None, Some("Newcastle"), Some("NE981ZZ"), "GB")
-          )
+            val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
+
+            val userAnswers = emptyUserAnswers
+              .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+              .set(IsThisLeadTrusteePage(0), true).success.value
+              .set(TrusteeIndividualOrBusinessPage(0), Business).success.value
+              .set(TrusteeOrgNamePage(0), "Org Name").success.value
+              .set(TrusteeUtrYesNoPage(0), true).success.value
+              .set(TrusteesUtrPage(0), "1234567890").success.value
+              .set(TrusteeOrgAddressUkYesNoPage(0), true).success.value
+              .set(TrusteeOrgAddressUkPage(0), address).success.value
+
+            declarationMapper.build(userAnswers) mustNot be(defined)
+
+          }
+
+          "must be able to create declaration when lead trustee UK address and declaration name answered" in {
+
+            val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
+
+            val userAnswers = emptyUserAnswers
+              .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+              .set(IsThisLeadTrusteePage(0), true).success.value
+              .set(TrusteeIndividualOrBusinessPage(0), Business).success.value
+              .set(TrusteeOrgNamePage(0), "Org Name").success.value
+              .set(TrusteeUtrYesNoPage(0), true).success.value
+              .set(TrusteesUtrPage(0), "1234567890").success.value
+              .set(TrusteeOrgAddressUkYesNoPage(0), true).success.value
+              .set(TrusteeOrgAddressUkPage(0), address).success.value
+              .set(TelephoneNumberPage(0), "0191 222222").success.value
+
+            declarationMapper.build(userAnswers).value mustBe Declaration(
+              name = NameType("First", None, "Last"),
+              address = AddressType("First line", "Second line", None, Some("Newcastle"), Some("NE981ZZ"), "GB")
+            )
+
+          }
+
+          "must be able to create declaration when lead trustee Non-UK address and declaration name answered" in {
+
+            val address = InternationalAddress("First line", "Second line", None, "DE")
+
+            val userAnswers = emptyUserAnswers
+              .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+              .set(IsThisLeadTrusteePage(0), true).success.value
+              .set(TrusteeIndividualOrBusinessPage(0), Business).success.value
+              .set(TrusteeOrgNamePage(0), "Org Name").success.value
+              .set(TrusteeUtrYesNoPage(0), true).success.value
+              .set(TrusteesUtrPage(0), "1234567890").success.value
+              .set(TrusteeOrgAddressUkYesNoPage(0), false).success.value
+              .set(TrusteeOrgAddressInternationalPage(0), address).success.value
+              .set(TelephoneNumberPage(0), "0191 222222").success.value
+
+            declarationMapper.build(userAnswers).value mustBe Declaration(
+              name = NameType("First", None, "Last"),
+              address = AddressType("First line", "Second line", None, None, None, "DE")
+            )
+
+          }
 
         }
 

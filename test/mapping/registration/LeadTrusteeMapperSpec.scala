@@ -97,7 +97,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
         )
       }
 
-      "must not able to create LeadTrusteeType with only trustee individual which is not lead." in {
+      "must not be able to create LeadTrusteeType with only trustee individual which is not lead." in {
         val index = 0
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
@@ -108,7 +108,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
         leadTrusteeMapper.build(userAnswers) mustNot be(defined)
       }
 
-      "must not able to create LeadTrusteeType with only trustee organisation which is not lead." in {
+      "must not be able to create LeadTrusteeType with only trustee organisation which is not lead." in {
         val index = 0
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
@@ -118,7 +118,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
         leadTrusteeMapper.build(userAnswers) mustNot be(defined)
       }
 
-      "must be able to create LeadTrusteeType without telephone number for trustee individual" in {
+      "must not be able to create LeadTrusteeType without telephone number for trustee individual" in {
 
         val index = 0
         val userAnswers = emptyUserAnswers
@@ -135,7 +135,7 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
 
       }
 
-      "must be able to create LeadTrusteeType without telephone number for trustee organisation" in {
+      "must not be able to create LeadTrusteeType without telephone number for trustee organisation" in {
 
         val index = 0
         val userAnswers = emptyUserAnswers
