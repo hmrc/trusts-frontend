@@ -34,7 +34,7 @@ import views.html.register.trustees.individual.TrusteesUkAddressView
 class TrusteesUkAddressControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val leadTrusteeMessagePrefix = "leadTrusteeUkAddress"
-  val trusteeMessagePrefix = "trusteeUkAddress"
+  val trusteeMessagePrefix = "trusteesUkAddress"
   val formProvider = new UKAddressFormProvider()
   val form: Form[UKAddress] = formProvider()
   val index = 0
