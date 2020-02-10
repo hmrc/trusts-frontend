@@ -28,7 +28,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
   private lazy val intervivosUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
@@ -40,7 +40,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
   private lazy val heritageUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
@@ -53,7 +53,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
   private lazy val flatManagementUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
@@ -95,7 +95,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
         val willTypeUserAnswers = {
           val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-          val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+          val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
           val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
           val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
           val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
