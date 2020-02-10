@@ -87,7 +87,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
       "must not able to submit data  when all data not available for registration" in {
 
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-        val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+        val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
         val userAnswers = TestUserAnswers.withDeceasedSettlor(uaWithLead)
 
 
@@ -118,7 +118,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
     val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
