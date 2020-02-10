@@ -91,11 +91,7 @@ class TrusteeOrgTelephoneNumberController @Inject()(
 
       val trusteeName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
 
-      Logger.info(s"*************************Name: $trusteeName")
-
       val messagePrefix: String = getMessagePrefix(index, request)
-
-      Logger.info(s"*************************Prefix: $messagePrefix")
 
       val form = formProvider(messagePrefix)
 
@@ -105,8 +101,6 @@ class TrusteeOrgTelephoneNumberController @Inject()(
 
         value => {
           val answers = request.userAnswers.set(TelephoneNumberPage(index), value)
-
-          Logger.info(s"*************************UserAnswers: $answers")
 
           for {
             updatedAnswers <- Future.fromTry(answers)
