@@ -19,6 +19,7 @@ package mapping.registration
 import javax.inject.Inject
 import mapping._
 import models.core.UserAnswers
+import play.api.Logger
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
@@ -46,10 +47,19 @@ class RegistrationMapper @Inject()(
       declaration <- declarationMapper.build(userAnswers)
     } yield {
 
+      Logger.info("*********************************************")
+      Logger.info(s"Lead trustees: $leadTrustees")
+      Logger.info("*********************************************")
+
       val agent = agentMapper.build(userAnswers)
       val deceasedSettlor = deceasedSettlorMapper.build(userAnswers)
       val taxLiability = taxLiabilityMapper.build(userAnswers)
       val trustees = trusteeMapper.build(userAnswers)
+
+      Logger.info("*********************************************")
+      Logger.info(s"Trustees: $trustees")
+      Logger.info("*********************************************")
+
       val settlors = settlorMapper.build(userAnswers)
 
       val entities = TrustEntitiesType(
@@ -62,7 +72,11 @@ class RegistrationMapper @Inject()(
         settlors = settlors
       )
 
-      Registration(
+      Logger.info("*********************************************")
+      Logger.info(s"Entities: $entities")
+      Logger.info("*********************************************")
+
+      val reg = Registration(
         matchData = matchingMapper.build(userAnswers),
         correspondence = correspondence,
         yearsReturns = taxLiability,
@@ -74,6 +88,12 @@ class RegistrationMapper @Inject()(
         ),
         agentDetails = agent
       )
+
+      Logger.info("*********************************************")
+      Logger.info(s"Registration: $reg")
+      Logger.info("*********************************************")
+
+      reg
     }
 
   }

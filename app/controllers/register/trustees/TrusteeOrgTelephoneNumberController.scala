@@ -25,7 +25,6 @@ import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeOrgNamePage}
-import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
