@@ -20,6 +20,7 @@ import controllers.register.trustees.routes
 import models.registration.pages.Status.{Completed, InProgress}
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
+import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import play.api.i18n.Messages
 import sections.Trustees
 import viewmodels._
@@ -45,11 +46,20 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
         s"${messages("entities.trustee")}"
     }
 
+    val removeLink = viewModel.`type` match {
+      case Some(Individual) =>
+        routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+      case Some(Business) =>
+        routes.RemoveTrusteeOrgController.onPageLoad(index, draftId).url
+      case _ =>
+        routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+    }
+
     AddRow(
       name = nameOfTrustee,
       typeLabel = trusteeType,
       changeUrl = "#",
-      removeUrl = routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+      removeUrl = removeLink
     )
   }
 
