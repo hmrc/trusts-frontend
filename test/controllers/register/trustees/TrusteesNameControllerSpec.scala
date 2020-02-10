@@ -29,6 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteesNameView
 import controllers.register.routes._
+import pages.register.trustees.individual.TrusteesNamePage
 
 class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidation {
 

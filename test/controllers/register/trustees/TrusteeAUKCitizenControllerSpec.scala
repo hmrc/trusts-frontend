@@ -22,12 +22,13 @@ import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeAUKCitizenPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteeAUKCitizenView
 import controllers.register.routes._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteesNamePage}
 
 
 class TrusteeAUKCitizenControllerSpec extends RegistrationSpecBase with IndexValidation {

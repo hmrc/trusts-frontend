@@ -27,6 +27,7 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages._
 import pages.register.TrustNamePage
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}
 
 class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

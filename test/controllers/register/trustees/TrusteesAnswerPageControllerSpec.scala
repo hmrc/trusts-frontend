@@ -29,6 +29,7 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.trustees.TrusteesAnswerPageView
 import controllers.register.routes._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {

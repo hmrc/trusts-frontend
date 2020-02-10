@@ -35,6 +35,7 @@ import pages.register.settlors.living_settlor.trust_type._
 import pages.register._
 import pages.register.settlors._
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {

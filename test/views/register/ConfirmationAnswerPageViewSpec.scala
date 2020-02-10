@@ -35,6 +35,7 @@ import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPa
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper

@@ -20,6 +20,7 @@ import models.core.UserAnswers
 import models.core.pages.UKAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import pages.register.trustees.individual.{TrusteeAddressInTheUKPage, TrusteesUkAddressPage}
 
 class TrusteeAddressInTheUKPageSpec extends PageBehaviours {
 

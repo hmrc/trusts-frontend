@@ -18,6 +18,7 @@ package utils.print.playback.sections.trustees.lead_trustee
 
 import models.playback.UserAnswers
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteePassportIDCardPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
 import play.api.i18n.Messages
 import utils.CheckAnswersFormatters
 import utils.countryOptions.CountryOptions

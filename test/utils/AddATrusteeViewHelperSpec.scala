@@ -20,8 +20,9 @@ import base.RegistrationSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.Completed
 import pages.entitystatus.TrusteeStatus
+import pages.register.trustees.individual.TrusteesNamePage
 import pages.register.trustees.organisation.TrusteeOrgNamePage
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage}
 import viewmodels.AddRow
 
 class AddATrusteeViewHelperSpec extends RegistrationSpecBase {

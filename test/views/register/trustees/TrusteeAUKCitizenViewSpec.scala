@@ -19,7 +19,7 @@ package views.register.trustees
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import pages.register.trustees.TrusteesNamePage
+import pages.register.trustees.individual.TrusteesNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours

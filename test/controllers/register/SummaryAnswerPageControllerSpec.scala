@@ -38,6 +38,7 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup

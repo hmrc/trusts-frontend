@@ -27,7 +27,7 @@ import pages.register.asset.shares.ShareCompanyNamePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.SettlorIndividualNamePage
-import pages.register.trustees.TrusteesNamePage
+import pages.register.trustees.individual.TrusteesNamePage
 import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}

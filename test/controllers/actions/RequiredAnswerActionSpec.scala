@@ -24,12 +24,13 @@ import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
-import pages.register.trustees.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import controllers.register.routes._
+import pages.register.trustees.individual.TrusteesNamePage
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

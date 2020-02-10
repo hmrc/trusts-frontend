@@ -25,6 +25,7 @@ import models.playback.{MetaData, UserAnswers}
 import models.registration.pages.Status.Completed
 import pages.entitystatus.TrusteeStatus
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteeAddressPage, TrusteeAddressYesNoPage, TrusteeDateOfBirthYesNoPage, TrusteeNinoYesNoPage, TrusteePassportIDCardPage, TrusteePassportIDCardYesNoPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage}
 import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.api.Logger
 

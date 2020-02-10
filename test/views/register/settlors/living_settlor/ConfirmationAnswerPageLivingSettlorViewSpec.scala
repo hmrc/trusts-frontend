@@ -36,6 +36,7 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import utils.AccessibilityHelper._
 import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper

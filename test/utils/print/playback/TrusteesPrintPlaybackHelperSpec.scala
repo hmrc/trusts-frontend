@@ -24,6 +24,7 @@ import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAddressInTheUKPage, TrusteeAddressYesNoPage, TrusteeDateOfBirthYesNoPage, TrusteeNinoYesNoPage, TrusteePassportIDCardPage, TrusteesDateOfBirthPage, TrusteesInternationalAddressPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.twirl.api.Html
 

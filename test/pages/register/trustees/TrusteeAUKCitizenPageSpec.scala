@@ -17,6 +17,7 @@
 package pages.register.trustees
 
 import pages.behaviours.PageBehaviours
+import pages.register.trustees.individual.TrusteeAUKCitizenPage
 
 class TrusteeAUKCitizenPageSpec extends PageBehaviours {
 

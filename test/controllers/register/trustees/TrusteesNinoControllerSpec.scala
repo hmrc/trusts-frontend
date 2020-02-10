@@ -22,12 +22,13 @@ import forms.NinoFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, IndividualOrBusiness}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesNinoPage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNinoPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteesNinoView
 import controllers.register.routes._
+import pages.register.trustees.individual.{TrusteesNamePage, TrusteesNinoPage}
 
 class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidation {
 

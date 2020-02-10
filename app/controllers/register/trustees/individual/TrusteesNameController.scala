@@ -24,7 +24,8 @@ import forms.trustees.TrusteesNameFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
+import pages.register.trustees.IsThisLeadTrusteePage
+import pages.register.trustees.individual.TrusteesNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

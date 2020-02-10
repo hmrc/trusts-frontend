@@ -23,7 +23,7 @@ import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.UKAddress
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.TrusteesUkAddressPage
+import pages.register.trustees.individual.TrusteesUkAddressPage
 import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}

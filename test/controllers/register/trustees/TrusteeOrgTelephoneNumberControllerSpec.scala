@@ -24,7 +24,7 @@ import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import pages.register.trustees.organisation.TrusteeOrgNamePage
-import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeAUKCitizenPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}

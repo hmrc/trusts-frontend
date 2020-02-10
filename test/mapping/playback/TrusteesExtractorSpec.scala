@@ -28,6 +28,7 @@ import models.registration.pages.PassportOrIdCardDetails
 import org.joda.time.DateTime
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAddressInTheUKPage, TrusteeAddressPage, TrusteeAddressYesNoPage, TrusteeDateOfBirthYesNoPage, TrusteeNinoYesNoPage, TrusteePassportIDCardPage, TrusteePassportIDCardYesNoPage, TrusteesDateOfBirthPage, TrusteesInternationalAddressPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 class TrusteesExtractorSpec extends FreeSpec with MustMatchers

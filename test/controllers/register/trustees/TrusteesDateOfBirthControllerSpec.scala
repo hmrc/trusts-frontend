@@ -25,12 +25,13 @@ import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Gen
 import org.scalatest.mockito.MockitoSugar
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesDateOfBirthPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteesDateOfBirthView
 import controllers.register.routes._
+import pages.register.trustees.individual.{TrusteesDateOfBirthPage, TrusteesNamePage}
 
 class TrusteesDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar with IndexValidation {
 

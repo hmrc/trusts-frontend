@@ -22,13 +22,14 @@ import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage, TrusteesUkAddressPage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesUkAddressPage}
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteesUkAddressView
 import controllers.register.routes._
+import pages.register.trustees.individual.{TrusteesNamePage, TrusteesUkAddressPage}
 
 class TrusteesUkAddressControllerSpec extends RegistrationSpecBase with IndexValidation {
 

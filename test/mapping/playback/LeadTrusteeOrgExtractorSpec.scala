@@ -24,6 +24,7 @@ import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAddressInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 class LeadTrusteeOrgExtractorSpec extends FreeSpec with MustMatchers

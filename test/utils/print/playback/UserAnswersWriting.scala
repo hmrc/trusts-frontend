@@ -25,6 +25,7 @@ import pages.register.trustees._
 import play.api.libs.json.Writes
 import queries.Settable
 import generators.ModelGenerators
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteeAddressYesNoPage, TrusteeDateOfBirthYesNoPage, TrusteeNinoYesNoPage, TrusteePassportIDCardPage, TrusteePassportIDCardYesNoPage, TrusteesDateOfBirthPage, TrusteesInternationalAddressPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 trait UserAnswersWriting extends TryValues with ModelGenerators {
