@@ -640,10 +640,10 @@ POST       /:draftId/trustee/:index/remove                                      
 GET        /:draftId/trustee/:index/remove-organisation                                             controllers.register.trustees.RemoveTrusteeOrgController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/trustee/:index/remove-organisation                                             controllers.register.trustees.RemoveTrusteeOrgController.onSubmit(index : Int, draftId: String)
 
-GET        /:draftId/trustees-based-in-the-uk                                                       controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trustees-based-in-the-uk                                                       controllers.register.trustees.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trustees.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trustees.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/trustees-based-in-the-uk                                                       controllers.register.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trustees-based-in-the-uk                                                       controllers.register.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trustees-based-in-the-uk                                                controllers.register.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trustees-based-in-the-uk                                                controllers.register.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/trustees/:index/trustee-org-address-in-uk                                      controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
 POST       /:draftId/trustees/:index/trustee-org-address-in-uk                                      controllers.register.trustees.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)

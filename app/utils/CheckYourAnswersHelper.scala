@@ -93,7 +93,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "trusteesBasedInTheUK.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"trusteesBasedInTheUK.$x")),
-        Some(controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),
+        Some(controllers.register.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )
   }
@@ -1319,7 +1319,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
   def trusteesBasedInUK: Option[AnswerRow] = userAnswers.get(TrusteesBasedInTheUKPage) map {
-    x => AnswerRow("trusteesBasedInTheUK.checkYourAnswersLabel", answer("trusteesBasedInTheUK", x), Some(controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("trusteesBasedInTheUK.checkYourAnswersLabel", answer("trusteesBasedInTheUK", x), Some(controllers.register.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
   def countryAdministeringTrust: Option[AnswerRow] = userAnswers.get(CountryAdministeringTrustPage) map {

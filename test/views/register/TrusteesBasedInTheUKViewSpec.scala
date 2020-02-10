@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.register.trustees
+package views.register
 
 import forms.TrusteesBasedInTheUKFormProvider
 import models.NormalMode
@@ -22,7 +22,7 @@ import models.registration.pages.TrusteesBasedInTheUK
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
-import views.html.register.trustees.TrusteesBasedInTheUKView
+import views.html.register.TrusteesBasedInTheUKView
 
 class TrusteesBasedInTheUKViewSpec extends ViewBehaviours {
 

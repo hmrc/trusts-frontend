@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.TrusteesBasedInTheUKFormProvider
 import javax.inject.Inject
@@ -28,7 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TrusteesBasedInTheUKView
+import views.html.register.TrusteesBasedInTheUKView
 
 import scala.concurrent.{ExecutionContext, Future}
 

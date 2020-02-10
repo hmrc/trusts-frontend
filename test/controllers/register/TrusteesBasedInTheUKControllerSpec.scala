@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.TrusteesBasedInTheUKFormProvider
 import models.NormalMode
 import models.registration.pages.TrusteesBasedInTheUK
+import pages.register.trustees.TrusteesBasedInTheUKPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.trustees.TrusteesBasedInTheUKView
-import controllers.register.routes._
-import pages.register.trustees.TrusteesBasedInTheUKPage
+import views.html.register.TrusteesBasedInTheUKView
 
 class TrusteesBasedInTheUKControllerSpec extends RegistrationSpecBase {
 
