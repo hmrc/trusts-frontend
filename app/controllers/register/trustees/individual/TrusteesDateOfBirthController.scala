@@ -19,21 +19,20 @@ package controllers.register.trustees.individual
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import controllers.register.trustees.routes
 import forms.trustees.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
+import pages.register.trustees.IsThisLeadTrusteePage
 import pages.register.trustees.individual.{TrusteesDateOfBirthPage, TrusteesNamePage}
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TrusteesDateOfBirthView
+import views.html.register.trustees.individual.TrusteesDateOfBirthView
 
 import scala.concurrent.{ExecutionContext, Future}
 

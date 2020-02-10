@@ -19,12 +19,10 @@ package controllers.register.trustees.organisation
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import controllers.register.trustees.routes
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees._
 import pages.register.trustees.organisation.{TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -32,7 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TrusteeOrgAddressUkYesNoView
+import views.html.register.trustees.organisation.TrusteeOrgAddressUkYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 

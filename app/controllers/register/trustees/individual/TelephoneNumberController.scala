@@ -19,7 +19,6 @@ package controllers.register.trustees.individual
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import controllers.register.trustees.routes
 import forms.trustees.TelephoneNumberFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
@@ -33,7 +32,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TelephoneNumberView
+import views.html.register.trustees.individual.TelephoneNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -57,7 +56,7 @@ class TelephoneNumberController @Inject()(
       requireData andThen
       validateIndex(index, Trustees) andThen
       requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

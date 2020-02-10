@@ -19,7 +19,6 @@ package controllers.register.trustees.organisation
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import controllers.register.trustees.routes
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -32,7 +31,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TrusteeUtrYesNoView
+import views.html.register.trustees.organisation.TrusteeUtrYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -56,7 +55,7 @@ class TrusteeUtrYesNoController @Inject()(
       requireData andThen
       validateIndex(index, Trustees) andThen
       requiredAnswer(RequiredAnswer(TrusteeIndividualOrBusinessPage(index),
-        routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
+        controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
