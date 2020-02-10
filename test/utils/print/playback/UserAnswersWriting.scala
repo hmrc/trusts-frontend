@@ -85,8 +85,8 @@ trait UserAnswersWriting extends TryValues with ModelGenerators {
   } yield Unit
 
   def ukCompanyTrustee(index: Int): State[UserAnswers, Unit] = for {
-  _ <- TrusteeIndividualOrBusinessPage(index) is IndividualOrBusiness.Business
   _ <- IsThisLeadTrusteePage(index) is false
+  _ <- TrusteeIndividualOrBusinessPage(index) is IndividualOrBusiness.Business
   _ <- TrusteeOrgNamePage(index).withArbitraryValue
   _ <- TrusteeUtrYesNoPage(index).withArbitraryValue
   _ <- TrusteesUtrPage(index).withArbitraryValue

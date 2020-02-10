@@ -20,7 +20,7 @@ package utils.print.playback
 import java.time.LocalDate
 
 import base.PlaybackSpecBase
-import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.registration.pages.PassportOrIdCardDetails
 import pages.register.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
 import pages.register.trustees._
@@ -160,7 +160,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
       result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
         "What is the business’s name?" -> Html("Lead Trustee Company"),
         "Is this trustee a UK registered company?"-> Html("Yes"),
-        "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
+        "What is Lead Trustee Company Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
         "Is Lead Trustee Company’s address in the UK?" -> Html("Yes"),
         "What is Lead Trustee Company’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
         "Do you know Lead Trustee Company’s email address?" -> Html("No"),
@@ -195,7 +195,7 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
       result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
         "What is the business’s name?" -> Html("Lead Trustee Company"),
         "Is this trustee a UK registered company?"-> Html("Yes"),
-        "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
+        "What is Lead Trustee Company Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
         "Is Lead Trustee Company’s address in the UK?" -> Html("Yes"),
         "What is Lead Trustee Company’s address?" -> Html("Address 1<br />Address 2<br />AA11 1AA"),
         "Do you know Lead Trustee Company’s email address?" -> Html("Yes"),
@@ -210,44 +210,56 @@ class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectio
       val helper = injector.instanceOf[PrintPlaybackHelper]
 
       val (answers, _) = (for {
-        _ <- ukCompanyTrustee(0)
-        _ <- TrusteeOrgNamePage(0) is "Lead Trustee Company"
-        _ <- TrusteeUtrYesNoPage(0) is true
-        _ <- TrusteesUtrPage(0) is "1234567890"
         _ <- IsThisLeadTrusteePage(0) is true
-        _ <- ukCompanyTrustee(1)
-        _ <- TrusteeOrgNamePage(1) is "Trustee Company"
-        _ <- TrusteeUtrYesNoPage(1) is true
-        _ <- TrusteesUtrPage(1) is "1234567890"
+        _ <- TrusteeIndividualOrBusinessPage(0) is IndividualOrBusiness.Business
+        _ <- TrusteeUtrYesNoPage(0) is true
+        _ <- TrusteeOrgNamePage(0) is "Lead Trustee Company"
+        _ <- TrusteesUtrPage(0) is "1234567890"
+        _ <- TrusteeOrgAddressUkYesNoPage(0) is true
+        _ <- TrusteeOrgAddressUkPage(0) is UKAddress("Line 1", "Line 2", None, None, "AB1 1AB")
+        _ <- TelephoneNumberPage(0) is "0191 1111111"
+
         _ <- IsThisLeadTrusteePage(1) is false
-        _ <- individualUKTrustee(2)
-        _ <- TrusteesNamePage(2) is FullName("Individual", None, "trustee")
-        _ <- TrusteeDateOfBirthYesNoPage(2) is true
-        _ <- TrusteesDateOfBirthPage(2) is LocalDate.parse("1975-01-23")
-        _ <- TrusteeNinoYesNoPage(2) is true
-        _ <- TrusteesNinoPage(2) is "NH111111A"
+        _ <- TrusteeIndividualOrBusinessPage(1) is IndividualOrBusiness.Business
+        _ <- TrusteeOrgNamePage(1) is "Trustee Company"
+        _ <- TrusteeUtrYesNoPage(1) is false
+        _ <- TrusteeOrgAddressUkYesNoPage(1) is false
+        _ <- TrusteeOrgAddressInternationalPage(1) is InternationalAddress("Line 1", "Line 2", None, "DE")
+
         _ <- IsThisLeadTrusteePage(2) is false
+        _ <- TrusteeIndividualOrBusinessPage(2) is IndividualOrBusiness.Individual
+        _ <- TrusteesNamePage(2) is FullName("Individual", None, "Trustee")
+        _ <- TrusteeDateOfBirthYesNoPage(2) is true
+        _ <- TrusteesDateOfBirthPage(2) is LocalDate.of(1975, 1, 23)
+        _ <- TrusteeNinoYesNoPage(2) is true
+        _ <- TrusteesNinoPage(2) is "AA000000A"
       } yield Unit).run(emptyUserAnswers).value
 
       val result = helper.entities(answers)
 
       result must containHeadingSection(messages("answerPage.section.trustees.heading"))
       result must containSectionWithHeadingAndValues(messages("answerPage.section.leadTrustee.subheading"),
-        "What is the business’s name?" -> Html("Lead Trustee Company"),
         "Is this trustee a UK registered company?"-> Html("Yes"),
-        "What is Lead Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890")
+        "What is the business’s name?" -> Html("Lead Trustee Company"),
+        "What is Lead Trustee Company Unique Taxpayer Reference (UTR) number?" -> Html("1234567890"),
+        "Is Lead Trustee Company’s address in the UK?" -> Html("Yes"),
+        "What is Lead Trustee Company’s address?" -> Html("Line 1<br />Line 2<br />AB1 1AB"),
+        "What is Lead Trustee Company’s telephone number?" -> Html("0191 1111111")
       )
+
       result must containSectionWithHeadingAndValues(messages("answerPage.section.trustee.subheading") + " 2",
         "What is the business’s name?" -> Html("Trustee Company"),
-        "Do you know Trustee Company’s Unique Taxpayer Reference (UTR) number?"-> Html("Yes"),
-        "What is Trustee Company’s Unique Taxpayer Reference (UTR) number?" -> Html("1234567890")
+        "Do you know Trustee Company’s Unique Taxpayer Reference (UTR) number?"-> Html("No"),
+        "Is Trustee Company’s address in the UK?" -> Html("No"),
+        "What is Trustee Company’s address?" -> Html("Line 1<br />Line 2<br />Germany")
       )
+
       result must containSectionWithHeadingAndValues(messages("answerPage.section.trustee.subheading") + " 3",
-        "What is the trustee’s name?" -> Html("Individual trustee"),
-        "Do you know Individual trustee’s date of birth?"-> Html("Yes"),
-        "What is Individual trustee’s date of birth?" -> Html("23 January 1975"),
-        "Do you know Individual trustee’s National Insurance number?"-> Html("Yes"),
-        "What is Individual trustee’s National Insurance number?" -> Html("NH 11 11 11 A")
+        "What is the trustee’s name?" -> Html("Individual Trustee"),
+        "Do you know Individual Trustee’s date of birth?"-> Html("Yes"),
+        "What is Individual Trustee’s date of birth?" -> Html("23 January 1975"),
+        "Do you know Individual Trustee’s National Insurance number?"-> Html("Yes"),
+        "What is Individual Trustee’s National Insurance number?" -> Html("AA 00 00 00 A")
       )
 
     }
