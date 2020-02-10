@@ -24,14 +24,15 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeOrgNamePage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeOrgNamePage}
+import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TelephoneNumberView
+import views.html.register.trustees.TrusteeOrgTelephoneNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -46,7 +47,7 @@ class TrusteeOrgTelephoneNumberController @Inject()(
                                            requiredAnswer: RequiredAnswerActionProvider,
                                            formProvider: TelephoneNumberFormProvider,
                                            val controllerComponents: MessagesControllerComponents,
-                                           view: TelephoneNumberView
+                                           view: TrusteeOrgTelephoneNumberView
                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
