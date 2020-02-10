@@ -25,14 +25,13 @@ import views.html.register.trustees.organisation.TrusteesOrgUkAddressView
 
 class TrusteesOrgUKAddressViewSpec extends UkAddressViewBehaviours {
 
-  val messageKeyPrefix = "trusteesUkAddress"
+  val messageKeyPrefix = "trusteesOrgUkAddress"
   val index = 0
   val trusteeName = "FirstName LastName"
-  val postcodeHintKey = "trusteesUkAddress.postcode.hint"
 
   override val form = new UKAddressFormProvider()()
 
-  "TrusteesUkAddressView" must {
+  "TrusteesOrgUkAddressView" must {
 
     val view = viewFor[TrusteesOrgUkAddressView](Some(emptyUserAnswers))
 

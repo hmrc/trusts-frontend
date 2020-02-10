@@ -28,7 +28,6 @@ class TrusteeUKAddressViewSpec extends UkAddressViewBehaviours {
   val messageKeyPrefix = "trusteesUkAddress"
   val index = 0
   val trusteeName = "FirstName LastName"
-  val postcodeHintKey = "trusteesUkAddress.postcode.hint"
 
   override val form = new UKAddressFormProvider()()
 
