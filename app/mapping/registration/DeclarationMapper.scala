@@ -17,7 +17,7 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, Trustee, Trustees}
+import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustee, Trustees}
 import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.DeclarationPage
@@ -60,19 +60,14 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
       case list =>
         list.find(_.isLead).flatMap {
           case lti: LeadTrusteeIndividual =>
-            val index = list.indexOf(lti)
-            addressMapper.build(
-              userAnswers,
-              TrusteeAddressInTheUKPage(index),
-              TrusteesUkAddressPage(index),
-              TrusteesInternationalAddressPage(index)
-            )
+            buildAddressMapper(userAnswers, list.indexOf(lti))
+          case lto: LeadTrusteeOrganisation =>
+            buildAddressMapper(userAnswers, list.indexOf(lto))
           case _ =>
             Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to trustees not having a lead")
             None
         }
     }
-
   }
 
   private def getAgentAddress(userAnswers: UserAnswers): Option[AddressType] = {
@@ -81,6 +76,15 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
       AgentAddressYesNoPage,
       AgentUKAddressPage,
       AgentInternationalAddressPage
+    )
+  }
+
+  private def buildAddressMapper(userAnswers: UserAnswers, index: Int) = {
+    addressMapper.build(
+      userAnswers,
+      TrusteeAddressInTheUKPage(index),
+      TrusteesUkAddressPage(index),
+      TrusteesInternationalAddressPage(index)
     )
   }
 }
