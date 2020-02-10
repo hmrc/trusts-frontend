@@ -22,8 +22,7 @@ import mapping._
 import models.core.UserAnswers
 
 
-class LeadTrusteeMapper @Inject()(
-                                   nameMapper: NameMapper) extends Mapping[LeadTrusteeType] {
+class LeadTrusteeMapper @Inject()(nameMapper: NameMapper) extends Mapping[LeadTrusteeType] {
 
   override def build(userAnswers: UserAnswers): Option[LeadTrusteeType] = {
 
