@@ -22,7 +22,7 @@ import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
-import pages.register.trustees.{TrusteeAddressInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
+import pages.register.trustees._
 import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper,
@@ -60,9 +60,21 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
       case list =>
         list.find(_.isLead).flatMap {
           case lti: LeadTrusteeIndividual =>
-            buildAddressMapper(userAnswers, list.indexOf(lti))
+            val index = list.indexOf(lti)
+            addressMapper.build(
+              userAnswers,
+              TrusteeAddressInTheUKPage(index),
+              TrusteesUkAddressPage(index),
+              TrusteesInternationalAddressPage(index)
+            )
           case lto: LeadTrusteeOrganisation =>
-            buildAddressMapper(userAnswers, list.indexOf(lto))
+            val index = list.indexOf(lto)
+            addressMapper.build(
+              userAnswers,
+              TrusteeOrgAddressUkYesNoPage(index),
+              TrusteeOrgAddressUkPage(index),
+              TrusteeOrgAddressInternationalPage(index)
+            )
           case _ =>
             Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to trustees not having a lead")
             None
@@ -76,15 +88,6 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
       AgentAddressYesNoPage,
       AgentUKAddressPage,
       AgentInternationalAddressPage
-    )
-  }
-
-  private def buildAddressMapper(userAnswers: UserAnswers, index: Int) = {
-    addressMapper.build(
-      userAnswers,
-      TrusteeAddressInTheUKPage(index),
-      TrusteesUkAddressPage(index),
-      TrusteesInternationalAddressPage(index)
     )
   }
 }

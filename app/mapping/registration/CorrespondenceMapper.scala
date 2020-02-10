@@ -21,7 +21,7 @@ import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
 import mapping.Mapping
 import models.core.UserAnswers
 import pages.register.TrustNamePage
-import pages.register.trustees.{TrusteeAddressInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
+import pages.register.trustees._
 import play.api.Logger
 
 class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mapping[Correspondence] {
@@ -35,31 +35,42 @@ class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mappi
           case list =>
             list.find(_.isLead).flatMap {
               case lti: LeadTrusteeIndividual =>
-                buildAddressMapper(userAnswers, trustName, list.indexOf(lti), !lti.liveInUK, lti.telephoneNumber)
+                val index = list.indexOf(lti)
+                addressMapper.build(
+                  userAnswers,
+                  TrusteeAddressInTheUKPage(index),
+                  TrusteesUkAddressPage(index),
+                  TrusteesInternationalAddressPage(index)
+                ) map {
+                  address =>
+                    Correspondence(
+                      abroadIndicator = !lti.liveInUK,
+                      name = trustName,
+                      address = address,
+                      phoneNumber = lti.telephoneNumber
+                    )
+                }
               case lto: LeadTrusteeOrganisation =>
-                buildAddressMapper(userAnswers, trustName, list.indexOf(lto), !lto.liveInUK, lto.telephoneNumber)
+                val index = list.indexOf(lto)
+                addressMapper.build(
+                  userAnswers,
+                  TrusteeOrgAddressUkYesNoPage(index),
+                  TrusteeOrgAddressUkPage(index),
+                  TrusteeOrgAddressInternationalPage(index)
+                ) map {
+                  address =>
+                    Correspondence(
+                      abroadIndicator = !lto.liveInUK,
+                      name = trustName,
+                      address = address,
+                      phoneNumber = lto.telephoneNumber
+                    )
+                }
               case _ =>
                 Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to unexpected lead trustee type")
                 None
             }
         }
-    }
-  }
-
-  private def buildAddressMapper(userAnswers: UserAnswers, trustName: String, index: Int, abroad: Boolean, telephone: String) = {
-    addressMapper.build(
-      userAnswers,
-      TrusteeAddressInTheUKPage(index),
-      TrusteesUkAddressPage(index),
-      TrusteesInternationalAddressPage(index)
-    ) map {
-      address =>
-        Correspondence(
-          abroadIndicator = abroad,
-          name = trustName,
-          address = address,
-          phoneNumber = telephone
-        )
     }
   }
 
