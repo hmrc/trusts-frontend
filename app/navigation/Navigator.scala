@@ -36,6 +36,7 @@ import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries._
 import pages.register.settlors.{SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
 import pages.register.trustees._
+import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.api.mvc.Call
 import sections._
 import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}

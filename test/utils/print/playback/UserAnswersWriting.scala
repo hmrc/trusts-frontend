@@ -17,7 +17,7 @@
 package utils.print.playback
 
 import cats.data.State
-import models.core.pages.{IndividualOrBusiness}
+import models.core.pages.IndividualOrBusiness
 import models.playback.UserAnswers
 import org.scalacheck.Arbitrary
 import org.scalatest.TryValues
@@ -25,6 +25,7 @@ import pages.register.trustees._
 import play.api.libs.json.Writes
 import queries.Settable
 import generators.ModelGenerators
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 trait UserAnswersWriting extends TryValues with ModelGenerators {
   class SettableWriterOps[T : Writes](s: Settable[T]) {

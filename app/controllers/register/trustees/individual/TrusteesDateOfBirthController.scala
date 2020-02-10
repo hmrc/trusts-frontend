@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.individual
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
+import controllers.register.trustees.routes
 import forms.trustees.TrusteesDateOfBirthFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest

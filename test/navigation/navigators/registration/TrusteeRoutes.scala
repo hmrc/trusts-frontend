@@ -27,6 +27,7 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.register.trustees._
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage}
 import sections.Trustees
 
 trait TrusteeRoutes {

@@ -25,7 +25,8 @@ import play.api.test.Helpers._
 import views.html.register.trustees.TrusteeBusinessNameView
 import controllers.register.routes._
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{TrusteeOrgNamePage, TrusteeUtrYesNoPage}
+import pages.register.trustees.TrusteeUtrYesNoPage
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 
 class TrusteeBusinessNameControllerSpec extends RegistrationSpecBase  with IndexValidation {

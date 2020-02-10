@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.organisation
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import forms.InternationalAddressFormProvider
+import controllers.register.trustees.routes
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees._
+import pages.register.trustees.TrusteeIndividualOrBusinessPage
+import pages.register.trustees.organisation.TrusteeUtrYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.countryOptions.CountryOptionsNonUK
-import views.html.register.trustees.TrusteeOrgAddressInternationalView
+import views.html.register.trustees.TrusteeUtrYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteeOrgAddressInternationalController @Inject()(
+class TrusteeUtrYesNoController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               registrationsRepository: RegistrationsRepository,
                                               navigator: Navigator,
@@ -44,49 +45,46 @@ class TrusteeOrgAddressInternationalController @Inject()(
                                               getData: DraftIdRetrievalActionProvider,
                                               requireData: RegistrationDataRequiredAction,
                                               requiredAnswer: RequiredAnswerActionProvider,
-                                              formProvider: InternationalAddressFormProvider,
+                                              formProvider: YesNoFormProvider,
                                               val controllerComponents: MessagesControllerComponents,
-                                              view: TrusteeOrgAddressInternationalView,
-                                              val countryOptions: CountryOptionsNonUK
+                                              view: TrusteeUtrYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  val form = formProvider()
 
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteeOrgNamePage(index), routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId))) andThen
-      requiredAnswer(RequiredAnswer(TrusteeOrgAddressUkYesNoPage(index), routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(TrusteeIndividualOrBusinessPage(index),
+        routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
+      val form: Form[Boolean] = formProvider.withPrefix("leadTrusteeUtrYesNo")
 
-      val preparedForm = request.userAnswers.get(TrusteeOrgAddressInternationalPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeUtrYesNoPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, countryOptions.options, mode, index, draftId, orgName))
+      Ok(view(preparedForm, mode, draftId, index))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
+      val form: Form[Boolean] = formProvider.withPrefix("leadTrusteeUtrYesNo")
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, countryOptions.options, mode, index, draftId, orgName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrgAddressInternationalPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeUtrYesNoPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeOrgAddressInternationalPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeUtrYesNoPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

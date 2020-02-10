@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.organisation
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
+import controllers.register.trustees.routes
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{TrusteeIndividualOrBusinessPage, TrusteeUtrYesNoPage}
+import pages.register.trustees._
+import pages.register.trustees.organisation.{TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TrusteeUtrYesNoView
+import views.html.register.trustees.TrusteeOrgAddressUkYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteeUtrYesNoController @Inject()(
+class TrusteeOrgAddressUkYesNoController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               registrationsRepository: RegistrationsRepository,
                                               navigator: Navigator,
@@ -45,7 +47,7 @@ class TrusteeUtrYesNoController @Inject()(
                                               requiredAnswer: RequiredAnswerActionProvider,
                                               formProvider: YesNoFormProvider,
                                               val controllerComponents: MessagesControllerComponents,
-                                              view: TrusteeUtrYesNoView
+                                              view: TrusteeOrgAddressUkYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
@@ -53,36 +55,39 @@ class TrusteeUtrYesNoController @Inject()(
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteeIndividualOrBusinessPage(index),
-        routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(TrusteeOrgNamePage(index), routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val form: Form[Boolean] = formProvider.withPrefix("leadTrusteeUtrYesNo")
+      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
 
-      val preparedForm = request.userAnswers.get(TrusteeUtrYesNoPage(index)) match {
+      val form: Form[Boolean] = formProvider.withPrefix("trusteeOrgAddressUkYesNo")
+
+      val preparedForm = request.userAnswers.get(TrusteeOrgAddressUkYesNoPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, mode, draftId, index, orgName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val form: Form[Boolean] = formProvider.withPrefix("leadTrusteeUtrYesNo")
+      val orgName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
+
+      val form: Form[Boolean] = formProvider.withPrefix("trusteeOrgAddressUkYesNo")
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, orgName))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeUtrYesNoPage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrgAddressUkYesNoPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteeUtrYesNoPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeOrgAddressUkYesNoPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

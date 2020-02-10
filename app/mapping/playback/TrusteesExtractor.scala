@@ -25,6 +25,7 @@ import models.playback.{MetaData, UserAnswers}
 import models.registration.pages.Status.Completed
 import pages.entitystatus.TrusteeStatus
 import pages.register.trustees._
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}

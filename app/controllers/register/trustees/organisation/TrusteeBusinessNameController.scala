@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.organisation
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import forms.trustees.TrusteesNameFormProvider
+import controllers.register.trustees.routes
+import forms.trustees.TrusteeBusinessNameFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteesNamePage}
+import pages.register.trustees.TrusteeUtrYesNoPage
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage}
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TrusteesNameView
+import views.html.register.trustees.TrusteeBusinessNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteesNameController @Inject()(
+class TrusteeBusinessNameController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         navigator: Navigator,
@@ -42,58 +44,48 @@ class TrusteesNameController @Inject()(
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: RegistrationDataRequiredAction,
                                         validateIndex: IndexActionFilterProvider,
-                                        formProvider: TrusteesNameFormProvider,
+                                        formProvider: TrusteeBusinessNameFormProvider,
                                         requiredAnswer: RequiredAnswerActionProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: TrusteesNameView
+                                        view: TrusteeBusinessNameView
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  val form: Form[String] = formProvider()
 
   private def actions(index: Int, draftId: String) =
     identify andThen getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
+      requiredAnswer(RequiredAnswer(TrusteeUtrYesNoPage(index), routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
+      val isUKRegisteredCompany: Boolean = request.userAnswers.get(TrusteeUtrYesNoPage(index)).get
 
-      val messagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
-
-      val heading = Messages(s"$messagePrefix.heading")
-
-      val form = formProvider(messagePrefix)
-
-      val preparedForm = request.userAnswers.get(TrusteesNamePage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeOrgNamePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index, heading))
+      Ok(view(preparedForm, mode, draftId, index, isUKRegisteredCompany))
 
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
-
-      val messagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
-
-      val heading = Messages(s"$messagePrefix.heading")
-
-      val form = formProvider(messagePrefix)
+      val isUKRegisteredCompany: Boolean = request.userAnswers.get(TrusteeUtrYesNoPage(index)).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, heading))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, isUKRegisteredCompany))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteesNamePage(index), value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeOrgNamePage(index), value))
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrusteesNamePage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeOrgNamePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

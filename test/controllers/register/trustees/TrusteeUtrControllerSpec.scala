@@ -22,7 +22,8 @@ import controllers.register.routes._
 import forms.UtrFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{TrusteeOrgNamePage, TrusteesUtrPage}
+import pages.register.trustees.TrusteesUtrPage
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteesUtrPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}

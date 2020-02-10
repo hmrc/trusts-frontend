@@ -18,6 +18,7 @@ package pages.register.trustees
 
 import models.core.UserAnswers
 import pages.QuestionPage
+import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.api.libs.json.JsPath
 import sections.Trustees
 

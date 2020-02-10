@@ -23,7 +23,8 @@ import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.IndividualOrBusiness
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{TrusteeIndividualOrBusinessPage, TrusteeUtrYesNoPage}
+import pages.register.trustees.TrusteeIndividualOrBusinessPage
+import pages.register.trustees.organisation.TrusteeUtrYesNoPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}

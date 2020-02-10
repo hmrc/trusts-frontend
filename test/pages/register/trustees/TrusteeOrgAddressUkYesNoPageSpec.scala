@@ -17,6 +17,7 @@
 package pages.register.trustees
 
 import pages.behaviours.PageBehaviours
+import pages.register.trustees.organisation.TrusteeOrgAddressUkYesNoPage
 
 class TrusteeOrgAddressUkYesNoPageSpec extends PageBehaviours {
 

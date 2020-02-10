@@ -6,11 +6,11 @@ echo "Applying migration TelephoneNumber"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /telephoneNumber                        controllers.register.trustees.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /telephoneNumber                        controllers.register.trustees.TelephoneNumberController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /telephoneNumber                        controllers.register.trustees.individual.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /telephoneNumber                        controllers.register.trustees.individual.TelephoneNumberController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTelephoneNumber                  controllers.register.trustees.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTelephoneNumber                  controllers.register.trustees.TelephoneNumberController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTelephoneNumber                  controllers.register.trustees.individual.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTelephoneNumber                  controllers.register.trustees.individual.TelephoneNumberController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

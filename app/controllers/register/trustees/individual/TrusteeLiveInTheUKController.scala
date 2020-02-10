@@ -14,59 +14,60 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.individual
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
-import forms.trustees.TelephoneNumberFormProvider
+import controllers.register.trustees.routes
+import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteeOrgNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeAddressInTheUKPage, TrusteesNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trustees.TrusteeOrgTelephoneNumberView
+import views.html.register.trustees.TrusteeLiveInTheUKView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrusteeOrgTelephoneNumberController @Inject()(
-                                           override val messagesApi: MessagesApi,
-                                           registrationsRepository: RegistrationsRepository,
-                                           navigator: Navigator,
-                                           validateIndex: IndexActionFilterProvider,
-                                           identify: RegistrationIdentifierAction,
-                                           getData: DraftIdRetrievalActionProvider,
-                                           requireData: RegistrationDataRequiredAction,
-                                           requiredAnswer: RequiredAnswerActionProvider,
-                                           formProvider: TelephoneNumberFormProvider,
-                                           val controllerComponents: MessagesControllerComponents,
-                                           view: TrusteeOrgTelephoneNumberView
-                                         )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrusteeLiveInTheUKController @Inject()(
+                                              override val messagesApi: MessagesApi,
+                                              registrationsRepository: RegistrationsRepository,
+                                              navigator: Navigator,
+                                              validateIndex: IndexActionFilterProvider,
+                                              identify: RegistrationIdentifierAction,
+                                              getData: DraftIdRetrievalActionProvider,
+                                              requireData: RegistrationDataRequiredAction,
+                                              requiredAnswer: RequiredAnswerActionProvider,
+                                              formProvider: YesNoFormProvider,
+                                              val controllerComponents: MessagesControllerComponents,
+                                              view: TrusteeLiveInTheUKView
+                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
     identify andThen
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, Trustees) andThen
-      requiredAnswer(RequiredAnswer(TrusteeOrgNamePage(index), routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId))) andThen
+      requiredAnswer(RequiredAnswer(TrusteesNamePage(index), routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId))) andThen
       requiredAnswer(RequiredAnswer(IsThisLeadTrusteePage(index), routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val trusteeName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form = formProvider(messagePrefix)
+      val form: Form[Boolean] = formProvider.withPrefix(messagePrefix)
 
-      val preparedForm = request.userAnswers.get(TelephoneNumberPage(index)) match {
+      val preparedForm = request.userAnswers.get(TrusteeAddressInTheUKPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -78,9 +79,9 @@ class TrusteeOrgTelephoneNumberController @Inject()(
     val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
     val messagePrefix = if (isLead) {
-      "leadTrusteesTelephoneNumber"
+      "leadTrusteeLiveInTheUK"
     } else {
-      "telephoneNumber"
+      "trusteeLiveInTheUK"
     }
     messagePrefix
   }
@@ -88,23 +89,21 @@ class TrusteeOrgTelephoneNumberController @Inject()(
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val trusteeName = request.userAnswers.get(TrusteeOrgNamePage(index)).get
+      val trusteeName = request.userAnswers.get(TrusteesNamePage(index)).get.toString
 
       val messagePrefix: String = getMessagePrefix(index, request)
 
-      val form = formProvider(messagePrefix)
+      val form: Form[Boolean] = formProvider.withPrefix(messagePrefix)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, messagePrefix, trusteeName))),
 
         value => {
-          val answers = request.userAnswers.set(TelephoneNumberPage(index), value)
-
           for {
-            updatedAnswers <- Future.fromTry(answers)
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrusteeAddressInTheUKPage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TelephoneNumberPage(index), mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrusteeAddressInTheUKPage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

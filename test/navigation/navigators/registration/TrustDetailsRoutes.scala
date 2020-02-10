@@ -29,9 +29,8 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages._
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, WhenTrustSetupPage}
+import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.trustees.TrusteesBasedInTheUKPage
 
 trait TrustDetailsRoutes {
 

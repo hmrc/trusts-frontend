@@ -23,11 +23,10 @@ import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement, H
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import models.registration.pages.{KindOfTrust, NonResidentType}
 import pages.entitystatus.DeceasedSettlorStatus
-import pages.register._
+import pages.register.{TrusteesBasedInTheUKPage, _}
 import pages.register.agents.AgentOtherThanBarristerPage
 import pages.register.settlors.SettlorsBasedInTheUKPage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.trustees.TrusteesBasedInTheUKPage
 import play.api.Logger
 import sections.LivingSettlors
 

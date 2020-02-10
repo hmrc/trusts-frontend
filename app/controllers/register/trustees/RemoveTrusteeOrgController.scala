@@ -23,7 +23,7 @@ import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import pages.QuestionPage
-import pages.register.trustees.TrusteeOrgNamePage
+import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveTrusteeQuery, Settable}

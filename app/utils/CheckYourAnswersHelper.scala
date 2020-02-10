@@ -35,6 +35,7 @@ import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trustees._
+import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import sections.LivingSettlors

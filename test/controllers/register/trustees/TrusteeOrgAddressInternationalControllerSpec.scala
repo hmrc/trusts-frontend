@@ -23,7 +23,8 @@ import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.pages.InternationalAddress
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
+import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
+import pages.register.trustees.{TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
