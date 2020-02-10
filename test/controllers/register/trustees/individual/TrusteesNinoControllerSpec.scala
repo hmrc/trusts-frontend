@@ -19,7 +19,6 @@ package controllers.register.trustees.individual
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.NinoFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, IndividualOrBusiness}
@@ -29,7 +28,7 @@ import pages.register.trustees.individual.{TrusteesNamePage, TrusteesNinoPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteesNinoView
+import views.html.register.trustees.individual.TrusteesNinoView
 
 class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidation {
 
@@ -214,7 +213,7 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
     "for a GET" must {
 
       def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
-        val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+        val route = controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(GET, route)
       }
@@ -231,7 +230,7 @@ class TrusteesNinoControllerSpec extends RegistrationSpecBase with IndexValidati
       def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
         val route =
-          routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+          controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
           .withFormUrlEncodedBody(("value", IndividualOrBusiness.Individual.toString))

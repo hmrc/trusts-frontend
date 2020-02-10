@@ -19,7 +19,6 @@ package controllers.register.trustees.organisation
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.IndividualOrBusiness
@@ -29,7 +28,7 @@ import pages.register.trustees.organisation.TrusteeUtrYesNoPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteeUtrYesNoView
+import views.html.register.trustees.organisation.TrusteeUtrYesNoView
 
 
 class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValidation {
@@ -102,7 +101,7 @@ class TrusteeUtrYesNoControllerSpec extends RegistrationSpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }

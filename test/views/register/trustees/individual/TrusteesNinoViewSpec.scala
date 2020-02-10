@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.trustees.TrusteesNinoView
+import views.html.register.trustees.individual.TrusteesNinoView
 
 class TrusteesNinoViewSpec extends StringViewBehaviours {
 

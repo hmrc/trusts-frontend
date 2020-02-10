@@ -16,7 +16,7 @@
 
 package views.register.trustees.organisation
 
-import controllers.register.trustees.routes
+import controllers.register.trustees.organisation.routes
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import play.api.data.Form
@@ -24,7 +24,7 @@ import play.twirl.api.HtmlFormat
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.InternationalAddressViewBehaviours
-import views.html.register.trustees.TrusteeOrgAddressInternationalView
+import views.html.register.trustees.organisation.TrusteeOrgAddressInternationalView
 
 class TrusteeOrgAddressInternationalViewSpec extends InternationalAddressViewBehaviours {
 

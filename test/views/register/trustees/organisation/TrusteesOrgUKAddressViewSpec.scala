@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours
-import views.html.register.trustees.TrusteesUkAddressView
+import views.html.register.trustees.organisation.TrusteesOrgUkAddressView
 
 class TrusteesOrgUKAddressViewSpec extends UkAddressViewBehaviours {
 
@@ -34,10 +34,10 @@ class TrusteesOrgUKAddressViewSpec extends UkAddressViewBehaviours {
 
   "TrusteesUkAddressView" must {
 
-    val view = viewFor[TrusteesUkAddressView](Some(emptyUserAnswers))
+    val view = viewFor[TrusteesOrgUkAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index, messageKeyPrefix, trusteeName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, trusteeName)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), messageKeyPrefix, trusteeName)
 

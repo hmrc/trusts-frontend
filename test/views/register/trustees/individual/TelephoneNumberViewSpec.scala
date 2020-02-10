@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.register.trustees
+package views.register.trustees.individual
 
 import forms.trustees.TelephoneNumberFormProvider
 import models.NormalMode
@@ -22,7 +22,7 @@ import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.trustees.TelephoneNumberView
+import views.html.register.trustees.individual.TelephoneNumberView
 
 class TelephoneNumberViewSpec extends StringViewBehaviours {
 

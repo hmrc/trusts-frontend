@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.trustees.TrusteeOrgTelephoneNumberView
+import views.html.register.trustees.organisation.TrusteeOrgTelephoneNumberView
 
 class TrusteeOrgTelephoneNumberViewSpec extends StringViewBehaviours {
 

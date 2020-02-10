@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours
-import views.html.register.trustees.TrusteesUkAddressView
+import views.html.register.trustees.individual.TrusteesUkAddressView
 
 class TrusteeUKAddressViewSpec extends UkAddressViewBehaviours {
 

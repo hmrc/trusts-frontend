@@ -17,12 +17,11 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import mapping.Mapping
+import mapping.reads.{LeadTrusteeIndividual, Trustees}
 import models.core.UserAnswers
 import pages.register.TrustNamePage
 import pages.register.trustees.individual.{TrusteeAddressInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
-import pages.register.trustees.{TrusteesInternationalAddressPage, TrusteesUkAddressPage}
 import play.api.Logger
 
 class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mapping[Correspondence] {

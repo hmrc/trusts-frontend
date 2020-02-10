@@ -19,7 +19,6 @@ package controllers.register.trustees.organisation
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.trustees.TelephoneNumberFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
@@ -28,7 +27,7 @@ import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteeOrgTelephoneNumberView
+import views.html.register.trustees.organisation.TrusteeOrgTelephoneNumberView
 
 class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValidation {
 
@@ -142,7 +141,7 @@ class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with 
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }
@@ -228,7 +227,7 @@ class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with 
   "for a GET" must {
 
     def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-      val route = routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
+      val route = routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(GET, route)
     }
@@ -245,7 +244,7 @@ class TrusteeOrgTelephoneNumberControllerSpec extends RegistrationSpecBase with 
     def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
       val route =
-        routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
+        routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       FakeRequest(POST, route)
         .withFormUrlEncodedBody(("value", "0191 1111111"))

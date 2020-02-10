@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.trustees.TrusteeUtrYesNoView
+import views.html.register.trustees.organisation.TrusteeUtrYesNoView
 
 class TrusteeUtrYesNoViewSpec extends YesNoViewBehaviours {
 

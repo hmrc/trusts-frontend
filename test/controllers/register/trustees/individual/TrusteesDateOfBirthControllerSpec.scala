@@ -21,7 +21,6 @@ import java.time.{LocalDate, ZoneOffset}
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.trustees.TrusteesDateOfBirthFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -32,7 +31,7 @@ import pages.register.trustees.individual.{TrusteesDateOfBirthPage, TrusteesName
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteesDateOfBirthView
+import views.html.register.trustees.individual.TrusteesDateOfBirthView
 
 class TrusteesDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar with IndexValidation {
 

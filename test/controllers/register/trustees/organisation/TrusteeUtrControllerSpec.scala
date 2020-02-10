@@ -19,7 +19,6 @@ package controllers.register.trustees.organisation
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.UtrFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
@@ -27,7 +26,7 @@ import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteesUtrPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteeUtrView
+import views.html.register.trustees.organisation.TrusteeUtrView
 
 class TrusteeUtrControllerSpec extends RegistrationSpecBase with IndexValidation {
 

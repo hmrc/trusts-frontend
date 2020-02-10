@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.trustees.TrusteeUtrView
+import views.html.register.trustees.organisation.TrusteeUtrView
 
 class TrusteeUtrViewSpec extends StringViewBehaviours {
 

@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.individual
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.trustees.TelephoneNumberFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage, TrusteesNamePage}
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TelephoneNumberPage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TelephoneNumberView
-import controllers.register.routes._
-import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteesNamePage}
+import views.html.register.trustees.individual.TelephoneNumberView
 
 class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValidation {
 
@@ -144,7 +144,7 @@ class TelephoneNumberControllerSpec extends RegistrationSpecBase with IndexValid
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }

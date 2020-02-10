@@ -23,7 +23,7 @@ import pages.register.trustees.individual.TrusteesNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.trustees.TrusteeAUKCitizenView
+import views.html.register.trustees.individual.TrusteeAUKCitizenView
 
 class TrusteeAUKCitizenViewSpec extends YesNoViewBehaviours {
 

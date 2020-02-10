@@ -19,7 +19,6 @@ package controllers.register.trustees.individual
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.trustees.TrusteesNameFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -30,7 +29,7 @@ import play.api.i18n.Messages
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteesNameView
+import views.html.register.trustees.individual.TrusteesNameView
 
 class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidation {
 
@@ -180,7 +179,7 @@ class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidati
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+        redirectLocation(result).value mustEqual controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         application.stop()
       }
@@ -255,7 +254,7 @@ class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidati
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+          redirectLocation(result).value mustEqual controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
           application.stop()
         }
@@ -296,7 +295,7 @@ class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidati
       "for a GET" must {
 
         def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
-          val route = routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+          val route = controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
           FakeRequest(GET, route)
         }
@@ -313,7 +312,7 @@ class TrusteesNameControllerSpec extends RegistrationSpecBase with IndexValidati
         def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
 
           val route =
-            routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
+            controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId).url
 
           FakeRequest(POST, route)
             .withFormUrlEncodedBody(("firstName", "first"), ("middleName", "middle"), ("lastName", "last"))

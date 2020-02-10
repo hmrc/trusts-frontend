@@ -19,7 +19,6 @@ package controllers.register.trustees.individual
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, UKAddress}
@@ -30,7 +29,7 @@ import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteesUkAddressView
+import views.html.register.trustees.individual.TrusteesUkAddressView
 
 class TrusteesUkAddressControllerSpec extends RegistrationSpecBase with IndexValidation {
 

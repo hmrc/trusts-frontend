@@ -19,7 +19,6 @@ package controllers.register.trustees.individual
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -29,7 +28,7 @@ import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteesNamePa
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteeAUKCitizenView
+import views.html.register.trustees.individual.TrusteeAUKCitizenView
 
 
 class TrusteeAUKCitizenControllerSpec extends RegistrationSpecBase with IndexValidation {
@@ -147,7 +146,7 @@ class TrusteeAUKCitizenControllerSpec extends RegistrationSpecBase with IndexVal
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }

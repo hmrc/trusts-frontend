@@ -19,7 +19,6 @@ package controllers.register.trustees.organisation
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.YesNoFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
@@ -28,7 +27,7 @@ import pages.register.trustees.organisation.{TrusteeOrgAddressUkYesNoPage, Trust
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.trustees.TrusteeOrgAddressUkYesNoView
+import views.html.register.trustees.organisation.TrusteeOrgAddressUkYesNoView
 
 
 class TrusteeOrgAddressUkYesNoControllerSpec extends RegistrationSpecBase with IndexValidation {

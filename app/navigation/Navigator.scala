@@ -77,19 +77,19 @@ class Navigator @Inject()(
     //  Trustees
     case IsThisLeadTrusteePage(index) => _ =>_ => controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
     case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index, draftId)
-    case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case TrusteeOrgNamePage(index)  => _ => ua => trusteeBusinessNameRoute(ua, index, draftId)
-    case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
     case TrusteeOrgAddressUkYesNoPage(index) => _ => ua => trusteeOrgAddressUkYesNoRoute(ua, index, draftId)
-    case TrusteeOrgAddressUkPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
-    case TrusteeOrgAddressInternationalPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressUkPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressInternationalPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
 
-    case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.individual.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index, draftId)
     case TrusteeAUKCitizenPage(index) => _ => ua => trusteeAUKCitizenRoute(ua, index, draftId)
-    case TrusteesNinoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesNinoPage(index) => _ => _ => controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, draftId)
     case TrusteeAddressInTheUKPage(index)  => _ => ua => trusteeLiveInTheUKRoute(ua, index, draftId)
-    case TrusteesUkAddressPage(index) => _ => _ => controllers.register.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesUkAddressPage(index) => _ => _ => controllers.register.trustees.individual.routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId)
     case TelephoneNumberPage(index) => _ => _ => controllers.register.trustees.routes.TrusteesAnswerPageController.onPageLoad(index, draftId)
     case TrusteesAnswerPage => _ => _ => controllers.register.trustees.routes.AddATrusteeController.onPageLoad(draftId)
     case AddATrusteePage => _ => addATrusteeRoute(draftId)
@@ -470,38 +470,38 @@ class Navigator @Inject()(
   }
 
   private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeAUKCitizenPage(index)) match {
-    case Some(true)   => controllers.register.trustees.routes.TrusteesNinoController.onPageLoad(NormalMode,index, draftId)
-    case Some(false)  => controllers.register.trustees.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, draftId)
+    case Some(true)   => controllers.register.trustees.individual.routes.TrusteesNinoController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => controllers.register.trustees.individual.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeAddressInTheUKPage(index)) match {
-    case Some(true)   => controllers.register.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode,index, draftId)
-    case Some(false)  => controllers.register.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index, draftId)
+    case Some(true)   => controllers.register.trustees.individual.routes.TrusteesUkAddressController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeOrgAddressUkYesNoRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeOrgAddressUkYesNoPage(index)) match {
-    case Some(true)   => controllers.register.trustees.routes.TrusteesOrgUkAddressController.onPageLoad(NormalMode,index, draftId)
-    case Some(false)  => controllers.register.trustees.routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode,index, draftId)
+    case Some(true)   => controllers.register.trustees.organisation.routes.TrusteesOrgUkAddressController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => controllers.register.trustees.organisation.routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeDateOfBirthRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(IsThisLeadTrusteePage(index)) match {
-    case Some(true) => controllers.register.trustees.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId)
+    case Some(true) => controllers.register.trustees.individual.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId)
     case Some(false) => controllers.register.trustees.routes.TrusteesAnswerPageController.onPageLoad(index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
-    case Some(IndividualOrBusiness.Individual) => controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
-    case Some(IndividualOrBusiness.Business) => controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode,index, draftId)
+    case Some(IndividualOrBusiness.Individual) => controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
+    case Some(IndividualOrBusiness.Business) => controllers.register.trustees.organisation.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode,index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeBusinessNameRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeUtrYesNoPage(index)) match {
-    case Some(true) => controllers.register.trustees.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId)
-    case Some(false) => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode,index, draftId)
+    case Some(true) => controllers.register.trustees.organisation.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId)
+    case Some(false) => controllers.register.trustees.organisation.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode,index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 

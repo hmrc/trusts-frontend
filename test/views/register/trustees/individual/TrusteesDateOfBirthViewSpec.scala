@@ -23,7 +23,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.register.trustees.TrusteesDateOfBirthView
+import views.html.register.trustees.individual.TrusteesDateOfBirthView
 
 class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 

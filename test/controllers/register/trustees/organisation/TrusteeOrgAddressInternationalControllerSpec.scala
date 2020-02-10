@@ -19,7 +19,6 @@ package controllers.register.trustees.organisation
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import controllers.register.trustees.routes
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.pages.InternationalAddress
@@ -31,7 +30,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
-import views.html.register.trustees.TrusteeOrgAddressInternationalView
+import views.html.register.trustees.organisation.TrusteeOrgAddressInternationalView
 
 class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase with IndexValidation {
 
