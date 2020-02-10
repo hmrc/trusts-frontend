@@ -464,7 +464,7 @@ leadTrusteeAUKCitizen.error.required = Select yes if the lead trustee is a UK ci
 trusteeDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 trusteeUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 
-trusteeUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+trusteeUtr.checkYourAnswersLabel = What is {0} Unique Taxpayer Reference (UTR) number?
 trusteeUtr.title = What is the trustee’s Unique Taxpayer Reference?
 trusteeUtr.heading = What is {0} Unique Taxpayer Reference (UTR) number?
 trusteeUtr.error.required = Enter the trustee’s Unique Taxpayer Reference
