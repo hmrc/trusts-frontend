@@ -80,7 +80,7 @@ class TrusteesUkAddressController @Inject()(
     val messagePrefix = if (isLead) {
       "leadTrusteeUkAddress"
     } else {
-      "trusteeUkAddress"
+      "trusteesUkAddress"
     }
     messagePrefix
   }

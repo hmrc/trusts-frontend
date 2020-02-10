@@ -27,6 +27,7 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
 import pages.register.trustees._
+import pages.register.trustees.organisation._
 import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}
 
 class DeclarationMapperSpec extends FreeSpec with MustMatchers

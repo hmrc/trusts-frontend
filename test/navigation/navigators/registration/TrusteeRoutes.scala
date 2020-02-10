@@ -147,7 +147,7 @@ trait TrusteeRoutes {
             .set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 

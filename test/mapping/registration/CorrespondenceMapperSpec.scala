@@ -26,6 +26,7 @@ import models.core.pages.{FullName, UKAddress, InternationalAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.TrustNamePage
 import pages.register.trustees._
+import pages.register.trustees.organisation._
 import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}
 
 class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
