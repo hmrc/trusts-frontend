@@ -34,7 +34,8 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.entitystatus._
 import pages.register.RegistrationProgress
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.{RegistrationProgress, WhenTrustSetupPage}
+import pages.register.RegistrationProgress
+import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}

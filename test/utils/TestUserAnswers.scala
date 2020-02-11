@@ -37,6 +37,9 @@ import pages.register.trustees._
 import pages.register._
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.trust_details.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, TrustNamePage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
+import pages.register.trustees.individual._
+import pages.register.trustees.organisation._
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -56,7 +59,7 @@ object TestUserAnswers extends TryValues {
       .set(AgentAddressYesNoPage, true).success.value
   }
 
-  def withLeadTrustee(userAnswers: UserAnswers): UserAnswers = {
+  def withLeadTrusteeIndividual(userAnswers: UserAnswers): UserAnswers = {
     val index = 0
     userAnswers
       .set(IsThisLeadTrusteePage(index), true).success.value
@@ -68,6 +71,20 @@ object TestUserAnswers extends TryValues {
       .set(TrusteesNinoPage(index), "AB123456C").success.value
       .set(TelephoneNumberPage(index), "0191 1111111").success.value
       .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
+      .set(TrusteeStatus(index), Completed).success.value
+  }
+
+  def withLeadTrusteeOrganisation(userAnswers: UserAnswers): UserAnswers = {
+    val index = 0
+    userAnswers
+      .set(IsThisLeadTrusteePage(index), true).success.value
+      .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+      .set(TrusteeUtrYesNoPage(index), true).success.value
+      .set(TrusteeOrgNamePage(index), "Org Name").success.value
+      .set(TrusteesUtrPage(index), "1234567890").success.value
+      .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
+      .set(TrusteeOrgAddressUkPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
+      .set(TelephoneNumberPage(index), "0191 1111111").success.value
       .set(TrusteeStatus(index), Completed).success.value
   }
 
@@ -156,7 +173,7 @@ object TestUserAnswers extends TryValues {
 
   def newTrustCompleteUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrustee(emptyUserAnswers)
+    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
     val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)

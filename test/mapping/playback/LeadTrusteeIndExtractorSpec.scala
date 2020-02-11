@@ -28,6 +28,7 @@ import models.playback.http._
 import models.playback.{MetaData, UserAnswers}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteePassportIDCardPage, TrusteesDateOfBirthPage, TrusteesInternationalAddressPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 
 class LeadTrusteeIndExtractorSpec extends FreeSpec with MustMatchers
   with EitherValues with Generators with SpecBaseHelpers {

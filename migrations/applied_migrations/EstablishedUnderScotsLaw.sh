@@ -6,11 +6,11 @@ echo "Applying migration EstablishedUnderScotsLaw"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /establishedUnderScotsLaw                        controllers.register.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /establishedUnderScotsLaw                        controllers.register.EstablishedUnderScotsLawController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /establishedUnderScotsLaw                        controllers.register.trust_details.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /establishedUnderScotsLaw                        controllers.register.trust_details.EstablishedUnderScotsLawController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeEstablishedUnderScotsLaw                  controllers.register.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeEstablishedUnderScotsLaw                  controllers.register.EstablishedUnderScotsLawController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeEstablishedUnderScotsLaw                  controllers.register.trust_details.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeEstablishedUnderScotsLaw                  controllers.register.trust_details.EstablishedUnderScotsLawController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

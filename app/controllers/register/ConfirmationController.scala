@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, Trustees}
+import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
@@ -31,7 +31,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.{ConfirmationIndividualView, ConfirmationAgentView, ConfirmationExistingView}
+import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -56,19 +56,30 @@ class ConfirmationController @Inject()(
 
     trustees.find(_.isLead) match {
       case Some(lt : LeadTrusteeIndividual) =>
-
-        userAnswers.get(TrustHaveAUTRPage) match {
-          case Some(true) =>
-            Future.successful(Ok(viewExisting(draftId, isAgent, trn, lt.name)))
-          case Some(false) if isAgent =>
-            Future.successful(Ok(viewAgent(draftId, trn, lt.name)))
-          case Some(false) =>
-            Future.successful(Ok(viewIndividual(draftId, trn, lt.name)))
-          case None =>
-            errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
-        }
+        render(userAnswers, draftId, isAgent, trn, lt.name.toString)
+      case Some(lt: LeadTrusteeOrganisation) =>
+        render(userAnswers, draftId, isAgent, trn, lt.name)
       case _ =>
         errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
+    }
+
+  }
+
+  private def render(userAnswers: UserAnswers,
+                      draftId: String,
+                      isAgent: Boolean,
+                      trn: String,
+                      name: String)(implicit request : RegistrationDataRequest[AnyContent]) = {
+
+    userAnswers.get(TrustHaveAUTRPage) match {
+      case Some(true) =>
+        Future.successful(Ok(viewExisting(draftId, isAgent, trn, name)))
+      case Some(false) if isAgent =>
+        Future.successful(Ok(viewAgent(draftId, trn, name)))
+      case Some(false) =>
+        Future.successful(Ok(viewIndividual(draftId, trn, name)))
+      case None =>
+        errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }
 
   }

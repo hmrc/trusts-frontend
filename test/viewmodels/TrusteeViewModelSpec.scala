@@ -48,11 +48,64 @@ class TrusteeViewModelSpec extends FreeSpec with MustMatchers with PropertyCheck
             )
 
             json.validate[TrusteeViewModel] mustEqual JsSuccess(
-              addAnother.TrusteeViewModel(isLead = false, Some(fullName), Some(individual), Completed)
+              addAnother.TrusteeViewModel(isLead = false, Some(fullName.toString), Some(individual), Completed)
             )
         }
       }
+      "from a trustee individual with no name to a view model" in {
+
+        forAll(arbitrary[LocalDate], Gen.const(IndividualOrBusiness.Individual)) {
+          (date, individual) =>
+
+            val json = Json.obj(
+              "dateOfBirth" -> date,
+              "isThisLeadTrustee" -> false,
+              "individualOrBusiness" -> individual.toString,
+              "status" -> Completed.toString
+            )
+
+            json.validate[TrusteeViewModel] mustEqual JsSuccess(
+              addAnother.TrusteeViewModel(isLead = false, None, Some(individual), Completed)
+            )
+        }
+      }
+      "from a trustee business to a view model" in {
+
+        forAll(arbitrary[LocalDate], arbitrary[String], Gen.const(IndividualOrBusiness.Business)) {
+          (date, businessName, business) =>
+
+            val json = Json.obj(
+              "name" -> businessName,
+              "dateOfBirth" -> date,
+              "isThisLeadTrustee" -> false,
+              "individualOrBusiness" -> business.toString,
+              "status" -> Completed.toString
+            )
+
+            json.validate[TrusteeViewModel] mustEqual JsSuccess(
+              addAnother.TrusteeViewModel(isLead = false, Some(businessName), Some(business), Completed)
+            )
+        }
+
+      }
+      "from a trustee business with no name to a view model" in {
+
+        forAll(arbitrary[LocalDate], Gen.const(IndividualOrBusiness.Business)) {
+          (date, business) =>
+
+            val json = Json.obj(
+              "dateOfBirth" -> date,
+              "isThisLeadTrustee" -> false,
+              "individualOrBusiness" -> business.toString,
+              "status" -> Completed.toString
+            )
+
+            json.validate[TrusteeViewModel] mustEqual JsSuccess(
+              addAnother.TrusteeViewModel(isLead = false, None, Some(business), Completed)
+            )
+        }
+
+      }
     }
   }
-
 }

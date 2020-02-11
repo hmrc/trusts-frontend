@@ -22,7 +22,7 @@
     main_template: MainTemplate
 )
 
-@(draftId : String, refNumber: String, leadTrusteeName : FullName)(implicit request: Request[_], messages: Messages)
+@(draftId : String, refNumber: String, leadTrusteeName : String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${messages("confirmationIndividualPage.title", formatReferenceNumber(refNumber))}"
@@ -43,7 +43,7 @@
 
     <h2>@messages("confirmationIndividualPage.subheading1")</h2>
 
-    <p>@messages("confirmationIndividualPage.paragraph1", leadTrusteeName.toString)</p>
+    <p>@messages("confirmationIndividualPage.paragraph1", leadTrusteeName)</p>
 
     <h2>@messages("confirmationIndividualPage.subheading2")</h2>
 

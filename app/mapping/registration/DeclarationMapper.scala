@@ -17,12 +17,13 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, Trustee, Trustees}
 import mapping.Mapping
+import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustee, Trustees}
 import models.core.UserAnswers
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
-import pages.register.trustees.{TrusteeAddressInTheUKPage, TrusteesInternationalAddressPage, TrusteesUkAddressPage}
+import pages.register.trustees.individual._
+import pages.register.trustees.organisation._
 import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper,
@@ -50,7 +51,6 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
     }
   }
 
-
   private def getLeadTrusteeAddress(userAnswers: UserAnswers): Option[AddressType] = {
     val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
     trustees match {
@@ -67,12 +67,19 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
               TrusteesUkAddressPage(index),
               TrusteesInternationalAddressPage(index)
             )
+          case lto: LeadTrusteeOrganisation =>
+            val index = list.indexOf(lto)
+            addressMapper.build(
+              userAnswers,
+              TrusteeOrgAddressUkYesNoPage(index),
+              TrusteeOrgAddressUkPage(index),
+              TrusteeOrgAddressInternationalPage(index)
+            )
           case _ =>
             Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to trustees not having a lead")
             None
         }
     }
-
   }
 
   private def getAgentAddress(userAnswers: UserAnswers): Option[AddressType] = {

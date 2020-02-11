@@ -24,6 +24,8 @@ import mapping.Mapping
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteeAddressYesNoPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 class TrusteeMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
@@ -49,20 +51,38 @@ class TrusteeMapperSpec extends FreeSpec with MustMatchers
             .set(IsThisLeadTrusteePage(index), false).success.value
             .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(TrusteesNamePage(index), FullName("first name", None, "last name")).success.value
-            .set(TrusteesDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
 
         trusteeMapper.build(userAnswers).value.head mustBe TrusteeType(
           trusteeInd = Some(TrusteeIndividualType(
             name = NameType("first name", None, "last name"),
-            dateOfBirth = Some(LocalDate.of(2010, 10, 10)),
+            dateOfBirth = None,
             phoneNumber = None,
-            identification = None)
+            identification = Some(IdentificationType(None, None, None)))
           ),
           None
         )
       }
 
-      "must be able to list of  a Trustee Individual with minimum data" in {
+      "must be able to create a Trustee Organisation with minimum data" in {
+        val index = 0
+        val userAnswers =
+          emptyUserAnswers
+            .set(IsThisLeadTrusteePage(index), false).success.value
+            .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+            .set(TrusteeOrgNamePage(index), "Org Name").success.value
+
+        trusteeMapper.build(userAnswers).value.head mustBe TrusteeType(
+          trusteeInd = None,
+          trusteeOrg = Some(TrusteeOrgType(
+            name = "Org Name",
+            phoneNumber = None,
+            email = None,
+            identification = IdentificationOrgType(None, None)
+          ))
+        )
+      }
+
+      "must be able to create a list of Trustee Individuals with minimum data" in {
         val index0 = 0
         val index1 = 1
 
@@ -71,33 +91,131 @@ class TrusteeMapperSpec extends FreeSpec with MustMatchers
             .set(IsThisLeadTrusteePage(index0), false).success.value
             .set(TrusteeIndividualOrBusinessPage(index0), IndividualOrBusiness.Individual).success.value
             .set(TrusteesNamePage(index0), FullName("first name", None, "last name")).success.value
-            .set(TrusteesDateOfBirthPage(index0), LocalDate.of(2010, 10, 10)).success.value
+
             .set(IsThisLeadTrusteePage(index1), false).success.value
             .set(TrusteeIndividualOrBusinessPage(index1), IndividualOrBusiness.Individual).success.value
             .set(TrusteesNamePage(index1), FullName("second name", None, "second name")).success.value
-            .set(TrusteesDateOfBirthPage(index1), LocalDate.of(2015, 10, 10)).success.value
 
         trusteeMapper.build(userAnswers).value mustBe List(TrusteeType(
           trusteeInd = Some(TrusteeIndividualType(
             name = NameType("first name", None, "last name"),
-            dateOfBirth = Some(LocalDate.of(2010, 10, 10)),
+            dateOfBirth = None,
             phoneNumber = None,
-            identification = None)
+            identification = Some(IdentificationType(None, None, None)))
           ),
           None
         ),
           TrusteeType(
             trusteeInd = Some(TrusteeIndividualType(
               name = NameType("second name", None, "second name"),
-              dateOfBirth = Some(LocalDate.of(2015, 10, 10)),
+              dateOfBirth = None,
               phoneNumber = None,
-              identification = None)
+              identification = Some(IdentificationType(None, None, None)))
             ),
             None
           ))
       }
 
-      "must not able to create a Trustee Individual when there is only LeadTrustee" in {
+      "must be able to create a list of Trustee Organisations with minimum data" in {
+        val index0 = 0
+        val index1 = 1
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(IsThisLeadTrusteePage(index0), false).success.value
+            .set(TrusteeIndividualOrBusinessPage(index0), IndividualOrBusiness.Business).success.value
+            .set(TrusteeOrgNamePage(index0), "Org Name1").success.value
+
+            .set(IsThisLeadTrusteePage(index1), false).success.value
+            .set(TrusteeIndividualOrBusinessPage(index1), IndividualOrBusiness.Business).success.value
+            .set(TrusteeOrgNamePage(index1), "Org Name2").success.value
+
+        trusteeMapper.build(userAnswers).value mustBe
+          List(
+            TrusteeType(
+              None,
+              trusteeOrg = Some(
+                  TrusteeOrgType(
+                  name = "Org Name1",
+                  phoneNumber = None,
+                  email = None,
+                  identification = IdentificationOrgType(None, None)
+                )
+              )
+            ),
+            TrusteeType(
+              None,
+              trusteeOrg = Some(
+                TrusteeOrgType(
+                  name = "Org Name2",
+                  phoneNumber = None,
+                  email = None,
+                  identification = IdentificationOrgType(None, None)
+                )
+              )
+            )
+          )
+      }
+
+      "must be able to create a Trustee Individual with full data" in {
+        val index = 0
+        val userAnswers = emptyUserAnswers
+          .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+          .set(TrusteesNamePage(index), FullName("first name", Some("middle name"), "last name")).success.value
+          .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500, 10, 10)).success.value
+          .set(TrusteeAUKCitizenPage(index), true).success.value
+          .set(TrusteeAddressInTheUKPage(index), true).success.value
+          .set(TrusteesNinoPage(index), "AB123456C").success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
+
+        trusteeMapper.build(userAnswers).value.head mustBe TrusteeType(
+          trusteeInd = Some(TrusteeIndividualType(
+            name = NameType("first name", Some("middle name"), "last name"),
+            dateOfBirth = Some(LocalDate.of(1500, 10, 10)),
+            phoneNumber = None,
+            identification = Some(
+              IdentificationType(
+                Some("AB123456C"),
+                None,
+                Some(AddressType("line1", "line2", None, None, Some("NE65QA"), "GB"))
+              )
+            )
+          )
+          ),
+          None
+        )
+      }
+
+      "must be able to create a Trustee Organisation with full data" in {
+        val index = 0
+        val userAnswers = emptyUserAnswers
+          .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+          .set(TrusteeOrgNamePage(index), "Org Name").success.value
+          .set(TrusteeUtrYesNoPage(index), true).success.value
+          .set(TrusteesUtrPage(index), "1234567890").success.value
+          .set(TrusteeAddressYesNoPage(index), true).success.value
+          .set(TrusteeAddressInTheUKPage(index), true).success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
+
+        trusteeMapper.build(userAnswers).value.head mustBe TrusteeType(
+          None,
+          trusteeOrg = Some(
+            TrusteeOrgType(
+              name = "Org Name",
+              phoneNumber = None,
+              email = None,
+              identification = IdentificationOrgType(
+                Some("1234567890"),
+                Some(AddressType("line1", "line2", None, None, Some("NE65QA"), "GB"))
+              )
+            )
+          )
+        )
+      }
+
+      "must not be able to create a Trustee Individual when there is only a LeadTrustee" in {
         val index = 0
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), true).success.value
@@ -107,7 +225,22 @@ class TrusteeMapperSpec extends FreeSpec with MustMatchers
           .set(TrusteeAUKCitizenPage(index), true).success.value
           .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(TrusteesNinoPage(index), "AB123456C").success.value
-          .set(TelephoneNumberPage(index), "0191 1111111").success.value
+          .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
+
+        trusteeMapper.build(userAnswers) mustNot be(defined)
+
+      }
+
+      "must not be able to create a Trustee Organisation when there is only a LeadTrustee" in {
+        val index = 0
+        val userAnswers = emptyUserAnswers
+          .set(IsThisLeadTrusteePage(index), true).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+          .set(TrusteeOrgNamePage(index), "Org Name").success.value
+          .set(TrusteeUtrYesNoPage(index), true).success.value
+          .set(TrusteesUtrPage(index), "1234567890").success.value
+          .set(TrusteeAddressYesNoPage(index), true).success.value
+          .set(TrusteeAddressInTheUKPage(index), true).success.value
           .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
 
         trusteeMapper.build(userAnswers) mustNot be(defined)

@@ -26,7 +26,7 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatTypeOfBeneficiary.Individual
 import navigation.Navigator
 import pages.entitystatus.TrusteeStatus
-import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesAnswerPage, TrusteesNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeIndividualOrBusinessPage, TrusteesAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.RegistrationsRepository
@@ -96,7 +96,7 @@ class TrusteesAnswerPageController @Inject()(
                 checkYourAnswersHelper.trusteeUtr(index),
                 checkYourAnswersHelper.orgAddressInTheUkYesNo(index),
                 checkYourAnswersHelper.trusteesOrgUkAddress(index),
-                checkYourAnswersHelper.trusteeInternationalAddress(index),
+                checkYourAnswersHelper.trusteeOrgInternationalAddress(index),
                 checkYourAnswersHelper.orgTelephoneNumber(index)
               ).flatten
 

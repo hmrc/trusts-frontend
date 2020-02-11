@@ -18,12 +18,14 @@ package mapping.reads
 
 import java.time.LocalDate
 
-import models.core.pages.{FullName, IndividualOrBusiness}
+import models.core.pages.{Address, FullName, IndividualOrBusiness}
 import play.api.libs.json._
 
 final case class TrusteeIndividual(override val isLead : Boolean,
-                                   override val name: FullName,
-                                   dateOfBirth: LocalDate) extends Trustee
+                                   name: FullName,
+                                   dateOfBirth: Option[LocalDate],
+                                   nino: Option[String],
+                                   address: Option[Address]) extends Trustee
 
 object TrusteeIndividual {
 
@@ -33,8 +35,10 @@ object TrusteeIndividual {
 
     val trusteeReads: Reads[TrusteeIndividual] = (
       (__ \ "name").read[FullName] and
-        (__ \ "dateOfBirth").read[LocalDate]
-      )((name, dateOfBirth) => TrusteeIndividual(isLead = false, name, dateOfBirth))
+        (__ \ "dateOfBirth").readNullable[LocalDate] and
+        (__ \ "nino").readNullable[String] and
+        (__ \ "address").readNullable[Address]
+      )((name, dateOfBirth, nino, address) => TrusteeIndividual(isLead = false, name, dateOfBirth, nino, address))
 
     ((__ \ "isThisLeadTrustee").read[Boolean] and
       (__ \ "individualOrBusiness").read[IndividualOrBusiness]) ((_, _)).flatMap[(Boolean, IndividualOrBusiness)] {

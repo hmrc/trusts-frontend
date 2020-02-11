@@ -122,7 +122,7 @@ entities.no.description.added = No description added
 entities.lead = Lead
 entities.trustee = Trustee
 entities.trustee.individual = Trustee Individual
-entities.trustee.business = Trustee Business
+entities.trustee.business = Trustee Company
 entities.beneficiary.individual = Individual Beneficiary
 entities.beneficiary.class = Class of beneficiaries
 
@@ -242,7 +242,7 @@ trustHaveAUTR.heading = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.checkYourAnswersLabel = Does the trust have a Unique Taxpayer Reference?
 trustHaveAUTR.error.required = Select yes if the trust has a Unique Taxpayer Reference
 trustHaveAUTR.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
-trustHaveAUTR.hint.reader = This is 10 numbers, for example one two three four five six seven eight nine zero. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’. You can
+trustHaveAUTR.hint.reader = This is 10 numbers, for example one two three four five six seven eight nine zero. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
 trustHaveAUTR.link = find a lost UTR number.
 
 whatIsTheUTR.title = What is the trust’s Unique Taxpayer Reference?
@@ -424,7 +424,7 @@ addATrustee.add-them-later = Yes, I want to add them later
 addATrustee.no-complete = No, I have added all trustees
 addATrustee.checkYourAnswersLabel = Add A Trustee
 addATrustee.individual = Trustee Individual
-addATrustee.business = Trustee Business
+addATrustee.business = Trustee Company
 addATrustee.error.required = Select yes if you want to add another trustee
 addATrustee.lead-trustee.required = You need to add or nominate a lead trustee.
 
@@ -465,7 +465,7 @@ leadTrusteeAUKCitizen.error.required = Select yes if the lead trustee is a UK ci
 trusteeDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 trusteeUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 
-trusteeUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+trusteeUtr.checkYourAnswersLabel = What is {0} Unique Taxpayer Reference (UTR) number?
 trusteeUtr.title = What is the trustee’s Unique Taxpayer Reference?
 trusteeUtr.heading = What is {0} Unique Taxpayer Reference (UTR) number?
 trusteeUtr.error.required = Enter the trustee’s Unique Taxpayer Reference
@@ -1641,7 +1641,7 @@ trusteeOrgAddressUkYesNo.heading = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.error.required = Select yes if the trustee’s address is in the UK
 
-trusteesOrgUkAddress.title = What is the trustee’s address?
+trusteesOrgUkAddress.title = What is {0}’s address?
 trusteesOrgUkAddress.heading = What is {0}’s address?
 trusteesOrgUkAddress.checkYourAnswersLabel = What is {0}’s address?
 

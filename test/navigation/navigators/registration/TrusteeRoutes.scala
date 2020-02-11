@@ -27,6 +27,8 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage}
 import sections.Trustees
 
 trait TrusteeRoutes {
@@ -125,23 +127,51 @@ trait TrusteeRoutes {
       }
     }
 
-    "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page when answer is Individual" in {
+    "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page for a lead trustee Individual" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
+          val answers = userAnswers
+            .set(IsThisLeadTrusteePage(index), true).success.value
+            .set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
-    "go to TrusteeUtrYesNoPage from TrusteeIndividualOrBusinessPage page when answer is Business" in {
+    "go to TrusteesNamePage from TrusteeIndividualOrBusinessPage page for a non-lead trustee Individual" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(TrusteeIndividualOrBusinessPage(index), Business).success.value
+          val answers = userAnswers
+            .set(IsThisLeadTrusteePage(index), false).success.value
+            .set(TrusteeIndividualOrBusinessPage(index), Individual).success.value
 
           navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
+    "go to TrusteeUtrYesNoPage from TrusteeIndividualOrBusinessPage page for a lead trustee Business" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers
+            .set(IsThisLeadTrusteePage(index), true).success.value
+            .set(TrusteeIndividualOrBusinessPage(index), Business).success.value
+
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.trustees.organisation.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
+    "go to TrusteeUtrYesNoPage from TrusteeIndividualOrBusinessPage page for a non-lead trustee Business" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers
+            .set(IsThisLeadTrusteePage(index), false).success.value
+            .set(TrusteeIndividualOrBusinessPage(index), Business).success.value
+
+          navigator.nextPage(TrusteeIndividualOrBusinessPage(index), NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -150,7 +180,7 @@ trait TrusteeRoutes {
         userAnswers =>
 
           navigator.nextPage(TrusteeUtrYesNoPage(index), NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(controllers.register.trustees.organisation.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -161,7 +191,7 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(TrusteeUtrYesNoPage(index), true).success.value
 
           navigator.nextPage(TrusteeOrgNamePage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteeUtrController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(controllers.register.trustees.organisation.routes.TrusteeUtrController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -172,7 +202,7 @@ trait TrusteeRoutes {
           val answers = userAnswers.set(TrusteeUtrYesNoPage(index), false).success.value
 
           navigator.nextPage(TrusteeOrgNamePage(index), NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(controllers.register.trustees.organisation.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -182,7 +212,7 @@ trait TrusteeRoutes {
         userAnswers =>
 
           navigator.nextPage(TrusteesNamePage(index), NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId))
+            .mustBe(controllers.register.trustees.individual.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -210,7 +240,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(IsThisLeadTrusteePage(index), true).success.value
 
             navigator.nextPage(TrusteesDateOfBirthPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.trustees.individual.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -221,7 +251,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = true).success.value
 
             navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.TrusteesNinoController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.trustees.individual.routes.TrusteesNinoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -232,7 +262,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(TrusteeAUKCitizenPage(index), value = false).success.value
 
             navigator.nextPage(TrusteeAUKCitizenPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, fakeDraftId))
+              .mustBe(controllers.register.trustees.individual.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, fakeDraftId))
         }
       }
 
@@ -241,7 +271,7 @@ trait TrusteeRoutes {
           userAnswers =>
 
             navigator.nextPage(TrusteesNinoPage(index), NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -252,7 +282,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(TrusteeAddressInTheUKPage(index), value = true).success.value
 
             navigator.nextPage(TrusteeAddressInTheUKPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.trustees.individual.routes.TrusteesUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -263,7 +293,7 @@ trait TrusteeRoutes {
             val answers = userAnswers.set(TrusteeAddressInTheUKPage(index), value = false).success.value
 
             navigator.nextPage(TrusteeAddressInTheUKPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -272,7 +302,7 @@ trait TrusteeRoutes {
           userAnswers =>
 
             navigator.nextPage(TrusteesUkAddressPage(index), NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.trustees.individual.routes.TelephoneNumberController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 

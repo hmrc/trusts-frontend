@@ -108,7 +108,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
     val applyView = view.apply(
       draftId = fakeDraftId,
       refNumber = refNumber,
-      FullName("John", None, "Smith")
+      FullName("John", None, "Smith").toString
     )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
@@ -126,7 +126,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
       draftId = fakeDraftId,
       isAgent = false,
       refNumber = refNumber,
-      leadTrusteeName = FullName("John", None, "Smith")
+      leadTrusteeName = FullName("John", None, "Smith").toString
     )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)
@@ -143,7 +143,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
     val applyView = view.apply(
       draftId = fakeDraftId,
       refNumber = refNumber,
-      leadTrusteeName = FullName("John", None, "Smith")
+      leadTrusteeName = FullName("John", None, "Smith").toString
     )(fakeRequest, messages)
 
     behave like confirmationPage(applyView, messageKeyPrefix, refNumber, accessibleRefNumber)

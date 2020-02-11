@@ -23,6 +23,8 @@ import models.playback.http.Correspondence
 import pages.register._
 import play.api.Logger
 import models.core.pages.{Address, InternationalAddress, UKAddress}
+import pages.register.trust_details.{CorrespondenceAbroadIndicatorPage, CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage, CorrespondenceBpMatchStatusPage, CorrespondencePhoneNumberPage, TrustNamePage}
+
 import scala.util.{Failure, Success}
 
 class CorrespondenceExtractor @Inject() extends PlaybackExtractor[Correspondence] {

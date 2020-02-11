@@ -21,7 +21,7 @@ import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.register.trustees.TrusteeOrgNamePage
+import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView

@@ -24,7 +24,7 @@ import javax.inject.Inject
 import models.core.pages.FullName
 import models.requests.RegistrationDataRequest
 import pages.QuestionPage
-import pages.register.trustees.TrusteesNamePage
+import pages.register.trustees.individual.TrusteesNamePage
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveTrusteeQuery, Settable}

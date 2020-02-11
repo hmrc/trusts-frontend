@@ -34,8 +34,11 @@ import pages.register.settlors.deceased_settlor._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries._
-import pages.register.settlors.{SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.trust_details.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, SettlorsBasedInTheUKPage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.api.mvc.Call
 import sections._
 import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
@@ -50,42 +53,44 @@ class Navigator @Inject()(
     //  Matching
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af, draftId)
-    case WhatIsTheUTRPage => _ => _ => routes.TrustNameController.onPageLoad(NormalMode, draftId)
+    case WhatIsTheUTRPage => _ => _ => controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
     case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad(draftId)
 
     //  Trust Details
     case TrustNamePage => _ => trustNameRoute(draftId)
-    case WhenTrustSetupPage => _ => _ => routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId)
+    case WhenTrustSetupPage => _ => _ => controllers.register.trust_details.routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId)
     case GovernedInsideTheUKPage => _ => isTrustGovernedInsideUKRoute(draftId)
-    case CountryGoverningTrustPage => _ => _ => routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
+    case CountryGoverningTrustPage => _ => _ => controllers.register.trust_details.routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
     case AdministrationInsideUKPage => _ => isTrustGeneralAdministrationRoute(draftId)
-    case CountryAdministeringTrustPage => _ => _ => controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
+    case CountryAdministeringTrustPage => _ => _ => controllers.register.trust_details.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
     case TrusteesBasedInTheUKPage => _ => isTrusteesBasedInTheUKPage(draftId)
 
     case SettlorsBasedInTheUKPage => _ => isSettlorsBasedInTheUKPage(draftId)
-    case EstablishedUnderScotsLawPage => _ => _ => routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
+    case EstablishedUnderScotsLawPage => _ => _ => controllers.register.trust_details.routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId)
     case TrustResidentOffshorePage => _ => wasTrustPreviouslyResidentOffshoreRoute(draftId)
-    case TrustPreviouslyResidentPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case TrustPreviouslyResidentPage => _ => _ => controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case RegisteringTrustFor5APage => _ => registeringForPurposeOfSchedule5ARoute(draftId)
-    case NonResidentTypePage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case NonResidentTypePage => _ => _ => controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case InheritanceTaxActPage => _ => inheritanceTaxRoute(draftId)
-    case AgentOtherThanBarristerPage => _ => _ => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case AgentOtherThanBarristerPage => _ => _ => controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case TrustDetailsAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
 
     //  Trustees
     case IsThisLeadTrusteePage(index) => _ =>_ => controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
     case TrusteeIndividualOrBusinessPage(index)  => _ => ua => trusteeIndividualOrBusinessRoute(ua, index, draftId)
-    case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeUtrYesNoPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case TrusteeOrgNamePage(index)  => _ => ua => trusteeBusinessNameRoute(ua, index, draftId)
-    case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
-    case TrusteeOrgAddressUkYesNoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesUtrPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressUkYesNoPage(index) => _ => ua => trusteeOrgAddressUkYesNoRoute(ua, index, draftId)
+    case TrusteeOrgAddressUkPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
+    case TrusteeOrgAddressInternationalPage(index) => _ => _ => controllers.register.trustees.organisation.routes.TrusteeOrgTelephoneNumberController.onPageLoad(NormalMode, index, draftId)
 
-    case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesNamePage(index) => _ => _ => controllers.register.trustees.individual.routes.TrusteesDateOfBirthController.onPageLoad(NormalMode, index, draftId)
     case TrusteesDateOfBirthPage(index) => _ => ua => trusteeDateOfBirthRoute(ua, index, draftId)
     case TrusteeAUKCitizenPage(index) => _ => ua => trusteeAUKCitizenRoute(ua, index, draftId)
-    case TrusteesNinoPage(index) => _ => _ => controllers.register.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesNinoPage(index) => _ => _ => controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode, index, draftId)
     case TrusteeAddressInTheUKPage(index)  => _ => ua => trusteeLiveInTheUKRoute(ua, index, draftId)
-    case TrusteesUkAddressPage(index) => _ => _ => controllers.register.trustees.routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId)
+    case TrusteesUkAddressPage(index) => _ => _ => controllers.register.trustees.individual.routes.TelephoneNumberController.onPageLoad(NormalMode, index, draftId)
     case TelephoneNumberPage(index) => _ => _ => controllers.register.trustees.routes.TrusteesAnswerPageController.onPageLoad(index, draftId)
     case TrusteesAnswerPage => _ => _ => controllers.register.trustees.routes.AddATrusteeController.onPageLoad(draftId)
     case AddATrusteePage => _ => addATrusteeRoute(draftId)
@@ -418,80 +423,89 @@ class Navigator @Inject()(
     if (hasUTR) {
       routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId)
     } else {
-      routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId)
+      controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId)
     }
   }
 
   private def isTrustGovernedInsideUKRoute(draftId: String)(answers: UserAnswers) = answers.get(GovernedInsideTheUKPage) match {
-    case Some(true)  => routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
-    case Some(false) => routes.CountryGoverningTrustController.onPageLoad(NormalMode, draftId)
+    case Some(true)  => controllers.register.trust_details.routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId)
+    case Some(false) => controllers.register.trust_details.routes.CountryGoverningTrustController.onPageLoad(NormalMode, draftId)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
   private def isTrustGeneralAdministrationRoute(draftId: String)(answers: UserAnswers) = answers.get(AdministrationInsideUKPage) match {
-    case Some(true)  => controllers.register.trustees.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
-    case Some(false) => routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId)
+    case Some(true)  => controllers.register.trust_details.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId)
+    case Some(false) => controllers.register.trust_details.routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId)
     case None        => routes.SessionExpiredController.onPageLoad()
   }
 
   private def isTrusteesBasedInTheUKPage(draftId: String)(answers: UserAnswers) = answers.get(TrusteesBasedInTheUKPage) match {
-    case Some(UKBasedTrustees)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
-    case Some(NonUkBasedTrustees)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
-    case Some(InternationalAndUKTrustees)  => controllers.register.settlors.routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId)
+    case Some(UKBasedTrustees)   => controllers.register.trust_details.routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
+    case Some(NonUkBasedTrustees)  => controllers.register.trust_details.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
+    case Some(InternationalAndUKTrustees)  => controllers.register.trust_details.routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def isSettlorsBasedInTheUKPage(draftId: String)(answers: UserAnswers) = answers.get(SettlorsBasedInTheUKPage) match {
-    case Some(true)   => routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
-    case Some(false)  => routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
+    case Some(true)   => controllers.register.trust_details.routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => controllers.register.trust_details.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def wasTrustPreviouslyResidentOffshoreRoute(draftId: String)(answers: UserAnswers) = answers.get(TrustResidentOffshorePage) match {
-    case Some(true)   => routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, draftId)
-    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case Some(true)   => controllers.register.trust_details.routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def registeringForPurposeOfSchedule5ARoute(draftId: String)(answers: UserAnswers) = answers.get(RegisteringTrustFor5APage) match {
-    case Some(true)   => routes.NonResidentTypeController.onPageLoad(NormalMode, draftId)
-    case Some(false)  => routes.InheritanceTaxActController.onPageLoad(NormalMode, draftId)
+    case Some(true)   => controllers.register.trust_details.routes.NonResidentTypeController.onPageLoad(NormalMode, draftId)
+    case Some(false)  => controllers.register.trust_details.routes.InheritanceTaxActController.onPageLoad(NormalMode, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def inheritanceTaxRoute(draftId: String)(answers: UserAnswers) = answers.get(InheritanceTaxActPage) match {
     case Some(true)   => controllers.register.agents.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId)
-    case Some(false)  => routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+    case Some(false)  => controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeAUKCitizenRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeAUKCitizenPage(index)) match {
-    case Some(true)   => controllers.register.trustees.routes.TrusteesNinoController.onPageLoad(NormalMode,index, draftId)
-    case Some(false)  => controllers.register.trustees.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, draftId)
+    case Some(true)   => controllers.register.trustees.individual.routes.TrusteesNinoController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => controllers.register.trustees.individual.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeLiveInTheUKRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeAddressInTheUKPage(index)) match {
-    case Some(true)   => controllers.register.trustees.routes.TrusteesUkAddressController.onPageLoad(NormalMode,index, draftId)
-    case Some(false)  => controllers.register.trustees.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index, draftId)
+    case Some(true)   => controllers.register.trustees.individual.routes.TrusteesUkAddressController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => controllers.register.trustees.individual.routes.TrusteeLiveInTheUKController.onPageLoad(NormalMode,index, draftId)
+    case None         => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def trusteeOrgAddressUkYesNoRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(TrusteeOrgAddressUkYesNoPage(index)) match {
+    case Some(true)   => controllers.register.trustees.organisation.routes.TrusteesOrgUkAddressController.onPageLoad(NormalMode,index, draftId)
+    case Some(false)  => controllers.register.trustees.organisation.routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode,index, draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 
   private def trusteeDateOfBirthRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(IsThisLeadTrusteePage(index)) match {
-    case Some(true) => controllers.register.trustees.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId)
+    case Some(true) => controllers.register.trustees.individual.routes.TrusteeAUKCitizenController.onPageLoad(NormalMode, index, draftId)
     case Some(false) => controllers.register.trustees.routes.TrusteesAnswerPageController.onPageLoad(index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 
-  private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeIndividualOrBusinessPage(index)) match {
-    case Some(IndividualOrBusiness.Individual) => controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
-    case Some(IndividualOrBusiness.Business) => controllers.register.trustees.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode,index, draftId)
-    case None => routes.SessionExpiredController.onPageLoad()
+  private def trusteeIndividualOrBusinessRoute(answers: UserAnswers, index : Int, draftId: String) = {
+    (answers.get(IsThisLeadTrusteePage(index)), answers.get(TrusteeIndividualOrBusinessPage(index))) match {
+      case (Some(_), Some(IndividualOrBusiness.Individual)) => controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, index, draftId)
+      case (Some(true), Some(IndividualOrBusiness.Business)) => controllers.register.trustees.organisation.routes.TrusteeUtrYesNoController.onPageLoad(NormalMode,index, draftId)
+      case (Some(false), Some(IndividualOrBusiness.Business)) => controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode,index, draftId)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
   }
 
   private def trusteeBusinessNameRoute(answers: UserAnswers, index : Int, draftId: String) = answers.get(TrusteeUtrYesNoPage(index)) match {
-    case Some(true) => controllers.register.trustees.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId)
-    case Some(false) => controllers.register.trustees.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode,index, draftId)
+    case Some(true) => controllers.register.trustees.organisation.routes.TrusteeUtrController.onPageLoad(NormalMode, index, draftId)
+    case Some(false) => controllers.register.trustees.organisation.routes.TrusteeOrgAddressUkYesNoController.onPageLoad(NormalMode,index, draftId)
     case None => routes.SessionExpiredController.onPageLoad()
   }
 

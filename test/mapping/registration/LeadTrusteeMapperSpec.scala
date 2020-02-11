@@ -24,6 +24,8 @@ import mapping.Mapping
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.register.trustees.organisation.{TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 
 class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
@@ -61,11 +63,41 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
             dateOfBirth = LocalDate.of(1500,10,10),
             phoneNumber = "0191 1111111",
             email = None,
-            identification = IdentificationType(nino = Some("AB123456C"),None, None)))
+            identification = IdentificationType(
+              nino = Some("AB123456C"),
+              None,
+              None
+            )
+          ))
         )
       }
 
-      "must not able to create LeadTrusteeType with only trustee individual which is not lead." in {
+      "must be able to create LeadTrusteeType with lead trustee organisation" in {
+
+        val index = 0
+        val userAnswers = emptyUserAnswers
+          .set(IsThisLeadTrusteePage(index), true).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+          .set(TrusteeUtrYesNoPage(index), true).success.value
+          .set(TrusteeOrgNamePage(index), "Org Name").success.value
+          .set(TrusteesUtrPage(index), "1234567890").success.value
+          .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
+          .set(TrusteeOrgAddressUkPage(index), UKAddress("line1", "line2" ,None, None, "NE65QA")).success.value
+          .set(TelephoneNumberPage(index), "0191 1111111").success.value
+
+        leadTrusteeMapper.build(userAnswers).value mustBe LeadTrusteeType(
+          leadTrusteeOrg = Some(LeadTrusteeOrgType("Org Name",
+            phoneNumber = "0191 1111111",
+            email = None,
+            identification = IdentificationOrgType(
+              utr = Some("1234567890"),
+              None
+            )
+          ))
+        )
+      }
+
+      "must not be able to create LeadTrusteeType with only trustee individual which is not lead." in {
         val index = 0
         val userAnswers = emptyUserAnswers
           .set(IsThisLeadTrusteePage(index), false).success.value
@@ -76,7 +108,17 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
         leadTrusteeMapper.build(userAnswers) mustNot be(defined)
       }
 
-      "must be able to create LeadTrusteeType without telephone number for trustee individual" in {
+      "must not be able to create LeadTrusteeType with only trustee organisation which is not lead." in {
+        val index = 0
+        val userAnswers = emptyUserAnswers
+          .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+          .set(TrusteeOrgNamePage(index), "Org Name").success.value
+
+        leadTrusteeMapper.build(userAnswers) mustNot be(defined)
+      }
+
+      "must not be able to create LeadTrusteeType without telephone number for trustee individual" in {
 
         val index = 0
         val userAnswers = emptyUserAnswers
@@ -90,6 +132,22 @@ class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers
           .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2",None, Some("line4"), "NE65QA")).success.value
 
          leadTrusteeMapper.build(userAnswers) mustNot be(defined)
+
+      }
+
+      "must not be able to create LeadTrusteeType without telephone number for trustee organisation" in {
+
+        val index = 0
+        val userAnswers = emptyUserAnswers
+          .set(IsThisLeadTrusteePage(index), true).success.value
+          .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+          .set(TrusteeUtrYesNoPage(index), true).success.value
+          .set(TrusteeOrgNamePage(index), "Org Name").success.value
+          .set(TrusteesUtrPage(index), "1234567890").success.value
+          .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
+          .set(TrusteeOrgAddressUkPage(index), UKAddress("line1", "line2" ,None, None, "NE65QA")).success.value
+
+        leadTrusteeMapper.build(userAnswers) mustNot be(defined)
 
       }
 

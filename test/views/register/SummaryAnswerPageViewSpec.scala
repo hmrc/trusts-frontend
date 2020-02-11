@@ -34,6 +34,8 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.trustees._
 import pages.register._
+import pages.register.trust_details.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, TrustNamePage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
 import utils.{DateFormatter, TestUserAnswers}

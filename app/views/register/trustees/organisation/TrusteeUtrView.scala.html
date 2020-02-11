@@ -1,0 +1,51 @@
+@*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.register.trustees.organisation.routes._
+@import models.Mode
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
+)
+
+@(form: Form[_], mode: Mode, draftId: String, index: Int, trusteeBusinessName: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)} ${messages("trusteeUtr.title")}"
+    ) {
+
+    @formHelper(action = TrusteeUtrController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.input_text(
+          field = form("value"),
+          label = messages("trusteeUtr.heading", trusteeBusinessName),
+          labelAsHeading = true,
+          hint = Some(messages("trusteeUtr.hint")),
+          readerHint = Some(messages("trusteeUtr.hint.reader")),
+          labelClass = Some("heading-large"),
+          ariaRequired = true
+        )
+
+        <p>@messages("trusteeUtr.p1") <a target="_blank" href="https://www.gov.uk/find-lost-utr-number">@messages("trusteeUtr.link")</a>.</p>
+
+        @components.submit_button()
+    }
+}
