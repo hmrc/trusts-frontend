@@ -22,10 +22,12 @@ import base.SpecBaseHelpers
 import generators.Generators
 import mapping.Mapping
 import models.core.pages.IndividualOrBusiness._
-import models.core.pages.{FullName, UKAddress, InternationalAddress}
+import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.register.TrustNamePage
+import pages.register.trust_details.TrustNamePage
 import pages.register.trustees._
+import pages.register.trustees.organisation._
+import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesUkAddressPage}
 
 class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

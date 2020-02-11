@@ -24,12 +24,13 @@ import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
-import pages.register.trustees.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import controllers.register.routes._
+import pages.register.trustees.individual.TrusteesNamePage
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -61,14 +62,14 @@ class RequiredAnswerActionSpec extends RegistrationSpecBase with MockitoSugar wi
 
           val action = new Harness(RequiredAnswer(
             TrusteesNamePage(0),
-            controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId))
+            controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId))
           )
 
           val futureResult = action.callRefine(new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe
-              controllers.register.trustees.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId).url
+              controllers.register.trustees.individual.routes.TrusteesNameController.onPageLoad(NormalMode, 0, fakeDraftId).url
           }
         }
 

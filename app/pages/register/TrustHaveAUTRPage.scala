@@ -18,6 +18,7 @@ package pages.register
 
 import models.core.UserAnswers
 import pages.QuestionPage
+import pages.register.trust_details.TrustNamePage
 import play.api.libs.json.JsPath
 
 import scala.util.Try

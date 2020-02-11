@@ -26,6 +26,7 @@ import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.asset.AddAssetsPage
 import pages.register.beneficiaries.AddABeneficiaryPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
+import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.AddATrusteePage
 import sections._
 import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}

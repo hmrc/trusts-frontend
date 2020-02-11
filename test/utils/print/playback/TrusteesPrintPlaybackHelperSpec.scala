@@ -22,8 +22,10 @@ import java.time.LocalDate
 import base.PlaybackSpecBase
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.registration.pages.PassportOrIdCardDetails
-import pages.register.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
+import pages.register.trust_details.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
 import pages.register.trustees._
+import pages.register.trustees.individual._
+import pages.register.trustees.organisation._
 import play.twirl.api.Html
 
 class TrusteesPrintPlaybackHelperSpec extends PlaybackSpecBase with AnswerSectionMatchers with UserAnswersWriting {
