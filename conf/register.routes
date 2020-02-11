@@ -18,6 +18,8 @@ GET        /create-agent-services-account                                       
 
 GET        /signed-out                                                                              controllers.register.SignedOutController.onPageLoad()
 
+GET        /logout                                                                                  controllers.register.LogoutController.logout()
+
 GET        /:draftId/trust-name                                                                     controllers.register.trust_details.TrustNameController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-name                                                                     controllers.register.trust_details.TrustNameController.onSubmit(mode: Mode = NormalMode, draftId: String)
 
