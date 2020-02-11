@@ -24,6 +24,7 @@ import models.playback.UserAnswers
 import models.playback.http.{AddressType, Correspondence}
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register._
+import pages.register.trust_details.{CorrespondenceAbroadIndicatorPage, CorrespondenceAddressPage, CorrespondenceBpMatchStatusPage, CorrespondencePhoneNumberPage, TrustNamePage}
 
 class CorrespondenceExtractorSpec extends FreeSpec with MustMatchers with EitherValues with Generators with SpecBaseHelpers {
 

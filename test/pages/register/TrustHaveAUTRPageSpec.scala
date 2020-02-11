@@ -19,6 +19,7 @@ package pages.register
 import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import pages.register.trust_details.TrustNamePage
 
 class TrustHaveAUTRPageSpec extends PageBehaviours {
 

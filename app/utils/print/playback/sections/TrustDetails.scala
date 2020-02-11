@@ -17,11 +17,8 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
-import models.registration.pages.TrusteesBasedInTheUK._
-import models.registration.pages.{NonResidentType, TrusteesBasedInTheUK}
 import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.settlors.SettlorsBasedInTheUKPage
-import pages.register.{NonResidentTypePage, TrusteesBasedInTheUKPage, _}
+import pages.register.trust_details._
 import play.api.i18n.Messages
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat

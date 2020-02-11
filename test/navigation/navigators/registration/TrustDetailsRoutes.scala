@@ -19,18 +19,18 @@ package navigation.navigators.registration
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
-import controllers.register.routes
+import controllers.register.trust_details.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
 import models.registration.pages.NonResidentType
+import models.registration.pages.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages._
-import pages.register.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustNamePage, TrustPreviouslyResidentPage, TrustRegisteredOnlinePage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.agents.AgentOtherThanBarristerPage
+import pages.register.trust_details._
+import pages.register.{TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 
 trait TrustDetailsRoutes {
 
@@ -267,7 +267,7 @@ trait TrustDetailsRoutes {
             .set(TrustHaveAUTRPage, false).success.value
 
           navigator.nextPage(TrustDetailsAnswerPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
 
     }

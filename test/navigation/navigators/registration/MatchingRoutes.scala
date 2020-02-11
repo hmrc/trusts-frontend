@@ -28,11 +28,12 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.prop.PropertyChecks
-import pages.register.{TrustHaveAUTRPage, TrustNamePage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
+import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup
 import org.mockito.Mockito.when
+import pages.register.trust_details.TrustNamePage
 
 trait MatchingRoutes {
 
@@ -71,7 +72,7 @@ trait MatchingRoutes {
             userAnswers =>
 
               navigator.nextPage(WhatIsTheUTRPage, NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId))
           }
         }
 

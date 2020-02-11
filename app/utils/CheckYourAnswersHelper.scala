@@ -30,10 +30,11 @@ import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
-import pages.register.settlors.{SetUpAfterSettlorDiedYesNoPage, SettlorsBasedInTheUKPage}
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.trust_details.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, SettlorsBasedInTheUKPage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.trustees._
 import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
@@ -85,7 +86,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "settlorsBasedInTheUK.checkYourAnswersLabel",
         yesOrNo(x),
-        Some(controllers.register.settlors.routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId).url),
+        Some(controllers.register.trust_details.routes.SettlorsBasedInTheUKController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )
   }
@@ -95,7 +96,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "trusteesBasedInTheUK.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"trusteesBasedInTheUK.$x")),
-        Some(controllers.register.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),
+        Some(controllers.register.trust_details.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )
   }
@@ -1291,7 +1292,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "whenTrustSetup.checkYourAnswersLabel",
         HtmlFormat.escape(x.format(dateFormatter)),
-        Some(controllers.register.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId).url),
+        Some(controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )
   }
@@ -1301,51 +1302,51 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
   def inheritanceTaxAct: Option[AnswerRow] = userAnswers.get(InheritanceTaxActPage) map {
-    x => AnswerRow("inheritanceTaxAct.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.InheritanceTaxActController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
+    x => AnswerRow("inheritanceTaxAct.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.InheritanceTaxActController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
   }
 
   def nonresidentType: Option[AnswerRow] = userAnswers.get(NonResidentTypePage) map {
-    x => AnswerRow("nonresidentType.checkYourAnswersLabel", answer("nonresidentType", x), Some(controllers.register.routes.NonResidentTypeController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
+    x => AnswerRow("nonresidentType.checkYourAnswersLabel", answer("nonresidentType", x), Some(controllers.register.trust_details.routes.NonResidentTypeController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
   }
 
   def trustPreviouslyResident: Option[AnswerRow] = userAnswers.get(TrustPreviouslyResidentPage) map {
-    x => AnswerRow("trustPreviouslyResident.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
+    x => AnswerRow("trustPreviouslyResident.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.trust_details.routes.TrustPreviouslyResidentController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
   }
 
   def trustResidentOffshore: Option[AnswerRow] = userAnswers.get(TrustResidentOffshorePage) map {
-    x => AnswerRow("trustResidentOffshore.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
+    x => AnswerRow("trustResidentOffshore.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.TrustResidentOffshoreController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
   }
 
   def establishedUnderScotsLaw: Option[AnswerRow] = userAnswers.get(EstablishedUnderScotsLawPage) map {
-    x => AnswerRow("establishedUnderScotsLaw.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
+    x => AnswerRow("establishedUnderScotsLaw.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.EstablishedUnderScotsLawController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
   }
 
   def trusteesBasedInUK: Option[AnswerRow] = userAnswers.get(TrusteesBasedInTheUKPage) map {
-    x => AnswerRow("trusteesBasedInTheUK.checkYourAnswersLabel", answer("trusteesBasedInTheUK", x), Some(controllers.register.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("trusteesBasedInTheUK.checkYourAnswersLabel", answer("trusteesBasedInTheUK", x), Some(controllers.register.trust_details.routes.TrusteesBasedInTheUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
   def countryAdministeringTrust: Option[AnswerRow] = userAnswers.get(CountryAdministeringTrustPage) map {
-    x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("countryAdministeringTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.trust_details.routes.CountryAdministeringTrustController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
   def administrationInsideUK: Option[AnswerRow] = userAnswers.get(AdministrationInsideUKPage) map {
-    x => AnswerRow("administrationInsideUK.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("administrationInsideUK.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.AdministrationInsideUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
   def countryGoverningTrust: Option[AnswerRow] = userAnswers.get(CountryGoverningTrustPage) map {
-    x => AnswerRow("countryGoverningTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.routes.CountryGoverningTrustController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("countryGoverningTrust.checkYourAnswersLabel", escape(country(x, countryOptions)), Some(controllers.register.trust_details.routes.CountryGoverningTrustController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
   def governedInsideTheUK: Option[AnswerRow] = userAnswers.get(GovernedInsideTheUKPage) map {
-    x => AnswerRow("governedInsideTheUK.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("governedInsideTheUK.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
   def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
-    x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), Some(controllers.register.routes.TrustNameController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), Some(controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
   def registeringTrustFor5A: Option[AnswerRow] = userAnswers.get(RegisteringTrustFor5APage) map {
-    x => AnswerRow("registeringTrustFor5A.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+    x => AnswerRow("registeringTrustFor5A.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
 }

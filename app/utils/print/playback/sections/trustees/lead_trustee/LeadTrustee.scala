@@ -18,7 +18,7 @@ package utils.print.playback.sections.trustees.lead_trustee
 
 import models.core.pages.IndividualOrBusiness.Individual
 import models.playback.UserAnswers
-import pages.register.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
+import pages.register.trust_details.{CorrespondenceAddressInTheUKPage, CorrespondenceAddressPage}
 import pages.register.trustees._
 import pages.register.trustees.individual.{TrusteeAddressInTheUKPage, TrusteeAddressPage}
 import play.api.i18n.Messages
