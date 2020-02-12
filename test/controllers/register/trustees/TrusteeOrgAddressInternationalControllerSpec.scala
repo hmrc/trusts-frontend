@@ -144,7 +144,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, trusteeOrgAddressInternationalRoute)
+        FakeRequest(POST, trusteeOrgAddressInternationalPOST)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -182,7 +182,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, trusteeOrgAddressInternationalRoute)
+        FakeRequest(POST, trusteeOrgAddressInternationalPOST)
 
       val result = route(application, request).value
 
