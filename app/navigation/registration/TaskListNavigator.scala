@@ -35,9 +35,9 @@ class TaskListNavigator @Inject()() {
   private def trustDetailsRoute(draftId: String)(answers: UserAnswers) = {
     val completed = answers.get(TrustDetailsStatus).contains(Completed)
     if (completed) {
-      routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+      controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     } else {
-      routes.TrustNameController.onPageLoad(NormalMode, draftId)
+      controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
     }
   }
 

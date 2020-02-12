@@ -18,6 +18,8 @@ package utils.print.playback.sections.trustees
 
 import models.playback.UserAnswers
 import pages.register.trustees._
+import pages.register.trustees.individual.{TrusteeAddressInTheUKPage, TrusteeAddressPage, TrusteeAddressYesNoPage}
+import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 import play.api.i18n.Messages
 import utils.countryOptions.CountryOptions
 import utils.print.playback.sections.AnswerRowConverter.{addressQuestion, stringQuestion, yesNoQuestion}

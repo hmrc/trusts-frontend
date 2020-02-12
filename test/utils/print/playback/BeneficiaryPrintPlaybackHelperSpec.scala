@@ -22,7 +22,6 @@ import base.PlaybackSpecBase
 import models.core.pages.{Description, FullName, UKAddress}
 import models.playback.UserAnswers
 import models.registration.pages.{PassportOrIdCardDetails, RoleInCompany}
-import pages.register.TrustNamePage
 import pages.register.beneficiaries.charity._
 import pages.register.beneficiaries.company._
 import pages.register.beneficiaries.trust._
@@ -30,6 +29,7 @@ import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.large._
 import pages.register.beneficiaries.other._
 import pages.register.beneficiaries.classOfBeneficiary._
+import pages.register.trust_details.TrustNamePage
 import play.twirl.api.Html
 import viewmodels.{AnswerRow, AnswerSection}
 

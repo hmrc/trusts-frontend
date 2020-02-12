@@ -6,11 +6,11 @@ echo "Applying migration TrusteesName"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trusteesName                        controllers.register.trustees.TrusteesNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trusteesName                        controllers.register.trustees.TrusteesNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trusteesName                        controllers.register.trustees.individual.TrusteesNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trusteesName                        controllers.register.trustees.individual.TrusteesNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrusteesName                  controllers.register.trustees.TrusteesNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrusteesName                  controllers.register.trustees.TrusteesNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrusteesName                  controllers.register.trustees.individual.TrusteesNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrusteesName                  controllers.register.trustees.individual.TrusteesNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

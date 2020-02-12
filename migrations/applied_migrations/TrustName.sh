@@ -6,11 +6,11 @@ echo "Applying migration TrustName"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trustName                        controllers.register.TrustNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trustName                        controllers.register.TrustNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trustName                        controllers.register.trust_details.TrustNameController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trustName                        controllers.register.trust_details.TrustNameController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrustName                  controllers.register.TrustNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrustName                  controllers.register.TrustNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrustName                  controllers.register.trust_details.TrustNameController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrustName                  controllers.register.trust_details.TrustNameController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

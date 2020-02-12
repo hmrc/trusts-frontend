@@ -21,11 +21,11 @@ import forms.RemoveIndexFormProvider
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.register.trustees.TrusteesNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
 import controllers.register.routes._
+import pages.register.trustees.individual.TrusteesNamePage
 
 class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChecks {
 

@@ -6,11 +6,11 @@ echo "Applying migration TrustResidentOffshore"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /trustResidentOffshore                        controllers.register.TrustResidentOffshoreController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /trustResidentOffshore                        controllers.register.TrustResidentOffshoreController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /trustResidentOffshore                        controllers.register.trust_details.TrustResidentOffshoreController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /trustResidentOffshore                        controllers.register.trust_details.TrustResidentOffshoreController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeTrustResidentOffshore                  controllers.register.TrustResidentOffshoreController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeTrustResidentOffshore                  controllers.register.TrustResidentOffshoreController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeTrustResidentOffshore                  controllers.register.trust_details.TrustResidentOffshoreController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeTrustResidentOffshore                  controllers.register.trust_details.TrustResidentOffshoreController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

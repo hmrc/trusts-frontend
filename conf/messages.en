@@ -59,6 +59,7 @@ site.warning = Warning
 site.confirm-send = Confirm and send
 site.address = Address
 site.utr = Unique Taxpayer Reference
+site.sign_out = Sign out
 
 site.address.uk.title = What is the address?
 site.address.uk.heading = What is {0}’s address?

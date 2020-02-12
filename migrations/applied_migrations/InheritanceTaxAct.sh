@@ -6,11 +6,11 @@ echo "Applying migration InheritanceTaxAct"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /inheritanceTaxAct                        controllers.register.InheritanceTaxActController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /inheritanceTaxAct                        controllers.register.InheritanceTaxActController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /inheritanceTaxAct                        controllers.register.trust_details.InheritanceTaxActController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /inheritanceTaxAct                        controllers.register.trust_details.InheritanceTaxActController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeInheritanceTaxAct                  controllers.register.InheritanceTaxActController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeInheritanceTaxAct                  controllers.register.InheritanceTaxActController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeInheritanceTaxAct                  controllers.register.trust_details.InheritanceTaxActController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeInheritanceTaxAct                  controllers.register.trust_details.InheritanceTaxActController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

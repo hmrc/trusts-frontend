@@ -6,11 +6,11 @@ echo "Applying migration WhenTrustSetup"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /whenTrustSetup                  controllers.register.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
-echo "POST       /whenTrustSetup                  controllers.register.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "GET        /whenTrustSetup                  controllers.register.trust_details.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode)" >> ../conf/app.routes
+echo "POST       /whenTrustSetup                  controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode)" >> ../conf/app.routes
 
-echo "GET        /changeWhenTrustSetup                        controllers.register.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
-echo "POST       /changeWhenTrustSetup                        controllers.register.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "GET        /changeWhenTrustSetup                        controllers.register.trust_details.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode)" >> ../conf/app.routes
+echo "POST       /changeWhenTrustSetup                        controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

@@ -28,13 +28,13 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Money
 import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.register.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
+import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.trustees.IsThisLeadTrusteePage
 import sections.beneficiaries.Beneficiaries
 import sections.{Settlors, TaxLiability, TrustDetails}
@@ -54,7 +54,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
             .set(TrustNamePage, "Trust of John").success.value
               .set(WhenTrustSetupPage, LocalDate.of(2010,10,10)).success.value
               .set(TrustDetailsStatus, Completed).success.value
-          navigator.nextPage(TrustDetails, answers, fakeDraftId) mustBe routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId)
+          navigator.nextPage(TrustDetails, answers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -62,7 +62,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "trust details has not been answered" must {
 
         "go to TrustName Page" in {
-          navigator.nextPage(TrustDetails, emptyUserAnswers, fakeDraftId) mustBe routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
+          navigator.nextPage(TrustDetails, emptyUserAnswers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
         }
 
       }
