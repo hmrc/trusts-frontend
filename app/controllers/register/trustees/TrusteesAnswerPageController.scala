@@ -67,6 +67,9 @@ class TrusteesAnswerPageController @Inject()(
 
       val isLead = request.userAnswers.get(IsThisLeadTrusteePage(index)).get
 
+      val titleMessagePrefix = if(isLead) "leadTrusteesAnswerPage" else "trusteesAnswerPage"
+
+
       val trusteeIndividualOrBusinessMessagePrefix = if (isLead) "leadTrusteeIndividualOrBusiness" else "trusteeIndividualOrBusiness"
       val trusteeFullNameMessagePrefix = if (isLead) "leadTrusteesName" else "trusteesName"
 
@@ -76,7 +79,6 @@ class TrusteesAnswerPageController @Inject()(
           request.userAnswers.get(TrusteeIndividualOrBusinessPage(index)) match {
             case Some(IndividualOrBusiness.Individual) =>
               Seq(
-                checkYourAnswersHelper.isThisLeadTrustee(index),
                 checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
                 checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix),
                 checkYourAnswersHelper.trusteesDateOfBirth(index),
@@ -89,7 +91,6 @@ class TrusteesAnswerPageController @Inject()(
 
             case Some(IndividualOrBusiness.Business) =>
               Seq(
-                checkYourAnswersHelper.isThisLeadTrustee(index),
                 checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
                 checkYourAnswersHelper.trusteeUtrYesNo(index),
                 checkYourAnswersHelper.trusteeOrgName(index),
@@ -106,7 +107,7 @@ class TrusteesAnswerPageController @Inject()(
         )
       )
 
-      Ok(view(index, draftId ,sections))
+      Ok(view(index, draftId ,sections, titleMessagePrefix))
   }
 
   def onSubmit(index : Int, draftId: String) = actions(index, draftId).async {

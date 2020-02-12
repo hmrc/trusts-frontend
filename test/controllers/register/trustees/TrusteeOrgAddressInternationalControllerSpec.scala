@@ -23,7 +23,7 @@ import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.pages.InternationalAddress
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
+import pages.register.trustees.{IsThisLeadTrusteePage, TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage}
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -43,6 +43,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
   val orgName = "Test"
 
   lazy val trusteeOrgAddressInternationalRoute = routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val trusteeOrgAddressInternationalPOST = routes.TrusteeOrgAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url
 
   "TrusteeOrgAddressInternational Controller" must {
 
@@ -122,7 +123,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
         applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, trusteeOrgAddressInternationalRoute)
+        FakeRequest(POST, trusteeOrgAddressInternationalPOST)
           .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("country", "IN"))
 
       val result = route(application, request).value

@@ -91,7 +91,7 @@ class AddATrusteeViewHelperSpec extends RegistrationSpecBase {
         rows.complete mustBe List(
           AddRow("First 0 Last 0", typeLabel = "Lead Trustee Individual", "#", "/trusts-registration/id/trustee/0/remove"),
           AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/1/remove"),
-          AddRow("BusinessName", typeLabel = "Trustee Company", "#", "/trusts-registration/id/trustee/2/remove-organisation")
+          AddRow("BusinessName", typeLabel = "Trustee Company", "#", "/trusts-registration/id/trustee/business/2/remove")
         )
         rows.inProgress mustBe Nil
       }
@@ -99,7 +99,7 @@ class AddATrusteeViewHelperSpec extends RegistrationSpecBase {
       "generate rows from user answers for complete trustees (Lead Trustee Business)" in {
         val rows = new AddATrusteeViewHelper(userAnswersWithTrusteesAndLeadTrusteeBusinessComplete, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("BusinessName", typeLabel = "Lead Trustee Company", "#", "/trusts-registration/id/trustee/0/remove-organisation")
+          AddRow("BusinessName", typeLabel = "Lead Trustee Company", "#", "/trusts-registration/id/trustee/business/0/remove")
         )
         rows.inProgress mustBe Nil
       }

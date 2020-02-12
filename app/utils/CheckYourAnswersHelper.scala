@@ -358,7 +358,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         val questions = trustee match {
           case _: TrusteeIndividual | _: LeadTrusteeIndividual =>
             Seq(
-              isThisLeadTrustee(index),
               trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
               trusteeFullName(index, trusteeFullNameMessagePrefix),
               trusteesDateOfBirth(index),
@@ -371,7 +370,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
             ).flatten
           case _: TrusteeOrganisation | _: LeadTrusteeOrganisation =>
             Seq(
-              isThisLeadTrustee(index),
               trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
               trusteeUtrYesNo(index),
               trusteeOrgName(index),
