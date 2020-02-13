@@ -43,6 +43,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
   val orgName = "Test"
 
   lazy val trusteeOrgAddressInternationalRoute = routes.TrusteeOrgAddressInternationalController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val trusteeOrgAddressInternationalPOST = routes.TrusteeOrgAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url
 
   "TrusteeOrgAddressInternational Controller" must {
 
@@ -122,7 +123,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
         applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, trusteeOrgAddressInternationalRoute)
+        FakeRequest(POST, trusteeOrgAddressInternationalPOST)
           .withFormUrlEncodedBody(("line1", "value 1"), ("line2", "value 2"), ("country", "IN"))
 
       val result = route(application, request).value
@@ -143,7 +144,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, trusteeOrgAddressInternationalRoute)
+        FakeRequest(POST, trusteeOrgAddressInternationalPOST)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -181,7 +182,7 @@ class TrusteeOrgAddressInternationalControllerSpec extends RegistrationSpecBase 
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, trusteeOrgAddressInternationalRoute)
+        FakeRequest(POST, trusteeOrgAddressInternationalPOST)
 
       val result = route(application, request).value
 

@@ -16,6 +16,7 @@
 
 package views.register.trustees
 
+import pages.register.trustees.IsThisLeadTrusteePage
 import views.behaviours.ViewBehaviours
 import views.html.register.trustees.TrusteesAnswerPageView
 
@@ -23,13 +24,34 @@ class TrusteesAnswerPageViewSpec extends ViewBehaviours {
 
   val index = 0
 
-  "TrusteesAnswerPage view" must {
+  "TrusteesAnswerPage as a lead trustee view" must {
 
-    val view = viewFor[TrusteesAnswerPageView](Some(emptyUserAnswers))
+    val titlePrefix = "leadTrusteesAnswerPage"
 
-    val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
+    val userAnswers = emptyUserAnswers
+      .set(IsThisLeadTrusteePage(index), true).success.value
 
-    behave like normalPage(applyView, "trusteesAnswerPage")
+    val view = viewFor[TrusteesAnswerPageView](Some(userAnswers))
+
+    val applyView = view.apply(index, fakeDraftId, Nil, titlePrefix)(fakeRequest, messages)
+
+    behave like normalPage(applyView, titlePrefix)
+
+    behave like pageWithBackLink(applyView)
+  }
+
+  "TrusteesAnswerPage as a trustee view" must {
+
+    val titlePrefix = "trusteesAnswerPage"
+
+    val userAnswers = emptyUserAnswers
+      .set(IsThisLeadTrusteePage(index), false).success.value
+
+    val view = viewFor[TrusteesAnswerPageView](Some(userAnswers))
+
+    val applyView = view.apply(index, fakeDraftId, Nil, titlePrefix)(fakeRequest, messages)
+
+    behave like normalPage(applyView, titlePrefix)
 
     behave like pageWithBackLink(applyView)
   }

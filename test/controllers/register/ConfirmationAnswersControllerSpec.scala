@@ -161,7 +161,6 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         AnswerSection(
           Some("Trustee 1"),
           Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
             checkYourAnswersHelper.trusteeFullName(index, leadTrusteeFullNameMessagePrefix).value,
             checkYourAnswersHelper.trusteesDateOfBirth(index).value,
@@ -370,7 +369,6 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         AnswerSection(
           headingKey = Some("Trustee 1"),
           Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
             checkYourAnswersHelper.trusteeFullName(index, leadTrusteeFullNameMessagePrefix).value,
             checkYourAnswersHelper.trusteesDateOfBirth(index).value,

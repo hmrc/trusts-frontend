@@ -34,7 +34,7 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.trust_details.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, SettlorsBasedInTheUKPage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
+import pages.register.trust_details.{AdministrationInsideUKPage, AgentOtherThanBarristerPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, SettlorsBasedInTheUKPage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.trustees._
 import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
@@ -361,7 +361,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         val questions = trustee match {
           case _: TrusteeIndividual | _: LeadTrusteeIndividual =>
             Seq(
-              isThisLeadTrustee(index),
               trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
               trusteeFullName(index, trusteeFullNameMessagePrefix),
               trusteesDateOfBirth(index),
@@ -374,7 +373,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
             ).flatten
           case _: TrusteeOrganisation | _: LeadTrusteeOrganisation =>
             Seq(
-              isThisLeadTrustee(index),
               trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix),
               trusteeUtrYesNo(index),
               trusteeOrgName(index),
@@ -1298,7 +1296,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
   def agentOtherThanBarrister: Option[AnswerRow] = userAnswers.get(AgentOtherThanBarristerPage) map {
-    x => AnswerRow("agentOtherThanBarrister.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.agents.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
+    x => AnswerRow("agentOtherThanBarrister.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId).url), canEdit = canEdit)
   }
 
   def inheritanceTaxAct: Option[AnswerRow] = userAnswers.get(InheritanceTaxActPage) map {

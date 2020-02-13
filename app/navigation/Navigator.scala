@@ -35,7 +35,7 @@ import pages.register.asset.shares._
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries._
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.trust_details.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, SettlorsBasedInTheUKPage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
+import pages.register.trust_details.{AdministrationInsideUKPage, AgentOtherThanBarristerPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, SettlorsBasedInTheUKPage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
 import pages.register.trustees._
 import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
 import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
@@ -465,7 +465,7 @@ class Navigator @Inject()(
   }
 
   private def inheritanceTaxRoute(draftId: String)(answers: UserAnswers) = answers.get(InheritanceTaxActPage) match {
-    case Some(true)   => controllers.register.agents.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId)
+    case Some(true)   => controllers.register.trust_details.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, draftId)
     case Some(false)  => controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
     case None         => routes.SessionExpiredController.onPageLoad()
   }

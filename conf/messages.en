@@ -395,6 +395,9 @@ leadTrusteesName.error.invalidLastNameCharacters = Lead trustee’s last name mu
 trusteesAnswerPage.title = Check trustee details
 trusteesAnswerPage.heading = Check trustee details
 
+leadTrusteesAnswerPage.title = Check lead trustee details
+leadTrusteesAnswerPage.heading = Check lead trustee details
+
 addATrustee.title = Add a trustee
 
 addATrustee.heading = Add a trustee

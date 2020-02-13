@@ -58,12 +58,12 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
       val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
+      val titlePrefix = "leadTrusteesAnswerPage"
 
       val expectedSections = Seq(
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
             checkYourAnswersHelper.trusteeFullName(index, leadTrusteeFullNameMessagePrefix).value,
             checkYourAnswersHelper.trusteesDateOfBirth(index).value,
@@ -87,7 +87,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+        view(index, fakeDraftId, expectedSections, titlePrefix)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -112,12 +112,12 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val trusteeIndividualOrBusinessMessagePrefix = "trusteeIndividualOrBusiness"
       val trusteeFullNameMessagePrefix = "trusteesName"
+      val titlePrefix = "trusteesAnswerPage"
 
       val expectedSections = Seq(
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix).value,
             checkYourAnswersHelper.trusteeFullName(index, trusteeFullNameMessagePrefix).value,
             checkYourAnswersHelper.trusteesDateOfBirth(index).value,
@@ -141,7 +141,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+        view(index, fakeDraftId, expectedSections, titlePrefix)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -166,12 +166,12 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val trusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
+      val titlePrefix = "leadTrusteesAnswerPage"
 
       val expectedSections = Seq(
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix).value,
             checkYourAnswersHelper.trusteeUtrYesNo(index).value,
             checkYourAnswersHelper.trusteeOrgName(index).value,
@@ -194,7 +194,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+        view(index, fakeDraftId, expectedSections, titlePrefix)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -203,7 +203,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val answers =
         emptyUserAnswers
-          .set(IsThisLeadTrusteePage(index), false).success.value
+          .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
           .set(TrusteeUtrYesNoPage(index), false).success.value
           .set(TrusteeOrgNamePage(index), "Amazon").success.value
@@ -216,6 +216,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val trusteeIndividualOrBusinessMessagePrefix = "trusteeIndividualOrBusiness"
+      val titlePrefix = "leadTrusteesAnswerPage"
 
       val expectedSections = Seq(
         AnswerSection(
@@ -243,7 +244,7 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+        view(index, fakeDraftId, expectedSections, titlePrefix)(fakeRequest, messages).toString
 
       application.stop()
     }

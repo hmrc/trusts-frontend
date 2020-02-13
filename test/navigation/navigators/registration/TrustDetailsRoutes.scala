@@ -28,8 +28,7 @@ import models.registration.pages.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBas
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.trust_details._
+import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import pages.register.{TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 
 trait TrustDetailsRoutes {
@@ -166,7 +165,7 @@ trait TrustDetailsRoutes {
           val answers = userAnswers.set(InheritanceTaxActPage, value = true).success.value
 
           navigator.nextPage(InheritanceTaxActPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.agents.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, fakeDraftId))
+            .mustBe(controllers.register.trust_details.routes.AgentOtherThanBarristerController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
 

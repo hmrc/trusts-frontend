@@ -22,8 +22,7 @@ import mapping.registration.{NonUKType, ResidentialStatusType, TrustDetailsType,
 import models.playback.UserAnswers
 import models.registration.pages.NonResidentType
 import pages.register._
-import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.trust_details.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, WhenTrustSetupPage}
+import pages.register.trust_details.{AdministrationInsideUKPage, AgentOtherThanBarristerPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, WhenTrustSetupPage}
 import play.api.Logger
 
 import scala.util.{Failure, Success, Try}
