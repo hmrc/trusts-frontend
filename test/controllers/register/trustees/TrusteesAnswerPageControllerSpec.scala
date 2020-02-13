@@ -215,14 +215,13 @@ class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
-      val trusteeIndividualOrBusinessMessagePrefix = "trusteeIndividualOrBusiness"
+      val trusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
       val titlePrefix = "leadTrusteesAnswerPage"
 
       val expectedSections = Seq(
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.isThisLeadTrustee(index).value,
             checkYourAnswersHelper.trusteeIndividualOrBusiness(index, trusteeIndividualOrBusinessMessagePrefix).value,
             checkYourAnswersHelper.trusteeUtrYesNo(index).value,
             checkYourAnswersHelper.trusteeOrgName(index).value,

@@ -42,8 +42,8 @@ class AddATrusteeControllerSpec extends RegistrationSpecBase {
   val yesNoForm = new YesNoFormProvider().withPrefix("addATrusteeYesNo")
 
   val trustee = List(
-    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/0/remove"),
-    AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustee/1/remove")
+    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustees/individual/0/remove"),
+    AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustees/individual/1/remove")
   )
 
   val userAnswersWithTrusteesComplete = emptyUserAnswers
@@ -166,7 +166,7 @@ class AddATrusteeControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addTrusteeForm, NormalMode, fakeDraftId,Nil, trustee, isLeadTrusteeDefined = false, heading = "You have added 2 trustees")(fakeRequest, messages).toString
+          view(addTrusteeForm, NormalMode, fakeDraftId, Nil, trustee, isLeadTrusteeDefined = false, heading = "You have added 2 trustees")(fakeRequest, messages).toString
 
         application.stop()
       }
