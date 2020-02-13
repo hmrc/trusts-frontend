@@ -21,7 +21,6 @@ import models.registration.pages.TrusteesBasedInTheUK
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import pages.QuestionPage
 import pages.entitystatus.TrustDetailsStatus
-import pages.register.agents.AgentOtherThanBarristerPage
 import play.api.libs.json.JsPath
 import sections.TrustDetails
 

@@ -22,8 +22,7 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import models.registration.pages.NonResidentType
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.trust_details._
+import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper

@@ -25,8 +25,7 @@ import mapping.{registration, _}
 import models.registration.pages.NonResidentType.Domiciled
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.trust_details._
+import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import utils.TestUserAnswers
 
 class TrustDetailsMapperSpec extends FreeSpec with MustMatchers

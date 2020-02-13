@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package controllers.register.agents
+package controllers.register.trust_details
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
+import pages.register.trust_details.AgentOtherThanBarristerPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.agents.AgentOtherThanBarristerView
-import controllers.register.routes._
-import pages.register.agents.AgentOtherThanBarristerPage
+import views.html.register.trust_details.AgentOtherThanBarristerView
 
 class AgentOtherThanBarristerControllerSpec extends RegistrationSpecBase {
 

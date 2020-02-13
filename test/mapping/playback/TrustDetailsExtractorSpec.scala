@@ -28,8 +28,7 @@ import models.registration.pages.NonResidentType
 import models.registration.pages.NonResidentType.Domiciled
 import org.scalatest.{EitherValues, FreeSpec, MustMatchers}
 import pages.register._
-import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.trust_details.{AdministrationInsideUKPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, WhenTrustSetupPage}
+import pages.register.trust_details.{AdministrationInsideUKPage, AgentOtherThanBarristerPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, WhenTrustSetupPage}
 
 class TrustDetailsExtractorSpec extends FreeSpec with MustMatchers with EitherValues with Generators with SpecBaseHelpers {
 

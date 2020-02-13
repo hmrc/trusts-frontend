@@ -14,34 +14,33 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.organisation
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.RemoveIndexFormProvider
-import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
+import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
-import controllers.register.routes._
-import pages.register.trustees.individual.TrusteesNamePage
 
-class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChecks {
+class RemoveTrusteeOrgControllerSpec extends RegistrationSpecBase with PropertyChecks {
 
-  val messagesPrefix = "removeATrustee"
+  val messagesPrefix = "removeATrusteeOrg"
 
   lazy val formProvider = new RemoveIndexFormProvider()
   lazy val form = formProvider(messagesPrefix)
 
-  lazy val formRoute = routes.RemoveTrusteeController.onSubmit(0, fakeDraftId)
+  lazy val formRoute = routes.RemoveTrusteeOrgController.onSubmit(0, fakeDraftId)
 
-  lazy val content : String = "John Smith"
+  lazy val content : String = "John Smith Org"
   lazy val defaultContent : String = "the trustee"
 
   val index = 0
 
-  "TrusteeRemove Controller" when {
+  "TrusteeOrgRemove Controller" when {
 
     "no name provided" must {
       "return OK and the correct view for a GET" in {
@@ -50,7 +49,7 @@ class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChec
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        val request = FakeRequest(GET, routes.RemoveTrusteeController.onPageLoad(index, fakeDraftId).url)
+        val request = FakeRequest(GET, routes.RemoveTrusteeOrgController.onPageLoad(index, fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -68,11 +67,11 @@ class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChec
       "return OK and the correct view for a GET" in {
 
         val userAnswers = emptyUserAnswers
-          .set(TrusteesNamePage(0), FullName("John", None, "Smith")).success.value
+          .set(TrusteeOrgNamePage(0), content).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        val request = FakeRequest(GET, routes.RemoveTrusteeController.onPageLoad(index, fakeDraftId).url)
+        val request = FakeRequest(GET, routes.RemoveTrusteeOrgController.onPageLoad(index, fakeDraftId).url)
 
         val result = route(application, request).value
 
@@ -89,7 +88,7 @@ class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChec
     "redirect to the next page when valid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(0), FullName("John", None, "Smith")).success.value
+        .set(TrusteeOrgNamePage(0), content).success.value
 
       forAll(arbitrary[Boolean]) {
         value =>
@@ -98,14 +97,14 @@ class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChec
               .build()
 
           val request =
-            FakeRequest(POST, routes.RemoveTrusteeController.onSubmit(index, fakeDraftId).url)
+            FakeRequest(POST, routes.RemoveTrusteeOrgController.onSubmit(index, fakeDraftId).url)
               .withFormUrlEncodedBody(("value", value.toString))
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.AddATrusteeController.onPageLoad(fakeDraftId).url
+          redirectLocation(result).value mustEqual controllers.register.trustees.routes.AddATrusteeController.onPageLoad(fakeDraftId).url
 
           application.stop()
       }
@@ -115,12 +114,12 @@ class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChec
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteesNamePage(0), FullName("John", None, "Smith")).success.value
+        .set(TrusteeOrgNamePage(0), content).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, routes.RemoveTrusteeController.onSubmit(index, fakeDraftId).url)
+        FakeRequest(POST, routes.RemoveTrusteeOrgController.onSubmit(index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
@@ -141,7 +140,7 @@ class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChec
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, routes.RemoveTrusteeController.onPageLoad(index, fakeDraftId).url)
+      val request = FakeRequest(GET, routes.RemoveTrusteeOrgController.onPageLoad(index, fakeDraftId).url)
 
       val result = route(application, request).value
 
@@ -157,7 +156,7 @@ class RemoveTrusteeControllerSpec extends RegistrationSpecBase with PropertyChec
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, routes.RemoveTrusteeController.onSubmit(index, fakeDraftId).url)
+        FakeRequest(POST, routes.RemoveTrusteeOrgController.onSubmit(index, fakeDraftId).url)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value

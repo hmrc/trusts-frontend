@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages.register.agents
+package pages.register.trust_details
 
 import pages.behaviours.PageBehaviours
 

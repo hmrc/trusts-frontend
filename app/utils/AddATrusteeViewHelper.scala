@@ -16,11 +16,10 @@
 
 package utils
 
-import controllers.register.trustees.routes
-import models.registration.pages.Status.{Completed, InProgress}
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.{Business, Individual}
+import models.registration.pages.Status.{Completed, InProgress}
 import play.api.i18n.Messages
 import sections.Trustees
 import viewmodels._
@@ -48,11 +47,11 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
 
     val removeLink = viewModel.`type` match {
       case Some(Individual) =>
-        routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+        controllers.register.trustees.individual.routes.RemoveTrusteeController.onPageLoad(index, draftId).url
       case Some(Business) =>
-        routes.RemoveTrusteeOrgController.onPageLoad(index, draftId).url
+        controllers.register.trustees.organisation.routes.RemoveTrusteeOrgController.onPageLoad(index, draftId).url
       case _ =>
-        routes.RemoveTrusteeController.onPageLoad(index, draftId).url
+        controllers.register.trustees.individual.routes.RemoveTrusteeController.onPageLoad(index, draftId).url
     }
 
     AddRow(

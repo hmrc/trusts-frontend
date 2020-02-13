@@ -21,7 +21,6 @@ import models.registration.pages.NonResidentType
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.TrustDetailsStatus
-import pages.register.agents.AgentOtherThanBarristerPage
 
 class RegisteringTrustFor5APageSpec extends PageBehaviours {
 

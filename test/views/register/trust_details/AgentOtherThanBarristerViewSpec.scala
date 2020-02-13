@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package views.register.agents
+package views.register.trust_details
 
 import forms.YesNoFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.agents.AgentOtherThanBarristerView
+import views.html.register.trust_details.AgentOtherThanBarristerView
 
 class AgentOtherThanBarristerViewSpec extends YesNoViewBehaviours {
 

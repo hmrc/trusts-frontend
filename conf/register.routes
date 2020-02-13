@@ -20,72 +20,6 @@ GET        /signed-out                                                          
 
 GET        /logout                                                                                  controllers.register.LogoutController.logout()
 
-GET        /:draftId/trust-name                                                                     controllers.register.trust_details.TrustNameController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-name                                                                     controllers.register.trust_details.TrustNameController.onSubmit(mode: Mode = NormalMode, draftId: String)
-
-GET        /:draftId/change-trust-name                                                              controllers.register.trust_details.TrustNameController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-name                                                              controllers.register.trust_details.TrustNameController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-governed                                                                 controllers.register.trust_details.GovernedInsideTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-governed                                                                 controllers.register.trust_details.GovernedInsideTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-governed                                                          controllers.register.trust_details.GovernedInsideTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-governed                                                          controllers.register.trust_details.GovernedInsideTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-governed-country                                                         controllers.register.trust_details.CountryGoverningTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-governed-country                                                         controllers.register.trust_details.CountryGoverningTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-governed-country                                                  controllers.register.trust_details.CountryGoverningTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-governed-country                                                  controllers.register.trust_details.CountryGoverningTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-administration                                                           controllers.register.trust_details.AdministrationInsideUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-administration                                                           controllers.register.trust_details.AdministrationInsideUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-administration                                                    controllers.register.trust_details.AdministrationInsideUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-administration                                                    controllers.register.trust_details.AdministrationInsideUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-administration-country                                                   controllers.register.trust_details.CountryAdministeringTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-administration-country                                                   controllers.register.trust_details.CountryAdministeringTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-administration-country                                            controllers.register.trust_details.CountryAdministeringTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-administration-country                                            controllers.register.trust_details.CountryAdministeringTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-scots-law                                                                controllers.register.trust_details.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-scots-law                                                                controllers.register.trust_details.EstablishedUnderScotsLawController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-scots-law                                                         controllers.register.trust_details.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-scots-law                                                         controllers.register.trust_details.EstablishedUnderScotsLawController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-act-1992                                                                 controllers.register.trust_details.RegisteringTrustFor5AController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-act-1992                                                                 controllers.register.trust_details.RegisteringTrustFor5AController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-act-1992                                                          controllers.register.trust_details.RegisteringTrustFor5AController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-act-1992                                                          controllers.register.trust_details.RegisteringTrustFor5AController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-offshore                                                                 controllers.register.trust_details.TrustResidentOffshoreController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-offshore                                                                 controllers.register.trust_details.TrustResidentOffshoreController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-offshore                                                          controllers.register.trust_details.TrustResidentOffshoreController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-offshore                                                          controllers.register.trust_details.TrustResidentOffshoreController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-offshore-country                                                         controllers.register.trust_details.TrustPreviouslyResidentController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-offshore-country                                                         controllers.register.trust_details.TrustPreviouslyResidentController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-offshore-country                                                  controllers.register.trust_details.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-offshore-country                                                  controllers.register.trust_details.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-non-resident-type                                                        controllers.register.trust_details.NonResidentTypeController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-non-resident-type                                                        controllers.register.trust_details.NonResidentTypeController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-non-resident-type                                                 controllers.register.trust_details.NonResidentTypeController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-non-resident-type                                                 controllers.register.trust_details.NonResidentTypeController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-inheritance-tax-act                                                      controllers.register.trust_details.InheritanceTaxActController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-inheritance-tax-act                                                      controllers.register.trust_details.InheritanceTaxActController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-inheritance-tax-act                                               controllers.register.trust_details.InheritanceTaxActController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-inheritance-tax-act                                               controllers.register.trust_details.InheritanceTaxActController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-barrister                                                                controllers.register.agents.AgentOtherThanBarristerController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-barrister                                                                controllers.register.agents.AgentOtherThanBarristerController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-barrister                                                         controllers.register.agents.AgentOtherThanBarristerController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-barrister                                                         controllers.register.agents.AgentOtherThanBarristerController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/trust-created                                                                  controllers.register.trust_details.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-created                                                                  controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-created                                                           controllers.register.trust_details.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-created                                                           controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
 GET        /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode, draftId: String)
@@ -569,20 +503,10 @@ POST       /:draftId/trustees/:index/is-this-the-lead-trustee                   
 GET        /:draftId/trustees/:index/change-is-this-the-lead-trustee                                controllers.register.trustees.IsThisLeadTrusteeController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
 POST       /:draftId/trustees/:index/change-is-this-the-lead-trustee                                controllers.register.trustees.IsThisLeadTrusteeController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-individual-or-business                                 controllers.register.trustees.TrusteeIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-individual-or-business                                 controllers.register.trustees.TrusteeIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-individual-or-business                          controllers.register.trustees.TrusteeIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-individual-or-business                          controllers.register.trustees.TrusteeIndividualOrBusinessController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
-
-GET        /:draftId/trustees/:index/trustee-name                                                   controllers.register.trustees.individual.TrusteesNameController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-name                                                   controllers.register.trustees.individual.TrusteesNameController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-name                                            controllers.register.trustees.individual.TrusteesNameController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-name                                            controllers.register.trustees.individual.TrusteesNameController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
-
-GET        /:draftId/trustees/:index/date-of-birth                                                  controllers.register.trustees.individual.TrusteesDateOfBirthController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/trustees/:index/date-of-birth                                                  controllers.register.trustees.individual.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/trustees/:index/change-date-of-birth                                           controllers.register.trustees.individual.TrusteesDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/trustees/:index/change-date-of-birth                                           controllers.register.trustees.individual.TrusteesDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/trustees/:index/individual-or-business                                 controllers.register.trustees.TrusteeIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual-or-business                                 controllers.register.trustees.TrusteeIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/change-individual-or-business                          controllers.register.trustees.TrusteeIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/change-individual-or-business                          controllers.register.trustees.TrusteeIndividualOrBusinessController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
 GET        /:draftId/trustees/:index/check-answers                                                  controllers.register.trustees.TrusteesAnswerPageController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/trustees/:index/check-answers                                                  controllers.register.trustees.TrusteesAnswerPageController.onSubmit(index : Int, draftId: String)
@@ -591,73 +515,155 @@ GET        /:draftId/trustees/add                                               
 POST       /:draftId/trustees/add                                                                   controllers.register.trustees.AddATrusteeController.submitOne(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trustees/add-another                                                           controllers.register.trustees.AddATrusteeController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
-GET        /:draftId/trustees/:index/telephone-number                                               controllers.register.trustees.individual.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/telephone-number                                               controllers.register.trustees.individual.TelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-telephone-number                                        controllers.register.trustees.individual.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-telephone-number                                        controllers.register.trustees.individual.TelephoneNumberController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+### Trustee Individual
 
-GET        /:draftId/trustees/:index/org-telephone-number                                           controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/org-telephone-number                                           controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-org-telephone-number                                    controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-org-telephone-number                                    controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/remove                                              controllers.register.trustees.individual.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/remove                                              controllers.register.trustees.individual.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
 
-GET        /:draftId/trustees/:index/is-a-uk-citizen                                                controllers.register.trustees.individual.TrusteeAUKCitizenController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/is-a-uk-citizen                                                controllers.register.trustees.individual.TrusteeAUKCitizenController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-is-a-uk-citizen                                         controllers.register.trustees.individual.TrusteeAUKCitizenController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-is-a-uk-citizen                                         controllers.register.trustees.individual.TrusteeAUKCitizenController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/name                                                controllers.register.trustees.individual.TrusteesNameController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/name                                                controllers.register.trustees.individual.TrusteesNameController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/change-name                                         controllers.register.trustees.individual.TrusteesNameController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/change-name                                         controllers.register.trustees.individual.TrusteesNameController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
-GET        /:draftId/trustees/:index/is-a-uk-company                                                controllers.register.trustees.organisation.TrusteeUtrYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/is-a-uk-company                                                controllers.register.trustees.organisation.TrusteeUtrYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-is-a-uk-company                                         controllers.register.trustees.organisation.TrusteeUtrYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-is-a-uk-company                                         controllers.register.trustees.organisation.TrusteeUtrYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/date-of-birth                                       controllers.register.trustees.individual.TrusteesDateOfBirthController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/date-of-birth                                       controllers.register.trustees.individual.TrusteesDateOfBirthController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/change-date-of-birth                                controllers.register.trustees.individual.TrusteesDateOfBirthController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/change-date-of-birth                                controllers.register.trustees.individual.TrusteesDateOfBirthController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-business-name                                          controllers.register.trustees.organisation.TrusteeBusinessNameController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-business-name                                          controllers.register.trustees.organisation.TrusteeBusinessNameController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-business-name                                   controllers.register.trustees.organisation.TrusteeBusinessNameController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-business-name                                   controllers.register.trustees.organisation.TrusteeBusinessNameController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/telephone-number                                    controllers.register.trustees.individual.TelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/telephone-number                                    controllers.register.trustees.individual.TelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/change-telephone-number                             controllers.register.trustees.individual.TelephoneNumberController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/change-telephone-number                             controllers.register.trustees.individual.TelephoneNumberController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-utr                                                   controllers.register.trustees.organisation.TrusteeUtrController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-utr                                                   controllers.register.trustees.organisation.TrusteeUtrController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-utr                                            controllers.register.trustees.organisation.TrusteeUtrController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-utr                                            controllers.register.trustees.organisation.TrusteeUtrController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/is-a-uk-citizen                                     controllers.register.trustees.individual.TrusteeAUKCitizenController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/is-a-uk-citizen                                     controllers.register.trustees.individual.TrusteeAUKCitizenController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/change-is-a-uk-citizen                              controllers.register.trustees.individual.TrusteeAUKCitizenController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/change-is-a-uk-citizen                              controllers.register.trustees.individual.TrusteeAUKCitizenController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
-GET         /:draftId/trustees/:index/live-in-the-uk                                                controllers.register.trustees.individual.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST        /:draftId/trustees/:index/live-in-the-uk                                                controllers.register.trustees.individual.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET         /:draftId/trustees/:index/change-live-in-the-uk                                         controllers.register.trustees.individual.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST        /:draftId/trustees/:index/change-live-in-the-uk                                         controllers.register.trustees.individual.TrusteeLiveInTheUKController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/live-in-the-uk                                     controllers.register.trustees.individual.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/live-in-the-uk                                     controllers.register.trustees.individual.TrusteeLiveInTheUKController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/change-live-in-the-uk                              controllers.register.trustees.individual.TrusteeLiveInTheUKController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/change-live-in-the-uk                              controllers.register.trustees.individual.TrusteeLiveInTheUKController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-nino                                                   controllers.register.trustees.individual.TrusteesNinoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-nino                                                   controllers.register.trustees.individual.TrusteesNinoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-nino                                            controllers.register.trustees.individual.TrusteesNinoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-nino                                            controllers.register.trustees.individual.TrusteesNinoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/nino                                                controllers.register.trustees.individual.TrusteesNinoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/nino                                                controllers.register.trustees.individual.TrusteesNinoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/change-nino                                         controllers.register.trustees.individual.TrusteesNinoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/change-nino                                         controllers.register.trustees.individual.TrusteesNinoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-uk-address                                             controllers.register.trustees.individual.TrusteesUkAddressController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-uk-address                                             controllers.register.trustees.individual.TrusteesUkAddressController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-uk-address                                      controllers.register.trustees.individual.TrusteesUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-uk-address                                      controllers.register.trustees.individual.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/uk-address                                          controllers.register.trustees.individual.TrusteesUkAddressController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/uk-address                                          controllers.register.trustees.individual.TrusteesUkAddressController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/individual/change-uk-address                                   controllers.register.trustees.individual.TrusteesUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/individual/change-uk-address                                   controllers.register.trustees.individual.TrusteesUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
 
-GET        /:draftId/trustee/:index/remove                                                          controllers.register.trustees.RemoveTrusteeController.onPageLoad(index : Int, draftId: String)
-POST       /:draftId/trustee/:index/remove                                                          controllers.register.trustees.RemoveTrusteeController.onSubmit(index : Int, draftId: String)
+### Trustee Business
 
-GET        /:draftId/trustee/:index/remove-organisation                                             controllers.register.trustees.RemoveTrusteeOrgController.onPageLoad(index : Int, draftId: String)
-POST       /:draftId/trustee/:index/remove-organisation                                             controllers.register.trustees.RemoveTrusteeOrgController.onSubmit(index : Int, draftId: String)
+GET        /:draftId/trustees/:index/business/remove                                                controllers.register.trustees.organisation.RemoveTrusteeOrgController.onPageLoad(index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/remove                                                controllers.register.trustees.organisation.RemoveTrusteeOrgController.onSubmit(index : Int, draftId: String)
+
+GET        /:draftId/trustees/:index/business/telephone-number                                      controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/telephone-number                                      controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/business/change-telephone-number                               controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/change-telephone-number                               controllers.register.trustees.organisation.TrusteeOrgTelephoneNumberController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/trustees/:index/business/is-a-uk-company                                       controllers.register.trustees.organisation.TrusteeUtrYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/is-a-uk-company                                       controllers.register.trustees.organisation.TrusteeUtrYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/business/change-is-a-uk-company                                controllers.register.trustees.organisation.TrusteeUtrYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/change-is-a-uk-company                                controllers.register.trustees.organisation.TrusteeUtrYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/trustees/:index/business/name                                                  controllers.register.trustees.organisation.TrusteeBusinessNameController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/name                                                  controllers.register.trustees.organisation.TrusteeBusinessNameController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/business/change-name                                           controllers.register.trustees.organisation.TrusteeBusinessNameController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/change-name                                           controllers.register.trustees.organisation.TrusteeBusinessNameController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/trustees/:index/business/utr                                                   controllers.register.trustees.organisation.TrusteeUtrController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/business/utr                                                   controllers.register.trustees.organisation.TrusteeUtrController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/trustees/:index/business/change-utr                                            controllers.register.trustees.organisation.TrusteeUtrController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/trustees/:index/business/change-utr                                            controllers.register.trustees.organisation.TrusteeUtrController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/trustees/:index/business/uk-address-yes-no                                     controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/uk-address-yes-no                                     controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/business/change-uk-address-yes-no                              controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/change-uk-address-yes-no                              controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/trustees/:index/business/uk-address                                            controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/uk-address                                            controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/business/change-uk-address                                     controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/change-uk-address                                     controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/trustees/:index/business/international-address                                 controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/international-address                                 controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/trustees/:index/business/change-international-address                          controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/trustees/:index/business/change-international-address                          controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+## Trust Details
+
+GET        /:draftId/trust-name                                                                     controllers.register.trust_details.TrustNameController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-name                                                                     controllers.register.trust_details.TrustNameController.onSubmit(mode: Mode = NormalMode, draftId: String)
+
+GET        /:draftId/change-trust-name                                                              controllers.register.trust_details.TrustNameController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-name                                                              controllers.register.trust_details.TrustNameController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-governed                                                                 controllers.register.trust_details.GovernedInsideTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-governed                                                                 controllers.register.trust_details.GovernedInsideTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-governed                                                          controllers.register.trust_details.GovernedInsideTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-governed                                                          controllers.register.trust_details.GovernedInsideTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-governed-country                                                         controllers.register.trust_details.CountryGoverningTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-governed-country                                                         controllers.register.trust_details.CountryGoverningTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-governed-country                                                  controllers.register.trust_details.CountryGoverningTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-governed-country                                                  controllers.register.trust_details.CountryGoverningTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-administration                                                           controllers.register.trust_details.AdministrationInsideUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-administration                                                           controllers.register.trust_details.AdministrationInsideUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-administration                                                    controllers.register.trust_details.AdministrationInsideUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-administration                                                    controllers.register.trust_details.AdministrationInsideUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-administration-country                                                   controllers.register.trust_details.CountryAdministeringTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-administration-country                                                   controllers.register.trust_details.CountryAdministeringTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-administration-country                                            controllers.register.trust_details.CountryAdministeringTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-administration-country                                            controllers.register.trust_details.CountryAdministeringTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-scots-law                                                                controllers.register.trust_details.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-scots-law                                                                controllers.register.trust_details.EstablishedUnderScotsLawController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-scots-law                                                         controllers.register.trust_details.EstablishedUnderScotsLawController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-scots-law                                                         controllers.register.trust_details.EstablishedUnderScotsLawController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-act-1992                                                                 controllers.register.trust_details.RegisteringTrustFor5AController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-act-1992                                                                 controllers.register.trust_details.RegisteringTrustFor5AController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-act-1992                                                          controllers.register.trust_details.RegisteringTrustFor5AController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-act-1992                                                          controllers.register.trust_details.RegisteringTrustFor5AController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-offshore                                                                 controllers.register.trust_details.TrustResidentOffshoreController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-offshore                                                                 controllers.register.trust_details.TrustResidentOffshoreController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-offshore                                                          controllers.register.trust_details.TrustResidentOffshoreController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-offshore                                                          controllers.register.trust_details.TrustResidentOffshoreController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-offshore-country                                                         controllers.register.trust_details.TrustPreviouslyResidentController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-offshore-country                                                         controllers.register.trust_details.TrustPreviouslyResidentController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-offshore-country                                                  controllers.register.trust_details.TrustPreviouslyResidentController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-offshore-country                                                  controllers.register.trust_details.TrustPreviouslyResidentController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-non-resident-type                                                        controllers.register.trust_details.NonResidentTypeController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-non-resident-type                                                        controllers.register.trust_details.NonResidentTypeController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-non-resident-type                                                 controllers.register.trust_details.NonResidentTypeController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-non-resident-type                                                 controllers.register.trust_details.NonResidentTypeController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/trust-inheritance-tax-act                                                      controllers.register.trust_details.InheritanceTaxActController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-inheritance-tax-act                                                      controllers.register.trust_details.InheritanceTaxActController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-inheritance-tax-act                                               controllers.register.trust_details.InheritanceTaxActController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-inheritance-tax-act                                               controllers.register.trust_details.InheritanceTaxActController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/trustees-based-in-the-uk                                                       controllers.register.trust_details.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trustees-based-in-the-uk                                                       controllers.register.trust_details.TrusteesBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trust_details.TrusteesBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trustees-based-in-the-uk                                                controllers.register.trust_details.TrusteesBasedInTheUKController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-org-address-in-uk                                      controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-org-address-in-uk                                      controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-org-address-in-uk                               controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-org-address-in-uk                               controllers.register.trustees.organisation.TrusteeOrgAddressUkYesNoController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trust-barrister                                                                controllers.register.trust_details.AgentOtherThanBarristerController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-barrister                                                                controllers.register.trust_details.AgentOtherThanBarristerController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-barrister                                                         controllers.register.trust_details.AgentOtherThanBarristerController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-barrister                                                         controllers.register.trust_details.AgentOtherThanBarristerController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/trustees/:index/trustee-org-uk-address                                         controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-org-uk-address                                         controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-org-trustee-uk-address                                  controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-org-trustee-uk-address                                  controllers.register.trustees.organisation.TrusteesOrgUkAddressController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
-
-GET        /:draftId/trustees/:index/trustee-org-international-address                              controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/trustee-org-international-address                              controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
-GET        /:draftId/trustees/:index/change-trustee-org-international-address                       controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
-POST       /:draftId/trustees/:index/change-trustee-org-international-address                       controllers.register.trustees.organisation.TrusteeOrgAddressInternationalController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+GET        /:draftId/trust-created                                                                  controllers.register.trust_details.WhenTrustSetupController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-created                                                                  controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-created                                                           controllers.register.trust_details.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-created                                                           controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode, draftId: String)

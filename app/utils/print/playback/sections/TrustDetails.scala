@@ -17,8 +17,7 @@
 package utils.print.playback.sections
 
 import models.playback.UserAnswers
-import pages.register.agents.AgentOtherThanBarristerPage
-import pages.register.trust_details._
+import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import play.api.i18n.Messages
 import play.api.mvc.Call
 import play.twirl.api.HtmlFormat

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.register.trustees
+package controllers.register.trustees.organisation
 
 import controllers.RemoveIndexController
 import controllers.actions._
@@ -52,7 +52,7 @@ class RemoveTrusteeOrgController @Inject()(
     identify andThen getData(draftId) andThen requireData
 
   override def redirect(draftId : String) : Call =
-    routes.AddATrusteeController.onPageLoad(draftId)
+    controllers.register.trustees.routes.AddATrusteeController.onPageLoad(draftId)
 
   override def formRoute(draftId: String, index: Int): Call =
     routes.RemoveTrusteeOrgController.onSubmit(index, draftId)
