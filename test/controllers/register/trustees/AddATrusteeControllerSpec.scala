@@ -42,8 +42,8 @@ class AddATrusteeControllerSpec extends RegistrationSpecBase {
   val yesNoForm = new YesNoFormProvider().withPrefix("addATrusteeYesNo")
 
   val trustee = List(
-    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustees/individual/0/remove"),
-    AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustees/individual/1/remove")
+    AddRow("First 0 Last 0", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustees/0/individual/remove"),
+    AddRow("First 1 Last 1", typeLabel = "Trustee Individual", "#", "/trusts-registration/id/trustees/1/individual/remove")
   )
 
   val userAnswersWithTrusteesComplete = emptyUserAnswers
