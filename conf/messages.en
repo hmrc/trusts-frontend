@@ -616,33 +616,35 @@ assetInterruptPage.title = Information you need to add assets
 assetInterruptPage.heading = Information you need to add assets
 
 assetInterruptPage.subheading1 = Money
-assetInterruptPage.paragraph1 = You must give the total amount of money in the trust. If more than one amount has been added to the trust, add them together.
+assetInterruptPage.paragraph1 = Tell us the total amount of money in the trust. If more than one amount has been added to the trust, add them together.
 
 assetInterruptPage.subheading2 = Property or land
-assetInterruptPage.paragraph2 = For property or land in the trust deed, you need:
-assetInterruptPage.bullet1 = description of the property or land, or address if available
-assetInterruptPage.bullet2 = estimated total value of the property or land
-assetInterruptPage.bullet3 = estimated value of the property or land if the trust only owns a proportion
-assetInterruptPage.paragraph3 = The current value of the property or land is needed, not the value when it first entered the trust. This can be an estimate.
+assetInterruptPage.paragraph2 = For property or land in the trust deed, you need to give:
+assetInterruptPage.bullet1 = a description of the property or land, or address if you know it
+assetInterruptPage.bullet2 = the estimated total value of the property or land
+assetInterruptPage.bullet3 = the estimated value of the proportion of the property or land that the trust owns
+assetInterruptPage.paragraph3 = You must tell us the current value of the property or land, not the value when it first entered the trust. This can be an estimate.
 
 assetInterruptPage.subheading3 = Shares
-assetInterruptPage.paragraph4 = For shares named in the trust deed, you need:
+assetInterruptPage.paragraph4 = Tell us the:
 assetInterruptPage.bullet4 = share company or share portfolio name
-assetInterruptPage.bullet5 = number of shares (for a share portfolio you will need to estimate the total number of shares across all share holdings)
+assetInterruptPage.bullet5 = number of shares (for a share portfolio you need to estimate the total number of shares across all share holdings)
 assetInterruptPage.bullet6 = total current value
-assetInterruptPage.paragraph5 = You will also need to choose whether the shares are listed on a stock exchange (quoted shares) or not. For individual shares, you will need to choose the class type.
+assetInterruptPage.paragraph5 = You also need to tell us whether the shares are listed on a stock exchange (quoted shares) or not.
+assetInterruptPage.paragraph6 = For individual shares, you need to tell us the class type.
 
 assetInterruptPage.subheading4 = Business
-assetInterruptPage.paragraph6 = For a business named in the trust deed, you need:
-assetInterruptPage.bullet7 = business name
-assetInterruptPage.bullet8 = the business’s Unique Taxpayer Reference (UTR), if you don’t have this you will need to enter the business’s address
-assetInterruptPage.bullet9 = current estimated value
+assetInterruptPage.paragraph7 = Tell us the:
+assetInterruptPage.bullet7 = business’s name
+assetInterruptPage.bullet8 = description of the business
+assetInterruptPage.bullet9 = business address
+assetInterruptPage.bullet10 = current estimated value
 
 assetInterruptPage.subheading5 = Partnerships
-assetInterruptPage.paragraph7 = You need the name of the partnership, a description of the partnership and the date it started.
+assetInterruptPage.paragraph8 = Tell us the name of the partnership, a description of the partnership and the date it started.
 
 assetInterruptPage.subheading6 = Other assets
-assetInterruptPage.paragraph8 = You need a description and an estimate of the current value of the asset.
+assetInterruptPage.paragraph9 = You need to give a description of the asset and an estimate of its current value.
 
 
 agentAnswer.title = Check agency details
