@@ -36,22 +36,19 @@ class SettlorInfoViewSpec extends ViewBehaviours {
       "bulletpoint1",
       "bulletpoint2",
       "bulletpoint3",
-      "bulletpoint4",
       "paragraph2",
+      "bulletpoint4",
       "bulletpoint5",
       "bulletpoint6",
       "bulletpoint7",
-      "bulletpoint8",
       "subheading2",
       "paragraph3",
-      "bulletpoint9",
-      "bulletpoint10",
       "subheading3",
       "paragraph4",
       "paragraph5",
-      "bulletpoint11",
-      "bulletpoint12",
-      "bulletpoint13"
+      "bulletpoint8",
+      "bulletpoint9",
+      "bulletpoint10"
     )
 
     behave like pageWithBackLink(applyView)
