@@ -100,6 +100,8 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
           assertRenderedById(doc, "summaryHeading")
           assertRenderedById(doc, "summary-paragraph")
+          assertRenderedById(doc, "summaryHeading2")
+          assertRenderedById(doc, "summary-paragraph-2")
           assertRenderedById(doc, "print-and-save")
 
         }
@@ -118,6 +120,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           val doc = asDocument(applyView)
 
           assertNotRenderedById(doc, "summaryHeading")
+          assertNotRenderedById(doc, "summary-paragraph")
+          assertNotRenderedById(doc, "summaryHeading2")
+          assertNotRenderedById(doc, "summary-paragraph-2")
           assertNotRenderedById(doc, "print-and-save")
 
         }
