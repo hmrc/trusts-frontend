@@ -35,6 +35,8 @@ class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
       "bulletpoint1",
       "bulletpoint2",
       "bulletpoint3",
+      "bulletpoint4",
+      "bulletpoint5",
       "paragraph2",
       "paragraph3",
       "subheading2",
@@ -43,12 +45,12 @@ class IndividualBeneficiaryInfoViewSpec extends ViewBehaviours {
       "paragraph5",
       "subheading4",
       "paragraph6",
-      "bulletpoint4",
-      "bulletpoint5",
       "bulletpoint6",
+      "bulletpoint7",
+      "bulletpoint8",
       "paragraph7",
       "subheading5",
-      "paragraph7"
+      "paragraph8"
     )
 
     behave like pageWithBackLink(applyView)
