@@ -41,11 +41,14 @@ class TrusteesInfoViewSpec extends ViewBehaviours {
       "bulletpoint2",
       "bulletpoint3",
       "paragraph3",
-      "subheading2",
       "paragraph4",
+      "subheading2",
+      "paragraph5",
       "bulletpoint4",
       "bulletpoint5",
       "bulletpoint6",
+      "bulletpoint7",
+      "bulletpoint8",
       "paragraph6",
       "warning"
     )
