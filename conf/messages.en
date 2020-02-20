@@ -1455,7 +1455,7 @@ trusteesBasedInTheUK.title = Are the trustees based in the UK?
 trusteesBasedInTheUK.heading =  Are the trustees based in the UK?
 trusteesBasedInTheUK.UKBasedTrustees = All of the trustees are based in the UK
 trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the UK
-trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains international and UK-based trustees
+trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains trustees based in and outside the UK
 trusteesBasedInTheUK.checkYourAnswersLabel = How many of the trustees are based in the UK?
 trusteesBasedInTheUK.error.required = Select how many of the trustees are based in the UK
 
