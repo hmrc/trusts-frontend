@@ -552,7 +552,6 @@ taskList.heading = Registration progress
 taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
 taskList.savedUntil.heading = Saved until
 taskList.sections.heading = Sections to be completed
-taskList.paragraph2 = You can print a draft copy of your saved answers once all sections are completed, as well as a declared copy after you have made a declaration.
 
 taskList.trustDetails.label = Trust details
 taskList.settlors.label = Settlors
@@ -563,10 +562,13 @@ taskList.taxLiability.label = Years of tax liability
 taskList.agent.savedRegistrations = Return to saved registrations
 taskList.agent.agentDetails = Agent details
 
-taskList.summary.heading = Summary
-taskList.summary.paragraph = If you need to update any asset details after making the declaration for this trust, use Self Assessment online or the Trust and Estate Tax Return form (SA900).
-taskList.summary.paragraph.reader = If you need to update any asset details after making the declaration for this trust, use Self Assessment online or the Trust and Estate Tax Return form (S A 900).
-taskList.summary.link = Print or save a copy of your answers (opens in a new window or tab).
+taskList.summary.heading1 = Print a copy
+taskList.summary.paragraph1.start = You can
+taskList.summary.link1 = print or save a draft copy of your saved answers (opens in a new window or tab)
+taskList.summary.paragraph1.end = . You can also print a declared copy after you have made a declaration.
+taskList.summary.heading2 = Update asset details
+taskList.summary.paragraph2 = To update any asset details after making the declaration for this trust, use Self Assessment online or the
+taskList.summary.link2 = Trust and Estate Tax Return form (SA900) (opens in a new window or tab)
 taskList.summary.continue = Continue to declaration
 
 taskList.completed = Completed
