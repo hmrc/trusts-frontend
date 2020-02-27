@@ -66,7 +66,7 @@ class IndexControllerSpec extends RegistrationSpecBase {
 
     "for a playback" should {
 
-        "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
+        "redirect to maintain a trust with Non-Agent affinityGroup" in {
 
           val answers = emptyUserAnswers.copy(progress = InProgress)
             .set(TrustRegisteredOnlinePage, true).success.value
@@ -79,7 +79,7 @@ class IndexControllerSpec extends RegistrationSpecBase {
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustBe controllers.playback.routes.IndexController.onPageLoad().url
+          redirectLocation(result).value must include("/maintain-a-trust")
 
           application.stop()
         }
