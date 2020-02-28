@@ -16,6 +16,7 @@
 
 package controllers.register
 
+import config.FrontendAppConfig
 import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
@@ -30,6 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class IndexController @Inject()(
                                  identify: RegistrationIdentifierAction,
                                  getData: RegistrationDataRetrievalAction,
+                                 config: FrontendAppConfig,
                                  val controllerComponents: MessagesControllerComponents
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -46,7 +48,7 @@ class IndexController @Inject()(
                 case Some(false) =>
                   Future.successful(Redirect(routes.TaskListController.onPageLoad(userAnswers.draftId)))
                 case Some(true) =>
-                  Future.successful(Redirect(controllers.playback.routes.IndexController.onPageLoad()))
+                  Future.successful(Redirect(config.maintainATrustFrontendUrl))
                 case None =>
                   Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, userAnswers.draftId)))
               }

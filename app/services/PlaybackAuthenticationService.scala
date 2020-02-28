@@ -60,7 +60,7 @@ class PlaybackAuthenticationServiceImpl @Inject()(
         utr = utr,
         onIVRelationshipExisting = {
           Logger.info(s"[PlaybackAuthentication] user is enrolled, redirecting to maintain")
-          Future.successful(Right(request))
+          Future.successful(Left(Redirect(config.maintainATrustFrontendUrl)))
         },
         onIVRelationshipNotExisting = {
           Logger.info(s"[PlaybackAuthentication] user is enrolled, redirecting to /verify-identity-for-a-trust")

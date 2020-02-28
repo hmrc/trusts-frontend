@@ -29,6 +29,7 @@ import org.scalatest.{EitherValues, RecoverMethods}
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.AnyContent
+import play.api.mvc.Results.Redirect
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
@@ -216,7 +217,7 @@ class PlaybackAuthenticationServiceSpec extends PlaybackSpecBase with ScalaFutur
 
         "relationship does exist in Trust IV" must {
 
-          "continue processing the request" in {
+          "redirect to maintain a trust" in {
 
             val enrolments = Enrolments(Set(trustsEnrolment))
 
@@ -238,7 +239,7 @@ class PlaybackAuthenticationServiceSpec extends PlaybackSpecBase with ScalaFutur
 
             whenReady(service.authenticate[AnyContent](utr)) {
               result =>
-                result.right.value mustBe dataRequest
+                result.left.value.header.headers(HeaderNames.LOCATION) must include("/maintain-a-trust")
             }
           }
 
