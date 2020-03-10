@@ -202,3 +202,5 @@
 .clearfix {
     @include govuk-clearfix;
 }
+
+#timeout-sign-out-btn {display: none;}
