@@ -20,6 +20,9 @@ GET        /signed-out                                                          
 
 GET        /logout                                                                                  controllers.register.LogoutController.logout()
 
+GET        /keep-alive                                                                              controllers.SessionTimeoutController.keepAlive
+GET        /timeout                                                                                 controllers.SessionTimeoutController.timeout
+
 GET        /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode, draftId: String)
