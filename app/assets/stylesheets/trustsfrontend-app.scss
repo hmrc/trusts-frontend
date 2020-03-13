@@ -10,7 +10,8 @@
 @import 'partials/heading';
 @import 'patterns/tag';
 @import 'conditionals';
-@import 'colours/palette';
+@import 'colours/_palette';
+@import 'partials/_focus';
 @import 'location-autocomplete.min';
 @import 'patterns/add-to-a-list';
 @import 'patterns/symbol-input';
