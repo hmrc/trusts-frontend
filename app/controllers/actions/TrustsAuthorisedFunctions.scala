@@ -21,7 +21,7 @@ import javax.inject.Inject
 import org.slf4j.LoggerFactory
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions, NoActiveSession}
+import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions, NoActiveSession}
 
 class TrustsAuthorisedFunctions @Inject()(override val authConnector: AuthConnector,
                                           val config: FrontendAppConfig) extends AuthorisedFunctions {
@@ -29,7 +29,7 @@ class TrustsAuthorisedFunctions @Inject()(override val authConnector: AuthConnec
 
   def recoverFromAuthorisation : PartialFunction[Throwable, Result] = {
     case _: NoActiveSession => redirectToLogin
-    case _ => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
+    case _: AuthorisationException => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
   }
 
   def redirectToLogin: Result = {
