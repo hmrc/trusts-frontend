@@ -41,16 +41,23 @@
 .hmrc-add-to-a-list__contents:first-child dt {
   @include media(desktop) {
     padding-top: 0;
-    padding-right: 5px;
+    padding-right: 20px;
   }
 }
 
 .hmrc-add-to-a-list__identifier,
 .hmrc-add-to-a-list__remove,
 .hmrc-add-to-a-list__change {
+
+  position: relative;
   display: block;
   margin: 0;
-   @include media(desktop) {
+  text-align: left;
+  font-weight: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  @include media(desktop) {
     display: table-cell;
     padding: 15px 0;
     border-bottom: 1px solid $border-colour;
@@ -58,33 +65,31 @@
 }
 
 .hmrc-add-to-a-list__identifier {
-  margin: 10px 40px 0 0;
+  margin: 10px auto;
   font-weight: bold;
    @include media(desktop) {
     margin: 0;
+    padding-right: 20px;
   }
 }
 
 .hmrc-add-to-a-list__identifier--light {
   font-weight: normal;
-  padding-right: 5px;
+  padding-right: 20px;
 }
 
 .hmrc-add-to-a-list__remove {
-  text-align: right;
   margin-bottom: 10px;
   margin-top: 10px;
    @include media(desktop) {
-    padding-right: 0;
+    padding-right: 20px;
   }
 }
 
 .hmrc-add-to-a-list__change {
-  position: absolute;
   top: 0;
   right: 0;
-  text-align: right;
-  padding-right: 5px;
+  padding-right: 20px;
    @include media(desktop) {
     position: static;
      + .hmrc-add-to-a-list__remove {
