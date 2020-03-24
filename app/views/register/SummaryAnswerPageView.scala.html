@@ -43,6 +43,7 @@
 
     <p>@messages("summaryAnswerPage.paragraph2")</p>
 
+    <div class="two-column-answers">
     @for(section <- answerSections){
         @{
             section match {
@@ -51,5 +52,6 @@
             }
         }
     }
+    </div>
 
 }
