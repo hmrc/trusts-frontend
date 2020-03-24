@@ -45,6 +45,7 @@
 
     @components.warning("confirmationAnswerPage")
 
+    <div class="two-column-answers">
     @for(section <- answerSections){
         @{
             section match {
@@ -53,5 +54,6 @@
             }
         }
     }
+    </div>
 
 }
