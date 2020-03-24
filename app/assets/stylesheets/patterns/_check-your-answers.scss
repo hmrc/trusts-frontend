@@ -25,12 +25,4 @@
         }
     }
 
-    .govuk-check-your-answers.cya-questions-long .cya-answer {
-        width: 100%;
-
-        @include media(desktop) {
-            width: 40%;
-        }
-    }
-
 }
