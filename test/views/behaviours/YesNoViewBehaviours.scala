@@ -31,19 +31,6 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
       "rendered" must {
 
-        "contain a legend for the question" in {
-
-          val doc = asDocument(createView(form))
-          val legends = doc.getElementsByTag("legend")
-          legends.size mustBe 1
-          legends.first.text must include(messages(s"$messageKeyPrefix.heading", args: _*))
-
-          hintTextPrefix.map {
-            pref =>
-              doc.getElementsByClass("form-hint").first.text must include(messages(s"$pref.hint"))
-          }
-        }
-
         "contain an input for the value" in {
 
           val doc = asDocument(createView(form))
