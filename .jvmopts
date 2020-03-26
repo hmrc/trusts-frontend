@@ -1,1 +1,3 @@
--Xss10M
+-Dfile.encoding=UTF8
+-Xms1G
+-Xmx5G
