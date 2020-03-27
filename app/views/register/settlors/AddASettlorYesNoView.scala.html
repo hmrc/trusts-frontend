@@ -34,16 +34,15 @@
 
     @components.error_summary(form.errors)
 
-    @components.heading("addASettlorYesNo.heading")
-
     @hint.map{ text =>
        <p>@messages(text)</p>
     }
 
     @components.input_yes_no(
-      field = form("value"),
-      label = messages("addASettlorYesNo.heading"),
-      legendClass = Some("visually-hidden")
+        field = form("value"),
+        label = messages("addASettlorYesNo.heading"),
+        legendClass = Some("heading-large"),
+        legendAsHeading = true
     )
 
     @components.submit_button()

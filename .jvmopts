@@ -1,1 +1,4 @@
--Xss10M
+-Dfile.encoding=UTF8
+-Xms2G
+-Xmx5G
+-Xss20M
