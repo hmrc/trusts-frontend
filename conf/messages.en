@@ -1647,15 +1647,15 @@ employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When d
 deedOfVariation.replaceAbsoluteInterestOverWill = to replace an absolute interest over a will
 deedOfVariation.replaceWillTrust = to replace a will trust
 
-trusteeOrgAddressUkYesNo.title = Is {0}’s address in the UK?
+trusteeOrgAddressUkYesNo.title = Is the trustee’s address in the UK?
 trusteeOrgAddressUkYesNo.heading = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 trusteeOrgAddressUkYesNo.error.required = Select yes if the trustee’s address is in the UK
 
-trusteesOrgUkAddress.title = What is {0}’s address?
+trusteesOrgUkAddress.title = What is the trustee’s address?
 trusteesOrgUkAddress.heading = What is {0}’s address?
 trusteesOrgUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
-trusteeOrgAddressInternational.title = What is {0}’s address?
+trusteeOrgAddressInternational.title = What is the trustee’s address?
 trusteeOrgAddressInternational.heading = What is {0}’s address?
 trusteeOrgAddressInternational.checkYourAnswersLabel = What is {0}’s address?
