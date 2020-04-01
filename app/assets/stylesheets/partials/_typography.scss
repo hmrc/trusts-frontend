@@ -60,6 +60,14 @@ p.font-xsmall{
     list-style-type: decimal;
 }
 
+.trust-list--bullet {
+  list-style-type: disc;
+}
+
+.trust-list--bullet .inside {
+  list-style-position: inside;
+}
+
 .govuk-caption-xl {
     font-family: "nta", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
