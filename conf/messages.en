@@ -436,12 +436,12 @@ addATrustee.business = Trustee Company
 addATrustee.error.required = Select yes if you want to add another trustee
 addATrustee.lead-trustee.required = You need to add or nominate a lead trustee.
 
-removeATrustee.title = Are you sure you want to remove {0}?
+removeATrustee.title = Are you sure you want to remove the trustee?
 removeATrustee.heading = Are you sure you want to remove {0}?
 removeATrustee.default = the trustee
 removeATrustee.error.required = Select yes if you want to remove the trustee
 
-removeATrusteeOrg.title = Are you sure you want to remove {0}?
+removeATrusteeOrg.title = Are you sure you want to remove the trustee?
 removeATrusteeOrg.heading = Are you sure you want to remove {0}?
 removeATrusteeOrg.default = the trustee
 removeATrusteeOrg.error.required = Select yes if you want to remove the trustee
