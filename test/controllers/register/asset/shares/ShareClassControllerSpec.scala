@@ -63,7 +63,7 @@ class ShareClassControllerSpec extends RegistrationSpecBase with ModelGenerators
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val ua = emptyUserAnswers.set(ShareCompanyNamePage(0), "Company").success.value
-        .set(ShareClassPage(index), ShareClass.values.head).success.value
+        .set(ShareClassPage(index), ShareClass.allValues.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(ua)).build()
 
@@ -76,7 +76,7 @@ class ShareClassControllerSpec extends RegistrationSpecBase with ModelGenerators
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(ShareClass.values.head), NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
+        view(form.fill(ShareClass.allValues.head), NormalMode, fakeDraftId, index, companyName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -90,7 +90,7 @@ class ShareClassControllerSpec extends RegistrationSpecBase with ModelGenerators
 
       val request =
         FakeRequest(POST, shareClassRoute)
-          .withFormUrlEncodedBody(("value", ShareClass.options.head.value))
+          .withFormUrlEncodedBody(("value", ShareClass.allOptions.head.value))
 
       val result = route(application, request).value
 
@@ -145,7 +145,7 @@ class ShareClassControllerSpec extends RegistrationSpecBase with ModelGenerators
 
       val request =
         FakeRequest(POST, shareClassRoute)
-          .withFormUrlEncodedBody(("value", ShareClass.values.head.toString))
+          .withFormUrlEncodedBody(("value", ShareClass.allValues.head.toString))
 
       val result = route(application, request).value
 

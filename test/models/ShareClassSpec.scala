@@ -29,7 +29,7 @@ class ShareClassSpec extends WordSpec with MustMatchers with PropertyChecks with
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(ShareClass.values.toSeq)
+      val gen = Gen.oneOf(ShareClass.allValues.toSeq)
 
       forAll(gen) {
         shareClass =>
@@ -40,7 +40,7 @@ class ShareClassSpec extends WordSpec with MustMatchers with PropertyChecks with
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!ShareClass.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!ShareClass.allValues.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
@@ -51,7 +51,7 @@ class ShareClassSpec extends WordSpec with MustMatchers with PropertyChecks with
 
     "serialise" in {
 
-      val gen = Gen.oneOf(ShareClass.values.toSeq)
+      val gen = Gen.oneOf(ShareClass.allValues.toSeq)
 
       forAll(gen) {
         shareClass =>

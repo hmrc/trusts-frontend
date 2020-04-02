@@ -19,6 +19,7 @@ package views.register.asset.shares
 import forms.shares.ShareClassFormProvider
 import models.NormalMode
 import models.registration.pages.ShareClass
+import models.registration.pages.ShareClass.{Capital, Dividend, Management, NonVoting, OtherClasses, Redeemable, Voting}
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.ViewBehaviours
@@ -56,13 +57,25 @@ class ShareClassViewSpec extends ViewBehaviours {
 
         val doc = asDocument(applyView(form))
 
-        for (option <- ShareClass.options) {
+        for (option <- ShareClass.allOptions) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
+        }
+      }
+
+      "not render radio buttons that are for maintain" in {
+        val doc = asDocument(applyView(form))
+
+        val excluded = ShareClass.asRadioOptions(List(
+          NonVoting, Redeemable, Management, OtherClasses, Voting, Dividend, Capital
+        ))
+
+        for (option <- excluded) {
+          assertNotRenderedById(doc, option.id)
         }
       }
     }
 
-    for (option <- ShareClass.options) {
+    for (option <- ShareClass.allOptions) {
 
       s"rendered with a value of '${option.value}'" must {
 
@@ -72,7 +85,7 @@ class ShareClassViewSpec extends ViewBehaviours {
 
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for (unselectedOption <- ShareClass.options.filterNot(o => o == option)) {
+          for (unselectedOption <- ShareClass.allOptions.filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }
