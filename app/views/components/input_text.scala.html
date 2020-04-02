@@ -56,6 +56,9 @@
         id="@{field.id}"
         name="@{field.name}"
         value="@{field.value}"
+        @if(symbol.nonEmpty) {
+        aria-valuenow="pounds sterling"
+        }
         @required
         @if(hint.nonEmpty) {
             aria-describedby="@{field.id}_hint"
