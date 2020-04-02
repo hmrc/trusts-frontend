@@ -91,6 +91,7 @@ ukAddress.error.postcode.invalidCharacters = Enter a real postcode
 
 site.address.international.title = What is the address?
 site.address.international.heading = What is {0}’s address?
+site.address.international.checkYourAnswersLabel = What is {0}’s address?
 site.address.international.line1 = Address line 1
 site.address.international.line2 = Address line 2
 site.address.international.line3 = Address line 3 (optional)
