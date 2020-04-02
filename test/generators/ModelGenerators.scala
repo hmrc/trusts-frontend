@@ -52,7 +52,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryShareClass: Arbitrary[ShareClass] =
     Arbitrary {
-      Gen.oneOf(ShareClass.values.toSeq)
+      Gen.oneOf(ShareClass.allValues.toSeq)
     }
 
   implicit lazy val arbitraryWhatTypeOfBeneficiary: Arbitrary[WhatTypeOfBeneficiary] =
