@@ -116,4 +116,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val countdownLength: String = configuration.get[String]("timeout.countdown")
   lazy val timeoutLength: String = configuration.get[String]("timeout.length")
 
+  lazy val accessibilityLinkUrl: String = configuration.get[String]("urls.accessibility")
+
 }
