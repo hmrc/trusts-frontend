@@ -76,6 +76,9 @@ site.address.uk.postcode = Postcode
 site.address.uk.postcode.hint = For example AB1 1AB
 site.address.uk.checkYourAnswersLabel = What is {0}’s address?
 
+symbolText.asSterling = The value must be entered in pounds sterling
+symbolText.asPercentage = The value must be entered as a percentage
+
 ukAddress.error.line1.required = Enter address line 1
 ukAddress.error.line2.required = Enter address line 2
 ukAddress.error.postcode.required = Enter a postcode
