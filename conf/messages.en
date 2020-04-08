@@ -536,7 +536,7 @@ trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
 trusteesNonUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
-trusteesPassportOrIdCard.checkYourAnswersLabel = What are {0}'s Passport or ID card details
+trusteesPassportOrIdCard.checkYourAnswersLabel = What are {0}’s Passport or ID card details
 
 leadTrusteeUkAddress.title = What is the lead trustee’s address?
 
@@ -591,8 +591,8 @@ agentOverview.start = Start now
 agentOverview.internalClientReference = Internal client reference
 agentOverview.savedUntil = Saved until
 
-trusteesInfo.title = Trustee: information you'll need to provide
-trusteesInfo.heading = Trustee: information you'll need to provide
+trusteesInfo.title = Trustee: information you’ll need to provide
+trusteesInfo.heading = Trustee: information you’ll need to provide
 trusteesInfo.subheading1 = Lead trustee
 trusteesInfo.paragraph1 = You must have a lead trustee. They are the main contact point for the trust. They will be sent all official documents like the trust’s Unique Taxpayer Reference (UTR) and notice to file tax returns.
 trusteesInfo.paragraph2 = If the lead trustee is a UK citizen, tell us their:
@@ -619,8 +619,8 @@ agentTelephoneNumber.hint = We will use this number to contact you about this tr
 agentTelephoneNumber.error.required = Enter the agency’s telephone number
 agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
-assetInterruptPage.title = Assets: information you'll need to provide
-assetInterruptPage.heading = Assets: information you'll need to provide
+assetInterruptPage.title = Assets: information you’ll need to provide
+assetInterruptPage.heading = Assets: information you’ll need to provide
 
 assetInterruptPage.subheading1 = Money
 assetInterruptPage.paragraph1 = Tell us the total amount of money in the trust. If more than one amount has been added to the trust, add them together.
@@ -919,8 +919,8 @@ individualBeneficiaryPassport.checkYourAnswersLabel = What are {0}’s passport 
 individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 
-individualBeneficiaryInfo.title = Beneficiary: information you'll need to provide
-individualBeneficiaryInfo.heading = Beneficiary: information you'll need to provide
+individualBeneficiaryInfo.title = Beneficiary: information you’ll need to provide
+individualBeneficiaryInfo.heading = Beneficiary: information you’ll need to provide
 individualBeneficiaryInfo.caption = Beneficiaries
 individualBeneficiaryInfo.subheading1 = Individual beneficiaries
 individualBeneficiaryInfo.paragraph1 = For individuals named in the trust deed, tell us their name. If you know more details, tell us their:
@@ -1068,7 +1068,7 @@ confirmationAgentPage.paragraph1 = We will post {0} the trust’s Unique Taxpaye
 confirmationAgentPage.subheading2 = What you need to do next
 
 confirmationAgentPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
-confirmationAgentPage.paragraph3 = One of the trustees will need to complete the next two steps once the trust’s UTR has been received. You will then be able to maintain the trust online on their behalf.
+confirmationAgentPage.paragraph3 = One of the trustees will need to complete the next 2 steps once the trust’s UTR has been received. You will then be able to maintain the trust online on their behalf.
 
 confirmationAgentPage.bullet1 = Trustee needs to claim the trust
 confirmationAgentPage.paragraph4 = A trustee needs to log onto the Trust Registration Service using their Government Gateway account. The account they use must be an organisation account, not an individual account.
@@ -1475,8 +1475,8 @@ removeSettlor.heading = Are you sure you want to remove {0}?
 removeSettlor.checkYourAnswersLabel = Are you sure you want to remove {0}?
 removeSettlor.error.required = Select yes if you want to remove the settlor
 
-settlorInfo.title = Settlor: information you'll need to provide
-settlorInfo.heading = Settlor: information you'll need to provide
+settlorInfo.title = Settlor: information you’ll need to provide
+settlorInfo.heading = Settlor: information you’ll need to provide
 settlorInfo.caption = Settlors
 settlorInfo.subheading1 = Individual settlor
 settlorInfo.paragraph1 = If the trust was created after the settlor died, tell us their name. If you know more details, tell us their:
@@ -1495,7 +1495,7 @@ settlorInfo.paragraph4 = If the settlor created the trust during their lifetime 
 settlorInfo.paragraph5 = For trusts set up for employees of a company, tell us:
 settlorInfo.bulletpoint8 = if it’s an employer-financed retirement scheme, and if so what date it started
 settlorInfo.bulletpoint9 = the business type (trading or investment) if the scheme’s settlor is a business
-settlorInfo.bulletpoint10 = if the business had existed for at least two years when any asset was added to the trust
+settlorInfo.bulletpoint10 = if the business had existed for at least 2 years when any asset was added to the trust
 
 TrustLocked.title = Sorry, you cannot access this trust
 TrustLocked.heading = Sorry, you cannot access this trust
@@ -1531,7 +1531,7 @@ declarationWhatNext.error.required = Select what you want to do next
 trustNotClaimed.title = Sorry, you cannot access this trust
 trustNotClaimed.heading = Sorry, you cannot access this trust
 trustNotClaimed.subheading = This trust’s UTR: {0}
-trustNotClaimed.p1 = One of the trustees will need to complete the next two steps so you can maintain the trust online on their behalf.
+trustNotClaimed.p1 = One of the trustees will need to complete the next 2 steps so you can maintain the trust online on their behalf.
 trustNotClaimed.bullet.1.title = Trustee needs to claim the trust
 trustNotClaimed.bullet.1.p1 = A trustee needs to log onto the Trust Registration Service using their Government Gateway account. The account they use must be an organisation account, not an individual account.
 trustNotClaimed.bullet.1.p2 = If they do not have an account, they can
@@ -1604,7 +1604,7 @@ playbackLastDeclared.declareAnnually.warning = You only need to declare the trus
 playbackLastDeclared.informationFirstRegistered = The following sections indicate what was entered when the trust was first registered. No further updates to trust details, assets and years of tax liability are required through this service.
 playbackLastDeclared.selfAssessmentOnline = If you need to update these sections, use Self Assessment for trusts.
 
-individualProtectorName.checkYourAnswersLabel = What is the protector's name?
+individualProtectorName.checkYourAnswersLabel = What is the protector’s name?
 individualProtectorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 individualProtectorDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 individualProtectorNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
