@@ -41,6 +41,9 @@
           ariaRequired = true
         )
 
-        @components.submit_button()
+        <p>@messages("whatIsTheUTR.linkMessage") <a href="https://www.gov.uk/find-lost-utr-number" target="_blank">@messages("whatIsTheUTR.linkText")</a>.</p>
+
+
+@components.submit_button()
     }
 }
