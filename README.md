@@ -16,3 +16,4 @@ to run locally using the micro-service provided by the service manager:
 If you want to run your local copy, then stop the frontend ran by the service manager and run your local code by
 
 ***sbt "run 9781"***
+
