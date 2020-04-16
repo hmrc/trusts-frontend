@@ -40,7 +40,7 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers, draftId : String)(impl
     AddRow(
       name = parseName(vm.name),
       typeLabel = messages("entities.beneficiary.individual"),
-      changeUrl = "#",
+      changeUrl = controllers.routes.FeatureNotAvailableController.onPageLoad().url,
       removeUrl = routes.RemoveIndividualBeneficiaryController.onPageLoad(index, draftId).url
     )
   }
@@ -54,7 +54,7 @@ class AddABeneficiaryViewHelper(userAnswers: UserAnswers, draftId : String)(impl
     AddRow(
       vm.description.getOrElse(defaultValue),
       messages("entities.beneficiary.class"),
-      "#",
+      controllers.routes.FeatureNotAvailableController.onPageLoad().url,
       removeUrl = routes.RemoveClassOfBeneficiaryController.onPageLoad(index, draftId).url
     )
   }

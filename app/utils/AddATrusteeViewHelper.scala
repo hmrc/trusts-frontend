@@ -57,7 +57,7 @@ class AddATrusteeViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
     AddRow(
       name = nameOfTrustee,
       typeLabel = trusteeType,
-      changeUrl = "#",
+      changeUrl = controllers.routes.FeatureNotAvailableController.onPageLoad().url,
       removeUrl = removeLink
     )
   }
