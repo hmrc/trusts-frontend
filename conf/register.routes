@@ -672,3 +672,5 @@ GET        /:draftId/trust-created                                              
 POST       /:draftId/trust-created                                                                  controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-created                                                           controllers.register.trust_details.WhenTrustSetupController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-created                                                           controllers.register.trust_details.WhenTrustSetupController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /feature-not-available                  controllers.FeatureNotAvailableController.onPageLoad()
