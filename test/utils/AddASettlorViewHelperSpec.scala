@@ -28,6 +28,7 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
   val settlorName = FullName("first name", Some("middle name"), "last name")
+  val featureUnavalible = "/trusts-registration/feature-not-available"
 
   def removeSettlorRoute(index : Int) =
     routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
@@ -56,8 +57,8 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
         val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Individual Settlor", "#", removeSettlorRoute(0)),
-          AddRow("first name last name", typeLabel = "Individual Settlor", "#", removeSettlorRoute(1))
+          AddRow("No name added", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0)),
+          AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(1))
         )
         rows.complete mustBe Nil
       }
@@ -75,7 +76,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
         val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("first name last name", typeLabel = "Individual Settlor", "#", removeSettlorRoute(0))
+          AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0))
         )
         rows.inProgress mustBe Nil
       }

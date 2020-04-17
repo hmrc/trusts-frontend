@@ -27,18 +27,20 @@ import views.html.register.beneficiaries.AddABeneficiaryView
 
 class AddABeneficiaryViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
+  val featureUnavalible = "/trusts-registration/feature-not-available"
+
   val completeBeneficiaries = Seq(
-    AddRow("beneficiary one", "Individual Beneficiary", "#", "#"),
-    AddRow("beneficiary two", "Individual Beneficiary", "#", "#"),
-    AddRow("beneficiary three", "Individual Beneficiary", "#", "#"),
-    AddRow("class of beneficiary", "Class of beneficiaries", "#", "#")
+    AddRow("beneficiary one", "Individual Beneficiary", featureUnavalible, featureUnavalible),
+    AddRow("beneficiary two", "Individual Beneficiary", featureUnavalible, featureUnavalible),
+    AddRow("beneficiary three", "Individual Beneficiary", featureUnavalible, featureUnavalible),
+    AddRow("class of beneficiary", "Class of beneficiaries", featureUnavalible, featureUnavalible)
   )
 
   val inProgressBeneficiaries = Seq(
-    AddRow("beneficiary four", "Individual Beneficiary", "#", "#"),
-    AddRow("beneficiary five", "Individual Beneficiary", "#", "#"),
-    AddRow("beneficiary six", "Individual Beneficiary", "#", "#"),
-    AddRow("class of beneficiary 2", "Class of beneficiaries", "#", "#")
+    AddRow("beneficiary four", "Individual Beneficiary", featureUnavalible, featureUnavalible),
+    AddRow("beneficiary five", "Individual Beneficiary", featureUnavalible, featureUnavalible),
+    AddRow("beneficiary six", "Individual Beneficiary", featureUnavalible, featureUnavalible),
+    AddRow("class of beneficiary 2", "Class of beneficiaries", featureUnavalible, featureUnavalible)
   )
   val messageKeyPrefix = "addABeneficiary"
 

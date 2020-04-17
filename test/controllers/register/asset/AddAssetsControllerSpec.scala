@@ -47,8 +47,8 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
   val yesNoForm: Form[Boolean] = new YesNoFormProvider().withPrefix("addAnAssetYesNo")
 
   lazy val assets = List(
-    AddRow("£4800", typeLabel = "Money", "#", removeMoneyRoute(0)),
-    AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareRoute(1))
+    AddRow("£4800", typeLabel = "Money", "/trusts-registration/feature-not-available", removeMoneyRoute(0)),
+    AddRow("Share Company Name", typeLabel = "Shares", "/trusts-registration/feature-not-available", removeShareRoute(1))
   )
 
   val userAnswersWithAssetsComplete: UserAnswers = emptyUserAnswers

@@ -67,7 +67,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
       controllers.register.asset.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, draftId)
     }
 
-    AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", removeRoute.url)
+    AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "/trusts-registration/feature-not-available", removeRoute.url)
   }
 
   private def parsePropertyOrLand(mvm : PropertyOrLandAssetViewModel, index: Int) : AddRow = {
