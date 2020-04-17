@@ -28,16 +28,18 @@ import views.html.register.trustees.AddATrusteeView
 
 class AddATrusteeViewSpec extends OptionsViewBehaviours with TabularDataViewBehaviours {
 
+  val featureUnavalible = "/trusts-registration/feature-not-available"
+
   val completeTrustees = Seq(
-    AddRow("trustee one", IndividualOrBusiness.Individual.toString, "#", "#"),
-    AddRow("trustee two", IndividualOrBusiness.Individual.toString, "#", "#"),
-    AddRow("trustee three", IndividualOrBusiness.Individual.toString, "#", "#")
+    AddRow("trustee one", IndividualOrBusiness.Individual.toString, featureUnavalible, featureUnavalible),
+    AddRow("trustee two", IndividualOrBusiness.Individual.toString, featureUnavalible, featureUnavalible),
+    AddRow("trustee three", IndividualOrBusiness.Individual.toString, featureUnavalible, featureUnavalible)
   )
 
   val inProgressTrustees = Seq(
-    AddRow("trustee one", IndividualOrBusiness.Individual.toString, "#", "#"),
-    AddRow("trustee two", IndividualOrBusiness.Individual.toString, "#", "#"),
-    AddRow("trustee three", IndividualOrBusiness.Individual.toString, "#", "#")
+    AddRow("trustee one", IndividualOrBusiness.Individual.toString, featureUnavalible, featureUnavalible),
+    AddRow("trustee two", IndividualOrBusiness.Individual.toString, featureUnavalible, featureUnavalible),
+    AddRow("trustee three", IndividualOrBusiness.Individual.toString, featureUnavalible, featureUnavalible)
   )
 
   val messageKeyPrefix = "addATrustee"

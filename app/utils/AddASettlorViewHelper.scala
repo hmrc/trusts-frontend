@@ -53,13 +53,13 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
       case SettlorLivingIndividualViewModel(_, name, _) => AddRow(
         name,
         typeLabel,
-        "#",
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
       case DefaultSettlorViewModel(individualOrBusiness, _)  => AddRow(
         defaultName,
         typeLabel,
-        "#",
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
     }

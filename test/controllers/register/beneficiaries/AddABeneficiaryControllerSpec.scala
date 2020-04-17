@@ -54,8 +54,8 @@ class AddABeneficiaryControllerSpec extends RegistrationSpecBase {
   val yesNoForm = new YesNoFormProvider().withPrefix("addABeneficiaryYesNo")
 
   lazy val beneficiariesComplete = List(
-    AddRow("First Last", typeLabel = "Individual Beneficiary", "#", removeIndividualRoute(0)),
-    AddRow("description", typeLabel = "Class of beneficiaries", "#", removeClassRoute(0))
+    AddRow("First Last", typeLabel = "Individual Beneficiary", "/trusts-registration/feature-not-available", removeIndividualRoute(0)),
+    AddRow("description", typeLabel = "Class of beneficiaries", "/trusts-registration/feature-not-available", removeClassRoute(0))
   )
 
   val userAnswersWithBeneficiariesComplete = emptyUserAnswers
