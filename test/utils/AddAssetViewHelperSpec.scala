@@ -49,6 +49,8 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
   def removeAssetRoute(index: Int) =
     routes.DefaultRemoveAssetController.onPageLoad(index, fakeDraftId).url
 
+  val featureUnavalible = "/trusts-registration/feature-not-available"
+
   "AddAssetViewHelper" when {
 
     ".row" must {
@@ -74,11 +76,11 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
 
         val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Shares", "#", removeSharePortfolioRoute(0)),
-          AddRow("No value added", typeLabel = "Money", "#", removeMoneyRoute(1)),
-          AddRow("No address added", typeLabel = "Property or Land", "#", removePropertyOrLandRoute(2)),
-          AddRow("No description added", typeLabel = "Property or Land", "#", removePropertyOrLandDescriptionRoute(3)),
-          AddRow("No address or description added", typeLabel = "Property or Land", "#", removeAssetRoute(4))
+          AddRow("No name added", typeLabel = "Shares", featureUnavalible, removeSharePortfolioRoute(0)),
+          AddRow("No value added", typeLabel = "Money", featureUnavalible, removeMoneyRoute(1)),
+          AddRow("No address added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
+          AddRow("No description added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3)),
+          AddRow("No address or description added", typeLabel = "Property or Land", featureUnavalible, removeAssetRoute(4))
         )
         rows.complete mustBe Nil
       }
@@ -113,10 +115,10 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
 
         val rows = new AddAssetViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("Share Company Name", typeLabel = "Shares", "#", removeShareCompanyRoute(0)),
-          AddRow("£200", typeLabel = "Money", "#", removeMoneyRoute(1)),
-          AddRow("line 1", typeLabel = "Property or Land", "#", removePropertyOrLandRoute(2)),
-          AddRow("1 hectare of land", typeLabel = "Property or Land", "#", removePropertyOrLandDescriptionRoute(3))
+          AddRow("Share Company Name", typeLabel = "Shares", featureUnavalible, removeShareCompanyRoute(0)),
+          AddRow("£200", typeLabel = "Money", featureUnavalible, removeMoneyRoute(1)),
+          AddRow("line 1", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
+          AddRow("1 hectare of land", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3))
         )
         rows.inProgress mustBe Nil
       }
