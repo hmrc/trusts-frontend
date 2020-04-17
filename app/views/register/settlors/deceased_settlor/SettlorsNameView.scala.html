@@ -34,24 +34,28 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorsName.heading")
+        <legend>
+            @components.heading("settlorsName.heading")
+        </legend>
 
-        @components.input_text(
-            field = form("firstName"),
-            label = messages("settlorsName.firstName"),
-            ariaRequired = true
-        )
+        <fieldset>
+            @components.input_text(
+                field = form("firstName"),
+                label = messages("settlorsName.firstName"),
+                ariaRequired = true
+            )
 
-        @components.input_text(
-            field = form("middleName"),
-            label = messages("settlorsName.middleName")
-        )
+            @components.input_text(
+                field = form("middleName"),
+                label = messages("settlorsName.middleName")
+            )
 
-        @components.input_text(
-            field = form("lastName"),
-            label = messages("settlorsName.lastName"),
-            ariaRequired = true
-        )
+            @components.input_text(
+                field = form("lastName"),
+                label = messages("settlorsName.lastName"),
+                ariaRequired = true
+            )
+        </fieldset>
 
         @components.submit_button()
     }

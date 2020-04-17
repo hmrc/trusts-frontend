@@ -34,7 +34,9 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteesUkAddress.heading", optionalParam = Some(trusteeName))
+        <legend>
+            @components.heading("trusteesUkAddress.heading", optionalParam = Some(trusteeName))
+        </legend>
 
         @components.uk_address(form)
 
