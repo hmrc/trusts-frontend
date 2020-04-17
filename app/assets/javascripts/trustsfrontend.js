@@ -14,6 +14,12 @@ $(document).ready(function() {
     numberInputs();
 
   // =====================================================
+  // Click focus wih space bar
+  // =====================================================
+
+  GOVUK.shimLinksWithButtonRole.init();
+
+  // =====================================================
   // Back link mimics browser back functionality
   // =====================================================
   // store referrer value to cater for IE - https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/10474810/  */
