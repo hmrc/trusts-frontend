@@ -35,9 +35,15 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteeOrgAddressInternational.heading", Some(name))
+        <fieldset>
 
-        @components.international_address(form, countryOptions)
+            <legend>
+                @components.heading("trusteeOrgAddressInternational.heading", Some(name))
+            </legend>
+
+            @components.international_address(form, countryOptions)
+
+        </fieldset>
 
         @components.submit_button(submitClass = Some("countryLookupHelper"))
     }

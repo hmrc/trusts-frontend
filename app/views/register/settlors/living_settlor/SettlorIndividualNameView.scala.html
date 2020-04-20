@@ -34,11 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        <legend>
-            @components.heading("settlorIndividualName.heading")
-        </legend>
-
         <fieldset>
+
+            <legend>
+                @components.heading("settlorIndividualName.heading")
+            </legend>
+
             @components.input_text(
                 field = form("firstName"),
                 label = messages("settlorIndividualName.firstName"),

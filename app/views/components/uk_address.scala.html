@@ -18,7 +18,6 @@
 form:Form[_]
 )(implicit messages: Messages)
 
-<fieldset>
     @components.input_text(
       field = form("line1"),
       label = messages("site.address.uk.line1"),
@@ -49,4 +48,3 @@ form:Form[_]
       hint = Some(messages(s"site.address.uk.postcode.hint")),
       inputClass = Some("form-control-1-4")
     )
-</fieldset>

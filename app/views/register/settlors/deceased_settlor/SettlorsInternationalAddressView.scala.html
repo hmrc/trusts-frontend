@@ -36,9 +36,15 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorsInternationalAddress.heading", Some(name.toString))
+        <fieldset>
 
-        @components.international_address(form, countryOptions)
+            <legend>
+                @components.heading("settlorsInternationalAddress.heading", Some(name.toString))
+            </legend>
+
+            @components.international_address(form, countryOptions)
+
+        </fieldset>
 
         @components.submit_button(submitClass = Some("countryLookupHelper"))
     }
