@@ -91,23 +91,7 @@ class AddAssetsController @Inject()(
       )
   }
 
-  def submitAnother(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
-    implicit request =>
 
-      addAnotherForm.bindFromRequest().fold(
-        (formWithErrors: Form[_]) => {
-          val assets = new AddAssetViewHelper(request.userAnswers, draftId).rows
-
-          val count = assets.count
-
-           Future.successful(BadRequest(addAssetsView(formWithErrors, mode, draftId, assets.inProgress, assets.complete, heading(count))))
-        },
-        value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddAssetsPage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(AddAssetsPage, mode, draftId)(updatedAnswers))
-        }
       )
   }
 }
