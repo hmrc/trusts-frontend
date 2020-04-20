@@ -34,25 +34,29 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryName.heading")
+        <fieldset>
 
-        @components.input_text(
-            field = form("firstName"),
-            label = messages("individualBeneficiaryName.firstName"),
-            ariaRequired = true
-        )
+            <legend>
+                @components.heading("individualBeneficiaryName.heading")
+            </legend>
 
-        @components.input_text(
-            field = form("middleName"),
-            label = messages("individualBeneficiaryName.middleName")
-        )
+            @components.input_text(
+                field = form("firstName"),
+                label = messages("individualBeneficiaryName.firstName"),
+                ariaRequired = true
+            )
 
-        @components.input_text(
-            field = form("lastName"),
-            label = messages("individualBeneficiaryName.lastName"),
-            ariaRequired = true
-        )
+            @components.input_text(
+                field = form("middleName"),
+                label = messages("individualBeneficiaryName.middleName")
+            )
 
+            @components.input_text(
+                field = form("lastName"),
+                label = messages("individualBeneficiaryName.lastName"),
+                ariaRequired = true
+            )
+        </fieldset>
 
         @components.submit_button()
     }

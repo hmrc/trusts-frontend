@@ -34,9 +34,15 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("site.address.uk.heading", Some(agencyName))
+        <fieldset>
 
-        @components.uk_address(form)
+            <legend>
+                @components.heading("site.address.uk.heading", Some(agencyName))
+            </legend>
+
+            @components.uk_address(form)
+
+        </fieldset>
 
         @components.submit_button()
     }

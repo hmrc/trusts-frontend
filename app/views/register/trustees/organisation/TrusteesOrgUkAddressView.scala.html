@@ -34,9 +34,15 @@ title = s"${errorPrefix(form)} ${messages("trusteesOrgUkAddress.title")}"
 
         @components.error_summary(form.errors)
 
-        @components.heading("trusteesOrgUkAddress.heading", optionalParam = Some(orgName))
+        <fieldset>
 
-        @components.uk_address(form)
+            <legend>
+                @components.heading("trusteesOrgUkAddress.heading", optionalParam = Some(orgName))
+            </legend>
+
+            @components.uk_address(form)
+
+        </fieldset>
 
         @components.submit_button()
     }
