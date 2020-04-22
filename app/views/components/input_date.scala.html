@@ -23,7 +23,8 @@
   hint: Option[String] = None,
   readerHint: Option[String] = None,
   link : Option[Link] = None,
-  legendAsHeading: Boolean = false
+  legendAsHeading: Boolean = false,
+  extraText: Option[String] = None
 )(implicit messages: Messages)
 
 <div class="form-group @if(field("day").hasErrors || field("month").hasErrors || field("year").hasErrors || field.hasErrors){form-group-error}">
@@ -35,6 +36,9 @@
             </span>
             @if(legendAsHeading){</h1>}
         </legend>
+        @if(extraText.nonEmpty){
+            <p>@extraText</p>
+        }
         @form_hint(hint = hint, readerHint = readerHint, link = link)
         @field.errors.map { error =>
         <span class="error-message" id="error-message-@{field.id}-input">@messages(error.message, error.args: _*)</span>

@@ -244,7 +244,8 @@ whenTrustSetup.error.required = The date the trust was created must include a {0
 whenTrustSetup.error.invalid = Enter a real date the trust was created
 whenTrustSetup.error.future = The date the trust was created must be today or in the past
 whenTrustSetup.error.past = The date the trust was created must be after 31 December 1499
-whenTrustSetup.hint = This is the date the trust deed was signed. For will trusts use the settlor’s date of death. For example, 31 3 2015
+whenTrustSetup.text = This is the date the trust deed was signed. For will trusts use the settlor’s date of death.
+whenTrustSetup.hint = For example, 31 3 2015
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?
