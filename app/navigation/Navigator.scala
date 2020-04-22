@@ -180,7 +180,8 @@ class Navigator @Inject()(
         routeToIndividualBeneficiaryIndex(userAnswers, draftId)
       case Some(WhatTypeOfBeneficiary.ClassOfBeneficiary) =>
         routeToClassOfBeneficiaryIndex(userAnswers, draftId)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case _ =>
+        controllers.routes.FeatureNotAvailableController.onPageLoad()
     }
   }
 
@@ -320,14 +321,22 @@ class Navigator @Inject()(
     }
   }
 
-  private def whatKindOfAssetRoute(answers: UserAnswers, index: Int, draftId: String) = answers.get(WhatKindOfAssetPage(index)) match {
-      case Some(Money) => controllers.register.asset.money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId)
-      case Some(Shares) => controllers.register.asset.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)
-      case Some(PropertyOrLand) => controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, draftId)
-      case Some(Business) => controllers.register.asset.routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
-      case Some(Partnership) => controllers.register.asset.routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
-      case Some(Other) => controllers.register.asset.routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, draftId)
-      case _ => routes.SessionExpiredController.onPageLoad()
+  private def whatKindOfAssetRoute(answers: UserAnswers, index: Int, draftId: String) =
+    answers.get(WhatKindOfAssetPage(index)) match {
+      case Some(Money) =>
+        controllers.register.asset.money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, draftId)
+      case Some(Shares) =>
+        controllers.register.asset.shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, draftId)
+      case Some(PropertyOrLand) =>
+        controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(Business) =>
+        controllers.routes.FeatureNotAvailableController.onPageLoad()
+      case Some(Partnership) =>
+        controllers.routes.FeatureNotAvailableController.onPageLoad()
+      case Some(Other) =>
+        controllers.routes.FeatureNotAvailableController.onPageLoad()
+      case _ =>
+        controllers.routes.FeatureNotAvailableController.onPageLoad()
     }
 
   private def addATrusteeYesNoRoute(draftId: String)(answers: UserAnswers) : Call = {

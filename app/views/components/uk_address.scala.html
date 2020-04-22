@@ -18,34 +18,33 @@
 form:Form[_]
 )(implicit messages: Messages)
 
+    @components.input_text(
+      field = form("line1"),
+      label = messages("site.address.uk.line1"),
+      inputClass = Some("form-control-3-4")
+    )
 
-@components.input_text(
-  field = form("line1"),
-  label = messages("site.address.uk.line1"),
-  inputClass = Some("form-control-3-4")
-)
+    @components.input_text(
+      field = form("line2"),
+      label = messages("site.address.uk.line2"),
+      inputClass = Some("form-control-3-4")
+    )
 
-@components.input_text(
-  field = form("line2"),
-  label = messages("site.address.uk.line2"),
-  inputClass = Some("form-control-3-4")
-)
+    @components.input_text(
+      field = form("line3"),
+      label = messages("site.address.uk.line3"),
+      inputClass = Some("form-control-1-2")
+    )
 
-@components.input_text(
-  field = form("line3"),
-  label = messages("site.address.uk.line3"),
-  inputClass = Some("form-control-1-2")
-)
+    @components.input_text(
+      field = form("line4"),
+      label = messages("site.address.uk.line4"),
+      inputClass = Some("form-control-1-2")
+    )
 
-@components.input_text(
-  field = form("line4"),
-  label = messages("site.address.uk.line4"),
-  inputClass = Some("form-control-1-2")
-)
-
-@components.input_text(
-  field = form("postcode"),
-  label = messages("site.address.uk.postcode"),
-  hint = Some(messages(s"site.address.uk.postcode.hint")),
-  inputClass = Some("form-control-1-4")
-)
+    @components.input_text(
+      field = form("postcode"),
+      label = messages("site.address.uk.postcode"),
+      hint = Some(messages(s"site.address.uk.postcode.hint")),
+      inputClass = Some("form-control-1-4")
+    )

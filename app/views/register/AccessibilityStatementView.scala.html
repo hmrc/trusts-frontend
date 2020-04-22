@@ -1,0 +1,122 @@
+@*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.register.routes._
+@import models.Mode
+
+@this(
+main_template: MainTemplate
+)
+
+@()(implicit request: Request[_], messages: Messages)
+
+@main_template(
+title = messages("accessibilityStatement.title")
+) {
+
+    @components.heading("accessibilityStatement.heading")
+
+    <p class="govuk-body-l">@messages("accessibilityStatement.p1")</p>
+    <p class="govuk-body">@messages("accessibilityStatement.p2.pre.link")
+      <a href="https://www.gov.uk/help/accessibility">@messages("accessibilityStatement.p2.link.text")</a> @messages("accessibilityStatement.p2.post.link")</p>
+    <p class="govuk-body">@messages("accessibilityStatement.p3")</p>
+
+    <h2 class="govuk-heading-l">@messages("accessibilityStatement.using.this.service")</h2>
+    <p class="govuk-body">@messages("accessibilityStatement.this.service.allows")</p>
+    <p class="govuk-body">@messages("accessibilityStatement.this.service.is.run")</p>
+
+    <ul class="trust-list--bullet">
+      <li class="inside">@messages("accessibilityStatement.this.service.is.run.b1")</li>
+      <li class="inside">@messages("accessibilityStatement.this.service.is.run.b2")</li>
+      <li class="inside">@messages("accessibilityStatement.this.service.is.run.b3")</li>
+      <li class="inside">@messages("accessibilityStatement.this.service.is.run.b4")</li>
+      <li class="inside">@messages("accessibilityStatement.this.service.is.run.b5")</li>
+    </ul>
+
+    <p class="govuk-body">@messages("accessibilityStatement.we.have.also")</p>
+    <p class="govuk-body">
+      <a href="https://mcmw.abilitynet.org.uk/">AbilityNet</a>
+      @messages("accessibilityStatement.ability.net.has.advice")
+    </p>
+
+    <h2 class="govuk-heading-l">@messages("accessibilityStatement.how.accessible")</h2>
+    <p class="govuk-body">@messages("accessibilityStatement.this.service.is.partial")
+      <a href="https://www.w3.org/TR/WCAG21/">@messages("accessibilityStatement.wcag.standard")</a>.</p>
+    <p class="govuk-body">@messages("accessibilityStatement.some.people.may.find")</p>
+
+    <ul class="trust-list--bullet">
+      <li class="inside">@messages("accessibilityStatement.some.people.may.find.b1")</li>
+      <li class="inside">@messages("accessibilityStatement.some.people.may.find.b2")</li>
+      <li class="inside">@messages("accessibilityStatement.some.people.may.find.b3")</li>
+      <li class="inside">@messages("accessibilityStatement.some.people.may.find.b4")</li>
+      <li class="inside">@messages("accessibilityStatement.some.people.may.find.b5")</li>
+      <li class="inside">@messages("accessibilityStatement.some.people.may.find.b6")</li>
+    </ul>
+
+    <h2 class="govuk-heading-l">@messages("accessibilityStatement.reporting.problems")</h2>
+    <p class="govuk-body">@messages("accessibilityStatement.reporting.pre.link")
+      <a target="_blank" href="https://www.tax.service.gov.uk/contact/accessibility-unauthenticated?service=trusts">@messages("accessibilityStatement.reporting.link")</a>.
+      </p>
+
+    <h2 class="govuk-heading-l">@messages("accessibilityStatement.what.to.do")</h2>
+    <p class="govuk-body">@messages("accessibilityStatement.what.to.do.pre.eass.link")
+      <a href="https://www.equalityadvisoryservice.com/">@messages("accessibilityStatement.what.to.do.eass.link")</a>,
+      @messages("accessibilityStatement.what.to.do.or.the")
+      <a href="https://www.equalityni.org/Home">@messages("accessibilityStatement.what.to.do.ecni.link")</a>
+      @messages("accessibilityStatement.what.to.do.if.you.live")
+    </p>
+
+    <h2 class="govuk-heading-l">@messages("accessibilityStatement.contacting.us")</h2>
+    <p class="govuk-body">@messages("accessibilityStatement.we.provide.a.text")</p>
+    <p class="govuk-body">@messages("accessibilityStatement.we.can.provide")</p>
+    <p class="govuk-body">
+      @messages("accessibilityStatement.find.out.how")
+      <a href="https://www.gov.uk/dealing-hmrc-additional-needs">@messages("accessibilityStatement.find.out.contact.us")</a>.
+    </p>
+
+    <h2 class="govuk-heading-l">@messages("accessibilityStatement.technical.information")</h2>
+    <p class="govuk-body">@messages("accessibilityStatement.hmrc.is.committed")</p>
+    <p class="govuk-body">
+      @messages("accessibilityStatement.this.service.is.partial")
+      <a href="https://www.w3.org/TR/WCAG21/">@messages("accessibilityStatement.wcag.standard")</a>,
+       @messages("accessibilityStatement.this.service.is.partial.due.to")
+    </p>
+
+    <h3 class="govuk-heading-m">@messages("accessibilityStatement.non.accessible")</h3>
+    <p class="govuk-body">@messages("accessibilityStatement.the.content.listed")</p>
+
+    <h4 class="govuk-heading-s">@messages("accessibilityStatement.non.compliance.with")</h4>
+
+    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.info.pre.link") <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html">@messages("accessibilityStatement.non.compliance.info.link")</a> @messages("accessibilityStatement.non.compliance.info.post.link")</p>
+
+    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.keyboard.pre.link") <a href="https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html">@messages("accessibilityStatement.non.compliance.keyboard.link")</a> @messages("accessibilityStatement.non.compliance.keyboard.post.link"), <a href="https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html">@messages("accessibilityStatement.non.compliance.bypass.link")</a> @messages("accessibilityStatement.non.compliance.bypass.post.link")</p>
+
+    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.change.pre.link") <a href="https://www.w3.org/TR/WCAG21/#link-purpose-in-context">@messages("accessibilityStatement.non.compliance.change.link")</a> @messages("accessibilityStatement.non.compliance.change.post.link")</p>
+
+    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.page.titles.pre.link") <a href="https://www.w3.org/TR/WCAG21/#page-titled">@messages("accessibilityStatement.non.compliance.page.titles.link")</a> @messages("accessibilityStatement.non.compliance.page.titles.post.link")</p>
+
+    <h2 class="govuk-heading-l">@messages("accessibilityStatement.how.we.tested")</h2>
+    <p class="govuk-body">@messages("accessibilityStatement.service.last.tested.on")</p>
+    <p class="govuk-body">
+      @messages("accessibilityStatement.this.service.was.built.pre.link")
+      <a href="http://www.digitalaccessibilitycentre.org/">@messages("accessibilityStatement.this.service.was.built.link")</a>.
+      @messages("accessibilityStatement.this.service.was.built.post.link")
+    </p>
+    <p class="govuk-body">@messages("accessibilityStatement.page.prepared.on")</p>
+
+}
+
+

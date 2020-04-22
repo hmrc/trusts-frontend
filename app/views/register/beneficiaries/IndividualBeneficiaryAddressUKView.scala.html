@@ -35,9 +35,15 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("individualBeneficiaryAddressUK.heading", Some(name.toString))
+        <fieldset>
 
-        @components.uk_address(form)
+            <legend>
+                @components.heading("individualBeneficiaryAddressUK.heading", Some(name.toString))
+            </legend>
+
+            @components.uk_address(form)
+
+        </fieldset>
 
         @components.submit_button()
     }

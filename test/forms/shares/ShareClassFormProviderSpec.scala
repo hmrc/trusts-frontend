@@ -32,7 +32,7 @@ class ShareClassFormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[ShareClass](
       form,
       fieldName,
-      validValues  = ShareClass.values.toSet,
+      validValues  = ShareClass.allValues.toSet,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

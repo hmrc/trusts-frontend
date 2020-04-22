@@ -21,7 +21,7 @@ import controllers.register.asset.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.AddAssets
+import models.registration.pages.{AddAssets, WhatKindOfAsset}
 import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
@@ -35,6 +35,17 @@ trait AssetRoutes {
   self: PropertyChecks with Generators with RegistrationSpecBase =>
 
   def assetRoutes()(implicit navigator: Navigator) = {
+
+    "go to feature not available for asset type not available" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
+
+          navigator.nextPage(WhatKindOfAssetPage(0), NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.routes.FeatureNotAvailableController.onPageLoad())
+      }
+    }
 
     "go to WhatKindOfAssetPage from from AddAnAssetYesNoPage when selected Yes" in {
       val index = 0

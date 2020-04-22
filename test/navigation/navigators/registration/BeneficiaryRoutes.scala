@@ -256,6 +256,15 @@ trait BeneficiaryRoutes {
 
     }
 
+    "go to feature not available when beneficiary option selected that is not available" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val answers = userAnswers.set(WhatTypeOfBeneficiaryPage, value = WhatTypeOfBeneficiary.CompanyOrEmployment).success.value
+          navigator.nextPage(WhatTypeOfBeneficiaryPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.routes.FeatureNotAvailableController.onPageLoad())
+      }
+    }
+
     "there is atleast one Individual Beneficiaries" must {
 
       "go to the next IndividualBeneficiaryNamePage from WhatTypeOfBeneficiaryPage when Individual option selected" in {
