@@ -16,14 +16,13 @@
 
 @import controllers.register.routes._
 @import models.Mode
-@import viewmodels.Link
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, link: Option[Link] =None)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("trustHaveAUTR.title")}"
@@ -38,9 +37,7 @@
         @components.input_yes_no(
             field = form("value"),
             label = messages("trustHaveAUTR.heading"),
-            hint = Some(messages(s"trustHaveAUTR.hint")),
             readerHint = Some(messages(s"trustHaveAUTR.hint.reader")),
-            link = link,
             legendClass = Some("heading-large"),
             legendAsHeading = true
         )

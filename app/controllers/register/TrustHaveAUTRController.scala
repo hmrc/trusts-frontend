@@ -17,7 +17,6 @@
 package controllers.register
 
 import config.FrontendAppConfig
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
 import javax.inject.Inject
@@ -25,11 +24,10 @@ import models.Mode
 import navigation.Navigator
 import pages.register.TrustHaveAUTRPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import viewmodels.Link
 import views.html.register.TrustHaveAUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -48,7 +46,7 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  private val lostUtrKey : String = "trustHaveAUTR.link"
+  private val lostUtrKey: String = "trustHaveAUTR.link"
 
   val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
@@ -60,26 +58,22 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
         case Some(value) => form.fill(value)
       }
 
-      val link = Link(Messages(lostUtrKey), config.lostUtrUrl)
-
-      Ok(view(preparedForm, mode, draftId, Some(link)))
+      Ok(view(preparedForm, mode, draftId))
   }
 
   def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
     implicit request =>
 
-      val link = Link(Messages(lostUtrKey), config.lostUtrUrl)
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, Some(link)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
+            _ <- registrationsRepository.set(updatedAnswers)
           } yield {
-              Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup)(updatedAnswers))
+            Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup)(updatedAnswers))
           }
         }
       )

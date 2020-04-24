@@ -19,22 +19,18 @@ package controllers.register
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
-import navigation.Navigator
-import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage}
+import pages.register.TrustHaveAUTRPage
+import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import viewmodels.Link
 import views.html.register.TrustHaveAUTRView
 
 class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
-  val form = formProvider.withPrefix("trustHaveAUTR")
+  val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
-  val url = "https://www.gov.uk/find-lost-utr-number"
-  val link = Link(messages("trustHaveAUTR.link"), url)
-
-  lazy val trustHaveAUTRRoute = routes.TrustHaveAUTRController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val trustHaveAUTRRoute: String = routes.TrustHaveAUTRController.onPageLoad(NormalMode,fakeDraftId).url
 
   "TrustHaveAUTR Controller" must {
 
@@ -51,7 +47,7 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, Some(link))(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -71,7 +67,7 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, Some(link))(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -93,7 +89,7 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, Some(link))(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
