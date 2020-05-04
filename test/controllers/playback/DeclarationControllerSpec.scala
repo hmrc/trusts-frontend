@@ -103,23 +103,6 @@ class DeclarationControllerSpec extends PlaybackSpecBase {
       application.stop()
     }
 
-    "redirect to the confirmation page when valid data is submitted" in {
-
-      val userAnswers = emptyUserAnswers.set(DeclarationWhatNextPage, DeclareTheTrustIsUpToDate).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
-
-      val request = FakeRequest(POST, declarationRoute)
-          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual controllers.playback.routes.VariationsConfirmationController.onPageLoad().url
-
-      application.stop()
-    }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 

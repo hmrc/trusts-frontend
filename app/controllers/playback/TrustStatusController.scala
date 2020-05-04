@@ -31,7 +31,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.PlaybackRepository
-import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.playback.status._
 
@@ -56,7 +55,6 @@ class TrustStatusController @Inject()(
                                        alreadyClaimedView: TrustAlreadyClaimedView,
                                        playbackProblemContactHMRCView: PlaybackProblemContactHMRCView,
                                        playbackExtractor: UserAnswersExtractor,
-                                       playbackAuthenticationService: PlaybackAuthenticationService,
                                        val controllerComponents: MessagesControllerComponents
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -136,11 +134,7 @@ class TrustStatusController @Inject()(
       case UtrNotFound =>
         Logger.info(s"[TrustStatusController][tryToPlayback] unable to retrieve trust due to UTR not found")
         Future.successful(Redirect(controllers.playback.routes.TrustStatusController.notFound()))
-      case Processed(playback, _) =>
-        playbackAuthenticationService.authenticate(utr) flatMap {
-          case Left(failure) => Future.successful(failure)
-          case Right(_) => extract(utr, playback)
-        }
+      case Processed(playback, _) => extract(utr, playback)
       case SorryThereHasBeenAProblem =>
         Logger.warn(s"[TrustStatusController][tryToPlayback] unable to retrieve trust due to status")
         Future.successful(Redirect(routes.TrustStatusController.sorryThereHasBeenAProblem()))

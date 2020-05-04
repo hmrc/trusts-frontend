@@ -16,7 +16,7 @@
 
 package controllers.playback
 
-import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction, PlaybackIdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction}
 import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationWhatNextFormProvider
 import javax.inject.Inject
@@ -37,7 +37,6 @@ class DeclarationWhatNextController @Inject()(
                                                sessionRepository: PlaybackRepository,
                                                navigator: VariationsNavigator,
                                                identify: RegistrationIdentifierAction,
-                                               playbackAction: PlaybackIdentifierAction,
                                                getData: PlaybackDataRetrievalAction,
                                                requireData: PlaybackDataRequiredAction,
                                                formProvider: DeclarationWhatNextFormProvider,
@@ -47,7 +46,7 @@ class DeclarationWhatNextController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData andThen playbackAction) {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationWhatNextPage) match {
@@ -58,7 +57,7 @@ class DeclarationWhatNextController @Inject()(
       Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData andThen playbackAction).async {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

@@ -31,7 +31,6 @@ import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.PlaybackRepository
-import services.{FakeFailingPlaybackAuthenticationService, FakePlaybackAuthenticationService, PlaybackAuthenticationService}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.playback.status._
 
@@ -53,7 +52,6 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
     val application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
       bind[TrustConnector].to(fakeTrustConnector),
       bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
-      bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService()),
       bind[UserAnswersExtractor].to[FakeUserAnswerExtractor]
     ).build()
 
@@ -260,8 +258,7 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
               def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
                 bind[TrustConnector].to(fakeTrustConnector),
                 bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
-                bind[UserAnswersExtractor].to[FakeFailingUserAnswerExtractor],
-                bind[PlaybackAuthenticationService].to(new FakePlaybackAuthenticationService())
+                bind[UserAnswersExtractor].to[FakeFailingUserAnswerExtractor]
               ).build()
 
               val payload : String =
@@ -291,50 +288,6 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
           }
 
         }
-
-        "user is not authenticated for playback" must {
-
-          "render authentication reason page" in {
-
-            lazy val request = FakeRequest(GET, routes.TrustStatusController.status().url)
-
-            def utr = "1234567890"
-
-            def userAnswers = emptyUserAnswers.set(WhatIsTheUTRVariationPage, utr).success.value
-
-            val fakeTrustConnector: TrustConnector = mock[TrustConnector]
-            val fakeTrustStoreConnector: TrustsStoreConnector = mock[TrustsStoreConnector]
-
-            def application: Application = applicationBuilder(userAnswers = Some(userAnswers)).overrides(
-              bind[TrustConnector].to(fakeTrustConnector),
-              bind[TrustsStoreConnector].to(fakeTrustStoreConnector),
-              bind[PlaybackAuthenticationService].to(new FakeFailingPlaybackAuthenticationService())
-            ).build()
-
-            val payload : String =
-              Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
-
-            val json : JsValue = Json.parse(payload)
-
-            val getTrust = json.as[GetTrustDesResponse].getTrust.value
-
-            def result: Future[Result] = route(application, request).value
-
-            when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
-              .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
-
-            when(fakeTrustConnector.playback(any[String])(any(), any()))
-              .thenReturn(Future.successful(Processed(getTrust, "9873459837459837")))
-
-            when(playbackRepository.set(any())).thenReturn(Future.successful(true))
-
-            status(result) mustEqual UNAUTHORIZED
-
-            application.stop()
-          }
-
-        }
-
       }
     }
   }

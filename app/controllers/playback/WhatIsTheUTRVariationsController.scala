@@ -17,7 +17,7 @@
 package controllers.playback
 
 import config.FrontendAppConfig
-import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction}
+import controllers.actions.playback.PlaybackDataRetrievalAction
 import controllers.actions.register.RegistrationIdentifierAction
 import forms.WhatIsTheUTRFormProvider
 import handlers.ErrorHandler
@@ -28,7 +28,6 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.PlaybackRepository
-import services.PlaybackAuthenticationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.WhatIsTheUTRView
 
@@ -43,8 +42,7 @@ class WhatIsTheUTRVariationsController @Inject()(
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: WhatIsTheUTRView,
                                                   config: FrontendAppConfig,
-                                                  errorHandler: ErrorHandler,
-                                                  authenticationService: PlaybackAuthenticationService
+                                                  errorHandler: ErrorHandler
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()

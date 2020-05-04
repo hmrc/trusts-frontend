@@ -16,7 +16,6 @@
 
 package base
 
-import controllers.actions.playback.PlaybackIdentifierAction
 import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import models.core.UserAnswers
@@ -59,7 +58,6 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
       .overrides(
         bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
         bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
-        bind[PlaybackIdentifierAction].toInstance(new FakePlaybackIdentifierAction()),
         bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),

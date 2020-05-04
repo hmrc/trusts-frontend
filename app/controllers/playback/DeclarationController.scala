@@ -17,7 +17,7 @@
 package controllers.playback
 
 import controllers.actions._
-import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction, PlaybackIdentifierAction}
+import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRetrievalAction}
 import controllers.actions.register.RegistrationIdentifierAction
 import forms.DeclarationFormProvider
 import javax.inject.Inject
@@ -37,7 +37,6 @@ class DeclarationController @Inject()(
                                        playbackRepository: PlaybackRepository,
                                        navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
-                                       playbackIdentify: PlaybackIdentifierAction,
                                        getData: PlaybackDataRetrievalAction,
                                        requireData: PlaybackDataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
@@ -48,8 +47,7 @@ class DeclarationController @Inject()(
 
   val form = formProvider()
 
-  def actions() = identify andThen getData andThen requireData andThen playbackIdentify //andThen
-    //requiredAnswer(RequiredAnswer(DeclarationWhatNextPage, routes.DeclarationWhatNextController.onPageLoad()))
+  def actions() = identify andThen getData andThen requireData
 
   def onPageLoad(): Action[AnyContent] = actions() {
     implicit request =>
@@ -75,7 +73,7 @@ class DeclarationController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- playbackRepository.set(updatedAnswers)
-          } yield Redirect(controllers.playback.routes.VariationsConfirmationController.onPageLoad())
+          } yield Redirect(???)
         }
       )
 

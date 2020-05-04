@@ -1,9 +1,6 @@
 # Maintain
 GET        /                                       controllers.playback.IndexController.onPageLoad()
 
-GET        /trust-not-claimed                      controllers.playback.TrustNotClaimedController.onPageLoad()
-GET        /agent-not-authorised                   controllers.playback.AgentNotAuthorisedController.onPageLoad()
-
 GET        /status/closed                          controllers.playback.TrustStatusController.closed()
 GET        /status/processing                      controllers.playback.TrustStatusController.processing()
 GET        /status/not-found                       controllers.playback.TrustStatusController.notFound()
@@ -21,5 +18,3 @@ POST       /declare-what-changed                   controllers.playback.Declarat
 
 GET        /declaration                            controllers.playback.DeclarationController.onPageLoad()
 POST       /declaration                            controllers.playback.DeclarationController.onSubmit()
-
-GET        /confirmation                           controllers.playback.VariationsConfirmationController.onPageLoad()
