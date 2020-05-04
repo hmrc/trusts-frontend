@@ -306,47 +306,6 @@ UTRSentByPost.link.contactHelpline = Contact the trusts helpline (opens in a new
 UTRSentByPost.paragraph3 = You can
 UTRSentByPost.link.returnToRegister = return to register and maintain a trust for a client
 
-
-ClosedError.title = Sorry, you cannot access this trust
-ClosedError.heading = Sorry, you cannot access this trust
-ClosedError.subheading = This trust’s UTR: {0}
-ClosedError.paragraph1 = You cannot make changes to this trust as it has been closed.
-ClosedError.paragraph2 = If this has been done in error or you need help with the service, please
-ClosedError.contact.link = contact the trusts helpline (opens in a new window or tab)
-ClosedError.paragraph3 = to reopen the records. HMRC will contact you if a tax return is required or for any further information.
-ClosedError.paragraph4 = You can
-ClosedError.return.link = return to register and maintain a trust for a client
-ClosedError.link.paragraph = If you need help with the service
-
-DoesNotMatchError.title = Sorry, you cannot access this trust
-DoesNotMatchError.heading = Sorry, you cannot access this trust
-DoesNotMatchError.subheading = This trust’s UTR: {0}
-DoesNotMatchError.paragraph1 = The Unique Taxpayer Reference (UTR) entered does not match our records.
-DoesNotMatchError.paragraph2 = Check you have entered the trust’s UTR correctly.
-DoesNotMatchError.paragraph3 = If you do not have a UTR for the trust you will need to register the trust first.
-DoesNotMatchError.paragraph4 = If you need help with the service
-DoesNotMatchError.paragraph5 = You can
-DoesNotMatchError.contact.link = contact the trusts helpline (opens in a new window or tab)
-DoesNotMatchError.return.link = return to register and maintain a trust for a client
-
-StillProcessingError.title = Sorry, you cannot access this trust
-StillProcessingError.heading = Sorry, you cannot access this trust
-StillProcessingError.subheading = This trust’s UTR: {0}
-StillProcessingError.paragraph1 = HMRC is still processing changes recently made to this trust.
-StillProcessingError.paragraph2 = Try again later.
-StillProcessingError.paragraph3 = If you need help with the service
-StillProcessingError.paragraph4 = You can
-StillProcessingError.contact.link = contact the trusts helpline (opens in a new window or tab)
-StillProcessingError.return.link = return to register and maintain a trust for a client
-
-IvDown.heading = Sorry, there is a problem with the service
-IvDown.title = Sorry, there is a problem with the service
-IvDown.paragraph1 = Try again later.
-IvDown.paragraph2 = You can
-IvDown.paragraph3 = if you need to speak to someone about registering and maintaining a trust.
-IvDown.contact.link = contact the trusts helpline (opens in a new window or tab)
-IvDown.return.link = return to register and maintain a trust for a client
-
 isThisLeadTrustee.title = Is this the lead trustee?
 isThisLeadTrustee.heading = Is this the lead trustee?
 isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
@@ -1505,29 +1464,6 @@ settlorInfo.paragraph5 = For trusts set up for employees of a company, tell us:
 settlorInfo.bulletpoint8 = if it’s an employer-financed retirement scheme, and if so what date it started
 settlorInfo.bulletpoint9 = the business type (trading or investment) if the scheme’s settlor is a business
 settlorInfo.bulletpoint10 = if the business had existed for at least 2 years when any asset was added to the trust
-
-TrustLocked.title = Sorry, you cannot access this trust
-TrustLocked.heading = Sorry, you cannot access this trust
-TrustLocked.p1 = You have not passed the security questions asked by HMRC.
-TrustLocked.p2 = Try again in 30 minutes.
-TrustLocked.p3 = If you need help with the service
-TrustLocked.link1 = contact the trusts helpline (opens in a new window or tab)
-TrustLocked.subheading = This trust’s UTR: {0}
-
-trustAlreadyClaimed.title = Sorry, you cannot access this trust
-trustAlreadyClaimed.heading = Sorry, you cannot access this trust
-trustAlreadyClaimed.subheading = This trust’s UTR: {0}
-trustAlreadyClaimed.p1 = Another Government Gateway account is linked to it. Please sign in with that account.
-trustAlreadyClaimed.p2 = If you are unable to do so,
-trustAlreadyClaimed.p2.a = contact the trusts helpline (opens in a new window or tab)
-
-playbackProblemContactHMRC.title = Sorry, there has been a problem accessing your trust’s registration
-playbackProblemContactHMRC.heading = Sorry, there has been a problem accessing your trust’s registration
-playbackProblemContactHMRC.subheading = This trust’s UTR: {0}
-playbackProblemContactHMRC.p1.beforeLink = You need to
-playbackProblemContactHMRC.p1.link = contact the trusts helpline (opens in a new window or tab)
-playbackProblemContactHMRC.p1.afterLink = so we can confirm details with you about the trust.
-playbackProblemContactHMRC.p2 = Please have the relevant documents relating to the trust and its Self Assessment available when you contact HMRC.
 
 individualProtectorName.checkYourAnswersLabel = What is the protector’s name?
 individualProtectorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
