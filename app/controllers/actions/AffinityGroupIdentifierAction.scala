@@ -17,6 +17,7 @@
 package controllers.actions
 
 import com.google.inject.Inject
+import config.FrontendAppConfig
 import models.requests.IdentifierRequest
 import org.slf4j.LoggerFactory
 import play.api.Logger
@@ -32,7 +33,8 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
-                                                 trustsAuthFunctions: TrustsAuthorisedFunctions
+                                                 trustsAuthFunctions: TrustsAuthorisedFunctions,
+                                                 config: FrontendAppConfig
                                                 ) extends Action[A]  {
   private val logger = LoggerFactory.getLogger("application.controllers.actions.AffinityGroupIdentifierAction")
 
@@ -69,6 +71,42 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     }
   }
 
+  private def authoriseOrg(request : Request[A],
+                           enrolments : Enrolments,
+                           internalId : String,
+                           action: Action[A]
+                          ): Future[Result] = {
+
+    def redirectToCreateAgentServicesAccount(reason: String): Future[Result] = {
+      Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent]: Agent services account required - $reason")
+      Future.successful(Redirect(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad()))
+    }
+
+    val enrolmentKey = "HMRC-TERS-ORG"
+    val identifier = "SAUTR"
+
+    val continueWithoutEnrolment =
+      action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
+
+    enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment){
+      enrolment =>
+        enrolment.getIdentifier(identifier).fold{
+          Logger.warn("missing SAUTR key for HMRC-TERS-ORG")
+          continueWithoutEnrolment
+        }{
+          enrolmentIdentifier =>
+            val utr = enrolmentIdentifier.value
+
+            if(utr.isEmpty) {
+              Logger.warn("UTR is empty")
+              continueWithoutEnrolment
+            } else {
+              Future.successful(Redirect(config.maintainATrustFrontendUrl))
+            }
+        }
+    }
+  }
+
 
   def apply(request: Request[A]): Future[Result] = {
 
@@ -84,7 +122,7 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
         authoriseAgent(request, enrolments, internalId, action)
       case Some(internalId) ~ Some(Organisation) ~ enrolments =>
         logger.info("successfully identified as Organisation")
-        action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
+        authoriseOrg(request, enrolments, internalId, action)
       case Some(_) ~ _ ~ _ =>
         logger.info("Unauthorised due to affinityGroup being Individual")
         Future.successful(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad()))

@@ -66,7 +66,7 @@ class IndexControllerSpec extends RegistrationSpecBase {
 
     "for a playback" should {
 
-        "redirect to maintain a trust with Non-Agent affinityGroup" in {
+      "redirect to maintain a trust with Non-Agent affinityGroup" in {
 
           val answers = emptyUserAnswers.copy(progress = InProgress)
             .set(TrustRegisteredOnlinePage, true).success.value
@@ -83,6 +83,10 @@ class IndexControllerSpec extends RegistrationSpecBase {
 
           application.stop()
         }
+
+      "" in {
+
+      }
 
     }
 

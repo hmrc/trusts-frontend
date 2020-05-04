@@ -45,7 +45,7 @@ trait PlaybackSpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mo
                                   ): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
-        bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
+        bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup, frontendAppConfig)(injectedParsers, trustsAuth, enrolments)),
         bind[PlaybackIdentifierAction].toInstance(new FakePlaybackIdentifierAction()),
         bind[PlaybackDataRetrievalAction].toInstance(new FakePlaybackDataRetrievalAction(userAnswers)),
         bind[PlaybackDataRequiredAction].to[PlaybackDataRequiredActionImpl],
