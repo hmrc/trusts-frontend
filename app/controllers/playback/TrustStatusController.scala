@@ -156,8 +156,7 @@ class TrustStatusController @Inject()(
 
     playbackExtractor.extract(request.userAnswers, playback) match {
       case Right(answers) =>
-        playbackRepository.set(answers) map { _ =>
-          Redirect(routes.InformationMaintainingThisTrustController.onPageLoad())
+        playbackRepository.set(answers) map { _ => ???
         }
       case Left(reason) =>
         Logger.warn(s"[TrustStatusController] unable to extract user answers due to $reason")

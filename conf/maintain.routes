@@ -16,8 +16,6 @@ GET        /status                                 controllers.playback.TrustSta
 GET        /trust-utr                              controllers.playback.WhatIsTheUTRVariationsController.onPageLoad()
 POST       /trust-utr                              controllers.playback.WhatIsTheUTRVariationsController.onSubmit()
 
-GET        /information                            controllers.playback.InformationMaintainingThisTrustController.onPageLoad()
-
 GET        /declare-what-changed                   controllers.playback.DeclarationWhatNextController.onPageLoad()
 POST       /declare-what-changed                   controllers.playback.DeclarationWhatNextController.onSubmit()
 

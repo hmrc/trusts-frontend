@@ -246,36 +246,6 @@ class TrustStatusControllerSpec extends PlaybackSpecBase with BeforeAndAfterEach
 
         "user is authenticated for playback" when {
 
-          "user answers is extracted" must {
-
-            "redirect to maintain a trust" in new LocalSetup {
-
-              override def request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest(GET, routes.TrustStatusController.status().url)
-
-              val payload : String =
-                Source.fromFile(getClass.getResource("/display-trust.json").getPath).mkString
-
-              val json : JsValue = Json.parse(payload)
-
-              val getTrust = json.as[GetTrustDesResponse].getTrust.value
-
-              when(fakeTrustStoreConnector.get(any[String], any[String])(any(), any()))
-                .thenReturn(Future.successful(Some(TrustClaim("1234567890", trustLocked = false, managedByAgent = false))))
-
-              when(fakeTrustConnector.playback(any[String])(any(), any()))
-                .thenReturn(Future.successful(Processed(getTrust, "9873459837459837")))
-
-              when(fakePlaybackRepository.set(any())).thenReturn(Future.successful(true))
-
-              status(result) mustEqual SEE_OTHER
-
-              redirectLocation(result).value mustEqual routes.InformationMaintainingThisTrustController.onPageLoad().url
-
-              application.stop()
-            }
-
-          }
-
           "user answers is not extracted" must {
 
             "render sorry there's been a problem" in {
