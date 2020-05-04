@@ -17,7 +17,6 @@
 package generators
 
 import org.scalacheck.Arbitrary
-import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
 import pages.register
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
@@ -36,12 +35,6 @@ import pages.register.trustees.individual._
 import pages.register._
 
 trait PageGenerators {
-
-  implicit lazy val arbitraryDeclarationWhatNextPage: Arbitrary[DeclarationWhatNextPage.type] =
-    Arbitrary(DeclarationWhatNextPage)
-
-  implicit lazy val arbitraryTrustUTRPage: Arbitrary[WhatIsTheUTRVariationPage.type] =
-    Arbitrary(WhatIsTheUTRVariationPage)
 
   implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
     Arbitrary(SettlorBusinessNamePage(0))

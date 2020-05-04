@@ -1,6 +1,4 @@
 # Maintain
-GET        /                                       controllers.playback.IndexController.onPageLoad()
-
 GET        /status/closed                          controllers.playback.TrustStatusController.closed()
 GET        /status/processing                      controllers.playback.TrustStatusController.processing()
 GET        /status/not-found                       controllers.playback.TrustStatusController.notFound()
@@ -12,9 +10,3 @@ GET        /status                                 controllers.playback.TrustSta
 
 GET        /trust-utr                              controllers.playback.WhatIsTheUTRVariationsController.onPageLoad()
 POST       /trust-utr                              controllers.playback.WhatIsTheUTRVariationsController.onSubmit()
-
-GET        /declare-what-changed                   controllers.playback.DeclarationWhatNextController.onPageLoad()
-POST       /declare-what-changed                   controllers.playback.DeclarationWhatNextController.onSubmit()
-
-GET        /declaration                            controllers.playback.DeclarationController.onPageLoad()
-POST       /declaration                            controllers.playback.DeclarationController.onSubmit()

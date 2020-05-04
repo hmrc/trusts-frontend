@@ -1514,14 +1514,6 @@ TrustLocked.p3 = If you need help with the service
 TrustLocked.link1 = contact the trusts helpline (opens in a new window or tab)
 TrustLocked.subheading = This trust’s UTR: {0}
 
-declarationWhatNext.title = What do you want to do next?
-declarationWhatNext.heading = What do you want to do next?
-declarationWhatNext.declare = Declare the trust is up to date
-declarationWhatNext.makeChanges = Make changes to the trust and declare
-declarationWhatNext.closeTrust = Close the trust
-declarationWhatNext.checkYourAnswersLabel = What do you want to do next?
-declarationWhatNext.error.required = Select what you want to do next
-
 trustAlreadyClaimed.title = Sorry, you cannot access this trust
 trustAlreadyClaimed.heading = Sorry, you cannot access this trust
 trustAlreadyClaimed.subheading = This trust’s UTR: {0}
