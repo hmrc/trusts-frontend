@@ -22,6 +22,4 @@ POST       /declare-what-changed                   controllers.playback.Declarat
 GET        /declaration                            controllers.playback.DeclarationController.onPageLoad()
 POST       /declaration                            controllers.playback.DeclarationController.onSubmit()
 
-GET        /last-declaration                   controllers.playback.PlaybackAnswerPageController.onPageLoad()
-
 GET        /confirmation                           controllers.playback.VariationsConfirmationController.onPageLoad()
