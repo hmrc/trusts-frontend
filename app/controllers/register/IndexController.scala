@@ -50,14 +50,7 @@ class IndexController @Inject()(
                 case Some(true) =>
                   Future.successful(Redirect(config.maintainATrustFrontendUrl))
                 case None =>
-                  {
-
-                    request.enrolments.enrolments
-                      .find(_.key equals "HMRC-TERS-ORG")
-                      .flatMap(_.identifiers.find(_.key equals "SAUTR"))
-
-                    Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, userAnswers.draftId)))
-                  }
+                  Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, userAnswers.draftId)))
               }
             case None =>
               Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
