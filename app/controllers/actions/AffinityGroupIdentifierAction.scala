@@ -77,11 +77,6 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
                            action: Action[A]
                           ): Future[Result] = {
 
-    def redirectToCreateAgentServicesAccount(reason: String): Future[Result] = {
-      Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent]: Agent services account required - $reason")
-      Future.successful(Redirect(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad()))
-    }
-
     val enrolmentKey = "HMRC-TERS-ORG"
     val identifier = "SAUTR"
 
@@ -101,7 +96,7 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
               Logger.warn("UTR is empty")
               continueWithoutEnrolment
             } else {
-              Future.successful(Redirect(config.maintainATrustFrontendUrl))
+              Future.successful(Redirect(config.maintainATrustFrontendUrl(utr)))
             }
         }
     }
