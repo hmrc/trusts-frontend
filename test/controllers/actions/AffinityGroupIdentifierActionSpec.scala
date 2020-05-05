@@ -35,6 +35,8 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
   val fakeAction: Action[AnyContent] = Action { _ => Results.Ok }
 
+  val utr = "0987654321"
+
   lazy override val trustsAuth = new TrustsAuthorisedFunctions(mockAuthConnector, appConfig)
 
   private val noEnrollment = Enrolments(Set())
@@ -43,7 +45,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
     Future.successful(new ~(new ~(Some("id"), Some(affinityGroup)), enrolment))
 
   private val agentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("AgentReferenceNumber", "SomeVal")), "Activated", None)))
-  private val trustsEnrolment = Enrolments(Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", "0987654321")), "Activated", None)))
+  private val trustsEnrolment = Enrolments(Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", utr)), "Activated", None)))
 
 
   "invoking an AuthenticatedIdentifier" when {
@@ -106,7 +108,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
           val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe appConfig.maintainATrustFrontendUrl
+          redirectLocation(result).value mustBe appConfig.maintainATrustFrontendUrl(utr)
           application.stop()
         }
       }
