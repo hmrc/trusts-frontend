@@ -21,7 +21,7 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.AnyContent
-import repositories.{PlaybackRepository, RegistrationsRepository}
+import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import utils.TestUserAnswers
 
@@ -30,7 +30,6 @@ import scala.concurrent.Future
 trait Mocked extends MockitoSugar {
 
   val registrationsRepository : RegistrationsRepository = mock[RegistrationsRepository]
-  val playbackRepository : PlaybackRepository = mock[PlaybackRepository]
 
   val mockSubmissionService : SubmissionService = mock[SubmissionService]
   val mockCreateDraftRegistrationService : CreateDraftRegistrationService = mock[CreateDraftRegistrationService]
@@ -42,6 +41,4 @@ trait Mocked extends MockitoSugar {
       .thenReturn(Future.successful(TestUserAnswers.draftId))
 
   when(registrationsRepository.set(any())).thenReturn(Future.successful(true))
-  when(playbackRepository.set(any())).thenReturn(Future.successful(true))
-
 }
