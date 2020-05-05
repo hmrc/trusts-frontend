@@ -16,10 +16,9 @@
 
 package pages.register.natural.individual
 
-import models.playback.MetaData
-import pages.QuestionPage
+import pages.{MetaData, QuestionPage}
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
+import sections.natural.{Individual, Natural}
 
 case class OtherIndividualMetaData(index: Int) extends QuestionPage[MetaData]{
 
