@@ -17,7 +17,6 @@
 package base
 
 import controllers.actions._
-import controllers.actions.playback.{PlaybackDataRequiredAction, PlaybackDataRequiredActionImpl, PlaybackDataRetrievalAction}
 import controllers.actions.register._
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
@@ -46,8 +45,6 @@ trait PlaybackSpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mo
     new GuiceApplicationBuilder()
       .overrides(
         bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
-        bind[PlaybackDataRetrievalAction].toInstance(new FakePlaybackDataRetrievalAction(userAnswers)),
-        bind[PlaybackDataRequiredAction].to[PlaybackDataRequiredActionImpl],
         bind[PlaybackRepository].toInstance(playbackRepository),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
