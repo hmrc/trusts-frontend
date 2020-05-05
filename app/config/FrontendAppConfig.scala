@@ -54,11 +54,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val locationCanonicalList: String = loadConfig("location.canonical.list.all")
   lazy val locationCanonicalListNonUK: String = loadConfig("location.canonical.list.nonUK")
 
-  lazy val relationshipName : String =
-    configuration.get[String]("microservice.services.self.relationship-establishment.name")
-  lazy val relationshipIdentifier : String =
-    configuration.get[String]("microservice.services.self.relationship-establishment.identifier")
-
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
 
@@ -69,8 +64,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val authUrl = configuration.get[Service]("microservice.services.auth").baseUrl
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
-
-  lazy val agentInvitationsUrl: String = configuration.get[String]("urls.agentInvitations")
 
   lazy val  posthmrc: String = configuration.get[String]("confirmation.posthmrc")
 
@@ -96,10 +89,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val livingSettlorBusinessEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.journey.livingSettlorBusiness.enabled")
 
-  lazy val playbackEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.playback.enabled")
-
-  lazy val declarationEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declare.enabled")
-
   lazy val declarationEmailEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")
 
   lazy val maintainATrustFrontendUrl : String =
@@ -109,5 +98,4 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val timeoutLength: String = configuration.get[String]("timeout.length")
 
   lazy val accessibilityLinkUrl: String = configuration.get[String]("urls.accessibility")
-
 }
