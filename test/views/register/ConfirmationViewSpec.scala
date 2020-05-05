@@ -82,7 +82,7 @@ class ConfirmationViewSpec extends ViewBehaviours {
 
       assertAttributeValueForElement(agentOverviewLink, "href", controllers.register.agents.routes.AgentOverviewController.onPageLoad().url)
 
-      assertContainsText(doc, "One of the trustees will need to complete the next two steps once the trust’s UTR has been received.")
+      assertContainsText(doc, "One of the trustees will need to complete the next 2 steps once the trust’s UTR has been received.")
       assertContainsText(doc, "You will then be able to maintain the trust online on their behalf.")
 
       assertContainsText(doc, s"We will post $name the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.")

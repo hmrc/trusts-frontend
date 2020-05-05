@@ -38,34 +38,39 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("declaration.heading")
+        <fieldset>
 
-        @components.input_text(
-            field = form("firstName"),
-            label = messages("declaration.firstName"),
-            ariaRequired = true
-        )
+            <legend>
+                @components.heading("declaration.heading")
+            </legend>
 
-        @components.input_text(
-            field = form("middleName"),
-            label = messages("declaration.middleName")
-        )
-
-        @components.input_text(
-            field = form("lastName"),
-            label = messages("declaration.lastName"),
-            ariaRequired = true
-        )
-
-        @if(appConfig.declarationEmailEnabled) {
-            <p>@messages("declaration.paragraph1")</p>
-            <p>@messages("declaration.paragraph2")</p>
             @components.input_text(
-                field = form("email"),
-                inputClass = Some("declaration-email"),
-                label = messages("declaration.email")
+                field = form("firstName"),
+                label = messages("declaration.firstName"),
+                ariaRequired = true
             )
-        }
+
+            @components.input_text(
+                field = form("middleName"),
+                label = messages("declaration.middleName")
+            )
+
+            @components.input_text(
+                field = form("lastName"),
+                label = messages("declaration.lastName"),
+                ariaRequired = true
+            )
+
+            @if(appConfig.declarationEmailEnabled) {
+                <p>@messages("declaration.paragraph1")</p>
+                <p>@messages("declaration.paragraph2")</p>
+                @components.input_text(
+                    field = form("email"),
+                    inputClass = Some("declaration-email"),
+                    label = messages("declaration.email")
+                )
+            }
+        </fieldset>
 
         @if(affinityGroup == AffinityGroup.Agent) {
             @components.warning("declaration.agent")

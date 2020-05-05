@@ -24,7 +24,8 @@
         labelClass: Option[String] = None,
         symbol: Option[String] = None,
         optionalHtmlContent: Option[Html] = None,
-        ariaRequired: Boolean = false
+        ariaRequired: Boolean = false,
+        symbolText: Option[String] = None
 )(implicit messages: Messages)
 
 @required = @{
@@ -56,6 +57,9 @@
         id="@{field.id}"
         name="@{field.name}"
         value="@{field.value}"
+        @if(symbolText.nonEmpty) {
+        aria-label='@{label} @{symbolText.get}'
+        }
         @required
         @if(hint.nonEmpty) {
             aria-describedby="@{field.id}_hint"

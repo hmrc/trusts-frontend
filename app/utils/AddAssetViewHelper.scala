@@ -53,7 +53,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
     AddRow(
       mvm.value.getOrElse(defaultValue),
       mvm.`type`.toString,
-      "#",
+      controllers.routes.FeatureNotAvailableController.onPageLoad().url,
       controllers.register.asset.money.routes.RemoveMoneyAssetController.onPageLoad(index, draftId).url
     )
   }
@@ -67,7 +67,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
       controllers.register.asset.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, draftId)
     }
 
-    AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "#", removeRoute.url)
+    AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "/trusts-registration/feature-not-available", removeRoute.url)
   }
 
   private def parsePropertyOrLand(mvm : PropertyOrLandAssetViewModel, index: Int) : AddRow = {
@@ -80,32 +80,32 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
       case PropertyOrLandAssetUKAddressViewModel(_, address, _) => AddRow(
         address.getOrElse(defaultAddressName),
         typeLabel,
-        "#",
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
       )
       case PropertyOrLandAssetInternationalAddressViewModel(_, address, _) => AddRow(
         address.getOrElse(defaultAddressName),
         typeLabel,
-        "#",
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithAddressInternationalController.onPageLoad(index, draftId).url
       )
       case PropertyOrLandAssetAddressViewModel(_, address, _) => AddRow(
         address.getOrElse(defaultAddressName),
         typeLabel,
-        "#",
-        "#"
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url
       )
       case PropertyOrLandAssetDescriptionViewModel(_, description, _) => AddRow(
         description.getOrElse(defaultDescriptionName),
         typeLabel,
-        "#",
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, draftId).url
       )
       case PropertyOrLandDefaultViewModel(_, _) =>
         AddRow(
           messages("entities.propertyOrLand.default"),
           typeLabel,
-          "#",
+          controllers.routes.FeatureNotAvailableController.onPageLoad().url,
           controllers.register.asset.routes.DefaultRemoveAssetController.onPageLoad(index, draftId).url
         )
     }
