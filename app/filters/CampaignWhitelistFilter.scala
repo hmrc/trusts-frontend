@@ -44,10 +44,9 @@ class CampaignWhitelistFilter @Inject()(
 
     import play.api.http.Status._
 
-    val maintainPrefix = rh.path.contains(maintain.RoutesPrefix.prefix)
     val registerPrefix = rh.path.contains(register.RoutesPrefix.prefix)
 
-    if (appConfig.campaignWhitelistEnabled && (maintainPrefix || registerPrefix)) {
+    if (appConfig.campaignWhitelistEnabled && registerPrefix) {
 
       rh.session.get(SessionKeys.otacToken)
         .orElse(rh.queryString.get("p").flatMap(_.headOption))

@@ -19,17 +19,11 @@ package generators
 import java.time.LocalDate
 
 import models.core.pages._
-import models.playback.pages.DeclarationWhatNext
 import models.registration.pages._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
-
-  implicit lazy val arbitraryDeclarationWhatNext: Arbitrary[DeclarationWhatNext] =
-    Arbitrary {
-      Gen.oneOf(DeclarationWhatNext.values.toSeq)
-    }
 
   implicit lazy val arbitraryKindOfTrust: Arbitrary[KindOfTrust] =
     Arbitrary {

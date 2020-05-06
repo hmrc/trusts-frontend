@@ -16,8 +16,7 @@
 
 package pages.register.settlors.living_settlor
 
-import models.playback.MetaData
-import pages.QuestionPage
+import pages.{MetaData, QuestionPage}
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
 

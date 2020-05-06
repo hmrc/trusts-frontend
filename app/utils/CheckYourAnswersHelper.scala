@@ -21,7 +21,6 @@ import javax.inject.Inject
 import mapping.reads._
 import models.NormalMode
 import models.core.UserAnswers
-import pages.playback.DeclarationWhatNextPage
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
@@ -34,10 +33,10 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.trust_details.{AdministrationInsideUKPage, AgentOtherThanBarristerPage, CountryAdministeringTrustPage, CountryGoverningTrustPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, InheritanceTaxActPage, NonResidentTypePage, RegisteringTrustFor5APage, SettlorsBasedInTheUKPage, TrustNamePage, TrustPreviouslyResidentPage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
+import pages.register.trust_details._
 import pages.register.trustees._
-import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
-import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
+import pages.register.trustees.individual._
+import pages.register.trustees.organisation._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import sections.LivingSettlors
@@ -50,16 +49,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
                                        draftId: String,
                                        canEdit: Boolean)
                                       (implicit messages: Messages) {
-
-  def declarationWhatNext: Option[AnswerRow] = userAnswers.get(DeclarationWhatNextPage) map {
-    x =>
-      AnswerRow(
-        "declarationWhatNext.checkYourAnswersLabel",
-        HtmlFormat.escape(messages(s"declarationWhatNext.$x")),
-        Some(controllers.playback.routes.DeclarationWhatNextController.onPageLoad().url),
-        canEdit = canEdit
-      )
-  }
 
   def settlorBusinessName(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessNamePage(index)) map {
     x =>

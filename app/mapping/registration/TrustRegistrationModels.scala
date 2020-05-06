@@ -19,7 +19,6 @@ package mapping.registration
 import java.time.LocalDate
 
 import mapping.{DeedOfVariation, TypeOfTrust}
-import models.playback.http.{Asset, GetTrust}
 import play.api.libs.json._
 
 /**
@@ -81,7 +80,7 @@ object Assets {
   implicit val assetsFormat: Format[Assets] = Json.format[Assets]
 }
 
-case class AssetMonetaryAmount(assetMonetaryAmount: Long) extends Asset
+case class AssetMonetaryAmount(assetMonetaryAmount: Long)
 
 object AssetMonetaryAmount {
   implicit val assetMonetaryAmountFormat: Format[AssetMonetaryAmount] = Json.format[AssetMonetaryAmount]
@@ -388,7 +387,7 @@ object NonUKType {
 case class PropertyLandType(buildingLandName: Option[String],
                             address: Option[AddressType],
                             valueFull: Long,
-                            valuePrevious: Long) extends Asset
+                            valuePrevious: Long)
 
 object PropertyLandType {
   implicit val propertyLandTypeFormat: Format[PropertyLandType] = Json.format[PropertyLandType]

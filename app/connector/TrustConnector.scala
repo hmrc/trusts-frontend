@@ -20,7 +20,6 @@ import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.registration.Registration
 import models.core.http.TrustResponse
-import models.playback.http.TrustsResponse
 import play.api.libs.json.{JsValue, Json, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -31,8 +30,6 @@ class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
   val registrationUrl = s"${config.trustsUrl}/trusts/register"
 
-  def playbackUrl(utr: String) = s"${config.trustsUrl}/trusts/$utr"
-
   def register(registration: Registration, draftId : String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustResponse] = {
 
     val newHc : HeaderCarrier = hc.withExtraHeaders(
@@ -41,12 +38,4 @@ class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
     http.POST[JsValue, TrustResponse](registrationUrl, Json.toJson(registration))(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
   }
-
-
-  def playback(utr: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustsResponse] = {
-
-    http.GET[TrustsResponse](playbackUrl(utr))(TrustsResponse.httpReads, hc, ec)
-  }
 }
-
-
