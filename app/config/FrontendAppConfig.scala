@@ -113,9 +113,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val maintainATrustFrontendUrl : String =
     configuration.get[String]("urls.maintainATrust")
 
-  def maintainATrustFrontendUrl(utr: String) : String =
-    configuration.get[String]("urls.maintainATrust") + s"/maintain-this-trust/$utr"
-
   lazy val countdownLength: String = configuration.get[String]("timeout.countdown")
   lazy val timeoutLength: String = configuration.get[String]("timeout.length")
 

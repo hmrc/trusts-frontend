@@ -96,7 +96,7 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
               Logger.warn("UTR is empty")
               continueWithoutEnrolment
             } else {
-              Future.successful(Redirect(config.maintainATrustFrontendUrl(utr)))
+              Future.successful(Redirect(s"${config.maintainATrustFrontendUrl}/status"))
             }
         }
     }
