@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import javax.inject.Inject
-import models.playback.UserAnswers
-import models.playback.pages.DeclarationWhatNext.DeclareTheTrustIsUpToDate
-import pages.playback.DeclarationWhatNextPage
+import play.api.libs.json.{Format, Json}
 
-class VariationsNavigator @Inject()() {
+case class MetaData(lineNo: String, bpMatchStatus: Option[String], entityStart: String)
 
-  def declarationWhatsNextPage(answers: UserAnswers) = {
-    answers.get(DeclarationWhatNextPage) match {
-      case Some(DeclareTheTrustIsUpToDate) =>
-        controllers.playback.routes.DeclarationController.onPageLoad()
-      case _ =>
-        controllers.playback.routes.DeclarationWhatNextController.onPageLoad()
-    }
-  }
+object MetaData {
+
+  implicit val format: Format[MetaData] = Json.format[MetaData]
 }

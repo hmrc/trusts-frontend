@@ -108,7 +108,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
           val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe s"${appConfig.maintainATrustFrontendUrl}/status"
+          redirectLocation(result).value mustBe s"${appConfig.maintainATrustFrontendUrl}"
           application.stop()
         }
       }

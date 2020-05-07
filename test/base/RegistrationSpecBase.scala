@@ -16,7 +16,6 @@
 
 package base
 
-import controllers.actions.playback.PlaybackIdentifierAction
 import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import models.core.UserAnswers
@@ -27,7 +26,7 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import repositories.{PlaybackRepository, RegistrationsRepository}
+import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
@@ -58,12 +57,15 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
+<<<<<<< HEAD
         bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup, frontendAppConfig)(injectedParsers, trustsAuth, enrolments)),
         bind[PlaybackIdentifierAction].toInstance(new FakePlaybackIdentifierAction()),
+=======
+        bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup)(injectedParsers, trustsAuth, enrolments)),
+>>>>>>> cb90513074425058740db65f01f9bd39ae53fcec
         bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
-        bind[PlaybackRepository].toInstance(playbackRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[AffinityGroup].toInstance(Organisation),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),

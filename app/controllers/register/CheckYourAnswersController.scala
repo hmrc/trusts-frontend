@@ -21,7 +21,6 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.CheckYourAnswersView
@@ -38,8 +37,6 @@ class CheckYourAnswersController @Inject()(
 
   def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
     implicit request =>
-
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = false)
 
       val sections = Seq(AnswerSection(None, Seq()))
 

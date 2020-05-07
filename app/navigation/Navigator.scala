@@ -399,11 +399,7 @@ class Navigator @Inject()(
   }
 
   private def routeToMaintain : Call = {
-    if (config.playbackEnabled) {
-      Call("GET", config.maintainATrustFrontendUrl)
-    } else {
-      controllers.register.routes.CannotMakeChangesController.onPageLoad()
-    }
+    Call("GET", config.maintainATrustFrontendUrl)
   }
 
   private def routeToRegistration(affinityGroup: AffinityGroup, draftId: String) = {

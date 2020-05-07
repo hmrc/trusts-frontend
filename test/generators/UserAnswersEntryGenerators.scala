@@ -17,11 +17,9 @@
 package generators
 
 import models.core.pages._
-import models.playback.pages.DeclarationWhatNext
 import models.registration.pages._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
-import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.property_or_land._
@@ -40,22 +38,6 @@ import pages.register._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
-
-  implicit lazy val arbitraryDeclarationWhatNextUserAnswersEntry: Arbitrary[(DeclarationWhatNextPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[DeclarationWhatNextPage.type]
-        value <- arbitrary[DeclarationWhatNext].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrustUTRUserAnswersEntry: Arbitrary[(WhatIsTheUTRVariationPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[WhatIsTheUTRVariationPage.type]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
 
   implicit lazy val arbitrarySettlorBusinessDetailsUserAnswersEntry: Arbitrary[(SettlorBusinessNamePage, JsValue)] =
     Arbitrary {

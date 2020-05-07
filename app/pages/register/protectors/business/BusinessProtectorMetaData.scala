@@ -16,8 +16,7 @@
 
 package pages.register.protectors.business
 
-import models.playback.MetaData
-import pages.QuestionPage
+import pages.{MetaData, QuestionPage}
 import play.api.libs.json.JsPath
 import sections.Protectors
 

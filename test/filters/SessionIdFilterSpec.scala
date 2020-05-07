@@ -30,7 +30,7 @@ import play.api.mvc.{DefaultActionBuilder, Results, SessionCookieBaker}
 import play.api.routing.Router
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.{PlaybackRepository, RegistrationsRepository}
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.{HeaderNames, SessionKeys}
 
 import scala.concurrent.ExecutionContext
@@ -79,7 +79,6 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with MockitoSugar w
   import SessionIdFilterSpec._
 
   val registrationsRepository = mock[RegistrationsRepository]
-  val playbackRepository = mock[PlaybackRepository]
 
   "session id filter" must {
 
@@ -135,8 +134,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with MockitoSugar w
     new GuiceApplicationBuilder()
       .overrides(
         bind[SessionIdFilter].to[TestSessionIdFilter],
-        bind[RegistrationsRepository].toInstance(registrationsRepository),
-        bind[PlaybackRepository].toInstance(playbackRepository)
+        bind[RegistrationsRepository].toInstance(registrationsRepository)
       )
       .configure(
         "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")

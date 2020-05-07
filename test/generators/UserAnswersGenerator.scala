@@ -30,7 +30,6 @@ import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
-import pages.playback.{DeclarationWhatNextPage, WhatIsTheUTRVariationPage}
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register._
 import pages.register.settlors._
@@ -45,8 +44,6 @@ trait UserAnswersGenerator extends TryValues {
   import models.core.UserAnswerImplicits._
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
-    arbitrary[(DeclarationWhatNextPage.type, JsValue)] ::
-    arbitrary[(WhatIsTheUTRVariationPage.type, JsValue)] ::
     arbitrary[(KindOfTrustPage.type, JsValue)] ::
     arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
