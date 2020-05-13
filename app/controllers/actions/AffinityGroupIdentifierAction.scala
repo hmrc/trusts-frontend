@@ -86,16 +86,17 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment){
       enrolment =>
         enrolment.getIdentifier(identifier).fold{
-          Logger.info("missing SAUTR key for HMRC-TERS-ORG")
+          logger.info("[AffinityGroupIdentifier] user is not enrolled, continuing to registered online")
           continueWithoutEnrolment
         }{
           enrolmentIdentifier =>
             val utr = enrolmentIdentifier.value
 
             if(utr.isEmpty) {
-              Logger.info("UTR is empty")
+              logger.info("[AffinityGroupIdentifier] no utr for enrolment value")
               continueWithoutEnrolment
             } else {
+              logger.info("[AffinityGroupIdentifier] user is already enrolled, redirecting to maintain")
               Future.successful(Redirect(config.maintainATrustFrontendUrl))
             }
         }
