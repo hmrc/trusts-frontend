@@ -86,14 +86,14 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment){
       enrolment =>
         enrolment.getIdentifier(identifier).fold{
-          Logger.warn("missing SAUTR key for HMRC-TERS-ORG")
+          Logger.info("missing SAUTR key for HMRC-TERS-ORG")
           continueWithoutEnrolment
         }{
           enrolmentIdentifier =>
             val utr = enrolmentIdentifier.value
 
             if(utr.isEmpty) {
-              Logger.warn("UTR is empty")
+              Logger.info("UTR is empty")
               continueWithoutEnrolment
             } else {
               Future.successful(Redirect(config.maintainATrustFrontendUrl))
