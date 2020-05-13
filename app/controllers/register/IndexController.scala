@@ -21,6 +21,7 @@ import controllers.actions.register.{RegistrationDataRetrievalAction, Registrati
 import javax.inject.Inject
 import models.NormalMode
 import pages.register.TrustRegisteredOnlinePage
+import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -40,19 +41,24 @@ class IndexController @Inject()(
 
       request.affinityGroup match {
         case AffinityGroup.Agent =>
+          Logger.info(s"[IndexController] user is an agent, redirect to overview")
           Future.successful(Redirect(controllers.register.agents.routes.AgentOverviewController.onPageLoad()))
         case _ =>
           request.userAnswers match {
             case Some(userAnswers) =>
               userAnswers.get(TrustRegisteredOnlinePage) match {
                 case Some(false) =>
+                  Logger.info(s"[IndexController] user previously indicated trust is not registered online, redirecting to register task list")
                   Future.successful(Redirect(routes.TaskListController.onPageLoad(userAnswers.draftId)))
                 case Some(true) =>
+                  Logger.info(s"[IndexController] user previously indicated trust is registered online, redirecting to maintain")
                   Future.successful(Redirect(config.maintainATrustFrontendUrl))
                 case None =>
+                  Logger.info(s"[IndexController] user is new, starting registration journey")
                   Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, userAnswers.draftId)))
               }
             case None =>
+              Logger.info(s"[IndexController] user is new, starting registration journey")
               Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
           }
       }
