@@ -17,6 +17,7 @@
 package controllers.actions.register
 
 import com.google.inject.Inject
+import config.FrontendAppConfig
 import controllers.actions.{AffinityGroupIdentifierAction, TrustsAuthorisedFunctions}
 import models.requests.IdentifierRequest
 import org.slf4j.LoggerFactory
@@ -28,7 +29,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
-                                             trustsAuth: TrustsAuthorisedFunctions)
+                                             trustsAuth: TrustsAuthorisedFunctions,
+                                             config: FrontendAppConfig)
                                             (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] {
   private val logger = LoggerFactory.getLogger(s"application" + classOf[RegistrationIdentifierAction].getCanonicalName)
 
@@ -46,5 +48,5 @@ class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
     }
   }
 
-  override def composeAction[A](action: Action[A]): Action[A] = new AffinityGroupIdentifierAction(action, trustsAuth)
+  override def composeAction[A](action: Action[A]): Action[A] = new AffinityGroupIdentifierAction(action, trustsAuth, config)
 }
