@@ -42,12 +42,20 @@ $(document).ready(function() {
     // need to invoke new enhanceSelectElement()
     // =====
 
-    if(document.querySelectorAll('select[data-non-uk-countries]').length > 0 || document.querySelectorAll('select[data-all-countries]').length > 0){
+    if(document.querySelectorAll('select[data-non-uk-countries]').length > 0) {
        accessibleAutocomplete.enhanceSelectElement({
-            selectElement: document.querySelector("#value"),
+            selectElement: document.querySelector("select[data-non-uk-countries]"),
             defaultValue: ''
         });
     }
+
+     if(document.querySelectorAll('select[data-all-countries]').length > 0) {
+           accessibleAutocomplete.enhanceSelectElement({
+                selectElement: document.querySelector("select[data-all-countries]"),
+                defaultValue: ''
+            });
+        }
+
 
     // Assign aria-labbledby to the dynamically created country input
     if ($(".autocomplete-wrapper .error-message").length) $(".autocomplete__wrapper #value").attr('aria-labelledby', 'error-message-input');
