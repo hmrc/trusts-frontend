@@ -42,16 +42,18 @@ $(document).ready(function() {
     // need to invoke new enhanceSelectElement()
     // =====
 
-    if(document.querySelectorAll('select[data-non-uk-countries]').length > 1) {
+    if(document.querySelectorAll('select[data-non-uk-countries]').length > 0) {
        accessibleAutocomplete.enhanceSelectElement({
             selectElement: document.querySelector("select[data-non-uk-countries]"),
+            minLength:2,
             defaultValue: ''
         });
     }
 
-     if(document.querySelectorAll('select[data-all-countries]').length > 1) {
+     if(document.querySelectorAll('select[data-all-countries]').length > 0) {
            accessibleAutocomplete.enhanceSelectElement({
                 selectElement: document.querySelector("select[data-all-countries]"),
+                minLength:2,
                 defaultValue: ''
             });
         }
