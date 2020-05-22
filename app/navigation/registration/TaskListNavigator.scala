@@ -31,24 +31,18 @@ import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 class TaskListNavigator @Inject()() {
 
   def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    trustDetailsRoute(draftId)(userAnswers)
-  }
-
-  private def trustDetailsRoute(draftId: String)(answers: UserAnswers): Call = {
-    val completed = answers.get(TrustDetailsStatus).contains(Completed)
-    if (completed) {
-      controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-    } else {
-      controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+    {
+      val completed = userAnswers.get(TrustDetailsStatus).contains(Completed)
+      if (completed) {
+        controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+      } else {
+        controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+      }
     }
   }
 
   def trusteesJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    trusteesRoute(draftId)(userAnswers)
-  }
-
-  private def trusteesRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(sections.Trustees).getOrElse(Nil) match {
+    userAnswers.get(sections.Trustees).getOrElse(Nil) match {
       case Nil =>
         controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
       case _ :: _ =>
@@ -57,35 +51,27 @@ class TaskListNavigator @Inject()() {
   }
 
   def settlorsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    settlorRoute(draftId)(userAnswers)
-  }
-
-  private def settlorRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(DeceasedSettlorStatus) match {
+    userAnswers.get(DeceasedSettlorStatus) match {
       case Some(value) =>
-        if(value.equals(Completed)) {
+        if (value.equals(Completed)) {
           controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
         } else {
-          controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
+          controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
         }
       case None =>
-        answers.get(SetUpAfterSettlorDiedYesNoPage) match {
+        userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
           case None => controllers.register.settlors.routes.SettlorInfoController.onPageLoad(draftId)
           case _ =>
-            answers.get (LivingSettlors).getOrElse (Nil) match {
-              case Nil => controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad (NormalMode, draftId)
-              case _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad (draftId)
+            userAnswers.get(LivingSettlors).getOrElse(Nil) match {
+              case Nil => controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
+              case _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
             }
         }
     }
   }
 
   def beneficiariesJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    beneficiaryRoute(draftId)(userAnswers)
-  }
-
-  private def beneficiaryRoute(draftId: String)(answers: UserAnswers) = {
-    if(isAnyBeneficiaryAdded(answers)) {
+    if (isAnyBeneficiaryAdded(userAnswers)) {
       controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId)
     } else {
       controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
@@ -101,11 +87,7 @@ class TaskListNavigator @Inject()() {
   }
 
   def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    assetRoute(draftId)(userAnswers)
-  }
-
-  private def assetRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(sections.Assets).getOrElse(Nil) match {
+    userAnswers.get(sections.Assets).getOrElse(Nil) match {
       case _ :: _ =>
         controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
       case Nil =>
