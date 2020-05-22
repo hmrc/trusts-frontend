@@ -18,21 +18,23 @@ package navigation.registration
 
 import controllers.register.routes
 import javax.inject.{Inject, Singleton}
-import mapping.reads.{Assets, Trustees}
-import models.registration.pages.Status.Completed
 import models.NormalMode
 import models.core.UserAnswers
-import pages._
+import models.registration.pages.Status.Completed
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
-import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}
+import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
 class TaskListNavigator @Inject()() {
 
-  private def trustDetailsRoute(draftId: String)(answers: UserAnswers) = {
+  def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    trustDetailsRoute(draftId)(userAnswers)
+  }
+
+  private def trustDetailsRoute(draftId: String)(answers: UserAnswers): Call = {
     val completed = answers.get(TrustDetailsStatus).contains(Completed)
     if (completed) {
       controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
@@ -41,13 +43,21 @@ class TaskListNavigator @Inject()() {
     }
   }
 
-  private def trusteeRoute(draftId: String)(answers: UserAnswers) = {
+  def trusteesJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    trusteesRoute(draftId)(userAnswers)
+  }
+
+  private def trusteesRoute(draftId: String)(answers: UserAnswers) = {
     answers.get(sections.Trustees).getOrElse(Nil) match {
       case Nil =>
         controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
       case _ :: _ =>
         controllers.register.trustees.routes.AddATrusteeController.onPageLoad(draftId)
     }
+  }
+
+  def settlorsJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    settlorRoute(draftId)(userAnswers)
   }
 
   private def settlorRoute(draftId: String)(answers: UserAnswers) = {
@@ -70,6 +80,10 @@ class TaskListNavigator @Inject()() {
     }
   }
 
+  def beneficiariesJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    beneficiaryRoute(draftId)(userAnswers)
+  }
+
   private def beneficiaryRoute(draftId: String)(answers: UserAnswers) = {
     if(isAnyBeneficiaryAdded(answers)) {
       controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId)
@@ -86,6 +100,10 @@ class TaskListNavigator @Inject()() {
     individuals.nonEmpty || classes.nonEmpty
   }
 
+  def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    assetRoute(draftId)(userAnswers)
+  }
+
   private def assetRoute(draftId: String)(answers: UserAnswers) = {
     answers.get(sections.Assets).getOrElse(Nil) match {
       case _ :: _ =>
@@ -95,18 +113,6 @@ class TaskListNavigator @Inject()() {
     }
   }
 
-  private def taskListRoutes(draftId: String): Page => UserAnswers => Call = {
-    case TrustDetails => trustDetailsRoute(draftId)
-    case Trustees => trusteeRoute(draftId)
-    case Settlors => settlorRoute(draftId)
-    case Beneficiaries => beneficiaryRoute(draftId)
-    case TaxLiability => _ => routes.TaskListController.onPageLoad(draftId)
-    case Assets => assetRoute(draftId)
-    case _ => _ => routes.IndexController.onPageLoad()
-  }
-
-  def nextPage(page: Page, userAnswers: UserAnswers, draftId: String) : Call = {
-    taskListRoutes(draftId)(page)(userAnswers)
-  }
+  def taxLiabilityJourney(draftId: String): Call = routes.TaskListController.onPageLoad(draftId)
 
 }

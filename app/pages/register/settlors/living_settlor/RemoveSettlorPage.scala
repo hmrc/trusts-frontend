@@ -18,7 +18,7 @@ package pages.register.settlors.living_settlor
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{LivingSettlors, Settlors}
+import sections.LivingSettlors
 
 case class RemoveSettlorPage(index : Int) extends QuestionPage[Boolean] {
 
