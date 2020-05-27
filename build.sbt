@@ -41,6 +41,7 @@ lazy val root = (project in file("."))
       "-feature"
     ),
     libraryDependencies ++= AppDependencies(),
+    dependencyOverrides := AppDependencies.overrides,
     retrieveManaged := true,
     evictionWarningOptions in update :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
