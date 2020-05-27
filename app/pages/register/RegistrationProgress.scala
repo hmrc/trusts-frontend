@@ -35,12 +35,12 @@ import viewmodels._
 class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
 
   def items(userAnswers: UserAnswers, draftId: String) = List(
-    Task(Link(TrustDetails, navigator.nextPage(TrustDetails, userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
-    Task(Link(Settlors, navigator.nextPage(Settlors, userAnswers, draftId).url), isSettlorsComplete(userAnswers)),
-    Task(Link(Trustees, navigator.nextPage(Trustees, userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
-    Task(Link(Beneficiaries, navigator.nextPage(Beneficiaries, userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
-    Task(Link(Assets, navigator.nextPage(Assets, userAnswers, draftId).url), assetsStatus(userAnswers)),
-    Task(Link(TaxLiability, navigator.nextPage(TaxLiability, userAnswers, draftId).url), None)
+    Task(Link(TrustDetails, navigator.trustDetailsJourney(userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
+    Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), isSettlorsComplete(userAnswers)),
+    Task(Link(Trustees, navigator.trusteesJourney(userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
+    Task(Link(Beneficiaries, navigator.beneficiariesJourney(userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
+    Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
+    Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId).url), None)
   )
 
   private def determineStatus(complete: Boolean): Option[Status] = {

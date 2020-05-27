@@ -20,7 +20,6 @@ import java.time.LocalDate
 
 import base.RegistrationSpecBase
 import controllers.register.routes
-import mapping.reads.{Assets, Trustees}
 import models.NormalMode
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
@@ -36,8 +35,6 @@ import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.trustees.IsThisLeadTrusteePage
-import sections.beneficiaries.Beneficiaries
-import sections.{Settlors, TaxLiability, TrustDetails}
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
@@ -54,7 +51,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
             .set(TrustNamePage, "Trust of John").success.value
               .set(WhenTrustSetupPage, LocalDate.of(2010,10,10)).success.value
               .set(TrustDetailsStatus, Completed).success.value
-          navigator.nextPage(TrustDetails, answers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId)
+          navigator.trustDetailsJourney(answers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -62,7 +59,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "trust details has not been answered" must {
 
         "go to TrustName Page" in {
-          navigator.nextPage(TrustDetails, emptyUserAnswers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
+          navigator.trustDetailsJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
         }
 
       }
@@ -74,7 +71,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "there are no settlors" must {
 
         "go to SettlorInfo" in {
-          navigator.nextPage(Settlors, emptyUserAnswers, fakeDraftId) mustBe controllers.register.settlors.routes.SettlorInfoController.onPageLoad(fakeDraftId)
+          navigator.settlorsJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.settlors.routes.SettlorInfoController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -86,13 +83,13 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
               .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
               .set(DeceasedSettlorStatus, Completed).success.value
 
-          navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
+          navigator.settlorsJourney(answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
         }
 
         "go to SetUpAfterSettlorDied when deceased settlor is not complete" in {
           val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
-         navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+         navigator.settlorsJourney(answers, fakeDraftId) mustBe controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
         }
 
       }
@@ -106,13 +103,13 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
           .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
           .set(DeceasedSettlorStatus, Completed).success.value
 
-        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
+        navigator.settlorsJourney(answers, fakeDraftId) mustBe controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId)
       }
 
       "go to SetUpAfterSettlorDied when deceased settlor is not complete" in {
         val answers = emptyUserAnswers.set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(SettlorsNamePage, FullName("deceased",None, "settlor")).success.value
-        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
+        navigator.settlorsJourney(answers, fakeDraftId) mustBe controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,fakeDraftId)
       }
 
     }
@@ -123,7 +120,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
           .set(SettlorIndividualNamePage(0), FullName("living settlor",None, "settlor")).success.value
 
-        navigator.nextPage(Settlors, answers, fakeDraftId) mustBe controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId)
+        navigator.settlorsJourney(answers, fakeDraftId) mustBe controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId)
       }
     }
 
@@ -135,7 +132,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "there are no beneficiaries" must {
 
         "go to BeneficiaryInfoPage" in {
-          navigator.nextPage(Beneficiaries, emptyUserAnswers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(fakeDraftId)
+          navigator.beneficiariesJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -146,7 +143,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
         "go to AddABeneficiary" in {
           val answers = emptyUserAnswers
             .set(IndividualBeneficiaryNamePage(0), FullName("individual",None, "beneficiary")).success.value
-          navigator.nextPage(Beneficiaries, answers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(fakeDraftId)
+          navigator.beneficiariesJourney(answers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -156,7 +153,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
         "go to AddABeneficiary" in {
           val answers = emptyUserAnswers
             .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
-          navigator.nextPage(Beneficiaries, answers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(fakeDraftId)
+          navigator.beneficiariesJourney(answers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -168,7 +165,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "there are no assets" must {
 
         "go to AssetInfoPage" in {
-          navigator.nextPage(Assets, emptyUserAnswers, fakeDraftId) mustBe controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(fakeDraftId)
+          navigator.assetsJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -179,7 +176,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
         "go to AddAAsset" in {
           val answers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), Money).success.value
-          navigator.nextPage(Assets, answers, fakeDraftId) mustBe controllers.register.asset.routes.AddAssetsController.onPageLoad(fakeDraftId)
+          navigator.assetsJourney(answers, fakeDraftId) mustBe controllers.register.asset.routes.AddAssetsController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -191,7 +188,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       "there are no trustees" must {
 
         "go to TrusteeInfoPage" in {
-          navigator.nextPage(Trustees, emptyUserAnswers, fakeDraftId) mustBe controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(fakeDraftId)
+          navigator.trusteesJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -202,7 +199,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
           val answers = emptyUserAnswers
             .set(IsThisLeadTrusteePage(0), false).success.value
 
-          navigator.nextPage(Trustees, answers, fakeDraftId) mustBe controllers.register.trustees.routes.AddATrusteeController.onPageLoad(fakeDraftId)
+          navigator.trusteesJourney(answers, fakeDraftId) mustBe controllers.register.trustees.routes.AddATrusteeController.onPageLoad(fakeDraftId)
         }
 
       }
@@ -212,7 +209,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
     "for task liability task" must {
 
         "go to TaxLiabilityPage" in {
-          navigator.nextPage(TaxLiability, emptyUserAnswers, fakeDraftId) mustBe routes.TaskListController.onPageLoad(fakeDraftId)
+          navigator.taxLiabilityJourney(fakeDraftId) mustBe routes.TaskListController.onPageLoad(fakeDraftId)
         }
 
       }

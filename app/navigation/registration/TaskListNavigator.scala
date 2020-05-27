@@ -18,31 +18,31 @@ package navigation.registration
 
 import controllers.register.routes
 import javax.inject.{Inject, Singleton}
-import mapping.reads.{Assets, Trustees}
-import models.registration.pages.Status.Completed
 import models.NormalMode
 import models.core.UserAnswers
-import pages._
+import models.registration.pages.Status.Completed
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
-import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}
+import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
 class TaskListNavigator @Inject()() {
 
-  private def trustDetailsRoute(draftId: String)(answers: UserAnswers) = {
-    val completed = answers.get(TrustDetailsStatus).contains(Completed)
-    if (completed) {
-      controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-    } else {
-      controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+  def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    {
+      val completed = userAnswers.get(TrustDetailsStatus).contains(Completed)
+      if (completed) {
+        controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
+      } else {
+        controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+      }
     }
   }
 
-  private def trusteeRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(sections.Trustees).getOrElse(Nil) match {
+  def trusteesJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    userAnswers.get(sections.Trustees).getOrElse(Nil) match {
       case Nil =>
         controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
       case _ :: _ =>
@@ -50,28 +50,28 @@ class TaskListNavigator @Inject()() {
     }
   }
 
-  private def settlorRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(DeceasedSettlorStatus) match {
+  def settlorsJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    userAnswers.get(DeceasedSettlorStatus) match {
       case Some(value) =>
-        if(value.equals(Completed)) {
+        if (value.equals(Completed)) {
           controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
         } else {
-          controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode,draftId)
+          controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
         }
       case None =>
-        answers.get(SetUpAfterSettlorDiedYesNoPage) match {
+        userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
           case None => controllers.register.settlors.routes.SettlorInfoController.onPageLoad(draftId)
           case _ =>
-            answers.get (LivingSettlors).getOrElse (Nil) match {
-              case Nil => controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad (NormalMode, draftId)
-              case _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad (draftId)
+            userAnswers.get(LivingSettlors).getOrElse(Nil) match {
+              case Nil => controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
+              case _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
             }
         }
     }
   }
 
-  private def beneficiaryRoute(draftId: String)(answers: UserAnswers) = {
-    if(isAnyBeneficiaryAdded(answers)) {
+  def beneficiariesJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    if (isAnyBeneficiaryAdded(userAnswers)) {
       controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId)
     } else {
       controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
@@ -86,8 +86,8 @@ class TaskListNavigator @Inject()() {
     individuals.nonEmpty || classes.nonEmpty
   }
 
-  private def assetRoute(draftId: String)(answers: UserAnswers) = {
-    answers.get(sections.Assets).getOrElse(Nil) match {
+  def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {
+    userAnswers.get(sections.Assets).getOrElse(Nil) match {
       case _ :: _ =>
         controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
       case Nil =>
@@ -95,18 +95,6 @@ class TaskListNavigator @Inject()() {
     }
   }
 
-  private def taskListRoutes(draftId: String): Page => UserAnswers => Call = {
-    case TrustDetails => trustDetailsRoute(draftId)
-    case Trustees => trusteeRoute(draftId)
-    case Settlors => settlorRoute(draftId)
-    case Beneficiaries => beneficiaryRoute(draftId)
-    case TaxLiability => _ => routes.TaskListController.onPageLoad(draftId)
-    case Assets => assetRoute(draftId)
-    case _ => _ => routes.IndexController.onPageLoad()
-  }
-
-  def nextPage(page: Page, userAnswers: UserAnswers, draftId: String) : Call = {
-    taskListRoutes(draftId)(page)(userAnswers)
-  }
+  def taxLiabilityJourney(draftId: String): Call = routes.TaskListController.onPageLoad(draftId)
 
 }
