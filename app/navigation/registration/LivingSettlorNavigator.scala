@@ -35,7 +35,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 @Singleton
 class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
 
-  override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+  override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case KindOfTrustPage => _ => kindOfTrustPage(draftId)
     case HoldoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case SettlorIndividualNamePage(index) => _ => _ => routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
