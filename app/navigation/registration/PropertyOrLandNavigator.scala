@@ -30,7 +30,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 @Singleton
 class PropertyOrLandNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
 
-  override protected def normalRoutes(draftId: String): Page => AffinityGroup => UserAnswers => Call = {
+  override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case PropertyOrLandAddressYesNoPage(index) => _ => propertyOrLandAddressYesNoPage(draftId, index)
     case PropertyOrLandAddressUkYesNoPage(index) => _ => propertyOrLandAddressUkYesNoPage(draftId, index)
     case PropertyOrLandDescriptionPage(index) => _ => _ => routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, draftId)
