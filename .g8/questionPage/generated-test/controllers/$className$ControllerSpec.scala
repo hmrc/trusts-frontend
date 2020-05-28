@@ -1,17 +1,7 @@
 package controllers
 
-import base.SpecBase
-import forms.$className$FormProvider
-import models.{NormalMode, $className$, UserAnswers}
-import navigation.FakeNavigator
-import pages.$className$Page
-import play.api.inject.bind
+import models.NormalMode
 import play.api.libs.json.Json
-import play.api.mvc.Call
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import views.html.$className$View
-import utils._
 
 class $className$ControllerSpec extends SpecBase {
 

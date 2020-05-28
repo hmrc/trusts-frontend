@@ -25,12 +25,12 @@ import models.core.pages.{InternationalAddress, UKAddress}
 import navigation.Navigator
 import navigation.registration.PropertyOrLandNavigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.asset.property_or_land._
 
 trait PropertyOrLandRoutes {
 
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   private val index = 0
 

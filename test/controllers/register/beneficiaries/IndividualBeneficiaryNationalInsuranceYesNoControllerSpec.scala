@@ -17,14 +17,14 @@
 package controllers.register.beneficiaries
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceYesNoPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.beneficiaries.IndividualBeneficiaryNationalInsuranceYesNoView
-import controllers.register.routes._
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceYesNoPage}
 
 class IndividualBeneficiaryNationalInsuranceYesNoControllerSpec extends RegistrationSpecBase {
 

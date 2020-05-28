@@ -18,6 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import models.core.pages.FullName
 import org.scalacheck.Arbitrary.arbitrary
@@ -26,7 +27,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.RemoveIndexView
-import controllers.register.routes._
 
 class RemoveSettlorControllerSpec extends RegistrationSpecBase with IndexValidation {
 

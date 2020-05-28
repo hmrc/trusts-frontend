@@ -19,12 +19,12 @@ package viewmodels
 import generators.{Generators, ModelGenerators}
 import models.core.pages.FullName
 import models.registration.pages.Status.Completed
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
 import viewmodels.addAnother.IndividualBeneficiaryViewModel
 
-class IndividualBeneficiaryViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators  {
+class IndividualBeneficiaryViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators with ModelGenerators  {
 
   "IndividualBeneficiary" - {
 

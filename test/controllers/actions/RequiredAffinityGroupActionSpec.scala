@@ -21,12 +21,11 @@ import controllers.register.routes._
 import models.requests.IdentifierRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.HeaderNames
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
   class RequiredAffinityGroupActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {

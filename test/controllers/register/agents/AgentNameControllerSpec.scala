@@ -17,14 +17,14 @@
 package controllers.register.agents
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.AgentNameFormProvider
 import models.NormalMode
+import pages.register.agents.AgentNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.agents.AgentNameView
-import controllers.register.routes._
-import pages.register.agents.AgentNamePage
 
 class AgentNameControllerSpec extends RegistrationSpecBase {
 

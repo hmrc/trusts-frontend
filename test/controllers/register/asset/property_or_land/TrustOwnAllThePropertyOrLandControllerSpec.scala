@@ -18,6 +18,7 @@ package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
@@ -26,7 +27,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.asset.property_or_land.TrustOwnAllThePropertyOrLandView
-import controllers.register.routes._
 
 class TrustOwnAllThePropertyOrLandControllerSpec extends RegistrationSpecBase with IndexValidation {
 

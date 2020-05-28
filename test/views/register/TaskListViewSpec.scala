@@ -26,15 +26,13 @@ import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages._
 import navigation.registration.TaskListNavigator
-import pages._
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.entitystatus._
 import pages.register.RegistrationProgress
+import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
+import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
+import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.RegistrationProgress
 import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}

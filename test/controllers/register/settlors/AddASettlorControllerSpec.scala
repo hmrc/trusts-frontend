@@ -17,15 +17,15 @@
 package controllers.register.settlors
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.{AddASettlorFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.registration.pages.AddASettlor
 import models.registration.pages.KindOfTrust.Intervivos
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.{AddASettlorView, AddASettlorYesNoView}
-import controllers.register.routes._
-import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 
 class AddASettlorControllerSpec extends RegistrationSpecBase {
 

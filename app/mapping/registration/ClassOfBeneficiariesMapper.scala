@@ -16,8 +16,8 @@
 
 package mapping.registration
 
-import mapping.reads.ClassOfBeneficiary
 import mapping.Mapping
+import mapping.reads.ClassOfBeneficiary
 import models.core.UserAnswers
 
 

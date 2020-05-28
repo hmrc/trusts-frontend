@@ -22,11 +22,11 @@ import generators.{Generators, ModelGenerators}
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
 
-class TrusteeReadsSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
+class TrusteeReadsSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators with ModelGenerators {
 
   "Trustee" - {
 

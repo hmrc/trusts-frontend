@@ -17,14 +17,14 @@
 package controllers.register.beneficiaries
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.WhatTypeOfBeneficiaryFormProvider
 import models.NormalMode
 import models.registration.pages.WhatTypeOfBeneficiary
+import pages.register.beneficiaries.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.beneficiaries.WhatTypeOfBeneficiaryView
-import controllers.register.routes._
-import pages.register.beneficiaries.{ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 
 class WhatTypeOfBeneficiaryControllerSpec extends RegistrationSpecBase {
 

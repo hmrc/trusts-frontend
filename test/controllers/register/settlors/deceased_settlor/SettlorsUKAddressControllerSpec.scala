@@ -17,6 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.UKAddressFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, UKAddress}
@@ -24,7 +25,6 @@ import pages.register.settlors.deceased_settlor.{SettlorsNamePage, SettlorsUKAdd
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorsUKAddressView
-import controllers.register.routes._
 
 class SettlorsUKAddressControllerSpec extends RegistrationSpecBase {
 

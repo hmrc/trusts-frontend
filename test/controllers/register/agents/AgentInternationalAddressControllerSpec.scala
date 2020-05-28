@@ -17,10 +17,12 @@
 package controllers.register.agents
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.InternationalAddress
+import pages.register.agents.{AgentInternationalAddressPage, AgentNamePage}
 import play.api.Application
 import play.api.data.Form
 import play.api.mvc.Result
@@ -30,8 +32,6 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.register.agents.AgentInternationalAddressView
-import controllers.register.routes._
-import pages.register.agents.{AgentInternationalAddressPage, AgentNamePage}
 
 import scala.concurrent.Future
 

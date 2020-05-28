@@ -25,8 +25,7 @@ import models.core.UserAnswers
 import models.registration.Matched
 import navigation.Navigator
 import navigation.registration.TaskListNavigator
-import pages._
-import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
+import pages.register._
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

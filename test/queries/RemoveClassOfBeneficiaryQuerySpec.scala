@@ -18,7 +18,6 @@ package queries
 
 import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
-import pages._
 import pages.behaviours.PageBehaviours
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 

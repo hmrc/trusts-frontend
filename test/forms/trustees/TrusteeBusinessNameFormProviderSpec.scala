@@ -16,9 +16,9 @@
 
 package forms.trustees
 
+import forms.Validation
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
-import forms.Validation
 
 class TrusteeBusinessNameFormProviderSpec extends StringFieldBehaviours {
 

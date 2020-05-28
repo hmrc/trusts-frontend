@@ -17,8 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.IndividualSettlor
 import mapping._
+import mapping.reads.IndividualSettlor
 import models.core.UserAnswers
 import models.registration.pages.PassportOrIdCardDetails
 

@@ -20,6 +20,7 @@ import models.core.pages._
 import models.registration.pages._
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
+import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.property_or_land._
@@ -34,7 +35,6 @@ import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details._
 import pages.register.trustees._
 import pages.register.trustees.individual._
-import pages.register._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {

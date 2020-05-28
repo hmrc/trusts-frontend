@@ -20,7 +20,7 @@ import java.util.UUID
 
 import akka.stream.Materializer
 import com.google.inject.Inject
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind

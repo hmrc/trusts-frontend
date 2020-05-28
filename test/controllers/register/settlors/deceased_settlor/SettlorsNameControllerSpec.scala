@@ -17,6 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.deceased_settlor.SettlorsNameFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -24,7 +25,6 @@ import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorsNameView
-import controllers.register.routes._
 
 class SettlorsNameControllerSpec extends RegistrationSpecBase {
 

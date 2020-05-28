@@ -17,8 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.PropertyOrLandAsset
 import mapping.Mapping
+import mapping.reads.PropertyOrLandAsset
 import models.core.UserAnswers
 
 import scala.util.Try

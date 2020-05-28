@@ -20,7 +20,7 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import pages.register.trust_details.TrustResidentOffshorePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

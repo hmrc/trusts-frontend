@@ -2,12 +2,9 @@ package views
 
 import java.time.LocalDate
 
-import forms.$className$FormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.QuestionViewBehaviours
-import views.html.$className$View
 
 class $className$ViewSpec extends QuestionViewBehaviours[LocalDate] {
 

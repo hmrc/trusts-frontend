@@ -18,8 +18,8 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.TypeOfTrust.{FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
 import mapping.Mapping
+import mapping.TypeOfTrust.{FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import utils.TestUserAnswers
 

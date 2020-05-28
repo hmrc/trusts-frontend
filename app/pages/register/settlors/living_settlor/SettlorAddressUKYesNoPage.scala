@@ -16,12 +16,9 @@
 
 package pages.register.settlors.living_settlor
 
-import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
-
-import scala.util.Try
 
 final case class SettlorAddressUKYesNoPage(index : Int) extends QuestionPage[Boolean] {
 

@@ -17,8 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
 import mapping.Mapping
+import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
 import models.core.UserAnswers
 import pages.register.trust_details.TrustNamePage
 import pages.register.trustees.individual._

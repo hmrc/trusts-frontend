@@ -20,6 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.DateOfBirthFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -29,7 +30,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.SettlorIndividualDateOfBirthView
-import controllers.register.routes._
 
 class SettlorIndividualDateOfBirthControllerSpec extends RegistrationSpecBase with IndexValidation {
 

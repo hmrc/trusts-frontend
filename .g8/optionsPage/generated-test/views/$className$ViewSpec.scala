@@ -1,11 +1,8 @@
 package views
 
-import forms.$className$FormProvider
-import models.{NormalMode, $className$}
+import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.ViewBehaviours
-import views.html.$className$View
 
 class $className$ViewSpec extends ViewBehaviours {
 

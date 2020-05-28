@@ -18,7 +18,7 @@ package pages.register.natural.individual
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
+import sections.natural.{Individual, Natural}
 
 final case class OtherIndividualPassportIDCardYesNoPage(index : Int) extends QuestionPage[Boolean] {
 

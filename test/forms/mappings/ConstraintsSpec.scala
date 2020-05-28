@@ -20,11 +20,11 @@ import java.time.LocalDate
 
 import generators.Generators
 import org.scalacheck.Gen
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, WordSpec}
 import play.api.data.validation.{Invalid, Valid}
 
-class ConstraintsSpec extends WordSpec with PropertyChecks with  MustMatchers with Generators with Constraints {
+class ConstraintsSpec extends WordSpec with ScalaCheckPropertyChecks with  MustMatchers with Generators with Constraints {
 
 
   "firstError" must {

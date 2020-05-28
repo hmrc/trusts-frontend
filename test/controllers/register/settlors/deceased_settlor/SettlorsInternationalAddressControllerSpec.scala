@@ -17,6 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.UserAnswers
@@ -30,7 +31,6 @@ import play.api.test.Helpers._
 import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.register.settlors.deceased_settlor.SettlorsInternationalAddressView
-import controllers.register.routes._
 
 import scala.concurrent.Future
 

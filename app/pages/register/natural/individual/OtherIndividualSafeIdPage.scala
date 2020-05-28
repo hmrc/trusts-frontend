@@ -18,7 +18,7 @@ package pages.register.natural.individual
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
+import sections.natural.{Individual, Natural}
 
 case class OtherIndividualSafeIdPage(index: Int) extends QuestionPage[String] {
 

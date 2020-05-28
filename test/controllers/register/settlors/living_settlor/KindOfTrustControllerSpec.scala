@@ -18,15 +18,15 @@ package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.KindOfTrustFormProvider
 import models.NormalMode
 import models.registration.pages.KindOfTrust
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.KindOfTrustView
-import controllers.register.routes._
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 
 class KindOfTrustControllerSpec extends RegistrationSpecBase with IndexValidation {
 

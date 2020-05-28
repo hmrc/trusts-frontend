@@ -20,6 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.PassportOrIdCardFormProvider
 import models.NormalMode
 import models.core.pages.{FullName, IndividualOrBusiness}
@@ -32,7 +33,6 @@ import play.api.test.Helpers._
 import utils._
 import utils.countryOptions.CountryOptions
 import views.html.register.settlors.living_settlor.SettlorIndividualIDCardView
-import controllers.register.routes._
 
 class SettlorIndividualIDCardControllerSpec extends RegistrationSpecBase with IndexValidation {
 

@@ -35,8 +35,8 @@ package controllers
 import base.RegistrationSpecBase
 import generators.Generators
 import org.scalacheck.Gen
-import org.scalatest.mockito.MockitoSugar
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.QuestionPage
 import play.api.http.Writeable
 import play.api.libs.json.Writes
@@ -44,7 +44,7 @@ import play.api.mvc.Request
 import play.api.test.Helpers._
 import views.html.ErrorTemplate
 
-trait IndexValidation extends RegistrationSpecBase with PropertyChecks with MockitoSugar with Generators {
+trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks with MockitoSugar with Generators {
 
   def validateIndex[A, B](
                                 generator: Gen[A],

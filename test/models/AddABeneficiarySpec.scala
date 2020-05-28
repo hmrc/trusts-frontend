@@ -19,11 +19,11 @@ package models
 import models.registration.pages.AddABeneficiary
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class AddABeneficiarySpec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
+class AddABeneficiarySpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "AddABeneficiary" must {
 

@@ -16,7 +16,6 @@
 
 package controllers.register
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.PostcodeForTheTrustFormProvider
 import javax.inject.Inject

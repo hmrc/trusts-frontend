@@ -18,6 +18,7 @@ package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.NormalMode
 import models.core.UserAnswers
@@ -29,7 +30,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils._
 import views.html.register.asset.property_or_land.PropertyLandValueTrustView
-import controllers.register.routes._
 
 class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with IndexValidation {
 

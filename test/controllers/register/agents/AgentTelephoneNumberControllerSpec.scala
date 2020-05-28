@@ -17,9 +17,11 @@
 package controllers.register.agents
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.AgentTelephoneNumber
 import models.NormalMode
 import models.core.UserAnswers
+import pages.register.agents.{AgentNamePage, AgentTelephoneNumberPage}
 import play.api.Application
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -27,8 +29,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.agents.AgentTelephoneNumberView
-import controllers.register.routes._
-import pages.register.agents.{AgentNamePage, AgentTelephoneNumberPage}
 
 import scala.concurrent.Future
 

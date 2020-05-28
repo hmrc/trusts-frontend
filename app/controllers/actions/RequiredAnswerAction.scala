@@ -16,7 +16,6 @@
 
 package controllers.actions
 
-import controllers.routes
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import play.api.libs.json.Reads

@@ -17,18 +17,18 @@
 package controllers.register.asset.money
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.entitystatus.AssetStatus
+import pages.register.asset.money.AssetMoneyValuePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
-import controllers.register.routes._
-import pages.register.asset.money.AssetMoneyValuePage
 
-class RemoveMoneyAssetControllerSpec extends RegistrationSpecBase with PropertyChecks {
+class RemoveMoneyAssetControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
   val messagesPrefix = "removeMoneyAsset"
 

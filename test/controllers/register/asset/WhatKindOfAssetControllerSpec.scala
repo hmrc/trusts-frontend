@@ -18,17 +18,17 @@ package controllers.register.asset
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.WhatKindOfAssetFormProvider
 import models.NormalMode
 import models.registration.pages.WhatKindOfAsset
 import models.registration.pages.WhatKindOfAsset.Money
 import org.scalacheck.Arbitrary.arbitrary
+import pages.register.asset.WhatKindOfAssetPage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.asset.WhatKindOfAssetView
-import controllers.register.routes._
-import pages.register.asset.WhatKindOfAssetPage
 
 class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValidation  {
 

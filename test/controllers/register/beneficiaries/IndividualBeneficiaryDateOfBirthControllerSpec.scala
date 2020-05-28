@@ -19,15 +19,15 @@ package controllers.register.beneficiaries
 import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.beneficiaries.IndividualBeneficiaryDateOfBirthView
-import controllers.register.routes._
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryNamePage}
 
 class IndividualBeneficiaryDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar {
 

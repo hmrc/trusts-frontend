@@ -16,8 +16,8 @@
 
 package forms
 
-import javax.inject.Inject
 import forms.mappings.Mappings
+import javax.inject.Inject
 import models.core.pages.FullName
 import play.api.data.Form
 import play.api.data.Forms._

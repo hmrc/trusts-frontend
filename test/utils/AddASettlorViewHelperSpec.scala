@@ -17,13 +17,13 @@
 package utils
 
 import base.RegistrationSpecBase
+import controllers.register.settlors.living_settlor.routes
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.{Completed, InProgress}
 import pages.entitystatus.LivingSettlorStatus
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor._
 import viewmodels.AddRow
-import controllers.register.settlors.living_settlor.routes
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 
 class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 

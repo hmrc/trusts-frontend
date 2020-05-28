@@ -16,8 +16,8 @@
 
 package viewmodels.addAnother
 
-import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages.Status
+import models.registration.pages.Status.{Completed, InProgress}
 import play.api.libs.json.{Reads, __}
 
 

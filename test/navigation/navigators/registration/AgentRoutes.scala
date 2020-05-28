@@ -23,14 +23,13 @@ import models.NormalMode
 import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
-import pages._
-import pages.register.agents.{AgentAddressYesNoPage, AgentAnswerPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.register.agents._
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait AgentRoutes {
 
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   def agentRoutes()(implicit navigator: Navigator) = {
 

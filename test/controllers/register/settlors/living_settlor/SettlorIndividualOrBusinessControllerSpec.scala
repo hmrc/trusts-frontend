@@ -18,6 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.deceased_settlor.SettlorIndividualOrBusinessFormProvider
 import models.NormalMode
 import models.core.pages.IndividualOrBusiness
@@ -27,7 +28,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.settlors.living_settlor.SettlorIndividualOrBusinessView
-import controllers.register.routes._
 
 class SettlorIndividualOrBusinessControllerSpec extends RegistrationSpecBase with IndexValidation {
 

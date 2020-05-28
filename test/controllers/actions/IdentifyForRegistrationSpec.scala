@@ -20,13 +20,12 @@ import base.RegistrationSpecBase
 import config.FrontendAppConfig
 import controllers.actions.register.RegistrationIdentifierAction
 import models.requests.IdentifierRequest
-import play.api.mvc.{Action, AnyContent, Results}
-import play.api.test.Helpers._
-import play.api.inject.{Injector, bind}
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import uk.gov.hmrc.auth.core.{AffinityGroup, AuthConnector, BearerTokenExpired, Enrolment, EnrolmentIdentifier, Enrolments}
+import play.api.mvc.{Action, AnyContent, Results}
+import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
+import uk.gov.hmrc.auth.core._
 
 import scala.concurrent.Future
 

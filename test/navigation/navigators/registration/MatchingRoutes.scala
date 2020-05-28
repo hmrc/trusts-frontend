@@ -18,26 +18,20 @@ package navigation.navigators.registration
 
 import base.RegistrationSpecBase
 import config.FrontendAppConfig
-import controllers.actions.FakeRegistrationDataRetrievalAction
-import controllers.actions.register.RegistrationDataRetrievalAction
 import controllers.register.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.mockito.MockitoSugar
-import org.scalatest.prop.PropertyChecks
-import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
-import uk.gov.hmrc.auth.core.AffinityGroup
-import org.mockito.Mockito.when
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.trust_details.TrustNamePage
+import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait MatchingRoutes {
 
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   def matchingRoutes()(implicit navigator : Navigator) = {
 

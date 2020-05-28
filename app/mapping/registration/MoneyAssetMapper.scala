@@ -17,8 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.MoneyAsset
 import mapping.Mapping
+import mapping.reads.MoneyAsset
 import models.core.UserAnswers
 
 import scala.util.Try

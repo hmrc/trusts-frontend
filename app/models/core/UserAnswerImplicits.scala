@@ -16,7 +16,6 @@
 
 package models.core
 
-import cats.kernel.Semigroup
 import play.api.libs.json._
 
 object UserAnswerImplicits {

@@ -24,6 +24,7 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import pages.entitystatus._
+import pages.register._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
@@ -32,13 +33,12 @@ import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
+import pages.register.trust_details._
 import pages.register.trustees._
-import pages.register._
-import pages.register.trust_details.{AdministrationInsideUKPage, EstablishedUnderScotsLawPage, GovernedInsideTheUKPage, TrustNamePage, TrustResidentOffshorePage, TrusteesBasedInTheUKPage, WhenTrustSetupPage}
-import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
+import pages.register.trustees.individual._
+import utils.TestUserAnswers
 import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
-import utils.{DateFormatter, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.register.SummaryAnswerPageView
 
@@ -121,10 +121,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
         .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
-
-    val formatter = injector.instanceOf[DateFormatter]
-
-    val trnDateTime: String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
 
     val name = "First Last"
     val benName = "BenFirst BenLast"

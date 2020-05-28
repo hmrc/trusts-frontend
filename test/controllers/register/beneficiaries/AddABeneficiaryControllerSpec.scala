@@ -17,19 +17,19 @@
 package controllers.register.beneficiaries
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.{AddABeneficiaryFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.core.pages.FullName
 import models.registration.pages.AddABeneficiary
 import models.registration.pages.Status.Completed
 import pages.entitystatus.{ClassBeneficiaryStatus, IndividualBeneficiaryStatus}
+import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
+import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import controllers.register.routes._
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import views.html.register.beneficiaries.{AddABeneficiaryView, AddABeneficiaryYesNoView}
 
 class AddABeneficiaryControllerSpec extends RegistrationSpecBase {

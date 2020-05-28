@@ -18,6 +18,7 @@ package mapping.reads
 
 import models.registration.pages.WhatKindOfAsset
 import play.api.libs.json.Reads
+
 import scala.language.implicitConversions
 
 trait Asset {

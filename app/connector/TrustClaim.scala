@@ -18,8 +18,9 @@ package connector
 
 import play.api.Logger
 import play.api.http.Status.OK
-import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+
 import scala.language.implicitConversions
 
 case class TrustClaim(utr:String, managedByAgent: Boolean, trustLocked:Boolean)

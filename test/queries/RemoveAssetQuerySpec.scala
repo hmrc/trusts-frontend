@@ -20,11 +20,10 @@ import models.core.UserAnswers
 import models.registration.pages.Status.Completed
 import models.registration.pages.{ShareClass, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import pages.register.asset.money.AssetMoneyValuePage
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.property_or_land.{PropertyOrLandDescriptionPage, PropertyOrLandTotalValuePage, TrustOwnAllThePropertyOrLandPage}
 import pages.register.asset.shares._
 

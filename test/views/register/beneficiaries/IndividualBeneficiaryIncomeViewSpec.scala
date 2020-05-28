@@ -19,7 +19,6 @@ package views.register.beneficiaries
 import forms.IndividualBeneficiaryIncomeFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
@@ -35,9 +34,6 @@ class IndividualBeneficiaryIncomeViewSpec extends StringViewBehaviours {
   val form = new IndividualBeneficiaryIncomeFormProvider()()
 
   "IndividualBeneficiaryIncomeView view" must {
-
-    val userAnswers = emptyUserAnswers
-      .set(IndividualBeneficiaryNamePage(index), fullName).success.value
 
     val view = viewFor[IndividualBeneficiaryIncomeView](Some(emptyUserAnswers))
 

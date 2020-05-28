@@ -27,13 +27,13 @@ import models.registration.pages.NonResidentType
 import models.registration.pages.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import pages.register.{TrustDetailsAnswerPage, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 
 trait TrustDetailsRoutes {
 
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   def trustDetailsRoutes()(implicit navigator : Navigator) = {
 

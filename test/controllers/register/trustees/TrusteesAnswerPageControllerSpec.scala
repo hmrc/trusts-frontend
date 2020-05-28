@@ -19,18 +19,18 @@ package controllers.register.trustees
 import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import models.NormalMode
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import pages.register.trustees._
+import pages.register.trustees.individual._
+import pages.register.trustees.organisation._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.trustees.TrusteesAnswerPageView
-import controllers.register.routes._
-import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
-import pages.register.trustees.organisation.{TrusteeOrgAddressInternationalPage, TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
 
 class TrusteesAnswerPageControllerSpec extends RegistrationSpecBase {
 

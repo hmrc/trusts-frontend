@@ -18,12 +18,12 @@ package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
 import controllers.register.asset.property_or_land.routes._
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import pages.register.asset.property_or_land.PropertyOrLandAddressUkYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import controllers.register.routes._
 import views.html.register.asset.property_or_land.PropertyOrLandAddressUkYesNoView
 
 class PropertyOrLandAddressUkYesNoControllerSpec extends RegistrationSpecBase {
