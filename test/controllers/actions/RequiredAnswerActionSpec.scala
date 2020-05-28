@@ -31,7 +31,6 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import controllers.register.routes._
 import pages.register.trustees.individual.TrusteesNamePage
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class RequiredAnswerActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {

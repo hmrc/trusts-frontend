@@ -28,7 +28,6 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 

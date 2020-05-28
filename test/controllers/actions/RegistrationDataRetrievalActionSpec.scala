@@ -26,7 +26,6 @@ import org.scalatest.mockito.MockitoSugar
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures {

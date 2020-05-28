@@ -34,7 +34,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.{TestUserAnswers, WireMockHelper}
 
 import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers

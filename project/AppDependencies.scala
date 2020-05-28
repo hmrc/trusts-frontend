@@ -41,7 +41,7 @@ object AppDependencies {
   val akkaVersion = "2.5.23"
   val akkaHttpVersion = "10.0.15"
 
-  val overrides: Set[ModuleID] = Set(
+  val overrides = Seq(
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,
     "com.typesafe.akka" %% "akka-protobuf" % akkaVersion,
     "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
