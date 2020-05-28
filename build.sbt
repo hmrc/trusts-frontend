@@ -10,15 +10,16 @@ lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtAutoBuildPlugin, SbtDistributablesPlugin, SbtArtifactory)
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
-    scalaVersion := "2.12.11",
+    DefaultBuildSettings.scalaSettings,
     DefaultBuildSettings.defaultSettings(),
-    unmanagedSourceDirectories in Compile += baseDirectory.value / "resources",
     SbtDistributablesPlugin.publishingSettings,
-    inConfig(Test)(testSettings)
+    scalaVersion := "2.11.11",
+    unmanagedSourceDirectories in Compile += baseDirectory.value / "resources",
   )
+  .settings(inConfig(Test)(testSettings))
   .configs(IntegrationTest)
+  .settings(inConfig(IntegrationTest)(itSettings))
   .settings(
-    inConfig(IntegrationTest)(itSettings),
     majorVersion := 0,
     name := appName,
     RoutesKeys.routesImport += "models._",
@@ -38,9 +39,7 @@ lazy val root = (project in file("."))
     ScoverageKeys.coverageMinimum := 74,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
-    scalacOptions ++= Seq(
-      "-feature"
-    ),
+    scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
     evictionWarningOptions in update :=
