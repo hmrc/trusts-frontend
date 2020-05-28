@@ -19,9 +19,11 @@ package controllers.register.settlors.deceased_settlor
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import play.api.Application
 import play.api.mvc.Result
@@ -31,8 +33,6 @@ import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.settlors.deceased_settlor.DeceasedSettlorAnswerView
-import controllers.register.routes._
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 
 import scala.concurrent.Future
 

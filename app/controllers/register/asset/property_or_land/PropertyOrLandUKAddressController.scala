@@ -16,7 +16,6 @@
 
 package controllers.register.asset.property_or_land
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.UKAddressFormProvider

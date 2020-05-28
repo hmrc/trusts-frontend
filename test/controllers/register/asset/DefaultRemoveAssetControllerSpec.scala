@@ -17,13 +17,13 @@
 package controllers.register.asset
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
-import controllers.register.routes._
 
 class DefaultRemoveAssetControllerSpec extends RegistrationSpecBase with PropertyChecks {
 

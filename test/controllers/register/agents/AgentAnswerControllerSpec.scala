@@ -17,10 +17,11 @@
 package controllers.register.agents
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import models.core.UserAnswers
 import models.core.pages.{InternationalAddress, UKAddress}
 import navigation.Navigator
-import pages._
+import pages.register.agents._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -28,8 +29,6 @@ import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.agents.AgentAnswerView
-import controllers.register.routes._
-import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
 
 
 class AgentAnswerControllerSpec extends RegistrationSpecBase {

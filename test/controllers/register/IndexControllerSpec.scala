@@ -17,12 +17,12 @@
 package controllers.register
 
 import base.RegistrationSpecBase
+import controllers.register.agents.routes._
 import models.registration.pages.RegistrationStatus.InProgress
+import pages.register.TrustRegisteredOnlinePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import controllers.register.agents.routes._
-import pages.register.TrustRegisteredOnlinePage
 
 class IndexControllerSpec extends RegistrationSpecBase {
 

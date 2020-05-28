@@ -18,6 +18,7 @@ package controllers.register.trustees
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.trustees.TrusteeIndividualOrBusinessFormProvider
 import models.NormalMode
 import models.core.pages.IndividualOrBusiness
@@ -28,7 +29,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.TrusteeIndividualOrBusinessView
-import controllers.register.routes._
 
 class TrusteeIndividualOrBusinessControllerSpec extends RegistrationSpecBase with IndexValidation {
 

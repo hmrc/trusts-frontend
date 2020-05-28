@@ -19,8 +19,8 @@ package filters
 import akka.stream.Materializer
 import com.google.inject.Inject
 import config.FrontendAppConfig
-import play.api.{Configuration, Logger}
 import play.api.mvc.{Call, RequestHeader, Result}
+import play.api.{Configuration, Logger}
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
 
 import scala.concurrent.Future

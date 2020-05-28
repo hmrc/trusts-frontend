@@ -19,17 +19,17 @@ package controllers.register.agents
 import java.time.LocalDateTime
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import models.NormalMode
 import models.core.UserAnswers
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import pages.register.agents.AgentTelephoneNumberPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import viewmodels.DraftRegistration
 import views.html.register.agents.AgentOverviewView
-import controllers.register.routes._
-import pages.register.agents.AgentTelephoneNumberPage
 
 import scala.concurrent.Future
 

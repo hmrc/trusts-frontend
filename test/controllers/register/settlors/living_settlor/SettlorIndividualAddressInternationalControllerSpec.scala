@@ -18,6 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.UserAnswers
@@ -32,7 +33,6 @@ import play.api.test.Helpers._
 import utils._
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.register.settlors.living_settlor.SettlorIndividualAddressInternationalView
-import controllers.register.routes._
 
 import scala.concurrent.Future
 

@@ -24,8 +24,8 @@ import mapping.Mapping
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.trustees._
-import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNamePage, TrusteesNinoPage, TrusteesUkAddressPage}
-import pages.register.trustees.organisation.{TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
+import pages.register.trustees.individual._
+import pages.register.trustees.organisation._
 
 
 class LeadTrusteeMapperSpec extends FreeSpec with MustMatchers

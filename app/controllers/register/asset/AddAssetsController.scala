@@ -16,7 +16,6 @@
 
 package controllers.register.asset
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import javax.inject.Inject

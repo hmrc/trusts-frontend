@@ -17,6 +17,7 @@
 package viewmodels.addAnother
 
 import models.registration.pages.Status
+
 import scala.language.implicitConversions
 
 trait AssetViewModel {

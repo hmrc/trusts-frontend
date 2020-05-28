@@ -19,7 +19,7 @@ package pages.register.natural.individual
 import models.registration.pages.PassportOrIdCardDetails
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
+import sections.natural.{Individual, Natural}
 
 final case class OtherIndividualPassportIDCardPage(index : Int) extends QuestionPage[PassportOrIdCardDetails] {
 

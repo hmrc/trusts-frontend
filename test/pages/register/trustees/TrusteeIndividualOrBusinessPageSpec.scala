@@ -20,11 +20,11 @@ import java.time.LocalDate
 
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness._
-import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.core.pages.{IndividualOrBusiness, UKAddress}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages.register.trustees.individual.{TrusteeAUKCitizenPage, TrusteeAddressInTheUKPage, TrusteesDateOfBirthPage, TrusteesNinoPage, TrusteesUkAddressPage}
-import pages.register.trustees.organisation.{TrusteeOrgAddressUkPage, TrusteeOrgAddressUkYesNoPage, TrusteeOrgNamePage, TrusteeUtrYesNoPage, TrusteesUtrPage}
+import pages.register.trustees.individual._
+import pages.register.trustees.organisation._
 
 
 class TrusteeIndividualOrBusinessPageSpec extends PageBehaviours {

@@ -4,7 +4,7 @@ resolvers += "HMRC Releases" at "https://dl.bintray.com/hmrc/releases"
 
 resolvers += "hmrc-artefactory-releases" at "https://artefacts.tax.service.gov.uk/artifactory/hmrc-releases"
 
-resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
+resolvers += "Typesafe Releases" at "https://repo.typesafe.com/typesafe/releases/"
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "2.7.0")
 

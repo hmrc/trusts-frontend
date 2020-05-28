@@ -17,14 +17,14 @@
 package controllers.register.settlors.deceased_settlor
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import pages.register.settlors.deceased_settlor.{SettlorsNationalInsuranceYesNoPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorsNamePage, SettlorsNationalInsuranceYesNoPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorsNINoYesNoView
-import controllers.register.routes._
 
 class SettlorsNINoYesNoControllerSpec extends RegistrationSpecBase {
 

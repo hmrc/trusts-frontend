@@ -23,9 +23,8 @@ import generators.Generators
 import mapping.Mapping
 import models.core.pages.FullName
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages._
 import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.beneficiaries.individual._
 
 class BeneficiariesMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

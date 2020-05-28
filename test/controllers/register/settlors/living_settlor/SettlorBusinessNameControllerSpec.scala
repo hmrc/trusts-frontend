@@ -18,6 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.living_settlor.SettlorBusinessNameFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
@@ -26,7 +27,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.settlors.living_settlor.SettlorBusinessNameView
-import controllers.register.routes._
 
 class SettlorBusinessNameControllerSpec extends RegistrationSpecBase with IndexValidation {
 

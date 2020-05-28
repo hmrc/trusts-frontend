@@ -17,11 +17,13 @@
 package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import models.NormalMode
 import models.core.pages.{InternationalAddress, UKAddress}
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.PropertyOrLand
 import pages.entitystatus.AssetStatus
+import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.property_or_land._
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -30,8 +32,6 @@ import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.asset.property_or_land.PropertyOrLandAnswersView
-import controllers.register.routes._
-import pages.register.asset.WhatKindOfAssetPage
 
 class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
 

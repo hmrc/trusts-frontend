@@ -17,6 +17,7 @@
 package controllers.register.trustees
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import forms.trustees.AddATrusteeFormProvider
 import models.NormalMode
@@ -25,11 +26,10 @@ import models.registration.pages.AddATrustee
 import models.registration.pages.Status.Completed
 import pages.entitystatus.TrusteeStatus
 import pages.register.trustees.TrusteeIndividualOrBusinessPage
+import pages.register.trustees.individual.TrusteesNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import controllers.register.routes._
-import pages.register.trustees.individual.TrusteesNamePage
 import views.html.register.trustees.{AddATrusteeView, AddATrusteeYesNoView}
 
 class AddATrusteeControllerSpec extends RegistrationSpecBase {

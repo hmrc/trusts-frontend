@@ -16,12 +16,9 @@
 
 package pages.register.natural.individual
 
-import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
-
-import scala.util.Try
+import sections.natural.{Individual, Natural}
 
 final case class OtherIndividualNationalInsuranceYesNoPage(index : Int) extends QuestionPage[Boolean] {
 

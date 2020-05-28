@@ -16,6 +16,7 @@
 
 package views.register.settlors.living_settlor
 
+import controllers.register.settlors.living_settlor.routes
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -25,7 +26,6 @@ import utils.InputOption
 import utils.countryOptions.CountryOptionsNonUK
 import views.behaviours.InternationalAddressViewBehaviours
 import views.html.register.settlors.living_settlor.SettlorIndividualAddressInternationalView
-import controllers.register.settlors.living_settlor.routes
 
 class SettlorIndividualAddressInternationalViewSpec extends InternationalAddressViewBehaviours {
 

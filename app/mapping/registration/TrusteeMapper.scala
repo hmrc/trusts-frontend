@@ -17,8 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.{Trustee, TrusteeIndividual, TrusteeOrganisation, Trustees}
 import mapping.Mapping
+import mapping.reads.{Trustee, TrusteeIndividual, TrusteeOrganisation, Trustees}
 import models.core.UserAnswers
 
 class TrusteeMapper @Inject()(nameMapper: NameMapper, addressMapper: AddressMapper) extends Mapping[List[TrusteeType]] {

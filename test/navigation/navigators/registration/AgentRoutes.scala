@@ -24,8 +24,7 @@ import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages._
-import pages.register.agents.{AgentAddressYesNoPage, AgentAnswerPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import pages.register.agents._
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait AgentRoutes {

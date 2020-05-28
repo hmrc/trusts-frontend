@@ -2,22 +2,7 @@ package controllers
 
 import java.time.{LocalDate, ZoneOffset}
 
-import base.SpecBase
-import forms.$className$FormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.FakeNavigator
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
-import pages.$className$Page
-import play.api.inject.bind
-import play.api.mvc.Call
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import repositories.RegistrationsRepository
-import views.html.$className$View
-
-import scala.concurrent.Future
+import models.NormalMode
 
 class $className$ControllerSpec extends SpecBase with MockitoSugar {
 

@@ -17,6 +17,7 @@
 package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
@@ -26,7 +27,6 @@ import pages.register.asset.property_or_land.PropertyOrLandDescriptionPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
-import controllers.register.routes._
 
 class RemovePropertyOrLandWithDescriptionControllerSpec extends RegistrationSpecBase with PropertyChecks {
 

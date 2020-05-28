@@ -18,6 +18,7 @@ package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.property_or_land.PropertyOrLandDescriptionFormProvider
 import models.NormalMode
 import org.jsoup.Jsoup
@@ -27,7 +28,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.asset.property_or_land.PropertyOrLandDescriptionView
-import controllers.register.routes._
 
 class PropertyOrLandDescriptionControllerSpec extends RegistrationSpecBase with IndexValidation {
 

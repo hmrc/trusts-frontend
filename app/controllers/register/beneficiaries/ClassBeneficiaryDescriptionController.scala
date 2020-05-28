@@ -16,15 +16,14 @@
 
 package controllers.register.beneficiaries
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.ClassBeneficiaryDescriptionFormProvider
 import javax.inject.Inject
 import models.Mode
 import models.registration.pages.Status.Completed
 import navigation.Navigator
-import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import pages.entitystatus.ClassBeneficiaryStatus
+import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

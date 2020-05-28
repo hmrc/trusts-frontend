@@ -17,16 +17,16 @@
 package controllers.register.beneficiaries
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.entitystatus.AssetStatus
+import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
-import controllers.register.routes._
-import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 
 class RemoveClassOfBeneficiaryControllerSpec extends RegistrationSpecBase with PropertyChecks {
 

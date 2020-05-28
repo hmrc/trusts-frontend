@@ -16,12 +16,12 @@
 
 package controllers.actions
 
-import controllers.routes
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionFilter, Result}
 import uk.gov.hmrc.auth.core._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 

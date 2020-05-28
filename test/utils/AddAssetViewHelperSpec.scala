@@ -17,17 +17,17 @@
 package utils
 
 import base.RegistrationSpecBase
+import controllers.register.asset._
 import models.core.pages.UKAddress
 import models.registration.pages.ShareClass
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
 import pages.entitystatus.AssetStatus
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import viewmodels.AddRow
-import controllers.register.asset._
-import pages.register.asset.WhatKindOfAssetPage
-import pages.register.asset.money.AssetMoneyValuePage
 
 class AddAssetViewHelperSpec extends RegistrationSpecBase {
 

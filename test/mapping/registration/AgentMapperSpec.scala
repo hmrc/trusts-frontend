@@ -21,8 +21,7 @@ import generators.Generators
 import mapping.Mapping
 import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages._
-import pages.register.agents.{AgentARNPage, AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentNamePage, AgentTelephoneNumberPage, AgentUKAddressPage}
+import pages.register.agents._
 
 class AgentMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {

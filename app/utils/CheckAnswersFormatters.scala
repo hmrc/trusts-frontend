@@ -19,8 +19,8 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import models.core.UserAnswers
-import models.registration.pages.KindOfTrust._
 import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
+import models.registration.pages.KindOfTrust._
 import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
 import pages.register.agents.AgentNamePage
 import pages.register.asset.shares.ShareCompanyNamePage

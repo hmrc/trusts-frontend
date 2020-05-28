@@ -17,13 +17,13 @@
 package controllers.register.asset.money
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.AssetMoneyValueFormProvider
 import models.NormalMode
+import pages.register.asset.money.AssetMoneyValuePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.asset.money.AssetMoneyValueView
-import controllers.register.routes._
-import pages.register.asset.money.AssetMoneyValuePage
 
 class AssetMoneyValueControllerSpec extends RegistrationSpecBase {
 

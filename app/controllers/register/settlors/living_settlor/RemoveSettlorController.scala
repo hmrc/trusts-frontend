@@ -17,7 +17,6 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.RemoveIndexController
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.RemoveIndexFormProvider

@@ -18,6 +18,7 @@ package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.UKAddressFormProvider
 import generators.ModelGenerators
 import models.NormalMode
@@ -28,7 +29,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.asset.property_or_land.PropertyOrLandUKAddressView
-import controllers.register.routes._
 
 class PropertyOrLandUKAddressControllerSpec extends RegistrationSpecBase with ModelGenerators with IndexValidation {
 

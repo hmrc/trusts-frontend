@@ -17,6 +17,7 @@
 package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import models.core.pages.InternationalAddress
 import models.registration.pages.Status.Completed
@@ -27,7 +28,6 @@ import pages.register.asset.property_or_land.PropertyOrLandInternationalAddressP
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
-import controllers.register.routes._
 
 class RemovePropertyOrLandWithAddressInternationalControllerSpec extends RegistrationSpecBase with PropertyChecks {
 

@@ -1,18 +1,14 @@
 package controllers
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import forms.$className$FormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.$className$Page
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.$className$View
 
 import scala.concurrent.{ExecutionContext, Future}
 

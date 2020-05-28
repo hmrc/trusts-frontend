@@ -18,6 +18,7 @@ package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -27,7 +28,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.SettlorIndividualPassportYesNoView
-import controllers.register.routes._
 
 class SettlorIndividualPassportYesNoControllerSpec extends RegistrationSpecBase with IndexValidation {
 

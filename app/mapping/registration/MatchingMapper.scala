@@ -19,7 +19,6 @@ package mapping.registration
 import mapping.Mapping
 import models.core.UserAnswers
 import models.registration.Matched
-import pages._
 import pages.register.trust_details.TrustNamePage
 import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
 import play.api.Logger

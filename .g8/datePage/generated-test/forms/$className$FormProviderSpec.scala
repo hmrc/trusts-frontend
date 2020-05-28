@@ -2,9 +2,6 @@ package forms
 
 import java.time.{LocalDate, ZoneOffset}
 
-import forms.behaviours.DateBehaviours
-import play.api.data.FormError
-
 class $className$FormProviderSpec extends DateBehaviours {
 
   val form = new $className$FormProvider()()

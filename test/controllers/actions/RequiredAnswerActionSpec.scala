@@ -17,19 +17,18 @@
 package controllers.actions
 
 import base.RegistrationSpecBase
-import controllers.routes
+import controllers.register.routes._
 import models.NormalMode
 import models.core.pages.FullName
 import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mockito.MockitoSugar
+import pages.register.trustees.individual.TrusteesNamePage
 import play.api.http.HeaderNames
 import play.api.libs.json.Reads
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
-import controllers.register.routes._
-import pages.register.trustees.individual.TrusteesNamePage
 
 import scala.concurrent.Future
 

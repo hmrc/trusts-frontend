@@ -21,14 +21,14 @@ import controllers.register.settlors.living_settlor.routes
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.AddASettlor
 import models.core.pages.IndividualOrBusiness._
+import models.registration.pages.AddASettlor
 import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 

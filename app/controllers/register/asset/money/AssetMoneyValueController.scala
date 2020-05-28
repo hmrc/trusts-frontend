@@ -16,15 +16,14 @@
 
 package controllers.register.asset.money
 
-import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.AssetMoneyValueFormProvider
 import javax.inject.Inject
 import models.Mode
 import models.registration.pages.Status.Completed
 import navigation.Navigator
-import pages.register.asset.money.AssetMoneyValuePage
 import pages.entitystatus.AssetStatus
+import pages.register.asset.money.AssetMoneyValuePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

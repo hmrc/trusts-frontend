@@ -19,10 +19,13 @@ package controllers.register.settlors.living_settlor
 import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.living_settlor.{SettlorIndividualOrBusinessPage, _}
 import play.api.Application
 import play.api.mvc.{Call, Result}
@@ -32,9 +35,6 @@ import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.settlors.living_settlor.SettlorIndividualAnswersView
-import controllers.register.routes._
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 import scala.concurrent.Future
 

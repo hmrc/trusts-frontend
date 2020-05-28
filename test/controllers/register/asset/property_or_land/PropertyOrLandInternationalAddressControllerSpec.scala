@@ -18,6 +18,7 @@ package controllers.register.asset.property_or_land
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.pages.InternationalAddress
@@ -31,7 +32,6 @@ import play.api.test.Helpers._
 import utils._
 import utils.countryOptions.CountryOptionsNonUK
 import views.html.register.asset.property_or_land.PropertyOrLandInternationalAddressView
-import controllers.register.routes._
 
 import scala.concurrent.Future
 

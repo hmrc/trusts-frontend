@@ -16,7 +16,6 @@
 
 package pages.register.beneficiaries.large
 
-import models.core.pages.Description
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.beneficiaries.{Beneficiaries, LargeBeneficiaries}

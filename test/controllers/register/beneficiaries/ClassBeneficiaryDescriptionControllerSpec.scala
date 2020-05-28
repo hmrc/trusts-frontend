@@ -17,13 +17,13 @@
 package controllers.register.beneficiaries
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.ClassBeneficiaryDescriptionFormProvider
 import models.NormalMode
+import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.beneficiaries.ClassBeneficiaryDescriptionView
-import controllers.register.routes._
-import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
 
 class ClassBeneficiaryDescriptionControllerSpec extends RegistrationSpecBase {
 

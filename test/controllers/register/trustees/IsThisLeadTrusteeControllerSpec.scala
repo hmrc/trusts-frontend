@@ -18,6 +18,7 @@ package controllers.register.trustees
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import navigation.Navigator
@@ -27,7 +28,6 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
 import views.html.register.trustees.IsThisLeadTrusteeView
-import controllers.register.routes._
 
 class IsThisLeadTrusteeControllerSpec extends RegistrationSpecBase with IndexValidation {
 

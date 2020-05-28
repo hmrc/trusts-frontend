@@ -16,10 +16,9 @@
 
 package mapping.reads
 
-import models.registration.pages.WhatKindOfAsset.Money
 import models.registration.pages.WhatKindOfAsset
-import play.api.libs.json.Reads
-import play.api.libs.json._
+import models.registration.pages.WhatKindOfAsset.Money
+import play.api.libs.json.{Reads, _}
 
 final case class MoneyAsset(override val whatKindOfAsset: WhatKindOfAsset,
                             value: String) extends Asset

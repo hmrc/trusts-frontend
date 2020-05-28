@@ -17,14 +17,14 @@
 package controllers.register.settlors.living_settlor
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.living_settlor.HoldoverReliefYesNoView
-import controllers.register.routes._
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 
 class HoldoverReliefYesNoControllerSpec extends RegistrationSpecBase {
 

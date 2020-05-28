@@ -25,8 +25,8 @@ import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.countryOptions.CountryOptions
 import utils.DateFormatter
+import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
 import views.html.register.ConfirmationAnswerPageView
 

@@ -21,7 +21,6 @@ import generators.Generators
 import mapping.Mapping
 import models.registration.Matched
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages._
 import pages.register.trust_details.TrustNamePage
 import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
 import utils.TestUserAnswers

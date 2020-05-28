@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.natural.{Natural, Individual}
+import sections.natural.{Individual, Natural}
 
 final case class OtherIndividualDateOfBirthPage(index : Int) extends QuestionPage[LocalDate] {
 

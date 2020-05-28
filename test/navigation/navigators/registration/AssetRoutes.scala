@@ -21,14 +21,14 @@ import controllers.register.asset.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.{AddAssets, WhatKindOfAsset}
 import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
+import models.registration.pages.{AddAssets, WhatKindOfAsset}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
 import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.asset.shares._
+import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
 
 trait AssetRoutes {
 

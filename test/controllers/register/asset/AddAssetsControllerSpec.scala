@@ -17,6 +17,7 @@
 package controllers.register.asset
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.core.UserAnswers
@@ -24,14 +25,13 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.{Money, Shares}
 import models.registration.pages.{AddAssets, ShareClass}
 import pages.entitystatus.AssetStatus
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import controllers.register.routes._
-import pages.register.asset.WhatKindOfAssetPage
-import pages.register.asset.money.AssetMoneyValuePage
 import views.html.register.asset.{AddAnAssetYesNoView, AddAssetsView}
 
 class AddAssetsControllerSpec extends RegistrationSpecBase {

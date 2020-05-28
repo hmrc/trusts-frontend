@@ -20,7 +20,7 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
 import models.core.pages.{FullName, UKAddress}
-import pages.register.beneficiaries.individual.{IndividualBeneficiaryAddressUKPage, IndividualBeneficiaryAddressUKYesNoPage, IndividualBeneficiaryAddressYesNoPage, IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryDateOfBirthYesNoPage, IndividualBeneficiaryIncomePage, IndividualBeneficiaryIncomeYesNoPage, IndividualBeneficiaryNamePage, IndividualBeneficiaryNationalInsuranceNumberPage, IndividualBeneficiaryNationalInsuranceYesNoPage, IndividualBeneficiaryVulnerableYesNoPage}
+import pages.register.beneficiaries.individual._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper

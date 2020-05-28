@@ -17,8 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.reads.IndividualBeneficiary
 import mapping.Mapping
+import mapping.reads.IndividualBeneficiary
 import models.core.UserAnswers
 import models.core.pages.Address
 

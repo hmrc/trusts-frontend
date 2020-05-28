@@ -28,9 +28,9 @@ import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.prop.PropertyChecks
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 
 trait LivingSettlorRoutes {
 
