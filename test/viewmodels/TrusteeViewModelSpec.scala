@@ -23,12 +23,12 @@ import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
 import viewmodels.addAnother.TrusteeViewModel
 
-class TrusteeViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
+class TrusteeViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators with ModelGenerators {
 
   "Trustee" - {
 

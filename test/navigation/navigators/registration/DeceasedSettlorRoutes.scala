@@ -23,12 +23,12 @@ import models.NormalMode
 import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 
 trait DeceasedSettlorRoutes {
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
 

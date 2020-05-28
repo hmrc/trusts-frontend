@@ -21,11 +21,11 @@ import java.time.LocalDate
 import forms.{FormSpec, Validation}
 import generators.Generators
 import models.registration.pages.PassportOrIdCardDetails
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.data.{Form, FormError}
 
 trait PassportOrIDCardBehaviours extends FormSpec
-  with PropertyChecks with Generators with FieldBehaviours with OptionalFieldBehaviours {
+  with ScalaCheckPropertyChecks with Generators with FieldBehaviours with OptionalFieldBehaviours {
 
 
   def passportOrIDCardDateField(form: Form[PassportOrIdCardDetails], key: String): Unit = {

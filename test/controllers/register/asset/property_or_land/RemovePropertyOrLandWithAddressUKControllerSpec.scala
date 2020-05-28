@@ -22,14 +22,14 @@ import forms.RemoveIndexFormProvider
 import models.core.pages.UKAddress
 import models.registration.pages.Status.Completed
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.entitystatus.AssetStatus
 import pages.register.asset.property_or_land.PropertyOrLandUKAddressPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
 
-class RemovePropertyOrLandWithAddressUKControllerSpec extends RegistrationSpecBase with PropertyChecks {
+class RemovePropertyOrLandWithAddressUKControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
   val messagesPrefix = "removePropertyOrLandAsset"
 

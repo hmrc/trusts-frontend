@@ -20,12 +20,12 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.RemoveIndexFormProvider
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.RemoveIndexView
 
-class DefaultRemoveAssetControllerSpec extends RegistrationSpecBase with PropertyChecks {
+class DefaultRemoveAssetControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
   val messagesPrefix = "removeAsset"
 

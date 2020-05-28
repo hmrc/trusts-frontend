@@ -21,11 +21,11 @@ import controllers.register.routes
 import generators.Generators
 import models.NormalMode
 import navigation.navigators.registration._
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages._
 
 class NavigatorSpec extends RegistrationSpecBase
-  with PropertyChecks
+  with ScalaCheckPropertyChecks
   with Generators
   with TrustDetailsRoutes
   with MatchingRoutes

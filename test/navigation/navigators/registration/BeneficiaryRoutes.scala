@@ -25,13 +25,13 @@ import models.core.pages.FullName
 import models.registration.pages.{AddABeneficiary, WhatTypeOfBeneficiary}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, AddABeneficiaryYesNoPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 trait BeneficiaryRoutes {
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   def beneficiaryRoutes()(implicit navigator: Navigator) = {
 

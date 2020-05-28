@@ -24,14 +24,14 @@ import models.NormalMode
 import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.trust_details.TrustNamePage
 import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 trait MatchingRoutes {
 
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   def matchingRoutes()(implicit navigator : Navigator) = {
 

@@ -19,12 +19,12 @@ package viewmodels
 import generators.{Generators, ModelGenerators}
 import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.Status.{Completed, InProgress}
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
 import play.api.libs.json.{JsSuccess, Json}
 import viewmodels.addAnother._
 
-class SettlorViewModelSpec extends FreeSpec with MustMatchers with PropertyChecks with Generators with ModelGenerators {
+class SettlorViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPropertyChecks with Generators with ModelGenerators {
 
   "Settlor" - {
 

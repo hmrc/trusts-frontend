@@ -2,7 +2,7 @@ package models
 
 import play.api.libs.json.{JsError, JsString, Json}
 
-class $className$Spec extends WordSpec with MustMatchers with PropertyChecks with OptionValues {
+class $className$Spec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
   "$className$" must {
 

@@ -24,14 +24,14 @@ import models.NormalMode
 import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.mockito.MockitoSugar
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.TrustHaveAUTRPage
 import pages.register.trust_details.TrustNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.trust_details.TrustNameView
 
-class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar with Generators with PropertyChecks {
+class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar with Generators with ScalaCheckPropertyChecks {
 
   val formProvider = new TrustNameFormProvider()
   val form = formProvider()

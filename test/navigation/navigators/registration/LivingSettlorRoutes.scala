@@ -27,14 +27,14 @@ import models.registration.pages.{AddASettlor, KindOfTrust}
 import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.prop.PropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
 
 trait LivingSettlorRoutes {
 
-  self: PropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   private val index = 0
 
