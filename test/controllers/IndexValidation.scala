@@ -35,7 +35,7 @@ package controllers
 import base.RegistrationSpecBase
 import generators.Generators
 import org.scalacheck.Gen
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.QuestionPage
 import play.api.http.Writeable

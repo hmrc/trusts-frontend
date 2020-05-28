@@ -23,7 +23,7 @@ import controllers.register.routes._
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import pages.register.beneficiaries.individual.{IndividualBeneficiaryDateOfBirthPage, IndividualBeneficiaryNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

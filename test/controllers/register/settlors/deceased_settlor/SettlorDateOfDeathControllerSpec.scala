@@ -23,7 +23,7 @@ import controllers.register.routes._
 import forms.deceased_settlor.SettlorDateOfDeathFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

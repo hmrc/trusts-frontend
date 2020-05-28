@@ -19,7 +19,7 @@ package base
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.AnyContent
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}

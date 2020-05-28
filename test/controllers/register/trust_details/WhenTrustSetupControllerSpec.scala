@@ -22,7 +22,7 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.WhenTrustSetupFormProvider
 import models.NormalMode
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import pages.register.trust_details.WhenTrustSetupPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

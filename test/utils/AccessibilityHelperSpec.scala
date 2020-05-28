@@ -17,7 +17,7 @@
 package utils
 
 import base.RegistrationSpecBase
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 
 class AccessibilityHelperSpec extends RegistrationSpecBase with MockitoSugar {
 

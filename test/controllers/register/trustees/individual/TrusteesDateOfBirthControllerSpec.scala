@@ -25,7 +25,7 @@ import forms.trustees.TrusteesDateOfBirthFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import org.scalacheck.Gen
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import pages.register.trustees.IsThisLeadTrusteePage
 import pages.register.trustees.individual.{TrusteesDateOfBirthPage, TrusteesNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
