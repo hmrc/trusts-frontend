@@ -19,7 +19,6 @@ package views.register.beneficiaries
 import forms.YesNoFormProvider
 import models.NormalMode
 import models.core.pages.FullName
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -36,9 +35,6 @@ class IndividualBeneficiaryAddressUKYesNoViewSpec extends YesNoViewBehaviours {
   val form = new YesNoFormProvider().withPrefix("individualBeneficiaryAddressUKYesNo")
 
   "IndividualBeneficiaryAddressUKYesNo view" must {
-
-    val userAnswers = emptyUserAnswers
-      .set(IndividualBeneficiaryNamePage(index), fullName).success.value
 
     val view = viewFor[IndividualBeneficiaryAddressUKYesNoView](Some(emptyUserAnswers))
 

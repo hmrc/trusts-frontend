@@ -36,9 +36,9 @@ import pages.register.settlors.deceased_settlor._
 import pages.register.trust_details._
 import pages.register.trustees._
 import pages.register.trustees.individual._
+import utils.TestUserAnswers
 import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
-import utils.{DateFormatter, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.register.SummaryAnswerPageView
 
@@ -121,10 +121,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
         .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
-
-    val formatter = injector.instanceOf[DateFormatter]
-
-    val trnDateTime: String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
 
     val name = "First Last"
     val benName = "BenFirst BenLast"

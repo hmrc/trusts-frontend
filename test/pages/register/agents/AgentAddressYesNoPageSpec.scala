@@ -33,7 +33,6 @@ class AgentAddressYesNoPageSpec extends PageBehaviours {
   }
 
   "remove AgentUKAddressPage when AgentAddressYesNoPage is set to false" in {
-    val index = 0
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial.set(AgentUKAddressPage,UKAddress(str, str, Some(str), Some(str), str) ).success.value
@@ -44,7 +43,6 @@ class AgentAddressYesNoPageSpec extends PageBehaviours {
   }
 
   "remove AgentInternationalAddressPage when AgentAddressYesNoPage is set to true" in {
-    val index = 0
     forAll(arbitrary[UserAnswers], arbitrary[String]) {
       (initial, str) =>
         val answers: UserAnswers = initial.set(AgentInternationalAddressPage,InternationalAddress(str, str, Some(str), str) ).success.value
