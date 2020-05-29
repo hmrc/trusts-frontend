@@ -16,13 +16,16 @@
 
 package controllers.register.settlors.deceased_settlor
 
+import java.time.LocalDate
+
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.deceased_settlor.SettlorsDateOfBirthFormProvider
 import javax.inject.Inject
+import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.{SettlorsDateOfBirthPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsDateOfBirthPage, SettlorsNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -45,7 +48,8 @@ class SettlorsDateOfBirthController @Inject()(
                                                view: SettlorsDateOfBirthView
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  private def form(maxDate: LocalDate): Form[LocalDate] =
+    formProvider.withMaxDate(maxDate)
 
   private def actions(draftId: String) =
     identify andThen
@@ -59,8 +63,8 @@ class SettlorsDateOfBirthController @Inject()(
       val name = request.userAnswers.get(SettlorsNamePage).get
 
       val preparedForm = request.userAnswers.get(SettlorsDateOfBirthPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        case None => form(maxDate)
+        case Some(value) => form(maxDate).fill(value)
       }
 
       Ok(view(preparedForm, mode, draftId, name))
@@ -71,7 +75,7 @@ class SettlorsDateOfBirthController @Inject()(
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
-      form.bindFromRequest().fold(
+      form(maxDate).bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId, name))),
 
@@ -82,5 +86,14 @@ class SettlorsDateOfBirthController @Inject()(
           } yield Redirect(navigator.nextPage(SettlorsDateOfBirthPage, mode, draftId)(updatedAnswers))
         }
       )
+  }
+
+  private def maxDate(implicit request: RegistrationDataRequest[AnyContent]): LocalDate = {
+    request.userAnswers.get(SettlorDateOfDeathPage) match {
+      case Some(dateOfDeath) =>
+        dateOfDeath
+      case None =>
+        LocalDate.now
+    }
   }
 }
