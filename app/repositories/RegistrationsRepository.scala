@@ -17,11 +17,14 @@
 package repositories
 
 import akka.stream.Materializer
+import connector.SubmissionDraftConnector
 import javax.inject.Inject
+import models.SubmissionDraftData
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
 import pages.register.agents.AgentInternalReferencePage
 import play.api.Configuration
+import play.api.http.Status
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.api.Cursor
@@ -29,6 +32,7 @@ import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
 import reactivemongo.play.json.collection.JSONCollection
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.DateFormatter
 import viewmodels.DraftRegistration
 
@@ -37,9 +41,12 @@ import scala.concurrent.{ExecutionContext, Future}
 class DefaultRegistrationsRepository @Inject()(
                                           mongo: ReactiveMongoApi,
                                           config: Configuration,
-                                          dateFormatter: DateFormatter
+                                          dateFormatter: DateFormatter,
+                                          submissionDraftConnector: SubmissionDraftConnector
                                         )(implicit ec: ExecutionContext, m: Materializer) extends RegistrationsRepository {
 
+
+  private val section = "main"
 
   private val collectionName: String = "user-answers"
 
@@ -68,64 +75,34 @@ class DefaultRegistrationsRepository @Inject()(
       }.map(_ => ())
     }
 
-  override def get(draftId: String, internalId: String): Future[Option[UserAnswers]] = {
-      val selector = Json.obj(
-        "_id" -> draftId,
-        "internalId" -> internalId
-      )
-
-      collection.flatMap(_.find(
-        selector = selector, None).one[UserAnswers])
+  override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
+    submissionDraftConnector.getDraftSection(draftId, section).map {
+      response => Some(response.data.as[UserAnswers])
+    }
   }
 
-  override def getDraftRegistrations(internalId: String): Future[List[UserAnswers]] = {
-    val draftIdLimit = 20
-
-    val selector = Json.obj(
-      "internalId" -> internalId,
-      "progress" -> Json.obj("$ne" -> RegistrationStatus.Complete.toString)
-    )
-
-    collection.flatMap(
-      _.find(
-        selector = selector,
-        projection = None
-      )
-        .sort(Json.obj("createdAt" -> -1))
-        .cursor[UserAnswers]()
-        .collect[List](draftIdLimit, Cursor.FailOnError[List[UserAnswers]]()))
-  }
-
-  override def listDrafts(internalId : String) : Future[List[DraftRegistration]] = {
-    getDraftRegistrations(internalId).map {
-      drafts =>
-
-        drafts.flatMap {
-          x =>
-            x.get(AgentInternalReferencePage).map {
-              reference =>
-                DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
-            }
-
+  override def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]] = {
+    submissionDraftConnector.getCurrentDraftIds().map {
+      draftIds =>
+        draftIds.flatMap {
+          x => x.reference.map {
+            reference => DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
+          }
         }
     }
   }
 
-  override def set(userAnswers: UserAnswers): Future[Boolean] = {
+  override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
 
-    val selector = Json.obj(
-      "_id" -> userAnswers.draftId
-    )
+    val reference =
+        userAnswers.get(AgentInternalReferencePage).map {
+          reference => reference
+        }.orElse(None)
 
-    val modifier = Json.obj(
-      "$set" -> userAnswers
-    )
+    val draftData = SubmissionDraftData(Json.toJson(userAnswers), reference)
 
-    collection.flatMap {
-      _.update(ordered = false).one(selector, modifier, upsert = true).map {
-        lastError =>
-          lastError.ok
-      }
+    submissionDraftConnector.setDraftSection(userAnswers.draftId, section, draftData).map {
+      response => response.status == Status.OK
     }
   }
 }
@@ -134,11 +111,9 @@ trait RegistrationsRepository {
 
   val started: Future[Unit]
 
-  def get(draftId: String, internalId: String): Future[Option[UserAnswers]]
+  def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]]
 
-  def set(userAnswers: UserAnswers): Future[Boolean]
+  def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
 
-  def getDraftRegistrations(internalId: String): Future[List[UserAnswers]]
-
-  def listDrafts(internalId : String) : Future[List[DraftRegistration]]
+  def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]]
 }

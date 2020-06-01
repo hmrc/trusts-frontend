@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.{SubmissionDraftId, SubmissionDraftResponse}
+import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -56,7 +56,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
       "can be set" in {
 
-        val payload = Json.parse(
+        val sectionData = Json.parse(
           """
             |{
             | "field1": "value1",
@@ -64,17 +64,19 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             |}
             |""".stripMargin)
 
+        val submissionDraftData = SubmissionDraftData(sectionData, Some("ref"))
+
         server.stubFor(
           post(urlEqualTo(submissionUrl))
             .withHeader(CONTENT_TYPE, containing("application/json"))
-            .withRequestBody(equalTo(payload.toString()))
+            .withRequestBody(equalTo(Json.toJson(submissionDraftData).toString()))
             .willReturn(
               aResponse()
                 .withStatus(Status.OK)
             )
         )
 
-        val result = Await.result(connector.setDraft(testDraftId, testSection, payload), Duration.Inf)
+        val result = Await.result(connector.setDraftSection(testDraftId, testSection, submissionDraftData), Duration.Inf)
         result.status mustBe Status.OK
       }
       "can be retrieved" in {
@@ -107,7 +109,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             )
         )
 
-        val result: SubmissionDraftResponse = Await.result(connector.getDraft(testDraftId, testSection), Duration.Inf)
+        val result: SubmissionDraftResponse = Await.result(connector.getDraftSection(testDraftId, testSection), Duration.Inf)
         result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
         result.data mustBe draftData
       }
@@ -118,7 +120,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             |[
             | {
             |   "draftId": "Draft1",
-            |   "createdAt": "2012-02-03T09:30:00"
+            |   "createdAt": "2012-02-03T09:30:00",
+            |   "reference": "ref"
             | },
             | {
             |   "draftId": "Draft2",
@@ -138,8 +141,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
         val result = Await.result(connector.getCurrentDraftIds(), Duration.Inf)
         result mustBe List(
-          SubmissionDraftId("Draft1", LocalDateTime.of(2012, 2, 3, 9, 30)),
-          SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44))
+          SubmissionDraftId("Draft1", LocalDateTime.of(2012, 2, 3, 9, 30), Some("ref")),
+          SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44), None)
         )
       }
       "can be deleted" in {

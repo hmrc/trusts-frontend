@@ -40,5 +40,5 @@ trait Mocked extends MockitoSugar {
   when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]])(any()))
       .thenReturn(Future.successful(TestUserAnswers.draftId))
 
-  when(registrationsRepository.set(any())).thenReturn(Future.successful(true))
+  when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
 }

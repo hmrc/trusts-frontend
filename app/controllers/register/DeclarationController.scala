@@ -36,6 +36,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import services.SubmissionService
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.DeclarationView
 
@@ -74,6 +76,7 @@ class DeclarationController @Inject()(
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
+      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
@@ -101,7 +104,8 @@ class DeclarationController @Inject()(
       )
   }
 
-  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String) : Future[Result] = {
+  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String)
+                            (implicit hc: HeaderCarrier): Future[Result] = {
     response match {
       case trn: RegistrationTRNResponse =>
         Logger.info("[DeclarationController][handleResponse] Saving trust registration trn.")
@@ -115,7 +119,8 @@ class DeclarationController @Inject()(
     }
   }
 
-  private def saveTRNAndCompleteRegistration(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse): Future[Result] = {
+  private def saveTRNAndCompleteRegistration(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse)
+                                            (implicit hc: HeaderCarrier): Future[Result] = {
       Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn)).flatMap {
         trnSaved =>
           val submissionDate = LocalDateTime.now(ZoneOffset.UTC)

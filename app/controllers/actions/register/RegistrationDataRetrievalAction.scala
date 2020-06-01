@@ -21,6 +21,8 @@ import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -29,16 +31,18 @@ class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository:
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
       OptionalRegistrationDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
 
-    registrationsRepository.getDraftRegistrations(request.identifier).flatMap {
+    registrationsRepository.listDrafts().flatMap {
       ids =>
         ids.headOption match {
           case None =>
             Future.successful(createdOptionalDataRequest(request, None))
-          case Some(userAnswer) =>
-            registrationsRepository.get(userAnswer.draftId, userAnswer.internalAuthId).map {
+          case Some(draftRegistration) =>
+            registrationsRepository.get(draftRegistration.draftId).map {
               case None =>
                 createdOptionalDataRequest(request, None)
               case Some(userAnswers) =>

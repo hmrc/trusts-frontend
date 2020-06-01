@@ -46,7 +46,7 @@ class AgentOverviewController @Inject()(
 
   def onPageLoad: Action[AnyContent] = actions.async {
     implicit request =>
-      registrationsRepository.listDrafts(request.identifier).map {
+      registrationsRepository.listDrafts().map {
         drafts =>
           Ok(view(drafts))
       }
@@ -60,9 +60,10 @@ class AgentOverviewController @Inject()(
   def continue(draftId: String): Action[AnyContent] = (actions andThen getData(draftId) andThen requireData).async {
     implicit request =>
 
-      request.userAnswers.get(AgentTelephoneNumberPage).isEmpty match {
-        case true => Future.successful(Redirect(routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)))
-        case false => Future.successful(Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId)))
+      if (request.userAnswers.get(AgentTelephoneNumberPage).isEmpty) {
+        Future.successful(Redirect(routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)))
+      } else {
+        Future.successful(Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId)))
       }
 
   }
