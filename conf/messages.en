@@ -719,7 +719,7 @@ settlorsDateOfBirth.error.required.all = Enter a date of birth
 settlorsDateOfBirth.error.required.two = The date of birth must include {0} and {1}
 settlorsDateOfBirth.error.required = The date of birth must include {0}
 settlorsDateOfBirth.error.invalid = Enter a real date of birth
-settlorsDateOfBirth.error.future = Date of birth must be today or in the past
+settlorsDateOfBirth.error.future = Date of birth must be on or before the date of death
 settlorsDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
 settlorsInternationalAddress.title = What is the settlor’s last known address?

@@ -24,7 +24,7 @@ import play.api.data.Form
 
 class SettlorsDateOfBirthFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[LocalDate] =
+  def withMaxDate(dateOfDeath: LocalDate): Form[LocalDate] =
     Form(
       "value" -> localDate(
         invalidKey     = "settlorsDateOfBirth.error.invalid",
@@ -32,7 +32,7 @@ class SettlorsDateOfBirthFormProvider @Inject() extends Mappings {
         twoRequiredKey = "settlorsDateOfBirth.error.required.two",
         requiredKey    = "settlorsDateOfBirth.error.required"
       ).verifying(firstError(
-          maxDate(LocalDate.now, s"settlorsDateOfBirth.error.future", "day", "month", "year"),
+          maxDate(dateOfDeath, s"settlorsDateOfBirth.error.future", "day", "month", "year"),
           minDate(LocalDate.of(1500,1,1), s"settlorsDateOfBirth.error.past", "day", "month", "year")
         ))
     )

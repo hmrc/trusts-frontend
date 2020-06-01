@@ -16,15 +16,17 @@
 
 package controllers.register.settlors.deceased_settlor
 
-import java.time.{LocalDate, ZoneOffset}
+import java.time.LocalDate
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.deceased_settlor.SettlorsDateOfBirthFormProvider
 import models.NormalMode
+import models.core.UserAnswers
 import models.core.pages.FullName
 import org.scalatestplus.mockito.MockitoSugar
-import pages.register.settlors.deceased_settlor.{SettlorsDateOfBirthPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsDateOfBirthPage, SettlorsNamePage}
+import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorsDateOfBirthView
@@ -32,22 +34,25 @@ import views.html.register.settlors.deceased_settlor.SettlorsDateOfBirthView
 class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new SettlorsDateOfBirthFormProvider()
-  val form = formProvider()
+  val dateOfDeath: LocalDate = LocalDate.parse("2019-02-03")
+  val form: Form[LocalDate] = formProvider.withMaxDate(dateOfDeath)
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val validAnswer: LocalDate = LocalDate.parse("2000-02-03")
+  val invalidAnswer: LocalDate = LocalDate.parse("2020-02-03")
 
-  lazy val settlorsDateOfBirthRoute = routes.SettlorsDateOfBirthController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val settlorsDateOfBirthRoute: String = routes.SettlorsDateOfBirthController.onPageLoad(NormalMode, fakeDraftId).url
 
-  val name = FullName("first name", None, "Last name")
+  val name: FullName = FullName("first name", None, "Last name")
+
+  val baseAnswers: UserAnswers = emptyUserAnswers
+    .set(SettlorsNamePage, name).success.value
+    .set(SettlorDateOfDeathPage, dateOfDeath).success.value
 
   "SettlorsDateOfBirth Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
-        name).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       val request = FakeRequest(GET, settlorsDateOfBirthRoute)
 
@@ -65,8 +70,8 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorsDateOfBirthPage, validAnswer).success.value.set(SettlorsNamePage,
-        name).success.value
+      val userAnswers = baseAnswers
+        .set(SettlorsDateOfBirthPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -86,11 +91,8 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
-        name).success.value
-
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers)).build()
+        applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorsDateOfBirthRoute)
@@ -110,16 +112,44 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
-      val userAnswers = emptyUserAnswers.set(SettlorsNamePage,
-        name).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorsDateOfBirthRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
+
+      val view = application.injector.instanceOf[SettlorsDateOfBirthView]
+
+      val result = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      contentAsString(result) mustEqual
+        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return a Bad Request and errors when date of birth exceeds date of death" in {
+
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
+
+      val request =
+        FakeRequest(POST, settlorsDateOfBirthRoute)
+          .withFormUrlEncodedBody(
+            "value.day"   -> invalidAnswer.getDayOfMonth.toString,
+            "value.month" -> invalidAnswer.getMonthValue.toString,
+            "value.year"  -> invalidAnswer.getYear.toString
+          )
+
+      val boundForm = form.bind(Map(
+        "value.day"   -> invalidAnswer.getDayOfMonth.toString,
+        "value.month" -> invalidAnswer.getMonthValue.toString,
+        "value.year"  -> invalidAnswer.getYear.toString
+      ))
 
       val view = application.injector.instanceOf[SettlorsDateOfBirthView]
 
