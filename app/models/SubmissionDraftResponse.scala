@@ -25,3 +25,9 @@ case class SubmissionDraftResponse(createdAt: LocalDateTime, data: JsValue)
 object SubmissionDraftResponse {
   implicit lazy val format: OFormat[SubmissionDraftResponse] = Json.format[SubmissionDraftResponse]
 }
+
+case class SubmissionDraftId(draftId: String, createdAt: LocalDateTime)
+
+object SubmissionDraftId {
+  implicit lazy val format: OFormat[SubmissionDraftId] = Json.format[SubmissionDraftId]
+}

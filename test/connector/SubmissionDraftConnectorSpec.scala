@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.SubmissionDraftResponse
+import models.{SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -46,7 +46,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
   private val testDraftId = "draftId"
   private val testSection = "section"
-  private val submissionUrl = s"/trusts/register/submission-drafts/$testDraftId/$testSection"
+  private val submissionsUrl = s"/trusts/register/submission-drafts"
+  private val submissionUrl = s"$submissionsUrl/$testDraftId/$testSection"
 
   "SubmissionDraftConnector" - {
 
@@ -108,6 +109,37 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result: SubmissionDraftResponse = Await.result(connector.getSubmissionDraft(testDraftId, testSection), Duration.Inf)
         result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
         result.data mustBe draftData
+      }
+      "can have list of ids retrieved" in {
+
+        val draftIdsResponseJson =
+          """
+            |[
+            | {
+            |   "draftId": "Draft1",
+            |   "createdAt": "2012-02-03T09:30:00"
+            | },
+            | {
+            |   "draftId": "Draft2",
+            |   "createdAt": "2010-06-21T14:44:00"
+            | }
+            |]
+            |""".stripMargin
+
+        server.stubFor(
+          get(urlEqualTo(submissionsUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(draftIdsResponseJson)
+            )
+        )
+
+        val result = Await.result(connector.getCurrentDraftIds(), Duration.Inf)
+        result mustBe List(
+          SubmissionDraftId("Draft1", LocalDateTime.of(2012, 2, 3, 9, 30)),
+          SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44))
+        )
       }
     }
   }

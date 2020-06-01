@@ -18,7 +18,7 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import models.SubmissionDraftResponse
+import models.{SubmissionDraftId, SubmissionDraftResponse}
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -36,5 +36,9 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
 
   def getSubmissionDraft(draftId: String, section: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] = {
     http.GET[SubmissionDraftResponse](s"$submissionsBaseUrl/$draftId/$section")
+  }
+
+  def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[List[SubmissionDraftId]] = {
+    http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
   }
 }
