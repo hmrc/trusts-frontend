@@ -16,64 +16,25 @@
 
 package repositories
 
-import akka.stream.Materializer
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import models.SubmissionDraftData
 import models.core.UserAnswers
-import models.registration.pages.RegistrationStatus
 import pages.register.agents.AgentInternalReferencePage
-import play.api.Configuration
 import play.api.http.Status
 import play.api.libs.json._
-import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.api.Cursor
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONDocument
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
-import reactivemongo.play.json.collection.JSONCollection
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.DateFormatter
 import viewmodels.DraftRegistration
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultRegistrationsRepository @Inject()(
-                                          mongo: ReactiveMongoApi,
-                                          config: Configuration,
-                                          dateFormatter: DateFormatter,
+class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
                                           submissionDraftConnector: SubmissionDraftConnector
-                                        )(implicit ec: ExecutionContext, m: Materializer) extends RegistrationsRepository {
+                                        )(implicit ec: ExecutionContext) extends RegistrationsRepository {
 
 
   private val section = "main"
-
-  private val collectionName: String = "user-answers"
-
-  private val cacheTtl = config.get[Int]("mongodb.registration.ttlSeconds")
-
-  private def collection: Future[JSONCollection] =
-    mongo.database.map(_.collection[JSONCollection](collectionName))
-
-  private val createdAtIndex = Index(
-    key = Seq("createdAt" -> IndexType.Ascending),
-    name = Some("user-answers-created-at-index"),
-    options = BSONDocument("expireAfterSeconds" -> cacheTtl)
-  )
-
-  private val internalAuthIdIndex = Index(
-    key = Seq("internalId" -> IndexType.Ascending),
-    name = Some("internal-auth-id-index")
-  )
-
-    val started : Future[Unit] = {
-      Future.sequence {
-        Seq(
-          collection.map(_.indexesManager.ensure(createdAtIndex)),
-          collection.map(_.indexesManager.ensure(internalAuthIdIndex))
-        )
-      }.map(_ => ())
-    }
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftSection(draftId, section).map {
@@ -108,9 +69,6 @@ class DefaultRegistrationsRepository @Inject()(
 }
 
 trait RegistrationsRepository {
-
-  val started: Future[Unit]
-
   def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]]
 
   def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
