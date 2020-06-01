@@ -29,16 +29,20 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
 
   val submissionsBaseUrl = s"${config.trustsUrl}/trusts/register/submission-drafts"
 
-  def setSubmissionDraft(draftId : String, section: String, draftData: JsValue)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
+  def setDraft(draftId : String, section: String, draftData: JsValue)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
     val url = s"$submissionsBaseUrl/$draftId/$section"
     http.POST[JsValue, HttpResponse](url, Json.toJson(draftData))
   }
 
-  def getSubmissionDraft(draftId: String, section: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] = {
+  def getDraft(draftId: String, section: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] = {
     http.GET[SubmissionDraftResponse](s"$submissionsBaseUrl/$draftId/$section")
   }
 
   def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[List[SubmissionDraftId]] = {
     http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
+  }
+
+  def deleteDraft(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
+    http.DELETE[HttpResponse](s"$submissionsBaseUrl/$draftId")
   }
 }

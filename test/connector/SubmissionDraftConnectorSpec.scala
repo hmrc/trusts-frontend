@@ -48,6 +48,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val testSection = "section"
   private val submissionsUrl = s"/trusts/register/submission-drafts"
   private val submissionUrl = s"$submissionsUrl/$testDraftId/$testSection"
+  private val deleteUrl = s"$submissionsUrl/$testDraftId"
 
   "SubmissionDraftConnector" - {
 
@@ -73,7 +74,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             )
         )
 
-        val result = Await.result(connector.setSubmissionDraft(testDraftId, testSection, payload), Duration.Inf)
+        val result = Await.result(connector.setDraft(testDraftId, testSection, payload), Duration.Inf)
         result.status mustBe Status.OK
       }
       "can be retrieved" in {
@@ -106,7 +107,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             )
         )
 
-        val result: SubmissionDraftResponse = Await.result(connector.getSubmissionDraft(testDraftId, testSection), Duration.Inf)
+        val result: SubmissionDraftResponse = Await.result(connector.getDraft(testDraftId, testSection), Duration.Inf)
         result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
         result.data mustBe draftData
       }
@@ -140,6 +141,19 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           SubmissionDraftId("Draft1", LocalDateTime.of(2012, 2, 3, 9, 30)),
           SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44))
         )
+      }
+      "can be deleted" in {
+
+        server.stubFor(
+          delete(urlEqualTo(deleteUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+            )
+        )
+
+        val result = Await.result(connector.deleteDraft(testDraftId), Duration.Inf)
+        result.status mustBe Status.OK
       }
     }
   }
