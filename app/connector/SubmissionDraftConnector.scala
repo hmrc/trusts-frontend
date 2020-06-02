@@ -18,7 +18,7 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import models.{SubmissionDraftId, SubmissionDraftMainData, SubmissionDraftResponse, SubmissionDraftSectionData}
+import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -29,14 +29,16 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
 
   val submissionsBaseUrl = s"${config.trustsUrl}/trusts/register/submission-drafts"
 
-  def setDraftMain(draftId : String, draftData: SubmissionDraftMainData)
+  def setDraftMain(draftId : String, draftData: JsValue, inProgress: Boolean, reference: Option[String])
                      (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
-    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/MAIN", Json.toJson(draftData))
+    val submissionDraftData = SubmissionDraftData(draftData, reference, Some(inProgress))
+    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/MAIN", Json.toJson(submissionDraftData))
   }
 
-  def setDraftSection(draftId : String, section: String, draftData: SubmissionDraftSectionData)
+  def setDraftSection(draftId : String, section: String, draftData: JsValue)
                      (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
-    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/$section", Json.toJson(draftData))
+    val submissionDraftData = SubmissionDraftData(draftData, None, None)
+    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/$section", Json.toJson(submissionDraftData))
   }
 
   def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] = {

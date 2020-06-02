@@ -18,7 +18,6 @@ package repositories
 
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
-import models.SubmissionDraftMainData
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus.Complete
 import pages.register.agents.AgentInternalReferencePage
@@ -58,9 +57,12 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
           reference => reference
         }.orElse(None)
 
-    val draftData = SubmissionDraftMainData(Json.toJson(userAnswers), reference, userAnswers.progress != Complete)
-
-    submissionDraftConnector.setDraftMain(userAnswers.draftId, draftData).map {
+    submissionDraftConnector.setDraftMain(
+      userAnswers.draftId,
+      Json.toJson(userAnswers),
+      userAnswers.progress != Complete,
+      reference
+    ).map {
       response => response.status == Status.OK
     }
   }

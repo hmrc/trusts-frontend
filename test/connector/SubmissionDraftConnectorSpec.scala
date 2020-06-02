@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.{SubmissionDraftId, SubmissionDraftMainData, SubmissionDraftResponse, SubmissionDraftSectionData}
+import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -65,19 +65,19 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             |}
             |""".stripMargin)
 
-        val submissionMainData = SubmissionDraftMainData(sectionData, Some("ref"), inProgress = true)
+        val submissionDraftData = SubmissionDraftData(sectionData, Some("ref"), Some(true))
 
         server.stubFor(
           post(urlEqualTo(mainUrl))
             .withHeader(CONTENT_TYPE, containing("application/json"))
-            .withRequestBody(equalTo(Json.toJson(submissionMainData).toString()))
+            .withRequestBody(equalTo(Json.toJson(submissionDraftData).toString()))
             .willReturn(
               aResponse()
                 .withStatus(Status.OK)
             )
         )
 
-        val result = Await.result(connector.setDraftMain(testDraftId, submissionMainData), Duration.Inf)
+        val result = Await.result(connector.setDraftMain(testDraftId, sectionData, inProgress = true, Some("ref")), Duration.Inf)
         result.status mustBe Status.OK
       }
       "can be retrieved for main" in {
@@ -124,7 +124,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             |}
             |""".stripMargin)
 
-        val submissionDraftData = SubmissionDraftSectionData(sectionData)
+        val submissionDraftData = SubmissionDraftData(sectionData, None, None)
 
         server.stubFor(
           post(urlEqualTo(submissionUrl))
@@ -136,7 +136,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             )
         )
 
-        val result = Await.result(connector.setDraftSection(testDraftId, testSection, submissionDraftData), Duration.Inf)
+        val result = Await.result(connector.setDraftSection(testDraftId, testSection, sectionData), Duration.Inf)
         result.status mustBe Status.OK
       }
       "can be retrieved for section" in {
