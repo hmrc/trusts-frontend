@@ -34,13 +34,13 @@ case object TrusteesBasedInTheUKPage extends QuestionPage[TrusteesBasedInTheUK] 
 
   override def cleanup(value: Option[TrusteesBasedInTheUK], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
-      case Some(UKBasedTrustees) | Some(InternationalAndUKTrustees) =>
+      case Some(NonUkBasedTrustees) =>
         userAnswers.remove(EstablishedUnderScotsLawPage)
           .flatMap(_.remove(TrustResidentOffshorePage))
           .flatMap(_.remove(TrustPreviouslyResidentPage))
           .flatMap(_.remove(TrustDetailsStatus))
           .flatMap(_.remove(SettlorsBasedInTheUKPage))
-      case Some(NonUkBasedTrustees) | Some(InternationalAndUKTrustees) =>
+      case Some(UKBasedTrustees) =>
         userAnswers.remove(RegisteringTrustFor5APage)
           .flatMap(_.remove(InheritanceTaxActPage))
           .flatMap(_.remove(NonResidentTypePage))
