@@ -64,7 +64,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             |}
             |""".stripMargin)
 
-        val submissionDraftData = SubmissionDraftData(sectionData, Some("ref"))
+        val submissionDraftData = SubmissionDraftData(sectionData, Some("ref"), Some(true))
 
         server.stubFor(
           post(urlEqualTo(submissionUrl))
@@ -121,7 +121,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             | {
             |   "draftId": "Draft1",
             |   "createdAt": "2012-02-03T09:30:00",
-            |   "reference": "ref"
+            |   "reference": "ref",
+            |   "inProgress": true
             | },
             | {
             |   "draftId": "Draft2",

@@ -20,6 +20,7 @@ import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import models.SubmissionDraftData
 import models.core.UserAnswers
+import models.registration.pages.RegistrationStatus.Complete
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http.Status
 import play.api.libs.json._
@@ -60,7 +61,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
           reference => reference
         }.orElse(None)
 
-    val draftData = SubmissionDraftData(Json.toJson(userAnswers), reference)
+    val draftData = SubmissionDraftData(Json.toJson(userAnswers), reference, Some(userAnswers.progress != Complete))
 
     submissionDraftConnector.setDraftSection(userAnswers.draftId, section, draftData).map {
       response => response.status == Status.OK
