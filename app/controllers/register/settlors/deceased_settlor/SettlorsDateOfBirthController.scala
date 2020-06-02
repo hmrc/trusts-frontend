@@ -90,8 +90,8 @@ class SettlorsDateOfBirthController @Inject()(
 
   private def maxDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
     request.userAnswers.get(SettlorDateOfDeathPage) match {
-      case Some(startDate) =>
-        (startDate, "afterDateOfDeath")
+      case Some(dateOfDeath) =>
+        (dateOfDeath, "afterDateOfDeath")
       case None =>
         (LocalDate.now, "future")
     }

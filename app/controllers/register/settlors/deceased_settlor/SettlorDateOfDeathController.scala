@@ -91,8 +91,8 @@ class SettlorDateOfDeathController @Inject()(
 
   private def minDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
     request.userAnswers.get(SettlorsDateOfBirthPage) match {
-      case Some(startDate) =>
-        (startDate, "beforeDateOfBirth")
+      case Some(dateOfBirth) =>
+        (dateOfBirth, "beforeDateOfBirth")
       case None =>
         (LocalDate.of(1500,1,1), "past")
     }
