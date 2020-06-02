@@ -25,6 +25,7 @@ import models.NormalMode
 import models.core.pages.FullName
 import org.scalatestplus.mockito.MockitoSugar
 import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsNamePage}
+import pages.register.trust_details.WhenTrustSetupPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorDateOfDeathView
@@ -32,7 +33,8 @@ import views.html.register.settlors.deceased_settlor.SettlorDateOfDeathView
 class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new SettlorDateOfDeathFormProvider()
-  val form = formProvider()
+  val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
+  val form = formProvider.withConfig(trustStartDate)
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
@@ -140,6 +142,43 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       val boundForm = form.bind(Map("value" -> "invalid value"))
+
+      val view = application.injector.instanceOf[SettlorDateOfDeathView]
+
+      val result = route(application, request).value
+
+      status(result) mustEqual BAD_REQUEST
+
+      contentAsString(result) mustEqual
+        view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+
+      application.stop()
+    }
+
+    "return a Bad Request and errors when submitted date is after trust start date" in {
+
+      val validAnswer = LocalDate.parse("2020-02-03")
+
+      val userAnswers = emptyUserAnswers
+        .set(WhenTrustSetupPage, trustStartDate).success.value
+        .set(SettlorsNamePage, fullName).success.value
+        .set(SettlorDateOfDeathPage, validAnswer).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request =
+        FakeRequest(POST, settlorDateOfDeathRoute)
+          .withFormUrlEncodedBody(
+            "value.day"   -> validAnswer.getDayOfMonth.toString,
+            "value.month" -> validAnswer.getMonthValue.toString,
+            "value.year"  -> validAnswer.getYear.toString
+          )
+
+      val boundForm = form.bind(Map(
+        "value.day"   -> validAnswer.getDayOfMonth.toString,
+        "value.month" -> validAnswer.getMonthValue.toString,
+        "value.year"  -> validAnswer.getYear.toString
+      ))
 
       val view = application.injector.instanceOf[SettlorDateOfDeathView]
 

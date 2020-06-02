@@ -16,13 +16,17 @@
 
 package controllers.register.settlors.deceased_settlor
 
+import java.time.LocalDate
+
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.deceased_settlor.SettlorDateOfDeathFormProvider
 import javax.inject.Inject
+import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsNamePage}
+import pages.register.trust_details.WhenTrustSetupPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -45,7 +49,8 @@ class SettlorDateOfDeathController @Inject()(
                                               view: SettlorDateOfDeathView
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  private def form(maxDate: LocalDate): Form[LocalDate] =
+    formProvider.withConfig(maxDate)
 
   private def actions(draftId: String) =
     identify andThen
@@ -60,8 +65,8 @@ class SettlorDateOfDeathController @Inject()(
       val name = request.userAnswers.get(SettlorsNamePage).get
 
       val preparedForm = request.userAnswers.get(SettlorDateOfDeathPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        case None => form(maxDate)
+        case Some(value) => form(maxDate).fill(value)
       }
 
       Ok(view(preparedForm, mode, draftId, name))
@@ -72,7 +77,7 @@ class SettlorDateOfDeathController @Inject()(
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
-      form.bindFromRequest().fold(
+      form(maxDate).bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId, name))),
 
@@ -83,5 +88,14 @@ class SettlorDateOfDeathController @Inject()(
           } yield Redirect(navigator.nextPage(SettlorDateOfDeathPage, mode, draftId)(updatedAnswers))
         }
       )
+  }
+
+  private def maxDate(implicit request: RegistrationDataRequest[AnyContent]): LocalDate = {
+    request.userAnswers.get(WhenTrustSetupPage) match {
+      case Some(startDate) =>
+        startDate
+      case None =>
+        LocalDate.now
+    }
   }
 }

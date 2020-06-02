@@ -24,7 +24,8 @@ import play.api.data.FormError
 
 class SettlorDateOfDeathFormProviderSpec extends DateBehaviours {
 
-  val form = new SettlorDateOfDeathFormProvider()()
+  val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
+  val form = new SettlorDateOfDeathFormProvider().withConfig(trustStartDate)
 
   private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)
