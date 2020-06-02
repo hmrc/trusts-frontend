@@ -30,7 +30,7 @@ class SettlorsDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "settlorsDateOfBirth"
 
-  val form: Form[LocalDate] = new SettlorsDateOfBirthFormProvider().withMaxDate(LocalDate.parse("2019-02-03"))
+  val form: Form[LocalDate] = new SettlorsDateOfBirthFormProvider().withConfig()
 
   "SettlorsDateOfBirthView view" must {
 

@@ -24,7 +24,9 @@ import play.api.data.Form
 
 class SettlorDateOfDeathFormProvider @Inject() extends Mappings {
 
-  def withConfig(config: (LocalDate, String)): Form[LocalDate] =
+  def withConfig(maximumDate: (LocalDate, String) = (LocalDate.now, "future"),
+                 minimumDate: (LocalDate, String) = (LocalDate.of(1500,1,1), "past")
+                ): Form[LocalDate] =
     Form(
       "value" -> localDate(
         invalidKey     = "settlorDateOfDeath.error.invalid",
@@ -32,8 +34,8 @@ class SettlorDateOfDeathFormProvider @Inject() extends Mappings {
         twoRequiredKey = "settlorDateOfDeath.error.required.two",
         requiredKey    = "settlorDateOfDeath.error.required"
       ).verifying(firstError(
-          maxDate(config._1, s"settlorDateOfDeath.error.${config._2}", "day", "month", "year"),
-          minDate(LocalDate.of(1500,1,1), s"settlorDateOfDeath.error.past", "day", "month", "year")
+          maxDate(maximumDate._1, s"settlorDateOfDeath.error.${maximumDate._2}", "day", "month", "year"),
+          minDate(minimumDate._1, s"settlorDateOfDeath.error.${minimumDate._2}", "day", "month", "year")
         ))
     )
 }

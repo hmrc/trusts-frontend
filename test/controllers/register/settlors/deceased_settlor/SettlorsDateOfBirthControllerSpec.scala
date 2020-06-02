@@ -35,7 +35,7 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
 
   val formProvider = new SettlorsDateOfBirthFormProvider()
   val dateOfDeath: LocalDate = LocalDate.parse("2019-02-03")
-  val form: Form[LocalDate] = formProvider.withMaxDate(dateOfDeath)
+  val form: Form[LocalDate] = formProvider.withConfig()
 
   val validAnswer: LocalDate = LocalDate.parse("2000-02-03")
   val invalidAnswer: LocalDate = LocalDate.parse("2020-02-03")
@@ -133,7 +133,9 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
       application.stop()
     }
 
-    "return a Bad Request and errors when date of birth exceeds date of death" in {
+    "return a Bad Request and errors when submitted date is after date of death" in {
+
+      val form: Form[LocalDate] = formProvider.withConfig((dateOfDeath, "afterDateOfDeath"))
 
       val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 

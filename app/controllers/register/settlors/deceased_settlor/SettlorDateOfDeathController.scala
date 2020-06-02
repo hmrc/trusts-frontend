@@ -25,7 +25,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsDateOfBirthPage, SettlorsNamePage}
 import pages.register.trust_details.WhenTrustSetupPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -47,7 +47,7 @@ class SettlorDateOfDeathController @Inject()(
                                               requiredAnswer: RequiredAnswerActionProvider,
                                               val controllerComponents: MessagesControllerComponents,
                                               view: SettlorDateOfDeathView
-                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
     identify andThen
@@ -55,8 +55,8 @@ class SettlorDateOfDeathController @Inject()(
       requireData andThen
       requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode, draftId)))
 
-  private def form(config: (LocalDate, String)): Form[LocalDate] =
-    formProvider.withConfig(config)
+  private def form(maxDate: (LocalDate, String), minDate: (LocalDate, String)): Form[LocalDate] =
+    formProvider.withConfig(maxDate, minDate)
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
@@ -64,8 +64,8 @@ class SettlorDateOfDeathController @Inject()(
       val name = request.userAnswers.get(SettlorsNamePage).get
 
       val preparedForm = request.userAnswers.get(SettlorDateOfDeathPage) match {
-        case None => form(maxDate)
-        case Some(value) => form(maxDate).fill(value)
+        case None => form(maxDate, minDate)
+        case Some(value) => form(maxDate, minDate).fill(value)
       }
 
       Ok(view(preparedForm, mode, draftId, name))
@@ -76,7 +76,7 @@ class SettlorDateOfDeathController @Inject()(
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
-      form(maxDate).bindFromRequest().fold(
+      form(maxDate, minDate).bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId, name))),
 
@@ -89,10 +89,19 @@ class SettlorDateOfDeathController @Inject()(
       )
   }
 
+  private def minDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
+    request.userAnswers.get(SettlorsDateOfBirthPage) match {
+      case Some(startDate) =>
+        (startDate, "beforeDateOfBirth")
+      case None =>
+        (LocalDate.of(1500,1,1), "past")
+    }
+  }
+
   private def maxDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
     request.userAnswers.get(WhenTrustSetupPage) match {
       case Some(startDate) =>
-        (startDate, "beforeTrustStartDate")
+        (startDate, "afterTrustStartDate")
       case None =>
         (LocalDate.now, "future")
     }

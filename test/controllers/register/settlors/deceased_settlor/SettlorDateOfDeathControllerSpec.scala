@@ -24,7 +24,7 @@ import forms.deceased_settlor.SettlorDateOfDeathFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import org.scalatestplus.mockito.MockitoSugar
-import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsDateOfBirthPage, SettlorsNamePage}
 import pages.register.trust_details.WhenTrustSetupPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -33,7 +33,7 @@ import views.html.register.settlors.deceased_settlor.SettlorDateOfDeathView
 class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new SettlorDateOfDeathFormProvider()
-  val form = formProvider.withConfig(LocalDate.now, "future")
+  val form = formProvider.withConfig()
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
@@ -154,44 +154,87 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
       application.stop()
     }
 
-    "return a Bad Request and errors when submitted date is after trust start date" in {
+    "return a Bad Request and errors when" when {
 
-      val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
-      val submittedDate = LocalDate.parse("2020-02-03")
+      "submitted date is after trust start date" in {
 
-      val form = formProvider.withConfig(trustStartDate, "beforeTrustStartDate")
+        val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
+        val submittedDate = LocalDate.parse("2020-02-03")
 
-      val userAnswers = emptyUserAnswers
-        .set(WhenTrustSetupPage, trustStartDate).success.value
-        .set(SettlorsNamePage, fullName).success.value
-        .set(SettlorDateOfDeathPage, submittedDate).success.value
+        val form = formProvider.withConfig((trustStartDate, "afterTrustStartDate"))
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val userAnswers = emptyUserAnswers
+          .set(WhenTrustSetupPage, trustStartDate).success.value
+          .set(SettlorsNamePage, fullName).success.value
+          .set(SettlorDateOfDeathPage, submittedDate).success.value
 
-      val request =
-        FakeRequest(POST, settlorDateOfDeathRoute)
-          .withFormUrlEncodedBody(
-            "value.day"   -> submittedDate.getDayOfMonth.toString,
-            "value.month" -> submittedDate.getMonthValue.toString,
-            "value.year"  -> submittedDate.getYear.toString
-          )
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val boundForm = form.bind(Map(
-        "value.day"   -> submittedDate.getDayOfMonth.toString,
-        "value.month" -> submittedDate.getMonthValue.toString,
-        "value.year"  -> submittedDate.getYear.toString
-      ))
+        val request =
+          FakeRequest(POST, settlorDateOfDeathRoute)
+            .withFormUrlEncodedBody(
+              "value.day"   -> submittedDate.getDayOfMonth.toString,
+              "value.month" -> submittedDate.getMonthValue.toString,
+              "value.year"  -> submittedDate.getYear.toString
+            )
 
-      val view = application.injector.instanceOf[SettlorDateOfDeathView]
+        val boundForm = form.bind(Map(
+          "value.day"   -> submittedDate.getDayOfMonth.toString,
+          "value.month" -> submittedDate.getMonthValue.toString,
+          "value.year"  -> submittedDate.getYear.toString
+        ))
 
-      val result = route(application, request).value
+        val view = application.injector.instanceOf[SettlorDateOfDeathView]
 
-      status(result) mustEqual BAD_REQUEST
+        val result = route(application, request).value
 
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+        status(result) mustEqual BAD_REQUEST
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+      "submitted date is before date of birth" in {
+
+        val dateOfBirth = LocalDate.parse("2020-02-03")
+        val submittedDate = LocalDate.parse("2019-02-03")
+
+        val form = formProvider.withConfig(minimumDate = (dateOfBirth, "beforeDateOfBirth"))
+
+        val userAnswers = emptyUserAnswers
+          .set(SettlorsNamePage, fullName).success.value
+          .set(SettlorDateOfDeathPage, submittedDate).success.value
+          .set(SettlorsDateOfBirthPage, dateOfBirth).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request =
+          FakeRequest(POST, settlorDateOfDeathRoute)
+            .withFormUrlEncodedBody(
+              "value.day"   -> submittedDate.getDayOfMonth.toString,
+              "value.month" -> submittedDate.getMonthValue.toString,
+              "value.year"  -> submittedDate.getYear.toString
+            )
+
+        val boundForm = form.bind(Map(
+          "value.day"   -> submittedDate.getDayOfMonth.toString,
+          "value.month" -> submittedDate.getMonthValue.toString,
+          "value.year"  -> submittedDate.getYear.toString
+        ))
+
+        val view = application.injector.instanceOf[SettlorDateOfDeathView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+
+        application.stop()
+      }
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
