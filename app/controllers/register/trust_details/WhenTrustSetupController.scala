@@ -83,7 +83,7 @@ class WhenTrustSetupController @Inject()(
   private def minDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
     request.userAnswers.get(SettlorDateOfDeathPage) match {
       case Some(dateOfDeath) =>
-        (dateOfDeath, "afterDateOfDeath")
+        (dateOfDeath, "beforeDateOfDeath")
       case None =>
         (LocalDate.of(1500,1,1), "past")
     }

@@ -127,7 +127,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       val dateOfDeath: LocalDate = LocalDate.parse("2019-02-03")
       val submittedDate: LocalDate = LocalDate.parse("2018-02-03")
 
-      val form = formProvider.withConfig((dateOfDeath, "afterDateOfDeath"))
+      val form = formProvider.withConfig((dateOfDeath, "beforeDateOfDeath"))
 
       val userAnswers = emptyUserAnswers.set(SettlorDateOfDeathPage, dateOfDeath).success.value
 
