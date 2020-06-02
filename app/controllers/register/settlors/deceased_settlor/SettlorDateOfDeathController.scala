@@ -49,15 +49,14 @@ class SettlorDateOfDeathController @Inject()(
                                               view: SettlorDateOfDeathView
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def form(maxDate: LocalDate): Form[LocalDate] =
-    formProvider.withConfig(maxDate)
-
   private def actions(draftId: String) =
     identify andThen
       getData(draftId) andThen
       requireData andThen
       requiredAnswer(RequiredAnswer(SettlorsNamePage, routes.SettlorsNameController.onPageLoad(NormalMode, draftId)))
 
+  private def form(config: (LocalDate, String)): Form[LocalDate] =
+    formProvider.withConfig(config)
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
@@ -90,12 +89,12 @@ class SettlorDateOfDeathController @Inject()(
       )
   }
 
-  private def maxDate(implicit request: RegistrationDataRequest[AnyContent]): LocalDate = {
+  private def maxDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
     request.userAnswers.get(WhenTrustSetupPage) match {
       case Some(startDate) =>
-        startDate
+        (startDate, "beforeTrustStartDate")
       case None =>
-        LocalDate.now
+        (LocalDate.now, "future")
     }
   }
 }

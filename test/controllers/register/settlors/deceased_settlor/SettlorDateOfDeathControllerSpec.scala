@@ -33,8 +33,7 @@ import views.html.register.settlors.deceased_settlor.SettlorDateOfDeathView
 class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
   val formProvider = new SettlorDateOfDeathFormProvider()
-  val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
-  val form = formProvider.withConfig(trustStartDate)
+  val form = formProvider.withConfig(LocalDate.now, "future")
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
@@ -157,27 +156,30 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
 
     "return a Bad Request and errors when submitted date is after trust start date" in {
 
-      val validAnswer = LocalDate.parse("2020-02-03")
+      val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
+      val submittedDate = LocalDate.parse("2020-02-03")
+
+      val form = formProvider.withConfig(trustStartDate, "beforeTrustStartDate")
 
       val userAnswers = emptyUserAnswers
         .set(WhenTrustSetupPage, trustStartDate).success.value
         .set(SettlorsNamePage, fullName).success.value
-        .set(SettlorDateOfDeathPage, validAnswer).success.value
+        .set(SettlorDateOfDeathPage, submittedDate).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, settlorDateOfDeathRoute)
           .withFormUrlEncodedBody(
-            "value.day"   -> validAnswer.getDayOfMonth.toString,
-            "value.month" -> validAnswer.getMonthValue.toString,
-            "value.year"  -> validAnswer.getYear.toString
+            "value.day"   -> submittedDate.getDayOfMonth.toString,
+            "value.month" -> submittedDate.getMonthValue.toString,
+            "value.year"  -> submittedDate.getYear.toString
           )
 
       val boundForm = form.bind(Map(
-        "value.day"   -> validAnswer.getDayOfMonth.toString,
-        "value.month" -> validAnswer.getMonthValue.toString,
-        "value.year"  -> validAnswer.getYear.toString
+        "value.day"   -> submittedDate.getDayOfMonth.toString,
+        "value.month" -> submittedDate.getMonthValue.toString,
+        "value.year"  -> submittedDate.getYear.toString
       ))
 
       val view = application.injector.instanceOf[SettlorDateOfDeathView]

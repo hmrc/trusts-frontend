@@ -695,7 +695,8 @@ settlorDateOfDeath.error.required.all = Enter a date of death
 settlorDateOfDeath.error.required.two = The date of death must include {0} and {1}
 settlorDateOfDeath.error.required = The date of death must include {0}
 settlorDateOfDeath.error.invalid = Enter a real date of death
-settlorDateOfDeath.error.future = Date of death must be on or before the trust’s start date
+settlorDateOfDeath.error.beforeTrustStartDate = Date of death must be on or before the trust’s start date
+settlorDateOfDeath.error.future = Date of death must be today or in the past
 settlorDateOfDeath.error.past = Date of death must be after 31 December 1499
 
 settlorDateOfDeathYesNo.title = Do you know the settlor’s date of death?

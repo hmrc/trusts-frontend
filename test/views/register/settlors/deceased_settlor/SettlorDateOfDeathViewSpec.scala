@@ -30,8 +30,7 @@ class SettlorDateOfDeathViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "settlorDateOfDeath"
 
-  val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
-  val form = new SettlorDateOfDeathFormProvider().withConfig(trustStartDate)
+  val form = new SettlorDateOfDeathFormProvider().withConfig(LocalDate.now, "future")
 
   "SettlorDateOfDeathView view" must {
 
