@@ -30,7 +30,7 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
   val messageKeyPrefix = "whenTrustSetup"
 
 
-  val form = new WhenTrustSetupFormProvider()()
+  val form = new WhenTrustSetupFormProvider().withConfig((LocalDate.of(1500,1,1), "past"))
 
   "WhenTrustSetupView view" must {
 
