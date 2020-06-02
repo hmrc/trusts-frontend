@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
+import models.{SubmissionDraftId, SubmissionDraftMainData, SubmissionDraftResponse, SubmissionDraftSectionData}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -48,13 +48,14 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val testSection = "section"
   private val submissionsUrl = s"/trusts/register/submission-drafts"
   private val submissionUrl = s"$submissionsUrl/$testDraftId/$testSection"
+  private val mainUrl = s"$submissionsUrl/$testDraftId/MAIN"
   private val deleteUrl = s"$submissionsUrl/$testDraftId"
 
   "SubmissionDraftConnector" - {
 
     "submission drafts" - {
 
-      "can be set" in {
+      "can be set for main" in {
 
         val sectionData = Json.parse(
           """
@@ -64,7 +65,66 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             |}
             |""".stripMargin)
 
-        val submissionDraftData = SubmissionDraftData(sectionData, Some("ref"), Some(true))
+        val submissionMainData = SubmissionDraftMainData(sectionData, Some("ref"), inProgress = true)
+
+        server.stubFor(
+          post(urlEqualTo(mainUrl))
+            .withHeader(CONTENT_TYPE, containing("application/json"))
+            .withRequestBody(equalTo(Json.toJson(submissionMainData).toString()))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+            )
+        )
+
+        val result = Await.result(connector.setDraftMain(testDraftId, submissionMainData), Duration.Inf)
+        result.status mustBe Status.OK
+      }
+      "can be retrieved for main" in {
+
+        val draftData = Json.parse(
+          """
+            |{
+            | "field1": "value1",
+            | "field2": "value2"
+            |}
+            |""".stripMargin)
+
+        val draftResponseJson =
+          """
+            |{
+            | "createdAt": "2012-02-03T09:30:00",
+            | "data": {
+            |  "field1": "value1",
+            |  "field2": "value2"
+            | }
+            |}
+            |""".stripMargin
+
+        server.stubFor(
+          get(urlEqualTo(mainUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(draftResponseJson)
+            )
+        )
+
+        val result: SubmissionDraftResponse = Await.result(connector.getDraftMain(testDraftId), Duration.Inf)
+        result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
+        result.data mustBe draftData
+      }
+      "can be set for section" in {
+
+        val sectionData = Json.parse(
+          """
+            |{
+            | "field1": "value1",
+            | "field2": "value2"
+            |}
+            |""".stripMargin)
+
+        val submissionDraftData = SubmissionDraftSectionData(sectionData)
 
         server.stubFor(
           post(urlEqualTo(submissionUrl))
@@ -79,7 +139,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result = Await.result(connector.setDraftSection(testDraftId, testSection, submissionDraftData), Duration.Inf)
         result.status mustBe Status.OK
       }
-      "can be retrieved" in {
+      "can be retrieved for section" in {
 
         val draftData = Json.parse(
           """

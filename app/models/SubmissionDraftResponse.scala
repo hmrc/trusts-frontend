@@ -20,10 +20,16 @@ import java.time.LocalDateTime
 
 import play.api.libs.json.{JsValue, Json, OFormat}
 
-case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgress: Option[Boolean])
+case class SubmissionDraftSectionData(data: JsValue)
 
-object SubmissionDraftData {
-  implicit lazy val format: OFormat[SubmissionDraftData] = Json.format[SubmissionDraftData]
+object SubmissionDraftSectionData {
+  implicit lazy val format: OFormat[SubmissionDraftSectionData] = Json.format[SubmissionDraftSectionData]
+}
+
+case class SubmissionDraftMainData(data: JsValue, reference: Option[String], inProgress: Boolean)
+
+object SubmissionDraftMainData {
+  implicit lazy val format: OFormat[SubmissionDraftMainData] = Json.format[SubmissionDraftMainData]
 }
 
 case class SubmissionDraftResponse(createdAt: LocalDateTime, data: JsValue, reference: Option[String])
