@@ -18,6 +18,7 @@ package views.register.settlors.deceased_settlor
 
 import java.time.LocalDate
 
+import base.RegistrationSpecBase
 import forms.deceased_settlor.SettlorDateOfDeathFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -30,7 +31,7 @@ class SettlorDateOfDeathViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "settlorDateOfDeath"
 
-  val form = new SettlorDateOfDeathFormProvider().withConfig()
+  val form = new SettlorDateOfDeathFormProvider(frontendAppConfig).withConfig()
 
   "SettlorDateOfDeathView view" must {
 

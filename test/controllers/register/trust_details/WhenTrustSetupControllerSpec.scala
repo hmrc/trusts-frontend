@@ -31,8 +31,8 @@ import views.html.register.trust_details.WhenTrustSetupView
 
 class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
-  val formProvider = new WhenTrustSetupFormProvider()
-  val form = formProvider.withConfig((LocalDate.of(1500,1,1), "past"))
+  val formProvider = new WhenTrustSetupFormProvider(frontendAppConfig)
+  val form = formProvider.withConfig()
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 

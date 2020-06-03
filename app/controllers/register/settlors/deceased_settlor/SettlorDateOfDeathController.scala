@@ -18,6 +18,7 @@ package controllers.register.settlors.deceased_settlor
 
 import java.time.LocalDate
 
+import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.deceased_settlor.SettlorDateOfDeathFormProvider
@@ -46,7 +47,8 @@ class SettlorDateOfDeathController @Inject()(
                                               formProvider: SettlorDateOfDeathFormProvider,
                                               requiredAnswer: RequiredAnswerActionProvider,
                                               val controllerComponents: MessagesControllerComponents,
-                                              view: SettlorDateOfDeathView
+                                              view: SettlorDateOfDeathView,
+                                              appConfig: FrontendAppConfig
                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
@@ -94,7 +96,7 @@ class SettlorDateOfDeathController @Inject()(
       case Some(dateOfBirth) =>
         (dateOfBirth, "beforeDateOfBirth")
       case None =>
-        (LocalDate.of(1500,1,1), "past")
+        (appConfig.minDate, "past")
     }
   }
 

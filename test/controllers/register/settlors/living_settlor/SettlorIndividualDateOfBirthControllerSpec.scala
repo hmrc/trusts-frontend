@@ -33,7 +33,7 @@ import views.html.register.settlors.living_settlor.SettlorIndividualDateOfBirthV
 
 class SettlorIndividualDateOfBirthControllerSpec extends RegistrationSpecBase with IndexValidation {
 
-  val formProvider = new DateOfBirthFormProvider()
+  val formProvider = new DateOfBirthFormProvider(frontendAppConfig)
   val form = formProvider()
   val index = 0
 

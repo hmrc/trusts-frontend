@@ -33,7 +33,7 @@ import views.html.register.settlors.deceased_settlor.SettlorsDateOfBirthView
 
 class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
-  val formProvider = new SettlorsDateOfBirthFormProvider()
+  val formProvider = new SettlorsDateOfBirthFormProvider(frontendAppConfig)
   val dateOfDeath: LocalDate = LocalDate.parse("2019-02-03")
   val form: Form[LocalDate] = formProvider.withConfig()
 

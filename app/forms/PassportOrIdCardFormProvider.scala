@@ -34,6 +34,7 @@ package forms
 
 import java.time.LocalDate
 
+import config.FrontendAppConfig
 import forms.mappings.Mappings
 import javax.inject.Inject
 import models.registration.pages.PassportOrIdCardDetails
@@ -41,7 +42,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 
 
-class PassportOrIdCardFormProvider @Inject() extends Mappings {
+class PassportOrIdCardFormProvider @Inject()(appConfig: FrontendAppConfig) extends Mappings {
 
   val maxLengthCountyField = 100
   val maxLengthNumberField = 30
@@ -74,7 +75,7 @@ class PassportOrIdCardFormProvider @Inject() extends Mappings {
           s"$prefix.expiryDate.error.future", "day", "month", "year"
         ),
         minDate(
-          LocalDate.of(1500,1,1),
+          appConfig.minDate,
           s"$prefix.expiryDate.error.past", "day", "month", "year"
         )
       ))

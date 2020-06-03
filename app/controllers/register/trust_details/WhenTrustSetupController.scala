@@ -18,6 +18,7 @@ package controllers.register.trust_details
 
 import java.time.LocalDate
 
+import config.FrontendAppConfig
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.WhenTrustSetupFormProvider
 import javax.inject.Inject
@@ -44,8 +45,9 @@ class WhenTrustSetupController @Inject()(
                                           requireData: RegistrationDataRequiredAction,
                                           formProvider: WhenTrustSetupFormProvider,
                                           val controllerComponents: MessagesControllerComponents,
-                                          view: WhenTrustSetupView
-                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                          view: WhenTrustSetupView,
+                                          appConfig: FrontendAppConfig
+                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
@@ -85,7 +87,7 @@ class WhenTrustSetupController @Inject()(
       case Some(dateOfDeath) =>
         (dateOfDeath, "beforeDateOfDeath")
       case None =>
-        (LocalDate.of(1500,1,1), "past")
+        (appConfig.minDate, "past")
     }
   }
 }
