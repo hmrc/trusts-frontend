@@ -18,12 +18,13 @@ package forms.trustees
 
 import java.time.{LocalDate, ZoneOffset}
 
+import base.FakeTrustsApp
 import forms.behaviours.DateBehaviours
 import play.api.data.FormError
 
-class TrusteesDateOfBirthFormProviderSpec extends DateBehaviours {
+class TrusteesDateOfBirthFormProviderSpec extends DateBehaviours with FakeTrustsApp {
 
-  val form = new TrusteesDateOfBirthFormProvider()()
+  val form = new TrusteesDateOfBirthFormProvider(frontendAppConfig)()
 
   private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)

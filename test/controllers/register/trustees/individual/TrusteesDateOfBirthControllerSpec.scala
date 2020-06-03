@@ -37,7 +37,7 @@ class TrusteesDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
 
   val leadTrusteeMessagePrefix = "leadTrusteesDateOfBirth"
   val trusteeMessagePrefix = "trusteesDateOfBirth"
-  val formProvider = new TrusteesDateOfBirthFormProvider()
+  val formProvider = new TrusteesDateOfBirthFormProvider(frontendAppConfig)
   val form = formProvider()
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)

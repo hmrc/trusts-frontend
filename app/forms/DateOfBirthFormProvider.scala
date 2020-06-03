@@ -18,11 +18,12 @@ package forms
 
 import java.time.LocalDate
 
+import config.FrontendAppConfig
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class DateOfBirthFormProvider @Inject() extends Mappings {
+class DateOfBirthFormProvider @Inject()(appConfig: FrontendAppConfig) extends Mappings {
 
   def apply(): Form[LocalDate] =
     Form(
@@ -33,7 +34,7 @@ class DateOfBirthFormProvider @Inject() extends Mappings {
         requiredKey    = "dateOfBirth.error.required"
       ).verifying(firstError(
         maxDate(LocalDate.now, "dateOfBirth.error.future", "day", "month", "year"),
-        minDate(LocalDate.of(1500,1,1), "dateOfBirth.error.past", "day", "month", "year")
+        minDate(appConfig.minDate, "dateOfBirth.error.past", "day", "month", "year")
       ))
     )
 }

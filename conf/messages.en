@@ -244,6 +244,7 @@ whenTrustSetup.error.required = The date the trust was created must include a {0
 whenTrustSetup.error.invalid = Enter a real date the trust was created
 whenTrustSetup.error.future = The date the trust was created must be today or in the past
 whenTrustSetup.error.past = The date the trust was created must be after 31 December 1499
+whenTrustSetup.error.beforeDateOfDeath = The date the trust was created must be on or after the settlor’s date of death
 whenTrustSetup.text = This is the date the trust deed was signed. For will trusts use the settlor’s date of death.
 whenTrustSetup.hint = For example, 31 3 2015
 
@@ -695,7 +696,9 @@ settlorDateOfDeath.error.required.two = The date of death must include {0} and {
 settlorDateOfDeath.error.required = The date of death must include {0}
 settlorDateOfDeath.error.invalid = Enter a real date of death
 settlorDateOfDeath.error.future = Date of death must be today or in the past
+settlorDateOfDeath.error.afterTrustStartDate = Date of death must be on or before the trust’s start date
 settlorDateOfDeath.error.past = Date of death must be after 31 December 1499
+settlorDateOfDeath.error.beforeDateOfBirth = Date of death must be on or after the date of birth
 
 settlorDateOfDeathYesNo.title = Do you know the settlor’s date of death?
 settlorDateOfDeathYesNo.heading = Do you know {0}’s date of death?
@@ -719,7 +722,8 @@ settlorsDateOfBirth.error.required.all = Enter a date of birth
 settlorsDateOfBirth.error.required.two = The date of birth must include {0} and {1}
 settlorsDateOfBirth.error.required = The date of birth must include {0}
 settlorsDateOfBirth.error.invalid = Enter a real date of birth
-settlorsDateOfBirth.error.future = Date of birth must be on or before the date of death
+settlorsDateOfBirth.error.future = Date of birth must be today or in the past
+settlorsDateOfBirth.error.afterDateOfDeath = Date of birth must be on or before the date of death
 settlorsDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
 settlorsInternationalAddress.title = What is the settlor’s last known address?

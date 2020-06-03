@@ -18,15 +18,16 @@ package forms
 
 import java.time.{LocalDate, ZoneOffset}
 
+import base.FakeTrustsApp
 import forms.behaviours.DateBehaviours
 import play.api.data.FormError
 
-class IndividualBeneficiaryDateOfBirthFormProviderSpec extends DateBehaviours {
+class IndividualBeneficiaryDateOfBirthFormProviderSpec extends DateBehaviours with FakeTrustsApp {
 
   private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)
 
-  val form = new IndividualBeneficiaryDateOfBirthFormProvider()()
+  val form = new IndividualBeneficiaryDateOfBirthFormProvider(frontendAppConfig)()
 
   ".value" should {
 

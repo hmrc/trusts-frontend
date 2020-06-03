@@ -18,14 +18,15 @@ package forms.living_settlor
 
 import java.time.{LocalDate, ZoneOffset}
 
+import base.FakeTrustsApp
 import forms.DateOfBirthFormProvider
 import forms.behaviours.DateBehaviours
 import play.api.data.FormError
 
-class DateOfBirthFormProviderSpec extends DateBehaviours {
+class DateOfBirthFormProviderSpec extends DateBehaviours with FakeTrustsApp {
 
   val messagePrefix = "dateOfBirth"
-  val form = new DateOfBirthFormProvider()()
+  val form = new DateOfBirthFormProvider(frontendAppConfig)()
 
   private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)
