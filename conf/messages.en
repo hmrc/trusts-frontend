@@ -768,6 +768,11 @@ setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the set
 setUpAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
 setUpAfterSettlorDied.hint = This is also known as a will trust
 
+setUpInAdditionToWillTrustYesNo.title = Is this in addition to a will trust?
+setUpInAdditionToWillTrustYesNo.heading = Is this in addition to a will trust?
+setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
+setUpInAdditionToWillTrustYesNo.error.required = Select yes if the trust is in addition to a will trust
+
 wasSettlorsAddressUKYesNo.title = Was the settlor’s last known address in the UK?
 wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?

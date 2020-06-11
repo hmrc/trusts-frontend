@@ -344,6 +344,11 @@ POST       /:draftId/settlors/setup-after-settlor-died                          
 GET        /:draftId/settlors/change-setup-after-settlor-died                                       controllers.register.settlors.SetUpAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/change-setup-after-settlor-died                                       controllers.register.settlors.SetUpAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/settlors/in-addition-to-will-trust                                              controllers.register.settlors.AdditionToWillTrustYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/in-addition-to-will-trust                                              controllers.register.settlors.AdditionToWillTrustYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
 GET        /:draftId/settlors/information-you-need                                                  controllers.register.settlors.SettlorInfoController.onPageLoad(draftId: String)
 
 ### Deceased Settlor
