@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor.trust_type
+package forms
 
-import models.registration.pages.DeedOfVariation
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Settlors
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.registration.pages.{DeedOfVariation, KindOfTrust}
+import play.api.data.Form
 
-case object HowDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
+class DeedOfVariationFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = Settlors.path \ toString
-
-  override def toString: String = "howDeedOfVariationCreated"
-
+  def apply(): Form[DeedOfVariation] =
+    Form(
+      "value" -> enumerable[DeedOfVariation]("howDeedOfVariationCreated.error.required")
+    )
 }

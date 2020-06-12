@@ -1429,6 +1429,13 @@ kindOfTrust.Repair = A trust for the repair of historic buildings
 kindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
 kindOfTrust.error.required = Select what kind of trust the settlor created
 
+howDeedOfVariationCreated.title = How was the deed of variation created?
+howDeedOfVariationCreated.heading = How was the deed of variation created?
+howDeedOfVariationCreated.ReplacedWill = to replace a will trust
+howDeedOfVariationCreated.ReplaceAbsolute = to replace an absolute interest over a will
+howDeedOfVariationCreated.checkYourAnswersLabel = How was the deed of variation created?
+howDeedOfVariationCreated.error.required = Select how the deed of variation was created
+
 holdoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
 holdoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
 holdoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?

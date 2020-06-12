@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package mapping
+package models.registration.pages
 
 import models.{Enumerable, WithName}
+import viewmodels.RadioOption
 
 sealed trait DeedOfVariation
 
 object DeedOfVariation extends Enumerable.Implicits {
 
-  case object DeedOfVariation extends WithName("Previously there was only an absolute interest under the will") with DeedOfVariation
-  case object ReplacedWill extends WithName("Replaced the will trust") with DeedOfVariation
-  case object AdditionToWill extends WithName("Addition to the will trust") with DeedOfVariation
+  case object ReplacedWill extends WithName("to replace a will trust") with DeedOfVariation
+  case object ReplaceAbsolute extends WithName("to replace an absolute interest over a will") with DeedOfVariation
 
-  val values: Set[DeedOfVariation] = Set(
-    DeedOfVariation,
+  val values: List[DeedOfVariation] = List(
     ReplacedWill,
-    AdditionToWill
+    ReplaceAbsolute
   )
 
+  val options: List[RadioOption] = values.map {
+    value =>
+      RadioOption("howDeedOfVariationCreated", value.toString)
+  }
+
   implicit val enumerable: Enumerable[DeedOfVariation] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    Enumerable(values.map(v => v.toString -> v): _*)
 }
