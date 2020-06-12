@@ -65,7 +65,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.register.settlors.routes.AdditionToWillTrustYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
 
       "user answers Lifetime" in {

@@ -95,7 +95,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def kindOfTrustPage(draftId: String)(answers: UserAnswers) = {
     answers.get(KindOfTrustPage) match {
       case Some(Deed) =>
-        routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
+        controllers.register.settlors.routes.AdditionToWillTrustYesNoController.onPageLoad(NormalMode, draftId)
       case Some(Intervivos) =>
         routes.HoldoverReliefYesNoController.onPageLoad(NormalMode, draftId)
       case Some(FlatManagement) =>
