@@ -41,7 +41,7 @@
         <span class="form-hint form-field">@{hint.get}</span>
         }
         @field.errors.map { error =>
-        <span class="govuk-error-message" id="error-message-@{field.id}-input">
+        <span class="error-message" id="error-message-@{field.id}-input">
             <span class="visually-hidden">@messages("site.error")</span> @messages(error.message, error.args: _*)
         </span>
         }
