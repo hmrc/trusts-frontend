@@ -35,6 +35,7 @@ import pages.register.beneficiaries._
 import pages.register.beneficiaries.individual._
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import pages.register.trust_details._
 import pages.register.trustees._
 import pages.register.trustees.individual._
@@ -268,6 +269,7 @@ object BeneficiaryRoutes {
 object DeceasedSettlorRoutes {
   def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case SetUpAfterSettlorDiedYesNoPage => _ => setUpAfterSettlorDiedRoute(draftId)
+    case SetUpInAdditionToWillTrustYesNoPage => _ => setInAdditionToWillTrustRoute(draftId)
     case SettlorsNamePage => _ => _ => controllers.register.settlors.deceased_settlor.routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, draftId)
     case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute(draftId)
     case SettlorDateOfBirthYesNoPage => _ => deceasedSettlorDateOfBirthRoute(draftId)
@@ -281,6 +283,13 @@ object DeceasedSettlorRoutes {
     case SettlorsUKAddressPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
   }
+
+  private def setInAdditionToWillTrustRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
+    case Some(false) => ???
+    case Some(true) => controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
   private def setUpAfterSettlorDiedRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
     case Some(false) => controllers.register.settlors.living_settlor.routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
     case Some(true) => controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId)

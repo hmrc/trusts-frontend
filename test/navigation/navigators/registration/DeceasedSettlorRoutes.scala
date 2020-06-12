@@ -26,6 +26,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 
 trait DeceasedSettlorRoutes {
   self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
@@ -50,6 +51,17 @@ trait DeceasedSettlorRoutes {
             val answers = userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value = true).success.value
 
             navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
+        }
+    }
+
+    "go to SettlorsNamePage from SetUpInAdditionToWillTrustYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, value = true).success.value
+
+            navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
         }
     }
