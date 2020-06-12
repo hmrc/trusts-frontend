@@ -61,6 +61,7 @@ site.complete = Completed
 site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
 site.warning = Warning
+site.error = Error:
 site.confirm-send = Confirm and send
 site.address = Address
 site.utr = Unique Taxpayer Reference
