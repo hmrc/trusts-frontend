@@ -22,6 +22,7 @@ import play.twirl.api.HtmlFormat
 trait QuestionViewBehaviours[A] extends ViewBehaviours {
 
   val errorKey = "value"
+  val errorPrefix = "site.error"
   val errorMessage = "error.number"
   val error = FormError(errorKey, errorMessage)
 
@@ -74,7 +75,7 @@ trait QuestionViewBehaviours[A] extends ViewBehaviours {
           s"show an error in the label for field '$field'" in {
 
             val doc = asDocument(createView(form.withError(FormError(field._1, "error"))))
-            val errorSpan = doc.getElementsByClass("error-message").first
+            val errorSpan = doc.getElementsByClass("govuk-error-message").first
             errorSpan.parent.getElementsByClass("form-label").attr("for") mustBe field._1
           }
         }
