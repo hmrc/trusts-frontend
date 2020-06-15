@@ -25,7 +25,7 @@ import views.html.register.settlors.AdditionToWillTrustYesNoView
 
 class AdditionToWillTrustYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "setupInAdditionToWillTrustYesNo"
+  val messageKeyPrefix = "setUpInAdditionToWillTrustYesNo"
 
   val form = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 

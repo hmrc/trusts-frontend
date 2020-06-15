@@ -1517,7 +1517,6 @@ answerPage.section.protectors.heading = Protectors
 answerPage.section.protectors.subheading = Protector {0}
 
 answerPage.section.trustType.heading = Trust type
-setupInAdditionToWillTrustYesNo.checkYourAnswersLabel = Was it set up in addition to a will trust?
 howDeedOfVariationCreated.checkYourAnswersLabel = How was the Deed of Variation created?
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
 employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
