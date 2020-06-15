@@ -349,10 +349,10 @@ POST       /:draftId/settlors/in-addition-to-will-trust                         
 GET        /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
-GET        /:draftId/settlors/how-was-deed-of-vriation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/settlors/how-was-deed-of-vriation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/settlors/change-how-was-deed-of-vriation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/settlors/change-how-was-deed-of-vriation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /:draftId/settlors/how-was-deed-of-variation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/how-was-deed-of-variation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-how-was-deed-of-variation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-how-was-deed-of-variation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/settlors/information-you-need                                                  controllers.register.settlors.SettlorInfoController.onPageLoad(draftId: String)
 

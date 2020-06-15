@@ -387,6 +387,7 @@ addASettlor.count.heading = You have added {0} settlors
 addASettlor.count.title = You have added {0} settlors
 
 addASettlor.Lifetime = This is a trust created during the settlor’s lifetime to gift or transfer assets (also known as an inter vivos trust)
+addASettlor.Deed = This trust was set up through a Deed of Variation or family agreement
 addASettlor.Employees = This trust was set up for the employees of a company
 addASettlor.Building = This trust was set up for a building or building with lots of tenants
 addASettlor.Repair = This trust was set up to pay for the repair of historic buildings
