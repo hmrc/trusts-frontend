@@ -21,17 +21,47 @@ import controllers.register.settlors.deceased_settlor.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
+import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HowDeedOfVariationCreatedPage, SetUpInAdditionToWillTrustYesNoPage}
 
 trait DeceasedSettlorRoutes {
   self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
   def deceasedSettlorRoutes()(implicit navigator: Navigator) = {
+
+    "go to SettlorIndividualOrBusinessPage from from HowDeedOfVariationCreatedPage" when {
+      "selected ReplacedWill" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(HowDeedOfVariationCreatedPage, ReplacedWill).success.value
+
+            navigator.nextPage(HowDeedOfVariationCreatedPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+                index, fakeDraftId))
+        }
+      }
+      "selected ReplaceAbsolute" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(HowDeedOfVariationCreatedPage, ReplaceAbsolute).success.value
+
+            navigator.nextPage(HowDeedOfVariationCreatedPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+                index, fakeDraftId))
+        }
+      }
+    }
 
     "go to WhatKindOfTrustPage from SetUpAfterSettlorDiedPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
@@ -63,6 +93,17 @@ trait DeceasedSettlorRoutes {
 
             navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
+        }
+    }
+
+    "go to HowDeedOfVariationCreatedPage from SetUpInAdditionToWillTrustYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, value = false).success.value
+
+            navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.settlors.routes.HowDeedOfVariationCreatedController.onPageLoad(NormalMode, fakeDraftId))
         }
     }
 

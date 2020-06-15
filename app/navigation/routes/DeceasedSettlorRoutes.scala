@@ -22,13 +22,14 @@ import models.core.UserAnswers
 import pages.Page
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{HowDeedOfVariationCreatedPage, SetUpInAdditionToWillTrustYesNoPage}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 object DeceasedSettlorRoutes {
   def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case SetUpAfterSettlorDiedYesNoPage => _ => setUpAfterSettlorDiedRoute(draftId)
+    case HowDeedOfVariationCreatedPage => _ => _ => controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case SetUpInAdditionToWillTrustYesNoPage => _ => setInAdditionToWillTrustRoute(draftId)
     case SettlorsNamePage => _ => _ => controllers.register.settlors.deceased_settlor.routes.SettlorDateOfDeathYesNoController.onPageLoad(NormalMode, draftId)
     case SettlorDateOfDeathYesNoPage => _ => deceasedSettlorDateOfDeathRoute(draftId)
@@ -45,7 +46,7 @@ object DeceasedSettlorRoutes {
   }
 
   private def setInAdditionToWillTrustRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
-    case Some(false) => ???
+    case Some(false) => controllers.register.settlors.routes.HowDeedOfVariationCreatedController.onPageLoad(NormalMode, draftId)
     case Some(true) => controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }

@@ -30,7 +30,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.annotations.LivingSettlor
 import views.html.register.settlors.HowDeedOfVariationCreatedView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class HowDeedOfVariationCreatedController @Inject()(
                                                      override val messagesApi: MessagesApi,
                                                      registrationsRepository: RegistrationsRepository,
-                                                     @LivingSettlor navigator: Navigator,
+                                                     navigator: Navigator,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
                                                      requiredAnswer: RequiredAnswerActionProvider,
