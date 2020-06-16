@@ -46,7 +46,7 @@
     }
     <div class="form-control-wrapper" @if(symbol.isDefined){data-type="@{symbol}"}>
         <input
-        class="form-control @inputClass"
+        class="form-control @inputClass @if(field.hasErrors){field-error}"
         type="text"
         id="@{field.id}"
         name="@{field.name}"

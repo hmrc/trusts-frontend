@@ -29,6 +29,11 @@ $error-colour: #d4351c;
 .field-error {
     border:4px solid $error-colour !important;
 }
+.field-error:focus {
+    border:4px solid $govuk-text-colour !important;
+    -webkit-box-shadow: none;
+    box-shadow:none;
+}
 
 .govuk-warning-text {
     font-family: "nta",Arial,sans-serif;
