@@ -40,7 +40,6 @@ class HowDeedOfVariationCreatedController @Inject()(
                                                      navigator: Navigator,
                                                      identify: RegistrationIdentifierAction,
                                                      getData: DraftIdRetrievalActionProvider,
-                                                     requiredAnswer: RequiredAnswerActionProvider,
                                                      requireData: RegistrationDataRequiredAction,
                                                      deedOfVariationFormProvider: DeedOfVariationFormProvider,
                                                      val controllerComponents: MessagesControllerComponents,
@@ -52,8 +51,7 @@ class HowDeedOfVariationCreatedController @Inject()(
   private def actions(draftId: String) =
     identify andThen
       getData(draftId) andThen
-      requireData andThen
-      requiredAnswer(RequiredAnswer(SetUpAfterSettlorDiedYesNoPage, controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)))
+      requireData
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

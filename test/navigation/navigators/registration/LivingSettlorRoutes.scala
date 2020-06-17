@@ -23,14 +23,16 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.Individual
+import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
+import models.registration.pages.KindOfTrust.Deed
 import models.registration.pages.{AddASettlor, KindOfTrust}
 import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 
 trait LivingSettlorRoutes {
 
@@ -56,6 +58,17 @@ trait LivingSettlorRoutes {
   }
 
   def livingSettlorRoutes(): Unit = {
+
+    "go to KindOfTrust from setUpAfterSettlorDied when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value = false).success.value
+
+          navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.living_settlor.routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
 
     "navigate from KindOfTrustPage" when {
 
@@ -104,6 +117,80 @@ trait LivingSettlorRoutes {
         navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
 
+    }
+
+    "go to SetUpInAdditionToWillTrustYesNoPage from KindOfTrustPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(KindOfTrustPage, value = Deed).success.value
+
+          navigator.nextPage(KindOfTrustPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.routes.AdditionToWillTrustYesNoController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to HowDeedOfVariationCreatedPage from SetUpInAdditionToWillTrustYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, value = false).success.value
+
+          navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.routes.HowDeedOfVariationCreatedController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to SettlorsNamePage from SetUpAfterSettlorDiedPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value = true).success.value
+
+          navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to SettlorsNamePage from SetUpInAdditionToWillTrustYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, value = true).success.value
+
+          navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to SettlorIndividualOrBusinessPage from from HowDeedOfVariationCreatedPage" when {
+      "selected ReplacedWill" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(HowDeedOfVariationCreatedPage, ReplacedWill).success.value
+
+            navigator.nextPage(HowDeedOfVariationCreatedPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+                index, fakeDraftId))
+        }
+      }
+
+      "selected ReplaceAbsolute" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(HowDeedOfVariationCreatedPage, ReplaceAbsolute).success.value
+
+            navigator.nextPage(HowDeedOfVariationCreatedPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+                index, fakeDraftId))
+        }
+      }
     }
 
     "navigate from HoldoverReliefYesNoPage" in {

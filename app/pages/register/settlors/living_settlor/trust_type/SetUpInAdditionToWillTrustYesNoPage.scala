@@ -33,9 +33,9 @@ case object SetUpInAdditionToWillTrustYesNoPage extends QuestionPage[Boolean] {
     value match {
       case Some(false) =>
         userAnswers.remove(DeceasedSettlor)
+          .flatMap(_.remove(HowDeedOfVariationCreatedPage))
       case Some(true) =>
         userAnswers.remove(KindOfTrustPage)
-          .flatMap(_.remove(HoldoverReliefYesNoPage))
           .flatMap(_.remove(LivingSettlors))
       case _ => super.cleanup(value, userAnswers)
     }

@@ -38,4 +38,9 @@ object DeedOfVariation extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[DeedOfVariation] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
+  def toDES(value : DeedOfVariation) : String = value match {
+    case ReplacedWill => "ReplacedWill"
+    case ReplaceAbsolute => "ReplaceAbsolute"
+  }
 }
