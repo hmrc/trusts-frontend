@@ -8,6 +8,8 @@ $blue: #005ea5;
 $grey-1: #6f777b;
 $grey-2: #bfc1c3;
 $border-colour: $grey-2;
+$error-colour: #d4351c;
+$govuk-text-colour: #0b0c0c;
 
 // #DEE0E2 to #f3f2f1
 .button--secondary,
@@ -218,7 +220,6 @@ button:active,
   color: #00703c;
 }
 
-// #b10e1e to #d4351c
 .button--alert,
 .button--alert:visited,
 .button--alert.disabled:hover,
@@ -235,11 +236,11 @@ button:active,
 .highlight-block--red,
 .main-nav .count,
 .badge {
-  background-color: #d4351c;
+  background-color: $error-colour;
 }
 .button--alert:active {
-  -webkit-box-shadow: 0 0 0 #d4351c;
-  box-shadow: 0 0 0 #d4351c;
+  -webkit-box-shadow: 0 0 0 $error-colour;
+  box-shadow: 0 0 0 $error-colour;
 }
 .email-form-errors .error-notification,
 .annual-summaries--group .alert--text,
@@ -249,13 +250,13 @@ button:active,
 .error-summary .error-summary-list a,
 .error-summary .error-summary-list .link-style,
 .error-summary .error-summary-list .button--link-style {
-  color: #d4351c;
+  color: $error-colour;
 }
 .email-form-errors .error-notification,
 .attorneyBanner--client-request-rejected,
 .business-tax .content__body .flag.flag--urgent,
 .form-group-error {
-  border-left-color: #d4351c;
+  border-left-color: $error-colour;
 }
 .business-tax .alert--failure,
 .form-control-error,
@@ -263,9 +264,9 @@ textarea.form-control-error,
 input.form-control-error[type="text"],
 input.form-control-error[type="password"],
 .error-summary {
-  border-color: #d4351c;
+  border-color: $error-colour;
 }
 // override for AF
 .form-control-error.form-control-error.form-control-error {
-  border-color: #d4351c;
+  border-color: $error-colour;
 }
