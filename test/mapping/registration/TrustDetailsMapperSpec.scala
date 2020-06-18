@@ -28,8 +28,6 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import utils.TestUserAnswers
 
-//TODO - Add spec for trust deed of variation
-
 class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 

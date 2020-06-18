@@ -21,9 +21,9 @@ import mapping.{registration, _}
 import models.core.UserAnswers
 import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{KindOfTrust, NonResidentType}
+import models.registration.pages.{DeedOfVariation, KindOfTrust, NonResidentType}
 import pages.entitystatus.DeceasedSettlorStatus
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
 import pages.register.trust_details.{AgentOtherThanBarristerPage, SettlorsBasedInTheUKPage, _}
 import play.api.Logger
 import sections.LivingSettlors
@@ -51,6 +51,13 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   }
 
+  private def deedOfVariation(userAnswers: UserAnswers): Option[DeedOfVariation] = {
+    userAnswers.get(HowDeedOfVariationCreatedPage) orElse userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
+      case Some(true) => Some(DeedOfVariation.ReplaceAbsolute)
+      case _ => None
+    }
+  }
+
   private def mapTrustTypeToDes(kind: KindOfTrust): TypeOfTrust = {
     kind match {
       case Intervivos => TypeOfTrust.IntervivosSettlementTrust
@@ -75,7 +82,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         administrationCountry = Some(administrationCountryOption),
         residentialStatus = Some(residentialStatusOption),
         typeOfTrust = typeOfTrust,
-        deedOfVariation = None,
+        deedOfVariation = deedOfVariation(userAnswers),
         interVivos = userAnswers.get(HoldoverReliefYesNoPage),
         efrbsStartDate = None
       )
