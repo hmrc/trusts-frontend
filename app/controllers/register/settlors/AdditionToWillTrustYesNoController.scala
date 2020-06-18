@@ -37,7 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AdditionToWillTrustYesNoController @Inject()(
                                                       override val messagesApi: MessagesApi,
                                                       registrationsRepository: RegistrationsRepository,
-                                                      navigator: Navigator,
+                                                      @LivingSettlor navigator: Navigator,
                                                       identify: RegistrationIdentifierAction,
                                                       getData: DraftIdRetrievalActionProvider,
                                                       requireData: RegistrationDataRequiredAction,
