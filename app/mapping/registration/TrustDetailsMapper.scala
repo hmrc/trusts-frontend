@@ -51,12 +51,11 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   }
 
-  private def deedOfVariation(userAnswers: UserAnswers): Option[DeedOfVariation] = {
-    userAnswers.get(HowDeedOfVariationCreatedPage) orElse userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
+  private def deedOfVariation(userAnswers: UserAnswers): Option[DeedOfVariation] =
+    userAnswers.get(HowDeedOfVariationCreatedPage) orElse (userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
       case Some(true) => Some(DeedOfVariation.ReplaceAbsolute)
       case _ => None
-    }
-  }
+    })
 
   private def mapTrustTypeToDes(kind: KindOfTrust): TypeOfTrust = {
     kind match {
