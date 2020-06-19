@@ -288,6 +288,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
     val questions = Seq(
       setUpAfterSettlorDied,
+      setUpInAddition,
+      deedOfVariation,
       deceasedSettlorsName,
       deceasedSettlorDateOfDeathYesNo,
       deceasedSettlorDateOfDeath,
@@ -322,6 +324,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
           setUpAfterSettlorDied,
           kindOfTrust,
           deedOfVariation,
+          setUpInAddition,
           holdoverReliefYesNo,
           settlorIndividualOrBusiness(index),
           settlorIndividualName(index),

@@ -37,8 +37,6 @@ class SummaryAnswerPageController @Inject()(
                                              requireData: RegistrationDataRequiredAction,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: SummaryAnswerPageView,
-                                             countryOptions : CountryOptions,
-                                             registrationProgress: RegistrationProgress,
                                              registrationComplete : TaskListCompleteActionRefiner,
                                              printUserAnswersHelper: PrintUserAnswersHelper
                                             ) extends FrontendBaseController with I18nSupport {

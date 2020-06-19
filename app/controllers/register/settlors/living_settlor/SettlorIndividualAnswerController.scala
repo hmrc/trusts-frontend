@@ -45,7 +45,6 @@ class SettlorIndividualAnswerController @Inject()(
                                                    getData: DraftIdRetrievalActionProvider,
                                                    requireData: RegistrationDataRequiredAction,
                                                    requiredAnswer: RequiredAnswerActionProvider,
-                                                   validateIndex: IndexActionFilterProvider,
                                                    view: SettlorIndividualAnswersView,
                                                    countryOptions: CountryOptions,
                                                    val controllerComponents: MessagesControllerComponents
