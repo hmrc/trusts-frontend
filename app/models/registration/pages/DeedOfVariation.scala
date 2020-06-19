@@ -17,11 +17,12 @@
 package models.registration.pages
 
 import models.{Enumerable, WithName}
+import play.api.libs.json.{JsError, JsString, JsSuccess, Reads, Writes}
 import viewmodels.RadioOption
 
 sealed trait DeedOfVariation
 
-object DeedOfVariation extends Enumerable.Implicits {
+object DeedOfVariation {
 
   case object ReplacedWill extends WithName("ReplacedWill") with DeedOfVariation
   case object ReplaceAbsolute extends WithName("ReplaceAbsolute") with DeedOfVariation
@@ -39,8 +40,23 @@ object DeedOfVariation extends Enumerable.Implicits {
   implicit val enumerable: Enumerable[DeedOfVariation] =
     Enumerable(values.map(v => v.toString -> v): _*)
 
-  def toDES(value : DeedOfVariation) : String = value match {
-    case ReplacedWill => "Replaced the will trust"
-    case ReplaceAbsolute => "Addition to the will trust"
+  implicit def reads[A](implicit ev: Enumerable[A]): Reads[A] = {
+    Reads {
+      case JsString("Replaced the will trust") =>
+        ev.withName("ReplacedWill").map {
+          s => JsSuccess(s)
+        }.getOrElse(JsError("error.invalid"))
+      case JsString("Addition to the will trust") =>
+        ev.withName("ReplaceAbsolute").map {
+          s => JsSuccess(s)
+        }.getOrElse(JsError("error.invalid"))
+      case _ =>
+        JsError("error.invalid")
+    }
+  }
+
+  implicit def writes: Writes[DeedOfVariation] = Writes {
+    case ReplacedWill => JsString("Replaced the will trust")
+    case ReplaceAbsolute => JsString("Addition to the will trust")
   }
 }
