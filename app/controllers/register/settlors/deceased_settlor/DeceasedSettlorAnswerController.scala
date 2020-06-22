@@ -64,6 +64,7 @@ class DeceasedSettlorAnswerController @Inject()(
         AnswerSection(
           None,
           Seq(checkYourAnswersHelper.setUpAfterSettlorDied,
+            checkYourAnswersHelper.deedOfVariation,
             checkYourAnswersHelper.setUpInAddition,
             checkYourAnswersHelper.deceasedSettlorsName,
             checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo,
