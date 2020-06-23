@@ -36,6 +36,12 @@ import pages.register.trustees.individual._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryPartnershipStartDatePage: Arbitrary[PartnershipStartDatePage.type] =
+    Arbitrary(PartnershipStartDatePage)
+
+  implicit lazy val arbitraryPartnershipDescriptionPage: Arbitrary[PartnershipDescriptionPage.type] =
+    Arbitrary(PartnershipDescriptionPage)
+
   implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
     Arbitrary(SettlorBusinessNamePage(0))
 

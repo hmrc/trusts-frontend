@@ -44,6 +44,8 @@ trait UserAnswersGenerator extends TryValues {
   import models.core.UserAnswerImplicits._
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
+    arbitrary[(PartnershipStartDatePage.type, JsValue)] ::
+    arbitrary[(PartnershipDescriptionPage.type, JsValue)] ::
     arbitrary[(KindOfTrustPage.type, JsValue)] ::
     arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::

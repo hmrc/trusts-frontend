@@ -45,6 +45,24 @@ import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
+
+  def partnershipStartDate: Option[AnswerRow] = userAnswers.get(PartnershipStartDatePage) map {
+    x =>
+      AnswerRow(
+        "partnershipStartDate.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        routes.PartnershipStartDateController.onPageLoad(NormalMode, draftId).url
+      )
+  }
+
+  def partnershipDescription: Option[AnswerRow] = userAnswers.get(PartnershipDescriptionPage) map {
+    x =>
+      AnswerRow(
+        "partnershipDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        routes.PartnershipDescriptionController.onPageLoad(NormalMode, draftId).url
+      )
+  }
                                       (userAnswers: UserAnswers,
                                        draftId: String,
                                        canEdit: Boolean)

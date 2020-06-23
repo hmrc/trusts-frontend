@@ -1,0 +1,10 @@
+
+GET        /:draftId/partnershipDescription                        controllers.PartnershipDescriptionController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/partnershipDescription                        controllers.PartnershipDescriptionController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/changePartnershipDescription                  controllers.PartnershipDescriptionController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/changePartnershipDescription                  controllers.PartnershipDescriptionController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/partnershipStartDate                  controllers.PartnershipStartDateController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/partnershipStartDate                  controllers.PartnershipStartDateController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/changePartnershipStartDate                        controllers.PartnershipStartDateController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/changePartnershipStartDate                        controllers.PartnershipStartDateController.onSubmit(mode: Mode = CheckMode, draftId: String)

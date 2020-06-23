@@ -1626,3 +1626,17 @@ accessibilityStatement.page.prepared.on = This page was prepared on 31 March 202
 accessibilityStatement.wcag.standard = Web Content Accessibility Guidelines version 2.1 AA standard
 
 footer.links.accessibility.text = Accessibility
+
+partnershipDescription.title = partnershipDescription
+partnershipDescription.heading = partnershipDescription
+partnershipDescription.checkYourAnswersLabel = partnershipDescription
+partnershipDescription.error.required = Enter partnershipDescription
+partnershipDescription.error.length = PartnershipDescription must be 100 characters or less
+
+partnershipStartDate.title = PartnershipStartDate
+partnershipStartDate.heading = PartnershipStartDate
+partnershipStartDate.checkYourAnswersLabel = PartnershipStartDate
+partnershipStartDate.error.required.all = Enter the partnershipStartDate
+partnershipStartDate.error.required.two = The partnershipStartDate must include {0} and {1}
+partnershipStartDate.error.required = The partnershipStartDate must include {0}
+partnershipStartDate.error.invalid = Enter a real PartnershipStartDate
