@@ -683,6 +683,8 @@ addAssets.singular.title = Add assets
 
 addAssets.propertyOrLand = Property or Land
 
+assets.other.defaultText = the asset
+
 assets.other.description.title = What is the description of the asset?
 assets.other.description.heading = What is the description of the asset?
 assets.other.description.checkYourAnswersLabel = What is the description of the asset?
@@ -696,7 +698,9 @@ assets.other.value.heading = What is the current value of {0}?
 assets.other.value.checkYourAnswersLabel = What is the current value of {0}?
 assets.other.value.hint = Rounded down to the nearest pound. For example, 4000
 assets.other.value.error.required = Enter the current value of the asset
-assets.other.value.error.invalid = The current value of the asset must be a number
+assets.other.value.error.invalid = Current value of the asset must be a number
+assets.other.value.error.zero = Current value of the asset must be 1 or more
+assets.other.value.error.wholeNumber = Current value of the asset must be a whole number
 
 assets.other.checkDetails.title = Check asset details
 assets.other.checkDetails.heading = Check asset details

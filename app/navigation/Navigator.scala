@@ -30,6 +30,7 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset._
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other._
 import pages.register.asset.shares._
 import pages.register.beneficiaries._
 import pages.register.beneficiaries.individual._
@@ -80,6 +81,8 @@ object AssetsRoutes {
     case ShareValueInTrustPage(index) => _ => _ => controllers.register.asset.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
     case ShareAnswerPage => _ => _ => controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
     case ShareCompanyNamePage(index) => _ => _ => controllers.register.asset.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+    case OtherAssetDescriptionPage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId)
+    case OtherAssetValuePage(index) => _ => _ => controllers.routes.FeatureNotAvailableController.onPageLoad()
   }
 
   private def sharesInAPortfolio(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {
@@ -144,7 +147,7 @@ object AssetsRoutes {
       case Some(Partnership) =>
         controllers.routes.FeatureNotAvailableController.onPageLoad()
       case Some(Other) =>
-        controllers.routes.FeatureNotAvailableController.onPageLoad()
+        controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, draftId)
       case _ =>
         controllers.routes.FeatureNotAvailableController.onPageLoad()
     }
