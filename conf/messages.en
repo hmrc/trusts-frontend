@@ -1420,6 +1420,10 @@ addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
 addASettlorYesNo.error.required = Select yes if you want to add a settlor
 
+addAnotherSettlorYesNo.title = Are there any additional settlors for the trust?
+addAnotherSettlorYesNo.heading = Are there any additional settlors for the trust?
+addAnotherSettlorYesNo.error.required = Select yes if you want to add a settlor
+
 kindOfTrust.title = What kind of trust did the settlor create?
 kindOfTrust.heading = What kind of trust did the settlor create?
 kindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets

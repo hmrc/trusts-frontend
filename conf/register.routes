@@ -334,6 +334,9 @@ GET        /:draftId/settlors/add                                               
 POST       /:draftId/settlors/add                                                                   controllers.register.settlors.AddASettlorController.submitOne(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/settlors/add-another                                                           controllers.register.settlors.AddASettlorController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
+GET        /:draftId/settlors/additional                                                            controllers.register.settlors.AddASettlorYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/additional                                                            controllers.register.settlors.AddASettlorYesNoController.onSubmit(draftId: String)
+
 GET        /:draftId/settlors-based-in-the-uk                                                       controllers.register.trust_details.SettlorsBasedInTheUKController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/settlors-based-in-the-uk                                                       controllers.register.trust_details.SettlorsBasedInTheUKController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-settlors-based-in-the-uk                                                controllers.register.trust_details.SettlorsBasedInTheUKController.onPageLoad(mode: Mode = CheckMode, draftId: String)
