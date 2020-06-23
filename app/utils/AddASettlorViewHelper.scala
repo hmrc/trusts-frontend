@@ -34,6 +34,9 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
 
     val inProgress: List[AddRow] = settlors.filterNot(_._1.status == Completed).flatMap(parseLivingSettlor)
 
+    println("??" + completed)
+    println("??" + inProgress)
+
     AddToRows(inProgress, completed)
   }
 

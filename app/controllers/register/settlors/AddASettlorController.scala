@@ -72,7 +72,7 @@ class AddASettlorController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val settlors = new AddASettlorViewHelper(request.userAnswers, draftId).rows
+      val settlors = new AddASettlorViewHelper(request.userAnswers, draftId).livingSettlorRows
 
       settlors.count match {
         case 0 =>
@@ -104,7 +104,7 @@ class AddASettlorController @Inject()(
       addAnotherForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
 
-          val settlors = new AddASettlorViewHelper(request.userAnswers, draftId).rows
+          val settlors = new AddASettlorViewHelper(request.userAnswers, draftId).livingSettlorRows
 
           Future.successful(BadRequest(
             addAnotherView(

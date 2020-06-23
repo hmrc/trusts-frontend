@@ -25,6 +25,7 @@ import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.asset.AddAssetsPage
 import pages.register.beneficiaries.AddABeneficiaryPage
+import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.AddATrusteePage
@@ -81,6 +82,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
 
   def isSettlorsComplete(userAnswers: UserAnswers): Option[Status] = {
     val setUpAfterSettlorDied = userAnswers.get(SetUpAfterSettlorDiedYesNoPage)
+    val inAdditionToWillTrust = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage).getOrElse(false)
 
     def isDeceasedSettlorComplete: Option[Status] = {
       val deceasedCompleted = userAnswers.get(DeceasedSettlorStatus)
@@ -94,11 +96,14 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
         if (setupAfterDeceased) {isDeceasedSettlorComplete}
         else {
           userAnswers.get(LivingSettlors).getOrElse(Nil) match {
-            case Nil => {
-              if (!setupAfterDeceased) {Some(Status.InProgress)}
-              else None
-            }
+            case Nil =>
+              println("?????????????>>>>>>>>>>" + !setupAfterDeceased)
+
+              if (!setupAfterDeceased & !inAdditionToWillTrust) {Some(Status.InProgress)}
+              else { determineStatus(true) }
             case living =>
+              println("?????????????>>>>>>>>>>" + living)
+
               val noMoreToAdd = userAnswers.get(AddASettlorPage).contains(AddASettlor.NoComplete)
               val isComplete = !living.exists(_.status == InProgress)
               determineStatus(isComplete && noMoreToAdd)
@@ -158,6 +163,9 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
   }
 
   def isTaskListComplete(userAnswers: UserAnswers): Boolean = {
+    println("?>>>>" )
+
+
     isTrustDetailsComplete(userAnswers).contains(Completed) &&
       isSettlorsComplete(userAnswers).contains(Completed) &&
       isTrusteesComplete(userAnswers).contains(Completed) &&
