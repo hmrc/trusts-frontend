@@ -38,7 +38,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
     ".row" must {
 
       "generate Nil for no user answers" in {
-        val rows = new AddASettlorViewHelper(emptyUserAnswers, fakeDraftId).livingSettlorRows
+        val rows = new AddASettlorViewHelper(emptyUserAnswers, fakeDraftId).rows
         rows.inProgress mustBe Nil
         rows.complete mustBe Nil
       }
@@ -55,7 +55,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
           .set(LivingSettlorStatus(0), InProgress).success.value
           .set(LivingSettlorStatus(1), InProgress).success.value
 
-        val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).livingSettlorRows
+        val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
         rows.inProgress mustBe List(
           AddRow("No name added", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0)),
           AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(1))
@@ -74,7 +74,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
           .set(SettlorAddressYesNoPage(0), false).success.value
           .set(LivingSettlorStatus(0), Completed).success.value
 
-        val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).livingSettlorRows
+        val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
         rows.complete mustBe List(
           AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0))
         )

@@ -20,38 +20,24 @@ import controllers.register.settlors.living_settlor.routes
 import models.core.UserAnswers
 import models.registration.pages.Status._
 import play.api.i18n.Messages
-import sections.{DeceasedSettlor, LivingSettlors}
+import sections.LivingSettlors
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
 class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit messages: Messages) {
 
-  def livingSettlorRows: AddToRows = {
+  def rows: AddToRows = {
 
     val settlors = userAnswers.get(LivingSettlors).toList.flatten.zipWithIndex
 
-    val completed: List[AddRow] = settlors.filter(_._1.status == Completed).flatMap(parseLivingSettlor)
+    val completed: List[AddRow] = settlors.filter(_._1.status == Completed).flatMap(parseSettlor)
 
-    val inProgress: List[AddRow] = settlors.filterNot(_._1.status == Completed).flatMap(parseLivingSettlor)
-
-    println("??" + completed)
-    println("??" + inProgress)
+    val inProgress: List[AddRow] = settlors.filterNot(_._1.status == Completed).flatMap(parseSettlor)
 
     AddToRows(inProgress, completed)
   }
 
-  def deceasedSettlorRows: AddToRows = {
-
-    val settlors = userAnswers.get(DeceasedSettlor).toList.flatten.zipWithIndex
-
-    val completed: List[AddRow] = settlors.filter(_._1.status == Completed).flatMap(parseDeceasedSettlor)
-
-    val inProgress: List[AddRow] = settlors.filterNot(_._1.status == Completed).flatMap(parseDeceasedSettlor)
-
-    AddToRows(inProgress, completed)
-  }
-
-  private def parseLivingSettlor(settlor: (SettlorViewModel, Int)): Option[AddRow] = {
+  private def parseSettlor(settlor: (SettlorViewModel, Int)): Option[AddRow] = {
     val vm = settlor._1
     val index = settlor._2
 
@@ -65,35 +51,6 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
 
     mvm match {
       case SettlorLivingIndividualViewModel(_, name, _) => AddRow(
-        name,
-        typeLabel,
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
-      )
-      case DefaultSettlorViewModel(individualOrBusiness, _)  => AddRow(
-        defaultName,
-        typeLabel,
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
-      )
-    }
-
-  }
-
-  private def parseDeceasedSettlor(settlor: (SettlorViewModel, Int)): Option[AddRow] = {
-    val vm = settlor._1
-    val index = settlor._2
-
-    Some(parseSettlorDeceased(vm, index))
-  }
-
-  private def parseSettlorDeceased(mvm : SettlorViewModel, index: Int) : AddRow = {
-    val defaultName = messages("entities.no.name.added")
-
-    val typeLabel : String = messages("entity.settlor.individual")
-
-    mvm match {
-      case SettlorDeceasedIndividualViewModel(_, name, _) => AddRow(
         name,
         typeLabel,
         controllers.routes.FeatureNotAvailableController.onPageLoad().url,
