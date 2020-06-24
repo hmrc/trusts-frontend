@@ -683,6 +683,35 @@ addAssets.singular.title = Add assets
 
 addAssets.propertyOrLand = Property or Land
 
+assetAddressUkYesNo.title = Is {0} address in the UK?
+assetAddressUkYesNo.heading = Is {0} address in the UK?
+assetAddressUkYesNo.checkYourAnswersLabel = Is {0} address in the UK?
+
+assetDescription.title = What is the description for {0}?
+assetDescription.heading = What is the description for {0}?
+assetDescription.checkYourAnswersLabel = What is the description for {0}?
+assetDescription.hint = This must be 70 characters or less
+
+assetInternationalAddress.title = What is {0}’s address?
+assetInternationalAddress.heading = What is {0}’s address?
+assetInternationalAddress.checkYourAnswersLabel = What is {0}’s address?
+
+assetName.title = What is the business’s name?
+assetName.heading = What is the business’s name?
+assetName.checkYourAnswersLabel = What is the business’s name?
+
+assetUkAddress.title = What is {0}’s address?
+assetUkAddress.heading = What is {0}’s address?
+assetUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+currentValue.title = What is the current value of the business?
+currentValue.heading = What is the current value of the business?
+currentValue.checkYourAnswersLabel = What is the current value of the business?
+currentValue.hint = Rounded down to the nearest pound. For example, 4000
+
+AssetAnswer.title = Check asset details
+AssetAnswer.heading = Check asset details
+
 settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
