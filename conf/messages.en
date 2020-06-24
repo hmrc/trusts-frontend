@@ -540,7 +540,7 @@ taskList.agent.agentDetails = Agent details
 
 taskList.summary.heading1 = Print a copy
 taskList.summary.paragraph1.start = You can
-taskList.summary.link1 = print or save a draft copy of your saved answers (opens in a new window or tab)
+taskList.summary.link1 = print or save a draft copy of your saved answers
 taskList.summary.paragraph1.end = . You can also print a declared copy after you have made a declaration.
 taskList.summary.heading2 = Update asset details
 taskList.summary.paragraph2 = To update any asset details after making the declaration for this trust, use Self Assessment online or the
@@ -997,7 +997,7 @@ removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
 removeIndividualBeneficiary.default = the individual beneficiary
 removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 
@@ -1060,7 +1060,7 @@ confirmationAgentPage.paragraph10.a = contact the trusts helpline (opens in a ne
 confirmationAgentPage.agent.you.can = You can
 confirmationAgentPage.agent.link = return to register and maintain a trust for a client
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 

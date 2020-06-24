@@ -28,17 +28,21 @@
     title = messages("summaryAnswerPage.title")
     ) {
 
+    @components.back_link()
+
     @components.heading("summaryAnswerPage.heading", headingSize = "heading-xlarge")
 
     @if(isAgent) {
         <h2 class="agentClientRef">@messages("answerPage.agentClientRef", agentClientRef)</h2>
     }
 
-    <p>@components.button_print()</p>
-
     <p>@messages("summaryAnswerPage.paragraph1")</p>
 
     <p>@messages("summaryAnswerPage.paragraph2")</p>
+
+    <div class="section">
+    <p>@components.button_print()</p>
+    </div>
 
     <div class="two-column-answers">
     @for(section <- answerSections){

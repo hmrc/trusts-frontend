@@ -255,20 +255,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,
-      whenTrustSetup,
-      governedInsideTheUK,
-      countryGoverningTrust,
-      administrationInsideUK,
-      countryAdministeringTrust,
-      trusteesBasedInUK,
-      settlorsBasedInTheUK,
-      establishedUnderScotsLaw,
-      trustResidentOffshore,
-      trustPreviouslyResident,
-      registeringTrustFor5A,
-      nonresidentType,
-      inheritanceTaxAct,
-      agentOtherThanBarrister
+      whenTrustSetup
     ).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(messages("answerPage.section.trustsDetails.heading"))))) else None
