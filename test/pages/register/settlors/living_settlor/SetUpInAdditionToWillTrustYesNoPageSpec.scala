@@ -60,7 +60,6 @@ class SetUpInAdditionToWillTrustYesNoPageSpec extends PageBehaviours {
 
               val result = answers.set(page, true).success.value
 
-              result.get(KindOfTrustPage) must not be defined
               result.get(LivingSettlors) must not be defined
           }
         }
