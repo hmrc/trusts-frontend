@@ -260,8 +260,8 @@ POST       /:draftId/asset/:index/other/value                                   
 GET        /:draftId/asset/:index/other/change-value                                                controllers.register.asset.other.OtherAssetValueController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/asset/:index/other/change-value                                                controllers.register.asset.other.OtherAssetValueController.onSubmit(mode: Mode = CheckMode,index: Int, draftId: String)
 
-#GET        /:draftId/asset/:index/other/check-answers                                               controllers.register.asset.other.OtherAssetAnswersController.onPageLoad(index : Int, draftId : String)
-#POST       /:draftId/asset/:index/other/check-answers                                               controllers.register.asset.other.OtherAssetAnswersController.onSubmit(index : Int, draftId : String)
+GET        /:draftId/asset/:index/other/check-answers                                               controllers.register.asset.other.OtherAssetAnswersController.onPageLoad(index : Int, draftId : String)
+POST       /:draftId/asset/:index/other/check-answers                                               controllers.register.asset.other.OtherAssetAnswersController.onSubmit(index : Int, draftId : String)
 
 ## Beneficiaries
 

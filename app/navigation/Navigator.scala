@@ -82,7 +82,7 @@ object AssetsRoutes {
     case ShareAnswerPage => _ => _ => controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
     case ShareCompanyNamePage(index) => _ => _ => controllers.register.asset.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
     case OtherAssetDescriptionPage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId)
-    case OtherAssetValuePage(index) => _ => _ => controllers.routes.FeatureNotAvailableController.onPageLoad()
+    case OtherAssetValuePage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, draftId)
   }
 
   private def sharesInAPortfolio(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {

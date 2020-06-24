@@ -16,6 +16,7 @@
 
 package utils
 
+import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.Status.Completed
 import play.api.i18n.Messages
@@ -41,9 +42,10 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
     val index = asset._2
 
     vm match {
-      case mvm: MoneyAssetViewModel => Some(parseMoney(mvm, index))
-      case mvm: ShareAssetViewModel => Some(parseShare(mvm, index))
-      case mvm: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(mvm, index))
+      case money: MoneyAssetViewModel => Some(parseMoney(money, index))
+      case share: ShareAssetViewModel => Some(parseShare(share, index))
+      case propertyOrLand: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(propertyOrLand, index))
+      case other: OtherAssetViewModel => Some(parseOther(other, index))
       case _ => None
     }
   }
@@ -110,6 +112,15 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
         )
     }
 
+  }
+
+  private def parseOther(other: OtherAssetViewModel, index: Int) : AddRow = {
+    AddRow(
+      other.description.getOrElse(messages("entities.no.description.added")),
+      other.`type`.toString,
+      controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, draftId).url,
+      controllers.routes.FeatureNotAvailableController.onPageLoad().url
+    )
   }
 
 }

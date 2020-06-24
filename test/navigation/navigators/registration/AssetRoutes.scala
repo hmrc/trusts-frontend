@@ -303,7 +303,7 @@ trait AssetRoutes {
         }
       }
 
-      "go to feature unavailable from other asset value" in {
+      "go to check answers from other asset value" in {
         val index = 0
 
         forAll(arbitrary[UserAnswers]) {
@@ -312,7 +312,7 @@ trait AssetRoutes {
             val answers = userAnswers.set(OtherAssetValuePage(index), "4000").success.value
 
             navigator.nextPage(OtherAssetValuePage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.routes.FeatureNotAvailableController.onPageLoad())
+              .mustBe(controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, fakeDraftId))
         }
       }
     }
