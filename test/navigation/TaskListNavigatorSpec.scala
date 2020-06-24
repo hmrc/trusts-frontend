@@ -38,7 +38,7 @@ import pages.register.trustees.IsThisLeadTrusteePage
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
-  val navigator : TaskListNavigator = new TaskListNavigator
+  val navigator : TaskListNavigator = new TaskListNavigator(frontendAppConfig)
 
   "TaskList Navigator" must {
 
@@ -164,19 +164,8 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
       "there are no assets" must {
 
-        "go to AssetInfoPage" in {
-          navigator.assetsJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(fakeDraftId)
-        }
-
-      }
-
-
-      "there are assets" must {
-
-        "go to AddAAsset" in {
-          val answers = emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), Money).success.value
-          navigator.assetsJourney(answers, fakeDraftId) mustBe controllers.register.asset.routes.AddAssetsController.onPageLoad(fakeDraftId)
+        "go to AssetFrontend" in {
+          navigator.assetsJourneyUrl(fakeDraftId) mustBe frontendAppConfig.assetFrontendUrl(fakeDraftId)
         }
 
       }

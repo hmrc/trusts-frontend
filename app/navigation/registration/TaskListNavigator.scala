@@ -16,6 +16,7 @@
 
 package navigation.registration
 
+import config.FrontendAppConfig
 import controllers.register.routes
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
@@ -28,7 +29,7 @@ import sections._
 import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
-class TaskListNavigator @Inject()() {
+class TaskListNavigator @Inject()(appConfig: FrontendAppConfig) {
 
   def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
     {
@@ -86,13 +87,8 @@ class TaskListNavigator @Inject()() {
     individuals.nonEmpty || classes.nonEmpty
   }
 
-  def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    userAnswers.get(sections.Assets).getOrElse(Nil) match {
-      case _ :: _ =>
-        controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
-      case Nil =>
-        controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(draftId)
-    }
+  def assetsJourneyUrl(draftId: String): String = {
+    appConfig.assetFrontendUrl(draftId)
   }
 
   def taxLiabilityJourney(draftId: String): Call = routes.TaskListController.onPageLoad(draftId)

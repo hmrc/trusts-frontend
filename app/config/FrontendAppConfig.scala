@@ -44,6 +44,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
   lazy val logoutUrl: String = loadConfig("urls.logout")
+  lazy val assetFrontendUrlTemplate: String = loadConfig("urls.assetFrontend")
+  def assetFrontendUrl(draftId: String): String = assetFrontendUrlTemplate.replace(":draftId", draftId)
 
   lazy val otacUrl : String = configuration.get[String]("urls.otacLogin")
 
