@@ -20,14 +20,17 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
+import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.libs.json.JsValue
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
+import viewmodels.DraftRegistration
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -40,9 +43,27 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   val mockConnector : TrustConnector = mock[TrustConnector]
 
+  val stubbedRegistrationsRepository = new RegistrationsRepository {
+    override def get(draftId: String)
+                    (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = Future.successful(None)
+
+    override def set(userAnswers: UserAnswers)
+                    (implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
+
+    override def listDrafts()
+                           (implicit hc: HeaderCarrier): Future[List[DraftRegistration]] = Future.successful(List.empty)
+
+    override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
+                                             (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
+  }
+
   val auditService : AuditService = injector.instanceOf[FakeAuditService]
 
-  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector,auditService)
+  val submissionService = new DefaultSubmissionService(
+    registrationMapper,
+    mockConnector,
+    auditService,
+    stubbedRegistrationsRepository)
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -111,9 +132,6 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         }
       }
     }
-
-
-
   }
 
   private val newTrustUserAnswers = {

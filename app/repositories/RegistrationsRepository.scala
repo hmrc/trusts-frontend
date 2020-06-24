@@ -33,6 +33,8 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
                                           submissionDraftConnector: SubmissionDraftConnector
                                         )(implicit ec: ExecutionContext) extends RegistrationsRepository {
 
+  private val registrationSection = "registration"
+
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
       response => Some(response.data.as[UserAnswers])
@@ -66,6 +68,38 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
       response => response.status == Status.OK
     }
   }
+
+  private def decodePath(encodedPath: String): JsPath =
+    encodedPath.split('/').foldLeft[JsPath](
+      JsPath
+    )(
+      (cur: JsPath, component: String) => cur \ component
+    )
+
+  private def addSection(key: String, section: JsValue, data: JsValue): JsResult[JsValue] = {
+    val path = decodePath(key).json
+    // This version of Json throws if you try to prune a non-existent element
+    // So we add an empty one first in case so there is always something to prune.
+    // Not the most efficient, but more concise code.
+    data.as[JsObject].transform(__.json.update(path.put(Json.obj()) andThen path.prune andThen path.put(section)))
+  }
+
+  override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue] = {
+    submissionDraftConnector.getDraftSection(draftId, registrationSection).map {
+      response =>
+        val o = response.data.as[JsObject]
+        val added: JsResult[JsValue] = o.keys.foldLeft[JsResult[JsValue]](
+          JsSuccess(registrationJson)
+        )(
+          (cur, key) => cur.flatMap(addSection(key, o(key), _))
+        )
+
+        added match {
+          case JsSuccess(value, _) => value
+          case _ => registrationJson
+        }
+    }
+  }
 }
 
 trait RegistrationsRepository {
@@ -74,4 +108,6 @@ trait RegistrationsRepository {
   def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
 
   def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]]
+
+  def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
 }
