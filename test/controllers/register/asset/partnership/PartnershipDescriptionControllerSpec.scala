@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.register.asset.partnership
 
+import base.RegistrationSpecBase
+import controllers.IndexValidation
+import controllers.register.routes._
+import forms.asset.partnership.PartnershipDescriptionFormProvider
 import models.NormalMode
+import org.scalacheck.Arbitrary.arbitrary
+import pages.register.asset.partnership.PartnershipDescriptionPage
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{route, _}
+import views.html.register.asset.partnership.PartnershipDescriptionView
 
-class PartnershipDescriptionControllerSpec extends SpecBase {
+class PartnershipDescriptionControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val formProvider = new PartnershipDescriptionFormProvider()
   val form = formProvider()
+  val index = 0
 
-  lazy val partnershipDescriptionRoute = routes.PartnershipDescriptionController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val partnershipDescriptionRoute = routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PartnershipDescription Controller" must {
 
@@ -40,14 +51,14 @@ class PartnershipDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PartnershipDescriptionPage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(PartnershipDescriptionPage(index), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -60,7 +71,7 @@ class PartnershipDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -99,7 +110,7 @@ class PartnershipDescriptionControllerSpec extends SpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -114,7 +125,7 @@ class PartnershipDescriptionControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -131,9 +142,43 @@ class PartnershipDescriptionControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
   }
+
+  "for a GET" must {
+
+    def getForIndex(index: Int) : FakeRequest[AnyContentAsEmpty.type] = {
+      val route = routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      arbitrary[String],
+      PartnershipDescriptionPage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(("value", "true"))
+    }
+
+    validateIndex(
+      arbitrary[String],
+      PartnershipDescriptionPage.apply,
+      postForIndex
+    )
+  }
+
 }

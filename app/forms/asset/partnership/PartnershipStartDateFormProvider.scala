@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package views
+package forms.asset.partnership
 
 import java.time.LocalDate
 
-import models.NormalMode
+import forms.mappings.Mappings
+import javax.inject.Inject
 import play.api.data.Form
-import play.twirl.api.HtmlFormat
 
-class PartnershipStartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
+class PartnershipStartDateFormProvider @Inject() extends Mappings {
 
-  val messageKeyPrefix = "partnershipStartDate"
-
-  val form = new PartnershipStartDateFormProvider()()
-
-  "PartnershipStartDateView view" must {
-
-    val view = viewFor[PartnershipStartDateView](Some(emptyUserAnswers))
-
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
-
-    behave like normalPage(applyView(form), messageKeyPrefix)
-
-    behave like pageWithBackLink(applyView(form))
-  }
+  def apply(): Form[LocalDate] =
+    Form(
+      "value" -> localDate(
+        invalidKey     = "partnershipStartDate.error.invalid",
+        allRequiredKey = "partnershipStartDate.error.required.all",
+        twoRequiredKey = "partnershipStartDate.error.required.two",
+        requiredKey    = "partnershipStartDate.error.required"
+      )
+    )
 }

@@ -14,20 +14,31 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.register.asset.partnership
 
 import java.time.{LocalDate, ZoneOffset}
 
+import base.RegistrationSpecBase
+import controllers.IndexValidation
+import controllers.register.routes._
+import forms.asset.partnership.PartnershipStartDateFormProvider
 import models.NormalMode
+import org.scalacheck.Gen
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{route, _}
+import pages.register.asset.partnership.PartnershipStartDatePage
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
+import views.html.register.asset.partnership.PartnershipStartDateView
 
-class PartnershipStartDateControllerSpec extends SpecBase with MockitoSugar {
+class PartnershipStartDateControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val formProvider = new PartnershipStartDateFormProvider()
   val form = formProvider()
+  val index = 0
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val partnershipStartDateRoute = routes.PartnershipStartDateController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val partnershipStartDateRoute = routes.PartnershipStartDateController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PartnershipStartDate Controller" must {
 
@@ -44,14 +55,14 @@ class PartnershipStartDateControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PartnershipStartDatePage, validAnswer).success.value
+      val userAnswers = emptyUserAnswers.set(PartnershipStartDatePage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -64,7 +75,7 @@ class PartnershipStartDateControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -108,7 +119,7 @@ class PartnershipStartDateControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -122,7 +133,7 @@ class PartnershipStartDateControllerSpec extends SpecBase with MockitoSugar {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -143,9 +154,47 @@ class PartnershipStartDateControllerSpec extends SpecBase with MockitoSugar {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
   }
+
+  "for a GET" must {
+
+    def getForIndex(index: Int): FakeRequest[AnyContentAsEmpty.type] = {
+      val route = routes.PartnershipStartDateController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(GET, route)
+    }
+
+    validateIndex(
+      Gen.const(LocalDate.of(2010,10,10)),
+      PartnershipStartDatePage.apply,
+      getForIndex
+    )
+
+  }
+
+  "for a POST" must {
+    def postForIndex(index: Int): FakeRequest[AnyContentAsFormUrlEncoded] = {
+
+      val route =
+        routes.PartnershipStartDateController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+      FakeRequest(POST, route)
+        .withFormUrlEncodedBody(
+          "value.day"   -> validAnswer.getDayOfMonth.toString,
+          "value.month" -> validAnswer.getMonthValue.toString,
+          "value.year"  -> validAnswer.getYear.toString
+        )
+    }
+
+    validateIndex(
+      Gen.const(LocalDate.of(2010,10,10)),
+      PartnershipStartDatePage.apply,
+      postForIndex
+    )
+  }
+
 }

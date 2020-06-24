@@ -21,6 +21,7 @@ import pages.register
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
@@ -36,11 +37,11 @@ import pages.register.trustees.individual._
 
 trait PageGenerators {
 
-  implicit lazy val arbitraryPartnershipStartDatePage: Arbitrary[PartnershipStartDatePage.type] =
-    Arbitrary(PartnershipStartDatePage)
+  implicit lazy val arbitraryPartnershipStartDatePage: Arbitrary[PartnershipStartDatePage] =
+    Arbitrary(PartnershipStartDatePage(0))
 
-  implicit lazy val arbitraryPartnershipDescriptionPage: Arbitrary[PartnershipDescriptionPage.type] =
-    Arbitrary(PartnershipDescriptionPage)
+  implicit lazy val arbitraryPartnershipDescriptionPage: Arbitrary[PartnershipDescriptionPage] =
+    Arbitrary(PartnershipDescriptionPage(0))
 
   implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
     Arbitrary(SettlorBusinessNamePage(0))

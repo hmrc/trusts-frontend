@@ -14,29 +14,39 @@
  * limitations under the License.
  */
 
-package views
+package views.register.asset.partnership
 
+import java.time.LocalDate
+
+import forms.asset.partnership.PartnershipStartDateFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import views.behaviours.QuestionViewBehaviours
+import views.html.register.asset.partnership.PartnershipStartDateView
 
-class PartnershipDescriptionViewSpec extends StringViewBehaviours {
+class PartnershipStartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
 
-  val messageKeyPrefix = "partnershipDescription"
+  val messageKeyPrefix = "partnershipStartDate"
 
-  val form = new PartnershipDescriptionFormProvider()()
+  val form = new PartnershipStartDateFormProvider()()
 
-  "PartnershipDescriptionView view" must {
+  "PartnershipStartDateView view" must {
 
-    val view = viewFor[PartnershipDescriptionView](Some(emptyUserAnswers))
+    val view = viewFor[PartnershipStartDateView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form, NormalMode, 0, fakeDraftId)(fakeRequest, messages)
+
+    val applyViewF = (form : Form[_]) => applyView(form)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 
-    behave like pageWithBackLink(applyView(form))
+    behave like pageWithDateFields(form, applyViewF,
+      messageKeyPrefix,
+      "value"
+    )
 
-    behave like stringPage(form, applyView, messageKeyPrefix)
+    behave like pageWithBackLink(applyView(form))
   }
 }

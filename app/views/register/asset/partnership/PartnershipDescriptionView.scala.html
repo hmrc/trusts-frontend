@@ -15,19 +15,20 @@
  *@
 
 @import models.Mode
+@import controllers.register.asset.partnership.routes._
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, index: Int, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("partnershipDescription.title")}"
     ) {
 
-    @formHelper(action = PartnershipDescriptionController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = PartnershipDescriptionController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 

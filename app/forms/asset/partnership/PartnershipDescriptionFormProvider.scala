@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms.asset.partnership
 
-import java.time.LocalDate
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-class PartnershipStartDatePageSpec extends PageBehaviours {
+class PartnershipDescriptionFormProvider @Inject() extends Mappings {
 
-  "PartnershipStartDatePage" must {
-
-    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
-      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
-    }
-
-    beRetrievable[LocalDate](PartnershipStartDatePage)
-
-    beSettable[LocalDate](PartnershipStartDatePage)
-
-    beRemovable[LocalDate](PartnershipStartDatePage)
-  }
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("partnershipDescription.error.required")
+        .verifying(maxLength(100, "partnershipDescription.error.length"))
+    )
 }

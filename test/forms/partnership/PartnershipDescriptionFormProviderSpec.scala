@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package forms
+package forms.partnership
 
+import forms.asset.partnership.PartnershipDescriptionFormProvider
+import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
 class PartnershipDescriptionFormProviderSpec extends StringFieldBehaviours {

@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package forms
+package pages.register.asset.partnership
 
-import java.time.{LocalDate, ZoneOffset}
+import pages.behaviours.PageBehaviours
 
-class PartnershipStartDateFormProviderSpec extends DateBehaviours {
 
-  val form = new PartnershipStartDateFormProvider()()
+class PartnershipDescriptionPageSpec extends PageBehaviours {
 
-  ".value" should {
+  "PartnershipDescriptionPage" must {
 
-    val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
-    )
+    beRetrievable[String](PartnershipDescriptionPage(0))
 
-    behave like dateField(form, "value", validData)
+    beSettable[String](PartnershipDescriptionPage(0))
 
-    behave like mandatoryDateField(form, "value", "partnershipStartDate.error.required.all")
+    beRemovable[String](PartnershipDescriptionPage(0))
   }
 }

@@ -24,6 +24,7 @@ import pages._
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
@@ -44,8 +45,8 @@ trait UserAnswersGenerator extends TryValues {
   import models.core.UserAnswerImplicits._
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
-    arbitrary[(PartnershipStartDatePage.type, JsValue)] ::
-    arbitrary[(PartnershipDescriptionPage.type, JsValue)] ::
+    arbitrary[(PartnershipStartDatePage, JsValue)] ::
+    arbitrary[(PartnershipDescriptionPage, JsValue)] ::
     arbitrary[(KindOfTrustPage.type, JsValue)] ::
     arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::

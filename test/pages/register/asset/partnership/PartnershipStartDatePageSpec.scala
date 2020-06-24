@@ -14,17 +14,25 @@
  * limitations under the License.
  */
 
-package pages
+package pages.register.asset.partnership
 
+import java.time.LocalDate
 
-class PartnershipDescriptionPageSpec extends PageBehaviours {
+import org.scalacheck.Arbitrary
+import pages.behaviours.PageBehaviours
 
-  "PartnershipDescriptionPage" must {
+class PartnershipStartDatePageSpec extends PageBehaviours {
 
-    beRetrievable[String](PartnershipDescriptionPage)
+  "PartnershipStartDatePage" must {
 
-    beSettable[String](PartnershipDescriptionPage)
+    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
+      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    }
 
-    beRemovable[String](PartnershipDescriptionPage)
+    beRetrievable[LocalDate](PartnershipStartDatePage(0))
+
+    beSettable[LocalDate](PartnershipStartDatePage(0))
+
+    beRemovable[LocalDate](PartnershipStartDatePage(0))
   }
 }

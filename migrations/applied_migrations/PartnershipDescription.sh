@@ -6,11 +6,11 @@ echo "Applying migration PartnershipDescription"
 echo "Adding routes to conf/app.routes"
 
 echo "" >> ../conf/app.routes
-echo "GET        /:draftId/partnershipDescription                        controllers.PartnershipDescriptionController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/partnershipDescription                        controllers.PartnershipDescriptionController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/partnershipDescription                        controllers.register.asset.partnership.PartnershipDescriptionController.onPageLoad(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/partnershipDescription                        controllers.register.asset.partnership.PartnershipDescriptionController.onSubmit(mode: Mode = NormalMode, draftId: String)" >> ../conf/app.routes
 
-echo "GET        /:draftId/changePartnershipDescription                  controllers.PartnershipDescriptionController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
-echo "POST       /:draftId/changePartnershipDescription                  controllers.PartnershipDescriptionController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "GET        /:draftId/changePartnershipDescription                  controllers.register.asset.partnership.PartnershipDescriptionController.onPageLoad(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
+echo "POST       /:draftId/changePartnershipDescription                  controllers.register.asset.partnership.PartnershipDescriptionController.onSubmit(mode: Mode = CheckMode, draftId: String)" >> ../conf/app.routes
 
 echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en

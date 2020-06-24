@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package pages.register.asset.partnership
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
+import sections.Assets
 
-class PartnershipDescriptionFormProvider @Inject() extends Mappings {
+final case class PartnershipDescriptionPage(index : Int) extends QuestionPage[String] {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("partnershipDescription.error.required")
-        .verifying(maxLength(100, "partnershipDescription.error.length"))
-    )
+  override def path: JsPath = Assets.path \ index \ toString
+
+  override def toString: String = "partnershipDescription"
 }

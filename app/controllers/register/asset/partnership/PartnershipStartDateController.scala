@@ -14,57 +14,68 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.register.asset.partnership
 
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.filters.IndexActionFilterProvider
+import forms.asset.partnership.PartnershipStartDateFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
+import pages.register.asset.partnership.PartnershipStartDatePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import views.html.register.asset.partnership.PartnershipStartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PartnershipDescriptionController @Inject()(
+class PartnershipStartDateController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
                                        identify: RegistrationIdentifierAction,
                                        getData: DraftIdRetrievalActionProvider,
+                                       validateIndex: IndexActionFilterProvider,
                                        requireData: RegistrationDataRequiredAction,
-                                       formProvider: PartnershipDescriptionFormProvider,
+                                       formProvider: PartnershipStartDateFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: PartnershipDescriptionView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                       view: PartnershipStartDateView
+                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData) {
+  private def actions(index: Int, draftId: String) =
+    identify andThen
+      getData(draftId) andThen
+      requireData andThen
+      validateIndex(index, sections.Assets)
+
+  def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(PartnershipDescriptionPage) match {
+      val preparedForm = request.userAnswers.get(PartnershipStartDatePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm, mode, index, draftId))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
+  def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors, mode, index, draftId))),
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(PartnershipDescriptionPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(PartnershipStartDatePage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(PartnershipDescriptionPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(PartnershipStartDatePage(index), mode, draftId)(updatedAnswers))
         }
       )
   }

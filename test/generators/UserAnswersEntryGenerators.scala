@@ -23,6 +23,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
@@ -39,18 +40,18 @@ import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
 
-  implicit lazy val arbitraryPartnershipStartDateUserAnswersEntry: Arbitrary[(PartnershipStartDatePage.type, JsValue)] =
+  implicit lazy val arbitraryPartnershipStartDateUserAnswersEntry: Arbitrary[(PartnershipStartDatePage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PartnershipStartDatePage.type]
+        page  <- arbitrary[PartnershipStartDatePage]
         value <- arbitrary[Int].map(Json.toJson(_))
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryPartnershipDescriptionUserAnswersEntry: Arbitrary[(PartnershipDescriptionPage.type, JsValue)] =
+  implicit lazy val arbitraryPartnershipDescriptionUserAnswersEntry: Arbitrary[(PartnershipDescriptionPage, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[PartnershipDescriptionPage.type]
+        page  <- arbitrary[PartnershipDescriptionPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }

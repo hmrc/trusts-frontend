@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-package pages
+package forms.partnership
 
-import java.time.LocalDate
+import java.time.{LocalDate, ZoneOffset}
 
-import play.api.libs.json.JsPath
+import forms.asset.partnership.PartnershipStartDateFormProvider
+import forms.behaviours.DateBehaviours
 
-case object PartnershipStartDatePage extends QuestionPage[LocalDate] {
+class PartnershipStartDateFormProviderSpec extends DateBehaviours {
 
-  override def path: JsPath = JsPath \ toString
+  val form = new PartnershipStartDateFormProvider()()
 
-  override def toString: String = "partnershipStartDate"
+  ".value" should {
+
+    val validData = datesBetween(
+      min = LocalDate.of(2000, 1, 1),
+      max = LocalDate.now(ZoneOffset.UTC)
+    )
+
+    behave like dateField(form, "value", validData)
+
+    behave like mandatoryDateField(form, "value", "partnershipStartDate.error.required.all")
+  }
 }
