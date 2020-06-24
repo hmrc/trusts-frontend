@@ -24,13 +24,8 @@
 
 @(answerSections: Seq[Section], isAgent: Boolean, agentClientRef: String)(implicit request: Request[_], messages: Messages)
 
-@printScript = {
-<script type="text/javascript" src='@routes.Assets.versioned("javascripts/print.js")'></script>
-}
-
 @main_template(
-    title = messages("summaryAnswerPage.title"),
-    scriptElem = Some(printScript)
+    title = messages("summaryAnswerPage.title")
     ) {
 
     @components.heading("summaryAnswerPage.heading", headingSize = "heading-xlarge")

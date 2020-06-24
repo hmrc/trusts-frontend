@@ -25,13 +25,8 @@
 
 @(answerSections: Seq[Section], trn: String, declarationSent: String)(implicit request: Request[_], messages: Messages)
 
-@printScript = {
-<script type="text/javascript" src='@routes.Assets.versioned("javascripts/print.js")'></script>
-}
-
 @main_template(
-    title = messages("confirmationAnswerPage.title"),
-    scriptElem = Some(printScript)
+    title = messages("confirmationAnswerPage.title")
     ) {
 
     @components.heading("confirmationAnswerPage.heading", headingSize = "heading-xlarge")
