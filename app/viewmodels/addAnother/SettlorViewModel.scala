@@ -41,7 +41,8 @@ object SettlorViewModel {
 
   implicit lazy val reads : Reads[SettlorViewModel] = {
       SettlorLivingViewModel.reads or
-      DefaultSettlorViewModel.reads
+        SettlorDeceasedViewModel.reads or
+        DefaultSettlorViewModel.reads
   }
 
 }

@@ -20,50 +20,76 @@ import controllers.register.settlors.living_settlor.routes
 import models.core.UserAnswers
 import models.registration.pages.Status._
 import play.api.i18n.Messages
-import sections.LivingSettlors
-import viewmodels.addAnother._
+import sections.{DeceasedSettlor, LivingSettlors}
+import viewmodels.addAnother.{SettlorViewModel, _}
 import viewmodels.{AddRow, AddToRows}
 
 class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit messages: Messages) {
 
   def rows: AddToRows = {
+    deceasedSettlors match {
+      case Some(s: SettlorViewModel) if s.status equals Completed =>
+        AddToRows(
+          inProgress = livingSettlors._2.flatMap(parseSettlor),
+          complete = livingSettlors._1.flatMap(parseSettlor) :+ parseToRows(s, 0)
+        )
+      case Some(s: SettlorViewModel) if s.status equals InProgress =>
+        AddToRows(
+          inProgress = livingSettlors._2.flatMap(parseSettlor) :+ parseToRows(s, 0),
+          complete = livingSettlors._1.flatMap(parseSettlor)
+        )
+      case _ =>
+        AddToRows(
+          inProgress = livingSettlors._2.flatMap(parseSettlor),
+          complete = livingSettlors._1.flatMap(parseSettlor)
+        )
+    }
+  }
 
-    val settlors = userAnswers.get(LivingSettlors).toList.flatten.zipWithIndex
+  val livingSettlors = {
+    userAnswers.get(LivingSettlors)
+      .toList
+      .flatten
+      .zipWithIndex
+      .partition(_._1.status == Completed)
+  }
 
-    val completed: List[AddRow] = settlors.filter(_._1.status == Completed).flatMap(parseSettlor)
-
-    val inProgress: List[AddRow] = settlors.filterNot(_._1.status == Completed).flatMap(parseSettlor)
-
-    AddToRows(inProgress, completed)
+  val deceasedSettlors = {
+    userAnswers.get(DeceasedSettlor)
   }
 
   private def parseSettlor(settlor: (SettlorViewModel, Int)): Option[AddRow] = {
     val vm = settlor._1
     val index = settlor._2
 
-    Some(parseSettlorLiving(vm, index))
+    Some(parseToRows(vm, index))
   }
 
-  private def parseSettlorLiving(mvm : SettlorViewModel, index: Int) : AddRow = {
+  private def parseToRows(mvm: SettlorViewModel, index: Int): AddRow = {
     val defaultName = messages("entities.no.name.added")
-
-    val typeLabel : String = messages("entity.settlor.individual")
 
     mvm match {
       case SettlorLivingIndividualViewModel(_, name, _) => AddRow(
         name,
-        typeLabel,
+        messages("entity.settlor.individual"),
         controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
-      case DefaultSettlorViewModel(individualOrBusiness, _)  => AddRow(
+      case SettlorDeceasedIndividualViewModel(_, name, _) => AddRow(
+        name,
+        messages("entity.settlor.deceased"),
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
+        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
+      )
+      case DefaultSettlorViewModel(_, _) => AddRow(
         defaultName,
-        typeLabel,
+        "entity.settlor.?",
         controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
     }
 
   }
+
 
 }

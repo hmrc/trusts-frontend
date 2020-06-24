@@ -26,29 +26,20 @@ sealed trait SettlorDeceasedViewModel extends SettlorViewModel
 final case class SettlorDeceasedIndividualViewModel(`type` : IndividualOrBusiness,
                                                   name : String,
                                                   override val status : Status) extends SettlorDeceasedViewModel
-object SettlorDeceasedIndividualViewModel {
+object SettlorDeceasedViewModel {
 
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
 
   implicit lazy val reads: Reads[SettlorDeceasedViewModel] = {
-
-    val individualNameReads: Reads[SettlorDeceasedViewModel] =
-    {
-        (__ \ "individualOrBusiness").read[IndividualOrBusiness].filter(x => x == Individual).flatMap { _ =>
-          ((__ \ "name").read[FullName].map(_.toString) and
-            (__ \ "status").readWithDefault[Status](InProgress)
-            ) ((name, status) => {
-            SettlorDeceasedIndividualViewModel(
-              Individual,
-              name,
-              status)
-          })
-        }
-    }
-
-    individualNameReads
-
+    ((__ \ "name").read[FullName].map(_.toString) and
+      (__ \ "status").readWithDefault[Status](InProgress)
+      ) ((name, status) => {
+      SettlorDeceasedIndividualViewModel(
+        Individual,
+        name,
+        status)
+    })
   }
 
 }
