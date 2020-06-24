@@ -94,7 +94,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
     }
@@ -118,7 +118,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
                              """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe AlreadyRegistered
       }
     }
@@ -141,7 +141,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
                              """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }
@@ -160,7 +160,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           expectedResponse = ""
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }
@@ -179,7 +179,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           expectedResponse = ""
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }
