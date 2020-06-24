@@ -16,7 +16,7 @@
 
 package utils
 
-import models.NormalMode
+import models.Mode
 import models.core.UserAnswers
 import models.registration.pages.Status.Completed
 import play.api.i18n.Messages
@@ -24,7 +24,7 @@ import sections.Assets
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
-class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit messages: Messages) {
+class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(implicit messages: Messages) {
 
   def rows: AddToRows = {
 
@@ -51,9 +51,8 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
   }
 
   private def parseMoney(mvm: MoneyAssetViewModel, index: Int) : AddRow = {
-    val defaultValue = messages("entities.no.value.added")
     AddRow(
-      mvm.value.getOrElse(defaultValue),
+      mvm.value,
       mvm.`type`.toString,
       controllers.routes.FeatureNotAvailableController.onPageLoad().url,
       controllers.register.asset.money.routes.RemoveMoneyAssetController.onPageLoad(index, draftId).url
@@ -116,9 +115,9 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
 
   private def parseOther(other: OtherAssetViewModel, index: Int) : AddRow = {
     AddRow(
-      other.description.getOrElse(messages("entities.no.description.added")),
+      other.description,
       other.`type`.toString,
-      controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, draftId).url,
+      controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(mode, index, draftId).url,
       controllers.routes.FeatureNotAvailableController.onPageLoad().url
     )
   }

@@ -21,7 +21,7 @@ import models.registration.pages.WhatKindOfAsset.Other
 import models.registration.pages.{Status, WhatKindOfAsset}
 
 final case class OtherAssetViewModel(`type`: WhatKindOfAsset,
-                                     description: Option[String],
+                                     description: String,
                                      value: Option[String],
                                      override val status: Status) extends AssetViewModel
 
@@ -35,7 +35,7 @@ object OtherAssetViewModel {
     def formatValue(v: String) = s"£$v"
 
     val otherReads: Reads[OtherAssetViewModel] =
-      ((__ \ "otherAssetDescription").readNullable[String] and
+      ((__ \ "otherAssetDescription").read[String] and
         (__ \ "otherAssetValue").readNullable[String] and
         (__ \ "status").readWithDefault[Status](InProgress)
         )((description, value, status) => OtherAssetViewModel(Other, description, value.map(formatValue), status))
