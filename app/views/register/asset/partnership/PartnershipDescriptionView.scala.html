@@ -34,12 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("partnershipDescription.heading")
-
         @components.input_text(
-          field = form("value"),
-          label = messages("partnershipDescription.heading"),
-          labelClass = Some("visually-hidden")
+            field = form("value"),
+            label = messages("partnershipDescription.heading"),
+            labelClass = Some("heading-large"),
+            labelAsHeading = true,
+            hint = Some(messages("partnershipDescription.hint"))
         )
 
         @components.submit_button()

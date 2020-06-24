@@ -26,6 +26,7 @@ import views.html.register.asset.partnership.PartnershipDescriptionView
 class PartnershipDescriptionViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "partnershipDescription"
+  val hintKey = "partnershipDescription.hint"
 
   val form = new PartnershipDescriptionFormProvider()()
 
@@ -40,6 +41,8 @@ class PartnershipDescriptionViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix)
+    behave like stringPage(form, applyView, messageKeyPrefix, Some(hintKey))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

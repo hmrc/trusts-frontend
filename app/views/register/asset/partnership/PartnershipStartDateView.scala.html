@@ -33,12 +33,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("partnershipStartDate.heading")
-
         @components.input_date(
             field = form("value"),
             legend = messages("partnershipStartDate.heading"),
-            legendClass = "visually-hidden"
+            legendClass = "heading-large",
+            legendAsHeading = true,
+            hint = Some(messages("partnershipStartDate.hint"))
         )
 
         @components.submit_button()

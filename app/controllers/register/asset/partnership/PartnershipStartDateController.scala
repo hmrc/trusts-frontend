@@ -45,7 +45,7 @@ class PartnershipStartDateController @Inject()(
                                        view: PartnershipStartDateView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form = formProvider.withConfig()
 
   private def actions(index: Int, draftId: String) =
     identify andThen

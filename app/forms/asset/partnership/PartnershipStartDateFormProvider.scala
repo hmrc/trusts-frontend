@@ -18,19 +18,23 @@ package forms.asset.partnership
 
 import java.time.LocalDate
 
+import config.FrontendAppConfig
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class PartnershipStartDateFormProvider @Inject() extends Mappings {
+class PartnershipStartDateFormProvider @Inject()(appConfig: FrontendAppConfig) extends Mappings {
 
-  def apply(): Form[LocalDate] =
+  def withConfig(maximumDate: (LocalDate, String) = (LocalDate.now, "future")): Form[LocalDate] =
     Form(
       "value" -> localDate(
         invalidKey     = "partnershipStartDate.error.invalid",
         allRequiredKey = "partnershipStartDate.error.required.all",
         twoRequiredKey = "partnershipStartDate.error.required.two",
         requiredKey    = "partnershipStartDate.error.required"
-      )
+      ).verifying(firstError(
+        maxDate(LocalDate.now, s"partnershipStartDate.error.future", "day", "month", "year"),
+        minDate(appConfig.minDate, s"partnershipStartDate.error.past", "day", "month", "year")
+      ))
     )
 }

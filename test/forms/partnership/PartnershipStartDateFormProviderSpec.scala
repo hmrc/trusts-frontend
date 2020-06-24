@@ -18,22 +18,38 @@ package forms.partnership
 
 import java.time.{LocalDate, ZoneOffset}
 
+import base.FakeTrustsApp
 import forms.asset.partnership.PartnershipStartDateFormProvider
 import forms.behaviours.DateBehaviours
+import play.api.data.FormError
 
-class PartnershipStartDateFormProviderSpec extends DateBehaviours {
+class PartnershipStartDateFormProviderSpec extends DateBehaviours with FakeTrustsApp {
 
-  val form = new PartnershipStartDateFormProvider()()
+  private val min = LocalDate.of(1500, 1, 1)
+  private val max = LocalDate.now(ZoneOffset.UTC)
+
+  val form = new PartnershipStartDateFormProvider(frontendAppConfig).withConfig()
 
   ".value" should {
 
     val validData = datesBetween(
-      min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      min = min,
+      max = max
     )
 
     behave like dateField(form, "value", validData)
 
     behave like mandatoryDateField(form, "value", "partnershipStartDate.error.required.all")
+
+    behave like dateFieldWithMax(form, "value",
+      max = max,
+      FormError("value", s"partnershipStartDate.error.future", List("day", "month", "year"))
+    )
+
+    behave like dateFieldWithMin(form, "value",
+      min = min,
+      FormError("value", s"partnershipStartDate.error.past", List("day", "month", "year"))
+    )
+
   }
 }

@@ -16,15 +16,24 @@
 
 package forms.asset.partnership
 
+import forms.Validation
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
 class PartnershipDescriptionFormProvider @Inject() extends Mappings {
 
+  val partnershipDescriptionMaxLength = 56
+
   def apply(): Form[String] =
     Form(
       "value" -> text("partnershipDescription.error.required")
-        .verifying(maxLength(100, "partnershipDescription.error.length"))
+        .verifying(
+          firstError(
+            isNotEmpty("value", "partnershipDescription.error.required"),
+            maxLength(partnershipDescriptionMaxLength, "partnershipDescription.error.length"),
+            regexp(Validation.descriptionRegex, "partnershipDescription.error.invalid")
+          )
+        )
     )
 }

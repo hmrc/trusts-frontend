@@ -16,6 +16,7 @@
 
 package forms.partnership
 
+import forms.Validation
 import forms.asset.partnership.PartnershipDescriptionFormProvider
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
@@ -24,7 +25,9 @@ class PartnershipDescriptionFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "partnershipDescription.error.required"
   val lengthKey = "partnershipDescription.error.length"
-  val maxLength = 100
+  val invalidFormatKey = "partnershipDescription.error.invalid"
+
+  val maxLength = 56
 
   val form = new PartnershipDescriptionFormProvider()()
 
@@ -50,5 +53,20 @@ class PartnershipDescriptionFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
     )
+
+    behave like nonEmptyField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
+    )
+
+    behave like fieldWithRegexpWithGenerator(
+      form,
+      fieldName,
+      Validation.descriptionRegex,
+      generator = stringsWithMaxLength(maxLength),
+      error = FormError(fieldName, invalidFormatKey, Seq(Validation.descriptionRegex))
+    )
+
   }
 }

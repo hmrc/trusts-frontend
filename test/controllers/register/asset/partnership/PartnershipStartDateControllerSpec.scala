@@ -32,8 +32,8 @@ import views.html.register.asset.partnership.PartnershipStartDateView
 
 class PartnershipStartDateControllerSpec extends RegistrationSpecBase with IndexValidation {
 
-  val formProvider = new PartnershipStartDateFormProvider()
-  val form = formProvider()
+  val formProvider = new PartnershipStartDateFormProvider(frontendAppConfig)
+  val form = formProvider.withConfig()
   val index = 0
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
