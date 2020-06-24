@@ -25,7 +25,7 @@ import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.{AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HowDeedOfVariationCreatedPage, SetUpInAdditionToWillTrustYesNoPage}
 
@@ -96,11 +96,11 @@ trait DeceasedSettlorRoutes {
       }
     }
 
-    "go to DeceasedSettlorAnswerPage from SettlorNationalInsuranceNumberPage" in {
+    "go to AdditionalSettlorsYesNoPage from SettlorNationalInsuranceNumberPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(SettlorNationalInsuranceNumberPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -121,12 +121,12 @@ trait DeceasedSettlorRoutes {
       }
     }
 
-    "go to DeceasedSettlorAnswerPage from SettlorsLastKnownAddressYesNoPage when user answers no" in {
+    "go to AnotherSettlorYesNoPage from SettlorsLastKnownAddressYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SettlorsLastKnownAddressYesNoPage, value = false).success.value
           navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
     "go to WasSettlorsAddressUKYesNoPage from SettlorsLastKnownAddressYesNoPage when user answers yes" in {
@@ -153,25 +153,39 @@ trait DeceasedSettlorRoutes {
             .mustBe(routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
-    "go to DeceasedSettlorAnswerPage from SettlorsInternationalAddressPage" in {
+    "go to AnotherSettlorYesNoPage from SettlorsInternationalAddressPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(SettlorsInternationalAddressPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
-    "go to DeceasedSettlorAnswerPage from SettlorsUKAddressPage" in {
+    "go to AnotherSettlorYesNo from SettlorsUKAddressPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(SettlorsUKAddressPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
     "go to TaskList from DeceasedSettlorAnswerPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(userAnswers)
+
+          val answers = userAnswers.set(AddAnotherSettlorYesNoPage, false).success.value
+
+          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(answers)
             .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+    "go to Add Settlors from DeceasedSettlorAnswerPage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddAnotherSettlorYesNoPage, true).success.value
+
+          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
       }
     }
   }
