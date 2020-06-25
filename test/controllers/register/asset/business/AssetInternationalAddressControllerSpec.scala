@@ -75,6 +75,7 @@ class AssetInternationalAddressControllerSpec extends RegistrationSpecBase with 
 
       val userAnswers = emptyUserAnswers
         .set(AssetNamePage(index), "Test").success.value
+        .set(AssetInternationalAddressPage(index), (InternationalAddress("line 1", "line 2", Some("line 3"), "country"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

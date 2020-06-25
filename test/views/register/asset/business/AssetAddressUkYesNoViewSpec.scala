@@ -32,19 +32,21 @@ class AssetAddressUkYesNoViewSpec extends YesNoViewBehaviours {
 
   val index = 0
 
-  val orgName = "Test"
+  val businessName = "Test"
 
   "AssetAddressUkYesNo view" must {
 
     val view = viewFor[AssetAddressUkYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index, orgName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, businessName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, orgName)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, businessName)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq("Test"))
+
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

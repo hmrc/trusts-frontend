@@ -21,31 +21,32 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours
+import views.html.register.asset.buisness.AssetUkAddressView
 import views.html.register.trustees.organisation.TrusteesOrgUkAddressView
 
 class AssetUKAddressViewSpec extends UkAddressViewBehaviours {
 
-  val messageKeyPrefix = "assetUKAddress"
+  val messageKeyPrefix = "site.address.uk"
   val index = 0
-  val assetName = "Test"
+  val businessName = "Test"
 
   override val form = new UKAddressFormProvider()()
 
   "AssetUKAddressView" must {
 
-    val view = viewFor[TrusteesOrgUkAddressView](Some(emptyUserAnswers))
+    val view = viewFor[AssetUkAddressView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index, assetName)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, businessName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, assetName)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, businessName)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like ukAddressPage(
       applyView,
       Some(messageKeyPrefix),
-      assetName
+      businessName
     )
 
     behave like pageWithASubmitButton(applyView(form))

@@ -21,7 +21,7 @@ import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.asset.money.AssetMoneyValueView
+import views.html.register.asset.buisness.CurrentValueView
 
 class CurrentValueViewSpec extends StringViewBehaviours {
 
@@ -35,10 +35,10 @@ class CurrentValueViewSpec extends StringViewBehaviours {
 
   "CurrentValueView view" must {
 
-    val view = viewFor[AssetMoneyValueView](Some(emptyUserAnswers))
+    val view = viewFor[CurrentValueView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, businessName)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), messageKeyPrefix)
 

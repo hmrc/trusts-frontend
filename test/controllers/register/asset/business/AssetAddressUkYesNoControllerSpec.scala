@@ -91,10 +91,7 @@ class AssetAddressUkYesNoControllerSpec extends RegistrationSpecBase with IndexV
 
     "redirect to AssetNamePage when AssetName is not answered" in {
 
-      val userAnswers = emptyUserAnswers
-        .set(AssetNamePage(index), "Test").success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       val request = FakeRequest(GET, businessAssetAddressUkYesNoRoute)
 
@@ -102,7 +99,7 @@ class AssetAddressUkYesNoControllerSpec extends RegistrationSpecBase with IndexV
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.AssetAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
+      redirectLocation(result).value mustEqual routes.AssetNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
       application.stop()
     }

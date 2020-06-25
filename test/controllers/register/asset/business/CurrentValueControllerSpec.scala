@@ -19,6 +19,7 @@ package controllers.register.asset.business
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.AssetMoneyValueFormProvider
+import forms.assets.CurrentValueFormProvider
 import models.NormalMode
 import pages.register.asset.business.{AssetNamePage, CurrentValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
@@ -29,7 +30,7 @@ import views.html.register.asset.money.AssetMoneyValueView
 
 class CurrentValueControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new AssetMoneyValueFormProvider()
+  val formProvider = new CurrentValueFormProvider()
   val form = formProvider()
   val buisnessName = "Test"
 

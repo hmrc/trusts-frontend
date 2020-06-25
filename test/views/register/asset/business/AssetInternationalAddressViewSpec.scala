@@ -30,7 +30,7 @@ class AssetInternationalAddressViewSpec extends InternationalAddressViewBehaviou
 
   val messageKeyPrefix = "assetInternationalAddress"
   val index = 0
-  val orgName = "Test"
+  val buisnessName = "Trust"
 
   override val form = new InternationalAddressFormProvider()()
 
@@ -41,16 +41,15 @@ class AssetInternationalAddressViewSpec extends InternationalAddressViewBehaviou
     val countryOptions: Seq[InputOption] = app.injector.instanceOf[CountryOptionsNonUK].options
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, countryOptions, NormalMode, index, fakeDraftId, orgName)(fakeRequest, messages)
-
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, orgName)
+      view.apply(form, countryOptions, NormalMode, index, fakeDraftId, buisnessName)(fakeRequest, messages)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like internationalAddress(
       applyView,
       Some(messageKeyPrefix),
-      routes.AssetInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url, orgName
+      routes.AssetInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
+      buisnessName
     )
 
     behave like pageWithASubmitButton(applyView(form))

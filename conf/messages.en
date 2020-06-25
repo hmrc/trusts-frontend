@@ -686,21 +686,26 @@ addAssets.propertyOrLand = Property or Land
 assetAddressUkYesNo.title = Is {0} address in the UK?
 assetAddressUkYesNo.heading = Is {0} address in the UK?
 assetAddressUkYesNo.checkYourAnswersLabel = Is {0} address in the UK?
+assetAddressUkYesNo.error.required = Select yes if the business's address in the UK
 
 assetDescription.title = What is the description for {0}?
 assetDescription.heading = What is the description for {0}?
 assetDescription.checkYourAnswersLabel = What is the description for {0}?
 assetDescription.hint = This must be 70 characters or less
+assetDescription.error.required = Enter a description of the business
+assetDescription.error.invalid = The description of the beneficiary must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+assetDescription.error.length = The description of the beneficiary must be 70 characters or less
 
-assetInternationalAddress.title = What is {0}’s address?
+assetInternationalAddress.title = What is the business asset address?
 assetInternationalAddress.heading = What is {0}’s address?
 assetInternationalAddress.checkYourAnswersLabel = What is {0}’s address?
 
 assetName.title = What is the business’s name?
 assetName.heading = What is the business’s name?
 assetName.checkYourAnswersLabel = What is the business’s name?
+assetName.error.required = Enter the business’s name
 
-assetUkAddress.title = What is {0}’s address?
+assetUkAddress.title = What is the business asset address?
 assetUkAddress.heading = What is {0}’s address?
 assetUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
@@ -708,6 +713,11 @@ currentValue.title = What is the current value of the business?
 currentValue.heading = What is the current value of the business?
 currentValue.checkYourAnswersLabel = What is the current value of the business?
 currentValue.hint = Rounded down to the nearest pound. For example, 4000
+currentValue.error.required = Enter the current value of the business
+currentValue.error.length = Total assets value must be 12 numbers or less
+currentValue.error.invalidFormat = Total assets value must be a number
+currentValue.error.wholeNumber = Total assets value must be a whole number
+currentValue.link = Return to registration progress
 
 AssetAnswer.title = Check asset details
 AssetAnswer.heading = Check asset details

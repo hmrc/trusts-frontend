@@ -26,7 +26,7 @@ class AssetAnswerPageViewSpec extends ViewBehaviours {
 
   "AssetAnswerPage" must {
 
-    val titlePrefix = "assetAddressUkYesNo"
+    val titlePrefix = "assetAnswer"
 
     val userAnswers = emptyUserAnswers
       .set(AssetNamePage(index), "Test").success.value

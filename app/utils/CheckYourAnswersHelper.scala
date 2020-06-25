@@ -55,7 +55,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   def assetAddressUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(AssetAddressUkYesNoPage(index)) map {
     x =>
       AnswerRow(
-        "assetAddressUkYesNoPage.checkYourAnswersLabel",
+        "assetAddressUkYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         Some(controllers.register.asset.business.routes.AssetAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit

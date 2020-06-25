@@ -31,8 +31,7 @@ class CurrentValueFormProvider @Inject() extends Mappings {
           isNotEmpty("value", "currentValue.error.required"),
           maxLength(12, "currentValue.error.length"),
           regexp(Validation.onlyNumbersRegex, "currentValue.error.invalidFormat"),
-          regexp(Validation.decimalCheck, "currentValue.error.wholeNumber"),
-          minimumValue("1", "currentValue.error.zero")
+          regexp(Validation.decimalCheck, "currentValue.error.wholeNumber")
         )
       )
     )

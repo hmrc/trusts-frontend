@@ -35,11 +35,11 @@ class AssetDescriptionViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, 0, businessName)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, businessName)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix)
+    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, businessName)
 
     behave like pageWithASubmitButton(applyView(form))
   }
