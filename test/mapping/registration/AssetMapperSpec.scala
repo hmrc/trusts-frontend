@@ -26,6 +26,7 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 
@@ -123,6 +124,26 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
         val expected = Some(Assets(Some(List(AssetMonetaryAmount(2000))),
           Some(List(PropertyLandType(None, Some(AddressType("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB")), 1000, 750L))),
           Some(List(SharesType("30","Portfolio","Other","Unquoted",999999999999L))),None,None,None))
+
+        assetMapper.build(userAnswers) mustBe expected
+      }
+
+      "must be able to create Assets for other" in {
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Other).success.value
+          .set(OtherAssetDescriptionPage(0), "Description").success.value
+          .set(OtherAssetValuePage(0), "4000").success.value
+          .set(AssetStatus(0), Completed).success.value
+
+        val expected = Some(Assets(
+          monetary = None,
+          propertyOrLand = None,
+          shares = None,
+          business = None,
+          partnerShip = None,
+          other = Some(List(OtherAssetType("Description", 4000)))
+        ))
 
         assetMapper.build(userAnswers) mustBe expected
       }
