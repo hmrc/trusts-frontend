@@ -1645,3 +1645,6 @@ partnershipStartDate.error.required = The date the partnership started must incl
 partnershipStartDate.error.invalid = Enter a real start date for the partnership start date
 partnershipStartDate.error.future = The date the partnership started must be today or in the past
 partnershipStartDate.error.past = The date the partnership started must be after 31 December 1499
+
+partnershipAnswers.title = Check asset details
+partnershipAnswers.heading = Check asset details
