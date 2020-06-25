@@ -51,6 +51,9 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
   def removeAssetRoute(index: Int) =
     routes.DefaultRemoveAssetController.onPageLoad(index, fakeDraftId).url
 
+  def removeAssetYesNoRoute(index: Int) =
+    routes.RemoveAssetYesNoController.onPageLoad(index, fakeDraftId).url
+
   val featureUnavalible = "/trusts-registration/feature-not-available"
 
   "AddAssetViewHelper" when {
@@ -84,7 +87,7 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           AddRow("No address added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
           AddRow("No description added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3)),
           AddRow("No address or description added", typeLabel = "Property or Land", featureUnavalible, removeAssetRoute(4)),
-          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 5, fakeDraftId).url, featureUnavalible)
+          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 5, fakeDraftId).url, removeAssetYesNoRoute(5))
         )
         rows.complete mustBe Nil
       }
@@ -127,7 +130,7 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           AddRow("£200", typeLabel = "Money", featureUnavalible, removeMoneyRoute(1)),
           AddRow("line 1", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
           AddRow("1 hectare of land", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3)),
-          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 4, fakeDraftId).url, featureUnavalible)
+          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 4, fakeDraftId).url, removeAssetYesNoRoute(4))
         )
         rows.inProgress mustBe Nil
       }

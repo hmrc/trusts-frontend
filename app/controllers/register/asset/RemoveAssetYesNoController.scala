@@ -1,0 +1,111 @@
+/*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.register.asset
+
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import forms.YesNoFormProvider
+import javax.inject.Inject
+import models.requests.RegistrationDataRequest
+import play.api.data.Form
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{JsPath, JsValue, Json}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
+import repositories.RegistrationsRepository
+import sections.Assets
+import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import viewmodels.addAnother._
+import views.html.register.asset.RemoveAssetYesNoView
+
+import scala.concurrent.{ExecutionContext, Future}
+
+class RemoveAssetYesNoController @Inject()(
+                                            override val messagesApi: MessagesApi,
+                                            registrationsRepository: RegistrationsRepository,
+                                            identify: RegistrationIdentifierAction,
+                                            getData: DraftIdRetrievalActionProvider,
+                                            requireData: RegistrationDataRequiredAction,
+                                            yesNoFormProvider: YesNoFormProvider,
+                                            val controllerComponents: MessagesControllerComponents,
+                                            view: RemoveAssetYesNoView
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("assets.removeYesNo")
+
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
+    identify andThen getData(draftId) andThen requireData
+
+  def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(draftId) {
+    implicit request =>
+
+      Ok(view(form, draftId, index, assetLabel(Json.toJson(request.userAnswers), index)))
+  }
+
+  def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(draftId).async {
+    implicit request =>
+
+      form.bindFromRequest().fold(
+        (formWithErrors: Form[_]) =>
+          Future.successful(BadRequest(view(formWithErrors, draftId, index, assetLabel(Json.toJson(request.userAnswers), index)))),
+
+        remove => {
+          if (remove) {
+            for {
+              updatedAnswers <- Future.fromTry(
+                request.userAnswers.deleteAtPath(Assets.path \ index)
+              )
+              _ <- registrationsRepository.set(updatedAnswers)
+            } yield {
+              Redirect(controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId))
+            }
+          } else {
+            Future.successful(Redirect(controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)))
+          }
+        }
+      )
+  }
+
+  private def assetLabel(json: JsValue, index: Int)(implicit request: RegistrationDataRequest[AnyContent]): String = {
+
+    val default: String = request.messages(messagesApi)("assets.defaultText")
+
+    val path: JsPath = JsPath \ 'data \ Assets \ index
+
+    (for {
+      pick <- json.transform(path.json.pick)
+      asset <- pick.validate[AssetViewModel]
+    } yield {
+      asset match {
+        case money: MoneyAssetViewModel => money.value
+        case propertyOrLand: PropertyOrLandAssetViewModel => propertyOrLandLabel(propertyOrLand)
+        case shares: ShareAssetViewModel => shares.name.getOrElse(default)
+        case other: OtherAssetViewModel => other.description
+        case _ => default
+      }
+    }).getOrElse(default)
+  }
+
+  private def propertyOrLandLabel(propertyOrLand: PropertyOrLandAssetViewModel)
+                                 (implicit request: RegistrationDataRequest[AnyContent]): String = {
+    propertyOrLand match {
+      case PropertyOrLandAssetUKAddressViewModel(_, Some(address), _) => address
+      case PropertyOrLandAssetInternationalAddressViewModel(_, Some(address), _) => address
+      case PropertyOrLandAssetAddressViewModel(_, Some(address), _) => address
+      case PropertyOrLandAssetDescriptionViewModel(_, Some(description), _) => description
+      case _ => request.messages(messagesApi)("assets.defaultText")
+    }
+  }
+}

@@ -118,7 +118,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
       other.description,
       other.`type`.toString,
       controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(mode, index, draftId).url,
-      controllers.routes.FeatureNotAvailableController.onPageLoad().url
+      controllers.register.asset.routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url
     )
   }
 
