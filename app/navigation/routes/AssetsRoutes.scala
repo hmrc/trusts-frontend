@@ -23,6 +23,7 @@ import models.registration.pages.AddAssets
 import models.registration.pages.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import pages.Page
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
 import play.api.mvc.Call
@@ -45,6 +46,8 @@ object AssetsRoutes {
     case ShareValueInTrustPage(index) => _ => _ => controllers.register.asset.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
     case ShareAnswerPage => _ => _ => controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
     case ShareCompanyNamePage(index) => _ => _ => controllers.register.asset.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
+    case OtherAssetDescriptionPage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId)
+    case OtherAssetValuePage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, draftId)
   }
 
   private def sharesInAPortfolio(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {
@@ -109,8 +112,9 @@ object AssetsRoutes {
       case Some(Partnership) =>
         controllers.routes.FeatureNotAvailableController.onPageLoad()
       case Some(Other) =>
-        controllers.routes.FeatureNotAvailableController.onPageLoad()
+        controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, draftId)
       case _ =>
         controllers.routes.FeatureNotAvailableController.onPageLoad()
     }
 }
+

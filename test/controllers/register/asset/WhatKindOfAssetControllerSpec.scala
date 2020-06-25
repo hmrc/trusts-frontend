@@ -39,8 +39,8 @@ class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValid
   val formProvider = new WhatKindOfAssetFormProvider()
   val form = formProvider()
 
-  val options = WhatKindOfAsset.options
-  val optionsWithoutMoney = WhatKindOfAsset.options.filterNot(_.value == Money.toString)
+  val options = WhatKindOfAsset.options()
+  val optionsWithoutMoney = WhatKindOfAsset.options().filterNot(_.value == Money.toString)
 
   "WhatKindOfAsset Controller" must {
 
@@ -62,52 +62,24 @@ class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValid
       application.stop()
     }
 
-    "when money has been answered for the same index" must {
+    "populate the view correctly on a GET when the question has previously been answered" in {
 
-      "populate the view correctly on a GET when the question has previously been answered" in {
+      val userAnswers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
 
-        val userAnswers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val request = FakeRequest(GET, whatKindOfAssetRoute)
 
-        val request = FakeRequest(GET, whatKindOfAssetRoute)
+      val view = application.injector.instanceOf[WhatKindOfAssetView]
 
-        val view = application.injector.instanceOf[WhatKindOfAssetView]
+      val result = route(application, request).value
 
-        val result = route(application, request).value
+      status(result) mustEqual OK
 
-        status(result) mustEqual OK
+      contentAsString(result) mustEqual
+        view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
 
-        contentAsString(result) mustEqual
-          view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
-
-        application.stop()
-      }
-
-    }
-
-    "when money has been answered and viewing a different index" must {
-
-      "populate the view correctly on a GET when the question has previously been answered" in {
-
-        val userAnswers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
-
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-        val request = FakeRequest(GET, routes.WhatKindOfAssetController.onPageLoad(NormalMode, 1, fakeDraftId).url)
-
-        val view = application.injector.instanceOf[WhatKindOfAssetView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, 1, optionsWithoutMoney)(fakeRequest, messages).toString
-
-        application.stop()
-      }
-
+      application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
@@ -117,7 +89,7 @@ class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValid
 
       val request =
         FakeRequest(POST, whatKindOfAssetRoute)
-          .withFormUrlEncodedBody(("value", WhatKindOfAsset.options.head.value))
+          .withFormUrlEncodedBody(("value", WhatKindOfAsset.options().head.value))
 
       val result = route(application, request).value
 
@@ -166,29 +138,6 @@ class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValid
 
       contentAsString(result) mustEqual
         view(boundForm, NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
-
-      application.stop()
-    }
-
-    "return a BadRequest when money is submitted and already exists for a different index" in {
-
-      val answers = emptyUserAnswers.set(WhatKindOfAssetPage(index), Money).success.value
-
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
-
-      val request = FakeRequest(routes.WhatKindOfAssetController.onSubmit(NormalMode, 1, fakeDraftId))
-        .withFormUrlEncodedBody(("value", "Money"))
-
-      val boundForm = form.bind(Map("value" -> "Money"))
-
-      val view = application.injector.instanceOf[WhatKindOfAssetView]
-
-      val result = route(application, request).value
-
-      status(result) mustEqual BAD_REQUEST
-
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, 1, optionsWithoutMoney)(fakeRequest, messages).toString
 
       application.stop()
     }

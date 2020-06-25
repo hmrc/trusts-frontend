@@ -99,3 +99,4 @@ object TrustDetailRoutes {
     case None         => routes.SessionExpiredController.onPageLoad()
   }
 }
+
