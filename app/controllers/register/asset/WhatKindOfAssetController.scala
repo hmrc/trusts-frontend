@@ -20,6 +20,7 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import controllers.filters.IndexActionFilterProvider
 import forms.WhatKindOfAssetFormProvider
 import javax.inject.Inject
+import models.core.UserAnswers
 import models.registration.pages.WhatKindOfAsset
 import models.registration.pages.WhatKindOfAsset._
 import models.requests.RegistrationDataRequest
@@ -51,8 +52,8 @@ class WhatKindOfAssetController @Inject()(
 
   val form: Form[WhatKindOfAsset] = formProvider()
 
-  private def options(request : RegistrationDataRequest[AnyContent]): List[RadioOption] = {
-    val assets = request.userAnswers.get(sections.Assets).getOrElse(Nil)
+  private def options(userAnswers: UserAnswers): List[RadioOption] = {
+    val assets = userAnswers.get(sections.Assets).getOrElse(Nil)
 
     WhatKindOfAsset.nonMaxedOutOptions(assets)
   }
@@ -67,7 +68,7 @@ class WhatKindOfAssetController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index, options(request)))
+      Ok(view(preparedForm, mode, draftId, index, options(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
@@ -75,7 +76,7 @@ class WhatKindOfAssetController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, options(request)))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, options(request.userAnswers)))),
 
         value => {
 
