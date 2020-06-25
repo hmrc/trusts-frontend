@@ -25,6 +25,7 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual._
@@ -1334,6 +1335,27 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
   def registeringTrustFor5A: Option[AnswerRow] = userAnswers.get(RegisteringTrustFor5APage) map {
     x => AnswerRow("registeringTrustFor5A.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+  }
+
+  def otherAssetDescription(index: Int): Option[AnswerRow] = userAnswers.get(OtherAssetDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "assets.other.description.checkYourAnswersLabel",
+        escape(x),
+        Some(controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def otherAssetValue(index: Int, description: String): Option[AnswerRow] = userAnswers.get(OtherAssetValuePage(index)) map {
+    x =>
+      AnswerRow(
+        "assets.other.value.checkYourAnswersLabel",
+        currency(x),
+        Some(controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId).url),
+        description,
+        canEdit = canEdit
+      )
   }
 
 }

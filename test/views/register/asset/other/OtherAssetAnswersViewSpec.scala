@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package pages.register.asset.other
+package views.register.asset.other
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import views.behaviours.ViewBehaviours
+import views.html.register.asset.other.OtherAssetAnswersView
+import views.html.register.beneficiaries.IndividualBenficiaryAnswersView
 
-final case class OtherAssetValuePage(index: Int) extends QuestionPage[String] {
+class OtherAssetAnswersViewSpec extends ViewBehaviours {
 
-  override def path: JsPath = Assets.path \ index \ toString
+  val index = 0
 
-  override def toString: String = "otherAssetValue"
+  "OtherAssetAnswersView" must {
+
+    val view = viewFor[OtherAssetAnswersView](Some(emptyUserAnswers))
+
+    val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
+
+    behave like normalPage(applyView, "assets.other.checkDetails")
+
+    behave like pageWithBackLink(applyView)
+  }
 }

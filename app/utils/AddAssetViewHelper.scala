@@ -16,6 +16,7 @@
 
 package utils
 
+import models.Mode
 import models.core.UserAnswers
 import models.registration.pages.Status.Completed
 import play.api.i18n.Messages
@@ -23,7 +24,7 @@ import sections.Assets
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
-class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit messages: Messages) {
+class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(implicit messages: Messages) {
 
   def rows: AddToRows = {
 
@@ -41,17 +42,17 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
     val index = asset._2
 
     vm match {
-      case mvm: MoneyAssetViewModel => Some(parseMoney(mvm, index))
-      case mvm: ShareAssetViewModel => Some(parseShare(mvm, index))
-      case mvm: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(mvm, index))
+      case money: MoneyAssetViewModel => Some(parseMoney(money, index))
+      case share: ShareAssetViewModel => Some(parseShare(share, index))
+      case propertyOrLand: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(propertyOrLand, index))
+      case other: OtherAssetViewModel => Some(parseOther(other, index))
       case _ => None
     }
   }
 
   private def parseMoney(mvm: MoneyAssetViewModel, index: Int) : AddRow = {
-    val defaultValue = messages("entities.no.value.added")
     AddRow(
-      mvm.value.getOrElse(defaultValue),
+      mvm.value,
       mvm.`type`.toString,
       controllers.routes.FeatureNotAvailableController.onPageLoad().url,
       controllers.register.asset.money.routes.RemoveMoneyAssetController.onPageLoad(index, draftId).url
@@ -110,6 +111,15 @@ class AddAssetViewHelper(userAnswers: UserAnswers, draftId: String)(implicit mes
         )
     }
 
+  }
+
+  private def parseOther(other: OtherAssetViewModel, index: Int) : AddRow = {
+    AddRow(
+      other.description,
+      other.`type`.toString,
+      controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(mode, index, draftId).url,
+      controllers.routes.FeatureNotAvailableController.onPageLoad().url
+    )
   }
 
 }
