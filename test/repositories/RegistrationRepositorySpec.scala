@@ -21,6 +21,7 @@ import java.time.LocalDateTime
 import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
 import models._
+import models.registration.pages.Status.InProgress
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.MustMatchers
@@ -96,5 +97,64 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         verify(mockConnector).getDraftSection(draftId, "registration")(hc, executionContext)
       }
     }
-   }
+    "reading section status" must {
+
+      "read existing status when there isn't any" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val mockConfig = mock[FrontendAppConfig]
+        when(mockConfig.ttlInSeconds).thenReturn(1200)
+
+        val repository = new DefaultRegistrationsRepository(new TrustsDateFormatter(mockConfig), mockConnector)
+
+        val statusData = Json.parse(
+          """
+            |{
+            |}
+            |""".stripMargin)
+        val existingStatusResponse = SubmissionDraftResponse(LocalDateTime.now(), statusData, None)
+
+        when(mockConnector.getDraftSection(any(), any())(any(), any())).thenReturn(Future.successful(existingStatusResponse))
+
+        val result = Await.result(repository.getSectionStatus(draftId, "assets"), Duration.Inf)
+
+        result mustBe None
+      }
+      "read existing status when there is status" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val mockConfig = mock[FrontendAppConfig]
+        when(mockConfig.ttlInSeconds).thenReturn(1200)
+
+        val repository = new DefaultRegistrationsRepository(new TrustsDateFormatter(mockConfig), mockConnector)
+
+        val statusData = Json.parse(
+          """
+            |{
+            | "assets": "progress"
+            |}
+            |""".stripMargin)
+
+        val existingStatusResponse = SubmissionDraftResponse(LocalDateTime.now(), statusData, None)
+
+        when(mockConnector.getDraftSection(any(), any())(any(), any())).thenReturn(Future.successful(existingStatusResponse))
+
+        val result = Await.result(repository.getSectionStatus(draftId, "assets"), Duration.Inf)
+
+        result mustBe Some(InProgress)
+        verify(mockConnector).getDraftSection(draftId, "status")(hc, executionContext)
+      }
+    }
+
+  }
  }

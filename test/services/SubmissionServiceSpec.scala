@@ -23,6 +23,7 @@ import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
+import models.registration.pages.Status
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
@@ -41,9 +42,9 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
-  val mockConnector : TrustConnector = mock[TrustConnector]
+  private val mockConnector : TrustConnector = mock[TrustConnector]
 
-  val stubbedRegistrationsRepository = new RegistrationsRepository {
+  private val stubbedRegistrationsRepository = new RegistrationsRepository {
     override def get(draftId: String)
                     (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = Future.successful(None)
 
@@ -55,11 +56,13 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
                                              (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
+
+    override def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]] = Future.successful(None)
   }
 
-  val auditService : AuditService = injector.instanceOf[FakeAuditService]
+  private val auditService : AuditService = injector.instanceOf[FakeAuditService]
 
-  val submissionService = new DefaultSubmissionService(
+  private val submissionService = new DefaultSubmissionService(
     registrationMapper,
     mockConnector,
     auditService,
