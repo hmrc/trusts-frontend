@@ -17,6 +17,7 @@
 package controllers.register.asset
 
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.filters.IndexActionFilterProvider
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
@@ -39,22 +40,23 @@ class RemoveAssetYesNoController @Inject()(
                                             getData: DraftIdRetrievalActionProvider,
                                             requireData: RegistrationDataRequiredAction,
                                             yesNoFormProvider: YesNoFormProvider,
+                                            validateIndex: IndexActionFilterProvider,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: RemoveAssetYesNoView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("assets.removeYesNo")
 
-  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    identify andThen getData(draftId) andThen requireData
+  private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
+    identify andThen getData(draftId) andThen requireData andThen validateIndex(index, sections.Assets)
 
-  def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
       Ok(view(form, draftId, index, assetLabel(Json.toJson(request.userAnswers), index)))
   }
 
-  def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
