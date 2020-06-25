@@ -22,8 +22,9 @@ import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.{Completed, InProgress}
 import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathYesNoPage, SettlorsNamePage}
+import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import viewmodels.AddRow
 
 class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
@@ -67,7 +68,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
         "deceased" in {
 
           val userAnswers = emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("first name", None, "last name")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
             .set(DeceasedSettlorStatus, InProgress).success.value
@@ -102,12 +103,13 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val userAnswers = emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-            .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
-            .set(SettlorIndividualNamePage(0), settlorName).success.value
-            .set(SettlorIndividualDateOfBirthYesNoPage(0), false).success.value
-            .set(SettlorIndividualNINOYesNoPage(0), false).success.value
-            .set(SettlorAddressYesNoPage(0), false).success.value
-            .set(LivingSettlorStatus(0), Completed).success.value
+            .set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
+            .set(SettlorsNamePage, FullName("first name", None, "last name")).success.value
+            .set(SettlorDateOfDeathYesNoPage, false).success.value
+            .set(SettlorDateOfBirthYesNoPage, false).success.value
+            .set(SettlorsNationalInsuranceYesNoPage, false).success.value
+            .set(SettlorsLastKnownAddressYesNoPage, false).success.value
+            .set(DeceasedSettlorStatus, Completed).success.value
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
