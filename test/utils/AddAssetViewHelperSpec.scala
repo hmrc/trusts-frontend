@@ -16,6 +16,8 @@
 
 package utils
 
+import java.time.{LocalDate, ZoneOffset}
+
 import base.RegistrationSpecBase
 import controllers.register.asset._
 import models.NormalMode
@@ -27,6 +29,7 @@ import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
+import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import viewmodels.AddRow
@@ -77,6 +80,8 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(WhatKindOfAssetPage(4), PropertyOrLand).success.value
           .set(WhatKindOfAssetPage(5), Other).success.value
           .set(OtherAssetDescriptionPage(5), "Description").success.value
+          .set(WhatKindOfAssetPage(6), Partnership).success.value
+          .set(PartnershipDescriptionPage(6), "Partnership Description").success.value
 
         val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
         rows.inProgress mustBe List(
@@ -84,7 +89,8 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           AddRow("No address added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
           AddRow("No description added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3)),
           AddRow("No address or description added", typeLabel = "Property or Land", featureUnavalible, removeAssetRoute(4)),
-          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 5, fakeDraftId).url, featureUnavalible)
+          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 5, fakeDraftId).url, featureUnavalible),
+          AddRow("Partnership Description", typeLabel = "Partnership", controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, 6, fakeDraftId).url, featureUnavalible)
         )
         rows.complete mustBe Nil
       }
@@ -120,6 +126,10 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(OtherAssetDescriptionPage(4), "Description").success.value
           .set(OtherAssetValuePage(4), "4000").success.value
           .set(AssetStatus(4), Completed).success.value
+          .set(WhatKindOfAssetPage(5), Partnership).success.value
+          .set(PartnershipDescriptionPage(5), "Partnership Description").success.value
+          .set(PartnershipStartDatePage(5), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(AssetStatus(5), Completed).success.value
 
         val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
         rows.complete mustBe List(
@@ -127,7 +137,8 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           AddRow("£200", typeLabel = "Money", featureUnavalible, removeMoneyRoute(1)),
           AddRow("line 1", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
           AddRow("1 hectare of land", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3)),
-          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 4, fakeDraftId).url, featureUnavalible)
+          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 4, fakeDraftId).url, featureUnavalible),
+          AddRow("Partnership Description", typeLabel = "Partnership", controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, 5, fakeDraftId).url, featureUnavalible)
         )
         rows.inProgress mustBe Nil
       }

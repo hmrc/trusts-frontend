@@ -45,6 +45,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
       case money: MoneyAssetViewModel => Some(parseMoney(money, index))
       case share: ShareAssetViewModel => Some(parseShare(share, index))
       case propertyOrLand: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(propertyOrLand, index))
+      case partnership: PartnershipAssetViewModel => Some(parsePartnership(partnership, index))
       case other: OtherAssetViewModel => Some(parseOther(other, index))
       case _ => None
     }
@@ -118,6 +119,15 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
       other.description,
       other.`type`.toString,
       controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(mode, index, draftId).url,
+      controllers.routes.FeatureNotAvailableController.onPageLoad().url
+    )
+  }
+
+  private def parsePartnership(partnership: PartnershipAssetViewModel, index: Int) : AddRow = {
+    AddRow(
+      partnership.description,
+      partnership.`type`.toString,
+      controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(mode, index, draftId).url,
       controllers.routes.FeatureNotAvailableController.onPageLoad().url
     )
   }

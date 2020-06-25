@@ -21,7 +21,7 @@ import controllers.register.asset.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.WhatKindOfAsset.{Money, Other, PropertyOrLand, Shares}
+import models.registration.pages.WhatKindOfAsset.{Money, Other, Partnership, PropertyOrLand, Shares}
 import models.registration.pages.{AddAssets, WhatKindOfAsset}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
@@ -317,6 +317,22 @@ trait AssetRoutes {
       }
     }
 
+    "partnership assets" must {
+
+      "go to partnership asset description from WhatKindOfAsset when partnership is selected" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Partnership).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+    }
 
    "add another asset" must {
 
