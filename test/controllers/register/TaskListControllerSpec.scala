@@ -31,18 +31,20 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
+import uk.gov.hmrc.http.HeaderCarrier
 import views.html.register.TaskListView
 
 class TaskListControllerSpec extends RegistrationSpecBase {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
+  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator(frontendAppConfig)).items(answers, fakeDraftId)
+  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(frontendAppConfig), registrationsRepository)
 
-  private def isTaskListComplete(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator(frontendAppConfig)).isTaskListComplete(answers)
+  private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers, fakeDraftId)
+
+  private def isTaskListComplete(answers: UserAnswers) = newRegistrationProgress.isTaskListComplete(answers)
 
   override protected def applicationBuilder(
                                              userAnswers: Option[UserAnswers],
@@ -110,8 +112,13 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
           status(result) mustEqual OK
 
-          contentAsString(result) mustEqual
-            view(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
+          for {
+            taskList <- sections(answers)
+            isTaskListComplete <- isTaskListComplete(answers)
+          } yield {
+            contentAsString(result) mustEqual
+              view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
+          }
 
           application.stop()
         }
@@ -206,9 +213,13 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual
-          view(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages).toString
-
+        for {
+          taskList <- sections(answers)
+          isTaskListComplete <- isTaskListComplete(answers)
+        } yield {
+          contentAsString(result) mustEqual
+            view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
+        }
         application.stop()
       }
 

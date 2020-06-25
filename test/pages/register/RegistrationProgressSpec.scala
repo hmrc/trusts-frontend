@@ -36,8 +36,15 @@ import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
+import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 class RegistrationProgressSpec extends RegistrationSpecBase {
+  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   "Trust details section" must {
 
@@ -391,41 +398,34 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
     "render no tag" when {
 
-      "there are no assets in user answers" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
+      "status is None" in {
+        when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(None))
+
+        val application = applicationBuilder().build()
+
+        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
 
-        registrationProgress.assetsStatus(userAnswers) mustBe None
-      }
-
-      "assets list is empty" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val json = Json.parse(
-          """
-            |{
-            |   "assets" : []
-            |}
-            |""".stripMargin)
-
-        val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
-
-        registrationProgress.assetsStatus(userAnswers) mustBe None
+        Await.result(registrationProgress.assetsStatus(userAnswers), Duration.Inf) mustBe None
       }
 
     }
 
     "render in-progress tag" when {
 
-      "there are assets in user answers that are not complete" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
+      "status is InProgress" in {
+        when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(InProgress)))
+
+        val application = applicationBuilder().build()
+
+        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
             .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
 
-        registrationProgress.assetsStatus(userAnswers).value mustBe InProgress
+        Await.result(registrationProgress.assetsStatus(userAnswers), Duration.Inf) mustBe Some(InProgress)
       }
 
     }
@@ -433,8 +433,11 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
     "render complete tag" when {
 
       "there are assets in user answers that are complete" in {
+        when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(Completed)))
 
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
+        val application = applicationBuilder().build()
+
+        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
@@ -449,7 +452,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(AssetStatus(1), Completed).success.value
           .set(AddAssetsPage, NoComplete).success.value
 
-        registrationProgress.assetsStatus(userAnswers).value mustBe Completed
+        Await.result(registrationProgress.assetsStatus(userAnswers), Duration.Inf) mustBe Some(Completed)
       }
 
     }
@@ -460,7 +463,11 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
     "all entities marked as complete" in {
 
-      val registrationProgress = injector.instanceOf[RegistrationProgress]
+      when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(Completed)))
+
+      val application = applicationBuilder().build()
+
+      val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
       val userAnswers = emptyUserAnswers
         .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
@@ -489,11 +496,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         .set(AssetStatus(1), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
 
-      registrationProgress.isTaskListComplete(userAnswers) mustBe true
+      Await.result(registrationProgress.isTaskListComplete(userAnswers), Duration.Inf) mustBe true
     }
-
-
   }
-
-
 }
