@@ -19,12 +19,13 @@ package utils
 import base.RegistrationSpecBase
 import controllers.register.settlors.living_settlor.routes
 import models.core.pages.{FullName, IndividualOrBusiness}
+import models.registration.pages.KindOfTrust.Deed
 import models.registration.pages.Status.{Completed, InProgress}
 import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
+import pages.register.settlors.living_settlor.trust_type.{KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
 import viewmodels.AddRow
 
 class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
@@ -103,6 +104,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val userAnswers = emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(KindOfTrustPage, Deed).success.value
             .set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
             .set(SettlorsNamePage, FullName("first name", None, "last name")).success.value
             .set(SettlorDateOfDeathYesNoPage, false).success.value
