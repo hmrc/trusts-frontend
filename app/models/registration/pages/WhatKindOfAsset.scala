@@ -19,7 +19,7 @@ package models.registration.pages
 import models.registration.pages.Status.Completed
 import models.{Enumerable, WithName}
 import viewmodels.RadioOption
-import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel, OtherAssetViewModel, PropertyOrLandAssetViewModel, ShareAssetViewModel}
+import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel, OtherAssetViewModel, PartnershipAssetViewModel, PropertyOrLandAssetViewModel, ShareAssetViewModel}
 
 sealed trait WhatKindOfAsset
 
@@ -52,7 +52,7 @@ object WhatKindOfAsset extends Enumerable.Implicits {
       (PropertyOrLand, assets.count(_.isInstanceOf[PropertyOrLandAssetViewModel])),
       (Shares, assets.count(_.isInstanceOf[ShareAssetViewModel])),
       (Business, 0),
-      (Partnership, 0),
+      (Partnership, assets.count(_.isInstanceOf[PartnershipAssetViewModel])),
       (Other, assets.count(_.isInstanceOf[OtherAssetViewModel]))
     )
 

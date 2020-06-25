@@ -25,14 +25,11 @@
 
 @(answerSections: Seq[Section], trn: String, declarationSent: String)(implicit request: Request[_], messages: Messages)
 
-@printScript = {
-<script type="text/javascript" src='@routes.Assets.versioned("javascripts/print.js")'></script>
-}
-
 @main_template(
-    title = messages("confirmationAnswerPage.title"),
-    scriptElem = Some(printScript)
+    title = messages("confirmationAnswerPage.title")
     ) {
+
+    @components.back_link()
 
     @components.heading("confirmationAnswerPage.heading", headingSize = "heading-xlarge")
 
@@ -44,6 +41,10 @@
     <p>@messages("confirmationAnswerPage.paragraph2", declarationSent)</p>
 
     @components.warning("confirmationAnswerPage")
+
+    <div class="section">
+    <p>@components.button_print()</p>
+    </div>
 
     <div class="two-column-answers">
     @for(section <- answerSections){
