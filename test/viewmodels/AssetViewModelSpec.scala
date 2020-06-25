@@ -35,11 +35,12 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
         "to a view model that is not complete" in {
 
           val json = Json.obj(
-            "whatKindOfAsset" -> Money.toString
+            "whatKindOfAsset" -> Money.toString,
+            "assetMoneyValue" -> "4000"
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            MoneyAssetViewModel(Money, None, InProgress)
+            MoneyAssetViewModel(Money, "£4000", InProgress)
           )
         }
 
@@ -51,7 +52,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            MoneyAssetViewModel(Money, Some("£4000"), Completed)
+            MoneyAssetViewModel(Money, "£4000", Completed)
           )
         }
 
@@ -289,6 +290,36 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
             PropertyOrLandDefaultViewModel(`type` = PropertyOrLand, status = InProgress)
+          )
+        }
+
+      }
+
+      "other" - {
+
+        "to a view model that is not complete" in {
+
+          val json = Json.obj(
+            "whatKindOfAsset" -> Other.toString,
+            "otherAssetDescription" -> "Description",
+            "status" -> InProgress.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            OtherAssetViewModel(Other, "Description", None, InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.obj(
+            "whatKindOfAsset" -> Other.toString,
+            "otherAssetDescription" -> "Description",
+            "otherAssetValue" -> "4000",
+            "status" -> Completed.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            OtherAssetViewModel(Other, "Description", Some("£4000"), Completed)
           )
         }
 

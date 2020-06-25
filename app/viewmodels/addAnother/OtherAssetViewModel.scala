@@ -17,35 +17,37 @@
 package viewmodels.addAnother
 
 import models.registration.pages.Status.InProgress
-import models.registration.pages.WhatKindOfAsset.Money
+import models.registration.pages.WhatKindOfAsset.Other
 import models.registration.pages.{Status, WhatKindOfAsset}
 
-final case class MoneyAssetViewModel(`type` : WhatKindOfAsset,
-                                     value : String,
-                                     override val status : Status) extends AssetViewModel
+final case class OtherAssetViewModel(`type`: WhatKindOfAsset,
+                                     description: String,
+                                     value: Option[String],
+                                     override val status: Status) extends AssetViewModel
 
-object MoneyAssetViewModel {
+object OtherAssetViewModel {
 
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
 
-  implicit lazy val reads: Reads[MoneyAssetViewModel] = {
+  implicit lazy val reads: Reads[OtherAssetViewModel] = {
 
-    def formatValue(v : String) = s"£$v"
+    def formatValue(v: String) = s"£$v"
 
-    val moneyReads: Reads[MoneyAssetViewModel] =
-      ((__ \ "assetMoneyValue").read[String] and
+    val otherReads: Reads[OtherAssetViewModel] =
+      ((__ \ "otherAssetDescription").read[String] and
+        (__ \ "otherAssetValue").readNullable[String] and
         (__ \ "status").readWithDefault[Status](InProgress)
-        )((value, status) => MoneyAssetViewModel(Money, formatValue(value), status))
+        )((description, value, status) => OtherAssetViewModel(Other, description, value.map(formatValue), status))
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>
-        if (whatKindOfAsset == Money) {
+        if (whatKindOfAsset == Other) {
           Reads(_ => JsSuccess(whatKindOfAsset))
         } else {
-          Reads(_ => JsError("money asset must be of type `Money`"))
+          Reads(_ => JsError("other asset must be of type `Other`"))
         }
-    }.andKeep(moneyReads)
+    }.andKeep(otherReads)
 
   }
 

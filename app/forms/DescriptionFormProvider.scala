@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package pages.register.asset.other
+package forms
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-final case class OtherAssetValuePage(index: Int) extends QuestionPage[String] {
+class DescriptionFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = Assets.path \ index \ toString
+  def withConfig(length: Int, prefix: String): Form[String] =
+  Form(
+    "value" -> text(s"$prefix.error.required")
+      .verifying(
+        firstError(
+          isNotEmpty("value", s"$prefix.error.required"),
+          maxLength(length, s"$prefix.error.length"),
+          regexp(Validation.descriptionRegex, s"$prefix.error.invalid")
+        )
+      )
+  )
 
-  override def toString: String = "otherAssetValue"
+
 }

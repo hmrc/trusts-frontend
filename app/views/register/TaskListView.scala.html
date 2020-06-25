@@ -51,7 +51,7 @@
         <h2 id="summaryHeading">@messages("taskList.summary.heading1")</h2>
         <div id="summary-paragraph" class="paragraph">
             <p>@messages("taskList.summary.paragraph1.start")
-                @components.link(SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link1", openInNewWindow = true)@messages("taskList.summary.paragraph1.end")</p>
+                @components.link(SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link1", openInNewWindow = false)@messages("taskList.summary.paragraph1.end")</p>
         </div>
         <h2 id="summaryHeading2">@messages("taskList.summary.heading2")</h2>
         <div id="summary-paragraph-2" class="paragraph">

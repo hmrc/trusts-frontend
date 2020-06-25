@@ -66,6 +66,7 @@ site.confirm-send = Confirm and send
 site.address = Address
 site.utr = Unique Taxpayer Reference
 site.sign_out = Sign out
+site.print-or-save = Print or save this page
 
 featureNotAvailable.title = This part of the online service is not available yet
 featureNotAvailable.heading = This part of the online service is not available yet
@@ -539,7 +540,7 @@ taskList.agent.agentDetails = Agent details
 
 taskList.summary.heading1 = Print a copy
 taskList.summary.paragraph1.start = You can
-taskList.summary.link1 = print or save a draft copy of your saved answers (opens in a new window or tab)
+taskList.summary.link1 = print or save a draft copy of your saved answers
 taskList.summary.paragraph1.end = . You can also print a declared copy after you have made a declaration.
 taskList.summary.heading2 = Update asset details
 taskList.summary.paragraph2 = To update any asset details after making the declaration for this trust, use Self Assessment online or the
@@ -682,6 +683,28 @@ addAssets.singular.heading = Add assets
 addAssets.singular.title = Add assets
 
 addAssets.propertyOrLand = Property or Land
+
+assets.other.defaultText = the asset
+
+assets.other.description.title = What is the description of the asset?
+assets.other.description.heading = What is the description of the asset?
+assets.other.description.checkYourAnswersLabel = What is the description of the asset?
+assets.other.description.hint = This must be 56 characters or less
+assets.other.description.error.required = Enter a description of the asset
+assets.other.description.error.length = The description of the asset must be 56 characters or less
+assets.other.description.error.invalid = The description of the asset must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+
+assets.other.value.title = What is the current value of the asset?
+assets.other.value.heading = What is the current value of {0}?
+assets.other.value.checkYourAnswersLabel = What is the current value of {0}?
+assets.other.value.hint = Rounded down to the nearest pound. For example, 4000
+assets.other.value.error.required = Enter the current value of the asset
+assets.other.value.error.invalid = Current value of the asset must be a number
+assets.other.value.error.zero = Current value of the asset must be 1 or more
+assets.other.value.error.wholeNumber = Current value of the asset must be a whole number
+
+assets.other.checkDetails.title = Check asset details
+assets.other.checkDetails.heading = Check asset details
 
 settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
@@ -996,7 +1019,7 @@ removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
 removeIndividualBeneficiary.default = the individual beneficiary
 removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 
@@ -1059,7 +1082,7 @@ confirmationAgentPage.paragraph10.a = contact the trusts helpline (opens in a ne
 confirmationAgentPage.agent.you.can = You can
 confirmationAgentPage.agent.link = return to register and maintain a trust for a client
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 

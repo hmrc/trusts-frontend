@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package pages.register.asset.other
+package models.requests.asset
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import models.core.UserAnswers
+import models.requests.RegistrationDataRequest
+import play.api.mvc.WrappedRequest
 
-final case class OtherAssetValuePage(index: Int) extends QuestionPage[String] {
+case class OtherAssetDescriptionRequest[T](request: RegistrationDataRequest[T], description: String)
+  extends WrappedRequest[T](request){
 
-  override def path: JsPath = Assets.path \ index \ toString
-
-  override def toString: String = "otherAssetValue"
+  val userAnswers: UserAnswers = request.userAnswers
 }
