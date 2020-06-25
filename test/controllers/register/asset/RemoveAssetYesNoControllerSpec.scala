@@ -16,6 +16,8 @@
 
 package controllers.register.asset
 
+import java.time.LocalDate
+
 import base.RegistrationSpecBase
 import controllers.register.asset.routes._
 import forms.YesNoFormProvider
@@ -29,6 +31,7 @@ import org.mockito.Mockito._
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money._
 import pages.register.asset.other._
+import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import play.api.data.Form
@@ -108,7 +111,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
             val userAnswers = emptyUserAnswers
               .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
               .set(PropertyOrLandAddressYesNoPage(index), false).success.value
-              .set(PropertyOrLandDescriptionPage(index), "Description").success.value
+              .set(PropertyOrLandDescriptionPage(index), "Property or land description").success.value
               .set(PropertyOrLandTotalValuePage(index), "4000").success.value
               .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
 
@@ -123,7 +126,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form, fakeDraftId, index, "Description")(fakeRequest, messages).toString
+              view(form, fakeDraftId, index, "Property or land description")(fakeRequest, messages).toString
 
             application.stop()
           }
@@ -237,15 +240,34 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
 
       }
 
-      "Partnership asset" ignore {
+      "Partnership asset" in {
 
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(index), Partnership).success.value
+          .set(PartnershipDescriptionPage(index), "Partnership description").success.value
+          .set(PartnershipStartDatePage(index), LocalDate.parse("2000-02-03")).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, removeAssetYesNoRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[RemoveAssetYesNoView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form, fakeDraftId, index, "Partnership description")(fakeRequest, messages).toString
+
+        application.stop()
       }
 
       "Other asset" in {
 
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(index), Other).success.value
-          .set(OtherAssetDescriptionPage(index), "Description").success.value
+          .set(OtherAssetDescriptionPage(index), "Other description").success.value
           .set(OtherAssetValuePage(index), "4000").success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -259,7 +281,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, fakeDraftId, index, "Description")(fakeRequest, messages).toString
+          view(form, fakeDraftId, index, "Other description")(fakeRequest, messages).toString
 
         application.stop()
       }
