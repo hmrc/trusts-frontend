@@ -76,7 +76,7 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
         name,
         messages("entity.settlor.deceased"),
         controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
+        removeUrl = controllers.register.settlors.deceased_settlor.routes.RemoveSettlorController.onPageLoad(draftId).url
       )
       case DefaultSettlorViewModel(_, _) => AddRow(
         defaultName,

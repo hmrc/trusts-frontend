@@ -431,6 +431,9 @@ POST       /:draftId/settlors/deceased/was-settlors-address-uk                  
 GET        /:draftId/settlors/deceased/change-was-settlors-address-uk                               controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/deceased/change-was-settlors-address-uk                               controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.deceased_settlor.RemoveSettlorController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.deceased_settlor.RemoveSettlorController.onSubmit(draftId: String)
+
 GET        /:draftId/settlors/deceased/check-answers                                                controllers.register.settlors.deceased_settlor.DeceasedSettlorAnswerController.onPageLoad(draftId: String)
 POST       /:draftId/settlors/deceased/check-answers                                                controllers.register.settlors.deceased_settlor.DeceasedSettlorAnswerController.onSubmit(draftId: String)
 
