@@ -26,7 +26,7 @@ import viewmodels.{AddRow, AddToRows}
 
 class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit messages: Messages) {
 
-  def rows: AddToRows = {
+  def rows: AddToRows =
     deceasedSettlors match {
       case Some(s: SettlorViewModel) if s.status equals Completed =>
         AddToRows(
@@ -44,19 +44,16 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
           complete = livingSettlors._1.flatMap(parseSettlor)
         )
     }
-  }
 
-  val livingSettlors = {
+  val livingSettlors =
     userAnswers.get(LivingSettlors)
       .toList
       .flatten
       .zipWithIndex
       .partition(_._1.status == Completed)
-  }
 
-  val deceasedSettlors = {
+  val deceasedSettlors =
     userAnswers.get(DeceasedSettlor)
-  }
 
   private def parseSettlor(settlor: (SettlorViewModel, Int)): Option[AddRow] = {
     val vm = settlor._1
@@ -83,7 +80,7 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
       )
       case DefaultSettlorViewModel(_, _) => AddRow(
         defaultName,
-        "entity.settlor.?",
+        messages("entity.settlor.individual"),
         controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
