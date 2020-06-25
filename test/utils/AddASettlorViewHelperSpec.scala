@@ -20,8 +20,9 @@ import base.RegistrationSpecBase
 import controllers.register.settlors.living_settlor.routes
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.Status.{Completed, InProgress}
-import pages.entitystatus.LivingSettlorStatus
+import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathYesNoPage, SettlorsNamePage}
 import pages.register.settlors.living_settlor._
 import viewmodels.AddRow
 
@@ -43,42 +44,77 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
         rows.complete mustBe Nil
       }
 
-      "generate rows from user answers for settlors in progress" in {
+      "generate rows from user answers for settlors in progress" when {
+        "living" in {
 
-        val userAnswers = emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
-          .set(SettlorIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
-          .set(SettlorIndividualNamePage(1), settlorName).success.value
-          .set(SettlorIndividualDateOfBirthYesNoPage(1), false).success.value
-          .set(SettlorIndividualNINOYesNoPage(1), false).success.value
-          .set(LivingSettlorStatus(0), InProgress).success.value
-          .set(LivingSettlorStatus(1), InProgress).success.value
+          val userAnswers = emptyUserAnswers
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+            .set(SettlorIndividualOrBusinessPage(1), IndividualOrBusiness.Individual).success.value
+            .set(SettlorIndividualNamePage(1), settlorName).success.value
+            .set(SettlorIndividualDateOfBirthYesNoPage(1), false).success.value
+            .set(SettlorIndividualNINOYesNoPage(1), false).success.value
+            .set(LivingSettlorStatus(0), InProgress).success.value
+            .set(LivingSettlorStatus(1), InProgress).success.value
 
-        val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
-        rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0)),
-          AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(1))
-        )
-        rows.complete mustBe Nil
+          val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
+          rows.inProgress mustBe List(
+            AddRow("No name added", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0)),
+            AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(1))
+          )
+          rows.complete mustBe Nil
+        }
+        "deceased" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(SettlorsNamePage, FullName("first name", None, "last name")).success.value
+            .set(SettlorDateOfDeathYesNoPage, false).success.value
+            .set(DeceasedSettlorStatus, InProgress).success.value
+
+          val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
+          rows.inProgress mustBe List(
+            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute(0))
+          )
+          rows.complete mustBe Nil
+        }
       }
 
-      "generate rows from user answers for complete settlors" in {
+      "generate rows from user answers for complete settlors" when {
+        "living" in {
 
-        val userAnswers = emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
-          .set(SettlorIndividualNamePage(0), settlorName).success.value
-          .set(SettlorIndividualDateOfBirthYesNoPage(0), false).success.value
-          .set(SettlorIndividualNINOYesNoPage(0), false).success.value
-          .set(SettlorAddressYesNoPage(0), false).success.value
-          .set(LivingSettlorStatus(0), Completed).success.value
+          val userAnswers = emptyUserAnswers
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+            .set(SettlorIndividualNamePage(0), settlorName).success.value
+            .set(SettlorIndividualDateOfBirthYesNoPage(0), false).success.value
+            .set(SettlorIndividualNINOYesNoPage(0), false).success.value
+            .set(SettlorAddressYesNoPage(0), false).success.value
+            .set(LivingSettlorStatus(0), Completed).success.value
 
-        val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
-        rows.complete mustBe List(
-          AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0))
-        )
-        rows.inProgress mustBe Nil
+          val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
+          rows.complete mustBe List(
+            AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0))
+          )
+          rows.inProgress mustBe Nil
+        }
+        "deceased" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+            .set(SettlorIndividualNamePage(0), settlorName).success.value
+            .set(SettlorIndividualDateOfBirthYesNoPage(0), false).success.value
+            .set(SettlorIndividualNINOYesNoPage(0), false).success.value
+            .set(SettlorAddressYesNoPage(0), false).success.value
+            .set(LivingSettlorStatus(0), Completed).success.value
+
+          val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
+          rows.complete mustBe List(
+            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute(0))
+          )
+          rows.inProgress mustBe Nil
+        }
       }
 
     }
