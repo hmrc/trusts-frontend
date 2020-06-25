@@ -25,6 +25,7 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
@@ -50,6 +51,27 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
                                        draftId: String,
                                        canEdit: Boolean)
                                       (implicit messages: Messages) {
+
+
+  def partnershipStartDate(index: Int): Option[AnswerRow] = userAnswers.get(PartnershipStartDatePage(index)) map {
+    x =>
+      AnswerRow(
+        "partnershipStartDate.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        Some(controllers.register.asset.partnership.routes.PartnershipStartDateController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def partnershipDescription(index: Int): Option[AnswerRow] = userAnswers.get(PartnershipDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "partnershipDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
 
   def settlorBusinessName(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessNamePage(index)) map {
     x =>
