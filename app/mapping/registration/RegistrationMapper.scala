@@ -39,7 +39,6 @@ class RegistrationMapper @Inject()(
 
     for {
       trustDetails <- trustDetailsMapper.build(userAnswers)
-      assets <- assetMapper.build(userAnswers)
       correspondence <- correspondenceMapper.build(userAnswers)
       beneficiaries <- beneficiariesMapper.build(userAnswers)
       leadTrustees <- leadTrusteeMapper.build(userAnswers)
@@ -70,7 +69,7 @@ class RegistrationMapper @Inject()(
         trust = Trust(
           details = trustDetails,
           entities = entities,
-          assets = assets
+          assets = Assets(None, None, None, None, None, None)
         ),
         agentDetails = agent
       )
