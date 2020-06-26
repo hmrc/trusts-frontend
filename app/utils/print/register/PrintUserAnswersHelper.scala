@@ -43,7 +43,8 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
       helper.money,
       helper.shares,
       helper.propertyOrLand,
-      helper.businessAsset
+      helper.businessAsset,
+      helper.other
     ).flatten
 
     List(

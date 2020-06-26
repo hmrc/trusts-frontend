@@ -27,6 +27,7 @@ import models.registration.pages._
 import pages.entitystatus._
 import pages.register.agents.AgentInternalReferencePage
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.beneficiaries.individual._
@@ -115,6 +116,10 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
         .set(SharePortfolioValueInTrustPage(1), "4000").success.value
         .set(AssetStatus(1), Completed).success.value
+        .set(WhatKindOfAssetPage(2), WhatKindOfAsset.Other).success.value
+        .set(OtherAssetDescriptionPage(2), "Description").success.value
+        .set(OtherAssetValuePage(2), "4000").success.value
+        .set(AssetStatus(2), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
         .set(AgentInternalReferencePage, "agentClientReference").success.value
 
@@ -129,12 +134,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         None,
         Seq(
           checkYourAnswersHelper.trustName.value,
-          checkYourAnswersHelper.whenTrustSetup.value,
-          checkYourAnswersHelper.governedInsideTheUK.value,
-          checkYourAnswersHelper.administrationInsideUK.value,
-          checkYourAnswersHelper.trusteesBasedInUK.value,
-          checkYourAnswersHelper.establishedUnderScotsLaw.value,
-          checkYourAnswersHelper.trustResidentOffshore.value
+          checkYourAnswersHelper.whenTrustSetup.value
         ),
         Some("Trust details")
       ),
@@ -208,6 +208,14 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
           checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
           checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
           checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
+        ),
+        None
+      ),
+      AnswerSection(
+        Some("Other 1"),
+        Seq(
+          checkYourAnswersHelper.otherAssetDescription(2).value,
+          checkYourAnswersHelper.otherAssetValue(2, "Description").value
         ),
         None
       )
@@ -356,12 +364,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         None,
         Seq(
           checkYourAnswersHelper.trustName.value,
-          checkYourAnswersHelper.whenTrustSetup.value,
-          checkYourAnswersHelper.governedInsideTheUK.value,
-          checkYourAnswersHelper.administrationInsideUK.value,
-          checkYourAnswersHelper.trusteesBasedInUK.value,
-          checkYourAnswersHelper.establishedUnderScotsLaw.value,
-          checkYourAnswersHelper.trustResidentOffshore.value
+          checkYourAnswersHelper.whenTrustSetup.value
         ),
         Some("Trust details")
       ),

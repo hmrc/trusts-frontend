@@ -31,6 +31,7 @@ import pages.register.agents._
 import pages.register.asset._
 import pages.register.asset.business.{AssetAddressUkYesNoPage, AssetDescriptionPage, AssetInternationalAddressPage, AssetNamePage, AssetUkAddressPage, CurrentValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other._
 import pages.register.asset.shares._
 import pages.register.beneficiaries._
 import pages.register.beneficiaries.individual._
@@ -87,6 +88,8 @@ object AssetsRoutes {
     case AssetUkAddressPage(index) => _ => _ => controllers.register.asset.business.routes.CurrentValueController.onPageLoad(NormalMode, index, draftId)
     case AssetInternationalAddressPage(index) => _ => _ => controllers.register.asset.business.routes.CurrentValueController.onPageLoad(NormalMode, index, draftId)
     case CurrentValuePage(index) => _ => _ => controllers.register.asset.business.routes.AssetAnswerController.onPageLoad(index, draftId)
+    case OtherAssetDescriptionPage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId)
+    case OtherAssetValuePage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, draftId)
   }
 
   private def AssetAddressUkYesNoRoute(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {
@@ -160,9 +163,9 @@ object AssetsRoutes {
       case Some(Business) =>
         controllers.register.asset.business.routes.AssetNameController.onPageLoad(NormalMode, index, draftId)
       case Some(Partnership) =>
-        controllers.routes.FeatureNotAvailableController.onPageLoad()
+        controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, draftId)
       case Some(Other) =>
-        controllers.routes.FeatureNotAvailableController.onPageLoad()
+        controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, draftId)
       case _ =>
         controllers.routes.FeatureNotAvailableController.onPageLoad()
     }

@@ -14,17 +14,25 @@
  * limitations under the License.
  */
 
-package pages.register.asset.partnership
+package forms
 
-import java.time.LocalDate
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+class DescriptionFormProvider @Inject() extends Mappings {
 
-final case class  PartnershipAssetStartDatePage(index : Int) extends QuestionPage[LocalDate] {
+  def withConfig(length: Int, prefix: String): Form[String] =
+  Form(
+    "value" -> text(s"$prefix.error.required")
+      .verifying(
+        firstError(
+          isNotEmpty("value", s"$prefix.error.required"),
+          maxLength(length, s"$prefix.error.length"),
+          regexp(Validation.descriptionRegex, s"$prefix.error.invalid")
+        )
+      )
+  )
 
-  override def path: JsPath = Assets.path \ index \ toString
 
-  override def toString: String = "partnershipAssetStartDate"
 }

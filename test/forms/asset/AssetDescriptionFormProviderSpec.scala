@@ -26,7 +26,7 @@ class AssetDescriptionFormProviderSpec extends StringFieldBehaviours {
   val requiredKey = "assetDescription.error.required"
   val lengthKey = "assetDescription.error.length"
   val invalidKey = "assetDescription.error.invalid"
-  val maxLength = 56
+  val maxLength = 70
 
   val form = new AssetDescriptionFormProvider()()
 

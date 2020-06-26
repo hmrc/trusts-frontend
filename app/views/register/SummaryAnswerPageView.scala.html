@@ -24,14 +24,11 @@
 
 @(answerSections: Seq[Section], isAgent: Boolean, agentClientRef: String)(implicit request: Request[_], messages: Messages)
 
-@printScript = {
-<script type="text/javascript" src='@routes.Assets.versioned("javascripts/print.js")'></script>
-}
-
 @main_template(
-    title = messages("summaryAnswerPage.title"),
-    scriptElem = Some(printScript)
+    title = messages("summaryAnswerPage.title")
     ) {
+
+    @components.back_link()
 
     @components.heading("summaryAnswerPage.heading", headingSize = "heading-xlarge")
 
@@ -42,6 +39,10 @@
     <p>@messages("summaryAnswerPage.paragraph1")</p>
 
     <p>@messages("summaryAnswerPage.paragraph2")</p>
+
+    <div class="section">
+    <p>@components.button_print()</p>
+    </div>
 
     <div class="two-column-answers">
     @for(section <- answerSections){

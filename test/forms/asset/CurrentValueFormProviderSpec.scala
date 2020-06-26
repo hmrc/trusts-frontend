@@ -47,14 +47,6 @@ class CurrentValueFormProviderSpec extends StringFieldBehaviours with IntFieldBe
       RegexpGen.from(Validation.onlyNumbersRegex)
     )
 
-    behave like intFieldWithMinimumWithGenerator(
-      form,
-      fieldName,
-      1,
-      Gen.const(0),
-      FormError(fieldName, zeroNumberkey, Array("1"))
-    )
-
     behave like mandatoryField(
       form,
       fieldName,

@@ -23,12 +23,14 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.UKAddress
 import models.registration.pages.WhatKindOfAsset.{Business, Money, PropertyOrLand, Shares}
+import models.registration.pages.WhatKindOfAsset.{Money, Other, Partnership, PropertyOrLand, Shares}
 import models.registration.pages.{AddAssets, WhatKindOfAsset}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.asset.business.{AssetAddressUkYesNoPage, AssetDescriptionPage, AssetNamePage, AssetUkAddressPage, CurrentValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
 
@@ -265,6 +267,64 @@ trait AssetRoutes {
 
     }
 
+    "other assets" must {
+
+      "go to other asset description from WhatKindOfAsset when other is selected" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Other).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to other asset value from other asset description" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(OtherAssetDescriptionPage(index), "Description").success.value
+
+            navigator.nextPage(OtherAssetDescriptionPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to check answers from other asset value" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(OtherAssetValuePage(index), "4000").success.value
+
+            navigator.nextPage(OtherAssetValuePage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, fakeDraftId))
+        }
+      }
+    }
+
+    "partnership assets" must {
+
+      "go to partnership asset description from WhatKindOfAsset when partnership is selected" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Partnership).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+    }
 
    "add another asset" must {
 

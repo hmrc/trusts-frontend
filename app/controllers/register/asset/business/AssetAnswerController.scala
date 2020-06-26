@@ -67,10 +67,10 @@ class AssetAnswerController @Inject()(
         AnswerSection(
           None,
           Seq(
-            answers.assetAddressUkYesNo(index),
-            answers.assetDescription(index),
-            answers.assetInternationalAddress(index),
             answers.assetNamePage(index),
+            answers.assetDescription(index),
+            answers.assetAddressUkYesNo(index),
+            answers.assetInternationalAddress(index),
             answers.assetUkAddress(index),
             answers.currentValue(index)
           ).flatten
@@ -90,7 +90,7 @@ class AssetAnswerController @Inject()(
       for {
         updatedAnswers <- Future.fromTry(answers)
         _ <- registrationsRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(ShareAnswerPage, NormalMode, draftId)(request.userAnswers))
+      } yield Redirect(controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId))
 
   }
 }

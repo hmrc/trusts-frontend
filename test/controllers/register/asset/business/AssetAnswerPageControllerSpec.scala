@@ -100,7 +100,7 @@ class AssetAnswerPageControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual controllers.register.asset.routes.AddAssetsController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }
