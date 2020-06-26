@@ -25,6 +25,8 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
+import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.beneficiaries.individual._
@@ -49,6 +51,27 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
                                        draftId: String,
                                        canEdit: Boolean)
                                       (implicit messages: Messages) {
+
+
+  def partnershipStartDate(index: Int): Option[AnswerRow] = userAnswers.get(PartnershipStartDatePage(index)) map {
+    x =>
+      AnswerRow(
+        "partnershipStartDate.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        Some(controllers.register.asset.partnership.routes.PartnershipStartDateController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def partnershipDescription(index: Int): Option[AnswerRow] = userAnswers.get(PartnershipDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "partnershipDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
 
   def settlorBusinessName(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessNamePage(index)) map {
     x =>
@@ -255,20 +278,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
       trustName,
-      whenTrustSetup,
-      governedInsideTheUK,
-      countryGoverningTrust,
-      administrationInsideUK,
-      countryAdministeringTrust,
-      trusteesBasedInUK,
-      settlorsBasedInTheUK,
-      establishedUnderScotsLaw,
-      trustResidentOffshore,
-      trustPreviouslyResident,
-      registeringTrustFor5A,
-      nonresidentType,
-      inheritanceTaxAct,
-      agentOtherThanBarrister
+      whenTrustSetup
     ).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(messages("answerPage.section.trustsDetails.heading"))))) else None
@@ -522,6 +532,26 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       case _ => Nil
     }
 
+  }
+
+  def other: Seq[AnswerSection] = {
+    val answers = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
+      case (x: OtherAsset, index) => (x, index)
+    }
+
+    answers.flatMap {
+      case o@(m, index) =>
+        Seq(
+          AnswerSection(
+            Some(s"${messages("answerPage.section.otherAsset.subheading")} ${answers.indexOf(o) + 1}"),
+            Seq(
+              otherAssetDescription(index),
+              otherAssetValue(index, m.description)
+            ).flatten,
+            None
+          )
+        )
+    }
   }
 
   def propertyOrLandAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressYesNoPage(index)) map {
@@ -1334,6 +1364,27 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
   def registeringTrustFor5A: Option[AnswerRow] = userAnswers.get(RegisteringTrustFor5APage) map {
     x => AnswerRow("registeringTrustFor5A.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.RegisteringTrustFor5AController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
+  }
+
+  def otherAssetDescription(index: Int): Option[AnswerRow] = userAnswers.get(OtherAssetDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "assets.other.description.checkYourAnswersLabel",
+        escape(x),
+        Some(controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def otherAssetValue(index: Int, description: String): Option[AnswerRow] = userAnswers.get(OtherAssetValuePage(index)) map {
+    x =>
+      AnswerRow(
+        "assets.other.value.checkYourAnswersLabel",
+        currency(x),
+        Some(controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId).url),
+        description,
+        canEdit = canEdit
+      )
   }
 
 }

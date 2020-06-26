@@ -133,12 +133,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           None,
           Seq(
             checkYourAnswersHelper.trustName.value,
-            checkYourAnswersHelper.whenTrustSetup.value,
-            checkYourAnswersHelper.governedInsideTheUK.value,
-            checkYourAnswersHelper.administrationInsideUK.value,
-            checkYourAnswersHelper.trusteesBasedInUK.value,
-            checkYourAnswersHelper.establishedUnderScotsLaw.value,
-            checkYourAnswersHelper.trustResidentOffshore.value
+            checkYourAnswersHelper.whenTrustSetup.value
           ),
           Some("Trust details")
         ),
@@ -343,12 +338,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           None,
           Seq(
             checkYourAnswersHelper.trustName.value,
-            checkYourAnswersHelper.whenTrustSetup.value,
-            checkYourAnswersHelper.governedInsideTheUK.value,
-            checkYourAnswersHelper.administrationInsideUK.value,
-            checkYourAnswersHelper.trusteesBasedInUK.value,
-            checkYourAnswersHelper.establishedUnderScotsLaw.value,
-            checkYourAnswersHelper.trustResidentOffshore.value
+            checkYourAnswersHelper.whenTrustSetup.value
           ),
           Some("Trust details")
         ),
