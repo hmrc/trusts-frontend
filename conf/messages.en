@@ -1149,6 +1149,7 @@ answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.section.propertyOrLandAsset.subheading = Property or land
+answerPage.section.partnershipAsset.subheading = Partnership
 answerPage.section.otherAsset.subheading = Other
 answerPage.agentClientRef = Client reference number: {0}
 answerPage.section.other.individual.heading = Other individual
