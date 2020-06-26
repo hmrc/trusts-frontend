@@ -24,7 +24,7 @@ import models.requests.RegistrationDataRequest
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.{JsPath, JsValue, Json}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
+import play.api.mvc._
 import repositories.RegistrationsRepository
 import sections.Assets
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -45,7 +45,9 @@ class RemoveAssetYesNoController @Inject()(
                                             view: RemoveAssetYesNoView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("assets.removeYesNo")
+  private val form: Form[Boolean] = yesNoFormProvider.withPrefix("assets.removeYesNo")
+
+  private def redirect(draftId: String): Result = Redirect(controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId))
 
   private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getData(draftId) andThen requireData andThen validateIndex(index, sections.Assets)
@@ -71,18 +73,29 @@ class RemoveAssetYesNoController @Inject()(
               )
               _ <- registrationsRepository.set(updatedAnswers)
             } yield {
-              Redirect(controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId))
+              redirect(draftId)
             }
           } else {
-            Future.successful(Redirect(controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)))
+            Future.successful(redirect(draftId))
           }
         }
       )
   }
 
-  private def assetLabel(json: JsValue, index: Int)(implicit request: RegistrationDataRequest[AnyContent]): String = {
+  private def assetLabel(json: JsValue, index: Int)
+                        (implicit request: RegistrationDataRequest[AnyContent]): String = {
 
     val default: String = request.messages(messagesApi)("assets.defaultText")
+
+    def propertyOrLandLabel(propertyOrLand: PropertyOrLandAssetViewModel): String = {
+      propertyOrLand match {
+        case PropertyOrLandAssetUKAddressViewModel(_, Some(address), _) => address
+        case PropertyOrLandAssetInternationalAddressViewModel(_, Some(address), _) => address
+        case PropertyOrLandAssetAddressViewModel(_, Some(address), _) => address
+        case PropertyOrLandAssetDescriptionViewModel(_, Some(description), _) => description
+        case _ => default
+      }
+    }
 
     val path: JsPath = JsPath \ 'data \ Assets \ index
 
@@ -101,14 +114,4 @@ class RemoveAssetYesNoController @Inject()(
     }).getOrElse(default)
   }
 
-  private def propertyOrLandLabel(propertyOrLand: PropertyOrLandAssetViewModel)
-                                 (implicit request: RegistrationDataRequest[AnyContent]): String = {
-    propertyOrLand match {
-      case PropertyOrLandAssetUKAddressViewModel(_, Some(address), _) => address
-      case PropertyOrLandAssetInternationalAddressViewModel(_, Some(address), _) => address
-      case PropertyOrLandAssetAddressViewModel(_, Some(address), _) => address
-      case PropertyOrLandAssetDescriptionViewModel(_, Some(description), _) => description
-      case _ => request.messages(messagesApi)("assets.defaultText")
-    }
-  }
 }
