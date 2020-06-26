@@ -28,7 +28,6 @@ import pages.entitystatus._
 import pages.register.agents.AgentInternalReferencePage
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
-import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.beneficiaries.individual._
@@ -121,10 +120,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(OtherAssetDescriptionPage(2), "Description").success.value
         .set(OtherAssetValuePage(2), "4000").success.value
         .set(AssetStatus(2), Completed).success.value
-        .set(WhatKindOfAssetPage(3), WhatKindOfAsset.Partnership).success.value
-        .set(PartnershipDescriptionPage(3), "Partnership Description").success.value
-        .set(PartnershipStartDatePage(3), LocalDate.now).success.value
-        .set(AssetStatus(3), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
         .set(AgentInternalReferencePage, "agentClientReference").success.value
 
@@ -213,14 +208,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
           checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
           checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
           checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
-        ),
-        None
-      ),
-      AnswerSection(
-        Some("Partnership 1"),
-        Seq(
-          checkYourAnswersHelper.partnershipDescription(3).value,
-          checkYourAnswersHelper.partnershipStartDate(3).value
         ),
         None
       ),
