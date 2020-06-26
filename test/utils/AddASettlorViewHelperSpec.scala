@@ -36,6 +36,9 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
   def removeSettlorRoute(index : Int) =
     routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
 
+  def removeSettlorRoute =
+    controllers.register.settlors.deceased_settlor.routes.RemoveSettlorController.onPageLoad(fakeDraftId).url
+
   "AddSettlorViewHelper" when {
 
     ".row" must {
@@ -76,7 +79,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.inProgress mustBe List(
-            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute(0))
+            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute)
           )
           rows.complete mustBe Nil
         }
@@ -115,7 +118,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute(0))
+            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute)
           )
           rows.inProgress mustBe Nil
         }
