@@ -151,8 +151,8 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 6
-      subHeaders.size mustBe 6
+      headers.size mustBe 5
+      subHeaders.size mustBe 3
     }
 
     "assert correct number of headers and subheaders for Organisation user" in {
@@ -160,8 +160,8 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 5
-      subHeaders.size mustBe 6
+      headers.size mustBe 4
+      subHeaders.size mustBe 3
     }
 
     "assert question labels for Trust details" in {
@@ -210,27 +210,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
       assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
-    }
-
-    "assert question labels for Money Assets" in {
-      assertContainsQuestionAnswerPair(doc, messages("assetMoneyValue.checkYourAnswersLabel"), "£100")
-    }
-
-    "assert question labels for share assets" in {
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioName.checkYourAnswersLabel"), "Company")
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioOnStockExchange.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioQuantityInTrust.checkYourAnswersLabel"), "1234")
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioValueInTrust.checkYourAnswersLabel"), "£4000")
-      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
-    }
-
-    "assert question labels for property or land assets" in {
-      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandAddressYesNo.checkYourAnswersLabel"), no)
-      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandDescription.checkYourAnswersLabel"), "Town House")
-      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandTotalValue.checkYourAnswersLabel"), "£10000")
-      assertContainsQuestionAnswerPair(doc, messages("trustOwnAllThePropertyOrLand.checkYourAnswersLabel"), no)
-      assertContainsQuestionAnswerPair(doc, messages("propertyLandValueTrust.checkYourAnswersLabel"), "£10")
     }
 
   }

@@ -22,7 +22,9 @@ import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustee, T
 import models.core.UserAnswers
 
 
-class LeadTrusteeMapper @Inject()(nameMapper: NameMapper) extends Mapping[LeadTrusteeType] {
+class LeadTrusteeMapper @Inject()(nameMapper: NameMapper,
+                                  addressMapper: AddressMapper
+                                 ) extends Mapping[LeadTrusteeType] {
 
   override def build(userAnswers: UserAnswers): Option[LeadTrusteeType] = {
 
@@ -30,47 +32,60 @@ class LeadTrusteeMapper @Inject()(nameMapper: NameMapper) extends Mapping[LeadTr
     trustees match {
       case Nil => None
       case list =>
-        val leadTrusteeOption: Option[Trustee] = list.find(_.isLead)
-        leadTrusteeOption.map { leadTrustee =>
-          getLeadTrusteeType(leadTrustee)
-        }
+        list.find(_.isLead)
+            .map(buildLeadTrusteeType)
     }
   }
 
-  private def getLeadTrusteeType(leadTrustee: Trustee): LeadTrusteeType = {
+  private def buildLeadTrusteeType(leadTrustee: Trustee): LeadTrusteeType = {
     leadTrustee match {
-      case indLeadTrustee: LeadTrusteeIndividual =>
-        LeadTrusteeType(
-          leadTrusteeInd = Some(
-            LeadTrusteeIndType(
-              name = nameMapper.build(indLeadTrustee.name),
-              dateOfBirth = indLeadTrustee.dateOfBirth,
-              phoneNumber = indLeadTrustee.telephoneNumber,
-              identification = IdentificationType(
-                nino = indLeadTrustee.nino,
-                passport = None,
-                address = None
-              )
-            )
-          ),
-          leadTrusteeOrg = None
-        )
-      case orgLeadTrustee: LeadTrusteeOrganisation =>
-        LeadTrusteeType(
-          leadTrusteeInd = None,
-          leadTrusteeOrg = Some(
-            LeadTrusteeOrgType(
-              name = orgLeadTrustee.name,
-              phoneNumber = orgLeadTrustee.telephoneNumber,
-              email = None,
-              identification = IdentificationOrgType(
-                utr = orgLeadTrustee.utr,
-                address = None
-              )
-            )
+      case indLeadTrustee: LeadTrusteeIndividual => buildLeadTrusteeIndividual(indLeadTrustee)
+      case orgLeadTrustee: LeadTrusteeOrganisation => buildLeadTrusteeBusiness(orgLeadTrustee)
+    }
+  }
+
+  private def buildLeadTrusteeIndividual(leadTrustee: LeadTrusteeIndividual) = {
+    LeadTrusteeType(
+      leadTrusteeInd = Some(
+        LeadTrusteeIndType(
+          name = nameMapper.build(leadTrustee.name),
+          dateOfBirth = leadTrustee.dateOfBirth,
+          phoneNumber = leadTrustee.telephoneNumber,
+          identification = IdentificationType(
+            nino = leadTrustee.nino,
+            passport = None,
+            address = None
           )
         )
+      ),
+      leadTrusteeOrg = None
+    )
+  }
+
+  private def buildLeadTrusteeBusiness(leadTrustee: LeadTrusteeOrganisation) = {
+
+    val identification = if(leadTrustee.utr.isDefined) {
+      IdentificationOrgType(
+        utr = leadTrustee.utr,
+        address = None
+      )
+    } else {
+      IdentificationOrgType(
+        utr = None,
+        address = addressMapper.build(leadTrustee.address)
+      )
     }
 
+      LeadTrusteeType(
+        leadTrusteeInd = None,
+        leadTrusteeOrg = Some(
+          LeadTrusteeOrgType(
+            name = leadTrustee.name,
+            phoneNumber = leadTrustee.telephoneNumber,
+            email = None,
+            identification = identification
+          )
+        )
+      )
   }
 }
