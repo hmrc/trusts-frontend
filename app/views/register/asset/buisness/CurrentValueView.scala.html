@@ -24,8 +24,6 @@
 
 @(form: Form[_], mode: Mode, draftId: String, index: Int, businessName: String)(implicit request: Request[_], messages: Messages)
 
-    @optionalHtmlContent = {<p>@messages("currentValue.paragraph1")</p>}
-
 @main_template(
     title = s"${errorPrefix(form)} ${messages("currentValue.title")}"
     ) {
@@ -43,7 +41,6 @@
           symbol = Some("currency"),
           symbolText = Some(messages(s"symbolText.asSterling")),
           hint = Some(messages(s"currentValue.hint")),
-          optionalHtmlContent = Some(optionalHtmlContent),
           labelAsHeading = true
         )
 

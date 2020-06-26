@@ -588,6 +588,32 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
   }
 
+  def businessAsset: Seq[AnswerSection] = {
+    val answers: Seq[(BusinessAsset, Int)] = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
+      case (x: BusinessAsset, index) => (x, index)
+    }
+
+    answers.flatMap {
+      case o@(m, index) =>
+        Seq(
+          AnswerSection(
+            Some(s"${messages("answerPage.section.businessAsset.subheading")} ${answers.indexOf(o) + 1}"),
+            Seq(
+              assetNamePage(index),
+              assetDescription(index),
+              assetAddressUkYesNo(index),
+              assetUkAddress(index),
+              assetInternationalAddress(index),
+              currentValue(index),
+            ).flatten,
+            None
+          )
+        )
+      case _ => Nil
+    }
+
+  }
+
   def propertyOrLandAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressYesNoPage(index)) map {
     x =>
       AnswerRow(

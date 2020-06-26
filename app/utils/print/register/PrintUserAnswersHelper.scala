@@ -42,7 +42,8 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
       Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading")))),
       helper.money,
       helper.shares,
-      helper.propertyOrLand
+      helper.propertyOrLand,
+      helper.businessAsset
     ).flatten
 
     List(
