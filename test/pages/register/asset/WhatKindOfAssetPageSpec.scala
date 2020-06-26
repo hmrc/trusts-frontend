@@ -16,14 +16,18 @@
 
 package pages.register.asset
 
+import java.time.LocalDate
+
 import models.core.UserAnswers
 import models.core.pages.UKAddress
+import models.registration.pages.Status.Completed
 import models.registration.pages.{ShareClass, Status, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
+import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 
@@ -141,6 +145,26 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
         result.get(PropertyOrLandUKAddressPage(0)) mustNot be(defined)
         result.get(PropertyOrLandTotalValuePage(0)) mustNot be(defined)
         result.get(TrustOwnAllThePropertyOrLandPage(0)) mustNot be(defined)
+        result.get(AssetStatus(0)) mustNot be(defined)
+    }
+  }
+
+  "remove partnership when changing type of asset" in {
+
+    val kindOfAsset = arbitrary[WhatKindOfAsset] suchThat (x => x != WhatKindOfAsset.Partnership)
+
+    forAll(arbitrary[UserAnswers], kindOfAsset) {
+      (initial, kind) =>
+        val answers: UserAnswers = initial
+          .set(PartnershipDescriptionPage(0), "Partnership Description 1").success.value
+          .set(PartnershipStartDatePage(0), LocalDate.now).success.value
+          .set(AssetStatus(0), Completed).success.value
+
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
+
+        result.get(WhatKindOfAssetPage(0)).value mustEqual kind
+        result.get(PartnershipDescriptionPage(0)) mustNot be(defined)
+        result.get(PartnershipStartDatePage(0)) mustNot be(defined)
         result.get(AssetStatus(0)) mustNot be(defined)
     }
   }

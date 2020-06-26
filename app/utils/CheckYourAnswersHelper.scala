@@ -554,6 +554,26 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     }
   }
 
+  def partnership: Seq[AnswerSection] = {
+    val answers = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
+      case (x: PartnershipAsset, index) => (x, index)
+    }
+
+    answers.flatMap {
+      case o@(m, index) =>
+        Seq(
+          AnswerSection(
+            Some(s"${messages("answerPage.section.partnershipAsset.subheading")} ${answers.indexOf(o) + 1}"),
+            Seq(
+              partnershipDescription(index),
+              partnershipStartDate(index)
+            ).flatten,
+            None
+          )
+        )
+    }
+  }
+
   def propertyOrLandAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(PropertyOrLandAddressYesNoPage(index)) map {
     x =>
       AnswerRow(

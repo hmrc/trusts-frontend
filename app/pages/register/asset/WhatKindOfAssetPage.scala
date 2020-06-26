@@ -23,6 +23,7 @@ import pages.QuestionPage
 import pages.entitystatus.AssetStatus
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other._
+import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import play.api.libs.json.JsPath
@@ -42,18 +43,21 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
 
         removeShare(userAnswers)
           .flatMap(removePropertyOrLand)
+          .flatMap(removePartnership)
           .flatMap(removeOther)
 
       case Some(Shares) =>
 
         removeMoney(userAnswers)
           .flatMap(removePropertyOrLand)
+          .flatMap(removePartnership)
           .flatMap(removeOther)
 
       case Some(PropertyOrLand) =>
 
         removeMoney(userAnswers)
           .flatMap(removeShare)
+          .flatMap(removePartnership)
           .flatMap(removeOther)
 
       case Some(Business) =>
@@ -61,6 +65,7 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
         removeMoney(userAnswers)
           .flatMap(removePropertyOrLand)
           .flatMap(removeShare)
+          .flatMap(removePartnership)
           .flatMap(removeOther)
 
       case Some(Partnership) =>
@@ -74,6 +79,7 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
 
         removeMoney(userAnswers)
           .flatMap(removePropertyOrLand)
+          .flatMap(removePartnership)
           .flatMap(removeShare)
 
       case _ => super.cleanup(value, userAnswers)
@@ -115,4 +121,10 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
     userAnswers.remove(OtherAssetDescriptionPage(index))
       .flatMap(_.remove(OtherAssetValuePage(index)))
   }
+
+  private def removePartnership(userAnswers: UserAnswers): Try[UserAnswers] = {
+    userAnswers.remove(PartnershipDescriptionPage(index))
+      .flatMap(_.remove(PartnershipStartDatePage(index)))
+  }
+
 }
