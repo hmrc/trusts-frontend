@@ -63,22 +63,19 @@ class LeadTrusteeMapper @Inject()(nameMapper: NameMapper,
   }
 
   private def buildLeadTrusteeBusiness(leadTrustee: LeadTrusteeOrganisation) = {
-    if (leadTrustee.utr.isDefined) {
-      LeadTrusteeType(
-        leadTrusteeInd = None,
-        leadTrusteeOrg = Some(
-          LeadTrusteeOrgType(
-            name = leadTrustee.name,
-            phoneNumber = leadTrustee.telephoneNumber,
-            email = None,
-            identification = IdentificationOrgType(
-              utr = leadTrustee.utr,
-              address = None
-            )
-          )
-        )
+
+    val identification = if(leadTrustee.utr.isDefined) {
+      IdentificationOrgType(
+        utr = leadTrustee.utr,
+        address = None
       )
     } else {
+      IdentificationOrgType(
+        utr = None,
+        address = addressMapper.build(leadTrustee.address)
+      )
+    }
+
       LeadTrusteeType(
         leadTrusteeInd = None,
         leadTrusteeOrg = Some(
@@ -86,13 +83,9 @@ class LeadTrusteeMapper @Inject()(nameMapper: NameMapper,
             name = leadTrustee.name,
             phoneNumber = leadTrustee.telephoneNumber,
             email = None,
-            identification = IdentificationOrgType(
-              utr = None,
-              address = addressMapper.build(leadTrustee.address)
-            )
+            identification = identification
           )
         )
       )
-    }
   }
 }
