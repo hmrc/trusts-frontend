@@ -40,15 +40,21 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
   lazy val addOnePostRoute: String = routes.AddAssetsController.submitOne(fakeDraftId).url
   lazy val addAnotherPostRoute: String = routes.AddAssetsController.submitAnother(fakeDraftId).url
 
-  def removeMoneyRoute(index: Int): String = controllers.register.asset.money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
-  def removeShareRoute(index: Int): String = controllers.register.asset.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(1, fakeDraftId).url
+  def changeMoneyAssetRoute(index: Int): String =
+    money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+  def changeSharesAssetRoute(index: Int): String =
+    shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+  def removeAssetYesNoRoute(index: Int): String =
+    routes.RemoveAssetYesNoController.onPageLoad(index, fakeDraftId).url
 
   val addAssetsForm: Form[AddAssets] = new AddAssetsFormProvider()()
   val yesNoForm: Form[Boolean] = new YesNoFormProvider().withPrefix("addAnAssetYesNo")
 
   lazy val assets = List(
-    AddRow("£4800", typeLabel = "Money", "/trusts-registration/feature-not-available", removeMoneyRoute(0)),
-    AddRow("Share Company Name", typeLabel = "Shares", "/trusts-registration/feature-not-available", removeShareRoute(1))
+    AddRow("£4800", typeLabel = "Money", changeMoneyAssetRoute(0), removeAssetYesNoRoute(0)),
+    AddRow("Share Company Name", typeLabel = "Shares", changeSharesAssetRoute(1), removeAssetYesNoRoute(1))
   )
 
   val userAnswersWithAssetsComplete: UserAnswers = emptyUserAnswers
