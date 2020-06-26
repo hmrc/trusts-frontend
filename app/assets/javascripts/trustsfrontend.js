@@ -204,6 +204,7 @@ $(document).ready(function() {
             $(this).attr('type', 'number');
             $(this).attr('step', 'any'); 
             $(this).attr('min', '0');
+            $('form').attr('novalidate','novalidate');
           });
       }
 

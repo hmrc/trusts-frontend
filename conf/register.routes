@@ -123,6 +123,9 @@ GET        /:draftId/asset/add                                                  
 POST       /:draftId/asset/add                                                                      controllers.register.asset.AddAssetsController.submitOne(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/asset/add-another                                                              controllers.register.asset.AddAssetsController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
+GET        /:draftId/asset/:index/remove                                                            controllers.register.asset.RemoveAssetYesNoController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/remove                                                            controllers.register.asset.RemoveAssetYesNoController.onSubmit(index: Int, draftId: String)
+
 ### Money
 
 GET        /:draftId/asset/:index/money                                                             controllers.register.asset.money.AssetMoneyValueController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
