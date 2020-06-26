@@ -55,7 +55,7 @@ class RemoveAssetYesNoController @Inject()(
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      Ok(view(form, draftId, index, assetLabel(Json.toJson(request.userAnswers), index)))
+      Ok(view(form, draftId, index, assetLabel(request.userAnswers.data, index)))
   }
 
   def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
@@ -63,7 +63,7 @@ class RemoveAssetYesNoController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, draftId, index, assetLabel(Json.toJson(request.userAnswers), index)))),
+          Future.successful(BadRequest(view(formWithErrors, draftId, index, assetLabel(request.userAnswers.data, index)))),
 
         remove => {
           if (remove) {
@@ -97,7 +97,7 @@ class RemoveAssetYesNoController @Inject()(
       }
     }
 
-    val path: JsPath = JsPath \ 'data \ Assets \ index
+    val path: JsPath = JsPath \ Assets \ index
 
     (for {
       pick <- json.transform(path.json.pick)
