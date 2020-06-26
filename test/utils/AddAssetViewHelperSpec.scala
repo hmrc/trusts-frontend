@@ -27,6 +27,7 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset._
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.business.{AssetAddressUkYesNoPage, AssetDescriptionPage, AssetNamePage, AssetUkAddressPage, CurrentValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
@@ -46,7 +47,7 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
     shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   def changeBusinessAssetRoute(index: Int): String =
-    controllers.routes.FeatureNotAvailableController.onPageLoad().url
+    controllers.register.asset.business.routes.AssetNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   def changePartnershipAssetRoute(index: Int): String =
     partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
@@ -131,6 +132,13 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(PartnershipDescriptionPage(5), "Partnership Description").success.value
           .set(PartnershipStartDatePage(5), LocalDate.now(ZoneOffset.UTC)).success.value
           .set(AssetStatus(5), Completed).success.value
+          .set(WhatKindOfAssetPage(6), Business).success.value
+          .set(AssetNamePage(6), "Test").success.value
+          .set(AssetDescriptionPage(6), "Test Test Test").success.value
+          .set(AssetAddressUkYesNoPage(6), true).success.value
+          .set(AssetUkAddressPage(6), UKAddress("Test Line 1", "Test Line 2", None, None, "NE11NE")).success.value
+          .set(CurrentValuePage(6), "12").success.value
+          .set(AssetStatus(6), Completed).success.value
 
         val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
         rows.complete mustBe List(
@@ -139,7 +147,8 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           AddRow("line 1", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(2), removeAssetYesNoRoute(2)),
           AddRow("1 hectare of land", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(3), removeAssetYesNoRoute(3)),
           AddRow("Description", typeLabel = "Other", changeOtherAssetRoute(4), removeAssetYesNoRoute(4)),
-          AddRow("Partnership Description", typeLabel = "Partnership", changePartnershipAssetRoute(5), removeAssetYesNoRoute(5))
+          AddRow("Partnership Description", typeLabel = "Partnership", changePartnershipAssetRoute(5), removeAssetYesNoRoute(5)),
+          AddRow("Business Asset", typeLabel = "Business", changeBusinessAssetRoute(6), removeAssetYesNoRoute(6))
         )
         rows.inProgress mustBe Nil
       }
