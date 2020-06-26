@@ -371,15 +371,11 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           val json = Json.obj(
             "whatKindOfAsset" -> Business.toString,
             "name" -> "Test",
-            "assetDescription" -> None,
-            "assetUkAddressYesNo" -> None,
-            "ukAddress" -> None,
-            "currentValue" -> None,
             "status" -> InProgress.toString
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            BusinessAssetViewModel(Business, "Test", None, None, None, None, InProgress)
+            BusinessAssetViewModel(Business, "Test", InProgress)
           )
         }
 
@@ -389,13 +385,17 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
             "name" -> "Test",
             "description" -> "Test Test Test",
             "addressUkYesNo" -> "true",
-            "ukAddress" -> "",
+            "address" -> Json.obj(
+              "line1" -> "Test line 1",
+              "line2" -> "Test line 2",
+              "postcode" -> "NE11NE"
+            ),
             "value" -> "12",
             "status" -> Completed.toString
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            BusinessAssetViewModel(Business, "Test", Some("Test Test Test"), Some(true), Some(UKAddress("Test line 1", "Test line 2", None, None, "NE11NE")), Some("12"), Completed)
+            BusinessAssetViewModel(Business, "Test", Completed)
           )
         }
 

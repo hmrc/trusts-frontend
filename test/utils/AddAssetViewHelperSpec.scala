@@ -148,7 +148,7 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           AddRow("1 hectare of land", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(3), removeAssetYesNoRoute(3)),
           AddRow("Description", typeLabel = "Other", changeOtherAssetRoute(4), removeAssetYesNoRoute(4)),
           AddRow("Partnership Description", typeLabel = "Partnership", changePartnershipAssetRoute(5), removeAssetYesNoRoute(5)),
-          AddRow("Business Asset", typeLabel = "Business", changeBusinessAssetRoute(6), removeAssetYesNoRoute(6))
+          AddRow("Test", typeLabel = "Business", changeBusinessAssetRoute(6), removeAssetYesNoRoute(6))
         )
         rows.inProgress mustBe Nil
       }

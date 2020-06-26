@@ -16,17 +16,12 @@
 
 package viewmodels.addAnother
 
-import models.core.pages.Address
 import models.registration.pages.Status.InProgress
 import models.registration.pages.WhatKindOfAsset.Business
 import models.registration.pages.{Status, WhatKindOfAsset}
 
 final case class BusinessAssetViewModel(`type`: WhatKindOfAsset,
                                         name: String,
-                                        description: Option[String],
-                                        addressUkYesNo: Option[Boolean],
-                                        address: Option[Address],
-                                        currentValue: Option[String],
                                         override val status: Status) extends AssetViewModel
 
 object BusinessAssetViewModel {
@@ -37,14 +32,10 @@ object BusinessAssetViewModel {
   implicit lazy val reads: Reads[BusinessAssetViewModel] = {
 
     val businessReads: Reads[BusinessAssetViewModel] =
-      ((__ \ "assetName").read[String] and
-        (__ \ "assetDescription").readNullable[String] and
-        (__ \ "addressUkYesNo").readNullable[Boolean] and
-        (__ \ "address").readNullable[Address] and
-        (__ \ "currentValue").readNullable[String] and
+      ((__ \ "name").read[String] and
         (__ \ "status").readWithDefault[Status](InProgress)
-        )((name, description, addressUkYesNo, address, value, status) =>
-        BusinessAssetViewModel(Business, name, description, addressUkYesNo, address, value, status))
+        )((name, status) =>
+        BusinessAssetViewModel(Business, name, status))
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>

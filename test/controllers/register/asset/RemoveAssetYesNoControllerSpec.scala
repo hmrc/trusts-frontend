@@ -29,6 +29,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
 import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.business._
 import pages.register.asset.money._
 import pages.register.asset.other._
 import pages.register.asset.partnership._
@@ -238,6 +239,28 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
 
       "Business asset" ignore {
 
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(index), Business).success.value
+          .set(AssetNamePage(index), "Business name").success.value
+          .set(AssetDescriptionPage(index), "Business description").success.value
+          .set(AssetAddressUkYesNoPage(index), true).success.value
+          .set(AssetUkAddressPage(index), UKAddress("Line 1", "Line 2", None, None, "POSTCODE")).success.value
+          .set(CurrentValuePage(index), "4000").success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, removeAssetYesNoRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[RemoveAssetYesNoView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(form, fakeDraftId, index, "Business name")(fakeRequest, messages).toString
+
+        application.stop()
       }
 
       "Partnership asset" in {
