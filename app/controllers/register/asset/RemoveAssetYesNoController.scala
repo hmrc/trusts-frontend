@@ -23,7 +23,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{JsPath, JsValue, Json}
+import play.api.libs.json.{JsPath, JsValue}
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import sections.Assets
