@@ -16,6 +16,7 @@
 
 package views.register.asset.business
 
+import forms.DescriptionFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -26,7 +27,7 @@ class AssetDescriptionViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "assetDescription"
   val businessName = "Test"
-  val form = new AssetDescriptionFormProvider()()
+  val form = new DescriptionFormProvider().withConfig(56, messageKeyPrefix)
   val view = viewFor[AssetDescriptionView](Some(emptyUserAnswers))
 
   "AssetDescription view" must {

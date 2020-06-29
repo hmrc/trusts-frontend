@@ -19,6 +19,7 @@ package controllers.register.asset.business
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
+import forms.DescriptionFormProvider
 import forms.trustees.TrusteeBusinessNameFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
@@ -32,8 +33,8 @@ import views.html.register.trustees.organisation.TrusteeBusinessNameView
 
 class AssetDescriptionControllerSpec extends RegistrationSpecBase  with IndexValidation {
 
-  val formProvider = new AssetDescriptionFormProvider()
-  val form = formProvider()
+  val formProvider = new DescriptionFormProvider()
+  val form = formProvider.withConfig(56, "assetDescription")
   val index = 0
   val buisnessName = "Test"
 
