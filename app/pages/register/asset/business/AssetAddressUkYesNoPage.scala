@@ -16,13 +16,28 @@
 
 package pages.register.asset.business
 
+import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Assets
+
+import scala.util.Try
 
 final case class AssetAddressUkYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
   override def toString: String = "addressUkYesNo"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(true) =>
+        userAnswers.remove(AssetInternationalAddressPage(index))
+
+      case Some(false) =>
+        userAnswers.remove(AssetUkAddressPage(index))
+
+      case _ => super.cleanup(value, userAnswers)
+    }
+  }
 }
