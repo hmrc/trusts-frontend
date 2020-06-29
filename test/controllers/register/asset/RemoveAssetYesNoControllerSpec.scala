@@ -241,11 +241,11 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
 
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(index), Business).success.value
-          .set(AssetNamePage(index), "Business name").success.value
-          .set(AssetDescriptionPage(index), "Business description").success.value
-          .set(AssetAddressUkYesNoPage(index), true).success.value
-          .set(AssetUkAddressPage(index), UKAddress("Line 1", "Line 2", None, None, "POSTCODE")).success.value
-          .set(CurrentValuePage(index), "4000").success.value
+          .set(BusinessNamePage(index), "Business name").success.value
+          .set(BusinessDescriptionPage(index), "Business description").success.value
+          .set(BusinessAddressUkYesNoPage(index), true).success.value
+          .set(BusinessUkAddressPage(index), UKAddress("Line 1", "Line 2", None, None, "POSTCODE")).success.value
+          .set(BusinessValuePage(index), "4000").success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

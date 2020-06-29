@@ -29,7 +29,7 @@ import pages._
 import pages.register._
 import pages.register.agents._
 import pages.register.asset._
-import pages.register.asset.business.{AssetAddressUkYesNoPage, AssetDescriptionPage, AssetInternationalAddressPage, AssetNamePage, AssetUkAddressPage, CurrentValuePage}
+import pages.register.asset.business.{BusinessAddressUkYesNoPage, BusinessDescriptionPage, BusinessInternationalAddressPage, BusinessNamePage, BusinessUkAddressPage, BusinessValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other._
 import pages.register.asset.shares._
@@ -82,22 +82,22 @@ object AssetsRoutes {
     case ShareValueInTrustPage(index) => _ => _ => controllers.register.asset.shares.routes.ShareAnswerController.onPageLoad(index, draftId)
     case ShareAnswerPage => _ => _ => controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
     case ShareCompanyNamePage(index) => _ => _ => controllers.register.asset.shares.routes.SharesOnStockExchangeController.onPageLoad(NormalMode, index, draftId)
-    case AssetNamePage(index) => _ => _ => controllers.register.asset.business.routes.AssetDescriptionController.onPageLoad(NormalMode, index, draftId)
-    case AssetDescriptionPage(index) => _ => _ => controllers.register.asset.business.routes.AssetAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
-    case AssetAddressUkYesNoPage(index) => _ => ua => AssetAddressUkYesNoRoute(ua, index, draftId)
-    case AssetUkAddressPage(index) => _ => _ => controllers.register.asset.business.routes.CurrentValueController.onPageLoad(NormalMode, index, draftId)
-    case AssetInternationalAddressPage(index) => _ => _ => controllers.register.asset.business.routes.CurrentValueController.onPageLoad(NormalMode, index, draftId)
-    case CurrentValuePage(index) => _ => _ => controllers.register.asset.business.routes.AssetAnswerController.onPageLoad(index, draftId)
+    case BusinessNamePage(index) => _ => _ => controllers.register.asset.business.routes.BusinessDescriptionController.onPageLoad(NormalMode, index, draftId)
+    case BusinessDescriptionPage(index) => _ => _ => controllers.register.asset.business.routes.BusinessAddressUkYesNoController.onPageLoad(NormalMode, index, draftId)
+    case BusinessAddressUkYesNoPage(index) => _ => ua => AssetAddressUkYesNoRoute(ua, index, draftId)
+    case BusinessUkAddressPage(index) => _ => _ => controllers.register.asset.business.routes.BusinessValueController.onPageLoad(NormalMode, index, draftId)
+    case BusinessInternationalAddressPage(index) => _ => _ => controllers.register.asset.business.routes.BusinessValueController.onPageLoad(NormalMode, index, draftId)
+    case BusinessValuePage(index) => _ => _ => controllers.register.asset.business.routes.BusinessAnswersController.onPageLoad(index, draftId)
     case OtherAssetDescriptionPage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId)
     case OtherAssetValuePage(index) => _ => _ => controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, draftId)
   }
 
   private def AssetAddressUkYesNoRoute(userAnswers: UserAnswers, index : Int, draftId: String) : Call = {
-    userAnswers.get(AssetAddressUkYesNoPage(index)) match {
+    userAnswers.get(BusinessAddressUkYesNoPage(index)) match {
       case Some(true) =>
-        controllers.register.asset.business.routes.AssetUkAddressController.onPageLoad(NormalMode, index, draftId)
+        controllers.register.asset.business.routes.BusinessUkAddressController.onPageLoad(NormalMode, index, draftId)
       case Some(false) =>
-        controllers.register.asset.business.routes.AssetInternationalAddressController.onPageLoad(NormalMode, index, draftId)
+        controllers.register.asset.business.routes.BusinessInternationalAddressController.onPageLoad(NormalMode, index, draftId)
       case _=>
         routes.SessionExpiredController.onPageLoad()
     }
@@ -161,7 +161,7 @@ object AssetsRoutes {
       case Some(PropertyOrLand) =>
         controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, draftId)
       case Some(Business) =>
-        controllers.register.asset.business.routes.AssetNameController.onPageLoad(NormalMode, index, draftId)
+        controllers.register.asset.business.routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)
       case Some(Partnership) =>
         controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, draftId)
       case Some(Other) =>

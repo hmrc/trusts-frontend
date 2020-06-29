@@ -23,7 +23,7 @@ import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
 import models.registration.pages.KindOfTrust._
 import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
 import pages.register.agents.AgentNamePage
-import pages.register.asset.business.AssetNamePage
+import pages.register.asset.business.BusinessNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
 import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
@@ -87,7 +87,7 @@ object CheckAnswersFormatters {
   }
 
   def assetName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(AssetNamePage(index)).map(_.toString).getOrElse("")
+    userAnswers.get(BusinessNamePage(index)).map(_.toString).getOrElse("")
   }
 
   def agencyName(userAnswers: UserAnswers): String = {

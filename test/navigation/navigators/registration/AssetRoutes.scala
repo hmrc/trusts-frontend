@@ -22,13 +22,12 @@ import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.UKAddress
-import models.registration.pages.WhatKindOfAsset.{Business, Money, PropertyOrLand, Shares}
-import models.registration.pages.WhatKindOfAsset.{Money, Other, Partnership, PropertyOrLand, Shares}
-import models.registration.pages.{AddAssets, WhatKindOfAsset}
+import models.registration.pages.AddAssets
+import models.registration.pages.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.asset.business.{AssetAddressUkYesNoPage, AssetDescriptionPage, AssetNamePage, AssetUkAddressPage, CurrentValuePage}
+import pages.register.asset.business._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.shares._
@@ -376,7 +375,7 @@ trait AssetRoutes {
             val answers = userAnswers.set(WhatKindOfAssetPage(index), Business).success.value
 
             navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.asset.business.routes.AssetNameController.onPageLoad(NormalMode, index, fakeDraftId))
+              .mustBe(controllers.register.asset.business.routes.BusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -386,10 +385,10 @@ trait AssetRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AssetNamePage(index), "Test").success.value
+            val answers = userAnswers.set(BusinessNamePage(index), "Test").success.value
 
-            navigator.nextPage(AssetNamePage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.asset.business.routes.AssetDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+            navigator.nextPage(BusinessNamePage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -399,10 +398,10 @@ trait AssetRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AssetDescriptionPage(index), "Test Test Test").success.value
+            val answers = userAnswers.set(BusinessDescriptionPage(index), "Test Test Test").success.value
 
-            navigator.nextPage(AssetDescriptionPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.asset.business.routes.AssetAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+            navigator.nextPage(BusinessDescriptionPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -412,10 +411,10 @@ trait AssetRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AssetAddressUkYesNoPage(index), true).success.value
+            val answers = userAnswers.set(BusinessAddressUkYesNoPage(index), true).success.value
 
-            navigator.nextPage(AssetAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.asset.business.routes.AssetUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
+            navigator.nextPage(BusinessAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -425,10 +424,10 @@ trait AssetRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AssetAddressUkYesNoPage(index), false).success.value
+            val answers = userAnswers.set(BusinessAddressUkYesNoPage(index), false).success.value
 
-            navigator.nextPage(AssetAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.asset.business.routes.AssetInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId))
+            navigator.nextPage(BusinessAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -438,10 +437,10 @@ trait AssetRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(AssetUkAddressPage(index), UKAddress("Test line 1", "Test line 2", None, None, "AA111AA")).success.value
+            val answers = userAnswers.set(BusinessUkAddressPage(index), UKAddress("Test line 1", "Test line 2", None, None, "AA111AA")).success.value
 
-            navigator.nextPage(AssetUkAddressPage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.asset.business.routes.CurrentValueController.onPageLoad(NormalMode, index, fakeDraftId))
+            navigator.nextPage(BusinessUkAddressPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessValueController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
 
@@ -451,10 +450,10 @@ trait AssetRoutes {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
-            val answers = userAnswers.set(CurrentValuePage(index), "12").success.value
+            val answers = userAnswers.set(BusinessValuePage(index), "12").success.value
 
-            navigator.nextPage(CurrentValuePage(index), NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.asset.business.routes.AssetAnswerController.onPageLoad(index, fakeDraftId))
+            navigator.nextPage(BusinessValuePage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessAnswersController.onPageLoad(index, fakeDraftId))
         }
       }
     }

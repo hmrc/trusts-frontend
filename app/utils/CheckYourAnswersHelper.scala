@@ -24,7 +24,7 @@ import models.core.UserAnswers
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
-import pages.register.asset.business.{AssetAddressUkYesNoPage, AssetDescriptionPage, AssetInternationalAddressPage, AssetNamePage, AssetUkAddressPage, CurrentValuePage}
+import pages.register.asset.business.{BusinessAddressUkYesNoPage, BusinessDescriptionPage, BusinessInternationalAddressPage, BusinessNamePage, BusinessUkAddressPage, BusinessValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
@@ -75,64 +75,64 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
 
-  def assetAddressUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(AssetAddressUkYesNoPage(index)) map {
+  def assetAddressUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(BusinessAddressUkYesNoPage(index)) map {
     x =>
       AnswerRow(
         "assetAddressUkYesNo.checkYourAnswersLabel",
         yesOrNo(x),
-        Some(controllers.register.asset.business.routes.AssetAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        Some(controllers.register.asset.business.routes.BusinessAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }
 
-  def assetDescription(index: Int): Option[AnswerRow] = userAnswers.get(AssetDescriptionPage(index)) map {
+  def assetDescription(index: Int): Option[AnswerRow] = userAnswers.get(BusinessDescriptionPage(index)) map {
     x =>
       AnswerRow(
         "assetDescription.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        Some(controllers.register.asset.business.routes.AssetDescriptionController.onPageLoad(NormalMode, index, draftId).url),
+        Some(controllers.register.asset.business.routes.BusinessDescriptionController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }
 
-  def assetNamePage(index: Int): Option[AnswerRow] = userAnswers.get(AssetNamePage(index)) map {
+  def assetNamePage(index: Int): Option[AnswerRow] = userAnswers.get(BusinessNamePage(index)) map {
     x =>
       AnswerRow(
         "assetName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        Some(controllers.register.asset.business.routes.AssetNameController.onPageLoad(NormalMode, index, draftId).url),
+        Some(controllers.register.asset.business.routes.BusinessNameController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }
 
-  def assetInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(AssetInternationalAddressPage(index)) map {
+  def assetInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(BusinessInternationalAddressPage(index)) map {
     x =>
       AnswerRow(
         "assetInternationalAddress.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
-        Some(controllers.register.asset.business.routes.AssetInternationalAddressController.onPageLoad(NormalMode, index, draftId).url),
+        Some(controllers.register.asset.business.routes.BusinessInternationalAddressController.onPageLoad(NormalMode, index, draftId).url),
         assetName(index, userAnswers),
         canEdit = canEdit
       )
   }
 
-  def assetUkAddress(index: Int): Option[AnswerRow] = userAnswers.get(AssetUkAddressPage(index)) map {
+  def assetUkAddress(index: Int): Option[AnswerRow] = userAnswers.get(BusinessUkAddressPage(index)) map {
     x =>
       AnswerRow(
         "assetUkAddress.checkYourAnswersLabel",
         ukAddress(x),
-        Some(controllers.register.asset.business.routes.AssetUkAddressController.onPageLoad(NormalMode, index, draftId).url),
+        Some(controllers.register.asset.business.routes.BusinessUkAddressController.onPageLoad(NormalMode, index, draftId).url),
         assetName(index, userAnswers),
         canEdit = canEdit
       )
   }
 
-  def currentValue(index: Int): Option[AnswerRow] = userAnswers.get(CurrentValuePage(index)) map {
+  def currentValue(index: Int): Option[AnswerRow] = userAnswers.get(BusinessValuePage(index)) map {
     x =>
       AnswerRow(
         "currentValue.checkYourAnswersLabel",
         currency(x),
-        Some(controllers.register.asset.business.routes.CurrentValueController.onPageLoad(NormalMode, index, draftId).url),
+        Some(controllers.register.asset.business.routes.BusinessValueController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }

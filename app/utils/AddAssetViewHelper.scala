@@ -116,7 +116,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
     AddRow(
       bvm.name,
       bvm.`type`.toString,
-      business.routes.AssetNameController.onPageLoad(mode, index, draftId).url,
+      business.routes.BusinessNameController.onPageLoad(mode, index, draftId).url,
       routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url
     )
   }

@@ -178,11 +178,11 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
-          .set(AssetNamePage(0), "Test").success.value
-          .set(AssetDescriptionPage(0), "Description").success.value
-          .set(AssetAddressUkYesNoPage(0), true).success.value
-          .set(AssetUkAddressPage(0), address).success.value
-          .set(CurrentValuePage(0), "123").success.value
+          .set(BusinessNamePage(0), "Test").success.value
+          .set(BusinessDescriptionPage(0), "Description").success.value
+          .set(BusinessAddressUkYesNoPage(0), true).success.value
+          .set(BusinessUkAddressPage(0), address).success.value
+          .set(BusinessValuePage(0), "123").success.value
           .set(AssetStatus(0), Completed).success.value
 
         val expected = Some(Assets(

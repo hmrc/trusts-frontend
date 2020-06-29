@@ -27,7 +27,7 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset._
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
-import pages.register.asset.business.{AssetAddressUkYesNoPage, AssetDescriptionPage, AssetNamePage, AssetUkAddressPage, CurrentValuePage}
+import pages.register.asset.business.{BusinessAddressUkYesNoPage, BusinessDescriptionPage, BusinessNamePage, BusinessUkAddressPage, BusinessValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
@@ -47,7 +47,7 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
     shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   def changeBusinessAssetRoute(index: Int): String =
-    controllers.register.asset.business.routes.AssetNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+    controllers.register.asset.business.routes.BusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   def changePartnershipAssetRoute(index: Int): String =
     partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
@@ -133,11 +133,11 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(PartnershipStartDatePage(5), LocalDate.now(ZoneOffset.UTC)).success.value
           .set(AssetStatus(5), Completed).success.value
           .set(WhatKindOfAssetPage(6), Business).success.value
-          .set(AssetNamePage(6), "Test").success.value
-          .set(AssetDescriptionPage(6), "Test Test Test").success.value
-          .set(AssetAddressUkYesNoPage(6), true).success.value
-          .set(AssetUkAddressPage(6), UKAddress("Test Line 1", "Test Line 2", None, None, "NE11NE")).success.value
-          .set(CurrentValuePage(6), "12").success.value
+          .set(BusinessNamePage(6), "Test").success.value
+          .set(BusinessDescriptionPage(6), "Test Test Test").success.value
+          .set(BusinessAddressUkYesNoPage(6), true).success.value
+          .set(BusinessUkAddressPage(6), UKAddress("Test Line 1", "Test Line 2", None, None, "NE11NE")).success.value
+          .set(BusinessValuePage(6), "12").success.value
           .set(AssetStatus(6), Completed).success.value
 
         val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
