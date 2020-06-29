@@ -16,7 +16,6 @@
 
 package views.register.asset.business
 
-import forms.assets.AssetDescriptionFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat

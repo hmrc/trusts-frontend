@@ -26,7 +26,7 @@ class AssetNameFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("assetName.error.required")
-        .verifying(maxLength(56, "assetName.error.length"),
+        .verifying(maxLength(105, "assetName.error.length"),
           isNotEmpty("value", "assetName.error.required"),
           regexp(Validation.nameRegex, "assetName.error.invalidFormat"))
     )

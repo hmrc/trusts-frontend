@@ -19,7 +19,6 @@ package controllers.register.asset.business
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import forms.assets.AssetDescriptionFormProvider
 import forms.trustees.TrusteeBusinessNameFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary

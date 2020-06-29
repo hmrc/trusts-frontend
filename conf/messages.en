@@ -712,19 +712,19 @@ assets.removeYesNo.heading = Are you sure you want to remove {0}?
 assets.removeYesNo.error.required = Select yes if you want to remove the asset
 
 assetAddressUkYesNo.title = Is the business asset address in the UK?
-assetAddressUkYesNo.heading = Is {0} address in the UK?
+assetAddressUkYesNo.heading = Is {0}’s address in the UK?
 assetAddressUkYesNo.checkYourAnswersLabel = Is {0} address in the UK?
-assetAddressUkYesNo.error.required = Select yes if the business's address in the UK
+assetAddressUkYesNo.error.required = Select yes if the {0}’s address in the UK
 
 assetDescription.title = What is the description for the business asset?
 assetDescription.heading = What is the description for {0}?
 assetDescription.checkYourAnswersLabel = What is the description for {0}?
-assetDescription.hint = This must be 70 characters or less
+assetDescription.hint = This must be 56 characters or less
 assetDescription.error.required = Enter a description of the business
 assetDescription.error.invalid = The description of the beneficiary must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 assetDescription.error.length = The description of the beneficiary must be 70 characters or less
 
-assetInternationalAddress.title = What is the business asset address?
+assetInternationalAddress.title = What is the business asset’s address?
 assetInternationalAddress.heading = What is {0}’s address?
 assetInternationalAddress.checkYourAnswersLabel = What is {0}’s address?
 
@@ -732,8 +732,8 @@ assetName.title = What is the business’s name?
 assetName.heading = What is the business’s name?
 assetName.checkYourAnswersLabel = What is the business’s name?
 assetName.error.required = Enter the business’s name
-assetName.error.length = Company’s name cannot be more than 53 characters
-assetName.error.format = Company’s name must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+assetName.error.length = Business’s name cannot be more than 53 characters
+assetName.error.invalidFormat = Business’s name must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 assetUkAddress.title = What is the business asset address?
 assetUkAddress.heading = What is {0}’s address?
@@ -744,9 +744,10 @@ currentValue.heading = What is the current value of the business?
 currentValue.checkYourAnswersLabel = What is the current value of the business?
 currentValue.hint = Rounded down to the nearest pound. For example, 4000
 currentValue.error.required = Enter the current value of the business
-currentValue.error.length = Total assets value must be 12 numbers or less
-currentValue.error.invalidFormat = Total assets value must be a number
-currentValue.error.wholeNumber = Total assets value must be a whole number
+currentValue.error.max.length = Assets current value must be 999999999999 or less
+currentValue.error.min.length = Assets current value must be 1 or more
+currentValue.error.invalidFormat = Assets current value must be a number
+currentValue.error.wholeNumber = Assets current value must be a whole number
 currentValue.link = Return to registration progress
 
 AssetAnswer.title = Check asset details
@@ -1643,7 +1644,7 @@ accessibilityStatement.reporting.pre.link = We are always looking to improve the
 accessibilityStatement.reporting.link = accessibility problem (opens in a new window or tab)
 
 accessibilityStatement.what.to.do = What to do if you are not happy with how we respond to your complaint
-accessibilityStatement.what.to.do.pre.eass.link = The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the 'accessibility regulations'). If you are not happy with how we respond to your complaint,
+accessibilityStatement.what.to.do.pre.eass.link = The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ’accessibility regulations’). If you are not happy with how we respond to your complaint,
 
 accessibilityStatement.what.to.do.eass.link = contact the Equality Advisory and Support Service (EASS)
 accessibilityStatement.what.to.do.or.the = or the
