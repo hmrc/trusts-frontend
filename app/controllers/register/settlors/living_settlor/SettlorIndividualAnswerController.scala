@@ -17,8 +17,7 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import controllers.filters.IndexActionFilterProvider
+import controllers.actions.register._
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed

@@ -32,7 +32,7 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 
 trait LivingSettlorRoutes {
 
@@ -280,7 +280,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -303,7 +303,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+              .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
         }
       }
     }
@@ -386,7 +386,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -410,7 +410,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+              .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
         }
       }
     }
@@ -422,7 +422,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
 
     }
@@ -499,7 +499,10 @@ trait LivingSettlorRoutes {
 
     forAll(arbitrary[UserAnswers]) {
       userAnswers =>
-        navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+
+        val answers = userAnswers.set(AddAnotherSettlorYesNoPage, true).success.value
+
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
           .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
     }
 

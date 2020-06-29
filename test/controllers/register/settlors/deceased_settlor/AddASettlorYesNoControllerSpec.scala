@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors
+package controllers.register.settlors.deceased_settlor
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
@@ -22,7 +22,7 @@ import forms.YesNoFormProvider
 import pages.register.settlors.AddAnotherSettlorYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.register.settlors.AddAnotherSettlorYesNoView
+import views.html.register.settlors.deceased_settlor.AddAnotherSettlorYesNoView
 
 class AddASettlorYesNoControllerSpec extends RegistrationSpecBase {
 

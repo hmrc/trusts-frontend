@@ -35,10 +35,10 @@ object DeceasedSettlorRoutes {
     case SettlorsNationalInsuranceYesNoPage => _ => deceasedSettlorNinoRoute(draftId)
     case SettlorsLastKnownAddressYesNoPage => _ => deceasedSettlorLastKnownAddressRoute(draftId)
     case SettlorDateOfDeathPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
-    case SettlorNationalInsuranceNumberPage => _ => _ => controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case SettlorNationalInsuranceNumberPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
     case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute(draftId)
-    case SettlorsInternationalAddressPage => _ => _ => controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(draftId)
-    case SettlorsUKAddressPage => _ => _ => controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case SettlorsInternationalAddressPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case SettlorsUKAddressPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
     case DeceasedSettlorAnswerPage => _ => deceasedSettlorAnswerPage(draftId)
   }
 
@@ -55,7 +55,7 @@ object DeceasedSettlorRoutes {
   }
 
   private def deceasedSettlorLastKnownAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsLastKnownAddressYesNoPage) match {
-    case Some(false) => controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case Some(false) => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
     case Some(true) => controllers.register.settlors.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }

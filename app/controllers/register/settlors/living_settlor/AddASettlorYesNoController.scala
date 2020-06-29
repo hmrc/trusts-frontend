@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors
+package controllers.register.settlors.living_settlor
 
 import controllers.actions.register._
 import forms.YesNoFormProvider
@@ -27,14 +27,15 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.settlors.AddAnotherSettlorYesNoView
+import utils.annotations.LivingSettlor
+import views.html.register.settlors.living_settlor.AddAnotherSettlorYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class AddASettlorYesNoController @Inject()(
                                             override val messagesApi: MessagesApi,
                                             registrationsRepository: RegistrationsRepository,
-                                            navigator: Navigator,
+                                            @LivingSettlor navigator: Navigator,
                                             identify: RegistrationIdentifierAction,
                                             getData: DraftIdRetrievalActionProvider,
                                             requireData: RegistrationDataRequiredAction,

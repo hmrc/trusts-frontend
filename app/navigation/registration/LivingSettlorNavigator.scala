@@ -27,8 +27,8 @@ import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
+import pages.register.settlors.living_settlor.trust_type._
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -38,6 +38,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case SetUpAfterSettlorDiedYesNoPage => _ => setUpAfterSettlorDied(draftId)
     case KindOfTrustPage => _ => kindOfTrustPage(draftId)
+    case AddAnotherSettlorYesNoPage => _ => _ => controllers.register.settlors.living_settlor.routes.SettlorIndividualAnswerController.onPageLoad(0, draftId)
     case SetUpInAdditionToWillTrustYesNoPage => _ => setInAdditionToWillTrustRoute(draftId)
     case HowDeedOfVariationCreatedPage => _ => _ => controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case HoldoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
@@ -45,17 +46,17 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)
     case SettlorIndividualDateOfBirthPage(index) => _ => _ => routes.SettlorIndividualNINOYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualNINOYesNoPage(index) => _ => settlorIndividualNINOYesNoPage(draftId, index)
-    case SettlorIndividualNINOPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+    case SettlorIndividualNINOPage(_) => _ => _ => controllers.register.settlors.living_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
     case SettlorAddressYesNoPage(index) => _ => settlorIndividualAddressYesNoPage(draftId, index)
     case SettlorAddressUKYesNoPage(index) => _ => settlorIndividualAddressUKYesNoPage(draftId, index)
     case SettlorAddressUKPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorAddressInternationalPage(index) => _ => _ => routes.SettlorIndividualPassportYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualPassportYesNoPage(index) => _ => settlorIndividualPassportYesNoPage(draftId, index)
-    case SettlorIndividualPassportPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+    case SettlorIndividualPassportPage(_) => _ => _ => controllers.register.settlors.living_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
     case SettlorIndividualIDCardYesNoPage(index) => _ =>  settlorIndividualIDCardYesNoPage(draftId, index)
-    case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+    case SettlorIndividualIDCardPage(_) => _ => _ => controllers.register.settlors.living_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
-    case SettlorIndividualAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
+    case SettlorIndividualAnswerPage => _ => settlorIndividualAnswerPage(draftId)
     case SettlorBusinessNamePage(index)  =>_ => _ => routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
@@ -141,7 +142,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def settlorIndividualAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(SettlorAddressYesNoPage(index)) match {
       case Some(true) => routes.SettlorIndividualAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
-      case Some(false) => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+      case Some(false) => controllers.register.settlors.living_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 
@@ -162,7 +163,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def settlorIndividualIDCardYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(SettlorIndividualIDCardYesNoPage(index)) match {
       case Some(true) => routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, draftId)
-      case Some(false) => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+      case Some(false) => controllers.register.settlors.living_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 
@@ -177,5 +178,12 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
         }
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
+
+
+  private def settlorIndividualAnswerPage(draftId: String)(answers: UserAnswers) = answers.get(AddAnotherSettlorYesNoPage) match {
+    case Some(false) => controllers.register.routes.TaskListController.onPageLoad(draftId)
+    case Some(true) => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
+    case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
+  }
 
 }

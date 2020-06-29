@@ -100,7 +100,7 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(SettlorNationalInsuranceNumberPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -126,7 +126,7 @@ trait DeceasedSettlorRoutes {
         userAnswers =>
           val answers = userAnswers.set(SettlorsLastKnownAddressYesNoPage, value = false).success.value
           navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
     "go to WasSettlorsAddressUKYesNoPage from SettlorsLastKnownAddressYesNoPage when user answers yes" in {
@@ -157,14 +157,14 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(SettlorsInternationalAddressPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
     "go to AnotherSettlorYesNo from SettlorsUKAddressPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(SettlorsUKAddressPage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(controllers.register.settlors.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
     "go to TaskList from DeceasedSettlorAnswerPage" in {
