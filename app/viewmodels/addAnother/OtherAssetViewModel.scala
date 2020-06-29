@@ -19,26 +19,21 @@ package viewmodels.addAnother
 import models.registration.pages.Status.InProgress
 import models.registration.pages.WhatKindOfAsset.Other
 import models.registration.pages.{Status, WhatKindOfAsset}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 final case class OtherAssetViewModel(`type`: WhatKindOfAsset,
                                      description: String,
-                                     value: Option[String],
                                      override val status: Status) extends AssetViewModel
 
 object OtherAssetViewModel {
 
-  import play.api.libs.functional.syntax._
-  import play.api.libs.json._
-
   implicit lazy val reads: Reads[OtherAssetViewModel] = {
-
-    def formatValue(v: String) = s"£$v"
 
     val otherReads: Reads[OtherAssetViewModel] =
       ((__ \ "otherAssetDescription").read[String] and
-        (__ \ "otherAssetValue").readNullable[String] and
         (__ \ "status").readWithDefault[Status](InProgress)
-        )((description, value, status) => OtherAssetViewModel(Other, description, value.map(formatValue), status))
+        )((description, status) => OtherAssetViewModel(Other, description, status))
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>
