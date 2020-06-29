@@ -31,7 +31,7 @@ import pages.register.asset.other._
 class BusinessAssetMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
-  val businessAssetMapper: Mapping[List[BusinessAssetType]] = injector.instanceOf[BusinessAssetType]
+  val businessAssetMapper: Mapping[List[BusinessAssetType]] = injector.instanceOf[BusinessAssetMapper]
 
   "BusinessAssetMapper" - {
 
@@ -68,14 +68,15 @@ class BusinessAssetMapperSpec extends FreeSpec with MustMatchers
       val userAnswers =
         emptyUserAnswers
           .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
-          .set(AssetNamePage(0), "Test").success.value
-          .set(AssetDescriptionPage(0), "Description").success.value
+          .set(AssetNamePage(0), "Test 1").success.value
+          .set(AssetDescriptionPage(0), "Description 1").success.value
           .set(AssetAddressUkYesNoPage(0), true).success.value
           .set(AssetUkAddressPage(0), UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")).success.value
           .set(CurrentValuePage(0), "123").success.value
           .set(AssetStatus(0), Completed).success.value
-          .set(AssetNamePage(1), "Test").success.value
-          .set(AssetDescriptionPage(1), "Description").success.value
+          .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Business).success.value
+          .set(AssetNamePage(1), "Test 2").success.value
+          .set(AssetDescriptionPage(1), "Description 2").success.value
           .set(AssetAddressUkYesNoPage(1), true).success.value
           .set(AssetUkAddressPage(1), UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")).success.value
           .set(CurrentValuePage(1), "123").success.value
@@ -83,11 +84,17 @@ class BusinessAssetMapperSpec extends FreeSpec with MustMatchers
 
       businessAssetMapper.build(userAnswers).value mustBe List(
         BusinessAssetType(
-          "Test", "Description",
-          AddressType("26","Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB"), 123L),
-      BusinessAssetType(
-        "Test", "Description",
-        AddressType("26","Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB"), 123L)
+          "Test 1",
+          "Description 1",
+          AddressType("26","Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB"),
+          123L
+        ),
+        BusinessAssetType(
+          "Test 2",
+          "Description 2",
+          AddressType("26","Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB"),
+          123L
+        )
       )
 
       businessAssetMapper.build(userAnswers).value.length mustBe 2

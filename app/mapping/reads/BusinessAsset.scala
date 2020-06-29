@@ -24,7 +24,6 @@ import play.api.libs.json.{JsError, JsSuccess, Reads, __}
 final case class BusinessAsset(override val whatKindOfAsset: WhatKindOfAsset,
                                assetName: String,
                                assetDescription: String,
-                               assetAddressUk: Boolean,
                                address: Address,
                                currentValue: String) extends Asset
 
@@ -36,12 +35,11 @@ object BusinessAsset {
 
     val businessAssetReads: Reads[BusinessAsset] = (
       (__ \ "whatKindOfAsset").read[WhatKindOfAsset] and
-        (__ \ "assetName").read[String] and
-        (__ \ "assetDescription").read[String] and
-        (__ \ "assetAddressUk").read[Boolean] and
+        (__ \ "name").read[String] and
+        (__ \ "description").read[String] and
         (__ \ "address").read[Address] and
-        (__ \ "currentValue").read[String]
-      )((kind, name, description, addressYesNo, address, value) => BusinessAsset(kind, name, description,addressYesNo, address, value))
+        (__ \ "value").read[String]
+      )((kind, name, description, address, value) => BusinessAsset(kind, name, description, address, value))
 
     (__ \ "whatKindOfAsset").read[WhatKindOfAsset].flatMap[WhatKindOfAsset] {
       whatKindOfAsset: WhatKindOfAsset =>

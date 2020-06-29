@@ -237,7 +237,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
         }
       }
 
-      "Business asset" ignore {
+      "Business asset" in {
 
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(index), Business).success.value
