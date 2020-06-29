@@ -21,8 +21,8 @@ import models.registration.pages.WhatKindOfAsset.Partnership
 import models.registration.pages.{Status, WhatKindOfAsset}
 
 final case class PartnershipAssetViewModel(`type`: WhatKindOfAsset,
-                                     description: String,
-                                     override val status: Status) extends AssetViewModel
+                                           description: String,
+                                           override val status: Status) extends AssetViewModel
 
 object PartnershipAssetViewModel {
 
@@ -30,8 +30,6 @@ object PartnershipAssetViewModel {
   import play.api.libs.json._
 
   implicit lazy val reads: Reads[PartnershipAssetViewModel] = {
-
-    def formatValue(v: String) = s"£$v"
 
     val partnershipReads: Reads[PartnershipAssetViewModel] =
       ((__ \ "partnershipDescription").read[String] and
