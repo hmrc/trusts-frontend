@@ -36,11 +36,12 @@
         @components.error_summary(form.errors)
 
         @components.input_text(
-          field = form("value"),
-          label = messages("individualBeneficiaryIncome.heading", name.toString),
-          labelClass=Some("heading-large"),
-          labelAsHeading = true,
-          hint = Some(messages(s"individualBeneficiaryIncome.hint"))
+            field = form("value"),
+            label = messages("individualBeneficiaryIncome.heading", name.toString),
+            labelClass=Some("heading-large"),
+            labelAsHeading = true,
+            hint = Some(messages(s"individualBeneficiaryIncome.hint")),
+            inputMode = Some("numeric")
         )
 
         @components.submit_button()

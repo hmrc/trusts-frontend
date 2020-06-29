@@ -37,14 +37,15 @@
         @components.error_summary(form.errors)
 
         @components.input_text(
-          field = form("value"),
-          label = messages("assetMoneyValue.heading"),
-          labelClass=Some("heading-large"),
-          symbol = Some("currency"),
-          symbolText = Some(messages(s"symbolText.asSterling")),
-          hint = Some(messages(s"assetMoneyValue.hint")),
-          optionalHtmlContent = Some(optionalHtmlContent),
-          labelAsHeading = true
+            field = form("value"),
+            label = messages("assetMoneyValue.heading"),
+            labelClass=Some("heading-large"),
+            symbol = Some("currency"),
+            symbolText = Some(messages(s"symbolText.asSterling")),
+            hint = Some(messages(s"assetMoneyValue.hint")),
+            optionalHtmlContent = Some(optionalHtmlContent),
+            labelAsHeading = true,
+            inputMode = Some("numeric")
         )
 
         @components.submit_button()

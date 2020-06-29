@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package pages.register.trustees.organisation
+package mapping.registration
 
+import javax.inject.Inject
+import mapping.Mapping
+import mapping.reads.PartnershipAsset
 import models.core.UserAnswers
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Trustees
 
-import scala.util.Try
+class PartnershipAssetMapper @Inject() extends Mapping[List[PartnershipType]] {
 
-final case class TrusteeUtrYesNoPage(index : Int) extends QuestionPage[Boolean] {
+  override def build(userAnswers: UserAnswers): Option[List[PartnershipType]] = {
 
-  override def path: JsPath = Trustees.path \ index \ toString
+    val partnerships: List[PartnershipAsset] =
+      userAnswers.get(mapping.reads.Assets)
+        .getOrElse(List.empty[mapping.reads.Asset])
+        .collect { case x: PartnershipAsset => x }
 
-  override def toString: String = "isUKBusiness"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(false) =>
-        userAnswers.remove(TrusteesUtrPage(index))
-      case _ => super.cleanup(value, userAnswers)
+    partnerships match {
+      case Nil => None
+      case list => Some(
+        list.map(x => PartnershipType(x.description, x.startDate))
+      )
     }
   }
 }

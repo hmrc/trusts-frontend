@@ -43,6 +43,7 @@ object Asset {
     ShareNonPortfolioAsset.reads or
     SharePortfolioAsset.reads or
     PropertyOrLandAsset.reads or
+    PartnershipAsset.reads or
     OtherAsset.reads
   }
 

@@ -15,16 +15,17 @@
  *@
 
 @(
-        field: Field,
-        label: String,
-        labelAsHeading: Boolean = false,
-        inputClass: Option[String] = None,
-        hint: Option[String] = None,
-        readerHint: Option[String] = None,
-        labelClass: Option[String] = None,
-        symbol: Option[String] = None,
-        optionalHtmlContent: Option[Html] = None,
-        symbolText: Option[String] = None
+    field: Field,
+    label: String,
+    labelAsHeading: Boolean = false,
+    inputClass: Option[String] = None,
+    hint: Option[String] = None,
+    readerHint: Option[String] = None,
+    labelClass: Option[String] = None,
+    symbol: Option[String] = None,
+    optionalHtmlContent: Option[Html] = None,
+    symbolText: Option[String] = None,
+    inputMode: Option[String] = None
 )(implicit messages: Messages)
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
@@ -51,8 +52,11 @@
         id="@{field.id}"
         name="@{field.name}"
         value="@{field.value}"
+        @if(inputMode.nonEmpty) {
+            inputmode="@inputMode"
+        }
         @if(symbolText.nonEmpty) {
-        aria-label='@{label} @{symbolText.get}'
+            aria-label='@{label} @{symbolText.get}'
         }
         @if(hint.nonEmpty) {
             aria-describedby="@{field.id}_hint"
