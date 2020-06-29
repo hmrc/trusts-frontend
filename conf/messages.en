@@ -731,6 +731,8 @@ assetName.title = What is the business’s name?
 assetName.heading = What is the business’s name?
 assetName.checkYourAnswersLabel = What is the business’s name?
 assetName.error.required = Enter the business’s name
+assetName.error.length = Company’s name cannot be more than 53 characters
+assetName.error.format = Company’s name must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
 
 assetUkAddress.title = What is the business asset address?
 assetUkAddress.heading = What is {0}’s address?

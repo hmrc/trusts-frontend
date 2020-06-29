@@ -23,11 +23,14 @@ import play.api.data.Form
 
 class AssetNameFormProvider @Inject() extends Mappings {
 
+  val maxLengthBusinessAsset = 56
+
   def apply(): Form[String] =
     Form(
       "value" -> text("assetName.error.required")
         .verifying(maxLength(56, "assetName.error.length"),
           isNotEmpty("value", "assetName.error.required"),
+          maxLength(maxLengthBusinessAsset, "assetDescription.error.length"),
           regexp(Validation.nameRegex, "assetName.error.invalidFormat"))
     )
 }
