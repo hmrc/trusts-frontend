@@ -35,12 +35,13 @@
         @components.error_summary(form.errors)
 
         @components.input_text(
-          field = form("value"),
-          label = messages("trusteeUtr.heading", trusteeBusinessName),
-          labelAsHeading = true,
-          hint = Some(messages("trusteeUtr.hint")),
-          readerHint = Some(messages("trusteeUtr.hint.reader")),
-          labelClass = Some("heading-large")
+            field = form("value"),
+            label = messages("trusteeUtr.heading", trusteeBusinessName),
+            labelAsHeading = true,
+            hint = Some(messages("trusteeUtr.hint")),
+            readerHint = Some(messages("trusteeUtr.hint.reader")),
+            labelClass = Some("heading-large"),
+            inputMode = Some("numeric")
         )
 
         <p>@messages("trusteeUtr.p1") <a target="_blank" href="https://www.gov.uk/find-lost-utr-number">@messages("trusteeUtr.link")</a>.</p>
