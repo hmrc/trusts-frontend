@@ -710,12 +710,12 @@ assets.removeYesNo.title = Are you sure you want to remove the asset?
 assets.removeYesNo.heading = Are you sure you want to remove {0}?
 assets.removeYesNo.error.required = Select yes if you want to remove the asset
 
-assetAddressUkYesNo.title = Is {0} address in the UK?
+assetAddressUkYesNo.title = Is the business asset address in the UK?
 assetAddressUkYesNo.heading = Is {0} address in the UK?
 assetAddressUkYesNo.checkYourAnswersLabel = Is {0} address in the UK?
 assetAddressUkYesNo.error.required = Select yes if the business's address in the UK
 
-assetDescription.title = What is the description for {0}?
+assetDescription.title = What is the description for the business asset?
 assetDescription.heading = What is the description for {0}?
 assetDescription.checkYourAnswersLabel = What is the description for {0}?
 assetDescription.hint = This must be 70 characters or less
