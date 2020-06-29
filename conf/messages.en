@@ -636,7 +636,7 @@ assetMoneyValue.checkYourAnswersLabel = What is the total amount of money in the
 assetMoneyValue.paragraph1 = Add all current amounts together.
 assetMoneyValue.hint = Rounded down to the nearest pound. For example, 4000
 assetMoneyValue.error.required = Enter the current total amount of money in the trust
-assetMoneyValue.error.length = Total assets value must be 12 numbers or less
+assetMoneyValue.error.length = Total assets value must be 999999999999 or less
 assetMoneyValue.error.invalidFormat = Total assets value must be a number
 assetMoneyValue.error.wholeNumber = Total assets value must be a whole number
 assetMoneyValue.error.zero = Total amount of money in the trust must be 1 or more
@@ -686,7 +686,7 @@ addAssets.singular.title = Add assets
 
 addAssets.propertyOrLand = Property or Land
 
-assets.other.defaultText = the asset
+assets.defaultText = the asset
 
 assets.other.description.title = What is the description of the asset?
 assets.other.description.heading = What is the description of the asset?
@@ -703,10 +703,15 @@ assets.other.value.hint = Rounded down to the nearest pound. For example, 4000
 assets.other.value.error.required = Enter the current value of the asset
 assets.other.value.error.invalid = Current value of the asset must be a number
 assets.other.value.error.zero = Current value of the asset must be 1 or more
+assets.other.value.error.length = Current value of the asset must be 999999999999 or less
 assets.other.value.error.wholeNumber = Current value of the asset must be a whole number
 
 assets.other.checkDetails.title = Check asset details
 assets.other.checkDetails.heading = Check asset details
+
+assets.removeYesNo.title = Are you sure you want to remove the asset?
+assets.removeYesNo.heading = Are you sure you want to remove {0}?
+assets.removeYesNo.error.required = Select yes if you want to remove the asset
 
 settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
@@ -1156,6 +1161,8 @@ answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.section.propertyOrLandAsset.subheading = Property or land
+answerPage.section.partnershipAsset.subheading = Partnership
+answerPage.section.otherAsset.subheading = Other
 answerPage.agentClientRef = Client reference number: {0}
 answerPage.section.other.individual.heading = Other individual
 
@@ -1176,7 +1183,7 @@ sharePortfolioQuantityInTrust.title = How many individual shares are in the port
 sharePortfolioQuantityInTrust.heading = How many individual shares are in the portfolio?
 sharePortfolioQuantityInTrust.checkYourAnswersLabel = How many individual shares are in the portfolio?
 sharePortfolioQuantityInTrust.error.required = Enter the current number of shares in the portfolio
-sharePortfolioQuantityInTrust.error.length = Total amount of individual shares in the portfolio must be 12 numbers or less
+sharePortfolioQuantityInTrust.error.length = Total amount of individual shares in the portfolio must be 999999999999 or less
 sharePortfolioQuantityInTrust.error.invalid = Total amount of individual shares in the portfolio must be a number
 sharePortfolioQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
 sharePortfolioQuantityInTrust.error.zero = Total amount of individual shares in the portfolio must be 1 or more
@@ -1185,7 +1192,7 @@ sharePortfolioValueInTrust.title = What is the current value of the portfolio?
 sharePortfolioValueInTrust.heading = What is the current value of the portfolio?
 sharePortfolioValueInTrust.checkYourAnswersLabel = What is the current value of the portfolio?
 sharePortfolioValueInTrust.error.required = Enter the current value of the portfolio
-sharePortfolioValueInTrust.error.length = Total current value of the portfolio must be 12 numbers or less
+sharePortfolioValueInTrust.error.length = Total current value of the portfolio must be 999999999999 or less
 sharePortfolioValueInTrust.error.invalid = Total current value of the portfolio must be a number
 sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
 sharePortfolioValueInTrust.error.zero = Total current value of the portfolio must be 1 or more
@@ -1211,7 +1218,7 @@ shareQuantityInTrust.heading = How many {0} shares are in the trust?
 shareQuantityInTrust.checkYourAnswersLabel = How many {0} shares are in the trust?
 shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
 shareQuantityInTrust.error.invalid = Total shares in the trust must be a number
-shareQuantityInTrust.error.length = Total shares in the trust must be 12 numbers or less
+shareQuantityInTrust.error.length = Total shares in the trust must be 999999999999 or less
 shareQuantityInTrust.error.required = Enter the current number of shares in the trust
 shareQuantityInTrust.error.zero = Total shares in the trust must be 1 or more
 
@@ -1261,7 +1268,7 @@ propertyOrLandTotalValue.heading = What is the current total value of the proper
 propertyOrLandTotalValue.checkYourAnswersLabel = What is the current total value of the property or land?
 propertyOrLandTotalValue.hint = This can be an estimate. Rounded down to the nearest pound. For example, 4000
 propertyOrLandTotalValue.error.required = Enter the current total value of the property or land
-propertyOrLandTotalValue.error.length = Current total value of the property or land must be 12 numbers or less
+propertyOrLandTotalValue.error.length = Current total value of the property or land must be 999999999999 or less
 propertyOrLandTotalValue.error.invalid = Current total value of the property or land must be a number
 propertyOrLandTotalValue.error.zero = Current total value of the property or land must be 1 or more
 propertyOrLandTotalValue.error.wholeNumber = Current total value of the property or land must be a whole number
@@ -1666,3 +1673,25 @@ accessibilityStatement.page.prepared.on = This page was prepared on 31 March 202
 accessibilityStatement.wcag.standard = Web Content Accessibility Guidelines version 2.1 AA standard
 
 footer.links.accessibility.text = Accessibility
+
+partnershipDescription.title = What is the description for the partnership?
+partnershipDescription.heading = What is the description for the partnership?
+partnershipDescription.checkYourAnswersLabel = What is the description for the partnership?
+partnershipDescription.hint = This must be 56 characters or less
+partnershipDescription.error.required = Enter a description of the partnership
+partnershipDescription.error.length = The description of the partnership must be 56 characters or less
+partnershipDescription.error.invalid = The description of the partnership must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, hyphens and spaces
+
+partnershipStartDate.title = When did the partnership start?
+partnershipStartDate.heading = When did the partnership start?
+partnershipStartDate.checkYourAnswersLabel = When did the partnership start?
+partnershipStartDate.hint = For example, 31 3 2015
+partnershipStartDate.error.required.all = Enter the date the partnership started
+partnershipStartDate.error.required.two = The date the partnership started must include {0} and {1}
+partnershipStartDate.error.required = The date the partnership started must include {0}
+partnershipStartDate.error.invalid = Enter a real start date for the partnership start date
+partnershipStartDate.error.future = The date the partnership started must be today or in the past
+partnershipStartDate.error.past = The date the partnership started must be after 31 December 1499
+
+partnershipAnswers.title = Check asset details
+partnershipAnswers.heading = Check asset details

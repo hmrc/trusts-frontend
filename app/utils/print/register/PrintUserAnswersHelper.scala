@@ -38,16 +38,8 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
       helper.classOfBeneficiaries(helper.individualBeneficiaries.exists(_.nonEmpty))
     ).flatten.flatten
 
-    val assetSections = List(
-      Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading")))),
-      helper.money,
-      helper.shares,
-      helper.propertyOrLand
-    ).flatten
-
     List(
-      entitySections,
-      assetSections
+      entitySections
     ).flatten
   }
 }

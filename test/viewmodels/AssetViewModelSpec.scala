@@ -325,6 +325,34 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
 
       }
 
+      "partnership" - {
+
+        "to a view model that is not complete" in {
+
+          val json = Json.obj(
+            "whatKindOfAsset" -> Partnership.toString,
+            "partnershipDescription" -> "Description",
+            "status" -> InProgress.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PartnershipAssetViewModel(Partnership, "Description", InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.obj(
+            "whatKindOfAsset" -> Partnership.toString,
+            "partnershipDescription" -> "Description",
+            "status" -> Completed.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PartnershipAssetViewModel(Partnership, "Description", Completed)
+          )
+        }
+
+      }
 
       "to a default from any other type" in {
         val json = Json.obj(

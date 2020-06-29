@@ -21,10 +21,10 @@ import connector.OtacAuthConnectorImpl
 import controllers.actions._
 import controllers.actions.register._
 import navigation.Navigator
-import navigation.registration.{LivingSettlorNavigator, PropertyOrLandNavigator}
+import navigation.registration.{LivingSettlorNavigator, PartnershipNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultRegistrationsRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
-import utils.annotations.{LivingSettlor, PropertyOrLand}
+import utils.annotations.{LivingSettlor, Partnership, PropertyOrLand}
 import utils.{DateFormatter, TrustsDateFormatter}
 
 class Module extends AbstractModule {
@@ -46,6 +46,7 @@ class Module extends AbstractModule {
 
     bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
     bind(classOf[Navigator]).annotatedWith(classOf[LivingSettlor]).to(classOf[LivingSettlorNavigator])
+    bind(classOf[Navigator]).annotatedWith(classOf[Partnership]).to(classOf[PartnershipNavigator])
 
     bind(classOf[DateFormatter]).to(classOf[TrustsDateFormatter])
   }

@@ -16,6 +16,8 @@
 
 package utils
 
+import java.time.{LocalDate, ZoneOffset}
+
 import base.RegistrationSpecBase
 import controllers.register.asset._
 import models.NormalMode
@@ -27,31 +29,33 @@ import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
+import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import viewmodels.AddRow
 
 class AddAssetViewHelperSpec extends RegistrationSpecBase {
 
-  def removeMoneyRoute(index: Int) =
-    money.routes.RemoveMoneyAssetController.onPageLoad(index, fakeDraftId).url
+  def changeMoneyAssetRoute(index: Int): String =
+    money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  def removeSharePortfolioRoute(index: Int) =
-    shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, fakeDraftId).url
+  def changePropertyOrLandAssetRoute(index: Int): String =
+    property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  def removeShareCompanyRoute(index: Int) =
-    shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, fakeDraftId).url
+  def changeSharesAssetRoute(index: Int): String =
+    shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  def removePropertyOrLandRoute(index: Int) =
-    property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, fakeDraftId).url
+  def changeBusinessAssetRoute(index: Int): String =
+    controllers.routes.FeatureNotAvailableController.onPageLoad().url
 
-  def removePropertyOrLandDescriptionRoute(index: Int) =
-    property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, fakeDraftId).url
+  def changePartnershipAssetRoute(index: Int): String =
+    partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  def removeAssetRoute(index: Int) =
-    routes.DefaultRemoveAssetController.onPageLoad(index, fakeDraftId).url
+  def changeOtherAssetRoute(index: Int): String =
+    other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  val featureUnavalible = "/trusts-registration/feature-not-available"
+  def removeAssetYesNoRoute(index: Int): String =
+    routes.RemoveAssetYesNoController.onPageLoad(index, fakeDraftId).url
 
   "AddAssetViewHelper" when {
 
@@ -77,14 +81,17 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(WhatKindOfAssetPage(4), PropertyOrLand).success.value
           .set(WhatKindOfAssetPage(5), Other).success.value
           .set(OtherAssetDescriptionPage(5), "Description").success.value
+          .set(WhatKindOfAssetPage(6), Partnership).success.value
+          .set(PartnershipDescriptionPage(6), "Partnership Description").success.value
 
         val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
         rows.inProgress mustBe List(
-          AddRow("No name added", typeLabel = "Shares", featureUnavalible, removeSharePortfolioRoute(0)),
-          AddRow("No address added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
-          AddRow("No description added", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3)),
-          AddRow("No address or description added", typeLabel = "Property or Land", featureUnavalible, removeAssetRoute(4)),
-          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 5, fakeDraftId).url, featureUnavalible)
+          AddRow("No name added", typeLabel = "Shares", changeSharesAssetRoute(0), removeAssetYesNoRoute(0)),
+          AddRow("No address added", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(2), removeAssetYesNoRoute(2)),
+          AddRow("No description added", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(3), removeAssetYesNoRoute(3)),
+          AddRow("No address or description added", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(4), removeAssetYesNoRoute(4)),
+          AddRow("Description", typeLabel = "Other", changeOtherAssetRoute(5), removeAssetYesNoRoute(5)),
+          AddRow("Partnership Description", typeLabel = "Partnership", changePartnershipAssetRoute(6), removeAssetYesNoRoute(6))
         )
         rows.complete mustBe Nil
       }
@@ -120,14 +127,19 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(OtherAssetDescriptionPage(4), "Description").success.value
           .set(OtherAssetValuePage(4), "4000").success.value
           .set(AssetStatus(4), Completed).success.value
+          .set(WhatKindOfAssetPage(5), Partnership).success.value
+          .set(PartnershipDescriptionPage(5), "Partnership Description").success.value
+          .set(PartnershipStartDatePage(5), LocalDate.now(ZoneOffset.UTC)).success.value
+          .set(AssetStatus(5), Completed).success.value
 
         val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
         rows.complete mustBe List(
-          AddRow("Share Company Name", typeLabel = "Shares", featureUnavalible, removeShareCompanyRoute(0)),
-          AddRow("£200", typeLabel = "Money", featureUnavalible, removeMoneyRoute(1)),
-          AddRow("line 1", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandRoute(2)),
-          AddRow("1 hectare of land", typeLabel = "Property or Land", featureUnavalible, removePropertyOrLandDescriptionRoute(3)),
-          AddRow("Description", typeLabel = "Other", controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, 4, fakeDraftId).url, featureUnavalible)
+          AddRow("Share Company Name", typeLabel = "Shares", changeSharesAssetRoute(0), removeAssetYesNoRoute(0)),
+          AddRow("£200", typeLabel = "Money", changeMoneyAssetRoute(1), removeAssetYesNoRoute(1)),
+          AddRow("line 1", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(2), removeAssetYesNoRoute(2)),
+          AddRow("1 hectare of land", typeLabel = "Property or Land", changePropertyOrLandAssetRoute(3), removeAssetYesNoRoute(3)),
+          AddRow("Description", typeLabel = "Other", changeOtherAssetRoute(4), removeAssetYesNoRoute(4)),
+          AddRow("Partnership Description", typeLabel = "Partnership", changePartnershipAssetRoute(5), removeAssetYesNoRoute(5))
         )
         rows.inProgress mustBe Nil
       }

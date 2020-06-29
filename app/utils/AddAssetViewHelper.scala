@@ -23,6 +23,7 @@ import play.api.i18n.Messages
 import sections.Assets
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
+import controllers.register.asset._
 
 class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(implicit messages: Messages) {
 
@@ -45,6 +46,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
       case money: MoneyAssetViewModel => Some(parseMoney(money, index))
       case share: ShareAssetViewModel => Some(parseShare(share, index))
       case propertyOrLand: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(propertyOrLand, index))
+      case partnership: PartnershipAssetViewModel => Some(parsePartnership(partnership, index))
       case other: OtherAssetViewModel => Some(parseOther(other, index))
       case _ => None
     }
@@ -54,71 +56,58 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
     AddRow(
       mvm.value,
       mvm.`type`.toString,
-      controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-      controllers.register.asset.money.routes.RemoveMoneyAssetController.onPageLoad(index, draftId).url
+      money.routes.AssetMoneyValueController.onPageLoad(mode, index, draftId).url,
+      routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url
     )
   }
 
-  private def parseShare(mvm: ShareAssetViewModel, index : Int) : AddRow = {
+  private def parseShare(svm: ShareAssetViewModel, index : Int) : AddRow = {
     val defaultName = messages("entities.no.name.added")
 
-    val removeRoute = if (mvm.inPortfolio) {
-      controllers.register.asset.shares.routes.RemoveSharePortfolioAssetController.onPageLoad(index, draftId)
-    } else {
-      controllers.register.asset.shares.routes.RemoveShareCompanyNameAssetController.onPageLoad(index, draftId)
-    }
-
-    AddRow(mvm.name.getOrElse(defaultName), mvm.`type`.toString, "/trusts-registration/feature-not-available", removeRoute.url)
+    AddRow(
+      svm.name.getOrElse(defaultName),
+      svm.`type`.toString,
+      shares.routes.SharesInAPortfolioController.onPageLoad(mode, index, draftId).url,
+      routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url
+    )
   }
 
-  private def parsePropertyOrLand(mvm : PropertyOrLandAssetViewModel, index: Int) : AddRow = {
+  private def parsePropertyOrLand(plvm : PropertyOrLandAssetViewModel, index: Int) : AddRow = {
     val defaultAddressName = messages("entities.no.address.added")
     val defaultDescriptionName = messages("entities.no.description.added")
 
     val typeLabel : String = messages("addAssets.propertyOrLand")
 
-    mvm match {
-      case PropertyOrLandAssetUKAddressViewModel(_, address, _) => AddRow(
-        address.getOrElse(defaultAddressName),
-        typeLabel,
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-        controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithAddressUKController.onPageLoad(index, draftId).url
-      )
-      case PropertyOrLandAssetInternationalAddressViewModel(_, address, _) => AddRow(
-        address.getOrElse(defaultAddressName),
-        typeLabel,
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-        controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithAddressInternationalController.onPageLoad(index, draftId).url
-      )
-      case PropertyOrLandAssetAddressViewModel(_, address, _) => AddRow(
-        address.getOrElse(defaultAddressName),
-        typeLabel,
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url
-      )
-      case PropertyOrLandAssetDescriptionViewModel(_, description, _) => AddRow(
-        description.getOrElse(defaultDescriptionName),
-        typeLabel,
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-        controllers.register.asset.property_or_land.routes.RemovePropertyOrLandWithDescriptionController.onPageLoad(index, draftId).url
-      )
-      case PropertyOrLandDefaultViewModel(_, _) =>
-        AddRow(
-          messages("entities.propertyOrLand.default"),
-          typeLabel,
-          controllers.routes.FeatureNotAvailableController.onPageLoad().url,
-          controllers.register.asset.routes.DefaultRemoveAssetController.onPageLoad(index, draftId).url
-        )
-    }
+    AddRow(
+      plvm match {
+        case PropertyOrLandAssetUKAddressViewModel(_, address, _) => address.getOrElse(defaultAddressName)
+        case PropertyOrLandAssetInternationalAddressViewModel(_, address, _) => address.getOrElse(defaultAddressName)
+        case PropertyOrLandAssetAddressViewModel(_, address, _) => address.getOrElse(defaultAddressName)
+        case PropertyOrLandAssetDescriptionViewModel(_, description, _) => description.getOrElse(defaultDescriptionName)
+        case PropertyOrLandDefaultViewModel(_, _) => messages("entities.propertyOrLand.default")
+      },
+      typeLabel,
+      property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(mode, index, draftId).url,
+      routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url
+    )
 
   }
 
-  private def parseOther(other: OtherAssetViewModel, index: Int) : AddRow = {
+  private def parseOther(ovm: OtherAssetViewModel, index: Int) : AddRow = {
     AddRow(
-      other.description,
-      other.`type`.toString,
-      controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(mode, index, draftId).url,
-      controllers.routes.FeatureNotAvailableController.onPageLoad().url
+      ovm.description,
+      ovm.`type`.toString,
+      other.routes.OtherAssetDescriptionController.onPageLoad(mode, index, draftId).url,
+      routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url
+    )
+  }
+
+  private def parsePartnership(pvm: PartnershipAssetViewModel, index: Int) : AddRow = {
+    AddRow(
+      pvm.description,
+      pvm.`type`.toString,
+      partnership.routes.PartnershipDescriptionController.onPageLoad(mode, index, draftId).url,
+      routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url
     )
   }
 

@@ -16,15 +16,6 @@
 
 package pages.register.asset.partnership
 
-import java.time.LocalDate
+import pages.Page
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
-
-final case class  PartnershipAssetStartDatePage(index : Int) extends QuestionPage[LocalDate] {
-
-  override def path: JsPath = Assets.path \ index \ toString
-
-  override def toString: String = "partnershipAssetStartDate"
-}
+case object PartnershipAnswerPage extends Page

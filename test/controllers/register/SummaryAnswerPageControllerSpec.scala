@@ -27,6 +27,7 @@ import models.registration.pages._
 import pages.entitystatus._
 import pages.register.agents.AgentInternalReferencePage
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.beneficiaries.individual._
@@ -111,11 +112,12 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
         .set(SharesInAPortfolioPage(1), true).success.value
         .set(SharePortfolioNamePage(1), "Company").success.value
-        .set(SharePortfolioOnStockExchangePage(1), true ).success.value
+        .set(SharePortfolioOnStockExchangePage(1), true).success.value
         .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
         .set(SharePortfolioValueInTrustPage(1), "4000").success.value
         .set(AssetStatus(1), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
+
         .set(AgentInternalReferencePage, "agentClientReference").success.value
 
     val countryOptions = injector.instanceOf[CountryOptions]
@@ -184,25 +186,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         Some("Class of beneficiary 1"),
         Seq(
           checkYourAnswersHelper.classBeneficiaryDescription(index).value
-        ),
-        None
-      ),
-      AnswerSection(None, Nil, Some("Assets")),
-      AnswerSection(
-        Some("Money"),
-        Seq(
-          checkYourAnswersHelper.assetMoneyValue(index).value
-        ),
-        None
-      ),
-      AnswerSection(
-        Some("Share 1"),
-        Seq(
-          checkYourAnswersHelper.sharesInAPortfolio(1).value,
-          checkYourAnswersHelper.sharePortfolioName(1).value,
-          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
-          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
-          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
         ),
         None
       )
@@ -404,25 +387,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         Some("Class of beneficiary 1"),
         Seq(
           checkYourAnswersHelper.classBeneficiaryDescription(index).value
-        ),
-        None
-      ),
-      AnswerSection(None, Nil, Some("Assets")),
-      AnswerSection(
-        Some("Money"),
-        Seq(
-          checkYourAnswersHelper.assetMoneyValue(index).value
-        ),
-        None
-      ),
-      AnswerSection(
-        Some("Share 1"),
-        Seq(
-          checkYourAnswersHelper.sharesInAPortfolio(1).value,
-          checkYourAnswersHelper.sharePortfolioName(1).value,
-          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
-          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
-          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
         ),
         None
       )
