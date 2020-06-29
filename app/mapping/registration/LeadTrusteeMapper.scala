@@ -72,7 +72,7 @@ class LeadTrusteeMapper @Inject()(nameMapper: NameMapper,
     } else {
       IdentificationOrgType(
         utr = None,
-        address = addressMapper.build(leadTrustee.address)
+        address = addressMapper.buildOptional(leadTrustee.address)
       )
     }
 
