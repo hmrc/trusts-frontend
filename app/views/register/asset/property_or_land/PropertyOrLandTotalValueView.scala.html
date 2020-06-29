@@ -35,13 +35,14 @@
         @components.error_summary(form.errors)
 
         @components.input_text(
-          field = form("value"),
-          label = messages("propertyOrLandTotalValue.heading"),
-          labelClass = Some("heading-large"),
-          labelAsHeading = true,
-          hint = Some(messages("propertyOrLandTotalValue.hint")),
-          symbolText = Some(messages(s"symbolText.asSterling")),
-          symbol = Some("currency")
+            field = form("value"),
+            label = messages("propertyOrLandTotalValue.heading"),
+            labelClass = Some("heading-large"),
+            labelAsHeading = true,
+            hint = Some(messages("propertyOrLandTotalValue.hint")),
+            symbolText = Some(messages(s"symbolText.asSterling")),
+            symbol = Some("currency"),
+            inputMode = Some("numeric")
         )
 
         @components.submit_button()
