@@ -20,8 +20,9 @@ import controllers.actions.register._
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.NormalMode
+import models.registration.pages.AddASettlor
 import navigation.Navigator
-import pages.register.settlors.AddAnotherSettlorYesNoPage
+import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -65,7 +66,9 @@ class AddASettlorYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddAnotherSettlorYesNoPage, value))
+            updatedAnswers <- Future.fromTry(
+              request.userAnswers.set(AddAnotherSettlorYesNoPage, value).flatMap(_.set(AddASettlorPage, AddASettlor.NoComplete))
+            )
             _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddAnotherSettlorYesNoPage, NormalMode, draftId)(updatedAnswers))
         }
