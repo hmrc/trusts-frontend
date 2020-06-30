@@ -202,7 +202,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
                   |{
                   |"propertyOrLandAddressYesNo": true,
                   |"propertyOrLandAddressUKYesNo": true,
-                  |"address": {
+                  |"ukAddress": {
                   | "line1": "line 1",
                   | "line2": "Newcastle",
                   | "postcode": "NE11TU"
@@ -242,7 +242,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
                   |{
                   |"propertyOrLandAddressYesNo": true,
                   |"propertyOrLandAddressUKYesNo": false,
-                  |"address": {
+                  |"internationalAddress": {
                   | "line1": "line 1",
                   | "line2": "line 2",
                   | "country": "France"
