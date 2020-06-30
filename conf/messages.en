@@ -1450,6 +1450,8 @@ settlorBusinessTime.checkYourAnswersLabel = At the date of each contribution to 
 addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
 addASettlorYesNo.error.required = Select yes if you want to add a settlor
+addASettlorYesNo.add-them-now = Yes
+addASettlorYesNo.no-complete = No
 
 addAnotherSettlorYesNo.title = Are there any additional settlors for the trust?
 addAnotherSettlorYesNo.heading = Are there any additional settlors for the trust?

@@ -17,9 +17,9 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions.register._
-import forms.YesNoFormProvider
+import forms.AddASettlorFormProvider
 import javax.inject.Inject
-import models.NormalMode
+import models.{Enumerable, NormalMode}
 import models.registration.pages.AddASettlor
 import navigation.Navigator
 import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
@@ -40,12 +40,12 @@ class AddASettlorYesNoController @Inject()(
                                             identify: RegistrationIdentifierAction,
                                             getData: DraftIdRetrievalActionProvider,
                                             requireData: RegistrationDataRequiredAction,
-                                            yesNoFormProvider: YesNoFormProvider,
+                                            formProvider: AddASettlorFormProvider,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: AddAnotherSettlorYesNoView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("addAnotherSettlorYesNo")
+  val form: Form[AddASettlor] = formProvider()
 
   private def actions(draftId: String) =
     identify andThen
@@ -59,7 +59,6 @@ class AddASettlorYesNoController @Inject()(
 
   def onSubmit(draftId: String) = actions(draftId).async {
     implicit request =>
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, draftId))),
@@ -67,11 +66,12 @@ class AddASettlorYesNoController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(
-              request.userAnswers.set(AddAnotherSettlorYesNoPage, value).flatMap(_.set(AddASettlorPage, AddASettlor.NoComplete))
+              request.userAnswers.set(AddASettlorPage, value).flatMap(_.set(AddASettlorPage, AddASettlor.NoComplete))
             )
             _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddAnotherSettlorYesNoPage, NormalMode, draftId)(updatedAnswers))
         }
       )
   }
+
 }

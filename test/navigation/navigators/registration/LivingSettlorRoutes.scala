@@ -40,9 +40,9 @@ trait LivingSettlorRoutes {
 
   private val index = 0
 
-  private val navigator : Navigator = injector.instanceOf[LivingSettlorNavigator]
+  private val navigator: Navigator = injector.instanceOf[LivingSettlorNavigator]
 
-  def livingBusinessSettlorRoutes() : Unit = {
+  def livingBusinessSettlorRoutes(): Unit = {
 
     "navigate from SettlorIndividualOrBusinessPage to SettlorBusinessName when user answers business" in {
 
@@ -52,7 +52,7 @@ trait LivingSettlorRoutes {
         .set(page, IndividualOrBusiness.Business).success.value
 
       navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
-          .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+        .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
 
     }
   }
@@ -427,87 +427,86 @@ trait LivingSettlorRoutes {
 
     }
 
-  "add another settlor" must {
+    "add another settlor" must {
 
-    "go to the IndividualOrBusiness from AddASettlorPage when selected add them now" in {
-
-      val answers = emptyUserAnswers
-        .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-        .set(AddASettlorPage, AddASettlor.YesNow).success.value
-
-      navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-        .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
-    }
-  }
-
-  "go to RegistrationProgress from AddASettlorPage when selecting add them later" in {
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
+      "go to the IndividualOrBusiness from AddASettlorPage when selected add them now" in {
 
         val answers = emptyUserAnswers
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-          .set(AddASettlorPage, AddASettlor.YesLater).success.value
+          .set(AddASettlorPage, AddASettlor.YesNow).success.value
 
         navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
-    }
-  }
-
-  "go to RegistrationProgress from AddASettlorPage when selecting no complete" in {
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-
-        val answers = emptyUserAnswers
-          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
-
-        navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
-    }
-  }
-
-  "go to SettlorIndividualOrBusinessPage from from AddAASettlorYesNoPage when selected Yes" in {
-    val index = 0
-
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-
-        val answers = userAnswers.set(AddASettlorYesNoPage, true).success.value
-
-        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
-            index, fakeDraftId))
-    }
-  }
-
-  "go to RegistrationProgress from from AddASettlorYesNoPage when selected No" in {
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-
-        val answers = userAnswers.set(AddASettlorYesNoPage, false).success.value
-
-        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
-    }
-  }
-
-
-
-  "navigate from SettlorIndividualAnswerPage" in {
-
-    val page = SettlorIndividualAnswerPage
-
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-
-        val answers = userAnswers.set(AddAnotherSettlorYesNoPage, true).success.value
-
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
+          .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
+      }
     }
 
-  }
+    "go to RegistrationProgress from AddASettlorPage when selecting add them later" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = emptyUserAnswers
+            .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+            .set(AddASettlorPage, AddASettlor.YesLater).success.value
+
+          navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+    "go to RegistrationProgress from AddASettlorPage when selecting no complete" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = emptyUserAnswers
+            .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+            .set(AddASettlorPage, AddASettlor.NoComplete).success.value
+
+          navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+    "go to SettlorIndividualOrBusinessPage from from AddAASettlorYesNoPage when selected Yes" in {
+      val index = 0
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddASettlorYesNoPage, true).success.value
+
+          navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+              index, fakeDraftId))
+      }
+    }
+
+    "go to RegistrationProgress from from AddASettlorYesNoPage when selected No" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddASettlorYesNoPage, false).success.value
+
+          navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+
+    "navigate from SettlorIndividualAnswerPage" in {
+
+      val page = SettlorIndividualAnswerPage
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddASettlorPage, AddASettlor.YesNow).success.value
+
+          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
+      }
+
+    }
 
   }
 
-  }
+}

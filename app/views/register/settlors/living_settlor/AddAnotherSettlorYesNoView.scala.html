@@ -15,6 +15,7 @@
  *@
 
 @import controllers.register.settlors.living_settlor.routes._
+@import models.registration.pages.AddAnotherSettlor
 
 @this(
   main_template: MainTemplate,
@@ -33,11 +34,13 @@
 
     @components.error_summary(form.errors)
 
-    @components.input_yes_no(
+    @components.input_radio(
         field = form("value"),
-        label = messages("addAnotherSettlorYesNo.heading"),
+        legend = messages("addAnotherSettlorYesNo.heading"),
+        legendAsHeading = true,
         legendClass = Some("heading-large"),
-        legendAsHeading = true
+        fieldSetClass = Some("inline"),
+        inputs = AddAnotherSettlor.options
     )
 
     @components.submit_button()

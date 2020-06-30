@@ -180,9 +180,9 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     }
 
 
-  private def settlorIndividualAnswerPage(draftId: String)(answers: UserAnswers) = answers.get(AddAnotherSettlorYesNoPage) match {
-    case Some(false) => controllers.register.routes.TaskListController.onPageLoad(draftId)
-    case Some(true) => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
+  private def settlorIndividualAnswerPage(draftId: String)(answers: UserAnswers) = answers.get(AddASettlorPage) match {
+    case Some(AddASettlor.NoComplete) => controllers.register.routes.TaskListController.onPageLoad(draftId)
+    case Some(AddASettlor.YesNow) => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
     case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
   }
 
