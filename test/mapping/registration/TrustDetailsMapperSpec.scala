@@ -367,7 +367,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
                 nonUK = None
               )),
               typeOfTrust = WillTrustOrIntestacyTrust,
-              deedOfVariation = Some(DeedOfVariation.ReplaceAbsolute),
+              deedOfVariation = Some(DeedOfVariation.AdditionToWill),
               interVivos = None,
               efrbsStartDate = None
             )

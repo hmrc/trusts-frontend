@@ -16,7 +16,7 @@
 
 package models
 
-import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
+import models.registration.pages.DeedOfVariation.{AdditionToWill, ReplaceAbsolute, ReplacedWill}
 import models.registration.pages.{DeedOfVariation, ShareClass}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
@@ -30,8 +30,7 @@ class DeedOfVariationSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
     "deserialise valid values" in {
       JsString("Replaced the will trust").validate[DeedOfVariation].asOpt.value mustEqual ReplacedWill
-      JsString("Addition to the will trust").validate[DeedOfVariation].asOpt.value mustEqual ReplaceAbsolute
-
+      JsString("Previously there was only an absolute interest under the will").validate[DeedOfVariation].asOpt.value mustEqual ReplaceAbsolute
     }
 
     "fail to deserialise invalid values" in {
@@ -46,9 +45,9 @@ class DeedOfVariationSpec extends WordSpec with MustMatchers with ScalaCheckProp
     }
 
     "serialise" in {
-
       Json.toJson(ReplacedWill) mustEqual JsString("Replaced the will trust")
-      Json.toJson(ReplaceAbsolute) mustEqual JsString("Addition to the will trust")
+      Json.toJson(AdditionToWill) mustEqual JsString("Addition to the will trust")
+      Json.toJson(ReplaceAbsolute) mustEqual JsString("Previously there was only an absolute interest under the will")
     }
 
   }
