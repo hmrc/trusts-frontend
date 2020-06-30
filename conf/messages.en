@@ -714,15 +714,15 @@ assets.removeYesNo.error.required = Select yes if you want to remove the asset
 assetAddressUkYesNo.title = Is the business asset address in the UK?
 assetAddressUkYesNo.heading = Is {0}’s address in the UK?
 assetAddressUkYesNo.checkYourAnswersLabel = Is {0} address in the UK?
-assetAddressUkYesNo.error.required = Select yes if the {0}’s address in the UK
+assetAddressUkYesNo.error.required = Select yes if the business asset’s address in the UK
 
 assetDescription.title = What is the description for the business asset?
 assetDescription.heading = What is the description for {0}?
 assetDescription.checkYourAnswersLabel = What is the description for {0}?
 assetDescription.hint = This must be 56 characters or less
 assetDescription.error.required = Enter a description of the business
-assetDescription.error.invalid = The description of the beneficiary must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
-assetDescription.error.length = The description of the beneficiary must be 70 characters or less
+assetDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+assetDescription.error.length = The description of the business asset must be 56 characters or less
 
 assetInternationalAddress.title = What is the business asset’s address?
 assetInternationalAddress.heading = What is {0}’s address?
@@ -732,8 +732,8 @@ assetName.title = What is the business’s name?
 assetName.heading = What is the business’s name?
 assetName.checkYourAnswersLabel = What is the business’s name?
 assetName.error.required = Enter the business’s name
-assetName.error.length = Business’s name cannot be more than 53 characters
-assetName.error.invalidFormat = Business’s name must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+assetName.error.length = Business’s name cannot be more than 105 characters
+assetName.error.invalidFormat = Business’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 assetUkAddress.title = What is the business asset address?
 assetUkAddress.heading = What is {0}’s address?
