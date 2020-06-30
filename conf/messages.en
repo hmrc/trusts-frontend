@@ -750,8 +750,8 @@ currentValue.error.invalidFormat = Assets current value must be a number
 currentValue.error.wholeNumber = Assets current value must be a whole number
 currentValue.link = Return to registration progress
 
-AssetAnswer.title = Check asset details
-AssetAnswer.heading = Check asset details
+assetAnswer.title = Check asset details
+assetAnswer.heading = Check asset details
 
 settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
