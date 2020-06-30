@@ -25,5 +25,5 @@ final case class BusinessUkAddressPage(index : Int) extends QuestionPage[UKAddre
 
   override def path: JsPath = JsPath \ Assets \ index \ toString
 
-  override def toString: String = "address"
+  override def toString: String = "ukAddress"
 }

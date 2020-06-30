@@ -25,8 +25,7 @@ import models.registration.pages.Status.Completed
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.entitystatus.AssetStatus
-import pages.register.asset.business.BusinessNamePage
-import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.business.{BusinessNamePage, BusinessValuePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -65,7 +64,7 @@ class BusinessValueController @Inject()(
 
       val businessName = request.userAnswers.get(BusinessNamePage(index)).get
 
-      val preparedForm = request.userAnswers.get(AssetMoneyValuePage(index)) match {
+      val preparedForm = request.userAnswers.get(BusinessValuePage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -84,13 +83,13 @@ class BusinessValueController @Inject()(
 
         value => {
 
-          val answers = request.userAnswers.set(AssetMoneyValuePage(index), value)
+          val answers = request.userAnswers.set(BusinessValuePage(index), value)
             .flatMap(_.set(AssetStatus(index), Completed))
 
           for {
                 updatedAnswers <- Future.fromTry(answers)
                 _              <- registrationsRepository.set(updatedAnswers)
-              } yield Redirect(navigator.nextPage(AssetMoneyValuePage(index), mode, draftId)(updatedAnswers))
+              } yield Redirect(navigator.nextPage(BusinessValuePage(index), mode, draftId)(updatedAnswers))
           }
       )
   }

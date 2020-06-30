@@ -52,7 +52,6 @@ class BusinessAnswersController @Inject()(
       requireData andThen
       requiredAnswer(RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
 
-
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
@@ -72,10 +71,8 @@ class BusinessAnswersController @Inject()(
         )
       )
 
-
       Ok(view(index, draftId, sections))
   }
-
 
   def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>

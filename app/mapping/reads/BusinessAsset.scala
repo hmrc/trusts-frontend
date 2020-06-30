@@ -37,7 +37,7 @@ object BusinessAsset {
       (__ \ "whatKindOfAsset").read[WhatKindOfAsset] and
         (__ \ "name").read[String] and
         (__ \ "description").read[String] and
-        (__ \ "address").read[Address] and
+        readAddress() and
         (__ \ "value").read[String]
       )((kind, name, description, address, value) => BusinessAsset(kind, name, description, address, value))
 
@@ -50,5 +50,10 @@ object BusinessAsset {
         }
     }.andKeep(businessAssetReads)
 
+  }
+
+  private def readAddress(): Reads[Address] = {
+    (__ \ "ukAddress").read[Address] orElse
+      (__ \ "internationalAddress").read[Address]
   }
 }
