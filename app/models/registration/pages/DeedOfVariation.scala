@@ -24,6 +24,7 @@ sealed trait DeedOfVariation
 
 object DeedOfVariation {
 
+  case object AdditionToWill extends WithName("AdditionToWillTrust") with DeedOfVariation
   case object ReplacedWill extends WithName("ReplacedWill") with DeedOfVariation
   case object ReplaceAbsolute extends WithName("ReplaceAbsolute") with DeedOfVariation
 
@@ -42,11 +43,15 @@ object DeedOfVariation {
 
   implicit def reads[A](implicit ev: Enumerable[A]): Reads[A] = {
     Reads {
+      case JsString("Addition to the will trust") =>
+        ev.withName("AdditionToWillTrust").map {
+          s => JsSuccess(s)
+        }.getOrElse(JsError("error.invalid"))
       case JsString("Replaced the will trust") =>
         ev.withName("ReplacedWill").map {
           s => JsSuccess(s)
         }.getOrElse(JsError("error.invalid"))
-      case JsString("Addition to the will trust") =>
+      case JsString("Previously there was only an absolute interest under the will") =>
         ev.withName("ReplaceAbsolute").map {
           s => JsSuccess(s)
         }.getOrElse(JsError("error.invalid"))
@@ -56,7 +61,8 @@ object DeedOfVariation {
   }
 
   implicit def writes: Writes[DeedOfVariation] = Writes {
+    case AdditionToWill => JsString("Addition to the will trust")
     case ReplacedWill => JsString("Replaced the will trust")
-    case ReplaceAbsolute => JsString("Addition to the will trust")
+    case ReplaceAbsolute => JsString("Previously there was only an absolute interest under the will")
   }
 }
