@@ -306,7 +306,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            OtherAssetViewModel(Other, "Description", None, InProgress)
+            OtherAssetViewModel(Other, "Description", InProgress)
           )
         }
 
@@ -319,7 +319,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            OtherAssetViewModel(Other, "Description", Some("£4000"), Completed)
+            OtherAssetViewModel(Other, "Description", Completed)
           )
         }
 

@@ -98,8 +98,8 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
       "there are a combined 10 Completed and InProgress assets of a particular type that isn't 'Money'" in {
 
-        val otherAssetCompleted = OtherAssetViewModel(Other, "description", Some("4000"), Completed)
-        val otherAssetInProgress = OtherAssetViewModel(Other, "description", None, Completed)
+        val otherAssetCompleted = OtherAssetViewModel(Other, "description", Completed)
+        val otherAssetInProgress = OtherAssetViewModel(Other, "description", InProgress)
 
         val assets: List[AssetViewModel] = List.fill(5)(otherAssetCompleted) ++ List.fill(5)(otherAssetInProgress)
 
