@@ -721,7 +721,7 @@ assetDescription.heading = What is the description for {0}?
 assetDescription.checkYourAnswersLabel = What is the description for {0}?
 assetDescription.hint = This must be 56 characters or less
 assetDescription.error.required = Enter a description of the business
-assetDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+assetDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, back slashes, hyphens and spaces
 assetDescription.error.length = The description of the business asset must be 56 characters or less
 
 assetInternationalAddress.title = What is the business asset’s address?
