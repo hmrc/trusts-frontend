@@ -130,7 +130,6 @@ trait Formatters {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], A] =
         {
-          println(">>>>>>>>>" + data)
           baseFormatter.bind(key, data).right.flatMap {
             str =>
               ev.withName(str).map(Right.apply).getOrElse(Left(Seq(FormError(key, invalidKey))))
