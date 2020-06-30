@@ -17,11 +17,12 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions.register._
-import forms.YesNoFormProvider
+import forms.{AddASettlorFormProvider, YesNoFormProvider}
 import javax.inject.Inject
 import models.NormalMode
+import models.registration.pages.AddASettlor
 import navigation.Navigator
-import pages.register.settlors.AddAnotherSettlorYesNoPage
+import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -38,12 +39,12 @@ class AddASettlorYesNoController @Inject()(
                                             identify: RegistrationIdentifierAction,
                                             getData: DraftIdRetrievalActionProvider,
                                             requireData: RegistrationDataRequiredAction,
-                                            yesNoFormProvider: YesNoFormProvider,
+                                            formProvider: AddASettlorFormProvider,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: AddAnotherSettlorYesNoView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("addAnotherSettlorYesNo")
+  val form: Form[AddASettlor] = formProvider()
 
   private def actions(draftId: String) =
     identify andThen
@@ -64,7 +65,7 @@ class AddASettlorYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddAnotherSettlorYesNoPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddASettlorPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddAnotherSettlorYesNoPage, NormalMode, draftId)(updatedAnswers))
         }

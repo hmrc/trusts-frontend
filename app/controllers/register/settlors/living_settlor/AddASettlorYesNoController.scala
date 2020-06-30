@@ -65,9 +65,7 @@ class AddASettlorYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(
-              request.userAnswers.set(AddASettlorPage, value).flatMap(_.set(AddASettlorPage, AddASettlor.NoComplete))
-            )
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AddASettlorPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(AddAnotherSettlorYesNoPage, NormalMode, draftId)(updatedAnswers))
         }

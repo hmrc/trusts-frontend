@@ -21,11 +21,12 @@ import controllers.register.settlors.deceased_settlor.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
+import models.registration.pages.AddASettlor
 import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.settlors.{AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
+import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HowDeedOfVariationCreatedPage, SetUpInAdditionToWillTrustYesNoPage}
 
@@ -171,7 +172,7 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = userAnswers.set(AddAnotherSettlorYesNoPage, false).success.value
+          val answers = userAnswers.set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
           navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(answers)
             .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
@@ -182,7 +183,7 @@ trait DeceasedSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-          val answers = userAnswers.set(AddAnotherSettlorYesNoPage, true).success.value
+          val answers = userAnswers.set(AddASettlorPage, AddASettlor.YesNow).success.value
 
           navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(answers)
             .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))

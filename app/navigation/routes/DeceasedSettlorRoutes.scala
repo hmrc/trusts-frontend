@@ -19,8 +19,9 @@ package navigation.routes
 import controllers.register.routes
 import models.NormalMode
 import models.core.UserAnswers
+import models.registration.pages.AddASettlor
 import pages.Page
-import pages.register.settlors.AddAnotherSettlorYesNoPage
+import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
 import pages.register.settlors.deceased_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -42,9 +43,9 @@ object DeceasedSettlorRoutes {
     case DeceasedSettlorAnswerPage => _ => deceasedSettlorAnswerPage(draftId)
   }
 
-  private def deceasedSettlorAnswerPage(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(AddAnotherSettlorYesNoPage) match {
-    case Some(false) => routes.TaskListController.onPageLoad(draftId)
-    case Some(true) => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
+  private def deceasedSettlorAnswerPage(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(AddASettlorPage) match {
+    case Some(AddASettlor.NoComplete) => routes.TaskListController.onPageLoad(draftId)
+    case Some(AddASettlor.YesNow) => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 

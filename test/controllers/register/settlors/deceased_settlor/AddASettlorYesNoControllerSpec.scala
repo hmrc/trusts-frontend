@@ -18,16 +18,17 @@ package controllers.register.settlors.deceased_settlor
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
-import forms.YesNoFormProvider
-import pages.register.settlors.AddAnotherSettlorYesNoPage
+import forms.{AddASettlorFormProvider, YesNoFormProvider}
+import models.registration.pages.AddASettlor
+import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.AddAnotherSettlorYesNoView
 
 class AddASettlorYesNoControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new YesNoFormProvider()
-  val form = formProvider.withPrefix("addASettlorYesNo")
+  val formProvider = new AddASettlorFormProvider()
+  val form = formProvider()
 
   lazy val addASettlorYesNoController = routes.AddASettlorYesNoController.onPageLoad(fakeDraftId).url
 
@@ -55,14 +56,14 @@ class AddASettlorYesNoControllerSpec extends RegistrationSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(AddAnotherSettlorYesNoPage, false).success.value
+      val userAnswers = emptyUserAnswers.set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, addASettlorYesNoController)
-          .withFormUrlEncodedBody(("value", "true"))
+          .withFormUrlEncodedBody(("value", AddASettlor.options.head.value))
 
       val result = route(application, request).value
 
