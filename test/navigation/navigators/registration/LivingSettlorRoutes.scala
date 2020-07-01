@@ -280,7 +280,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
       }
     }
 
@@ -303,7 +303,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
         }
       }
     }
@@ -386,7 +386,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
       }
     }
 
@@ -410,7 +410,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
         }
       }
     }
@@ -422,7 +422,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
       }
 
     }
@@ -496,14 +496,11 @@ trait LivingSettlorRoutes {
 
       val page = SettlorIndividualAnswerPage
 
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
-
-          val answers = userAnswers.set(AddASettlorPage, AddASettlor.YesNow).success.value
-
-          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
-      }
+    forAll(arbitrary[UserAnswers]) {
+      userAnswers =>
+        navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+          .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
+    }
 
     }
 
