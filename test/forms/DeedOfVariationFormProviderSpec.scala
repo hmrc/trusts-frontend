@@ -14,17 +14,32 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor.trust_type
+package forms
 
+import forms.behaviours.OptionFieldBehaviours
 import models.registration.pages.DeedOfVariation
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Settlors
+import play.api.data.FormError
 
-case object HowDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
+class DeedOfVariationFormProviderSpec extends OptionFieldBehaviours {
 
-  override def path: JsPath = Settlors.path \ toString
+  val form = new DeedOfVariationFormProvider()()
 
-  override def toString: String = "howDeedOfVariationCreated"
+  ".value" must {
 
+    val fieldName = "value"
+    val requiredKey = "howDeedOfVariationCreated.error.required"
+
+    behave like optionsField[DeedOfVariation](
+      form,
+      fieldName,
+      validValues  = DeedOfVariation.values.toSet,
+      invalidError = FormError(fieldName, "error.invalid")
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

@@ -34,7 +34,7 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.settlors.living_settlor.trust_type._
 import pages.register.trust_details._
 import pages.register.trustees._
 import pages.register.trustees.individual._
@@ -89,6 +89,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "kindOfTrust.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"kindOfTrust.$x")),
         Some(routes.KindOfTrustController.onPageLoad(NormalMode, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def deedOfVariation: Option[AnswerRow] = userAnswers.get(HowDeedOfVariationCreatedPage) map {
+    x =>
+      AnswerRow(
+        "howDeedOfVariationCreated.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"howDeedOfVariationCreated.$x")),
+        Some(controllers.register.settlors.routes.HowDeedOfVariationCreatedController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )
   }
@@ -288,6 +298,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
     val questions = Seq(
       setUpAfterSettlorDied,
+      setUpInAddition,
+      deedOfVariation,
       deceasedSettlorsName,
       deceasedSettlorDateOfDeathYesNo,
       deceasedSettlorDateOfDeath,
@@ -321,6 +333,8 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         val questions = Seq(
           setUpAfterSettlorDied,
           kindOfTrust,
+          deedOfVariation,
+          setUpInAddition,
           holdoverReliefYesNo,
           settlorIndividualOrBusiness(index),
           settlorIndividualName(index),
@@ -957,6 +971,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "setUpAfterSettlorDied.checkYourAnswersLabel",
         yesOrNo(x),
         Some(controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def setUpInAddition: Option[AnswerRow] = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) map {
+    x =>
+      AnswerRow(
+        "setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(controllers.register.settlors.routes.AdditionToWillTrustYesNoController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )
   }

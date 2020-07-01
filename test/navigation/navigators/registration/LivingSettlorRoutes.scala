@@ -23,14 +23,16 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.Individual
+import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
+import models.registration.pages.KindOfTrust.Deed
 import models.registration.pages.{AddASettlor, KindOfTrust}
 import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 
 trait LivingSettlorRoutes {
 
@@ -38,9 +40,9 @@ trait LivingSettlorRoutes {
 
   private val index = 0
 
-  private val navigator : Navigator = injector.instanceOf[LivingSettlorNavigator]
+  private val navigator: Navigator = injector.instanceOf[LivingSettlorNavigator]
 
-  def livingBusinessSettlorRoutes() : Unit = {
+  def livingBusinessSettlorRoutes(): Unit = {
 
     "navigate from SettlorIndividualOrBusinessPage to SettlorBusinessName when user answers business" in {
 
@@ -50,12 +52,23 @@ trait LivingSettlorRoutes {
         .set(page, IndividualOrBusiness.Business).success.value
 
       navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
-          .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+        .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
 
     }
   }
 
   def livingSettlorRoutes(): Unit = {
+
+    "go to KindOfTrust from setUpAfterSettlorDied when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value = false).success.value
+
+          navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.living_settlor.routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
 
     "navigate from KindOfTrustPage" when {
 
@@ -65,7 +78,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(controllers.register.settlors.routes.AdditionToWillTrustYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
 
       "user answers Lifetime" in {
@@ -104,6 +117,80 @@ trait LivingSettlorRoutes {
         navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
       }
 
+    }
+
+    "go to SetUpInAdditionToWillTrustYesNoPage from KindOfTrustPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(KindOfTrustPage, value = Deed).success.value
+
+          navigator.nextPage(KindOfTrustPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.routes.AdditionToWillTrustYesNoController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to HowDeedOfVariationCreatedPage from SetUpInAdditionToWillTrustYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, value = false).success.value
+
+          navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.routes.HowDeedOfVariationCreatedController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to SettlorsNamePage from SetUpAfterSettlorDiedPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value = true).success.value
+
+          navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to SettlorsNamePage from SetUpInAdditionToWillTrustYesNoPage when user answers yes" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, value = true).success.value
+
+          navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to SettlorIndividualOrBusinessPage from from HowDeedOfVariationCreatedPage" when {
+      "selected ReplacedWill" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(HowDeedOfVariationCreatedPage, ReplacedWill).success.value
+
+            navigator.nextPage(HowDeedOfVariationCreatedPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+                index, fakeDraftId))
+        }
+      }
+
+      "selected ReplaceAbsolute" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(HowDeedOfVariationCreatedPage, ReplaceAbsolute).success.value
+
+            navigator.nextPage(HowDeedOfVariationCreatedPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+                index, fakeDraftId))
+        }
+      }
     }
 
     "navigate from HoldoverReliefYesNoPage" in {
@@ -193,7 +280,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -216,7 +303,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+              .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
         }
       }
     }
@@ -299,7 +386,7 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -323,7 +410,7 @@ trait LivingSettlorRoutes {
           userAnswers =>
             val answers = userAnswers.set(page, value = false).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+              .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
         }
       }
     }
@@ -335,89 +422,91 @@ trait LivingSettlorRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId))
+            .mustBe(routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
       }
 
     }
 
-  "add another settlor" must {
+    "add another settlor" must {
 
-    "go to the IndividualOrBusiness from AddASettlorPage when selected add them now" in {
-
-      val answers = emptyUserAnswers
-        .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-        .set(AddASettlorPage, AddASettlor.YesNow).success.value
-
-      navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-        .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
-    }
-  }
-
-  "go to RegistrationProgress from AddASettlorPage when selecting add them later" in {
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
+      "go to the IndividualOrBusiness from AddASettlorPage when selected add them now" in {
 
         val answers = emptyUserAnswers
           .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-          .set(AddASettlorPage, AddASettlor.YesLater).success.value
+          .set(AddASettlorPage, AddASettlor.YesNow).success.value
 
         navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
-    }
-  }
-
-  "go to RegistrationProgress from AddASettlorPage when selecting no complete" in {
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-
-        val answers = emptyUserAnswers
-          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
-
-        navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
-    }
-  }
-
-  "go to SettlorIndividualOrBusinessPage from from AddAASettlorYesNoPage when selected Yes" in {
-    val index = 0
-
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-
-        val answers = userAnswers.set(AddASettlorYesNoPage, true).success.value
-
-        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
-            index, fakeDraftId))
-    }
-  }
-
-  "go to RegistrationProgress from from AddASettlorYesNoPage when selected No" in {
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-
-        val answers = userAnswers.set(AddASettlorYesNoPage, false).success.value
-
-        navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
-    }
-  }
-
-
-
-  "navigate from SettlorIndividualAnswerPage" in {
-
-    val page = SettlorIndividualAnswerPage
-
-    forAll(arbitrary[UserAnswers]) {
-      userAnswers =>
-        navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
-          .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
+          .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 1, fakeDraftId))
+      }
     }
 
-  }
+    "go to RegistrationProgress from AddASettlorPage when selecting add them later" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = emptyUserAnswers
+            .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+            .set(AddASettlorPage, AddASettlor.YesLater).success.value
+
+          navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+    "go to RegistrationProgress from AddASettlorPage when selecting no complete" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = emptyUserAnswers
+            .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
+            .set(AddASettlorPage, AddASettlor.NoComplete).success.value
+
+          navigator.nextPage(AddASettlorPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+    "go to SettlorIndividualOrBusinessPage from from AddAASettlorYesNoPage when selected Yes" in {
+      val index = 0
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddASettlorYesNoPage, true).success.value
+
+          navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode,
+              index, fakeDraftId))
+      }
+    }
+
+    "go to RegistrationProgress from from AddASettlorYesNoPage when selected No" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddASettlorYesNoPage, false).success.value
+
+          navigator.nextPage(AddASettlorYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+
+    "navigate from SettlorIndividualAnswerPage" in {
+
+      val page = SettlorIndividualAnswerPage
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(AddASettlorPage, AddASettlor.YesNow).success.value
+
+          navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
+            .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
+      }
+
+    }
 
   }
 
-  }
+}

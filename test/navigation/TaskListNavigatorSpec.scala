@@ -19,7 +19,6 @@ package navigation
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
-import controllers.register.routes
 import models.NormalMode
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
@@ -35,6 +34,7 @@ import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.trustees.IsThisLeadTrusteePage
+import controllers.register.routes._
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
@@ -209,7 +209,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
     "for task liability task" must {
 
         "go to TaxLiabilityPage" in {
-          navigator.taxLiabilityJourney(fakeDraftId) mustBe routes.TaskListController.onPageLoad(fakeDraftId)
+          navigator.taxLiabilityJourney(fakeDraftId) mustBe TaskListController.onPageLoad(fakeDraftId)
         }
 
       }

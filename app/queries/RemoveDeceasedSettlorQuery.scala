@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package sections
+package queries
 
-import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
+import sections.{DeceasedSettlor, LivingSettlors}
 
-case object DeceasedSettlor extends QuestionPage[SettlorViewModel]{
+case object  RemoveDeceasedSettlorQuery extends Settable[Boolean] {
 
-  override def path: JsPath = Settlors.path \ toString
-
-  override def toString: String = "deceased"
-
+  override def path: JsPath = DeceasedSettlor.path
 }
+
+

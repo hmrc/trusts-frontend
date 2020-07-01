@@ -16,42 +16,46 @@
 
 package controllers.register.settlors
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions._
+import controllers.actions.register._
 import forms.YesNoFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
-import views.html.register.settlors.SetUpAfterSettlorDiedView
+import views.html.register.settlors.AdditionToWillTrustYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SetUpAfterSettlorDiedController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 registrationsRepository: RegistrationsRepository,
-                                                 @LivingSettlor navigator: Navigator,
-                                                 identify: RegistrationIdentifierAction,
-                                                 getData: DraftIdRetrievalActionProvider,
-                                                 requireData: RegistrationDataRequiredAction,
-                                                 yesNoFormProvider: YesNoFormProvider,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: SetUpAfterSettlorDiedView
+class AdditionToWillTrustYesNoController @Inject()(
+                                                      override val messagesApi: MessagesApi,
+                                                      registrationsRepository: RegistrationsRepository,
+                                                      @LivingSettlor navigator: Navigator,
+                                                      identify: RegistrationIdentifierAction,
+                                                      getData: DraftIdRetrievalActionProvider,
+                                                      requireData: RegistrationDataRequiredAction,
+                                                      yesNoFormProvider: YesNoFormProvider,
+                                                      val controllerComponents: MessagesControllerComponents,
+                                                      view: AdditionToWillTrustYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+  val form: Form[Boolean] = yesNoFormProvider.withPrefix("setUpInAdditionToWillTrustYesNo")
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("setUpAfterSettlorDied")
-
+  private def actions(draftId: String) =
+    identify andThen
+      getData(draftId) andThen
+      requireData
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
+      val preparedForm = request.userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -59,7 +63,7 @@ class SetUpAfterSettlorDiedController @Inject()(
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
+  def onSubmit(mode: Mode, draftId : String) = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(
@@ -68,9 +72,9 @@ class SetUpAfterSettlorDiedController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetUpAfterSettlorDiedYesNoPage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SetUpAfterSettlorDiedYesNoPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(SetUpInAdditionToWillTrustYesNoPage, mode, draftId)(updatedAnswers))
         }
       )
   }

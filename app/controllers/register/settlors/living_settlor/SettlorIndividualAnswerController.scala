@@ -17,8 +17,7 @@
 package controllers.register.settlors.living_settlor
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import controllers.filters.IndexActionFilterProvider
+import controllers.actions.register._
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed
@@ -45,7 +44,6 @@ class SettlorIndividualAnswerController @Inject()(
                                                    getData: DraftIdRetrievalActionProvider,
                                                    requireData: RegistrationDataRequiredAction,
                                                    requiredAnswer: RequiredAnswerActionProvider,
-                                                   validateIndex: IndexActionFilterProvider,
                                                    view: SettlorIndividualAnswersView,
                                                    countryOptions: CountryOptions,
                                                    val controllerComponents: MessagesControllerComponents
@@ -69,6 +67,7 @@ class SettlorIndividualAnswerController @Inject()(
           Seq(
             answers.setUpAfterSettlorDied,
             answers.kindOfTrust,
+            answers.deedOfVariation,
             answers.holdoverReliefYesNo,
             answers.settlorIndividualOrBusiness(index),
             answers.settlorIndividualName(index),

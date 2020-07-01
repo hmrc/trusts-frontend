@@ -23,7 +23,7 @@ import pages.behaviours.PageBehaviours
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
-class KindOfTrustPageSpec extends PageBehaviours {
+class uKindOfTrustPageSpec extends PageBehaviours {
 
   "KindOfTrustPage" must {
 

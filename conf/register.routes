@@ -377,6 +377,16 @@ POST       /:draftId/settlors/setup-after-settlor-died                          
 GET        /:draftId/settlors/change-setup-after-settlor-died                                       controllers.register.settlors.SetUpAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/change-setup-after-settlor-died                                       controllers.register.settlors.SetUpAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/settlors/in-addition-to-will-trust                                              controllers.register.settlors.AdditionToWillTrustYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/in-addition-to-will-trust                                              controllers.register.settlors.AdditionToWillTrustYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/settlors/how-was-deed-of-variation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/how-was-deed-of-variation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-how-was-deed-of-variation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-how-was-deed-of-variation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
 GET        /:draftId/settlors/information-you-need                                                  controllers.register.settlors.SettlorInfoController.onPageLoad(draftId: String)
 
 ### Deceased Settlor
@@ -435,6 +445,12 @@ GET        /:draftId/settlors/deceased/was-settlors-address-uk                  
 POST       /:draftId/settlors/deceased/was-settlors-address-uk                                      controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/settlors/deceased/change-was-settlors-address-uk                               controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/deceased/change-was-settlors-address-uk                               controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.deceased_settlor.RemoveSettlorController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.deceased_settlor.RemoveSettlorController.onSubmit(draftId: String)
+
+GET        /:draftId/settlors/deceased/add-another                                                            controllers.register.settlors.deceased_settlor.AddASettlorYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/deceased/add-another                                                            controllers.register.settlors.deceased_settlor.AddASettlorYesNoController.onSubmit(draftId: String)
 
 GET        /:draftId/settlors/deceased/check-answers                                                controllers.register.settlors.deceased_settlor.DeceasedSettlorAnswerController.onPageLoad(draftId: String)
 POST       /:draftId/settlors/deceased/check-answers                                                controllers.register.settlors.deceased_settlor.DeceasedSettlorAnswerController.onSubmit(draftId: String)
@@ -526,6 +542,9 @@ POST       /:draftId/settlors/living/change-holdover-relief                     
 
 GET        /:draftId/settlors/living/:index/individual/remove                                       controllers.register.settlors.living_settlor.RemoveSettlorController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/settlors/living/:index/individual/remove                                       controllers.register.settlors.living_settlor.RemoveSettlorController.onSubmit(index : Int, draftId: String)
+
+GET        /:draftId/settlors/living/add-another                                                            controllers.register.settlors.living_settlor.AddASettlorYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/living/add-another                                                            controllers.register.settlors.living_settlor.AddASettlorYesNoController.onSubmit(draftId: String)
 
 GET        /:draftId/settlors/living/type                                                           controllers.register.settlors.living_settlor.KindOfTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/settlors/living/type                                                           controllers.register.settlors.living_settlor.KindOfTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
