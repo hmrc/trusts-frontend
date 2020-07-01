@@ -57,7 +57,7 @@ object DeceasedSettlorRoutes {
   }
 
   private def deceasedSettlorLastKnownAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsLastKnownAddressYesNoPage) match {
-    case Some(false) => addASettlorYesNoController(draftId)
+    case Some(false) => addASettlorYesNoController(draftId)(userAnswers)
     case Some(true) => controllers.register.settlors.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
