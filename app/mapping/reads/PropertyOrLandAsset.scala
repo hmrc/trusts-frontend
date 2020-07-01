@@ -35,7 +35,7 @@ object PropertyOrLandAsset {
 
     val landOrPropertyReads: Reads[PropertyOrLandAsset] = (
       (__ \ "propertyOrLandDescription").readNullable[String] and
-        (__ \ "address").readNullable[Address] and
+        readAddress() and
           (__ \ "propertyOrLandValueTrust").readNullable[String] and
             (__ \ "propertyOrLandTotalValue").read[String] and
               (__ \ "whatKindOfAsset").read[WhatKindOfAsset]
@@ -50,5 +50,10 @@ object PropertyOrLandAsset {
         }
     }.andKeep(landOrPropertyReads)
 
+  }
+
+  private def readAddress(): Reads[Option[Address]] = {
+    (__ \ "ukAddress").readNullable[Address] orElse
+      (__ \ "internationalAddress").readNullable[Address]
   }
 }

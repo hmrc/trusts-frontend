@@ -76,7 +76,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |{
             |"whatKindOfAsset" : "PropertyOrLand",
             |"propertyOrLandDescription" : "Property Or Land",
-            |"address" : {
+            |"ukAddress" : {
             |     "line1" : "26",
             |     "line2" : "Grangetown",
             |     "line3" : "Tyne and Wear",
@@ -164,7 +164,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |{
             |"whatKindOfAsset" : "PropertyOrLand",
             |"propertyOrLandDescription" : "Property Or Land",
-            |"address" : {
+            |"ukAddress" : {
             |     "line1" : "26",
             |     "line2" : "Grangetown",
             |     "line3" : "Tyne and Wear",
@@ -198,7 +198,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
           """
             |{
             |"whatKindOfAsset" : "PropertyOrLand",
-            |"address" : {
+            |"ukAddress" : {
             |     "line1" : "26",
             |     "line2" : "Newcastle",
             |     "postcode" : "Z99 2YY"
