@@ -23,6 +23,7 @@ import models.registration.pages.AddASettlor
 import pages.Page
 import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
 import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -36,10 +37,10 @@ object DeceasedSettlorRoutes {
     case SettlorsNationalInsuranceYesNoPage => _ => deceasedSettlorNinoRoute(draftId)
     case SettlorsLastKnownAddressYesNoPage => _ => deceasedSettlorLastKnownAddressRoute(draftId)
     case SettlorDateOfDeathPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
-    case SettlorNationalInsuranceNumberPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case SettlorNationalInsuranceNumberPage => _ => addASettlorYesNoController(draftId)
     case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute(draftId)
-    case SettlorsInternationalAddressPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
-    case SettlorsUKAddressPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case SettlorsInternationalAddressPage => _ => addASettlorYesNoController(draftId)
+    case SettlorsUKAddressPage => _ => addASettlorYesNoController(draftId)
     case DeceasedSettlorAnswerPage => _ => deceasedSettlorAnswerPage(draftId)
   }
 
@@ -56,7 +57,7 @@ object DeceasedSettlorRoutes {
   }
 
   private def deceasedSettlorLastKnownAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorsLastKnownAddressYesNoPage) match {
-    case Some(false) => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case Some(false) => addASettlorYesNoController(draftId)
     case Some(true) => controllers.register.settlors.deceased_settlor.routes.WasSettlorsAddressUKYesNoController.onPageLoad(NormalMode, draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
@@ -76,6 +77,12 @@ object DeceasedSettlorRoutes {
   private def deceasedSettlorDateOfDeathRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SettlorDateOfDeathYesNoPage) match {
     case Some(false) => controllers.register.settlors.deceased_settlor.routes.SettlorDateOfBirthYesNoController.onPageLoad(NormalMode, draftId)
     case Some(true) => controllers.register.settlors.deceased_settlor.routes.SettlorDateOfDeathController.onPageLoad(NormalMode, draftId)
+    case _ => routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def addASettlorYesNoController(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
+    case Some(true) => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
+    case Some(false) => controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 }
