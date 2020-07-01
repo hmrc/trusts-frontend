@@ -16,6 +16,7 @@
 
 package models.registration.pages
 
+import models.registration.pages.AddASettlor.values
 import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 
@@ -38,4 +39,20 @@ object AddASettlor extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[AddASettlor] =
     Enumerable(values.map(v => v.toString -> v): _*)
+}
+
+object AddAnotherSettlor {
+
+  val values: List[AddASettlor] = List(
+    AddASettlor.YesNow, AddASettlor.NoComplete
+  )
+
+  val options: List[RadioOption] = values.map {
+    value =>
+      RadioOption("addASettlorYesNo", value.toString)
+  }
+
+  implicit val enumerable: Enumerable[AddASettlor] =
+    Enumerable(values.map(v => v.toString -> v): _*)
+
 }

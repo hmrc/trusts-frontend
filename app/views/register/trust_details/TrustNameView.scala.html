@@ -41,8 +41,7 @@
           labelAsHeading = true,
           hint = if(hintTextShown) Some(messages("trustName.hint.hasUtr")) else Some(messages("trustName.hint.noUtr")),
           readerHint = if(hintTextShown) Some(messages(s"trustName.hint.hasUtr.reader")) else None,
-          labelClass = Some("heading-large"),
-          ariaRequired = true
+          labelClass = Some("heading-large")
         )
 
         @components.submit_button()

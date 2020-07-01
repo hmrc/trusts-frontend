@@ -31,7 +31,7 @@ class TrusteesDateOfBirthViewSpec extends QuestionViewBehaviours[LocalDate] {
   val index = 0
   val trusteeName = "FirstName LastName"
 
-  val form = new TrusteesDateOfBirthFormProvider()()
+  val form = new TrusteesDateOfBirthFormProvider(frontendAppConfig)()
 
   "TrusteesDateOfBirthView view" must {
 

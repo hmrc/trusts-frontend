@@ -24,6 +24,7 @@ import models.NormalMode
 import org.jsoup.Jsoup
 import org.scalacheck.Arbitrary.arbitrary
 import pages.register.asset.property_or_land.PropertyOrLandDescriptionPage
+import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -32,10 +33,10 @@ import views.html.register.asset.property_or_land.PropertyOrLandDescriptionView
 class PropertyOrLandDescriptionControllerSpec extends RegistrationSpecBase with IndexValidation {
 
   val formProvider = new PropertyOrLandDescriptionFormProvider()
-  val form = formProvider()
+  val form: Form[String] = formProvider()
   val index = 0
 
-  lazy val propertyOrLandDescriptionRoute = routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val propertyOrLandDescriptionRoute: String = routes.PropertyOrLandDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PropertyOrLandDescription Controller" must {
 
@@ -130,7 +131,7 @@ class PropertyOrLandDescriptionControllerSpec extends RegistrationSpecBase with 
 
       val document = Jsoup.parse(contentAsString(result))
       document.getElementById("error-message-value-input").text() mustBe
-        "The description of the property or land must only include letters a to z, numbers, ampersands (&), " +
+        "Error: The description of the property or land must only include letters a to z, numbers, ampersands (&), " +
           "apostrophes, forward slashes, hyphens and spaces"
 
       application.stop()

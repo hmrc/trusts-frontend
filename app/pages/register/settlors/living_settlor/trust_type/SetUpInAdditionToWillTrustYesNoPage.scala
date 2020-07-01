@@ -19,7 +19,7 @@ package pages.register.settlors.living_settlor.trust_type
 import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.{DeceasedSettlor, LivingSettlors, Settlors}
 
 import scala.util.Try
 
@@ -31,8 +31,11 @@ case object SetUpInAdditionToWillTrustYesNoPage extends QuestionPage[Boolean] {
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
+      case Some(false) =>
+        userAnswers.remove(DeceasedSettlor)
+          .flatMap(_.remove(HowDeedOfVariationCreatedPage))
       case Some(true) =>
-        userAnswers.remove(HowDeedOfVariationCreatedPage)
+        userAnswers.remove(LivingSettlors)
       case _ => super.cleanup(value, userAnswers)
     }
   }

@@ -31,7 +31,7 @@ import views.html.register.beneficiaries.IndividualBeneficiaryDateOfBirthView
 
 class IndividualBeneficiaryDateOfBirthControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
-  val formProvider = new IndividualBeneficiaryDateOfBirthFormProvider()
+  val formProvider = new IndividualBeneficiaryDateOfBirthFormProvider(frontendAppConfig)
   val form = formProvider()
   val index: Int = 0
 

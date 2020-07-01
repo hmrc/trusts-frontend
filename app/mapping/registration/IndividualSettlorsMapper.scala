@@ -37,6 +37,8 @@ class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: 
      }
   }
 
+
+
   private def identificationMap(settlor: IndividualSettlor): Option[IdentificationType] = {
 
     val identificationType = IdentificationType(

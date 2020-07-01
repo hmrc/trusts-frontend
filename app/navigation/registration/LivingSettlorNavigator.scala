@@ -27,8 +27,8 @@ import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage}
+import pages.register.settlors.living_settlor.trust_type._
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -36,7 +36,11 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
 
   override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    case SetUpAfterSettlorDiedYesNoPage => _ => setUpAfterSettlorDied(draftId)
     case KindOfTrustPage => _ => kindOfTrustPage(draftId)
+    case AddAnotherSettlorYesNoPage => _ => _ => controllers.register.settlors.living_settlor.routes.SettlorIndividualAnswerController.onPageLoad(0, draftId)
+    case SetUpInAdditionToWillTrustYesNoPage => _ => setInAdditionToWillTrustRoute(draftId)
+    case HowDeedOfVariationCreatedPage => _ => _ => controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case HoldoverReliefYesNoPage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case SettlorIndividualNamePage(index) => _ => _ => routes.SettlorIndividualDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorIndividualDateOfBirthYesNoPage(index) => _ => settlorIndividualDateOfBirthYesNoPage(draftId, index)
@@ -56,6 +60,19 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorBusinessNamePage(index)  =>_ => _ => routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
+  }
+
+
+  private def setUpAfterSettlorDied(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
+    case Some(false) => controllers.register.settlors.living_settlor.routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
+    case Some(true) => controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
+    case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
+  }
+
+  private def setInAdditionToWillTrustRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
+    case Some(false) => controllers.register.settlors.routes.HowDeedOfVariationCreatedController.onPageLoad(NormalMode, draftId)
+    case Some(true) => controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId)
+    case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
   }
 
   private def addASettlorYesNoRoute(draftId: String)(answers: UserAnswers) : Call = {
@@ -95,7 +112,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def kindOfTrustPage(draftId: String)(answers: UserAnswers) = {
     answers.get(KindOfTrustPage) match {
       case Some(Deed) =>
-        routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
+        controllers.register.settlors.routes.AdditionToWillTrustYesNoController.onPageLoad(NormalMode, draftId)
       case Some(Intervivos) =>
         routes.HoldoverReliefYesNoController.onPageLoad(NormalMode, draftId)
       case Some(FlatManagement) =>
@@ -161,5 +178,12 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
         }
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
+
+
+  private def settlorIndividualAnswerPage(draftId: String)(answers: UserAnswers) = answers.get(AddASettlorPage) match {
+    case Some(AddASettlor.NoComplete) => controllers.register.routes.TaskListController.onPageLoad(draftId)
+    case Some(AddASettlor.YesNow) => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
+    case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
+  }
 
 }

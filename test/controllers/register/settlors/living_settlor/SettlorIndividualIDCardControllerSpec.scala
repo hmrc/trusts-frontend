@@ -38,7 +38,7 @@ class SettlorIndividualIDCardControllerSpec extends RegistrationSpecBase with In
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new PassportOrIdCardFormProvider()
+  val formProvider = new PassportOrIdCardFormProvider(frontendAppConfig)
   val form = formProvider("settlorIndividualIDCard")
   val index = 0
   val name = FullName("First", Some("Middle"), "Last")

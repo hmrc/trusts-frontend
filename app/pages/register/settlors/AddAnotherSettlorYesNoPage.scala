@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.asset.partnership
-
-import java.time.LocalDate
+package pages.register.settlors
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Assets
 
-final case class  PartnershipAssetStartDatePage(index : Int) extends QuestionPage[LocalDate] {
+case object AddAnotherSettlorYesNoPage extends QuestionPage[Boolean] {
 
-  override def path: JsPath = Assets.path \ index \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "partnershipAssetStartDate"
+  override def toString: String = "addAnotherSettlor"
 }
+

@@ -16,12 +16,16 @@
 
 package models
 
+import models.registration.pages.Status._
 import models.registration.pages.WhatKindOfAsset
+import models.registration.pages.WhatKindOfAsset._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
+import viewmodels.RadioOption
+import viewmodels.addAnother.{AssetViewModel, MoneyAssetViewModel, OtherAssetViewModel}
 
 class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
@@ -58,6 +62,56 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
           Json.toJson(whatKindOfAsset) mustEqual JsString(whatKindOfAsset.toString)
       }
+    }
+
+    "return the non maxed out options" when {
+
+      "no assets" in {
+
+        val assets: List[AssetViewModel] = Nil
+
+        WhatKindOfAsset.nonMaxedOutOptions(assets) mustBe List(
+          RadioOption("whatKindOfAsset", Money.toString),
+          RadioOption("whatKindOfAsset", PropertyOrLand.toString),
+          RadioOption("whatKindOfAsset", Shares.toString),
+          RadioOption("whatKindOfAsset", Business.toString),
+          RadioOption("whatKindOfAsset", Partnership.toString),
+          RadioOption("whatKindOfAsset", Other.toString)
+        )
+
+      }
+
+      "there is a 'Money' asset" in {
+
+        val moneyAsset = MoneyAssetViewModel(Money, "4000", Completed)
+
+        val assets: List[AssetViewModel] = List(moneyAsset)
+
+        WhatKindOfAsset.nonMaxedOutOptions(assets) mustBe List(
+          RadioOption("whatKindOfAsset", PropertyOrLand.toString),
+          RadioOption("whatKindOfAsset", Shares.toString),
+          RadioOption("whatKindOfAsset", Business.toString),
+          RadioOption("whatKindOfAsset", Partnership.toString),
+          RadioOption("whatKindOfAsset", Other.toString)
+        )
+      }
+
+      "there are a combined 10 Completed and InProgress assets of a particular type that isn't 'Money'" in {
+
+        val otherAssetCompleted = OtherAssetViewModel(Other, "description", Completed)
+        val otherAssetInProgress = OtherAssetViewModel(Other, "description", InProgress)
+
+        val assets: List[AssetViewModel] = List.fill(5)(otherAssetCompleted) ++ List.fill(5)(otherAssetInProgress)
+
+        WhatKindOfAsset.nonMaxedOutOptions(assets) mustBe List(
+          RadioOption("whatKindOfAsset", Money.toString),
+          RadioOption("whatKindOfAsset", PropertyOrLand.toString),
+          RadioOption("whatKindOfAsset", Shares.toString),
+          RadioOption("whatKindOfAsset", Business.toString),
+          RadioOption("whatKindOfAsset", Partnership.toString)
+        )
+      }
+
     }
   }
 }

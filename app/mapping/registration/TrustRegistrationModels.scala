@@ -18,7 +18,8 @@ package mapping.registration
 
 import java.time.LocalDate
 
-import mapping.{DeedOfVariation, TypeOfTrust}
+import mapping.TypeOfTrust
+import models.registration.pages.DeedOfVariation
 import play.api.libs.json._
 
 /**

@@ -31,7 +31,7 @@ import services.{CreateDraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
-import utils.annotations.{LivingSettlor, PropertyOrLand}
+import utils.annotations.{LivingSettlor, Partnership, PropertyOrLand}
 
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter with FakeTrustsApp {
   this: TestSuite =>
@@ -65,6 +65,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[AffinityGroup].toInstance(Organisation),
         bind[CreateDraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),
+        bind[Navigator].qualifiedWith(classOf[Partnership]).toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[LivingSettlor]).toInstance(navigator)
       )

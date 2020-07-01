@@ -65,6 +65,7 @@ trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
 
           val doc = asDocument(createView(form.withError(error)))
           val errorSpan = doc.getElementsByClass("error-message").first
+          errorSpan.text mustBe s"""${messages(errorPrefix)} ${messages(errorMessage)}"""
           errorSpan.text mustBe messages(errorMessage)
         }
 
