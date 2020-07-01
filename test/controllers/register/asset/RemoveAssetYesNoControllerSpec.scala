@@ -37,6 +37,7 @@ import pages.register.asset.shares._
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
 import views.html.register.asset.RemoveAssetYesNoView
 
 import scala.concurrent.Future
@@ -308,7 +309,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
 
       reset(registrationsRepository)
 
-      when(registrationsRepository.set(any())).thenReturn(Future.successful(true))
+      when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
 
       val userAnswers = emptyUserAnswers
         .set(WhatKindOfAssetPage(index), Money).success.value
@@ -327,7 +328,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
       redirectLocation(result).value mustEqual AddAssetsController.onPageLoad(fakeDraftId).url
 
       val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-      verify(registrationsRepository).set(uaCaptor.capture)
+      verify(registrationsRepository).set(uaCaptor.capture)(any())
       uaCaptor.getValue.get(WhatKindOfAssetPage(index)) mustNot be(defined)
       uaCaptor.getValue.get(AssetMoneyValuePage(index)) mustNot be(defined)
 
