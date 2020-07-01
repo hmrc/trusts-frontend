@@ -97,7 +97,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
         else {
           userAnswers.get(LivingSettlors).getOrElse(Nil) match {
             case Nil =>
-              if (!setupAfterDeceased & !inAdditionToWillTrust) {Some(Status.InProgress)}
+              if (!setupAfterDeceased && !inAdditionToWillTrust) {Some(Status.InProgress)}
               else { determineStatus(true) }
             case living =>
               val noMoreToAdd = userAnswers.get(AddASettlorPage).contains(AddASettlor.NoComplete)
