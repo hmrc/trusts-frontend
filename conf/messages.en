@@ -694,7 +694,7 @@ assets.other.description.checkYourAnswersLabel = What is the description of the 
 assets.other.description.hint = This must be 56 characters or less
 assets.other.description.error.required = Enter a description of the asset
 assets.other.description.error.length = The description of the asset must be 56 characters or less
-assets.other.description.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
+assets.other.description.error.invalid = The description of the asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
 
 assets.other.value.title = What is the current value of the asset?
 assets.other.value.heading = What is the current value of {0}?
@@ -1724,7 +1724,7 @@ partnershipDescription.checkYourAnswersLabel = What is the description for the p
 partnershipDescription.hint = This must be 56 characters or less
 partnershipDescription.error.required = Enter a description of the partnership
 partnershipDescription.error.length = The description of the partnership must be 56 characters or less
-partnershipDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
+partnershipDescription.error.invalid = The description of the partnership must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
 
 partnershipStartDate.title = When did the partnership start?
 partnershipStartDate.heading = When did the partnership start?
