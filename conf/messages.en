@@ -692,7 +692,7 @@ assets.other.description.checkYourAnswersLabel = What is the description of the 
 assets.other.description.hint = This must be 56 characters or less
 assets.other.description.error.required = Enter a description of the asset
 assets.other.description.error.length = The description of the asset must be 56 characters or less
-assets.other.description.error.invalid = The description of the asset must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, full stops, hyphens, round brackets and spaces
+assets.other.description.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
 
 assets.other.value.title = What is the current value of the asset?
 assets.other.value.heading = What is the current value of {0}?
@@ -722,7 +722,6 @@ assetDescription.checkYourAnswersLabel = What is the description for {0}?
 assetDescription.hint = This must be 56 characters or less
 assetDescription.error.required = Enter a description of the business
 assetDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
-                                 
 assetDescription.error.length = The description of the business asset must be 56 characters or less
 
 assetInternationalAddress.title = What is the business asset’s address?
@@ -1293,7 +1292,7 @@ propertyOrLandDescription.checkYourAnswersLabel = What is the description of the
 propertyOrLandDescription.hint = This must be 56 characters or less
 propertyOrLandDescription.error.required = Enter a description of the property or land
 propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less
-propertyOrLandDescription.error.invalid = The description of the property or land must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, hyphens and spaces
+propertyOrLandDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
 
 propertyOrLandInternationalAddress.title = What is the property or land’s address?
 propertyOrLandInternationalAddress.heading = What is the property or land’s address?
@@ -1706,7 +1705,7 @@ partnershipDescription.checkYourAnswersLabel = What is the description for the p
 partnershipDescription.hint = This must be 56 characters or less
 partnershipDescription.error.required = Enter a description of the partnership
 partnershipDescription.error.length = The description of the partnership must be 56 characters or less
-partnershipDescription.error.invalid = The description of the partnership must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, hyphens and spaces
+partnershipDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
 
 partnershipStartDate.title = When did the partnership start?
 partnershipStartDate.heading = When did the partnership start?
