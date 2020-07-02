@@ -45,10 +45,10 @@ trait AssetRoutes {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-        val answers = userAnswers.set(AddAnAssetYesNoPage, true).success.value
+          val answers = userAnswers.set(AddAnAssetYesNoPage, true).success.value
 
-        navigator.nextPage(AddAnAssetYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId))
+          navigator.nextPage(AddAnAssetYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -90,7 +90,6 @@ trait AssetRoutes {
               .mustBe(controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
-
 
 
       "go to AddAssetsPage from AssetMoneyValue page when the amount submitted" in {
@@ -325,7 +324,7 @@ trait AssetRoutes {
 
     }
 
-   "add another asset" must {
+    "add another asset" must {
 
       "go to the WhatKindOfAssetPage from AddAssetsPage when selected add them now" in {
 

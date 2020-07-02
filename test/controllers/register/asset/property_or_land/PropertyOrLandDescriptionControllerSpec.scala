@@ -131,8 +131,7 @@ class PropertyOrLandDescriptionControllerSpec extends RegistrationSpecBase with 
 
       val document = Jsoup.parse(contentAsString(result))
       document.getElementById("error-message-value-input").text() mustBe
-        "Error: The description of the property or land must only include letters a to z, numbers, ampersands (&), " +
-          "apostrophes, forward slashes, hyphens and spaces"
+        "Error: The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces"
 
       application.stop()
     }
