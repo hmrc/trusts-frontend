@@ -23,7 +23,6 @@ import models.registration.pages.AddASettlor
 import pages.Page
 import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
 import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
@@ -41,13 +40,7 @@ object DeceasedSettlorRoutes {
     case WasSettlorsAddressUKYesNoPage => _ => deceasedSettlorAddressRoute(draftId)
     case SettlorsInternationalAddressPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case SettlorsUKAddressPage => _ => _ => controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
-    case DeceasedSettlorAnswerPage => _ => deceasedSettlorAnswerPage(draftId)
-  }
-
-  private def deceasedSettlorAnswerPage(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(AddASettlorPage) match {
-    case Some(AddASettlor.NoComplete) => routes.TaskListController.onPageLoad(draftId)
-    case Some(AddASettlor.YesNow) => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
-    case _ => routes.SessionExpiredController.onPageLoad()
+    case DeceasedSettlorAnswerPage => _ => _ => routes.TaskListController.onPageLoad(draftId)
   }
 
   private def deceasedSettlorAddressRoute(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(WasSettlorsAddressUKYesNoPage) match {

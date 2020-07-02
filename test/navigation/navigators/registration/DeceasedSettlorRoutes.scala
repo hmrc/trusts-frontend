@@ -21,11 +21,9 @@ import controllers.register.settlors.deceased_settlor.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.AddASettlor
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.settlors.AddASettlorPage
 import pages.register.settlors.deceased_settlor._
 
 trait DeceasedSettlorRoutes {
@@ -148,10 +146,7 @@ trait DeceasedSettlorRoutes {
     "go to TaskList from DeceasedSettlorAnswerPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-
-          val answers = userAnswers.set(AddASettlorPage, AddASettlor.NoComplete).success.value
-
-          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(answers)
+          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(userAnswers)
             .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
       }
     }
@@ -192,15 +187,5 @@ trait DeceasedSettlorRoutes {
       }
     }
 
-    "go to Add Settlors from DeceasedSettlorAnswerPage" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
-
-          val answers = userAnswers.set(AddASettlorPage, AddASettlor.YesNow).success.value
-
-          navigator.nextPage(DeceasedSettlorAnswerPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
-      }
-    }
   }
 }
