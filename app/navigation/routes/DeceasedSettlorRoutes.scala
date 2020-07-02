@@ -81,8 +81,7 @@ object DeceasedSettlorRoutes {
   }
 
   private def addASettlorYesNoController(draftId: String)(userAnswers: UserAnswers) : Call = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
-    case Some(true) => controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(draftId)
-    case Some(false) => controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
+    case Some(_) => controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
     case _ => routes.SessionExpiredController.onPageLoad()
   }
 }

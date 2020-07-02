@@ -97,14 +97,14 @@ trait DeceasedSettlorRoutes {
       }
     }
 
-    "go to AdditionalSettlorsYesNoPage from SettlorNationalInsuranceNumberPage" in {
+    "go to DeceasedSettlorAnswer from SettlorNationalInsuranceNumberPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
 
           navigator.nextPage(SettlorNationalInsuranceNumberPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
 
@@ -125,14 +125,14 @@ trait DeceasedSettlorRoutes {
       }
     }
 
-    "go to AnotherSettlorYesNoPage from SettlorsLastKnownAddressYesNoPage when user answers no" in {
+    "go to DeceasedSettlorAnswer from SettlorsLastKnownAddressYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, true).flatMap(
             _.set(SettlorsLastKnownAddressYesNoPage, value = false))
             .success.value
           navigator.nextPage(SettlorsLastKnownAddressYesNoPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
     "go to WasSettlorsAddressUKYesNoPage from SettlorsLastKnownAddressYesNoPage when user answers yes" in {
@@ -159,24 +159,24 @@ trait DeceasedSettlorRoutes {
             .mustBe(routes.SettlorsInternationalAddressController.onPageLoad(NormalMode, fakeDraftId))
       }
     }
-    "go to AnotherSettlorYesNoPage from SettlorsInternationalAddressPage" in {
+    "go to DeceasedSettlorAnswer from SettlorsInternationalAddressPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
 
           navigator.nextPage(SettlorsInternationalAddressPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
-    "go to AnotherSettlorYesNo from SettlorsUKAddressPage" in {
+    "go to DeceasedSettlorAnswer from SettlorsUKAddressPage" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
           val answers = userAnswers.set(SetUpInAdditionToWillTrustYesNoPage, true).success.value
 
           navigator.nextPage(SettlorsUKAddressPage, NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.register.settlors.deceased_settlor.routes.AddASettlorYesNoController.onPageLoad(fakeDraftId))
+            .mustBe(controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId))
       }
     }
     "go to TaskList from DeceasedSettlorAnswerPage" in {
