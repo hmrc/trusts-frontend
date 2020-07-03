@@ -23,6 +23,7 @@ import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
+import models.registration.pages.Status
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
@@ -55,6 +56,8 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
                                              (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
+
+    override def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]] = Future.successful(None)
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]

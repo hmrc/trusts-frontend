@@ -20,8 +20,9 @@ import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus.Complete
+import models.registration.pages.Status
 import pages.register.agents.AgentInternalReferencePage
-import play.api.http.Status
+import play.api.http
 import play.api.libs.json._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.DateFormatter
@@ -34,6 +35,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
                                         )(implicit ec: ExecutionContext) extends RegistrationsRepository {
 
   private val registrationSection = "registration"
+  private val statusSection = "status"
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
@@ -65,7 +67,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
       userAnswers.progress != Complete,
       reference
     ).map {
-      response => response.status == Status.OK
+      response => response.status == http.Status.OK
     }
   }
 
@@ -78,10 +80,12 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   private def addSection(key: String, section: JsValue, data: JsValue): JsResult[JsValue] = {
     val path = decodePath(key).json
-    // This version of Json throws if you try to prune a non-existent element
-    // So we add an empty one first in case so there is always something to prune.
-    // Not the most efficient, but more concise code.
-    data.as[JsObject].transform(__.json.update(path.put(Json.obj()) andThen path.prune andThen path.put(section)))
+    val transform = data.transform(path.pick) match {
+      case JsSuccess(_,_) => path.prune andThen __.json.update(path.put(section))
+      case _ => __.json.update(path.put(section))
+    }
+
+    data.transform(transform)
   }
 
   override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue] = {
@@ -101,6 +105,16 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
+  override def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]] = {
+    submissionDraftConnector.getDraftSection(draftId, statusSection).map {
+      response =>
+        val path = JsPath \ section
+        response.data.transform(path.json.pick) match {
+          case JsSuccess(value, _) => Some(value.as[Status])
+          case _ => None
+        }
+    }
+  }
 }
 
 trait RegistrationsRepository {
@@ -111,4 +125,6 @@ trait RegistrationsRepository {
   def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]]
 
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
+
+  def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]]
 }
