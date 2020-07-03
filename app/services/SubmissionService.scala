@@ -25,6 +25,7 @@ import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import play.api.Logger
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,7 +44,7 @@ class DefaultSubmissionService @Inject()(
 
     registrationMapper.build(userAnswers) match {
       case Some(registration) =>
-        trustConnector.register(registration, userAnswers.draftId) map {
+        trustConnector.register(Json.toJson(registration), userAnswers.draftId) map {
           case response @ RegistrationTRNResponse(_) =>
 
             auditService.audit(

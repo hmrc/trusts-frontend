@@ -25,6 +25,7 @@ import models.core.http.TrustResponse.UnableToRegister
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
@@ -65,7 +66,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
+        when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
@@ -76,7 +77,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
 
-        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
+        when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
