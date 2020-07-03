@@ -19,14 +19,13 @@ package mapping.registration
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.Mapping
-import models.core.pages.UKAddress
+import models.core.pages.{InternationalAddress, UKAddress}
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.business._
-import pages.register.asset.other._
 
 class BusinessAssetMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
@@ -35,7 +34,7 @@ class BusinessAssetMapperSpec extends FreeSpec with MustMatchers
 
   "BusinessAssetMapper" - {
 
-    "must not be able to create an business asset when no description or value in user answers" in {
+    "must not be able to create a business asset when no description or value in user answers" in {
 
       val userAnswers =
         emptyUserAnswers
@@ -44,23 +43,47 @@ class BusinessAssetMapperSpec extends FreeSpec with MustMatchers
       businessAssetMapper.build(userAnswers) mustNot be(defined)
     }
 
-    "must able to create an Business Asset" in {
+    "must able to create a Business Asset" - {
 
-      val address = UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")
+      "when UK address" in {
 
-      val userAnswers =
-        emptyUserAnswers
-          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
-          .set(BusinessNamePage(0), "Test").success.value
-          .set(BusinessDescriptionPage(0), "Description").success.value
-          .set(BusinessAddressUkYesNoPage(0), true).success.value
-          .set(BusinessUkAddressPage(0), UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")).success.value
-          .set(BusinessValuePage(0), "123").success.value
-          .set(AssetStatus(0), Completed).success.value
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
+            .set(BusinessNamePage(0), "Test").success.value
+            .set(BusinessDescriptionPage(0), "Description").success.value
+            .set(BusinessAddressUkYesNoPage(0), true).success.value
+            .set(BusinessUkAddressPage(0), UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")).success.value
+            .set(BusinessValuePage(0), "123").success.value
+            .set(AssetStatus(0), Completed).success.value
 
-      businessAssetMapper.build(userAnswers).value mustBe List(BusinessAssetType(
-        "Test", "Description",
-          AddressType("26","Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB"), 123L))
+        businessAssetMapper.build(userAnswers).value mustBe List(BusinessAssetType(
+          "Test",
+          "Description",
+          AddressType("26","Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB"),
+          123L
+        ))
+      }
+
+      "when international address" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
+            .set(BusinessNamePage(0), "Test").success.value
+            .set(BusinessDescriptionPage(0), "Description").success.value
+            .set(BusinessAddressUkYesNoPage(0), false).success.value
+            .set(BusinessInternationalAddressPage(0), InternationalAddress("1", "Broadway", Some("New York"), "US")).success.value
+            .set(BusinessValuePage(0), "123").success.value
+            .set(AssetStatus(0), Completed).success.value
+
+        businessAssetMapper.build(userAnswers).value mustBe List(BusinessAssetType(
+          "Test",
+          "Description",
+          AddressType("1","Broadway", Some("New York"), None, None, "US"),
+          123L
+        ))
+      }
     }
 
     "must able to create multiple Business Assets" in {
