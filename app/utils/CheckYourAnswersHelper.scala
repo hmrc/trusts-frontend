@@ -904,7 +904,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x =>
       AnswerRow(
         "individualBeneficiaryIncome.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        percentage(x),
         Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, index, draftId).url),
         indBeneficiaryName(index, userAnswers),
         canEdit = canEdit
