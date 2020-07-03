@@ -34,12 +34,12 @@
 
         @components.error_summary(form.errors)
 
-        @components.input_text(
-          field = form("value"),
-          label = messages("telephoneNumber.heading", trusteeName),
-          labelClass = Some("heading-large"),
-          labelAsHeading = true,
-          hint = Some(messages(s"telephoneNumber.hint"))
+        @components.input_tele(
+            field = form("value"),
+            label = messages("telephoneNumber.heading", trusteeName),
+            labelClass = Some("heading-large"),
+            labelAsHeading = true,
+            hint = Some(messages(s"telephoneNumber.hint"))
         )
 
         @components.submit_button()

@@ -18,13 +18,14 @@ package forms
 
 import java.time.{LocalDate, ZoneOffset}
 
+import base.FakeTrustsApp
 import forms.behaviours.DateBehaviours
 import forms.deceased_settlor.SettlorDateOfDeathFormProvider
 import play.api.data.FormError
 
-class SettlorDateOfDeathFormProviderSpec extends DateBehaviours {
+class SettlorDateOfDeathFormProviderSpec extends DateBehaviours with FakeTrustsApp {
 
-  val form = new SettlorDateOfDeathFormProvider()()
+  val form = new SettlorDateOfDeathFormProvider(frontendAppConfig).withConfig()
 
   private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)

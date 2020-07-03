@@ -16,11 +16,16 @@
 
 package controllers.register.trust_details
 
+import java.time.LocalDate
+
+import config.FrontendAppConfig
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.WhenTrustSetupFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
+import pages.register.settlors.deceased_settlor.SettlorDateOfDeathPage
 import pages.register.trust_details.WhenTrustSetupPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -40,20 +45,22 @@ class WhenTrustSetupController @Inject()(
                                           requireData: RegistrationDataRequiredAction,
                                           formProvider: WhenTrustSetupFormProvider,
                                           val controllerComponents: MessagesControllerComponents,
-                                          view: WhenTrustSetupView
-                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                          view: WhenTrustSetupView,
+                                          appConfig: FrontendAppConfig
+                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form = formProvider()
+  private def form(config: (LocalDate, String)): Form[LocalDate] =
+    formProvider.withConfig(config)
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(WhenTrustSetupPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
+        case None => form(minDate)
+        case Some(value) => form(minDate).fill(value)
       }
 
       Ok(view(preparedForm, mode, draftId))
@@ -62,7 +69,7 @@ class WhenTrustSetupController @Inject()(
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      form.bindFromRequest().fold(
+      form(minDate).bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
@@ -73,6 +80,15 @@ class WhenTrustSetupController @Inject()(
           } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
         }
       )
+  }
+
+  private def minDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
+    request.userAnswers.get(SettlorDateOfDeathPage) match {
+      case Some(dateOfDeath) =>
+        (dateOfDeath, "beforeDateOfDeath")
+      case None =>
+        (appConfig.minDate, "past")
+    }
   }
 }
 

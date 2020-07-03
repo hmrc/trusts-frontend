@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package pages.register.asset.partnership
+package forms.assets
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import forms.Validation
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-final case class  PartnershipAssetUtrPage(index : Int) extends QuestionPage[String] {
+class AssetNameFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = Assets.path \ index \ toString
-
-  override def toString: String = "partnershipAssetUtr"
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("assetName.error.required")
+        .verifying(maxLength(105, "assetName.error.length"),
+          isNotEmpty("value", "assetName.error.required"),
+          regexp(Validation.nameRegex, "assetName.error.invalidFormat"))
+    )
 }

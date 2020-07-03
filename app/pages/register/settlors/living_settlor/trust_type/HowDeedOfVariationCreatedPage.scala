@@ -16,7 +16,7 @@
 
 package pages.register.settlors.living_settlor.trust_type
 
-import mapping.DeedOfVariation
+import models.registration.pages.DeedOfVariation
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors

@@ -21,12 +21,15 @@ import controllers.register.asset.routes
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.WhatKindOfAsset.{Money, PropertyOrLand, Shares}
-import models.registration.pages.{AddAssets, WhatKindOfAsset}
+import models.core.pages.UKAddress
+import models.registration.pages.AddAssets
+import models.registration.pages.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.register.asset.business._
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
 
@@ -36,27 +39,16 @@ trait AssetRoutes {
 
   def assetRoutes()(implicit navigator: Navigator) = {
 
-    "go to feature not available for asset type not available" in {
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
-
-          val answers = userAnswers.set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
-
-          navigator.nextPage(WhatKindOfAssetPage(0), NormalMode, fakeDraftId)(answers)
-            .mustBe(controllers.routes.FeatureNotAvailableController.onPageLoad())
-      }
-    }
-
     "go to WhatKindOfAssetPage from from AddAnAssetYesNoPage when selected Yes" in {
       val index = 0
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
-        val answers = userAnswers.set(AddAnAssetYesNoPage, true).success.value
+          val answers = userAnswers.set(AddAnAssetYesNoPage, true).success.value
 
-        navigator.nextPage(AddAnAssetYesNoPage, NormalMode, fakeDraftId)(answers)
-          .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId))
+          navigator.nextPage(AddAnAssetYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.WhatKindOfAssetController.onPageLoad(NormalMode, index, fakeDraftId))
       }
     }
 
@@ -98,7 +90,6 @@ trait AssetRoutes {
               .mustBe(controllers.register.asset.property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
         }
       }
-
 
 
       "go to AddAssetsPage from AssetMoneyValue page when the amount submitted" in {
@@ -274,8 +265,66 @@ trait AssetRoutes {
 
     }
 
+    "other assets" must {
 
-   "add another asset" must {
+      "go to other asset description from WhatKindOfAsset when other is selected" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Other).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to other asset value from other asset description" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(OtherAssetDescriptionPage(index), "Description").success.value
+
+            navigator.nextPage(OtherAssetDescriptionPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to check answers from other asset value" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(OtherAssetValuePage(index), "4000").success.value
+
+            navigator.nextPage(OtherAssetValuePage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.other.routes.OtherAssetAnswersController.onPageLoad(index, fakeDraftId))
+        }
+      }
+    }
+
+    "partnership assets" must {
+
+      "go to partnership asset description from WhatKindOfAsset when partnership is selected" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Partnership).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+    }
+
+    "add another asset" must {
 
       "go to the WhatKindOfAssetPage from AddAssetsPage when selected add them now" in {
 
@@ -311,6 +360,100 @@ trait AssetRoutes {
 
           navigator.nextPage(AddAssetsPage, NormalMode, fakeDraftId)(answers)
             .mustBe(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+      }
+    }
+
+    "business assets" must {
+
+      "go to AssetNamePage from WhatKindOfAsset page when the business option is selected" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(WhatKindOfAssetPage(index), Business).success.value
+
+            navigator.nextPage(WhatKindOfAssetPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to AssetDescription from AssetNamepage" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(BusinessNamePage(index), "Test").success.value
+
+            navigator.nextPage(BusinessNamePage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessDescriptionController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to AssetAddressUkYesNo from AssetDescription" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(BusinessDescriptionPage(index), "Test Test Test").success.value
+
+            navigator.nextPage(BusinessDescriptionPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessAddressUkYesNoController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to AssetUkAddress from AssetAddressUkYesNo" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(BusinessAddressUkYesNoPage(index), true).success.value
+
+            navigator.nextPage(BusinessAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessUkAddressController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to AssetInternationalAddress from AssetAddressUkYesNo" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(BusinessAddressUkYesNoPage(index), false).success.value
+
+            navigator.nextPage(BusinessAddressUkYesNoPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessInternationalAddressController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to CurrentValue from AssetUkAddress" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(BusinessUkAddressPage(index), UKAddress("Test line 1", "Test line 2", None, None, "AA111AA")).success.value
+
+            navigator.nextPage(BusinessUkAddressPage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessValueController.onPageLoad(NormalMode, index, fakeDraftId))
+        }
+      }
+
+      "go to AssetAnswer from CurrentValue" in {
+        val index = 0
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(BusinessValuePage(index), "12").success.value
+
+            navigator.nextPage(BusinessValuePage(index), NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.asset.business.routes.BusinessAnswersController.onPageLoad(index, fakeDraftId))
+        }
       }
     }
   }

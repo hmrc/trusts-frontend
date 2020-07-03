@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package pages.register.asset.partnership
+package utils.annotations;
 
-import java.time.LocalDate
+import com.google.inject.BindingAnnotation;
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.Assets
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-final case class  PartnershipAssetStartDatePage(index : Int) extends QuestionPage[LocalDate] {
-
-  override def path: JsPath = Assets.path \ index \ toString
-
-  override def toString: String = "partnershipAssetStartDate"
-}
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
+@BindingAnnotation
+public @interface Partnership {}

@@ -28,7 +28,7 @@ class SettlorIndividualAddressUKViewSpec extends UkAddressViewBehaviours {
 
   val messageKeyPrefix = "settlorIndividualAddressUK"
   val index = 0
-  val name = FullName("First", Some("middle"), "Last")
+  val name: FullName = FullName("First", Some("middle"), "Last")
 
   override val form = new UKAddressFormProvider()()
 

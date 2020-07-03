@@ -18,7 +18,8 @@ package mapping.registration
 
 import java.time.LocalDate
 
-import mapping.{DeedOfVariation, TypeOfTrust}
+import mapping.TypeOfTrust
+import models.registration.pages.DeedOfVariation
 import play.api.libs.json._
 
 /**
@@ -394,7 +395,7 @@ object PropertyLandType {
 }
 
 case class BusinessAssetType(orgName: String,
-                             businessDescription: Option[String],
+                             businessDescription: String,
                              address: AddressType,
                              businessValue: Long)
 

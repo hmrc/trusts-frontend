@@ -38,7 +38,7 @@ class WhatKindOfAssetViewSpec extends ViewBehaviours {
   val index = 0
 
   def applyView(form: Form[_], index : Int): HtmlFormat.Appendable =
-    view.apply(form, NormalMode, fakeDraftId, index, WhatKindOfAsset.options)(fakeRequest, messages)
+    view.apply(form, NormalMode, fakeDraftId, index, WhatKindOfAsset.options())(fakeRequest, messages)
 
   "WhatKindOfAssetView" must {
 
@@ -66,13 +66,13 @@ class WhatKindOfAssetViewSpec extends ViewBehaviours {
 
         val doc = asDocument(applyView(form, 0))
 
-        for (option <- WhatKindOfAsset.options) {
+        for (option <- WhatKindOfAsset.options()) {
           assertContainsRadioButton(doc, option.id, "value", option.value, false)
         }
       }
     }
 
-    for (option <- WhatKindOfAsset.options) {
+    for (option <- WhatKindOfAsset.options()) {
 
       s"rendered with a value of '${option.value}'" must {
 
@@ -82,7 +82,7 @@ class WhatKindOfAssetViewSpec extends ViewBehaviours {
 
           assertContainsRadioButton(doc, option.id, "value", option.value, true)
 
-          for (unselectedOption <- WhatKindOfAsset.options.filterNot(o => o == option)) {
+          for (unselectedOption <- WhatKindOfAsset.options().filterNot(o => o == option)) {
             assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
           }
         }

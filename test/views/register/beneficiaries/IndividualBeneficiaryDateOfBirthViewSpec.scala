@@ -18,6 +18,7 @@ package views.register.beneficiaries
 
 import java.time.LocalDate
 
+import base.RegistrationSpecBase
 import forms.IndividualBeneficiaryDateOfBirthFormProvider
 import models.NormalMode
 import models.core.pages.FullName
@@ -33,7 +34,7 @@ class IndividualBeneficiaryDateOfBirthViewSpec extends QuestionViewBehaviours[Lo
   val name = "First Last"
   val fullName = FullName("First", None, "Last")
 
-  val form = new IndividualBeneficiaryDateOfBirthFormProvider()()
+  val form = new IndividualBeneficiaryDateOfBirthFormProvider(frontendAppConfig)()
 
   "IndividualBeneficiaryDateOfBirthView view" must {
 

@@ -17,6 +17,7 @@
 package viewmodels
 
 import generators.{Generators, ModelGenerators}
+import models.core.pages.UKAddress
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages.WhatKindOfAsset._
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -35,11 +36,12 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
         "to a view model that is not complete" in {
 
           val json = Json.obj(
-            "whatKindOfAsset" -> Money.toString
+            "whatKindOfAsset" -> Money.toString,
+            "assetMoneyValue" -> "4000"
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            MoneyAssetViewModel(Money, None, InProgress)
+            MoneyAssetViewModel(Money, "£4000", InProgress)
           )
         }
 
@@ -51,7 +53,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            MoneyAssetViewModel(Money, Some("£4000"), Completed)
+            MoneyAssetViewModel(Money, "£4000", Completed)
           )
         }
 
@@ -201,7 +203,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
                   |{
                   |"propertyOrLandAddressYesNo": true,
                   |"propertyOrLandAddressUKYesNo": true,
-                  |"address": {
+                  |"ukAddress": {
                   | "line1": "line 1",
                   | "line2": "Newcastle",
                   | "postcode": "NE11TU"
@@ -241,7 +243,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
                   |{
                   |"propertyOrLandAddressYesNo": true,
                   |"propertyOrLandAddressUKYesNo": false,
-                  |"address": {
+                  |"internationalAddress": {
                   | "line1": "line 1",
                   | "line2": "line 2",
                   | "country": "France"
@@ -294,6 +296,64 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
 
       }
 
+      "other" - {
+
+        "to a view model that is not complete" in {
+
+          val json = Json.obj(
+            "whatKindOfAsset" -> Other.toString,
+            "otherAssetDescription" -> "Description",
+            "status" -> InProgress.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            OtherAssetViewModel(Other, "Description", InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.obj(
+            "whatKindOfAsset" -> Other.toString,
+            "otherAssetDescription" -> "Description",
+            "otherAssetValue" -> "4000",
+            "status" -> Completed.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            OtherAssetViewModel(Other, "Description", Completed)
+          )
+        }
+
+      }
+
+      "partnership" - {
+
+        "to a view model that is not complete" in {
+
+          val json = Json.obj(
+            "whatKindOfAsset" -> Partnership.toString,
+            "partnershipDescription" -> "Description",
+            "status" -> InProgress.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PartnershipAssetViewModel(Partnership, "Description", InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.obj(
+            "whatKindOfAsset" -> Partnership.toString,
+            "partnershipDescription" -> "Description",
+            "status" -> Completed.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            PartnershipAssetViewModel(Partnership, "Description", Completed)
+          )
+        }
+
+      }
 
       "to a default from any other type" in {
         val json = Json.obj(
@@ -303,6 +363,42 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
         json.validate[AssetViewModel] mustEqual JsSuccess(
           DefaultAssetsViewModel(Partnership, InProgress)
         )
+      }
+      "business" - {
+
+        "to a view model that is not complete" in {
+
+          val json = Json.obj(
+            "whatKindOfAsset" -> Business.toString,
+            "name" -> "Test",
+            "status" -> InProgress.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            BusinessAssetViewModel(Business, "Test", InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.obj(
+            "whatKindOfAsset" -> Business.toString,
+            "name" -> "Test",
+            "description" -> "Test Test Test",
+            "addressUkYesNo" -> "true",
+            "address" -> Json.obj(
+              "line1" -> "Test line 1",
+              "line2" -> "Test line 2",
+              "postcode" -> "NE11NE"
+            ),
+            "value" -> "12",
+            "status" -> Completed.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            BusinessAssetViewModel(Business, "Test", Completed)
+          )
+        }
+
       }
     }
   }

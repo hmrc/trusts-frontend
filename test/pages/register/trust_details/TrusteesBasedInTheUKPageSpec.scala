@@ -16,8 +16,12 @@
 
 package pages.register.trust_details
 
+import models.registration.pages.NonResidentType._
+import models.registration.pages.Status._
 import models.registration.pages.TrusteesBasedInTheUK
+import models.registration.pages.TrusteesBasedInTheUK._
 import pages.behaviours.PageBehaviours
+import pages.entitystatus.TrustDetailsStatus
 
 class TrusteesBasedInTheUKPageSpec extends PageBehaviours {
 
@@ -28,5 +32,39 @@ class TrusteesBasedInTheUKPageSpec extends PageBehaviours {
     beSettable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
 
     beRemovable[TrusteesBasedInTheUK](TrusteesBasedInTheUKPage)
+
+    "implement cleanup logic when UKBasedTrustees selected" in {
+      val userAnswers = emptyAnswers
+        .set(RegisteringTrustFor5APage, false)
+        .flatMap(_.set(InheritanceTaxActPage, false))
+        .flatMap(_.set(NonResidentTypePage, Domiciled))
+        .flatMap(_.set(AgentOtherThanBarristerPage, true))
+        .flatMap(_.set(TrustDetailsStatus, InProgress))
+        .flatMap(_.set(SettlorsBasedInTheUKPage, false))
+        .flatMap(_.set(TrusteesBasedInTheUKPage, UKBasedTrustees))
+
+      userAnswers.get.get(RegisteringTrustFor5APage) mustNot be(defined)
+      userAnswers.get.get(InheritanceTaxActPage) mustNot be(defined)
+      userAnswers.get.get(NonResidentTypePage) mustNot be(defined)
+      userAnswers.get.get(AgentOtherThanBarristerPage) mustNot be(defined)
+      userAnswers.get.get(TrustDetailsStatus) mustNot be(defined)
+      userAnswers.get.get(SettlorsBasedInTheUKPage) mustNot be(defined)
+    }
+
+    "implement cleanup logic when NonUkBasedTrustees selected" in {
+      val userAnswers = emptyAnswers
+        .set(EstablishedUnderScotsLawPage, false)
+        .flatMap(_.set(TrustResidentOffshorePage, false))
+        .flatMap(_.set(TrustPreviouslyResidentPage, "country"))
+        .flatMap(_.set(TrustDetailsStatus, InProgress))
+        .flatMap(_.set(SettlorsBasedInTheUKPage, true))
+        .flatMap(_.set(TrusteesBasedInTheUKPage, NonUkBasedTrustees))
+
+      userAnswers.get.get(EstablishedUnderScotsLawPage) mustNot be(defined)
+      userAnswers.get.get(TrustResidentOffshorePage) mustNot be(defined)
+      userAnswers.get.get(TrustPreviouslyResidentPage) mustNot be(defined)
+      userAnswers.get.get(TrustDetailsStatus) mustNot be(defined)
+      userAnswers.get.get(SettlorsBasedInTheUKPage) mustNot be(defined)
+    }
   }
 }

@@ -16,6 +16,8 @@
 
 package config
 
+import java.time.LocalDate
+
 import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.Lang
@@ -97,4 +99,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val timeoutLength: String = configuration.get[String]("timeout.length")
 
   lazy val accessibilityLinkUrl: String = configuration.get[String]("urls.accessibility")
+
+  private val day: Int = configuration.get[Int]("minimumDate.day")
+  private val month: Int = configuration.get[Int]("minimumDate.month")
+  private val year: Int = configuration.get[Int]("minimumDate.year")
+  lazy val minDate: LocalDate = LocalDate.of(year, month, day)
 }

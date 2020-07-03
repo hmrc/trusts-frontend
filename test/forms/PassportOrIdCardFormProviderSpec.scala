@@ -18,16 +18,17 @@ package forms
 
 import java.time.LocalDate
 
+import base.FakeTrustsApp
 import forms.behaviours.{DateBehaviours, PassportOrIDCardBehaviours, StringFieldBehaviours}
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
 class PassportOrIdCardFormProviderSpec extends
-  StringFieldBehaviours with PassportOrIDCardBehaviours with DateBehaviours {
+  StringFieldBehaviours with PassportOrIDCardBehaviours with DateBehaviours with FakeTrustsApp {
 
   val prefix = "passport"
 
-  val form = new PassportOrIdCardFormProvider()(prefix)
+  val form = new PassportOrIdCardFormProvider(frontendAppConfig)(prefix)
 
   ".country" must {
 

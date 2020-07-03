@@ -23,9 +23,9 @@ import controllers.register.routes._
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
-import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
+import models.registration.pages.{DeedOfVariation, KindOfTrust, PassportOrIdCardDetails}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage}
 import pages.register.settlors.living_settlor.{SettlorIndividualOrBusinessPage, _}
 import play.api.Application
 import play.api.mvc.{Call, Result}
@@ -62,6 +62,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
             .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
             .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -78,6 +79,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             Seq(
               checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.deedOfVariation.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
@@ -114,6 +116,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
             .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplaceAbsolute).success.value
             .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -132,6 +135,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             Seq(
               checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.deedOfVariation.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
@@ -170,6 +174,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
             .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
             .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -190,6 +195,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             Seq(
               checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.deedOfVariation.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
@@ -230,6 +236,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
             .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
             .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -250,6 +257,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             Seq(
               checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.deedOfVariation.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
@@ -290,6 +298,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
             .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
             .set(HoldoverReliefYesNoPage, false).success.value
             .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
             .set(SettlorIndividualNamePage(index), settlorName).success.value
@@ -312,6 +321,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
             Seq(
               checkYourAnswersHelper.setUpAfterSettlorDied.value,
               checkYourAnswersHelper.kindOfTrust.value,
+              checkYourAnswersHelper.deedOfVariation.value,
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorIndividualName(index).value,
@@ -352,6 +362,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
         emptyUserAnswers
           .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
           .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+          .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
           .set(HoldoverReliefYesNoPage, false).success.value
           .set(SettlorIndividualNamePage(index), settlorName).success.value
           .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value

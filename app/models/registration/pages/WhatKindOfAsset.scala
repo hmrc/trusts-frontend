@@ -18,6 +18,7 @@ package models.registration.pages
 
 import models.{Enumerable, WithName}
 import viewmodels.RadioOption
+import viewmodels.addAnother._
 
 sealed trait WhatKindOfAsset
 
@@ -34,11 +35,30 @@ object WhatKindOfAsset extends Enumerable.Implicits {
     Money, PropertyOrLand, Shares, Business, Partnership, Other
   )
 
-  val options: List[RadioOption] = values.map {
+  def options(kindsOfAsset: List[WhatKindOfAsset] = values): List[RadioOption] = kindsOfAsset.map {
     value =>
       RadioOption("whatKindOfAsset", value.toString)
   }
 
   implicit val enumerable: Enumerable[WhatKindOfAsset] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
+  type AssetTypeCount = (WhatKindOfAsset, Int)
+
+  def nonMaxedOutOptions(assets: List[AssetViewModel]): List[RadioOption] = {
+    val assetTypeCounts: List[AssetTypeCount] = List(
+      (Money, assets.count(_.isInstanceOf[MoneyAssetViewModel])),
+      (PropertyOrLand, assets.count(_.isInstanceOf[PropertyOrLandAssetViewModel])),
+      (Shares, assets.count(_.isInstanceOf[ShareAssetViewModel])),
+      (Business, assets.count(_.isInstanceOf[BusinessAssetViewModel])),
+      (Partnership, assets.count(_.isInstanceOf[PartnershipAssetViewModel])),
+      (Other, assets.count(_.isInstanceOf[OtherAssetViewModel]))
+    )
+
+    options(assetTypeCounts.filter(limitConditions).map(_._1))
+  }
+
+  private def limitConditions(assetTypeCount: AssetTypeCount): Boolean =
+    (assetTypeCount._2 < 1 && assetTypeCount._1 == Money) ||
+      (assetTypeCount._2 < 10 && assetTypeCount._1 != Money)
 }

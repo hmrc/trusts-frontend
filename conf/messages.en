@@ -61,10 +61,12 @@ site.complete = Completed
 site.onlyContinue = Continue
 site.date.hint = For example, 31 3 1980
 site.warning = Warning
+site.error = Error:
 site.confirm-send = Confirm and send
 site.address = Address
 site.utr = Unique Taxpayer Reference
 site.sign_out = Sign out
+site.print-or-save = Print or save this page
 
 featureNotAvailable.title = This part of the online service is not available yet
 featureNotAvailable.heading = This part of the online service is not available yet
@@ -122,6 +124,7 @@ charityOrTrust.charity = Charity
 charityOrTrust.trust = Trust
 
 entity.settlor.individual = Individual Settlor
+entity.settlor.deceased = Will Trust
 
 entity.trustee = Trustees
 entity.asset = Assets
@@ -244,6 +247,7 @@ whenTrustSetup.error.required = The date the trust was created must include a {0
 whenTrustSetup.error.invalid = Enter a real date the trust was created
 whenTrustSetup.error.future = The date the trust was created must be today or in the past
 whenTrustSetup.error.past = The date the trust was created must be after 31 December 1499
+whenTrustSetup.error.beforeDateOfDeath = The date the trust was created must be on or after the settlor’s date of death
 whenTrustSetup.text = This is the date the trust deed was signed. For will trusts use the settlor’s date of death.
 whenTrustSetup.hint = For example, 31 3 2015
 
@@ -385,6 +389,7 @@ addASettlor.count.heading = You have added {0} settlors
 addASettlor.count.title = You have added {0} settlors
 
 addASettlor.Lifetime = This is a trust created during the settlor’s lifetime to gift or transfer assets (also known as an inter vivos trust)
+addASettlor.Deed = This trust was set up through a Deed of Variation or family agreement
 addASettlor.Employees = This trust was set up for the employees of a company
 addASettlor.Building = This trust was set up for a building or building with lots of tenants
 addASettlor.Repair = This trust was set up to pay for the repair of historic buildings
@@ -537,7 +542,7 @@ taskList.agent.agentDetails = Agent details
 
 taskList.summary.heading1 = Print a copy
 taskList.summary.paragraph1.start = You can
-taskList.summary.link1 = print or save a draft copy of your saved answers (opens in a new window or tab)
+taskList.summary.link1 = print or save a draft copy of your saved answers
 taskList.summary.paragraph1.end = . You can also print a declared copy after you have made a declaration.
 taskList.summary.heading2 = Update asset details
 taskList.summary.paragraph2 = To update any asset details after making the declaration for this trust, use Self Assessment online or the
@@ -631,7 +636,7 @@ assetMoneyValue.checkYourAnswersLabel = What is the total amount of money in the
 assetMoneyValue.paragraph1 = Add all current amounts together.
 assetMoneyValue.hint = Rounded down to the nearest pound. For example, 4000
 assetMoneyValue.error.required = Enter the current total amount of money in the trust
-assetMoneyValue.error.length = Total assets value must be 12 numbers or less
+assetMoneyValue.error.length = Total assets value must be 999999999999 or less
 assetMoneyValue.error.invalidFormat = Total assets value must be a number
 assetMoneyValue.error.wholeNumber = Total assets value must be a whole number
 assetMoneyValue.error.zero = Total amount of money in the trust must be 1 or more
@@ -681,6 +686,75 @@ addAssets.singular.title = Add assets
 
 addAssets.propertyOrLand = Property or Land
 
+assets.defaultText = the asset
+
+assets.other.description.title = What is the description of the asset?
+assets.other.description.heading = What is the description of the asset?
+assets.other.description.checkYourAnswersLabel = What is the description of the asset?
+assets.other.description.hint = This must be 56 characters or less
+assets.other.description.error.required = Enter a description of the asset
+assets.other.description.error.length = The description of the asset must be 56 characters or less
+assets.other.description.error.invalid = The description of the asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
+
+assets.other.value.title = What is the current value of the asset?
+assets.other.value.heading = What is the current value of {0}?
+assets.other.value.checkYourAnswersLabel = What is the current value of {0}?
+assets.other.value.hint = Rounded down to the nearest pound. For example, 4000
+assets.other.value.error.required = Enter the current value of the asset
+assets.other.value.error.invalid = Current value of the asset must be a number
+assets.other.value.error.zero = Current value of the asset must be 1 or more
+assets.other.value.error.length = Current value of the asset must be 999999999999 or less
+assets.other.value.error.wholeNumber = Current value of the asset must be a whole number
+
+assets.other.checkDetails.title = Check asset details
+assets.other.checkDetails.heading = Check asset details
+
+assets.removeYesNo.title = Are you sure you want to remove the asset?
+assets.removeYesNo.heading = Are you sure you want to remove {0}?
+assets.removeYesNo.error.required = Select yes if you want to remove the asset
+
+assetAddressUkYesNo.title = Is the business asset address in the UK?
+assetAddressUkYesNo.heading = Is {0}’s address in the UK?
+assetAddressUkYesNo.checkYourAnswersLabel = Is {0} address in the UK?
+assetAddressUkYesNo.error.required = Select yes if the business asset’s address in the UK
+
+assetDescription.title = What is the description for the business asset?
+assetDescription.heading = What is the description for {0}?
+assetDescription.checkYourAnswersLabel = What is the description for {0}?
+assetDescription.hint = This must be 56 characters or less
+assetDescription.error.required = Enter a description of the business
+assetDescription.error.invalid = The description of the business asset must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
+assetDescription.error.length = The description of the business asset must be 56 characters or less
+
+assetInternationalAddress.title = What is the business asset’s address?
+assetInternationalAddress.heading = What is {0}’s address?
+assetInternationalAddress.checkYourAnswersLabel = What is {0}’s address?
+
+assetName.title = What is the business’s name?
+assetName.heading = What is the business’s name?
+assetName.checkYourAnswersLabel = What is the business’s name?
+assetName.error.required = Enter the business’s name
+assetName.error.length = Business’s name cannot be more than 105 characters
+assetName.error.invalidFormat = Business’s name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
+
+assetUkAddress.title = What is the business asset address?
+assetUkAddress.heading = What is {0}’s address?
+assetUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+currentValue.title = What is the current value of the business?
+currentValue.heading = What is the current value of the business?
+currentValue.checkYourAnswersLabel = What is the current value of the business?
+currentValue.hint = Rounded down to the nearest pound. For example, 4000
+currentValue.error.required = Enter the current value of the business
+currentValue.error.max.length = Assets current value must be 999999999999 or less
+currentValue.error.min.length = Assets current value must be 1 or more
+currentValue.error.invalidFormat = Assets current value must be a number
+currentValue.error.wholeNumber = Assets current value must be a whole number
+currentValue.link = Return to registration progress
+
+assetAnswer.title = Check asset details
+assetAnswer.heading = Check asset details
+
 settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
 settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
 settlorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
@@ -695,7 +769,9 @@ settlorDateOfDeath.error.required.two = The date of death must include {0} and {
 settlorDateOfDeath.error.required = The date of death must include {0}
 settlorDateOfDeath.error.invalid = Enter a real date of death
 settlorDateOfDeath.error.future = Date of death must be today or in the past
+settlorDateOfDeath.error.afterTrustStartDate = Date of death must be on or before the trust’s start date
 settlorDateOfDeath.error.past = Date of death must be after 31 December 1499
+settlorDateOfDeath.error.beforeDateOfBirth = Date of death must be on or after the date of birth
 
 settlorDateOfDeathYesNo.title = Do you know the settlor’s date of death?
 settlorDateOfDeathYesNo.heading = Do you know {0}’s date of death?
@@ -719,7 +795,8 @@ settlorsDateOfBirth.error.required.all = Enter a date of birth
 settlorsDateOfBirth.error.required.two = The date of birth must include {0} and {1}
 settlorsDateOfBirth.error.required = The date of birth must include {0}
 settlorsDateOfBirth.error.invalid = Enter a real date of birth
-settlorsDateOfBirth.error.future = Date of birth must be on or before the date of death
+settlorsDateOfBirth.error.future = Date of birth must be today or in the past
+settlorsDateOfBirth.error.afterDateOfDeath = Date of birth must be on or before the date of death
 settlorsDateOfBirth.error.past = Date of birth must be after 31 December 1499
 
 settlorsInternationalAddress.title = What is the settlor’s last known address?
@@ -763,6 +840,11 @@ setUpAfterSettlorDied.heading = Was the trust set up after the settlor died?
 setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
 setUpAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
 setUpAfterSettlorDied.hint = This is also known as a will trust
+
+setUpInAdditionToWillTrustYesNo.title = Is this in addition to a will trust?
+setUpInAdditionToWillTrustYesNo.heading = Is this in addition to a will trust?
+setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
+setUpInAdditionToWillTrustYesNo.error.required = Select yes if the trust is in addition to a will trust
 
 wasSettlorsAddressUKYesNo.title = Was the settlor’s last known address in the UK?
 wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
@@ -991,7 +1073,7 @@ removeIndividualBeneficiary.heading = Are you sure you want to remove {0}?
 removeIndividualBeneficiary.default = the individual beneficiary
 removeIndividualBeneficiary.error.required = Select yes if you want to remove the individual beneficiary
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 
@@ -1054,7 +1136,7 @@ confirmationAgentPage.paragraph10.a = contact the trusts helpline (opens in a ne
 confirmationAgentPage.agent.you.can = You can
 confirmationAgentPage.agent.link = return to register and maintain a trust for a client
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
+confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
 confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
 confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
 
@@ -1121,6 +1203,8 @@ answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.section.propertyOrLandAsset.subheading = Property or land
+answerPage.section.partnershipAsset.subheading = Partnership
+answerPage.section.otherAsset.subheading = Other
 answerPage.agentClientRef = Client reference number: {0}
 answerPage.section.other.individual.heading = Other individual
 
@@ -1141,7 +1225,7 @@ sharePortfolioQuantityInTrust.title = How many individual shares are in the port
 sharePortfolioQuantityInTrust.heading = How many individual shares are in the portfolio?
 sharePortfolioQuantityInTrust.checkYourAnswersLabel = How many individual shares are in the portfolio?
 sharePortfolioQuantityInTrust.error.required = Enter the current number of shares in the portfolio
-sharePortfolioQuantityInTrust.error.length = Total amount of individual shares in the portfolio must be 12 numbers or less
+sharePortfolioQuantityInTrust.error.length = Total amount of individual shares in the portfolio must be 999999999999 or less
 sharePortfolioQuantityInTrust.error.invalid = Total amount of individual shares in the portfolio must be a number
 sharePortfolioQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
 sharePortfolioQuantityInTrust.error.zero = Total amount of individual shares in the portfolio must be 1 or more
@@ -1150,7 +1234,7 @@ sharePortfolioValueInTrust.title = What is the current value of the portfolio?
 sharePortfolioValueInTrust.heading = What is the current value of the portfolio?
 sharePortfolioValueInTrust.checkYourAnswersLabel = What is the current value of the portfolio?
 sharePortfolioValueInTrust.error.required = Enter the current value of the portfolio
-sharePortfolioValueInTrust.error.length = Total current value of the portfolio must be 12 numbers or less
+sharePortfolioValueInTrust.error.length = Total current value of the portfolio must be 999999999999 or less
 sharePortfolioValueInTrust.error.invalid = Total current value of the portfolio must be a number
 sharePortfolioValueInTrust.hint = Rounded down to the nearest pound. For example, 4000
 sharePortfolioValueInTrust.error.zero = Total current value of the portfolio must be 1 or more
@@ -1176,7 +1260,7 @@ shareQuantityInTrust.heading = How many {0} shares are in the trust?
 shareQuantityInTrust.checkYourAnswersLabel = How many {0} shares are in the trust?
 shareQuantityInTrust.hint = Add together the total number of shares across all share holdings. This can be an estimate.
 shareQuantityInTrust.error.invalid = Total shares in the trust must be a number
-shareQuantityInTrust.error.length = Total shares in the trust must be 12 numbers or less
+shareQuantityInTrust.error.length = Total shares in the trust must be 999999999999 or less
 shareQuantityInTrust.error.required = Enter the current number of shares in the trust
 shareQuantityInTrust.error.zero = Total shares in the trust must be 1 or more
 
@@ -1215,7 +1299,7 @@ propertyOrLandDescription.checkYourAnswersLabel = What is the description of the
 propertyOrLandDescription.hint = This must be 56 characters or less
 propertyOrLandDescription.error.required = Enter a description of the property or land
 propertyOrLandDescription.error.length = The description of the property or land must be 56 characters or less
-propertyOrLandDescription.error.invalid = The description of the property or land must only include letters a to z, numbers, ampersands (&), apostrophes, forward slashes, hyphens and spaces
+propertyOrLandDescription.error.invalid = The description of the property or land must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
 
 propertyOrLandInternationalAddress.title = What is the property or land’s address?
 propertyOrLandInternationalAddress.heading = What is the property or land’s address?
@@ -1226,7 +1310,7 @@ propertyOrLandTotalValue.heading = What is the current total value of the proper
 propertyOrLandTotalValue.checkYourAnswersLabel = What is the current total value of the property or land?
 propertyOrLandTotalValue.hint = This can be an estimate. Rounded down to the nearest pound. For example, 4000
 propertyOrLandTotalValue.error.required = Enter the current total value of the property or land
-propertyOrLandTotalValue.error.length = Current total value of the property or land must be 12 numbers or less
+propertyOrLandTotalValue.error.length = Current total value of the property or land must be 999999999999 or less
 propertyOrLandTotalValue.error.invalid = Current total value of the property or land must be a number
 propertyOrLandTotalValue.error.zero = Current total value of the property or land must be 1 or more
 propertyOrLandTotalValue.error.wholeNumber = Current total value of the property or land must be a whole number
@@ -1408,6 +1492,12 @@ settlorBusinessTime.checkYourAnswersLabel = At the date of each contribution to 
 addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
 addASettlorYesNo.error.required = Select yes if you want to add a settlor
+addASettlorYesNo.add-them-now = Yes
+addASettlorYesNo.no-complete = No
+
+addAnotherSettlorYesNo.title = Are there any additional settlors for the trust?
+addAnotherSettlorYesNo.heading = Are there any additional settlors for the trust?
+addAnotherSettlorYesNo.error.required = Select yes if you want to add a settlor
 
 kindOfTrust.title = What kind of trust did the settlor create?
 kindOfTrust.heading = What kind of trust did the settlor create?
@@ -1418,6 +1508,13 @@ kindOfTrust.Building = A trust for a building or building with tenants
 kindOfTrust.Repair = A trust for the repair of historic buildings
 kindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
 kindOfTrust.error.required = Select what kind of trust the settlor created
+
+howDeedOfVariationCreated.title = How was the deed of variation created?
+howDeedOfVariationCreated.heading = How was the deed of variation created?
+howDeedOfVariationCreated.ReplacedWill = to replace a will trust
+howDeedOfVariationCreated.ReplaceAbsolute = to replace an absolute interest over a will
+howDeedOfVariationCreated.checkYourAnswersLabel = How was the deed of variation created?
+howDeedOfVariationCreated.error.required = Select how the deed of variation was created
 
 holdoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
 holdoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
@@ -1500,7 +1597,6 @@ answerPage.section.protectors.heading = Protectors
 answerPage.section.protectors.subheading = Protector {0}
 
 answerPage.section.trustType.heading = Trust type
-setupInAdditionToWillTrustYesNo.checkYourAnswersLabel = Was it set up in addition to a will trust?
 howDeedOfVariationCreated.checkYourAnswersLabel = How was the Deed of Variation created?
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
 employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
@@ -1567,7 +1663,7 @@ accessibilityStatement.reporting.pre.link = We are always looking to improve the
 accessibilityStatement.reporting.link = accessibility problem (opens in a new window or tab)
 
 accessibilityStatement.what.to.do = What to do if you are not happy with how we respond to your complaint
-accessibilityStatement.what.to.do.pre.eass.link = The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the 'accessibility regulations'). If you are not happy with how we respond to your complaint,
+accessibilityStatement.what.to.do.pre.eass.link = The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ''accessibility regulations''). If you are not happy with how we respond to your complaint,
 
 accessibilityStatement.what.to.do.eass.link = contact the Equality Advisory and Support Service (EASS)
 accessibilityStatement.what.to.do.or.the = or the
@@ -1621,3 +1717,25 @@ accessibilityStatement.page.prepared.on = This page was prepared on 31 March 202
 accessibilityStatement.wcag.standard = Web Content Accessibility Guidelines version 2.1 AA standard
 
 footer.links.accessibility.text = Accessibility
+
+partnershipDescription.title = What is the description for the partnership?
+partnershipDescription.heading = What is the description for the partnership?
+partnershipDescription.checkYourAnswersLabel = What is the description for the partnership?
+partnershipDescription.hint = This must be 56 characters or less
+partnershipDescription.error.required = Enter a description of the partnership
+partnershipDescription.error.length = The description of the partnership must be 56 characters or less
+partnershipDescription.error.invalid = The description of the partnership must only include letters a to z, numbers, ampersands (&), apostrophes, hyphens and spaces
+
+partnershipStartDate.title = When did the partnership start?
+partnershipStartDate.heading = When did the partnership start?
+partnershipStartDate.checkYourAnswersLabel = When did the partnership start?
+partnershipStartDate.hint = For example, 31 3 2015
+partnershipStartDate.error.required.all = Enter the date the partnership started
+partnershipStartDate.error.required.two = The date the partnership started must include {0} and {1}
+partnershipStartDate.error.required = The date the partnership started must include {0}
+partnershipStartDate.error.invalid = Enter a real start date for the partnership start date
+partnershipStartDate.error.future = The date the partnership started must be today or in the past
+partnershipStartDate.error.past = The date the partnership started must be after 31 December 1499
+
+partnershipAnswers.title = Check asset details
+partnershipAnswers.heading = Check asset details

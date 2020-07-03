@@ -40,8 +40,7 @@
           label = messages("trusteeBusinessName.heading"),
           labelAsHeading = true,
           hint = if(isUKRegisteredCompany) Some(messages("trusteeBusinessName.hint")) else None,
-          labelClass=Some("heading-large"),
-          ariaRequired = true
+          labelClass=Some("heading-large")
         )
 
         @components.submit_button()

@@ -123,6 +123,44 @@ GET        /:draftId/asset/add                                                  
 POST       /:draftId/asset/add                                                                      controllers.register.asset.AddAssetsController.submitOne(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/asset/add-another                                                              controllers.register.asset.AddAssetsController.submitAnother(mode: Mode = NormalMode, draftId: String)
 
+GET        /:draftId/asset/:index/remove                                                            controllers.register.asset.RemoveAssetYesNoController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/remove                                                            controllers.register.asset.RemoveAssetYesNoController.onSubmit(index: Int, draftId: String)
+
+### Business
+
+GET        /:draftId/asset/:index/business/name                                                      controllers.register.asset.business.BusinessNameController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/name                                                      controllers.register.asset.business.BusinessNameController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/business/name                                                      controllers.register.asset.business.BusinessNameController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/name                                                      controllers.register.asset.business.BusinessNameController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/business/description                                               controllers.register.asset.business.BusinessDescriptionController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/description                                               controllers.register.asset.business.BusinessDescriptionController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/business/description                                               controllers.register.asset.business.BusinessDescriptionController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/description                                               controllers.register.asset.business.BusinessDescriptionController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/business/is-address-in-uk                                          controllers.register.asset.business.BusinessAddressUkYesNoController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/is-address-in-uk                                          controllers.register.asset.business.BusinessAddressUkYesNoController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/business/is-address-in-uk                                          controllers.register.asset.business.BusinessAddressUkYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/is-address-in-uk                                          controllers.register.asset.business.BusinessAddressUkYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/business/uk-address                                                controllers.register.asset.business.BusinessUkAddressController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/uk-address                                                controllers.register.asset.business.BusinessUkAddressController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/business/uk-address                                                controllers.register.asset.business.BusinessUkAddressController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/uk-address                                                controllers.register.asset.business.BusinessUkAddressController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/business/international-address                                     controllers.register.asset.business.BusinessInternationalAddressController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/international-address                                     controllers.register.asset.business.BusinessInternationalAddressController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/business/international-address                                     controllers.register.asset.business.BusinessInternationalAddressController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/international-address                                     controllers.register.asset.business.BusinessInternationalAddressController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/business/current-value                                             controllers.register.asset.business.BusinessValueController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/current-value                                             controllers.register.asset.business.BusinessValueController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/business/current-value                                             controllers.register.asset.business.BusinessValueController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/current-value                                             controllers.register.asset.business.BusinessValueController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/business/check-answers                                             controllers.register.asset.business.BusinessAnswersController.onPageLoad(index: Int, draftId: String)
+POST       /:draftId/asset/:index/business/check-answers                                             controllers.register.asset.business.BusinessAnswersController.onSubmit(index: Int, draftId: String)
+
 ### Money
 
 GET        /:draftId/asset/:index/money                                                             controllers.register.asset.money.AssetMoneyValueController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
@@ -248,6 +286,36 @@ POST       /:draftId/asset/:index/share/company/remove                          
 GET        /:draftId/asset/:index/share/portfolio/remove                                            controllers.register.asset.shares.RemoveSharePortfolioAssetController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/share/portfolio/remove                                            controllers.register.asset.shares.RemoveSharePortfolioAssetController.onSubmit(index: Int, draftId: String)
 
+## Partnership
+
+GET        /:draftId/asset/:index/partnership/description                                           controllers.register.asset.partnership.PartnershipDescriptionController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/asset/:index/partnership/description                                           controllers.register.asset.partnership.PartnershipDescriptionController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/asset/:index/partnership/change-description                                    controllers.register.asset.partnership.PartnershipDescriptionController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/asset/:index/partnership/change-description                                    controllers.register.asset.partnership.PartnershipDescriptionController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/asset/:index/partnership/start-date                                            controllers.register.asset.partnership.PartnershipStartDateController.onPageLoad(mode: Mode = NormalMode, index : Int, draftId: String)
+POST       /:draftId/asset/:index/partnership/start-date                                            controllers.register.asset.partnership.PartnershipStartDateController.onSubmit(mode: Mode = NormalMode, index : Int, draftId: String)
+GET        /:draftId/asset/:index/partnership/change-start-date                                     controllers.register.asset.partnership.PartnershipStartDateController.onPageLoad(mode: Mode = CheckMode, index : Int, draftId: String)
+POST       /:draftId/asset/:index/partnership/change-start-date                                     controllers.register.asset.partnership.PartnershipStartDateController.onSubmit(mode: Mode = CheckMode, index : Int, draftId: String)
+
+GET        /:draftId/asset/:index/partnership/check-partnership-answers                             controllers.register.asset.partnership.PartnershipAnswerController.onPageLoad(index : Int, draftId : String)
+POST       /:draftId/asset/:index/partnership/check-partnership-answers                             controllers.register.asset.partnership.PartnershipAnswerController.onSubmit(index : Int, draftId : String)
+
+### Other
+
+GET        /:draftId/asset/:index/other/description                                                 controllers.register.asset.other.OtherAssetDescriptionController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/other/description                                                 controllers.register.asset.other.OtherAssetDescriptionController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/other/change-description                                          controllers.register.asset.other.OtherAssetDescriptionController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/other/change-description                                          controllers.register.asset.other.OtherAssetDescriptionController.onSubmit(mode: Mode = CheckMode,index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/other/value                                                       controllers.register.asset.other.OtherAssetValueController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/other/value                                                       controllers.register.asset.other.OtherAssetValueController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/asset/:index/other/change-value                                                controllers.register.asset.other.OtherAssetValueController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/asset/:index/other/change-value                                                controllers.register.asset.other.OtherAssetValueController.onSubmit(mode: Mode = CheckMode,index: Int, draftId: String)
+
+GET        /:draftId/asset/:index/other/check-answers                                               controllers.register.asset.other.OtherAssetAnswersController.onPageLoad(index : Int, draftId : String)
+POST       /:draftId/asset/:index/other/check-answers                                               controllers.register.asset.other.OtherAssetAnswersController.onSubmit(index : Int, draftId : String)
+
 ## Beneficiaries
 
 GET        /:draftId/beneficiaries/individual/:index/name                                           controllers.register.beneficiaries.IndividualBeneficiaryNameController.onPageLoad(mode: Mode = NormalMode,index: Int, draftId: String)
@@ -344,6 +412,16 @@ POST       /:draftId/settlors/setup-after-settlor-died                          
 GET        /:draftId/settlors/change-setup-after-settlor-died                                       controllers.register.settlors.SetUpAfterSettlorDiedController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/change-setup-after-settlor-died                                       controllers.register.settlors.SetUpAfterSettlorDiedController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/settlors/in-addition-to-will-trust                                              controllers.register.settlors.AdditionToWillTrustYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/in-addition-to-will-trust                                              controllers.register.settlors.AdditionToWillTrustYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-in-addition-to-will-trust                                       controllers.register.settlors.AdditionToWillTrustYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/settlors/how-was-deed-of-variation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/how-was-deed-of-variation-created                                              controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/change-how-was-deed-of-variation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/change-how-was-deed-of-variation-created                                       controllers.register.settlors.HowDeedOfVariationCreatedController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
 GET        /:draftId/settlors/information-you-need                                                  controllers.register.settlors.SettlorInfoController.onPageLoad(draftId: String)
 
 ### Deceased Settlor
@@ -402,6 +480,12 @@ GET        /:draftId/settlors/deceased/was-settlors-address-uk                  
 POST       /:draftId/settlors/deceased/was-settlors-address-uk                                      controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/settlors/deceased/change-was-settlors-address-uk                               controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/settlors/deceased/change-was-settlors-address-uk                               controllers.register.settlors.deceased_settlor.WasSettlorsAddressUKYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.deceased_settlor.RemoveSettlorController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.deceased_settlor.RemoveSettlorController.onSubmit(draftId: String)
+
+GET        /:draftId/settlors/deceased/add-another                                                            controllers.register.settlors.deceased_settlor.AddASettlorYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/deceased/add-another                                                            controllers.register.settlors.deceased_settlor.AddASettlorYesNoController.onSubmit(draftId: String)
 
 GET        /:draftId/settlors/deceased/check-answers                                                controllers.register.settlors.deceased_settlor.DeceasedSettlorAnswerController.onPageLoad(draftId: String)
 POST       /:draftId/settlors/deceased/check-answers                                                controllers.register.settlors.deceased_settlor.DeceasedSettlorAnswerController.onSubmit(draftId: String)
@@ -493,6 +577,9 @@ POST       /:draftId/settlors/living/change-holdover-relief                     
 
 GET        /:draftId/settlors/living/:index/individual/remove                                       controllers.register.settlors.living_settlor.RemoveSettlorController.onPageLoad(index : Int, draftId: String)
 POST       /:draftId/settlors/living/:index/individual/remove                                       controllers.register.settlors.living_settlor.RemoveSettlorController.onSubmit(index : Int, draftId: String)
+
+GET        /:draftId/settlors/living/add-another                                                            controllers.register.settlors.living_settlor.AddASettlorYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/settlors/living/add-another                                                            controllers.register.settlors.living_settlor.AddASettlorYesNoController.onSubmit(draftId: String)
 
 GET        /:draftId/settlors/living/type                                                           controllers.register.settlors.living_settlor.KindOfTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/settlors/living/type                                                           controllers.register.settlors.living_settlor.KindOfTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)

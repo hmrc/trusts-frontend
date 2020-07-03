@@ -18,10 +18,13 @@ package pages.register.asset
 
 import models.core.UserAnswers
 import models.registration.pages.WhatKindOfAsset
-import models.registration.pages.WhatKindOfAsset.{Business, Money, Other, Partnership, PropertyOrLand, Shares}
+import models.registration.pages.WhatKindOfAsset._
 import pages.QuestionPage
 import pages.entitystatus.AssetStatus
-import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.business._
+import pages.register.asset.money._
+import pages.register.asset.other._
+import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import play.api.libs.json.JsPath
@@ -41,34 +44,49 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
 
         removeShare(userAnswers)
           .flatMap(removePropertyOrLand)
+          .flatMap(removePartnership)
+          .flatMap(removeOther)
+          .flatMap(removeBusiness)
 
       case Some(Shares) =>
 
         removeMoney(userAnswers)
           .flatMap(removePropertyOrLand)
+          .flatMap(removePartnership)
+          .flatMap(removeOther)
+          .flatMap(removeBusiness)
 
       case Some(PropertyOrLand) =>
 
         removeMoney(userAnswers)
           .flatMap(removeShare)
+          .flatMap(removePartnership)
+          .flatMap(removeOther)
+          .flatMap(removeBusiness)
 
       case Some(Business) =>
 
         removeMoney(userAnswers)
           .flatMap(removePropertyOrLand)
           .flatMap(removeShare)
+          .flatMap(removePartnership)
+          .flatMap(removeOther)
 
       case Some(Partnership) =>
 
         removeMoney(userAnswers)
           .flatMap(removePropertyOrLand)
           .flatMap(removeShare)
+          .flatMap(removeOther)
+          .flatMap(removeBusiness)
 
       case Some(Other) =>
 
         removeMoney(userAnswers)
           .flatMap(removePropertyOrLand)
+          .flatMap(removePartnership)
           .flatMap(removeShare)
+          .flatMap(removeBusiness)
 
       case _ => super.cleanup(value, userAnswers)
     }
@@ -104,4 +122,24 @@ final case class WhatKindOfAssetPage(index: Int) extends QuestionPage[WhatKindOf
       .flatMap(_.remove(PropertyLandValueTrustPage(index)))
       .flatMap(_.remove(AssetStatus(index)))
   }
+
+  private def removeOther(userAnswers: UserAnswers): Try[UserAnswers] = {
+    userAnswers.remove(OtherAssetDescriptionPage(index))
+      .flatMap(_.remove(OtherAssetValuePage(index)))
+  }
+
+  private def removePartnership(userAnswers: UserAnswers): Try[UserAnswers] = {
+    userAnswers.remove(PartnershipDescriptionPage(index))
+      .flatMap(_.remove(PartnershipStartDatePage(index)))
+  }
+
+  private def removeBusiness(userAnswers: UserAnswers): Try[UserAnswers] = {
+    userAnswers.remove(BusinessNamePage(index))
+      .flatMap(_.remove(BusinessDescriptionPage(index)))
+      .flatMap(_.remove(BusinessAddressUkYesNoPage(index)))
+      .flatMap(_.remove(BusinessUkAddressPage(index)))
+      .flatMap(_.remove(BusinessInternationalAddressPage(index)))
+      .flatMap(_.remove(BusinessValuePage(index)))
+  }
+
 }
