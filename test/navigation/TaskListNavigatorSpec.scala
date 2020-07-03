@@ -38,7 +38,7 @@ import controllers.register.routes._
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
-  val navigator : TaskListNavigator = new TaskListNavigator
+  val navigator : TaskListNavigator = new TaskListNavigator(frontendAppConfig)
 
   "TaskList Navigator" must {
 
@@ -124,40 +124,14 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       }
     }
 
-  }
-
-
     "for beneficiaries task" when {
 
-      "there are no beneficiaries" must {
+      "it always" must {
 
         "go to BeneficiaryInfoPage" in {
-          navigator.beneficiariesJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(fakeDraftId)
+          navigator.beneficiariesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)
         }
-
       }
-
-
-      "there are individual beneficiaries" must {
-
-        "go to AddABeneficiary" in {
-          val answers = emptyUserAnswers
-            .set(IndividualBeneficiaryNamePage(0), FullName("individual",None, "beneficiary")).success.value
-          navigator.beneficiariesJourney(answers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(fakeDraftId)
-        }
-
-      }
-
-      "there are class of beneficiaries" must {
-
-        "go to AddABeneficiary" in {
-          val answers = emptyUserAnswers
-            .set(ClassBeneficiaryDescriptionPage(0), "description").success.value
-          navigator.beneficiariesJourney(answers, fakeDraftId) mustBe controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(fakeDraftId)
-        }
-
-      }
-
     }
 
     "for assets task" when {
@@ -173,7 +147,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
       "there are assets" must {
 
-        "go to AddAAsset" in {
+        "go to AddAssets" in {
           val answers = emptyUserAnswers
             .set(WhatKindOfAssetPage(0), Money).success.value
           navigator.assetsJourney(answers, fakeDraftId) mustBe controllers.register.asset.routes.AddAssetsController.onPageLoad(fakeDraftId)
@@ -208,10 +182,10 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     "for task liability task" must {
 
-        "go to TaxLiabilityPage" in {
-          navigator.taxLiabilityJourney(fakeDraftId) mustBe TaskListController.onPageLoad(fakeDraftId)
-        }
-
+      "go to TaxLiabilityPage" in {
+        navigator.taxLiabilityJourney(fakeDraftId) mustBe TaskListController.onPageLoad(fakeDraftId)
       }
 
+    }
+  }
 }

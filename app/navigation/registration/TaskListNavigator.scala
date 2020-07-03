@@ -16,6 +16,7 @@
 
 package navigation.registration
 
+import config.FrontendAppConfig
 import controllers.register.routes
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
@@ -28,7 +29,7 @@ import sections._
 import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
-class TaskListNavigator @Inject()() {
+class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
 
   def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
     {
@@ -70,12 +71,8 @@ class TaskListNavigator @Inject()() {
     }
   }
 
-  def beneficiariesJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    if (isAnyBeneficiaryAdded(userAnswers)) {
-      controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId)
-    } else {
-      controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
-    }
+  def beneficiariesJourneyUrl(draftId: String): String = {
+    frontendAppConfig.beneficiariesFrontendUrl(draftId)
   }
 
   private def isAnyBeneficiaryAdded(answers: UserAnswers) = {

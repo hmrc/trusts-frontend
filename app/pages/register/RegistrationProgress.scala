@@ -39,7 +39,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
     Task(Link(TrustDetails, navigator.trustDetailsJourney(userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
     Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), isSettlorsComplete(userAnswers)),
     Task(Link(Trustees, navigator.trusteesJourney(userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
-    Task(Link(Beneficiaries, navigator.beneficiariesJourney(userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
+    Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), isBeneficiariesComplete(userAnswers)),
     Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
     Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId).url), None)
   )

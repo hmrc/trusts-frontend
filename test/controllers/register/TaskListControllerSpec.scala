@@ -39,10 +39,10 @@ class TaskListControllerSpec extends RegistrationSpecBase {
   private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
 
   private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).items(answers, fakeDraftId)
+    new RegistrationProgress(new TaskListNavigator(frontendAppConfig)).items(answers, fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator()).isTaskListComplete(answers)
+    new RegistrationProgress(new TaskListNavigator(frontendAppConfig)).isTaskListComplete(answers)
 
   override protected def applicationBuilder(
                                              userAnswers: Option[UserAnswers],
