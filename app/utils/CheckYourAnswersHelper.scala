@@ -24,6 +24,7 @@ import models.core.UserAnswers
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.business.{BusinessAddressUkYesNoPage, BusinessDescriptionPage, BusinessInternationalAddressPage, BusinessNamePage, BusinessUkAddressPage, BusinessValuePage}
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
@@ -69,6 +70,69 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "partnershipDescription.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         Some(controllers.register.asset.partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+
+  def assetAddressUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(BusinessAddressUkYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "assetAddressUkYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(controllers.register.asset.business.routes.BusinessAddressUkYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def assetDescription(index: Int): Option[AnswerRow] = userAnswers.get(BusinessDescriptionPage(index)) map {
+    x =>
+      AnswerRow(
+        "assetDescription.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(controllers.register.asset.business.routes.BusinessDescriptionController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def assetNamePage(index: Int): Option[AnswerRow] = userAnswers.get(BusinessNamePage(index)) map {
+    x =>
+      AnswerRow(
+        "assetName.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(controllers.register.asset.business.routes.BusinessNameController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def assetInternationalAddress(index: Int): Option[AnswerRow] = userAnswers.get(BusinessInternationalAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "assetInternationalAddress.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        Some(controllers.register.asset.business.routes.BusinessInternationalAddressController.onPageLoad(NormalMode, index, draftId).url),
+        assetName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def assetUkAddress(index: Int): Option[AnswerRow] = userAnswers.get(BusinessUkAddressPage(index)) map {
+    x =>
+      AnswerRow(
+        "assetUkAddress.checkYourAnswersLabel",
+        ukAddress(x),
+        Some(controllers.register.asset.business.routes.BusinessUkAddressController.onPageLoad(NormalMode, index, draftId).url),
+        assetName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def currentValue(index: Int): Option[AnswerRow] = userAnswers.get(BusinessValuePage(index)) map {
+    x =>
+      AnswerRow(
+        "currentValue.checkYourAnswersLabel",
+        currency(x),
+        Some(controllers.register.asset.business.routes.BusinessValueController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }
@@ -539,6 +603,32 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
               propertyOrLandTotalValue(index),
               trustOwnAllThePropertyOrLand(index),
               propertyLandValueTrust(index)
+            ).flatten,
+            None
+          )
+        )
+      case _ => Nil
+    }
+
+  }
+
+  def businessAsset: Seq[AnswerSection] = {
+    val answers: Seq[(BusinessAsset, Int)] = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
+      case (x: BusinessAsset, index) => (x, index)
+    }
+
+    answers.flatMap {
+      case o@(m, index) =>
+        Seq(
+          AnswerSection(
+            Some(s"${messages("answerPage.section.businessAsset.subheading")} ${answers.indexOf(o) + 1}"),
+            Seq(
+              assetNamePage(index),
+              assetDescription(index),
+              assetAddressUkYesNo(index),
+              assetUkAddress(index),
+              assetInternationalAddress(index),
+              currentValue(index)
             ).flatten,
             None
           )

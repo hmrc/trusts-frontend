@@ -25,8 +25,9 @@ import models.registration.pages.{ShareClass, Status, WhatKindOfAsset}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.AssetStatus
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
+import pages.register.asset.business._
+import pages.register.asset.money._
+import pages.register.asset.other._
 import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
@@ -185,6 +186,32 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
         result.get(WhatKindOfAssetPage(0)).value mustEqual kind
         result.get(OtherAssetDescriptionPage(0)) mustNot be(defined)
         result.get(OtherAssetValuePage(0)) mustNot be(defined)
+        result.get(AssetStatus(0)) mustNot be(defined)
+    }
+  }
+
+  "remove business when changing type of asset" in {
+
+    val kindOfAsset = arbitrary[WhatKindOfAsset] suchThat (x => x != WhatKindOfAsset.Business)
+
+    forAll(arbitrary[UserAnswers], kindOfAsset) {
+      (initial, kind) =>
+        val answers: UserAnswers = initial
+          .set(BusinessNamePage(0), "Name").success.value
+          .set(BusinessDescriptionPage(0), "Description").success.value
+          .set(BusinessAddressUkYesNoPage(0), true).success.value
+          .set(BusinessUkAddressPage(0), UKAddress("Line 1", "Line 2", None, None, "POSTCODE")).success.value
+          .set(BusinessValuePage(0), "400").success.value
+          .set(AssetStatus(0), Status.Completed).success.value
+
+        val result = answers.set(WhatKindOfAssetPage(0), kind).success.value
+
+        result.get(WhatKindOfAssetPage(0)).value mustEqual kind
+        result.get(BusinessNamePage(0)) mustNot be(defined)
+        result.get(BusinessDescriptionPage(0)) mustNot be(defined)
+        result.get(BusinessAddressUkYesNoPage(0)) mustNot be(defined)
+        result.get(BusinessUkAddressPage(0)) mustNot be(defined)
+        result.get(BusinessValuePage(0)) mustNot be(defined)
         result.get(AssetStatus(0)) mustNot be(defined)
     }
   }

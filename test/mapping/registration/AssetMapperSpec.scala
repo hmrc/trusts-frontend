@@ -27,6 +27,7 @@ import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.business._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other._
 import pages.register.asset.partnership._
@@ -166,6 +167,31 @@ class AssetMapperSpec extends FreeSpec with MustMatchers
           business = None,
           partnerShip = None,
           other = Some(List(OtherAssetType("Description", 4000)))
+        ))
+
+        assetMapper.build(userAnswers) mustBe expected
+      }
+
+      "must be able to create Assets for business asset" in {
+
+        val address = UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")
+
+        val userAnswers = emptyUserAnswers
+          .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Business).success.value
+          .set(BusinessNamePage(0), "Test").success.value
+          .set(BusinessDescriptionPage(0), "Description").success.value
+          .set(BusinessAddressUkYesNoPage(0), true).success.value
+          .set(BusinessUkAddressPage(0), address).success.value
+          .set(BusinessValuePage(0), "123").success.value
+          .set(AssetStatus(0), Completed).success.value
+
+        val expected = Some(Assets(
+          monetary = None,
+          propertyOrLand = None,
+          shares = None,
+          business = Some(List(BusinessAssetType("Test", "Description", AddressType("26","Grangetown", Some("Tyne and Wear"), Some("Newcastle"), Some("Z99 2YY"), "GB"), 123L))),
+          partnerShip = None,
+          other = None
         ))
 
         assetMapper.build(userAnswers) mustBe expected

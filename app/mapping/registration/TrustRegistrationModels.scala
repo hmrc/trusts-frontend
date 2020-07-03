@@ -395,7 +395,7 @@ object PropertyLandType {
 }
 
 case class BusinessAssetType(orgName: String,
-                             businessDescription: Option[String],
+                             businessDescription: String,
                              address: AddressType,
                              businessValue: Long)
 

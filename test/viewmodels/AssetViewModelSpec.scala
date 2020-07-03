@@ -17,6 +17,7 @@
 package viewmodels
 
 import generators.{Generators, ModelGenerators}
+import models.core.pages.UKAddress
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages.WhatKindOfAsset._
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -362,6 +363,42 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
         json.validate[AssetViewModel] mustEqual JsSuccess(
           DefaultAssetsViewModel(Partnership, InProgress)
         )
+      }
+      "business" - {
+
+        "to a view model that is not complete" in {
+
+          val json = Json.obj(
+            "whatKindOfAsset" -> Business.toString,
+            "name" -> "Test",
+            "status" -> InProgress.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            BusinessAssetViewModel(Business, "Test", InProgress)
+          )
+        }
+
+        "to a view model that is complete" in {
+          val json = Json.obj(
+            "whatKindOfAsset" -> Business.toString,
+            "name" -> "Test",
+            "description" -> "Test Test Test",
+            "addressUkYesNo" -> "true",
+            "address" -> Json.obj(
+              "line1" -> "Test line 1",
+              "line2" -> "Test line 2",
+              "postcode" -> "NE11NE"
+            ),
+            "value" -> "12",
+            "status" -> Completed.toString
+          )
+
+          json.validate[AssetViewModel] mustEqual JsSuccess(
+            BusinessAssetViewModel(Business, "Test", Completed)
+          )
+        }
+
       }
     }
   }
