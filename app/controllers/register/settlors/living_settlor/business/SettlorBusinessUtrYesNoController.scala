@@ -30,6 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.annotations.LivingSettlor
 import views.html.register.settlors.living_settlor.business.SettlorBusinessUtrYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,7 +38,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SettlorBusinessUtrYesNoController @Inject()(
                                               override val messagesApi: MessagesApi,
                                               registrationsRepository: RegistrationsRepository,
-                                              navigator: Navigator,
+                                              @LivingSettlor navigator: Navigator,
                                               validateIndex: IndexActionFilterProvider,
                                               identify: RegistrationIdentifierAction,
                                               getData: DraftIdRetrievalActionProvider,
@@ -59,24 +60,28 @@ class SettlorBusinessUtrYesNoController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val form: Form[Boolean] = formProvider.withPrefix("SettlorBusinessUtrYesNo")
+      val form: Form[Boolean] = formProvider.withPrefix("settlorBusinessUtrYesNo")
+
+      val settlorBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
 
       val preparedForm = request.userAnswers.get(SettlorBusinessUtrYesNoPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index))
+      Ok(view(preparedForm, mode, draftId, index, settlorBusinessName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
     implicit request =>
 
-      val form: Form[Boolean] = formProvider.withPrefix("SettlorBusinessUtrYesNo")
+      val form: Form[Boolean] = formProvider.withPrefix("settlorBusinessUtrYesNo")
+
+      val settlorBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, settlorBusinessName))),
 
         value => {
           for {

@@ -18,6 +18,7 @@ package navigation.registration
 
 import config.FrontendAppConfig
 import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
@@ -27,7 +28,7 @@ import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
+import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, SettlorBusinessUtrYesNoPage}
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.mvc.Call
@@ -58,7 +59,8 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
     case SettlorIndividualAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
-    case SettlorBusinessNamePage(index)  =>_ => _ => controllers.register.settlors.living_settlor.business.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessNamePage(index)  =>_ => _ => businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessUtrYesNoPage(index) => _ => settlorBusinessUtrYesNoPage(draftId, index)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }
@@ -165,6 +167,13 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     answers.get(SettlorIndividualIDCardYesNoPage(index)) match {
       case Some(true) => routes.SettlorIndividualIDCardController.onPageLoad(NormalMode, index, draftId)
       case Some(false) => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+
+  private def settlorBusinessUtrYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorBusinessUtrYesNoPage(index)) match {
+      case Some(true) => businessRoutes.SettlorBusinessUtrController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 

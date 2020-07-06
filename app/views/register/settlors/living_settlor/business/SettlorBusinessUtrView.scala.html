@@ -22,7 +22,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, index: Int, settlorBusinessBusinessName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index: Int, settlorBusinessName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("settlorBusinessUtr.title")}"
@@ -36,7 +36,7 @@
 
         @components.input_text(
             field = form("value"),
-            label = messages("settlorBusinessUtr.heading", settlorBusinessBusinessName),
+            label = messages("settlorBusinessUtr.heading", settlorBusinessName),
             labelAsHeading = true,
             hint = Some(messages("settlorBusinessUtr.hint")),
             readerHint = Some(messages("settlorBusinessUtr.hint.reader")),

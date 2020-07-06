@@ -39,7 +39,7 @@ class SettlorBusinessUtrYesNoControllerSpec extends RegistrationSpecBase with In
 
   val index = 0
   val emptySettlorBusinessName = ""
-  val settlorBusinessName = "FirstName LastName"
+  val settlorBusinessName = "Business name"
 
   lazy val settlorBusinessUtrYesNoRoute = routes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
@@ -61,7 +61,7 @@ class SettlorBusinessUtrYesNoControllerSpec extends RegistrationSpecBase with In
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, settlorBusinessName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -83,7 +83,7 @@ class SettlorBusinessUtrYesNoControllerSpec extends RegistrationSpecBase with In
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, index, settlorBusinessName)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -147,7 +147,7 @@ class SettlorBusinessUtrYesNoControllerSpec extends RegistrationSpecBase with In
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, settlorBusinessName)(fakeRequest, messages).toString
 
       application.stop()
     }

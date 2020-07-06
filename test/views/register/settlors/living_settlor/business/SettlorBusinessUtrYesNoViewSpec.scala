@@ -31,15 +31,17 @@ class SettlorBusinessUtrYesNoViewSpec extends YesNoViewBehaviours {
 
   val index = 0
 
+  val settlorBusinessName = "Business name"
+
   "SettlorBusinessUtrYesNo view" must {
 
     val view = viewFor[SettlorBusinessUtrYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
+      view.apply(form, NormalMode, fakeDraftId, index, settlorBusinessName)(fakeRequest, messages)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None)
+    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(settlorBusinessName))
   }
 }

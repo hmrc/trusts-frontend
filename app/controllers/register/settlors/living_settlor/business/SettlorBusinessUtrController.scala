@@ -30,6 +30,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.annotations.LivingSettlor
 import views.html.register.settlors.living_settlor.business.SettlorBusinessUtrView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,7 +38,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SettlorBusinessUtrController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
-                                        navigator: Navigator,
+                                        @LivingSettlor navigator: Navigator,
                                         identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: RegistrationDataRequiredAction,
@@ -61,24 +62,24 @@ class SettlorBusinessUtrController @Inject()(
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val settlorBusinessBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
+      val settlorBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
 
       val preparedForm = request.userAnswers.get(SettlorBusinessUtrPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index, settlorBusinessBusinessName))
+      Ok(view(preparedForm, mode, draftId, index, settlorBusinessName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index,draftId).async {
     implicit request =>
 
-      val settlorBusinessBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
+      val settlorBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, settlorBusinessBusinessName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, settlorBusinessName))),
 
         value => {
           for {
