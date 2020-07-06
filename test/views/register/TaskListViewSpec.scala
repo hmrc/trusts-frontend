@@ -36,6 +36,7 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+import uk.gov.hmrc.http.HeaderCarrier
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.register.TaskListView
 
@@ -43,29 +44,36 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
-  private def sections(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator(frontendAppConfig)).items(answers,fakeDraftId)
+  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  private def isTaskListComplete(answers: UserAnswers) =
-    new RegistrationProgress(new TaskListNavigator(frontendAppConfig)).isTaskListComplete(answers)
+  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(frontendAppConfig), registrationsRepository)
+
+  private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers,fakeDraftId)
+  private def isTaskListComplete(answers: UserAnswers) = newRegistrationProgress.isTaskListComplete(answers)
 
   "TaskList view" when {
 
     "rendered for an Organisation or an Agent" must {
 
-      "render sections" must {
+      "render sections" in {
 
         val answers = emptyUserAnswers
 
         val view = viewFor[TaskListView](Some(answers))
 
-        val applyView = view.apply(fakeDraftId, savedUntil, sections(answers), isTaskListComplete(answers), Organisation)(fakeRequest, messages)
+        for {
+          sections <- sections(answers)
+          isTaskListComplete <- isTaskListComplete(answers)
+        } yield {
 
-        behave like normalPage(applyView, "taskList")
+          val applyView = view.apply(fakeDraftId, savedUntil, sections, isTaskListComplete, Organisation)(fakeRequest, messages)
 
-        behave like pageWithBackLink(applyView)
+          behave like normalPage(applyView, "taskList")
 
-        behave like taskList(applyView, sections(answers))
+          behave like pageWithBackLink(applyView)
+
+          behave like taskList(applyView, sections)
+        }
       }
 
       "render summary" when {
@@ -92,18 +100,22 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AssetStatus(0), Completed).success.value
             .set(AddAssetsPage, NoComplete).success.value
 
-          val view = viewFor[TaskListView](Some(userAnswers))
-          val applyView = view.apply(fakeDraftId, savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
-          val doc = asDocument(applyView)
+          for {
+            sections <- sections(userAnswers)
+            isTaskListComplete <- isTaskListComplete(userAnswers)
+          } yield {
+            val view = viewFor[TaskListView](Some(userAnswers))
+            val applyView = view.apply(fakeDraftId, savedUntil, sections, isTaskListComplete, Organisation)(fakeRequest, messages)
+            val doc = asDocument(applyView)
 
-          assertRenderedById(doc, "summaryHeading")
-          assertRenderedById(doc, "summary-paragraph")
-          assertRenderedById(doc, "summaryHeading2")
-          assertRenderedById(doc, "summary-paragraph-2")
-          assertRenderedById(doc, "print-and-save")
+            assertRenderedById(doc, "summaryHeading")
+            assertRenderedById(doc, "summary-paragraph")
+            assertRenderedById(doc, "summaryHeading2")
+            assertRenderedById(doc, "summary-paragraph-2")
+            assertRenderedById(doc, "print-and-save")
 
+          }
         }
-
       }
 
       "not render summary" when {
@@ -113,18 +125,22 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0), FullName("individual", None, "beneficiary")).success.value
             .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
-          val view = viewFor[TaskListView](Some(userAnswers))
-          val applyView = view.apply(fakeDraftId, savedUntil, sections(userAnswers), isTaskListComplete(userAnswers), Organisation)(fakeRequest, messages)
-          val doc = asDocument(applyView)
+          for {
+            sections <- sections(userAnswers)
+            isTaskListComplete <- isTaskListComplete(userAnswers)
+          } yield {
+            val view = viewFor[TaskListView](Some(userAnswers))
+            val applyView = view.apply(fakeDraftId, savedUntil, sections, isTaskListComplete, Organisation)(fakeRequest, messages)
+            val doc = asDocument(applyView)
 
-          assertNotRenderedById(doc, "summaryHeading")
-          assertNotRenderedById(doc, "summary-paragraph")
-          assertNotRenderedById(doc, "summaryHeading2")
-          assertNotRenderedById(doc, "summary-paragraph-2")
-          assertNotRenderedById(doc, "print-and-save")
+            assertNotRenderedById(doc, "summaryHeading")
+            assertNotRenderedById(doc, "summary-paragraph")
+            assertNotRenderedById(doc, "summaryHeading2")
+            assertNotRenderedById(doc, "summary-paragraph-2")
+            assertNotRenderedById(doc, "print-and-save")
 
+          }
         }
-
       }
 
     }
@@ -133,53 +149,70 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render Saved Until" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Organisation)(fakeRequest, messages)
+        for {
+          sections <- sections(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+        } yield {
+          val applyView = view.apply(fakeDraftId, savedUntil, sections, isTaskListComplete, Organisation)(fakeRequest, messages)
 
-        val doc = asDocument(applyView)
-        assertRenderedById(doc, "saved-until")
+          val doc = asDocument(applyView)
+          assertRenderedById(doc, "saved-until")
+        }
       }
-
     }
 
     "rendered for an Agent" must {
 
       "render return to saved registrations link" in {
         val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        for {
+          sections <- sections(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+        } yield {
+          val applyView = view.apply(fakeDraftId, savedUntil, sections, isTaskListComplete, Agent)(fakeRequest, messages)
 
-        val doc = asDocument(applyView)
+          val doc = asDocument(applyView)
 
-        assertAttributeValueForElement(
-          doc.getElementById("saved-registrations"),
-          "href",
-          routes.AgentOverviewController.onPageLoad().url
-        )
+          assertAttributeValueForElement(
+            doc.getElementById("saved-registrations"),
+            "href",
+            routes.AgentOverviewController.onPageLoad().url
+          )
+        }
       }
 
       "render agent details link" in {
-        val view = viewFor[TaskListView](Some(emptyUserAnswers))
+        for {
+          sections <- sections(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+        } yield {
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
-        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+          val applyView = view.apply(fakeDraftId, savedUntil, sections, isTaskListComplete, Agent)(fakeRequest, messages)
 
-        val doc = asDocument(applyView)
+          val doc = asDocument(applyView)
 
-        assertAttributeValueForElement(
-          doc.getElementById("agent-details"),
-          "href",
-          routes.AgentAnswerController.onPageLoad(fakeDraftId).url
-        )
+          assertAttributeValueForElement(
+            doc.getElementById("agent-details"),
+            "href",
+            routes.AgentAnswerController.onPageLoad(fakeDraftId).url
+          )
+        }
       }
 
       "not render saved until" in {
-        val view = viewFor[TaskListView](Some(emptyUserAnswers))
-        val applyView = view.apply(fakeDraftId, savedUntil, sections(emptyUserAnswers), isTaskListComplete(emptyUserAnswers), Agent)(fakeRequest, messages)
+        for {
+          sections <- sections(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+        } yield {
 
-        val doc = asDocument(applyView)
-        assertNotRenderedById(doc, "saved-until")
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
+          val applyView = view.apply(fakeDraftId, savedUntil, sections, isTaskListComplete, Agent)(fakeRequest, messages)
+
+          val doc = asDocument(applyView)
+          assertNotRenderedById(doc, "saved-until")
+        }
       }
-
     }
-
   }
-
 }

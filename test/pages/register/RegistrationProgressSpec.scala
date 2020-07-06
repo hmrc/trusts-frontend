@@ -19,6 +19,8 @@ package pages.register
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import models.core.UserAnswers
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
@@ -36,8 +38,13 @@ import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.Duration
 
 class RegistrationProgressSpec extends RegistrationSpecBase {
+  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   "Trust details section" must {
 
@@ -48,38 +55,36 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
         val userAnswers = emptyUserAnswers
 
-        registrationProgress.isTrustDetailsComplete(userAnswers) mustBe None
+        registrationProgress.trustDetailsStatus(userAnswers) mustBe None
       }
-
     }
 
     "render in-progress tag" when {
 
       "user has entered when the trust was created" in {
+
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
 
-        registrationProgress.isTrustDetailsComplete(userAnswers).value mustBe InProgress
+        registrationProgress.trustDetailsStatus(userAnswers).value mustBe InProgress
       }
-
     }
 
     "render complete tag" when {
 
       "user answer has reached check-trust-details" in {
+
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
           .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
           .set(TrustDetailsStatus, Completed).success.value
 
-        registrationProgress.isTrustDetailsComplete(userAnswers).value mustBe Completed
+        registrationProgress.trustDetailsStatus(userAnswers).value mustBe Completed
       }
-
     }
-
   }
 
   "Trustee section" must {
@@ -92,7 +97,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
         val userAnswers = emptyUserAnswers
 
-        registrationProgress.isTrusteesComplete(userAnswers) mustBe None
+        registrationProgress.trusteesStatus(userAnswers) mustBe None
       }
 
       "trustees list is empty" in {
@@ -108,9 +113,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
         val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
 
-        registrationProgress.isTrusteesComplete(userAnswers) mustBe None
+        registrationProgress.trusteesStatus(userAnswers) mustBe None
       }
-
     }
 
     "render in-progress tag" when {
@@ -124,7 +128,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(IsThisLeadTrusteePage(1), false).success.value
           .set(TrusteeStatus(1), Status.Completed).success.value
 
-        registrationProgress.isTrusteesComplete(userAnswers).value mustBe InProgress
+        registrationProgress.trusteesStatus(userAnswers).value mustBe InProgress
       }
 
       "there are trustees that are complete, but section flagged not complete" in {
@@ -137,7 +141,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(TrusteeStatus(1), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.YesLater).success.value
 
-        registrationProgress.isTrusteesComplete(userAnswers).value mustBe InProgress
+        registrationProgress.trusteesStatus(userAnswers).value mustBe InProgress
       }
 
       "there are completed trustees, the section is flagged as completed, but there is no lead trustee" in {
@@ -150,14 +154,14 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(TrusteeStatus(1), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        registrationProgress.isTrusteesComplete(userAnswers).value mustBe InProgress
+        registrationProgress.trusteesStatus(userAnswers).value mustBe InProgress
       }
-
     }
 
     "render complete tag" when {
 
       "there are trustees that are complete, and section flagged as complete" in {
+
         val registrationProgress = injector.instanceOf[RegistrationProgress]
 
         val userAnswers = emptyUserAnswers
@@ -167,9 +171,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(TrusteeStatus(1), Status.Completed).success.value
           .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
-        registrationProgress.isTrusteesComplete(userAnswers).value mustBe Completed
+        registrationProgress.trusteesStatus(userAnswers).value mustBe Completed
       }
-
     }
 
   }
@@ -183,9 +186,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
         val userAnswers = emptyUserAnswers
 
-        registrationProgress.isSettlorsComplete(userAnswers) mustBe None
+        registrationProgress.settlorsStatus(userAnswers) mustBe None
       }
-
     }
 
     "render in-progress tag" when {
@@ -197,7 +199,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
             .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(DeceasedSettlorStatus, Status.InProgress).success.value
 
-        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
+        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
       }
 
       "there are no living settlors added and the trust was not setup after the settlor died" in {
@@ -206,7 +208,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val userAnswers = emptyUserAnswers
           .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
 
-        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
+        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
       }
 
       "there are living settlors that are not completed" in {
@@ -218,7 +220,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(SettlorIndividualOrBusinessPage(1), Individual).success.value
           .set(LivingSettlorStatus(1), Status.Completed).success.value
 
-        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
+        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
       }
 
 
@@ -232,9 +234,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(LivingSettlorStatus(0), Status.Completed).success.value
           .set(AddASettlorPage, AddASettlor.YesLater).success.value
 
-        registrationProgress.isSettlorsComplete(userAnswers).value mustBe InProgress
+        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
       }
-
     }
 
     "render complete tag" when {
@@ -246,7 +247,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
           .set(DeceasedSettlorStatus, Status.Completed).success.value
 
-        registrationProgress.isSettlorsComplete(userAnswers).value mustBe Completed
+        registrationProgress.settlorsStatus(userAnswers).value mustBe Completed
       }
 
       "there are living settlors marked as complete" in {
@@ -258,133 +259,48 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           .set(LivingSettlorStatus(0), Status.Completed).success.value
           .set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
-        registrationProgress.isSettlorsComplete(userAnswers).value mustBe Completed
+        registrationProgress.settlorsStatus(userAnswers).value mustBe Completed
       }
-
-
     }
-
   }
 
   "Beneficiary section" must {
 
       "render no tag" when {
 
-        "there is no beneficiaries in user answers" in {
-          val registrationProgress = injector.instanceOf[RegistrationProgress]
+        "there is beneficiaries status is None" in {
+          when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(None))
 
-          val userAnswers = emptyUserAnswers
+          val application = applicationBuilder().build()
+          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          registrationProgress.isBeneficiariesComplete(userAnswers) mustBe None
+          Await.result(registrationProgress.beneficiariesStatus(emptyUserAnswers), Duration.Inf) mustBe None
         }
-
-        "individual beneficiaries list is empty" in {
-          val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-          val json = Json.parse(
-            """
-              |{
-              |"beneficiaries" : {
-              |            "whatTypeOfBeneficiary" : "Individual",
-              |            "individualBeneficiaries" : [
-              |            ]
-              |        }
-              |}
-              |""".stripMargin)
-
-          val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
-
-          registrationProgress.isBeneficiariesComplete(userAnswers) mustBe None
-        }
-
-        "class of beneficiaries list is empty" in {
-          val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-          val json = Json.parse(
-            """
-              |{
-              |"beneficiaries" : {
-              |            "whatTypeOfBeneficiary" : "Individual",
-              |            "classOfBeneficiaries" : [
-              |            ]
-              |        }
-              |}
-              |""".stripMargin)
-
-          val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
-
-          registrationProgress.isBeneficiariesComplete(userAnswers) mustBe None
-        }
-
       }
 
     "render in-progress tag" when {
 
-      "there are individual beneficiaries only that are in progress" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
+      "status is in-progress" in {
+        when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(InProgress)))
 
-        val userAnswers = emptyUserAnswers
-          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
+        val application = applicationBuilder().build()
+        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-        registrationProgress.isBeneficiariesComplete(userAnswers).value mustBe InProgress
+        Await.result(registrationProgress.beneficiariesStatus(emptyUserAnswers), Duration.Inf) mustBe Some(InProgress)
       }
-
-      "there are beneficiaries that are incomplete" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-          .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
-          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-
-        registrationProgress.isBeneficiariesComplete(userAnswers).value mustBe InProgress
-      }
-
-      "there are benficiaries that are all complete, but user answered AddMore" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-          .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
-          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-          .set(IndividualBeneficiaryStatus(0), Status.Completed).success.value
-          .set(AddABeneficiaryPage, AddABeneficiary.YesLater).success.value
-
-        registrationProgress.isBeneficiariesComplete(userAnswers).value mustBe InProgress
-      }
-
     }
 
     "render complete tag" when {
 
-      "there are individual beneficiaries only that are complete" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
+      "status is completed" in {
+        when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(Completed)))
 
-        val userAnswers = emptyUserAnswers
-          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-          .set(IndividualBeneficiaryStatus(0), Completed).success.value
-          .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+        val application = applicationBuilder().build()
+        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-        registrationProgress.isBeneficiariesComplete(userAnswers).value mustBe Completed
+        Await.result(registrationProgress.beneficiariesStatus(emptyUserAnswers), Duration.Inf) mustBe Some(Completed)
       }
-
-      "there are beneficiaries marked as complete" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-          .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
-          .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-          .set(IndividualBeneficiaryStatus(0), Status.Completed).success.value
-          .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
-
-        registrationProgress.isBeneficiariesComplete(userAnswers).value mustBe Completed
-      }
-
     }
-
   }
 
   "Assets section" must {
@@ -427,7 +343,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
         registrationProgress.assetsStatus(userAnswers).value mustBe InProgress
       }
-
     }
 
     "render complete tag" when {
@@ -451,16 +366,15 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
         registrationProgress.assetsStatus(userAnswers).value mustBe Completed
       }
-
     }
-
   }
 
   "All tasklist complete" when {
 
     "all entities marked as complete" in {
 
-      val registrationProgress = injector.instanceOf[RegistrationProgress]
+      val application = applicationBuilder().build()
+      val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
       val userAnswers = emptyUserAnswers
         .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
@@ -489,11 +403,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         .set(AssetStatus(1), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
 
-      registrationProgress.isTaskListComplete(userAnswers) mustBe true
+      Await.result(registrationProgress.isTaskListComplete(userAnswers), Duration.Inf) mustBe true
     }
-
-
   }
-
-
 }
