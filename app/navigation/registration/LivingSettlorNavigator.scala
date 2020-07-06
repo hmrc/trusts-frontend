@@ -27,6 +27,7 @@ import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.mvc.Call
@@ -57,7 +58,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
     case SettlorIndividualAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
-    case SettlorBusinessNamePage(index)  =>_ => _ => routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessNamePage(index)  =>_ => _ => controllers.register.settlors.living_settlor.business.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }
@@ -172,7 +173,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
       case Some(Individual) => routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
       case Some(Business) =>
         if(config.livingSettlorBusinessEnabled) {
-          routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
+          controllers.register.settlors.living_settlor.business.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
         } else {
           routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
         }

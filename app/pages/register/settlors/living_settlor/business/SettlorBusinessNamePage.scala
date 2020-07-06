@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.business
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
 
-final case class SettlorUtrYesNoPage(index : Int) extends QuestionPage[Boolean] {
+case class SettlorBusinessNamePage(index : Int) extends QuestionPage[String] {
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  override def toString: String = "utrYesNo"
-
+  override def toString: String = "name"
 }

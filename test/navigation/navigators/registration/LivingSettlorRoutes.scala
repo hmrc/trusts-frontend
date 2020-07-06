@@ -18,6 +18,7 @@ package navigation.navigators.registration
 
 import base.RegistrationSpecBase
 import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
@@ -52,7 +53,7 @@ trait LivingSettlorRoutes {
         .set(page, IndividualOrBusiness.Business).success.value
 
       navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
-        .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+        .mustBe(businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
 
     }
   }

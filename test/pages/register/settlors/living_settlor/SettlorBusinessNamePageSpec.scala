@@ -17,6 +17,7 @@
 package pages.register.settlors.living_settlor
 
 import pages.behaviours.PageBehaviours
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 
 
 class SettlorBusinessNamePageSpec extends PageBehaviours {

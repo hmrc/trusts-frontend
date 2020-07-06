@@ -35,6 +35,7 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.trust_details._
 import pages.register.trustees._
@@ -142,7 +143,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "settlorBusinessName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        Some(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url),
+        Some(controllers.register.settlors.living_settlor.business.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }

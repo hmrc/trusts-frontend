@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors.living_settlor
+package controllers.register.settlors.living_settlor.business
 
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
@@ -22,7 +22,7 @@ import forms.living_settlor.SettlorBusinessNameFormProvider
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.register.settlors.living_settlor.SettlorBusinessNamePage
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -30,7 +30,7 @@ import repositories.RegistrationsRepository
 import sections.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
-import views.html.register.settlors.living_settlor.SettlorBusinessNameView
+import views.html.register.settlors.living_settlor.business.SettlorBusinessNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 

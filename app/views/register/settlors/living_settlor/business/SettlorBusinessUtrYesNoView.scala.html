@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.settlors.living_settlor.routes._
+@import controllers.register.settlors.living_settlor.business.routes._
 @import models.Mode
 
 @this(
@@ -22,24 +22,23 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, index: Int, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, draftId: String, index : Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorBusinessName.title")}"
+    title = s"${errorPrefix(form)} ${messages("settlorBusinessUtrYesNo.title")}"
     ) {
 
-    @formHelper(action = SettlorBusinessNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SettlorBusinessUtrYesNoController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
         @components.error_summary(form.errors)
 
-        @components.heading("settlorBusinessName.heading")
-
-        @components.input_text(
-          field = form("value"),
-          label = messages("settlorBusinessName.heading"),
-          labelClass = Some("visually-hidden")
+        @components.input_yes_no(
+            field = form("value"),
+            label = messages("settlorBusinessUtrYesNo.heading"),
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
         )
 
         @components.submit_button()
