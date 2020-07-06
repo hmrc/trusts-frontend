@@ -17,6 +17,7 @@
 package controllers.register.settlors.living_settlor.business
 
 import controllers.actions._
+import controllers.actions.register.settlors.living_settlor.business.NameRequiredActionProvider
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.UtrFormProvider
@@ -43,7 +44,7 @@ class SettlorBusinessUtrController @Inject()(
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: RegistrationDataRequiredAction,
                                         validateIndex : IndexActionFilterProvider,
-                                        requiredAnswer: RequiredAnswerActionProvider,
+                                        nameRequired: NameRequiredActionProvider,
                                         formProvider: UtrFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: SettlorBusinessUtrView
@@ -56,30 +57,25 @@ class SettlorBusinessUtrController @Inject()(
       getData(draftId) andThen
       requireData andThen
       validateIndex(index, LivingSettlors) andThen
-      requiredAnswer(RequiredAnswer(SettlorBusinessNamePage(index),
-        routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)))
+      nameRequired(index, draftId)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
-
-      val settlorBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
 
       val preparedForm = request.userAnswers.get(SettlorBusinessUtrPage(index)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, index, settlorBusinessName))
+      Ok(view(preparedForm, mode, draftId, index, request.businessName))
   }
 
   def onSubmit(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index,draftId).async {
     implicit request =>
 
-      val settlorBusinessName = request.userAnswers.get(SettlorBusinessNamePage(index)).get
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, settlorBusinessName))),
+          Future.successful(BadRequest(view(formWithErrors, mode, draftId, index, request.businessName))),
 
         value => {
           for {
