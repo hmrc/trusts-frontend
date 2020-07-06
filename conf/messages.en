@@ -1480,10 +1480,12 @@ settlorBusinessName.error.required = Enter the business’s name
 settlorBusinessName.error.length = Business’s name must be 105 characters or less
 settlorBusinessName.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
+settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessUtrYesNo.title = Do you know the business’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessUtrYesNo.heading = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessUtrYesNo.error.required = Select yes if you know the business’s Unique Taxpayer Reference (UTR) number
 
+settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessUtr.title = What is the business’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessUtr.heading = What is {0}’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessUtr.error.required = Enter the business’s Unique Taxpayer Reference
@@ -1494,12 +1496,24 @@ settlorBusinessUtr.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8
 settlorBusinessUtr.p1 = You can
 settlorBusinessUtr.link = find a lost UTR number (opens in a new window or tab)
 
-settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+settlorBusinessAddressYesNo.title = Do you know the settlor’s address?
+settlorBusinessAddressYesNo.heading = Do you know {0}’s address?
+settlorBusinessAddressYesNo.error.required = Select yes if you know the settlor’s address
+
 settlorBusinessAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressUKYesNo.title = Is the settlor’s address in the UK?
+settlorBusinessAddressUKYesNo.heading = Is {0}’s address in the UK?
+settlorBusinessAddressUKYesNo.error.required = Select yes if the settlor’s address is in the UK
+
 settlorBusinessAddressInternational.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressInternational.title = What is the settlor’s address?
+settlorBusinessAddressInternational.heading = What is {0}’s address?
+
+settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressUK.title = What is the settlor’s address?
+settlorBusinessAddressUK.heading = What is {0}’s address?
+
 settlorBusinessType.checkYourAnswersLabel = What kind of business is {0}?
 settlorBusinessTime.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
 

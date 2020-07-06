@@ -28,7 +28,7 @@ import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, SettlorBusinessUtrYesNoPage}
+import pages.register.settlors.living_settlor.business._
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.mvc.Call
@@ -61,6 +61,9 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
     case SettlorBusinessNamePage(index)  =>_ => _ => businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorBusinessUtrYesNoPage(index) => _ => settlorBusinessUtrYesNoPage(draftId, index)
+    case SettlorBusinessAddressYesNoPage(index) => _ => settlorBusinessAddressYesNoPage(draftId, index)
+    case SettlorBusinessAddressUKYesNoPage(index) => _ => settlorBusinessAddressUKYesNoPage(draftId, index)
+
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }
@@ -173,10 +176,24 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def settlorBusinessUtrYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(SettlorBusinessUtrYesNoPage(index)) match {
       case Some(true) => businessRoutes.SettlorBusinessUtrController.onPageLoad(NormalMode, index, draftId)
-      case Some(false) => businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(NormalMode, index, draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 
+  private def settlorBusinessAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorBusinessAddressYesNoPage(index)) match {
+      case Some(true) => businessRoutes.SettlorBusinessAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(NormalMode, index, draftId)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+
+  private def settlorBusinessAddressUKYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorBusinessAddressUKYesNoPage(index)) match {
+      case Some(true) => businessRoutes.SettlorBusinessAddressUKController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => businessRoutes.SettlorBusinessAddressInternationalController.onPageLoad(NormalMode, index, draftId)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+  
   private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
     answers.get(SettlorIndividualOrBusinessPage(index)) match {
       case Some(Individual) => routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
