@@ -130,7 +130,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
       case Some(HeritageMaintenanceFund) =>
         routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case Some(Employees) =>
-        routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
+        routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
   }

@@ -288,7 +288,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
       }
 
     }

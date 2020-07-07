@@ -124,6 +124,7 @@ charityOrTrust.charity = Charity
 charityOrTrust.trust = Trust
 
 entity.settlor.individual = Individual Settlor
+entity.settlor.business = Business Settlor
 entity.settlor.deceased = Will Trust
 
 entity.trustee = Trustees

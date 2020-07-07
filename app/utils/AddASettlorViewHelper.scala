@@ -72,6 +72,12 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
         controllers.routes.FeatureNotAvailableController.onPageLoad().url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
+      case SettlorBusinessTypeViewModel(_, name, _) => AddRow(
+        name,
+        messages("entity.settlor.business"),
+        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
+        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
+      )
       case SettlorDeceasedIndividualViewModel(_, name, _) => AddRow(
         name,
         messages("entity.settlor.deceased"),
