@@ -23,7 +23,7 @@ import forms.living_settlor.SettlorBusinessTypeFormProvider
 import javax.inject.Inject
 import models.{Enumerable, Mode}
 import navigation.Navigator
-import pages.register.settlors.living_settlor.SettlorBusinessTypePage
+import pages.register.settlors.living_settlor.business.SettlorBusinessTypePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

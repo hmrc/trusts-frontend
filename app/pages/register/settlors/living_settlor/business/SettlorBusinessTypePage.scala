@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.business
 
 import models.registration.pages.KindOfBusiness
 import pages.QuestionPage
