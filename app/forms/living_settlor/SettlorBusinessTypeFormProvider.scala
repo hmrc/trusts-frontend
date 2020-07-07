@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package forms.living_settlor
 
-import models.registration.pages.KindOfBusiness
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.registration.pages.{KindOfBusiness, KindOfTrust}
+import play.api.data.Form
 
-case class SettlorCompanyTypePage(index : Int) extends QuestionPage[KindOfBusiness] {
+class SettlorBusinessTypeFormProvider @Inject() extends Mappings {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
-
-  override def toString: String = "companyType"
+  def apply(): Form[KindOfBusiness] =
+    Form(
+      "value" -> enumerable[KindOfBusiness]("settlorBusinessType.error.required")
+    )
 }

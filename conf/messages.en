@@ -1515,7 +1515,17 @@ settlorBusinessAddressUK.title = What is the settlor’s address?
 settlorBusinessAddressUK.heading = What is {0}’s address?
 
 settlorBusinessType.checkYourAnswersLabel = What kind of business is {0}?
-settlorBusinessTime.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessType.title = What kind of business is the settlor?
+settlorBusinessType.heading = What kind of business is {0}?
+settlorBusinessType.error.required = Select what kind of business the settlor is
+
+kindOfBusiness.Trading = Trading
+kindOfBusiness.Investment = Investment
+
+settlorBusinessTimeYesNo.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessTimeYesNo.title = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessTimeYesNo.heading = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessTimeYesNo.error.required = Select yes if the business had been in existence for at least 2 years
 
 addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?

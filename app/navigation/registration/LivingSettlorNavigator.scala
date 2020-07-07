@@ -61,9 +61,13 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
     case SettlorBusinessNamePage(index)  =>_ => _ => businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorBusinessUtrYesNoPage(index) => _ => settlorBusinessUtrYesNoPage(draftId, index)
+    case SettlorBusinessUtrPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
     case SettlorBusinessAddressYesNoPage(index) => _ => settlorBusinessAddressYesNoPage(draftId, index)
     case SettlorBusinessAddressUKYesNoPage(index) => _ => settlorBusinessAddressUKYesNoPage(draftId, index)
-
+    case SettlorBusinessAddressUKPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
+    case SettlorBusinessAddressInternationalPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
+    case SettlorBusinessTypePage(index) => _=> _ => businessRoutes.SettlorBusinessTimeYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessTimeYesNoPage(index) => _ => ??? //TODO: This should be checkYourAnswers
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }
@@ -183,7 +187,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def settlorBusinessAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(SettlorBusinessAddressYesNoPage(index)) match {
       case Some(true) => businessRoutes.SettlorBusinessAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
-      case Some(false) => businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)(answers)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 
@@ -193,7 +197,14 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
       case Some(false) => businessRoutes.SettlorBusinessAddressInternationalController.onPageLoad(NormalMode, index, draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
-  
+
+  private def displayAdditionalQuestionsForEmploymentTrusts(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(KindOfTrustPage) match {
+      case Some(Employees) => businessRoutes.SettlorBusinessTypeController.onPageLoad(NormalMode, index, draftId)
+      case Some(_) => ??? //TODO: This should be checkYourAnswers
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+
   private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
     answers.get(SettlorIndividualOrBusinessPage(index)) match {
       case Some(Individual) => routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)

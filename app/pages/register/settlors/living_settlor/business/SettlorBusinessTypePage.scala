@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.business
 
+import models.registration.pages.KindOfBusiness
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
 
-case class SettlorCompanyTimePage(index : Int) extends QuestionPage[Boolean] {
+case class SettlorBusinessTypePage(index : Int) extends QuestionPage[KindOfBusiness] {
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  override def toString: String = "companyTime"
+  override def toString: String = "businessType"
 }
