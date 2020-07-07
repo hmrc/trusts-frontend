@@ -67,7 +67,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorBusinessAddressUKPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
     case SettlorBusinessAddressInternationalPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
     case SettlorBusinessTypePage(index) => _=> _ => businessRoutes.SettlorBusinessTimeYesNoController.onPageLoad(NormalMode, index, draftId)
-    case SettlorBusinessTimeYesNoPage(index) => _ => ??? //TODO: This should be checkYourAnswers
+    case SettlorBusinessTimeYesNoPage(index) => _ => _ => businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }
@@ -201,7 +201,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def displayAdditionalQuestionsForEmploymentTrusts(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(KindOfTrustPage) match {
       case Some(Employees) => businessRoutes.SettlorBusinessTypeController.onPageLoad(NormalMode, index, draftId)
-      case Some(_) => ??? //TODO: This should be checkYourAnswers
+      case Some(_) => businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, draftId)
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 

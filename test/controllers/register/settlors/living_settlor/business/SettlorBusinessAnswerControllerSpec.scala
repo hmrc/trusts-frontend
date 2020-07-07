@@ -85,7 +85,7 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorBusinessName(index).value,
-              checkYourAnswersHelper.settlorUtrYesNo(index).value,
+              checkYourAnswersHelper.settlorBusinessUtrYesNo(index).value,
               checkYourAnswersHelper.settlorBusinessAddressYesNo(index).value
             )
           )
@@ -138,8 +138,8 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorBusinessName(index).value,
-              checkYourAnswersHelper.settlorUtrYesNo(index).value,
-              checkYourAnswersHelper.settlorUtr(index).value,
+              checkYourAnswersHelper.settlorBusinessUtrYesNo(index).value,
+              checkYourAnswersHelper.settlorBusinessUtr(index).value,
               checkYourAnswersHelper.settlorBusinessAddressYesNo(index).value
             )
           )
@@ -193,10 +193,10 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorBusinessName(index).value,
-              checkYourAnswersHelper.settlorUtrYesNo(index).value,
+              checkYourAnswersHelper.settlorBusinessUtrYesNo(index).value,
               checkYourAnswersHelper.settlorBusinessAddressYesNo(index).value,
-              checkYourAnswersHelper.settlorBusinessAddressInTheUkYesNo(index).value,
-              checkYourAnswersHelper.settlorBusinessUkAddress(index).value
+              checkYourAnswersHelper.settlorBusinessAddressUkYesNo(index).value,
+              checkYourAnswersHelper.settlorBusinessAddressUk(index).value
             )
           )
         )
@@ -249,10 +249,10 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
               checkYourAnswersHelper.holdoverReliefYesNo.value,
               checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
               checkYourAnswersHelper.settlorBusinessName(index).value,
-              checkYourAnswersHelper.settlorUtrYesNo(index).value,
+              checkYourAnswersHelper.settlorBusinessUtrYesNo(index).value,
               checkYourAnswersHelper.settlorBusinessAddressYesNo(index).value,
-              checkYourAnswersHelper.settlorBusinessAddressInTheUkYesNo(index).value,
-              checkYourAnswersHelper.settlorBusinessInternationalAddress(index).value
+              checkYourAnswersHelper.settlorBusinessAddressUkYesNo(index).value,
+              checkYourAnswersHelper.settlorBusinessAddressInternational(index).value
             )
           )
         )

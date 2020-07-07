@@ -73,12 +73,14 @@ class SettlorBusinessAnswerController @Inject()(
             answers.holdoverReliefYesNo,
             answers.settlorIndividualOrBusiness(index),
             answers.settlorBusinessName(index),
-            answers.settlorUtrYesNo(index),
-            answers.settlorUtr(index),
+            answers.settlorBusinessUtrYesNo(index),
+            answers.settlorBusinessUtr(index),
             answers.settlorBusinessAddressYesNo(index),
-            answers.settlorBusinessAddressInTheUkYesNo(index),
-            answers.settlorBusinessInternationalAddress(index),
-            answers.settlorBusinessUkAddress(index)
+            answers.settlorBusinessAddressUkYesNo(index),
+            answers.settlorBusinessAddressInternational(index),
+            answers.settlorBusinessAddressUk(index),
+            answers.settlorBusinessType(index),
+            answers.settlorBusinessTimeYesNo(index)
           ).flatten
         )
       )

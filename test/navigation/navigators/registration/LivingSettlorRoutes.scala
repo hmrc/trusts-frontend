@@ -89,14 +89,14 @@ trait LivingSettlorRoutes {
           .mustBe(businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(mode, index, fakeDraftId))
       }
 
-      "UTR page (Not an Employment Related trust) -> Check details page" ignore {
+      "UTR page (Not an Employment Related trust) -> Check details page" in {
         val answers = emptyUserAnswers
           .set(KindOfTrustPage, FlatManagement).success.value
           .set(SettlorBusinessNamePage(index), "Business Name").success.value
           .set(SettlorBusinessUtrPage(index), "1234567890").success.value
 
-        navigator.nextPage(SettlorBusinessUtrYesNoPage(index), mode, fakeDraftId)(answers)
-          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId)) //TODO: Should be check details
+        navigator.nextPage(SettlorBusinessUtrPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
       }
 
       "UTR page (Employment Related trust) -> Business Type page" in {
@@ -109,14 +109,14 @@ trait LivingSettlorRoutes {
           .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId))
       }
 
-      "Address yes/no page (Not an Employment Related trust) -> No -> Check details page" ignore {
+      "Address yes/no page (Not an Employment Related trust) -> No -> Check details page" in {
         val answers = emptyUserAnswers
           .set(KindOfTrustPage, FlatManagement).success.value
           .set(SettlorBusinessNamePage(index), "Business Name").success.value
           .set(SettlorBusinessAddressYesNoPage(index), false).success.value
 
         navigator.nextPage(SettlorBusinessAddressYesNoPage(index), mode, fakeDraftId)(answers)
-          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId)) //TODO: Should be check details
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
       }
 
       "Address yes/no page (Employment Related trust) -> No -> Business Type page" in {
@@ -159,14 +159,14 @@ trait LivingSettlorRoutes {
           .mustBe(businessRoutes.SettlorBusinessAddressInternationalController.onPageLoad(mode, index, fakeDraftId))
       }
 
-      "UK Address page (Not an Employment Related trust) -> Check details page" ignore {
+      "UK Address page (Not an Employment Related trust) -> Check details page" in {
         val answers = emptyUserAnswers
           .set(KindOfTrustPage, FlatManagement).success.value
           .set(SettlorBusinessNamePage(index), "Business Name").success.value
           .set(SettlorBusinessAddressUKPage(index), UKAddress("line1", "line2",None, None, "AB11AB")).success.value
 
         navigator.nextPage(SettlorBusinessAddressUKPage(index), mode, fakeDraftId)(answers)
-          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId)) //TODO: Should be check details
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
       }
 
       "UK Address page (Employment Related trust) -> Business Type page" in {
@@ -179,14 +179,14 @@ trait LivingSettlorRoutes {
           .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId))
       }
 
-      "International Address page (Not an Employment Related trust) -> Check details page" ignore {
+      "International Address page (Not an Employment Related trust) -> Check details page" in {
         val answers = emptyUserAnswers
           .set(KindOfTrustPage, FlatManagement).success.value
           .set(SettlorBusinessNamePage(index), "Business Name").success.value
           .set(SettlorBusinessAddressInternationalPage(index), InternationalAddress("line1", "line2",None, "DE")).success.value
 
         navigator.nextPage(SettlorBusinessAddressInternationalPage(index), mode, fakeDraftId)(answers)
-          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId)) //TODO: Should be check details
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
       }
 
       "International Address page (Employment Related trust) -> Business Type page" in {
@@ -209,24 +209,24 @@ trait LivingSettlorRoutes {
           .mustBe(businessRoutes.SettlorBusinessTimeYesNoController.onPageLoad(mode, index, fakeDraftId))
       }
 
-      "Business time Yes/No page -> Yes -> Check details page" ignore {
+      "Business time Yes/No page -> Yes -> Check details page" in {
         val answers = emptyUserAnswers
           .set(KindOfTrustPage, Employees).success.value
           .set(SettlorBusinessNamePage(index), "Business Name").success.value
           .set(SettlorBusinessTimeYesNoPage(index), true).success.value
 
         navigator.nextPage(SettlorBusinessTimeYesNoPage(index), mode, fakeDraftId)(answers)
-          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId)) //TODO: Should be check details
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
       }
 
-      "Business time Yes/No page -> No -> Check details page" ignore {
+      "Business time Yes/No page -> No -> Check details page" in {
         val answers = emptyUserAnswers
           .set(KindOfTrustPage, Employees).success.value
           .set(SettlorBusinessNamePage(index), "Business Name").success.value
           .set(SettlorBusinessTimeYesNoPage(index), false).success.value
 
         navigator.nextPage(SettlorBusinessTimeYesNoPage(index), mode, fakeDraftId)(answers)
-          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId)) //TODO: Should be check details
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
       }
     }
   }
