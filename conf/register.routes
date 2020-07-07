@@ -600,6 +600,11 @@ POST       /:draftId/settlors/living/:index/business/address-uk-yes-no          
 GET        /:draftId/settlors/living/:index/business/change-address-uk-yes-no                       controllers.register.settlors.living_settlor.business.SettlorBusinessAddressUKYesNoController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
 POST       /:draftId/settlors/living/:index/business/change-address-uk-yes-no                       controllers.register.settlors.living_settlor.business.SettlorBusinessAddressUKYesNoController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
 
+GET        /:draftId/settlors/living/:index/business/type                                           controllers.register.settlors.living_settlor.business.SettlorBusinessTypeController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
+POST       /:draftId/settlors/living/:index/business/type                                           controllers.register.settlors.living_settlor.business.SettlorBusinessTypeController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
+GET        /:draftId/settlors/living/:index/business/change-type                                    controllers.register.settlors.living_settlor.business.SettlorBusinessTypeController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)
+POST       /:draftId/settlors/living/:index/business/change-type                                    controllers.register.settlors.living_settlor.business.SettlorBusinessTypeController.onSubmit(mode: Mode = CheckMode, index: Int, draftId: String)
+
 GET        /:draftId/settlors/living/holdover-relief                                                controllers.register.settlors.living_settlor.HoldoverReliefYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/settlors/living/holdover-relief                                                controllers.register.settlors.living_settlor.HoldoverReliefYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/settlors/living/change-holdover-relief                                         controllers.register.settlors.living_settlor.HoldoverReliefYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
