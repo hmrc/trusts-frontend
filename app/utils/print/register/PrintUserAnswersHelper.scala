@@ -43,8 +43,7 @@ class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions, registrat
         helper.deceasedSettlor,
         helper.livingSettlors,
         helper.trustees,
-        helper.individualBeneficiaries,
-        helper.classOfBeneficiaries(helper.individualBeneficiaries.exists(_.nonEmpty))
+        registrationAnswerSections.beneficiaries
       ).flatten.flatten
 
       List(
