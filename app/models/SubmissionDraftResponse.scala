@@ -18,6 +18,7 @@ package models
 
 import java.time.LocalDateTime
 
+import models.registration.pages.Status
 import play.api.libs.json.{JsValue, Json, OFormat}
 
 case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgress: Option[Boolean])
@@ -35,4 +36,30 @@ case class SubmissionDraftId(draftId: String, createdAt: LocalDateTime, referenc
 
 object SubmissionDraftId {
   implicit lazy val format: OFormat[SubmissionDraftId] = Json.format[SubmissionDraftId]
+}
+
+object RegistrationSubmission {
+  // Answer row and section, for display in print summary.
+  case class AnswerRow(label: String, answer: String, labelArg: String)
+
+  object AnswerRow {
+    implicit lazy val format: OFormat[AnswerRow] = Json.format[AnswerRow]
+  }
+
+  case class AnswerSection(headingKey: Option[String],
+                           rows: Seq[AnswerRow],
+                           sectionKey: Option[String])
+
+  object AnswerSection {
+    implicit lazy val format: OFormat[AnswerSection] = Json.format[AnswerSection]
+  }
+
+  case class AllAnswerSections(
+                                beneficiaries: Option[List[AnswerSection]]
+                              )
+
+  object AllAnswerSections {
+    implicit lazy val format: OFormat[AllAnswerSections] = Json.format[AllAnswerSections]
+  }
+
 }

@@ -31,7 +31,7 @@ import play.api.libs.json.JsValue
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
-import viewmodels.DraftRegistration
+import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -58,6 +58,8 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
                                              (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
 
     override def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]] = Future.successful(None)
+
+    override def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = ???
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]

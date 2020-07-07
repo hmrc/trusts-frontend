@@ -18,15 +18,18 @@ package repositories
 
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
+import models.RegistrationSubmission
+import models.RegistrationSubmission.AllAnswerSections
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus.Complete
 import models.registration.pages.Status
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
 import play.api.libs.json._
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.DateFormatter
-import viewmodels.DraftRegistration
+import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,6 +39,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   private val registrationSection = "registration"
   private val statusSection = "status"
+  private val answerSectionsSection = "answerSections"
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
@@ -115,6 +119,31 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
         }
     }
   }
+
+  override def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = {
+    submissionDraftConnector.getDraftSection(draftId, answerSectionsSection).map {
+      section =>
+        val allAnswerSections = section.data.as[AllAnswerSections]
+        RegistrationAnswerSections(
+          beneficiaries = convertAnswerSectionOpt(allAnswerSections.beneficiaries)
+        )
+    }
+  }
+
+  private def convertAnswerRow(row: RegistrationSubmission.AnswerRow): AnswerRow = {
+    AnswerRow(row.label, HtmlFormat.raw(row.answer), None, row.labelArg, canEdit = false)
+  }
+
+  private def convertAnswerSection(section: RegistrationSubmission.AnswerSection): AnswerSection = {
+    AnswerSection(section.headingKey, section.rows.map(convertAnswerRow), section.sectionKey)
+  }
+
+  private def convertAnswerSectionOpt(section: Option[List[RegistrationSubmission.AnswerSection]]): List[AnswerSection] = {
+    section match {
+      case Some(sections) => sections.map(convertAnswerSection)
+      case _ => List.empty
+    }
+  }
 }
 
 trait RegistrationsRepository {
@@ -127,4 +156,6 @@ trait RegistrationsRepository {
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
 
   def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]]
+
+  def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections]
 }
