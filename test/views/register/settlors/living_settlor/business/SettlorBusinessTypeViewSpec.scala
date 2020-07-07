@@ -39,7 +39,7 @@ class SettlorBusinessTypeViewSpec extends ViewBehaviours {
 
   "SettlorBusinessTypeView" must {
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
