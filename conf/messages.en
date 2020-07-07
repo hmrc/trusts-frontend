@@ -1519,6 +1519,9 @@ settlorBusinessType.title = What kind of business is the settlor?
 settlorBusinessType.heading = What kind of business is {0}?
 settlorBusinessType.error.required = Select what kind of business the settlor is
 
+kindOfBusiness.Trading = Trading
+kindOfBusiness.Investment = Investment
+
 settlorBusinessTimeYesNo.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
 settlorBusinessTimeYesNo.title = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
 settlorBusinessTimeYesNo.heading = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
