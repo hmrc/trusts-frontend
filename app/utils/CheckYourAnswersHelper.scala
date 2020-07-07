@@ -472,55 +472,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     }
   }
 
-
-  def individualBeneficiaries: Option[Seq[AnswerSection]] = {
-    for {
-      beneficiaries <- userAnswers.get(IndividualBeneficiaries)
-      indexed = beneficiaries.zipWithIndex
-    } yield indexed.map {
-      case (beneficiary, index) =>
-
-        val questions = Seq(
-          individualBeneficiaryName(index),
-          individualBeneficiaryDateOfBirthYesNo(index),
-          individualBeneficiaryDateOfBirth(index),
-          individualBeneficiaryIncomeYesNo(index),
-          individualBeneficiaryIncome(index),
-          individualBeneficiaryNationalInsuranceYesNo(index),
-          individualBeneficiaryNationalInsuranceNumber(index),
-          individualBeneficiaryAddressYesNo(index),
-          individualBeneficiaryAddressUKYesNo(index),
-          individualBeneficiaryAddressUK(index),
-          individualBeneficiaryVulnerableYesNo(index)
-        ).flatten
-
-        AnswerSection(Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
-          questions, if (index == 0) {
-            Some(Messages("answerPage.section.beneficiaries.heading"))
-          } else None)
-    }
-  }
-
-  def classOfBeneficiaries(individualBeneficiariesExist: Boolean): Option[Seq[AnswerSection]] = {
-    for {
-      beneficiaries <- userAnswers.get(ClassOfBeneficiaries)
-      indexed = beneficiaries.zipWithIndex
-    } yield indexed.map {
-      case (beneficiary, index) =>
-
-        val questions = Seq(
-          classBeneficiaryDescription(index)
-        ).flatten
-
-        val sectionKey = if (index == 0 && !individualBeneficiariesExist) {
-          Some(Messages("answerPage.section.beneficiaries.heading"))
-        } else None
-
-        AnswerSection(Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
-          questions, sectionKey)
-    }
-  }
-
   def money: Seq[AnswerSection] = {
     val answers = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
       case (x: MoneyAsset, index) => (x, index)
