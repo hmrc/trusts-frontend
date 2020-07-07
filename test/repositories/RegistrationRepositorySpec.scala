@@ -171,7 +171,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val result = Await.result(repository.getAnswerSections(draftId), Duration.Inf)
 
-        result mustBe RegistrationAnswerSections(beneficiaries = List.empty)
+        result mustBe RegistrationAnswerSections(beneficiaries = None)
         verify(mockConnector).getDraftSection(draftId, "answerSections")(hc, executionContext)
       }
     }
@@ -220,7 +220,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
       val result = Await.result(repository.getAnswerSections(draftId), Duration.Inf)
 
-      val expected = List(
+      val expected = Some(List(
         AnswerSection(
           Some("headingKey1"),
           List(
@@ -235,7 +235,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
           ),
           Some("sectionKey2")
         )
-      )
+      ))
 
       result mustBe RegistrationAnswerSections(beneficiaries = expected)
       verify(mockConnector).getDraftSection(draftId, "answerSections")(hc, executionContext)

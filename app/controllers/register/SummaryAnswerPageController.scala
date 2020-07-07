@@ -22,12 +22,14 @@ import javax.inject.Inject
 import pages.register.RegistrationProgress
 import pages.register.agents.AgentInternalReferencePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.MessagesControllerComponents
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
 import views.html.register.SummaryAnswerPageView
+
+import scala.concurrent.ExecutionContext
 
 
 class SummaryAnswerPageController @Inject()(
@@ -39,22 +41,25 @@ class SummaryAnswerPageController @Inject()(
                                              view: SummaryAnswerPageView,
                                              registrationComplete : TaskListCompleteActionRefiner,
                                              printUserAnswersHelper: PrintUserAnswersHelper
-                                            ) extends FrontendBaseController with I18nSupport {
+                                            )(implicit ec: ExecutionContext)
+  extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =
     identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad(draftId : String) = actions(draftId) {
+  def onPageLoad(draftId : String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      val isAgent = request.affinityGroup == Agent
-
-      val sections = printUserAnswersHelper.summary(draftId, request.userAnswers)
-
-      val agentClientRef = request.userAnswers.get(AgentInternalReferencePage).getOrElse("")
-
-      Ok(view(sections, isAgent, agentClientRef))
-
+      printUserAnswersHelper.summary(draftId, request.userAnswers).map {
+        sections =>
+          Ok(
+            view(
+              sections,
+              request.affinityGroup == Agent,
+              request.userAnswers.get(AgentInternalReferencePage).getOrElse("")
+            )
+          )
+      }
   }
 
 }

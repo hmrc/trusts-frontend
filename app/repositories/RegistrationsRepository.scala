@@ -125,25 +125,19 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
       section =>
         val allAnswerSections = section.data.as[AllAnswerSections]
         RegistrationAnswerSections(
-          beneficiaries = convertAnswerSectionOpt(allAnswerSections.beneficiaries)
+          beneficiaries = convert(allAnswerSections.beneficiaries)
         )
     }
   }
 
-  private def convertAnswerRow(row: RegistrationSubmission.AnswerRow): AnswerRow = {
+  private def convert(row: RegistrationSubmission.AnswerRow): AnswerRow =
     AnswerRow(row.label, HtmlFormat.raw(row.answer), None, row.labelArg, canEdit = false)
-  }
 
-  private def convertAnswerSection(section: RegistrationSubmission.AnswerSection): AnswerSection = {
-    AnswerSection(section.headingKey, section.rows.map(convertAnswerRow), section.sectionKey)
-  }
+  private def convert(section: RegistrationSubmission.AnswerSection): AnswerSection =
+    AnswerSection(section.headingKey, section.rows.map(convert), section.sectionKey)
 
-  private def convertAnswerSectionOpt(section: Option[List[RegistrationSubmission.AnswerSection]]): List[AnswerSection] = {
-    section match {
-      case Some(sections) => sections.map(convertAnswerSection)
-      case _ => List.empty
-    }
-  }
+  private def convert(section: Option[List[RegistrationSubmission.AnswerSection]]): Option[List[AnswerSection]] =
+    section map { _.map(convert) }
 }
 
 trait RegistrationsRepository {

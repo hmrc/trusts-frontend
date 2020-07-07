@@ -17,5 +17,5 @@
 package viewmodels
 
 case class RegistrationAnswerSections(
-                                       beneficiaries: List[AnswerSection]
+                                       beneficiaries: Option[List[AnswerSection]] = None
                                      )

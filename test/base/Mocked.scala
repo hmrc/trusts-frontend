@@ -25,6 +25,7 @@ import play.api.mvc.AnyContent
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import utils.TestUserAnswers
+import viewmodels.RegistrationAnswerSections
 
 import scala.concurrent.Future
 
@@ -43,4 +44,5 @@ trait Mocked extends MockitoSugar {
 
   when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
   when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(Completed)))
+  when(registrationsRepository.getAnswerSections(any())(any())).thenReturn(Future.successful(RegistrationAnswerSections()))
 }

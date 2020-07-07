@@ -19,27 +19,38 @@ package utils.print.register
 import javax.inject.Inject
 import models.core.UserAnswers
 import play.api.i18n.Messages
+import repositories.RegistrationsRepository
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 
-class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions){
+import scala.concurrent.{ExecutionContext, Future}
 
-  def summary(draftId: String, userAnswers : UserAnswers)(implicit messages: Messages) : Seq[AnswerSection] = {
+class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions, registrationsRepository: RegistrationsRepository)
+                                      (implicit ec: ExecutionContext){
 
-    val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, draftId, canEdit = false)
+  def summary(draftId: String, userAnswers : UserAnswers)
+             (implicit messages: Messages, hc: HeaderCarrier) : Future[List[AnswerSection]] = {
 
-    val entitySections = List(
-      helper.trustDetails,
-      helper.deceasedSettlor,
-      helper.livingSettlors,
-      helper.trustees,
-      helper.individualBeneficiaries,
-      helper.classOfBeneficiaries(helper.individualBeneficiaries.exists(_.nonEmpty))
-    ).flatten.flatten
+    registrationsRepository.getAnswerSections(draftId).map {
+      registrationAnswerSections =>
 
-    List(
-      entitySections
-    ).flatten
+      val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, draftId, canEdit = false)
+
+      val entitySections = List(
+        helper.trustDetails,
+        helper.deceasedSettlor,
+        helper.livingSettlors,
+        helper.trustees,
+        helper.individualBeneficiaries,
+        helper.classOfBeneficiaries(helper.individualBeneficiaries.exists(_.nonEmpty))
+      ).flatten.flatten
+
+      List(
+        entitySections
+      ).flatten
+
+    }
   }
 }
