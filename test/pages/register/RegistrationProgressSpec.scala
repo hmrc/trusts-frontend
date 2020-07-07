@@ -19,20 +19,17 @@ package pages.register
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
 import models.core.UserAnswers
-import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages._
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.entitystatus._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details.WhenTrustSetupPage
@@ -40,8 +37,8 @@ import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 class RegistrationProgressSpec extends RegistrationSpecBase {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
@@ -386,11 +383,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         .set(AddATrusteePage, AddATrustee.NoComplete).success.value
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
-        .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-        .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
-        .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-        .set(IndividualBeneficiaryStatus(0), Status.Completed).success.value
-        .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
         .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(0), "2000").success.value
         .set(AssetStatus(0), Completed).success.value

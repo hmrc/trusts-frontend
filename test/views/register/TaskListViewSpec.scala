@@ -21,7 +21,6 @@ import java.time.{LocalDate, LocalDateTime}
 
 import controllers.register.agents.routes
 import models.core.UserAnswers
-import models.core.pages.FullName
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages._
@@ -30,8 +29,6 @@ import pages.entitystatus._
 import pages.register.RegistrationProgress
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
@@ -90,11 +87,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             .set(AddATrusteePage, AddATrustee.NoComplete).success.value
             .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
-            .set(ClassBeneficiaryDescriptionPage(0), "Description").success.value
-            .set(ClassBeneficiaryStatus(0), Status.Completed).success.value
-            .set(IndividualBeneficiaryNamePage(0), FullName("First", None, "Last")).success.value
-            .set(IndividualBeneficiaryStatus(0), Status.Completed).success.value
-            .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
             .set(AssetMoneyValuePage(0), "2000").success.value
             .set(AssetStatus(0), Completed).success.value
@@ -122,8 +114,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         "not all sections are completed" in {
 
-          val userAnswers = emptyUserAnswers.set(IndividualBeneficiaryNamePage(0), FullName("individual", None, "beneficiary")).success.value
-            .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
+          val userAnswers = emptyUserAnswers.set(AddAssetsPage, NoComplete).success.value
 
           for {
             sections <- sections(userAnswers)

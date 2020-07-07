@@ -26,7 +26,6 @@ import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
-import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
@@ -73,14 +72,6 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
 
   def beneficiariesJourneyUrl(draftId: String): String = {
     frontendAppConfig.beneficiariesFrontendUrl(draftId)
-  }
-
-  private def isAnyBeneficiaryAdded(answers: UserAnswers) = {
-
-    val individuals = answers.get(IndividualBeneficiaries).getOrElse(Nil)
-    val classes = answers.get(ClassOfBeneficiaries).getOrElse(Nil)
-
-    individuals.nonEmpty || classes.nonEmpty
   }
 
   def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {

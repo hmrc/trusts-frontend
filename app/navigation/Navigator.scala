@@ -37,7 +37,6 @@ class Navigator @Inject()(
   protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] =
     AgentRoutes.route(draftId) orElse
       AssetsRoutes.route(draftId) orElse
-      BeneficiaryRoutes.route(draftId) orElse
       DeceasedSettlorRoutes.route(draftId) orElse
       MatchingRoutes.route(draftId, config) orElse
       TrusteeRoutes.route(draftId) orElse

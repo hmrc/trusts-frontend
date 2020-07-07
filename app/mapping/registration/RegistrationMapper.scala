@@ -24,7 +24,6 @@ class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
                                     correspondenceMapper: CorrespondenceMapper,
                                     trustDetailsMapper: TrustDetailsMapper,
-                                    beneficiariesMapper: BeneficiariesMapper,
                                     assetMapper: AssetMapper,
                                     leadTrusteeMapper: LeadTrusteeMapper,
                                     agentMapper: AgentMapper,

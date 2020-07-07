@@ -126,8 +126,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
         val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-        val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
         val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
         val userAnswers = TestUserAnswers.withDeclaration(asset)
 
@@ -143,8 +142,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val userAnswers = TestUserAnswers.withDeclaration(asset)
 

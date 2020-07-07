@@ -25,7 +25,6 @@ import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
 import pages.register.agents.AgentNamePage
 import pages.register.asset.business.BusinessNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.SettlorIndividualNamePage
 import pages.register.trustees.individual.TrusteesNamePage
@@ -73,10 +72,6 @@ object CheckAnswersFormatters {
 
   def deceasedSettlorName(userAnswers: UserAnswers): String =
     userAnswers.get(SettlorsNamePage).map(_.toString).getOrElse("")
-
-  def indBeneficiaryName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(IndividualBeneficiaryNamePage(index)).map(_.toString).getOrElse("")
-  }
 
   def shareCompName(index: Int, userAnswers: UserAnswers): String = {
     userAnswers.get(ShareCompanyNamePage(index)).map(_.toString).getOrElse("")

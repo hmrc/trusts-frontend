@@ -19,6 +19,7 @@ package navigation
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
+import controllers.register.routes._
 import models.NormalMode
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
@@ -27,14 +28,11 @@ import models.registration.pages.WhatKindOfAsset.Money
 import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.asset.WhatKindOfAssetPage
-import pages.register.beneficiaries.ClassBeneficiaryDescriptionPage
-import pages.register.beneficiaries.individual.IndividualBeneficiaryNamePage
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.trustees.IsThisLeadTrusteePage
-import controllers.register.routes._
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 

@@ -27,8 +27,6 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.individual._
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
@@ -368,27 +366,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryWhatTypeOfBeneficiaryUserAnswersEntry: Arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[WhatTypeOfBeneficiaryPage.type]
-        value <- arbitrary[WhatTypeOfBeneficiary].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
   implicit lazy val arbitraryAgentInternationalAddressUserAnswersEntry: Arbitrary[(AgentInternationalAddressPage.type, JsValue)] =
     Arbitrary {
       for {
         page  <- arbitrary[AgentInternationalAddressPage.type]
         value <- arbitrary[InternationalAddress].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryClassBeneficiaryDescriptionUserAnswersEntry: Arbitrary[(ClassBeneficiaryDescriptionPage, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[ClassBeneficiaryDescriptionPage]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
       } yield (page, value)
     }
 
@@ -408,108 +390,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryIndividualBeneficiaryAddressUKYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAddressUKYesNoPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryAddressUKYesNoPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-
   implicit lazy val arbitraryAgentNameUserAnswersEntry: Arbitrary[(AgentNamePage.type, JsValue)] =
     Arbitrary {
       for {
         page  <- arbitrary[AgentNamePage.type]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryAddABeneficiaryUserAnswersEntry: Arbitrary[(AddABeneficiaryPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[AddABeneficiaryPage.type]
-        value <- arbitrary[AddABeneficiary].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryVulnerableYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryVulnerableYesNoPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryVulnerableYesNoPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryAddressUKUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAddressUKPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryAddressUKPage]
-        value <- arbitrary[UKAddress].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryAddressYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryAddressYesNoPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryAddressYesNoPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceNumberUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNationalInsuranceNumberPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNationalInsuranceYesNoPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryIncomeUserAnswersEntry: Arbitrary[(IndividualBeneficiaryIncomePage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryIncomePage]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryIncomeYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryIncomeYesNoPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryIncomeYesNoPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthUserAnswersEntry: Arbitrary[(IndividualBeneficiaryDateOfBirthPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryDateOfBirthPage]
-        value <- arbitrary[Int].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthYesNoUserAnswersEntry: Arbitrary[(IndividualBeneficiaryDateOfBirthYesNoPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IndividualBeneficiaryDateOfBirthYesNoPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIndividualBeneficiaryNameUserAnswersEntry: Arbitrary[(IndividualBeneficiaryNamePage, JsValue)] =
-    Arbitrary {
-      for {
-        page <- arbitrary[IndividualBeneficiaryNamePage]
-        value <- arbitrary[FullName].map(Json.toJson(_))
       } yield (page, value)
     }
 
