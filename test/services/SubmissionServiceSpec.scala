@@ -20,6 +20,7 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
+import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
@@ -57,9 +58,11 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
                                              (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
 
-    override def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]] = Future.successful(None)
+    override def getAllStatus(draftId: String)
+                             (implicit hc: HeaderCarrier) : Future[AllStatus] = Future.successful(AllStatus())
 
-    override def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = ???
+    override def getAnswerSections(draftId: String)
+                                  (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]

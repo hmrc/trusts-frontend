@@ -16,12 +16,11 @@
 
 package repositories
 
-import java.time.LocalDateTime
-
 import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
+import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
-import models.registration.pages.Status.InProgress
+import models.registration.pages.Status.Completed
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.MustMatchers
@@ -61,17 +60,15 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val repository = createRepository(mockConnector)
 
-        val registrationSectionsData = Json.parse(
+        val registrationSectionsData = Json.obj(
+          "field/subfield" -> Json.parse(
           """
             |{
-            | "field/subfield": {
             |   "dataField": "newData"
-            | }
             |}
-            |""".stripMargin)
-        val existingSubmissionResponse = SubmissionDraftResponse(LocalDateTime.now(), registrationSectionsData, None)
+            |""".stripMargin))
 
-        when(mockConnector.getDraftSection(any(), any())(any(), any())).thenReturn(Future.successful(existingSubmissionResponse))
+        when(mockConnector.getRegistrationPieces(any())(any(), any())).thenReturn(Future.successful(registrationSectionsData))
 
         val currentRegistrationJson = Json.parse(
           """
@@ -85,7 +82,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val result = Await.result(repository.addDraftRegistrationSections(draftId, currentRegistrationJson), Duration.Inf)
 
-        val expectedRegistrationJson = Json.parse(
+        val expectedCombinedRegistrationJson = Json.parse(
           """
             |{
             | "existingObject": {
@@ -99,11 +96,11 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
             |}
             |""".stripMargin)
 
-        result mustBe expectedRegistrationJson
-        verify(mockConnector).getDraftSection(draftId, "registration")(hc, executionContext)
+        result mustBe expectedCombinedRegistrationJson
+        verify(mockConnector).getRegistrationPieces(draftId)(hc, executionContext)
       }
     }
-    "reading section status" must {
+    "reading status got sections" must {
 
       "read existing status when there isn't any" in {
 
@@ -115,48 +112,19 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val repository = createRepository(mockConnector)
 
-        val statusData = Json.parse(
-          """
-            |{
-            |}
-            |""".stripMargin)
-        val existingStatusResponse = SubmissionDraftResponse(LocalDateTime.now(), statusData, None)
+        val allStatus = AllStatus(beneficiaries = Some(Completed))
 
-        when(mockConnector.getDraftSection(any(), any())(any(), any())).thenReturn(Future.successful(existingStatusResponse))
+        when(mockConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(allStatus))
 
-        val result = Await.result(repository.getSectionStatus(draftId, "assets"), Duration.Inf)
+        val result = Await.result(repository.getAllStatus(draftId), Duration.Inf)
 
-        result mustBe None
-      }
-      "read existing status when there is status" in {
+        result mustBe allStatus
 
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-        val draftId = "DraftId"
-
-        val mockConnector = mock[SubmissionDraftConnector]
-
-        val repository = createRepository(mockConnector)
-
-        val statusData = Json.parse(
-          """
-            |{
-            | "assets": "progress"
-            |}
-            |""".stripMargin)
-
-        val existingStatusResponse = SubmissionDraftResponse(LocalDateTime.now(), statusData, None)
-
-        when(mockConnector.getDraftSection(any(), any())(any(), any())).thenReturn(Future.successful(existingStatusResponse))
-
-        val result = Await.result(repository.getSectionStatus(draftId, "assets"), Duration.Inf)
-
-        result mustBe Some(InProgress)
-        verify(mockConnector).getDraftSection(draftId, "status")(hc, executionContext)
+        verify(mockConnector).getStatus(draftId)(hc, executionContext)
       }
     }
     "reading answer sections" must {
-      "return empty answer sections if there are none" in {
+      "return deserialised answer sections" in {
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val draftId = "DraftId"
@@ -165,80 +133,49 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val repository = createRepository(mockConnector)
 
-        val answerSectionsResponse = SubmissionDraftResponse(LocalDateTime.now(), Json.obj(), None)
+        val answerSections = AllAnswerSections(
+          beneficiaries = Some(
+            List(
+              RegistrationSubmission.AnswerSection(
+                Some("headingKey1"),
+                List(
+                  RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
+                ),
+                Some("sectionKey1")),
+              RegistrationSubmission.AnswerSection(
+                Some("headingKey2"),
+                List(
+                  RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
+                ),
+                Some("sectionKey2"))
+            )
+          )
+        )
 
-        when(mockConnector.getDraftSection(any(), any())(any(), any())).thenReturn(Future.successful(answerSectionsResponse))
+        when(mockConnector.getAnswerSections(any())(any(), any())).thenReturn(Future.successful(answerSections))
 
         val result = Await.result(repository.getAnswerSections(draftId), Duration.Inf)
 
-        result mustBe RegistrationAnswerSections(beneficiaries = None)
-        verify(mockConnector).getDraftSection(draftId, "answerSections")(hc, executionContext)
+        val expected = Some(List(
+          AnswerSection(
+            Some("headingKey1"),
+            List(
+              AnswerRow("label1", HtmlFormat.raw("answer1"), None, "labelArg1", canEdit = false)
+            ),
+            Some("sectionKey1")
+          ),
+          AnswerSection(
+            Some("headingKey2"),
+            List(
+              AnswerRow("label2", HtmlFormat.raw("answer2"), None, "labelArg2", canEdit = false)
+            ),
+            Some("sectionKey2")
+          )
+        ))
+
+        result mustBe RegistrationAnswerSections(beneficiaries = expected)
+        verify(mockConnector).getAnswerSections(draftId)(hc, executionContext)
       }
-    }
-    "return deserialised answer sections if there are some" in {
-      implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-      val draftId = "DraftId"
-
-      val mockConnector = mock[SubmissionDraftConnector]
-
-      val repository = createRepository(mockConnector)
-
-      val answerSectionsJson = Json.parse(
-        """
-          |{
-          | "beneficiaries": [
-          |   {
-          |     "headingKey": "headingKey1",
-          |     "rows": [
-          |       {
-          |         "label": "label1",
-          |         "answer": "answer1",
-          |         "labelArg": "labelArg1"
-          |       }
-          |     ],
-          |     "sectionKey": "sectionKey1"
-          |   },
-          |   {
-          |     "headingKey": "headingKey2",
-          |     "rows": [
-          |       {
-          |         "label": "label2",
-          |         "answer": "answer2",
-          |         "labelArg": "labelArg2"
-          |       }
-          |     ],
-          |     "sectionKey": "sectionKey2"
-          |   }
-          | ]
-          |}
-          |""".stripMargin)
-
-      val answerSectionsResponse = SubmissionDraftResponse(LocalDateTime.now(), answerSectionsJson, None)
-
-      when(mockConnector.getDraftSection(any(), any())(any(), any())).thenReturn(Future.successful(answerSectionsResponse))
-
-      val result = Await.result(repository.getAnswerSections(draftId), Duration.Inf)
-
-      val expected = Some(List(
-        AnswerSection(
-          Some("headingKey1"),
-          List(
-            AnswerRow("label1", HtmlFormat.raw("answer1"), None, "labelArg1", canEdit = false)
-          ),
-          Some("sectionKey1")
-        ),
-        AnswerSection(
-          Some("headingKey2"),
-          List(
-            AnswerRow("label2", HtmlFormat.raw("answer2"), None, "labelArg2", canEdit = false)
-          ),
-          Some("sectionKey2")
-        )
-      ))
-
-      result mustBe RegistrationAnswerSections(beneficiaries = expected)
-      verify(mockConnector).getDraftSection(draftId, "answerSections")(hc, executionContext)
     }
   }
 }

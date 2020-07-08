@@ -19,6 +19,7 @@ package controllers.register
 import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
+import models.RegistrationSubmission.AllStatus
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
@@ -171,6 +172,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       beneficiarySections(0),
       beneficiarySections(1)
     )
+
+    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 

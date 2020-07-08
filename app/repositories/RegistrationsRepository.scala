@@ -19,7 +19,7 @@ package repositories
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import models.RegistrationSubmission
-import models.RegistrationSubmission.AllAnswerSections
+import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus.Complete
 import models.registration.pages.Status
@@ -36,10 +36,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
                                           submissionDraftConnector: SubmissionDraftConnector
                                         )(implicit ec: ExecutionContext) extends RegistrationsRepository {
-
-  private val registrationSection = "registration"
-  private val statusSection = "status"
-  private val answerSectionsSection = "answerSections"
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
@@ -93,13 +89,12 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   }
 
   override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue] = {
-    submissionDraftConnector.getDraftSection(draftId, registrationSection).map {
-      response =>
-        val o = response.data.as[JsObject]
-        val added: JsResult[JsValue] = o.keys.foldLeft[JsResult[JsValue]](
+    submissionDraftConnector.getRegistrationPieces(draftId).map {
+      pieces =>
+        val added: JsResult[JsValue] = pieces.keys.foldLeft[JsResult[JsValue]](
           JsSuccess(registrationJson)
         )(
-          (cur, key) => cur.flatMap(addSection(key, o(key), _))
+          (cur, key) => cur.flatMap(addSection(key, pieces(key), _))
         )
 
         added match {
@@ -109,24 +104,15 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
-  override def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]] = {
-    submissionDraftConnector.getDraftSection(draftId, statusSection).map {
-      response =>
-        val path = JsPath \ section
-        response.data.transform(path.json.pick) match {
-          case JsSuccess(value, _) => Some(value.as[Status])
-          case _ => None
-        }
-    }
+  override def getAllStatus(draftId: String)(implicit hc: HeaderCarrier) : Future[AllStatus] = {
+    submissionDraftConnector.getStatus(draftId)
   }
 
   override def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = {
-    submissionDraftConnector.getDraftSection(draftId, answerSectionsSection).map {
-      section =>
-        val allAnswerSections = section.data.as[AllAnswerSections]
-        RegistrationAnswerSections(
-          beneficiaries = convert(allAnswerSections.beneficiaries)
-        )
+    submissionDraftConnector.getAnswerSections(draftId).map {
+      sections => RegistrationAnswerSections(
+        beneficiaries = convert(sections.beneficiaries)
+      )
     }
   }
 
@@ -138,6 +124,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   private def convert(section: Option[List[RegistrationSubmission.AnswerSection]]): Option[List[AnswerSection]] =
     section map { _.map(convert) }
+
 }
 
 trait RegistrationsRepository {
@@ -149,7 +136,7 @@ trait RegistrationsRepository {
 
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
 
-  def getSectionStatus(draftId: String, section: String)(implicit hc: HeaderCarrier) : Future[Option[Status]]
+  def getAllStatus(draftId: String)(implicit hc: HeaderCarrier) : Future[AllStatus]
 
   def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections]
 }

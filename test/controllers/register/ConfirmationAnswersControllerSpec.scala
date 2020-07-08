@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime, ZoneOffset}
 
 import base.RegistrationSpecBase
+import models.RegistrationSubmission.AllStatus
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
@@ -71,6 +72,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       beneficiaries = Some(beneficiarySections)
     )
 
+    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
     when(registrationsRepository.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {

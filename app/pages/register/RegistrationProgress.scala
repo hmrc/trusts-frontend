@@ -41,13 +41,13 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
 
   def items(userAnswers: UserAnswers, draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
     for {
-      resolvedBeneficiariesStatus <- beneficiariesStatus(userAnswers)
+      allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
       List(
         Task(Link(TrustDetails, navigator.trustDetailsJourney(userAnswers, draftId).url), trustDetailsStatus(userAnswers)),
         Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), settlorsStatus(userAnswers)),
         Task(Link(Trustees, navigator.trusteesJourney(userAnswers, draftId).url), trusteesStatus(userAnswers)),
-        Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), resolvedBeneficiariesStatus),
+        Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
         Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
         Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId).url), None)
       )
@@ -117,10 +117,6 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
     }
   }
 
-  def beneficiariesStatus(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[Status]] = {
-    registrationsRepository.getSectionStatus(userAnswers.draftId, "beneficiaries")
-  }
-
   def assetsStatus(userAnswers: UserAnswers): Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
     val assets = userAnswers.get(sections.Assets).getOrElse(List.empty)
@@ -139,12 +135,11 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
       settlorsStatus(userAnswers).contains(Completed) &&
       trusteesStatus(userAnswers).contains(Completed) &&
       assetsStatus(userAnswers).contains(Completed)) {
-      beneficiariesStatus(userAnswers) map {
-        result => result.contains(Completed)
+      registrationsRepository.getAllStatus(userAnswers.draftId).map {
+        status => status.beneficiaries.contains(Completed)
       }
     } else {
       Future.successful(false)
     }
   }
-
 }

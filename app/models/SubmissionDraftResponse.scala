@@ -54,6 +54,14 @@ object RegistrationSubmission {
     implicit lazy val format: OFormat[AnswerSection] = Json.format[AnswerSection]
   }
 
+  case class AllStatus(
+                        beneficiaries: Option[Status] = None
+                      )
+
+  object AllStatus {
+    implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
+  }
+
   case class AllAnswerSections(
                                 beneficiaries: Option[List[AnswerSection]]
                               )

@@ -18,16 +18,24 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
+import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
+  private val registrationSection = "registration"
+  private val statusSection = "status"
+  private val answerSectionsSection = "answerSections"
 
-  val submissionsBaseUrl = s"${config.trustsUrl}/trusts/register/submission-drafts"
+  private val submissionsBaseUrl = s"${config.trustsUrl}/trusts/register/submission-drafts"
+
+  private def getDraftSection(draftId: String, section: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] = {
+    http.GET[SubmissionDraftResponse](s"$submissionsBaseUrl/$draftId/$section")
+  }
 
   def setDraftMain(draftId : String, draftData: JsValue, inProgress: Boolean, reference: Option[String])
                      (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
@@ -41,19 +49,25 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
     http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/$section", Json.toJson(submissionDraftData))
   }
 
-  def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] = {
-    http.GET[SubmissionDraftResponse](s"$submissionsBaseUrl/$draftId/MAIN")
-  }
-
-  def getDraftSection(draftId: String, section: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] = {
-    http.GET[SubmissionDraftResponse](s"$submissionsBaseUrl/$draftId/$section")
-  }
+  def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] =
+    getDraftSection(draftId, "MAIN")
 
   def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[List[SubmissionDraftId]] = {
     http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
   }
 
-  def deleteDraft(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
-    http.DELETE[HttpResponse](s"$submissionsBaseUrl/$draftId")
-  }
+  def getStatus(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[AllStatus] =
+    getDraftSection(draftId, statusSection).map {
+      section => section.data.as[AllStatus]
+    }
+
+  def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[JsObject] =
+    getDraftSection(draftId, registrationSection).map {
+      section => section.data.as[JsObject]
+    }
+
+  def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[AllAnswerSections] =
+    getDraftSection(draftId, answerSectionsSection).map {
+      section => section.data.as[AllAnswerSections]
+    }
 }

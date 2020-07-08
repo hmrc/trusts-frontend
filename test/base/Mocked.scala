@@ -16,6 +16,7 @@
 
 package base
 
+import models.RegistrationSubmission.AllStatus
 import models.registration.pages.Status.Completed
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.any
@@ -43,6 +44,6 @@ trait Mocked extends MockitoSugar {
       .thenReturn(Future.successful(TestUserAnswers.draftId))
 
   when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
-  when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(Completed)))
+  when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
   when(registrationsRepository.getAnswerSections(any())(any())).thenReturn(Future.successful(RegistrationAnswerSections()))
 }

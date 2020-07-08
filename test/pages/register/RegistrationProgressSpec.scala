@@ -19,6 +19,7 @@ package pages.register
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
+import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.AddAssets.NoComplete
@@ -261,45 +262,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
     }
   }
 
-  "Beneficiary section" must {
-
-      "render no tag" when {
-
-        "there is beneficiaries status is None" in {
-          when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(None))
-
-          val application = applicationBuilder().build()
-          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
-
-          Await.result(registrationProgress.beneficiariesStatus(emptyUserAnswers), Duration.Inf) mustBe None
-        }
-      }
-
-    "render in-progress tag" when {
-
-      "status is in-progress" in {
-        when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(InProgress)))
-
-        val application = applicationBuilder().build()
-        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
-
-        Await.result(registrationProgress.beneficiariesStatus(emptyUserAnswers), Duration.Inf) mustBe Some(InProgress)
-      }
-    }
-
-    "render complete tag" when {
-
-      "status is completed" in {
-        when(registrationsRepository.getSectionStatus(any(), any())(any())).thenReturn(Future.successful(Some(Completed)))
-
-        val application = applicationBuilder().build()
-        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
-
-        Await.result(registrationProgress.beneficiariesStatus(emptyUserAnswers), Duration.Inf) mustBe Some(Completed)
-      }
-    }
-  }
-
   "Assets section" must {
 
     "render no tag" when {
@@ -369,6 +331,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
   "All tasklist complete" when {
 
     "all entities marked as complete" in {
+
+      when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
 
       val application = applicationBuilder().build()
       val registrationProgress = application.injector.instanceOf[RegistrationProgress]

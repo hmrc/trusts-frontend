@@ -139,40 +139,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result = Await.result(connector.setDraftSection(testDraftId, testSection, sectionData), Duration.Inf)
         result.status mustBe Status.OK
       }
-      "can be retrieved for section" in {
-
-        val draftData = Json.parse(
-          """
-            |{
-            | "field1": "value1",
-            | "field2": "value2"
-            |}
-            |""".stripMargin)
-
-        val draftResponseJson =
-          """
-            |{
-            | "createdAt": "2012-02-03T09:30:00",
-            | "data": {
-            |  "field1": "value1",
-            |  "field2": "value2"
-            | }
-            |}
-            |""".stripMargin
-
-        server.stubFor(
-          get(urlEqualTo(submissionUrl))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-                .withBody(draftResponseJson)
-            )
-        )
-
-        val result: SubmissionDraftResponse = Await.result(connector.getDraftSection(testDraftId, testSection), Duration.Inf)
-        result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
-        result.data mustBe draftData
-      }
       "can have list of ids retrieved" in {
 
         val draftIdsResponseJson =
@@ -205,19 +171,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           SubmissionDraftId("Draft1", LocalDateTime.of(2012, 2, 3, 9, 30), Some("ref")),
           SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44), None)
         )
-      }
-      "can be deleted" in {
-
-        server.stubFor(
-          delete(urlEqualTo(deleteUrl))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-            )
-        )
-
-        val result = Await.result(connector.deleteDraft(testDraftId), Duration.Inf)
-        result.status mustBe Status.OK
       }
     }
   }
