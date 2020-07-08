@@ -42,148 +42,138 @@ import utils.{DateFormatter, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.register.ConfirmationAnswerPageView
 
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
 class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
-  val index = 0
+  private val index = 0
+
+  private val userAnswers =
+    TestUserAnswers.emptyUserAnswers
+      .set(TrustNamePage, "New Trust").success.value
+      .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+      .set(GovernedInsideTheUKPage, true).success.value
+      .set(AdministrationInsideUKPage, true).success.value
+      .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
+      .set(EstablishedUnderScotsLawPage, true).success.value
+      .set(TrustResidentOffshorePage, false).success.value
+      .set(TrustDetailsStatus, Completed).success.value
+
+      .set(IsThisLeadTrusteePage(index), true).success.value
+      .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+      .set(TrusteesNamePage(index), FullName("TrusteeFirst", None, "TrusteeLast")).success.value
+      .set(TrusteesDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
+      .set(TrusteeAUKCitizenPage(index), true).success.value
+      .set(TrusteesNinoPage(index), "AB123456C").success.value
+      .set(TelephoneNumberPage(index), "0191 1111111").success.value
+      .set(TrusteeAddressInTheUKPage(index), true).success.value
+      .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
+      .set(TrusteeStatus(index), Status.Completed).success.value
+      .set(AddATrusteePage, AddATrustee.NoComplete).success.value
+
+      .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+      .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+      .set(HoldoverReliefYesNoPage, true).success.value
+      .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
+      .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
+      .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+      .set(SettlorIndividualDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
+      .set(SettlorIndividualNINOYesNoPage(index), true).success.value
+      .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
+      .set(LivingSettlorStatus(index), Status.Completed).success.value
+
+      .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
+      .set(AssetMoneyValuePage(index), "100").success.value
+      .set(AssetStatus(index), Completed).success.value
+      .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+      .set(SharesInAPortfolioPage(1), true).success.value
+      .set(SharePortfolioNamePage(1), "Company").success.value
+      .set(SharePortfolioOnStockExchangePage(1), true).success.value
+      .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
+      .set(SharePortfolioValueInTrustPage(1), "4000").success.value
+      .set(AssetStatus(1), Completed).success.value
+      .set(WhatKindOfAssetPage(2), WhatKindOfAsset.PropertyOrLand).success.value
+      .set(PropertyOrLandAddressYesNoPage(2), false).success.value
+      .set(PropertyOrLandDescriptionPage(2), "Town House").success.value
+      .set(PropertyOrLandTotalValuePage(2), "10000").success.value
+      .set(TrustOwnAllThePropertyOrLandPage(2), false).success.value
+      .set(PropertyLandValueTrustPage(2), "10").success.value
+      .set(AssetStatus(2), Completed).success.value
+      .set(AddAssetsPage, NoComplete).success.value
+
+      .set(RegistrationTRNPage, "XNTRN000000001").success.value
+      .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
+
+
+  private val formatter = injector.instanceOf[DateFormatter]
+
+  private val trnDateTime : String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
+  private val name = "First Last"
+  private val trusteeName = "TrusteeFirst TrusteeLast"
+  private val yes = "Yes"
+  private val no = "No"
+
+  private val application = applicationBuilder().build()
+
+  private val helper = application.injector.instanceOf[PrintUserAnswersHelper]
+
+  private implicit val hc: HeaderCarrier = HeaderCarrier()
+
+  private val viewFuture = helper.summary(fakeDraftId, userAnswers).map {
+    sections =>
+      val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
+
+      view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
+  }
+
+  private val view = Await.result(viewFuture, Duration.Inf)
+
+  private val doc = asDocument(view)
 
   "ConfirmationAnswerPage view" must {
 
-    val userAnswers =
-      TestUserAnswers.emptyUserAnswers
-        .set(TrustNamePage, "New Trust").success.value
-        .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(GovernedInsideTheUKPage, true).success.value
-        .set(AdministrationInsideUKPage, true).success.value
-        .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
-        .set(EstablishedUnderScotsLawPage, true).success.value
-        .set(TrustResidentOffshorePage, false).success.value
-        .set(TrustDetailsStatus, Completed).success.value
-
-        .set(IsThisLeadTrusteePage(index), true).success.value
-        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-        .set(TrusteesNamePage(index), FullName("TrusteeFirst", None, "TrusteeLast")).success.value
-        .set(TrusteesDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
-        .set(TrusteesNinoPage(index), "AB123456C").success.value
-        .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(TrusteeAddressInTheUKPage(index), true).success.value
-        .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
-        .set(TrusteeStatus(index), Status.Completed).success.value
-        .set(AddATrusteePage, AddATrustee.NoComplete).success.value
-
-        .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-        .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-        .set(HoldoverReliefYesNoPage, true).success.value
-        .set(SettlorIndividualOrBusinessPage(index),IndividualOrBusiness.Individual).success.value
-        .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
-        .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
-        .set(SettlorIndividualDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
-        .set(SettlorIndividualNINOYesNoPage(index), true).success.value
-        .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
-        .set(LivingSettlorStatus(index), Status.Completed).success.value
-
-        .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
-        .set(AssetMoneyValuePage(index), "100").success.value
-        .set(AssetStatus(index), Completed).success.value
-        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
-        .set(SharesInAPortfolioPage(1), true).success.value
-        .set(SharePortfolioNamePage(1), "Company").success.value
-        .set(SharePortfolioOnStockExchangePage(1), true).success.value
-        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
-        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
-        .set(AssetStatus(1), Completed).success.value
-        .set(WhatKindOfAssetPage(2), WhatKindOfAsset.PropertyOrLand).success.value
-        .set(PropertyOrLandAddressYesNoPage(2), false).success.value
-        .set(PropertyOrLandDescriptionPage(2), "Town House").success.value
-        .set(PropertyOrLandTotalValuePage(2), "10000").success.value
-        .set(TrustOwnAllThePropertyOrLandPage(2), false).success.value
-        .set(PropertyLandValueTrustPage(2), "10").success.value
-        .set(AssetStatus(2), Completed).success.value
-        .set(AddAssetsPage, NoComplete).success.value
-
-        .set(RegistrationTRNPage, "XNTRN000000001").success.value
-        .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
-
-
-    val formatter = injector.instanceOf[DateFormatter]
-
-    val trnDateTime : String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
-    val name = "First Last"
-    val trusteeName = "TrusteeFirst TrusteeLast"
-    val yes = "Yes"
-    val no = "No"
-
-    val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
-
-    val app = applicationBuilder().build()
-
-    val helper = app.injector.instanceOf[PrintUserAnswersHelper]
-
-    implicit val hc: HeaderCarrier = HeaderCarrier()
-
-    val testDoc = helper.summary(fakeDraftId, userAnswers).map {
-      sections =>
-        val applyView = view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
-
-        behave like normalPage(applyView, "confirmationAnswerPage")
-
-        asDocument(applyView)
-    }
+    behave like normalPage(view, "confirmationAnswerPage")
 
     "assert header content" in {
-      testDoc.map {
-        doc =>
-          assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
-          assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
-      }
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
     }
 
     "assert correct number of headers and subheaders" in {
-      testDoc.map {
-        doc =>
-          val wrapper = doc.getElementById("wrapper")
-          val headers = wrapper.getElementsByTag("h2")
-          val subHeaders = wrapper.getElementsByTag("h3")
+      val wrapper = doc.getElementById("wrapper")
+      val headers = wrapper.getElementsByTag("h2")
+      val subHeaders = wrapper.getElementsByTag("h3")
 
-          headers.size mustBe 4
-          subHeaders.size mustBe 4
-      }
+      headers.size mustBe 3
+      subHeaders.size mustBe 2
     }
 
     "assert question labels for Trusts" in {
-      testDoc.map {
-        doc =>
-          assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
-          assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
-      }
+      assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
+      assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
     }
 
     "assert question labels for Trustees" in {
-      testDoc.map {
-        doc =>
-          assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
-          assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
-          assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
-          assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
-          assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
-      }
+      assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
+      assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
+      assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
+      assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
+      assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
+      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
     }
 
     "assert question labels for Settlors" in {
-      testDoc.map {
-        doc =>
-          assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), no)
-          assertContainsQuestionAnswerPair(doc, messages("kindOfTrust.checkYourAnswersLabel"), "A trust created during their lifetime to gift or transfer assets")
-          assertContainsQuestionAnswerPair(doc, messages("holdoverReliefYesNo.checkYourAnswersLabel"), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
-          assertContainsQuestionAnswerPair(doc, messages("settlorIndividualName.checkYourAnswersLabel"), name)
-          assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
-          assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINOYesNo.checkYourAnswersLabel", name), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINO.checkYourAnswersLabel", name), "AB 12 34 56 C")
-      }
+      assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("kindOfTrust.checkYourAnswersLabel"), "A trust created during their lifetime to gift or transfer assets")
+      assertContainsQuestionAnswerPair(doc, messages("holdoverReliefYesNo.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualName.checkYourAnswersLabel"), name)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINOYesNo.checkYourAnswersLabel", name), yes)
+      assertContainsQuestionAnswerPair(doc, messages("settlorIndividualNINO.checkYourAnswersLabel", name), "AB 12 34 56 C")
     }
   }
 }

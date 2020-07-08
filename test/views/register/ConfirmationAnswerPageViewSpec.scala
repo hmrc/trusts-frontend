@@ -22,7 +22,6 @@ import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
-import org.jsoup.nodes.Document
 import pages.entitystatus._
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
@@ -37,7 +36,8 @@ import utils.{DateFormatter, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.register.ConfirmationAnswerPageView
 
-import scala.concurrent.Future
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
   val index = 0
@@ -93,80 +93,65 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
-
     val app = applicationBuilder().build()
 
     val helper = app.injector.instanceOf[PrintUserAnswersHelper]
 
-    val testDoc: Future[Document] = {
-      helper.summary(fakeDraftId, userAnswers).map {
-        sections =>
-          val applyView = view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
+    val viewFuture = helper.summary(fakeDraftId, userAnswers).map {
+      sections =>
+        val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
 
-          behave like normalPage(applyView, "confirmationAnswerPage")
-
-          asDocument(applyView)
-      }
+        view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
     }
 
+    val view = Await.result(viewFuture, Duration.Inf)
+
+    val doc = asDocument(view)
+
+    behave like normalPage(view, "confirmationAnswerPage")
+
     "assert header content" in {
-      testDoc.map {
-        doc =>
-          assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
-          assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
-      }
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
+      assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
     }
 
     "assert correct number of headers and subheaders" in {
-      testDoc.map {
-        doc =>
-          val wrapper = doc.getElementById("wrapper")
-          val headers = wrapper.getElementsByTag("h2")
-          val subHeaders = wrapper.getElementsByTag("h3")
+      val wrapper = doc.getElementById("wrapper")
+      val headers = wrapper.getElementsByTag("h2")
+      val subHeaders = wrapper.getElementsByTag("h3")
 
-          headers.size mustBe 4
-          subHeaders.size mustBe 3
-      }
+      headers.size mustBe 3
+      subHeaders.size mustBe 1
     }
 
     "assert question labels for Trust details" in {
-      testDoc.map {
-        doc =>
-          assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
-          assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
-      }
+      assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
+      assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
     }
 
     "assert question labels for Trustees" in {
-      testDoc.map {
-        doc =>
-          assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
-          assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
-          assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
-          assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
-          assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
-      }
+        assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
+        assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
+        assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
+        assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
+        assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
+        assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
+        assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
+        assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
     }
 
     "assert question labels for Settlors" in {
-      testDoc.map {
-        doc =>
-          assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
-          assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
-          assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
-          assertContainsQuestionAnswerPair(doc, messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
-          assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
-          assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
-          assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
-      }
+        assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), yes)
+        assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
+        assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
+        assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
+        assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
+        assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
+        assertContainsQuestionAnswerPair(doc, messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), yes)
+        assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
+        assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
+        assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
+        assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
     }
   }
 }
