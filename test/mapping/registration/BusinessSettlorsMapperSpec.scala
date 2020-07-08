@@ -53,16 +53,35 @@ class BusinessSettlorsMapperSpec extends FreeSpec with MustMatchers
           emptyUserAnswers
             .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
             .set(SettlorBusinessNamePage(0), "Business name").success.value
-            .set(SettlorBusinessUtrYesNoPage(0), true).success.value
-            .set(SettlorBusinessUtrPage(0), "1234567890").success.value
+            .set(SettlorBusinessUtrYesNoPage(0), false).success.value
+            .set(SettlorBusinessAddressYesNoPage(0), false).success.value
 
 
           businessSettlorsMapper.build(userAnswers).value mustBe List(SettlorCompany(
             name = "Business name",
             companyType = None,
             companyTime = None,
-            identification = Some(IdentificationOrgType(Some("1234567890"), None))
+            identification = None
           )
+        )
+      }
+
+      "must be able to create a Settlor with a UTR" in {
+
+        val userAnswers =
+          emptyUserAnswers
+            .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
+            .set(SettlorBusinessNamePage(0), "Business name").success.value
+            .set(SettlorBusinessUtrYesNoPage(0), true).success.value
+            .set(SettlorBusinessUtrPage(0), "1234567890").success.value
+
+
+        businessSettlorsMapper.build(userAnswers).value mustBe List(SettlorCompany(
+          name = "Business name",
+          companyType = None,
+          companyTime = None,
+          identification = Some(IdentificationOrgType(Some("1234567890"), None))
+        )
         )
       }
 
