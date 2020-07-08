@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor.business
+package mapping.reads
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import models.core.pages.Address
+import play.api.libs.json.{Format, Json}
 
-case class SettlorBusinessTimeYesNoPage(index : Int) extends QuestionPage[Boolean] {
+final case class BusinessSettlor(name: String,
+                                 utr: Option[String],
+                                 address : Option[Address],
+                                 companyType: Option[String],
+                                 companyTime: Option[Boolean])
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
-
-  override def toString: String = "companyTime"
+object BusinessSettlor {
+  implicit val classFormat: Format[BusinessSettlor] = Json.format[BusinessSettlor]
 }
+

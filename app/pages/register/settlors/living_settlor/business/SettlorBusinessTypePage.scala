@@ -25,5 +25,5 @@ case class SettlorBusinessTypePage(index : Int) extends QuestionPage[KindOfBusin
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  override def toString: String = "businessType"
+  override def toString: String = "companyType"
 }
