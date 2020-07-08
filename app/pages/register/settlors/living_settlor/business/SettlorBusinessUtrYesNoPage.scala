@@ -16,9 +16,12 @@
 
 package pages.register.settlors.living_settlor.business
 
+import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
+
+import scala.util.Try
 
 final case class SettlorBusinessUtrYesNoPage(index : Int) extends QuestionPage[Boolean] {
 
@@ -26,4 +29,9 @@ final case class SettlorBusinessUtrYesNoPage(index : Int) extends QuestionPage[B
 
   override def toString: String = "utrYesNo"
 
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
+    value match {
+      case Some(false) => userAnswers.remove(SettlorBusinessUtrPage(index))
+      case _ => super.cleanup(value, userAnswers)
+    }
 }

@@ -1481,14 +1481,14 @@ settlorBusinessName.error.required = Enter the business’s name
 settlorBusinessName.error.length = Business’s name must be 105 characters or less
 settlorBusinessName.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
-settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtrYesNo.title = Do you know the business’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtrYesNo.heading = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtrYesNo.error.required = Select yes if you know the business’s Unique Taxpayer Reference (UTR) number
+settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR)?
+settlorBusinessUtrYesNo.title = Do you know the business’s Unique Taxpayer Reference (UTR)?
+settlorBusinessUtrYesNo.heading = Do you know {0}’s Unique Taxpayer Reference (UTR)?
+settlorBusinessUtrYesNo.error.required = Select yes if you know the business’s Unique Taxpayer Reference (UTR)
 
-settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtr.title = What is the business’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtr.heading = What is {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
+settlorBusinessUtr.title = What is the business’s Unique Taxpayer Reference (UTR)?
+settlorBusinessUtr.heading = What is {0}’s Unique Taxpayer Reference (UTR)?
 settlorBusinessUtr.error.required = Enter the business’s Unique Taxpayer Reference
 settlorBusinessUtr.error.length = Unique Taxpayer Reference must be a 10 digit number
 settlorBusinessUtr.error.invalidCharacters = Enter the business’s Unique Taxpayer Reference in the correct format
