@@ -27,6 +27,7 @@ import pages.register.asset.business.BusinessNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.SettlorIndividualNamePage
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.trustees.individual.TrusteesNamePage
 import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.i18n.Messages
@@ -63,7 +64,7 @@ object CheckAnswersFormatters {
     userAnswers.get(TrusteesNamePage(index)).map(_.toString).getOrElse("")
 
   def orgName(index: Int, userAnswers: UserAnswers): String =
-    userAnswers.get(TrusteeOrgNamePage(index)).map(_.toString).getOrElse("")
+    userAnswers.get(TrusteeOrgNamePage(index)).getOrElse("")
 
   def answer[T](key: String, answer: T)(implicit messages: Messages): Html =
     HtmlFormat.escape(messages(s"$key.$answer"))
@@ -74,19 +75,23 @@ object CheckAnswersFormatters {
     userAnswers.get(SettlorsNamePage).map(_.toString).getOrElse("")
 
   def shareCompName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(ShareCompanyNamePage(index)).map(_.toString).getOrElse("")
+    userAnswers.get(ShareCompanyNamePage(index)).getOrElse("")
   }
 
   def livingSettlorName(index: Int, userAnswers: UserAnswers): String = {
     userAnswers.get(SettlorIndividualNamePage(index)).map(_.toString).getOrElse("")
   }
 
+  def businessSettlorName(index: Int, userAnswers: UserAnswers): String = {
+    userAnswers.get(SettlorBusinessNamePage(index)).getOrElse("")
+  }
+
   def assetName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(BusinessNamePage(index)).map(_.toString).getOrElse("")
+    userAnswers.get(BusinessNamePage(index)).getOrElse("")
   }
 
   def agencyName(userAnswers: UserAnswers): String = {
-    userAnswers.get(AgentNamePage).map(_.toString).getOrElse("")
+    userAnswers.get(AgentNamePage).getOrElse("")
   }
 
   def ukAddress(address: UKAddress): Html = {

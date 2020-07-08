@@ -18,20 +18,24 @@ package navigation.navigators.registration
 
 import base.RegistrationSpecBase
 import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
 import generators.Generators
 import models.NormalMode
 import models.core.UserAnswers
-import models.core.pages.IndividualOrBusiness
+import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
-import models.registration.pages.KindOfTrust.Deed
+import models.registration.pages.KindOfBusiness.Trading
+import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement}
+import models.registration.pages.RoleInCompany.Employee
 import models.registration.pages.{AddASettlor, KindOfTrust}
 import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
+import pages.register.settlors.living_settlor.business._
+import pages.register.settlors.living_settlor.trust_type._
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 
 trait LivingSettlorRoutes {
@@ -52,8 +56,178 @@ trait LivingSettlorRoutes {
         .set(page, IndividualOrBusiness.Business).success.value
 
       navigator.nextPage(page, NormalMode, fakeDraftId)(ua)
-        .mustBe(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
+        .mustBe(businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId))
 
+    }
+
+    "business settlor " must {
+      val mode = NormalMode
+
+      "Name page -> UTR yes/no page" in {
+        val answers = emptyUserAnswers
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+
+        navigator.nextPage(SettlorBusinessNamePage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "UTR yes/no page -> Yes -> UTR page" in {
+        val answers = emptyUserAnswers
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessUtrYesNoPage(index), true).success.value
+
+        navigator.nextPage(SettlorBusinessUtrYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessUtrController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "UTR yes/no page -> No -> Address yes/no page" in {
+        val answers = emptyUserAnswers
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessUtrYesNoPage(index), false).success.value
+
+        navigator.nextPage(SettlorBusinessUtrYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "UTR page (Not an Employment Related trust) -> Check details page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, FlatManagement).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessUtrPage(index), "1234567890").success.value
+
+        navigator.nextPage(SettlorBusinessUtrPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
+      }
+
+      "UTR page (Employment Related trust) -> Business Type page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessUtrPage(index), "1234567890").success.value
+
+        navigator.nextPage(SettlorBusinessUtrPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "Address yes/no page (Not an Employment Related trust) -> No -> Check details page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, FlatManagement).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressYesNoPage(index), false).success.value
+
+        navigator.nextPage(SettlorBusinessAddressYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
+      }
+
+      "Address yes/no page (Employment Related trust) -> No -> Business Type page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressYesNoPage(index), false).success.value
+
+        navigator.nextPage(SettlorBusinessAddressYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "Address yes/no page -> Yes -> Uk Address yes/no page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressYesNoPage(index), true).success.value
+
+        navigator.nextPage(SettlorBusinessAddressYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAddressUKYesNoController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "UK Address yes/no page -> Yes -> UK Address page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressUKYesNoPage(index), true).success.value
+
+        navigator.nextPage(SettlorBusinessAddressUKYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAddressUKController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "UK Address yes/no page -> No -> International Address page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressUKYesNoPage(index), false).success.value
+
+        navigator.nextPage(SettlorBusinessAddressUKYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAddressInternationalController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "UK Address page (Not an Employment Related trust) -> Check details page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, FlatManagement).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressUKPage(index), UKAddress("line1", "line2",None, None, "AB11AB")).success.value
+
+        navigator.nextPage(SettlorBusinessAddressUKPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
+      }
+
+      "UK Address page (Employment Related trust) -> Business Type page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressUKPage(index), UKAddress("line1", "line2",None, None, "AB11AB")).success.value
+
+        navigator.nextPage(SettlorBusinessAddressUKPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "International Address page (Not an Employment Related trust) -> Check details page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, FlatManagement).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressInternationalPage(index), InternationalAddress("line1", "line2",None, "DE")).success.value
+
+        navigator.nextPage(SettlorBusinessAddressInternationalPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
+      }
+
+      "International Address page (Employment Related trust) -> Business Type page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessAddressInternationalPage(index), InternationalAddress("line1", "line2",None, "DE")).success.value
+
+        navigator.nextPage(SettlorBusinessAddressInternationalPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessTypeController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "Business type page (Employment Related trust) -> Business time page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessTypePage(index), Trading).success.value
+
+        navigator.nextPage(SettlorBusinessTypePage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessTimeYesNoController.onPageLoad(mode, index, fakeDraftId))
+      }
+
+      "Business time Yes/No page -> Yes -> Check details page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessTimeYesNoPage(index), true).success.value
+
+        navigator.nextPage(SettlorBusinessTimeYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
+      }
+
+      "Business time Yes/No page -> No -> Check details page" in {
+        val answers = emptyUserAnswers
+          .set(KindOfTrustPage, Employees).success.value
+          .set(SettlorBusinessNamePage(index), "Business Name").success.value
+          .set(SettlorBusinessTimeYesNoPage(index), false).success.value
+
+        navigator.nextPage(SettlorBusinessTimeYesNoPage(index), mode, fakeDraftId)(answers)
+          .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
+      }
     }
   }
 
@@ -114,7 +288,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.KindOfTrustController.onPageLoad(NormalMode, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
       }
 
     }

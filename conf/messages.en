@@ -124,6 +124,7 @@ charityOrTrust.charity = Charity
 charityOrTrust.trust = Trust
 
 entity.settlor.individual = Individual Settlor
+entity.settlor.business = Business Settlor
 entity.settlor.deceased = Will Trust
 
 entity.trustee = Trustees
@@ -458,7 +459,6 @@ leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered comp
 leadTrusteeUtrYesNo.title = Is this trustee a UK registered company?
 leadTrusteeUtrYesNo.heading = Is this trustee a UK registered company?
 leadTrusteeUtrYesNo.error.required = Select yes if the trustee is a UK registered company
-leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 
 trusteesDateOfBirth.title = What is the trustee’s date of birth?
 trusteesDateOfBirth.heading = What is {0}’s date of birth?
@@ -926,10 +926,6 @@ confirmationAgentPage.paragraph10.a = contact the trusts helpline (opens in a ne
 confirmationAgentPage.agent.you.can = You can
 confirmationAgentPage.agent.link = return to register and maintain a trust for a client
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
-confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
-confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
-
 confirmationExistingPage.heading1 = Registration received
 confirmationExistingPage.heading2 = Your reference is:
 
@@ -1263,13 +1259,51 @@ settlorBusinessName.error.length = Business’s name must be 105 characters or l
 settlorBusinessName.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 
 settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtrYesNo.title = Do you know the business’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtrYesNo.heading = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtrYesNo.error.required = Select yes if you know the business’s Unique Taxpayer Reference (UTR) number
+
 settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtr.title = What is the business’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtr.heading = What is {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtr.error.required = Enter the business’s Unique Taxpayer Reference
+settlorBusinessUtr.error.length = Unique Taxpayer Reference must be a 10 digit number
+settlorBusinessUtr.error.invalidCharacters = Enter the business’s Unique Taxpayer Reference in the correct format
+settlorBusinessUtr.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Corporation Tax. It may be called ‘reference’, ‘UTR’ or ‘official use’.
+settlorBusinessUtr.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. It will be on tax returns and other letters about Corporation Tax. It may be called ‘reference’, ‘UTR’ or ‘official use’.
+settlorBusinessUtr.p1 = You can
+settlorBusinessUtr.link = find a lost UTR number (opens in a new window or tab)
+
 settlorBusinessAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+settlorBusinessAddressYesNo.title = Do you know the settlor’s address?
+settlorBusinessAddressYesNo.heading = Do you know {0}’s address?
+settlorBusinessAddressYesNo.error.required = Select yes if you know the settlor’s address
+
 settlorBusinessAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressUKYesNo.title = Is the settlor’s address in the UK?
+settlorBusinessAddressUKYesNo.heading = Is {0}’s address in the UK?
+settlorBusinessAddressUKYesNo.error.required = Select yes if the settlor’s address is in the UK
+
 settlorBusinessAddressInternational.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressInternational.title = What is the settlor’s address?
+settlorBusinessAddressInternational.heading = What is {0}’s address?
+
+settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressUK.title = What is the settlor’s address?
+settlorBusinessAddressUK.heading = What is {0}’s address?
+
 settlorBusinessType.checkYourAnswersLabel = What kind of business is {0}?
-settlorBusinessTime.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessType.title = What kind of business is the settlor?
+settlorBusinessType.heading = What kind of business is {0}?
+settlorBusinessType.error.required = Select what kind of business the settlor is
+
+kindOfBusiness.Trading = Trading
+kindOfBusiness.Investment = Investment
+
+settlorBusinessTimeYesNo.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessTimeYesNo.title = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessTimeYesNo.heading = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+settlorBusinessTimeYesNo.error.required = Select yes if the business had been in existence for at least 2 years
 
 addASettlorYesNo.title = Do you want to add a settlor?
 addASettlorYesNo.heading = Do you want to add a settlor?
@@ -1379,7 +1413,6 @@ answerPage.section.protectors.heading = Protectors
 answerPage.section.protectors.subheading = Protector {0}
 
 answerPage.section.trustType.heading = Trust type
-howDeedOfVariationCreated.checkYourAnswersLabel = How was the Deed of Variation created?
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
 employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
 

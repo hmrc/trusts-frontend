@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.business
 
-import models.registration.pages.KindOfBusiness
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import pages.Page
 
-case class SettlorCompanyTypePage(index : Int) extends QuestionPage[KindOfBusiness] {
-
-  override def path: JsPath = LivingSettlors.path \ index \ toString
-
-  override def toString: String = "companyType"
-}
+case object SettlorBusinessAnswerPage extends Page

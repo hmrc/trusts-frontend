@@ -20,14 +20,15 @@ import javax.inject.Inject
 import mapping.Mapping
 import models.core.UserAnswers
 
-class SettlorsMapper @Inject()(individualSettlorsMapper: IndividualSettlorsMapper) extends Mapping[Settlors] {
+class SettlorsMapper @Inject()(individualSettlorsMapper: IndividualSettlorsMapper, businessSettlorsMapper: BusinessSettlorsMapper) extends Mapping[Settlors] {
 
    def build(userAnswers: UserAnswers): Option[Settlors] = {
      val individualSettlors = individualSettlorsMapper.build(userAnswers)
+     val businessSettlors = businessSettlorsMapper.build(userAnswers)
 
      val settlors = Settlors(
        settlor = individualSettlors,
-       settlorCompany = None
+       settlorCompany = businessSettlors
      )
 
      settlors match {
