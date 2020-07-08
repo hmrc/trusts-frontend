@@ -17,7 +17,7 @@
 package mapping.reads
 
 import models.core.pages.Address
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{JsResult, JsSuccess, Reads, __}
 
 final case class BusinessSettlor(name: String,
                                  utr: Option[String],
@@ -26,6 +26,20 @@ final case class BusinessSettlor(name: String,
                                  companyTime: Option[Boolean])
 
 object BusinessSettlor {
-  implicit val classFormat: Format[BusinessSettlor] = Json.format[BusinessSettlor]
+  import play.api.libs.functional.syntax._
+
+  implicit lazy val reads: Reads[BusinessSettlor] = {
+    ((__ \ "name").read[String] and
+      (__ \ "utr").readNullable[String] and
+      readAddress() and
+      (__ \ "companyType").readNullable[String] and
+      (__ \ "companyTime").readNullable[Boolean])(BusinessSettlor.apply _)
+  }
+
+  private def readAddress(): Reads[Option[Address]] = {
+    (__ \ "ukAddress").read[Address].map(Some(_): Option[Address]) orElse
+      (__ \ "internationalAddress").read[Address].map(Some(_): Option[Address]) orElse
+    Reads(_ => JsSuccess(None: Option[Address]))
+  }
 }
 

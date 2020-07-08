@@ -20,7 +20,6 @@ import javax.inject.Inject
 import mapping._
 import mapping.reads.BusinessSettlor
 import models.core.UserAnswers
-import models.registration.pages.PassportOrIdCardDetails
 
 class BusinessSettlorsMapper @Inject()(addressMapper: AddressMapper) extends Mapping[List[SettlorCompany]] {
 
