@@ -21,6 +21,7 @@ import models.core.pages.IndividualOrBusiness
 import models.core.pages.IndividualOrBusiness.{Business, Individual}
 import pages.QuestionPage
 import pages.entitystatus.LivingSettlorStatus
+import pages.register.settlors.living_settlor.business._
 import play.api.libs.json.JsPath
 import sections.LivingSettlors
 
@@ -35,9 +36,19 @@ final case class SettlorIndividualOrBusinessPage(index : Int) extends QuestionPa
   override def cleanup(value: Option[IndividualOrBusiness], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(Individual) =>
-        userAnswers.remove(LivingSettlorStatus(index))
+        userAnswers.remove(SettlorBusinessNamePage(index))
+          .flatMap(_.remove(SettlorBusinessUtrYesNoPage(index)))
+          .flatMap(_.remove(SettlorBusinessUtrPage(index)))
+          .flatMap(_.remove(SettlorAddressYesNoPage(index)))
+          .flatMap(_.remove(SettlorAddressUKYesNoPage(index)))
+          .flatMap(_.remove(SettlorAddressUKPage(index)))
+          .flatMap(_.remove(SettlorAddressInternationalPage(index)))
+          .flatMap(_.remove(SettlorBusinessTypePage(index)))
+          .flatMap(_.remove(SettlorBusinessTimeYesNoPage(index)))
+          .flatMap(_.remove(LivingSettlorStatus(index)))
       case Some(Business) =>
-        userAnswers.remove(SettlorIndividualDateOfBirthYesNoPage(index))
+        userAnswers.remove(SettlorIndividualNamePage(index))
+          .flatMap(_.remove(SettlorIndividualDateOfBirthYesNoPage(index)))
           .flatMap(_.remove(SettlorIndividualDateOfBirthPage(index)))
           .flatMap(_.remove(SettlorIndividualNINOYesNoPage(index)))
           .flatMap(_.remove(SettlorIndividualNINOPage(index)))

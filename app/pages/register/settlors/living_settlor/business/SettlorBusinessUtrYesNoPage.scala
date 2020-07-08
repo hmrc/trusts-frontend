@@ -31,6 +31,10 @@ final case class SettlorBusinessUtrYesNoPage(index : Int) extends QuestionPage[B
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {
+      case Some(true) => userAnswers.remove(SettlorBusinessAddressYesNoPage(index))
+        .flatMap(_.remove(SettlorBusinessAddressUKYesNoPage(index)))
+        .flatMap(_.remove(SettlorBusinessAddressInternationalPage(index)))
+        .flatMap(_.remove(SettlorBusinessAddressUKPage(index)))
       case Some(false) => userAnswers.remove(SettlorBusinessUtrPage(index))
       case _ => super.cleanup(value, userAnswers)
     }
