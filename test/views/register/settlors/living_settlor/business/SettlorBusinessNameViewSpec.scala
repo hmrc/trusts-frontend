@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package views.register.settlors.living_settlor
+package views.register.settlors.living_settlor.business
 
 import forms.living_settlor.SettlorBusinessNameFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.settlors.living_settlor.SettlorBusinessNameView
+import views.html.register.settlors.living_settlor.business.SettlorBusinessNameView
 
 class SettlorBusinessNameViewSpec extends StringViewBehaviours {
 

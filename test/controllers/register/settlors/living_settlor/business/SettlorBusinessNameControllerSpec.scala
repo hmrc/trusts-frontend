@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package controllers.register.settlors.living_settlor
+package controllers.register.settlors.living_settlor.business
 
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
 import forms.living_settlor.SettlorBusinessNameFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.settlors.living_settlor.SettlorBusinessNamePage
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
-import views.html.register.settlors.living_settlor.SettlorBusinessNameView
+import views.html.register.settlors.living_settlor.business.SettlorBusinessNameView
 
 class SettlorBusinessNameControllerSpec extends RegistrationSpecBase with IndexValidation {
 
@@ -34,7 +35,7 @@ class SettlorBusinessNameControllerSpec extends RegistrationSpecBase with IndexV
   val form = formProvider()
   val index = 0
 
-  lazy val settlorBusinesNameRoute = routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorBusinesNameRoute = businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "settlorBusinessName Controller" must {
 

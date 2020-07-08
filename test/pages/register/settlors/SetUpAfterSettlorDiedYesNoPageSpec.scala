@@ -27,6 +27,7 @@ import pages.behaviours.PageBehaviours
 import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
