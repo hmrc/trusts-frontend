@@ -17,6 +17,8 @@
 package utils
 
 import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
+import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.Status._
 import play.api.i18n.Messages
@@ -69,25 +71,25 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
       case SettlorLivingIndividualViewModel(_, name, _) => AddRow(
         name,
         messages("entity.settlor.individual"),
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
+        routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
       case SettlorBusinessTypeViewModel(_, name, _) => AddRow(
         name,
         messages("entity.settlor.business"),
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
+        businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
       case SettlorDeceasedIndividualViewModel(_, name, _) => AddRow(
         name,
         messages("entity.settlor.deceased"),
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
+        controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId).url,
         removeUrl = controllers.register.settlors.deceased_settlor.routes.RemoveSettlorController.onPageLoad(draftId).url
       )
       case DefaultSettlorViewModel(_, _) => AddRow(
         defaultName,
         messages("entity.settlor.individual"),
-        controllers.routes.FeatureNotAvailableController.onPageLoad().url,
+        routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url,
         removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
       )
     }

@@ -18,6 +18,7 @@ package utils
 
 import base.RegistrationSpecBase
 import controllers.register.settlors.living_settlor.routes
+import models.NormalMode
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.KindOfTrust.Deed
 import models.registration.pages.Status.{Completed, InProgress}
@@ -30,8 +31,11 @@ import viewmodels.AddRow
 
 class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
+  val index = 0
+  val indexOne = 1
   val settlorName = FullName("first name", Some("middle name"), "last name")
-  val featureUnavalible = "/trusts-registration/feature-not-available"
+  def individualSettlorStartRoute(index: Int) = controllers.register.settlors.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+  def deceasedSettlorStartRoute = controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
 
   def removeSettlorRoute(index : Int) =
     routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
@@ -64,8 +68,8 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.inProgress mustBe List(
-            AddRow("No name added", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0)),
-            AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(1))
+            AddRow("No name added", typeLabel = "Individual Settlor", individualSettlorStartRoute(index), removeSettlorRoute(index)),
+            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorStartRoute(indexOne), removeSettlorRoute(indexOne))
           )
           rows.complete mustBe Nil
         }
@@ -79,7 +83,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.inProgress mustBe List(
-            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute)
+            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorStartRoute, removeSettlorRoute)
           )
           rows.complete mustBe Nil
         }
@@ -99,7 +103,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("first name last name", typeLabel = "Individual Settlor", featureUnavalible, removeSettlorRoute(0))
+            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorStartRoute(index), removeSettlorRoute(index))
           )
           rows.inProgress mustBe Nil
         }
@@ -118,7 +122,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("first name last name", typeLabel = "Will Trust", featureUnavalible, removeSettlorRoute)
+            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorStartRoute, removeSettlorRoute)
           )
           rows.inProgress mustBe Nil
         }
