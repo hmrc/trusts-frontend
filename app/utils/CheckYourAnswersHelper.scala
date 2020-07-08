@@ -153,6 +153,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorBusinessUtrYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         Some(businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -163,6 +164,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorBusinessUtr.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         Some(businessRoutes.SettlorBusinessUtrController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -173,6 +175,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorBusinessAddressYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         Some(businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -183,6 +186,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorBusinessAddressUKYesNo.checkYourAnswersLabel",
         yesOrNo(x),
         Some(businessRoutes.SettlorBusinessAddressUKYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -193,7 +197,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorBusinessAddressUK.checkYourAnswersLabel",
         ukAddress(x),
         Some(businessRoutes.SettlorBusinessAddressUKController.onPageLoad(NormalMode, index, draftId).url),
-        livingSettlorName(index, userAnswers),
+        businessSettlorName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -204,7 +208,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorBusinessAddressInternational.checkYourAnswersLabel",
         internationalAddress(x, countryOptions),
         Some(businessRoutes.SettlorBusinessAddressInternationalController.onPageLoad(NormalMode, index, draftId).url),
-        livingSettlorName(index, userAnswers),
+        businessSettlorName(index, userAnswers),
         canEdit = canEdit
       )
   }
@@ -215,6 +219,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         "settlorBusinessType.checkYourAnswersLabel",
         HtmlFormat.escape(messages(s"kindOfBusiness.$x")),
         Some(businessRoutes.SettlorBusinessTypeController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
         canEdit = canEdit
       )
   }
