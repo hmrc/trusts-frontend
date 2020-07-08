@@ -27,6 +27,7 @@ import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import scala.concurrent.{ExecutionContext, Future}
 
 class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
+  private val mainSection = "main"
   private val registrationSection = "registration"
   private val statusSection = "status"
   private val answerSectionsSection = "answerSections"
@@ -40,17 +41,11 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
   def setDraftMain(draftId : String, draftData: JsValue, inProgress: Boolean, reference: Option[String])
                      (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
     val submissionDraftData = SubmissionDraftData(draftData, reference, Some(inProgress))
-    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/MAIN", Json.toJson(submissionDraftData))
-  }
-
-  def setDraftSection(draftId : String, section: String, draftData: JsValue)
-                     (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
-    val submissionDraftData = SubmissionDraftData(draftData, None, None)
-    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/$section", Json.toJson(submissionDraftData))
+    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/$mainSection", Json.toJson(submissionDraftData))
   }
 
   def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] =
-    getDraftSection(draftId, "MAIN")
+    getDraftSection(draftId, mainSection)
 
   def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[List[SubmissionDraftId]] = {
     http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")

@@ -48,7 +48,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val testSection = "section"
   private val submissionsUrl = s"/trusts/register/submission-drafts"
   private val submissionUrl = s"$submissionsUrl/$testDraftId/$testSection"
-  private val mainUrl = s"$submissionsUrl/$testDraftId/MAIN"
+  private val mainUrl = s"$submissionsUrl/$testDraftId/main"
   private val deleteUrl = s"$submissionsUrl/$testDraftId"
 
   "SubmissionDraftConnector" - {
@@ -113,31 +113,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result: SubmissionDraftResponse = Await.result(connector.getDraftMain(testDraftId), Duration.Inf)
         result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
         result.data mustBe draftData
-      }
-      "can be set for section" in {
-
-        val sectionData = Json.parse(
-          """
-            |{
-            | "field1": "value1",
-            | "field2": "value2"
-            |}
-            |""".stripMargin)
-
-        val submissionDraftData = SubmissionDraftData(sectionData, None, None)
-
-        server.stubFor(
-          post(urlEqualTo(submissionUrl))
-            .withHeader(CONTENT_TYPE, containing("application/json"))
-            .withRequestBody(equalTo(Json.toJson(submissionDraftData).toString()))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-            )
-        )
-
-        val result = Await.result(connector.setDraftSection(testDraftId, testSection, sectionData), Duration.Inf)
-        result.status mustBe Status.OK
       }
       "can have list of ids retrieved" in {
 
