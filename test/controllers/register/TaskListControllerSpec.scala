@@ -108,15 +108,15 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[TaskListView]
-
           status(result) mustEqual OK
 
           for {
             taskList <- sections(answers)
             isTaskListComplete <- isTaskListComplete(answers)
           } yield {
-            view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
+            val view = application.injector.instanceOf[TaskListView]
+            contentAsString(result) mustEqual
+              view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
           }
 
           application.stop()
@@ -204,14 +204,15 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[TaskListView]
-
         status(result) mustEqual OK
+
         for {
           taskList <- sections(answers)
           isTaskListComplete <- isTaskListComplete(answers)
         } yield {
-          view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
+          val view = application.injector.instanceOf[TaskListView]
+          contentAsString(result) mustEqual
+            view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
         }
 
         application.stop()
