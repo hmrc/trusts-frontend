@@ -18,7 +18,6 @@ package views.register.asset.other
 
 import views.behaviours.ViewBehaviours
 import views.html.register.asset.other.OtherAssetAnswersView
-import views.html.register.beneficiaries.IndividualBenficiaryAnswersView
 
 class OtherAssetAnswersViewSpec extends ViewBehaviours {
 
