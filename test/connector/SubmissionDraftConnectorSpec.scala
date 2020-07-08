@@ -20,6 +20,8 @@ import java.time.LocalDateTime
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
+import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
+import models.registration.pages.Status.Completed
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
@@ -47,9 +49,10 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val testDraftId = "draftId"
   private val testSection = "section"
   private val submissionsUrl = s"/trusts/register/submission-drafts"
-  private val submissionUrl = s"$submissionsUrl/$testDraftId/$testSection"
   private val mainUrl = s"$submissionsUrl/$testDraftId/main"
-  private val deleteUrl = s"$submissionsUrl/$testDraftId"
+  private val statusUrl = s"$submissionsUrl/$testDraftId/status"
+  private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
+  private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
 
   "SubmissionDraftConnector" - {
 
@@ -147,6 +150,83 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44), None)
         )
       }
+      "can retrieve status for a draft" in {
+
+        val allStatus = AllStatus(beneficiaries = Some(Completed))
+        val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allStatus), None)
+
+        server.stubFor(
+          get(urlEqualTo(statusUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val result = Await.result(connector.getStatus(testDraftId), Duration.Inf)
+        result mustEqual allStatus
+      }
+
+      "can retrieve registrations for a draft" in {
+
+        val resultJson = Json.obj(
+          "path1" -> "value1",
+          "path2" -> "value2"
+        )
+
+        val response = SubmissionDraftResponse(LocalDateTime.now(), resultJson, None)
+
+
+        server.stubFor(
+          get(urlEqualTo(registrationUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val result = Await.result(connector.getRegistrationPieces(testDraftId), Duration.Inf)
+        result mustEqual resultJson
+      }
+
+      "can retrieve answer sections for a draft" in {
+
+        val allAnswerSections = AllAnswerSections(
+          beneficiaries = Some(
+            List(
+              AnswerSection(
+                Some("headingKey1"),
+                List(
+                  AnswerRow("label1", "answer1", "labelArg1")
+                ),
+                Some("sectionKey1")),
+              AnswerSection(
+                Some("headingKey2"),
+                List(
+                  AnswerRow("label2", "answer2", "labelArg2")
+                ),
+                Some("sectionKey2"))
+            )
+          )
+        )
+
+        val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allAnswerSections), None)
+
+        server.stubFor(
+          get(urlEqualTo(answerSectionsUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val result = Await.result(connector.getAnswerSections(testDraftId), Duration.Inf)
+        result mustEqual allAnswerSections
+      }
+
     }
   }
 }

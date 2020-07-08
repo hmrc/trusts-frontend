@@ -16,6 +16,8 @@
 
 package repositories
 
+import java.time.LocalDateTime
+
 import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
@@ -26,11 +28,12 @@ import org.mockito.Mockito.{verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
+import play.api.http
 import play.api.libs.json.Json
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TrustsDateFormatter
-import viewmodels.{AnswerRow, AnswerSection, RegistrationAnswerSections}
+import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -41,12 +44,95 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
   private def createRepository(mockConnector: SubmissionDraftConnector) = {
     val mockConfig = mock[FrontendAppConfig]
-    when(mockConfig.ttlInSeconds).thenReturn(1200)
+    when(mockConfig.ttlInSeconds).thenReturn(60*60*24*3)   // 3 days
 
     new DefaultRegistrationsRepository(new TrustsDateFormatter(mockConfig), mockConnector)
   }
 
   "RegistrationRepository" when {
+    "getting user answers" must {
+      "read answers from main section" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId")
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val response = SubmissionDraftResponse(LocalDateTime.now, Json.toJson(userAnswers), None)
+
+        when(mockConnector.getDraftMain(any())(any(), any())).thenReturn(Future.successful(response))
+
+        val result = Await.result(repository.get(draftId), Duration.Inf)
+
+        result mustBe Some(userAnswers)
+        verify(mockConnector).getDraftMain(draftId)(hc, executionContext)
+      }
+    }
+
+    "listing drafts" must {
+      "transforms received from connector" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId")
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val drafts = List(
+          SubmissionDraftId(
+            "draft1",
+            LocalDateTime.of(2012, 2, 1, 12, 30, 0),
+            Some("reference1")
+          ),
+          SubmissionDraftId(
+            "draft2",
+            LocalDateTime.of(2011, 1, 2, 9, 42, 0),
+            Some("reference2")
+          )
+        )
+
+        val response = SubmissionDraftResponse(LocalDateTime.now, Json.toJson(userAnswers), None)
+
+        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+
+        val result = Await.result(repository.listDrafts(), Duration.Inf)
+
+        result mustBe List(
+          DraftRegistration("draft1", "reference1", "4 February 2012"),
+          DraftRegistration("draft2", "reference2", "5 January 2011")
+        )
+        verify(mockConnector).getCurrentDraftIds()(hc, executionContext)
+      }
+    }
+
+    "setting user answers" must {
+      "write answers to main section" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId")
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
+
+        val result = Await.result(repository.set(userAnswers), Duration.Inf)
+
+        result mustBe true
+        verify(mockConnector).setDraftMain(draftId, Json.toJson(userAnswers), inProgress = true, None)(hc, executionContext)
+      }
+    }
+
 
     "adding a registration section" must {
 
