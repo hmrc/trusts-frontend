@@ -18,6 +18,7 @@ package navigation.registration
 
 import config.FrontendAppConfig
 import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
@@ -27,6 +28,7 @@ import models.registration.pages.KindOfTrust._
 import navigation.Navigator
 import pages._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business._
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.mvc.Call
@@ -57,7 +59,15 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorIndividualIDCardPage(index) => _ => _ => routes.SettlorIndividualAnswerController.onPageLoad(index, draftId)
     case SettlorIndividualOrBusinessPage(index) => _ => settlorIndividualOrBusinessPage(index, draftId)
     case SettlorIndividualAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
-    case SettlorBusinessNamePage(index)  =>_ => _ => routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessNamePage(index)  =>_ => _ => businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessUtrYesNoPage(index) => _ => settlorBusinessUtrYesNoPage(draftId, index)
+    case SettlorBusinessUtrPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
+    case SettlorBusinessAddressYesNoPage(index) => _ => settlorBusinessAddressYesNoPage(draftId, index)
+    case SettlorBusinessAddressUKYesNoPage(index) => _ => settlorBusinessAddressUKYesNoPage(draftId, index)
+    case SettlorBusinessAddressUKPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
+    case SettlorBusinessAddressInternationalPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
+    case SettlorBusinessTypePage(index) => _=> _ => businessRoutes.SettlorBusinessTimeYesNoController.onPageLoad(NormalMode, index, draftId)
+    case SettlorBusinessTimeYesNoPage(index) => _ => _ => businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage => _ => addASettlorYesNoRoute(draftId)
   }
@@ -120,7 +130,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
       case Some(HeritageMaintenanceFund) =>
         routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case Some(Employees) =>
-        routes.KindOfTrustController.onPageLoad(NormalMode, draftId)
+        routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
   }
@@ -167,12 +177,40 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
       case None => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
 
+  private def settlorBusinessUtrYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorBusinessUtrYesNoPage(index)) match {
+      case Some(true) => businessRoutes.SettlorBusinessUtrController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(NormalMode, index, draftId)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+
+  private def settlorBusinessAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorBusinessAddressYesNoPage(index)) match {
+      case Some(true) => businessRoutes.SettlorBusinessAddressUKYesNoController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)(answers)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+
+  private def settlorBusinessAddressUKYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(SettlorBusinessAddressUKYesNoPage(index)) match {
+      case Some(true) => businessRoutes.SettlorBusinessAddressUKController.onPageLoad(NormalMode, index, draftId)
+      case Some(false) => businessRoutes.SettlorBusinessAddressInternationalController.onPageLoad(NormalMode, index, draftId)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+
+  private def displayAdditionalQuestionsForEmploymentTrusts(draftId: String, index: Int)(answers: UserAnswers) =
+    answers.get(KindOfTrustPage) match {
+      case Some(Employees) => businessRoutes.SettlorBusinessTypeController.onPageLoad(NormalMode, index, draftId)
+      case Some(_) => businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, draftId)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
+
   private def settlorIndividualOrBusinessPage(index: Int, draftId: String)(answers: UserAnswers) =
     answers.get(SettlorIndividualOrBusinessPage(index)) match {
       case Some(Individual) => routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId)
       case Some(Business) =>
         if(config.livingSettlorBusinessEnabled) {
-          routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
+          controllers.register.settlors.living_settlor.business.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId)
         } else {
           routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, draftId)
         }

@@ -31,6 +31,7 @@ import pages.register.beneficiaries.individual._
 import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details._

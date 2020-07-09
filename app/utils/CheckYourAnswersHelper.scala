@@ -17,6 +17,7 @@
 package utils
 
 import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
 import javax.inject.Inject
 import mapping.reads._
 import models.NormalMode
@@ -35,6 +36,7 @@ import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescri
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business._
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.trust_details._
 import pages.register.trustees._
@@ -52,7 +54,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
                                        draftId: String,
                                        canEdit: Boolean)
                                       (implicit messages: Messages) {
-
 
   def partnershipStartDate(index: Int): Option[AnswerRow] = userAnswers.get(PartnershipStartDatePage(index)) map {
     x =>
@@ -73,7 +74,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         canEdit = canEdit
       )
   }
-
 
   def assetAddressUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(BusinessAddressUkYesNoPage(index)) map {
     x =>
@@ -142,7 +142,94 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       AnswerRow(
         "settlorBusinessName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
-        Some(routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url),
+        Some(businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessUtrYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessUtrYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessUtrYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(businessRoutes.SettlorBusinessUtrYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessUtr(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessUtrPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessUtr.checkYourAnswersLabel",
+        HtmlFormat.escape(x),
+        Some(businessRoutes.SettlorBusinessUtrController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessAddressYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessAddressYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(businessRoutes.SettlorBusinessAddressYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessAddressUkYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessAddressUKYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessAddressUKYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(businessRoutes.SettlorBusinessAddressUKYesNoController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessAddressUk(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessAddressUKPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessAddressUK.checkYourAnswersLabel",
+        ukAddress(x),
+        Some(businessRoutes.SettlorBusinessAddressUKController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessAddressInternational(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessAddressInternationalPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessAddressInternational.checkYourAnswersLabel",
+        internationalAddress(x, countryOptions),
+        Some(businessRoutes.SettlorBusinessAddressInternationalController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessType(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessTypePage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessType.checkYourAnswersLabel",
+        HtmlFormat.escape(messages(s"kindOfBusiness.$x")),
+        Some(businessRoutes.SettlorBusinessTypeController.onPageLoad(NormalMode, index, draftId).url),
+        businessSettlorName(index, userAnswers),
+        canEdit = canEdit
+      )
+  }
+
+  def settlorBusinessTimeYesNo(index: Int): Option[AnswerRow] = userAnswers.get(SettlorBusinessTimeYesNoPage(index)) map {
+    x =>
+      AnswerRow(
+        "settlorBusinessTimeYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(businessRoutes.SettlorBusinessTimeYesNoController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }
@@ -413,7 +500,16 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
           settlorIndividualPassportYesNo(index),
           settlorIndividualPassport(index),
           settlorIndividualIDCardYesNo(index),
-          settlorIndividualIDCard(index)
+          settlorIndividualIDCard(index),
+          settlorBusinessName(index),
+          settlorBusinessUtrYesNo(index),
+          settlorBusinessUtr(index),
+          settlorBusinessAddressYesNo(index),
+          settlorBusinessAddressUkYesNo(index),
+          settlorBusinessAddressUk(index),
+          settlorBusinessAddressInternational(index),
+          settlorBusinessType(index),
+          settlorBusinessTimeYesNo(index)
         ).flatten
 
         val sectionKey = if (index == 0) Some(messages("answerPage.section.settlors.heading")) else None
@@ -471,7 +567,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         )
     }
   }
-
 
   def individualBeneficiaries: Option[Seq[AnswerSection]] = {
     for {
@@ -1302,7 +1397,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-
   def trusteeFullName(index: Int, messagePrefix: String): Option[AnswerRow] = userAnswers.get(TrusteesNamePage(index)) map {
     x =>
       AnswerRow(
@@ -1396,7 +1490,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         canEdit = canEdit
       )
   }
-
 
   def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {
     x =>
