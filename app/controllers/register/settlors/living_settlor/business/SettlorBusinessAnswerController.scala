@@ -69,6 +69,8 @@ class SettlorBusinessAnswerController @Inject()(
           Seq(
             answers.setUpAfterSettlorDied,
             answers.kindOfTrust,
+            answers.efrbsYesNo,
+            answers.efrbsStartDate,
             answers.deedOfVariation,
             answers.holdoverReliefYesNo,
             answers.settlorIndividualOrBusiness(index),
