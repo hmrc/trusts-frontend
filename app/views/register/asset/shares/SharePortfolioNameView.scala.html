@@ -38,7 +38,9 @@
           field = form("value"),
           label = messages("sharePortfolioName.heading"),
           labelClass=Some("heading-large"),
-          labelAsHeading = true
+          labelAsHeading = true,
+          autocomplete = Some("name")
+
         )
 
         @components.submit_button()
