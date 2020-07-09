@@ -242,6 +242,26 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
+  def efrbsYesNo: Option[AnswerRow] = userAnswers.get(EfrbsYesNoPage) map {
+    x =>
+      AnswerRow(
+        "employerFinancedRbsYesNo.checkYourAnswersLabel",
+        yesOrNo(x),
+        Some(routes.EmployerFinancedRbsYesNoController.onPageLoad(NormalMode, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
+  def efrbsStartDate: Option[AnswerRow] = userAnswers.get(EfrbsStartDatePage) map {
+    x =>
+      AnswerRow(
+        "employerFinancedRbsStartDate.checkYourAnswersLabel",
+        HtmlFormat.escape(x.format(dateFormatter)),
+        Some(routes.EmployerFinancedRbsStartDateController.onPageLoad(NormalMode, draftId).url),
+        canEdit = canEdit
+      )
+  }
+
   def deedOfVariation: Option[AnswerRow] = userAnswers.get(HowDeedOfVariationCreatedPage) map {
     x =>
       AnswerRow(

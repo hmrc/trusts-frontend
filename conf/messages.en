@@ -1325,6 +1325,22 @@ kindOfTrust.Repair = A trust for the repair of historic buildings
 kindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
 kindOfTrust.error.required = Select what kind of trust the settlor created
 
+employerFinancedRbsYesNo.title = Is this an employer-financed retirement benefits scheme?
+employerFinancedRbsYesNo.heading = Is this an employer-financed retirement benefits scheme?
+employerFinancedRbsYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
+employerFinancedRbsYesNo.error.required = Select yes if this is an employer-financed retirement benefits scheme
+
+employerFinancedRbsStartDate.title = When did the employer-financed retirement benefits scheme start?
+employerFinancedRbsStartDate.heading = When did the employer-financed retirement benefits scheme start?
+employerFinancedRbsStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
+employerFinancedRbsStartDate.hint = For example, 31 3 1980
+employerFinancedRbsStartDate.error.required.all = Enter the employer-financed retirement benefits scheme start date
+employerFinancedRbsStartDate.error.required.two = The employer-financed retirement benefits scheme start date must include {0} and {1}
+employerFinancedRbsStartDate.error.required = The employer-financed retirement benefits scheme start date must include {0}
+employerFinancedRbsStartDate.error.invalid = Enter a real date
+employerFinancedRbsStartDate.error.future = Employer-financed retirement benefits scheme start date must be today or in the past
+employerFinancedRbsStartDate.error.past = Employer-financed retirement benefits scheme start date must be after 31 December 1499
+
 howDeedOfVariationCreated.title = How was the deed of variation created?
 howDeedOfVariationCreated.heading = How was the deed of variation created?
 howDeedOfVariationCreated.ReplacedWill = to replace a will trust

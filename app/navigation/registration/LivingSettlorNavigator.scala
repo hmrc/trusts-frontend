@@ -40,6 +40,8 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case SetUpAfterSettlorDiedYesNoPage => _ => setUpAfterSettlorDied(draftId)
     case KindOfTrustPage => _ => kindOfTrustPage(draftId)
+    case EfrbsYesNoPage => _ => employerFinancedRbsYesNoPage(draftId)
+    case EfrbsStartDatePage => _ => _ => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
     case AddAnotherSettlorYesNoPage => _ => _ => controllers.register.settlors.living_settlor.routes.SettlorIndividualAnswerController.onPageLoad(0, draftId)
     case SetUpInAdditionToWillTrustYesNoPage => _ => setInAdditionToWillTrustRoute(draftId)
     case HowDeedOfVariationCreatedPage => _ => _ => controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
@@ -130,10 +132,17 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
       case Some(HeritageMaintenanceFund) =>
         routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
       case Some(Employees) =>
-        routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+        routes.EmployerFinancedRbsYesNoController.onPageLoad(NormalMode, draftId)
       case _ => controllers.register.routes.SessionExpiredController.onPageLoad()
     }
   }
+
+  private def employerFinancedRbsYesNoPage(draftId: String)(answers: UserAnswers) =
+    answers.get(EfrbsYesNoPage) match {
+      case Some(true) => routes.EmployerFinancedRbsStartDateController.onPageLoad(NormalMode, draftId)
+      case Some(false) => routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+      case None => controllers.register.routes.SessionExpiredController.onPageLoad()
+    }
 
   private def settlorIndividualDateOfBirthYesNoPage(draftId: String, index: Int)(answers: UserAnswers) =
     answers.get(SettlorIndividualDateOfBirthYesNoPage(index)) match {

@@ -34,12 +34,13 @@ class SettlorBusinessTypeControllerSpec extends RegistrationSpecBase with IndexV
   val index = 0
 
   lazy val settlorBusinessTypeRoute = routes.SettlorBusinessTypeController.onPageLoad(NormalMode, index, fakeDraftId).url
+  lazy val settlorBusinessTimeYesNoRoute = routes.SettlorBusinessTimeYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   val formProvider = new SettlorBusinessTypeFormProvider()
   val form = formProvider()
   val name = "Business name"
   
-  "KindOfTrust Controller" must {
+  "SettlorBusinessType Controller" must {
 
     "return OK and the correct view for a GET" in {
 
@@ -106,7 +107,6 @@ class SettlorBusinessTypeControllerSpec extends RegistrationSpecBase with IndexV
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers = emptyUserAnswers.set(SettlorBusinessNamePage(index), name).success.value
-        .set(KindOfTrustPage, Employees).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

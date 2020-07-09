@@ -18,7 +18,7 @@ package pages.register.settlors.living_settlor.trust_type
 
 import models.core.UserAnswers
 import models.registration.pages.KindOfTrust
-import models.registration.pages.KindOfTrust.Intervivos
+import models.registration.pages.KindOfTrust.{Employees, Intervivos}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import sections.Settlors
@@ -34,9 +34,14 @@ case object KindOfTrustPage extends QuestionPage[KindOfTrust] {
   override def cleanup(value: Option[KindOfTrust], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
       case Some(Intervivos) =>
-        super.cleanup(value, userAnswers)
+        userAnswers.remove(EfrbsYesNoPage)
+          .flatMap(_.remove(EfrbsStartDatePage))
+      case Some(Employees) =>
+        userAnswers.remove(HoldoverReliefYesNoPage)
       case _ =>
         userAnswers.remove(HoldoverReliefYesNoPage)
+        .flatMap(_.remove(EfrbsYesNoPage))
+        .flatMap(_.remove(EfrbsStartDatePage))
     }
   }
 }
