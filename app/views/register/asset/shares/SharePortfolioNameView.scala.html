@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("sharePortfolioName.title")}"
     ) {
 
-    @formHelper(action = SharePortfolioNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SharePortfolioNameController.onSubmit(mode, index, draftId), 'autoComplete -> "on") {
 
         @components.back_link()
 
