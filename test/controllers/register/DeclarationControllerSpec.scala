@@ -19,11 +19,13 @@ package controllers.register
 import base.RegistrationSpecBase
 import forms.DeclarationFormProvider
 import models.NormalMode
+import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
 import models.registration.pages.RegistrationStatus.InProgress
+import models.registration.pages.Status.Completed
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when, _}
 import pages.register.DeclarationPage
@@ -51,6 +53,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
   before {
     reset(mockSubmissionService)
   }
+
+  when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
 
   "Declaration Controller" must {
 

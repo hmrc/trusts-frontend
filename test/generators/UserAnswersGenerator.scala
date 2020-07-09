@@ -28,8 +28,6 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.individual._
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
 import pages.register.settlors._
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
@@ -85,26 +83,12 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(ShareClassPage, JsValue)] ::
     arbitrary[(PropertyOrLandUKAddressPage, JsValue)] ::
     arbitrary[(DeclarationPage.type, JsValue)] ::
-    arbitrary[(WhatTypeOfBeneficiaryPage.type, JsValue)] ::
     arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::
     arbitrary[(AgentUKAddressPage.type, JsValue)] ::
     arbitrary[(AgentAddressYesNoPage.type, JsValue)] ::
-    arbitrary[(ClassBeneficiaryDescriptionPage, JsValue)] ::
     arbitrary[(AgentNamePage.type, JsValue)] ::
-    arbitrary[(AddABeneficiaryPage.type, JsValue)] ::
     arbitrary[(PropertyOrLandDescriptionPage, JsValue)] ::
     arbitrary[(PropertyOrLandTotalValuePage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryVulnerableYesNoPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryAddressUKPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryAddressYesNoPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryAddressUKYesNoPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryNationalInsuranceNumberPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryNationalInsuranceYesNoPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryIncomePage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryIncomeYesNoPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryDateOfBirthPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryDateOfBirthYesNoPage, JsValue)] ::
-    arbitrary[(IndividualBeneficiaryNamePage, JsValue)] ::
     arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] ::
     arbitrary[(SetUpAfterSettlorDiedYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorsUKAddressPage.type, JsValue)] ::

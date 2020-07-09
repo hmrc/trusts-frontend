@@ -19,14 +19,20 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.registration.{Registration, RegistrationMapper}
+import mapping.registration.RegistrationMapper
+import models.RegistrationSubmission.AllStatus
+import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
+import models.registration.pages.Status
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import play.api.libs.json.JsValue
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
+import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -37,13 +43,37 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
-  val mockConnector : TrustConnector = mock[TrustConnector]
+  private val mockConnector : TrustConnector = mock[TrustConnector]
 
-  val auditService : AuditService = injector.instanceOf[FakeAuditService]
+  private val stubbedRegistrationsRepository = new RegistrationsRepository {
+    override def get(draftId: String)
+                    (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = Future.successful(None)
 
-  val submissionService = new DefaultSubmissionService(registrationMapper,mockConnector,auditService)
+    override def set(userAnswers: UserAnswers)
+                    (implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
 
-  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+    override def listDrafts()
+                           (implicit hc: HeaderCarrier): Future[List[DraftRegistration]] = Future.successful(List.empty)
+
+    override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
+                                             (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
+
+    override def getAllStatus(draftId: String)
+                             (implicit hc: HeaderCarrier) : Future[AllStatus] = Future.successful(AllStatus())
+
+    override def getAnswerSections(draftId: String)
+                                  (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
+  }
+
+  private val auditService : AuditService = injector.instanceOf[FakeAuditService]
+
+  private val submissionService = new DefaultSubmissionService(
+    registrationMapper,
+    mockConnector,
+    auditService,
+    stubbedRegistrationsRepository)
+
+  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   "SubmissionService" -  {
 
@@ -65,7 +95,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
+        when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
@@ -76,7 +106,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
 
-        when(mockConnector.register(any[Registration], any())(any[HeaderCarrier], any())).
+        when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
@@ -99,8 +129,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
         val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-        val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
         val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
         val userAnswers = TestUserAnswers.withDeclaration(asset)
 
@@ -110,17 +139,13 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         }
       }
     }
-
-
-
   }
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val userAnswers = TestUserAnswers.withDeclaration(asset)
 

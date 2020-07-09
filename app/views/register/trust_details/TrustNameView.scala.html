@@ -29,7 +29,7 @@
     title = s"${errorPrefix(form)} ${messages("trustName.title")}"
     ) {
 
-    @formHelper(action = TrustNameController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = TrustNameController.onSubmit(mode, draftId), 'autoComplete -> "on") {
 
         @components.back_link()
 
@@ -41,7 +41,8 @@
           labelAsHeading = true,
           hint = if(hintTextShown) Some(messages("trustName.hint.hasUtr")) else Some(messages("trustName.hint.noUtr")),
           readerHint = if(hintTextShown) Some(messages(s"trustName.hint.hasUtr.reader")) else None,
-          labelClass = Some("heading-large")
+          labelClass = Some("heading-large"),
+          autocomplete = Some("name")
         )
 
         @components.submit_button()

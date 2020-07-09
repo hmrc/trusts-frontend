@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("shareCompanyName.title")}"
     ) {
 
-    @formHelper(action = ShareCompanyNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = ShareCompanyNameController.onSubmit(mode, index, draftId), 'autoComplete -> "on") {
 
         @components.back_link()
 
@@ -38,7 +38,8 @@
             field = form("value"),
             label = messages("shareCompanyName.heading"),
             labelClass=Some("heading-large"),
-            labelAsHeading = true
+            labelAsHeading = true,
+            autocomplete = Some("name")
         )
 
         @components.submit_button()

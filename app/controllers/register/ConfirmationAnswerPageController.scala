@@ -23,12 +23,14 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import javax.inject.Inject
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.MessagesControllerComponents
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.DateFormatter
 import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
 import views.html.register.ConfirmationAnswerPageView
+
+import scala.concurrent.ExecutionContext
 
 
 class ConfirmationAnswerPageController @Inject()(
@@ -42,23 +44,26 @@ class ConfirmationAnswerPageController @Inject()(
                                                   registrationComplete : TaskListCompleteActionRefiner,
                                                   printUserAnswersHelper: PrintUserAnswersHelper,
                                                   dateFormatter: DateFormatter
-                                            ) extends FrontendBaseController with I18nSupport {
+                                            )(implicit ec: ExecutionContext)
+  extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =
     identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad(draftId: String) = actions(draftId) {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      val sections = printUserAnswersHelper.summary(draftId, request.userAnswers)
+      printUserAnswersHelper.summary(draftId, request.userAnswers).map {
+        sections =>
+          val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
 
-      val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
+          val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
 
-      val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
+          val declarationSent : String = dateFormatter.formatDate(trnDateTime)
 
-      val declarationSent : String = dateFormatter.formatDate(trnDateTime)
+          Ok(view(sections, trn, declarationSent))
+      }
 
-      Ok(view(sections, trn, declarationSent))
 
   }
 

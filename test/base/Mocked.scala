@@ -16,6 +16,8 @@
 
 package base
 
+import models.RegistrationSubmission.AllStatus
+import models.registration.pages.Status.Completed
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -24,6 +26,7 @@ import play.api.mvc.AnyContent
 import repositories.RegistrationsRepository
 import services.{CreateDraftRegistrationService, SubmissionService}
 import utils.TestUserAnswers
+import viewmodels.RegistrationAnswerSections
 
 import scala.concurrent.Future
 
@@ -40,5 +43,7 @@ trait Mocked extends MockitoSugar {
   when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]])(any()))
       .thenReturn(Future.successful(TestUserAnswers.draftId))
 
-  when(registrationsRepository.set(any())).thenReturn(Future.successful(true))
+  when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
+  when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+  when(registrationsRepository.getAnswerSections(any())(any())).thenReturn(Future.successful(RegistrationAnswerSections()))
 }

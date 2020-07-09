@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("settlorBusinessName.title")}"
     ) {
 
-    @formHelper(action = SettlorBusinessNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SettlorBusinessNameController.onSubmit(mode, index, draftId), 'autoComplete -> "on") {
 
         @components.back_link()
 
@@ -39,7 +39,8 @@
         @components.input_text(
           field = form("value"),
           label = messages("settlorBusinessName.heading"),
-          labelClass = Some("visually-hidden")
+          labelClass = Some("visually-hidden"),
+          autocomplete = Some("name")
         )
 
         @components.submit_button()

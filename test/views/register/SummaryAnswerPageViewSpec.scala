@@ -29,15 +29,13 @@ import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.individual._
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.trust_details._
 import pages.register.trustees._
 import pages.register.trustees.individual._
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
-import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
 import views.behaviours.ViewBehaviours
 import views.html.register.SummaryAnswerPageView
@@ -57,23 +55,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(EstablishedUnderScotsLawPage, true).success.value
         .set(TrustResidentOffshorePage, false).success.value
         .set(TrustDetailsStatus, Completed).success.value
-
-        .set(IndividualBeneficiaryNamePage(index), FullName("BenFirst", None, "BenLast")).success.value
-        .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
-        .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
-        .set(IndividualBeneficiaryIncomeYesNoPage(index), true).success.value
-        .set(IndividualBeneficiaryIncomePage(index), "100").success.value
-        .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
-        .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
-        .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
-        .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
-        .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
-        .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
-        .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
-
-        .set(ClassBeneficiaryDescriptionPage(index), "Class of beneficary description").success.value
-        .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
-        .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
         .set(IsThisLeadTrusteePage(index), true).success.value
         .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
@@ -130,87 +111,99 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))
 
-    val countryOptions = injector.instanceOf[CountryOptions]
+    val app = applicationBuilder().build()
 
-    val sections = new PrintUserAnswersHelper(countryOptions).summary(fakeDraftId, userAnswers)
+    val helper = app.injector.instanceOf[PrintUserAnswersHelper]
 
-    val applyOrganisationView = view.apply(sections, isAgent = false, "")(fakeRequest, messages)
-    val applyAgentView = view.apply(sections, isAgent = true, "agentClientReference")(fakeRequest, messages)
+    implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    behave like normalPage(applyOrganisationView, "summaryAnswerPage", "paragraph1", "paragraph2")
+    val summary = helper.summary(fakeDraftId, userAnswers)
 
-    val doc = asDocument(applyOrganisationView)
-    val agentDoc = asDocument(applyAgentView)
+    val orgDoc = {
+      summary.map {
+        sections =>
+          val applyOrganisationView = view.apply(sections, isAgent = false, "")(fakeRequest, messages)
+
+          behave like normalPage(applyOrganisationView, "summaryAnswerPage", "paragraph1", "paragraph2")
+
+          asDocument(applyOrganisationView)
+      }
+    }
+
+    val agentDoc = {
+      summary.map {
+        sections =>
+          val applyAgentView = view.apply(sections, isAgent = true, "agentClientReference")(fakeRequest, messages)
+
+          asDocument(applyAgentView)
+      }
+    }
 
     "assert header content for Agent user" in {
-      assertContainsText(agentDoc, messages("answerPage.agentClientRef", "agentClientReference"))
+      agentDoc.map(assertContainsText(_, messages("answerPage.agentClientRef", "agentClientReference")))
     }
 
     "assert correct number of headers and subheaders for Agent user" in {
-      val wrapper = agentDoc.getElementById("wrapper")
-      val headers = wrapper.getElementsByTag("h2")
-      val subHeaders = wrapper.getElementsByTag("h3")
+      agentDoc.map {
+        doc =>
+          val wrapper = doc.getElementById("wrapper")
+          val headers = wrapper.getElementsByTag("h2")
+          val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 5
-      subHeaders.size mustBe 3
+          headers.size mustBe 5
+          subHeaders.size mustBe 3
+      }
     }
 
     "assert correct number of headers and subheaders for Organisation user" in {
-      val wrapper = doc.getElementById("wrapper")
-      val headers = wrapper.getElementsByTag("h2")
-      val subHeaders = wrapper.getElementsByTag("h3")
+      orgDoc.map {
+        doc =>
+          val wrapper = doc.getElementById("wrapper")
+          val headers = wrapper.getElementsByTag("h2")
+          val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 4
-      subHeaders.size mustBe 3
+          headers.size mustBe 4
+          subHeaders.size mustBe 3
+      }
     }
 
     "assert question labels for Trust details" in {
-      assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
-      assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
-    }
-
-    "assert question labels for Individual Beneficiaries" in {
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryName.checkYourAnswersLabel"), benName)
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel", benName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryDateOfBirth.checkYourAnswersLabel", benName), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryIncomeYesNo.checkYourAnswersLabel", benName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryIncome.checkYourAnswersLabel", benName), "100%")
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel", benName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel", benName), "AB 12 34 56 C")
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressYesNo.checkYourAnswersLabel", benName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel", benName), yes)
-      assertContainsText(doc, messages("individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel", benName))
-      assertContainsQuestionAnswerPair(doc, messages("individualBeneficiaryAddressUK.checkYourAnswersLabel", benName), "Line1 Line2 NE62RT")
-    }
-
-    "assert question labels for Class Of Beneficiaries" in {
-      assertContainsQuestionAnswerPair(doc, messages("classBeneficiaryDescription.checkYourAnswersLabel"), "Class of beneficary description")
+      orgDoc.map {
+        doc =>
+          assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
+          assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
+      }
     }
 
     "assert question labels for Trustees" in {
-      assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
-      assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
-      assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
-      assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
+      orgDoc.map {
+        doc =>
+          assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
+          assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
+          assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
+          assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
+          assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
+          assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
+          assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
+          assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
+      }
     }
 
     "assert question labels for Settlors" in {
-      assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
-      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
-      assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
-      assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
+      orgDoc.map {
+        doc =>
+          assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), yes)
+          assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
+          assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
+          assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
+          assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
+          assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
+          assertContainsQuestionAnswerPair(doc, messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), yes)
+          assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
+          assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
+          assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
+          assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
+      }
     }
-
   }
 }

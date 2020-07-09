@@ -25,11 +25,9 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.individual._
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage, WhatTypeOfBeneficiaryPage}
-import pages.register.settlors.deceased_settlor.{RemoveSettlorPage => RemoveDeceasedSettlorPage, _}
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
+import pages.register.settlors.deceased_settlor.{RemoveSettlorPage => RemoveDeceasedSettlorPage, _}
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details._
@@ -165,14 +163,8 @@ trait PageGenerators {
   implicit lazy val arbitraryDeclarationPage: Arbitrary[DeclarationPage.type] =
     Arbitrary(register.DeclarationPage)
 
-  implicit lazy val arbitraryWhatTypeOfBeneficiaryPage: Arbitrary[WhatTypeOfBeneficiaryPage.type] =
-    Arbitrary(WhatTypeOfBeneficiaryPage)
-
   implicit lazy val arbitraryAgentInternationalAddressPage: Arbitrary[AgentInternationalAddressPage.type] =
     Arbitrary(AgentInternationalAddressPage)
-
-  implicit lazy val arbitraryClassBeneficiaryDescriptionPage: Arbitrary[ClassBeneficiaryDescriptionPage] =
-    Arbitrary(ClassBeneficiaryDescriptionPage(0))
 
   implicit lazy val arbitraryAgentUKAddressPage: Arbitrary[AgentUKAddressPage.type] =
     Arbitrary(AgentUKAddressPage)
@@ -180,44 +172,8 @@ trait PageGenerators {
   implicit lazy val arbitraryAgentAddressYesNoPage: Arbitrary[AgentAddressYesNoPage.type] =
     Arbitrary(AgentAddressYesNoPage)
 
-  implicit lazy val arbitraryIndividualBeneficiaryAddressUKYesNoPage: Arbitrary[IndividualBeneficiaryAddressUKYesNoPage] =
-    Arbitrary(IndividualBeneficiaryAddressUKYesNoPage(0))
-
   implicit lazy val arbitraryAgentNamePage: Arbitrary[AgentNamePage.type] =
     Arbitrary(AgentNamePage)
-
-  implicit lazy val arbitraryAddABeneficiaryPage: Arbitrary[AddABeneficiaryPage.type] =
-    Arbitrary(AddABeneficiaryPage)
-
-  implicit lazy val arbitraryIndividualBeneficiaryVulnerableYesNoPage: Arbitrary[IndividualBeneficiaryVulnerableYesNoPage] =
-    Arbitrary(IndividualBeneficiaryVulnerableYesNoPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryAddressUKPage: Arbitrary[IndividualBeneficiaryAddressUKPage] =
-    Arbitrary(IndividualBeneficiaryAddressUKPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryAddressYesNoPage: Arbitrary[IndividualBeneficiaryAddressYesNoPage] =
-    Arbitrary(IndividualBeneficiaryAddressYesNoPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceNumberPage: Arbitrary[IndividualBeneficiaryNationalInsuranceNumberPage] =
-    Arbitrary(IndividualBeneficiaryNationalInsuranceNumberPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryNationalInsuranceYesNoPage: Arbitrary[IndividualBeneficiaryNationalInsuranceYesNoPage] =
-    Arbitrary(IndividualBeneficiaryNationalInsuranceYesNoPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryIncomePage: Arbitrary[IndividualBeneficiaryIncomePage] =
-    Arbitrary(IndividualBeneficiaryIncomePage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryIncomeYesNoPage: Arbitrary[IndividualBeneficiaryIncomeYesNoPage] =
-    Arbitrary(IndividualBeneficiaryIncomeYesNoPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthPage: Arbitrary[IndividualBeneficiaryDateOfBirthPage] =
-    Arbitrary(IndividualBeneficiaryDateOfBirthPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryDateOfBirthYesNoPage: Arbitrary[IndividualBeneficiaryDateOfBirthYesNoPage] =
-    Arbitrary(IndividualBeneficiaryDateOfBirthYesNoPage(0))
-
-  implicit lazy val arbitraryIndividualBeneficiaryNamePage: Arbitrary[IndividualBeneficiaryNamePage] =
-    Arbitrary(IndividualBeneficiaryNamePage(0))
 
   implicit lazy val arbitraryWasSettlorsAddressUKYesNoPage: Arbitrary[WasSettlorsAddressUKYesNoPage.type] =
     Arbitrary(WasSettlorsAddressUKYesNoPage)

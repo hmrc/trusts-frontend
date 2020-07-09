@@ -47,6 +47,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
   lazy val logoutUrl: String = loadConfig("urls.logout")
 
+  private lazy val beneficiariesFrontendUrlTemplate: String = loadConfig("urls.beneficiariesFrontend")
+  def beneficiariesFrontendUrl(draftId: String): String = beneficiariesFrontendUrlTemplate.replace(":draftId", draftId)
+
   lazy val otacUrl : String = configuration.get[String]("urls.otacLogin")
 
   lazy val agentsSubscriptionsUrl : String = configuration.get[String]("urls.agentSubscriptions")

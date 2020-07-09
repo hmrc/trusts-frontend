@@ -18,7 +18,7 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction, RequireDraftRegistrationActionRefiner}
+import controllers.actions.register._
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
@@ -74,16 +74,16 @@ class TaskListController @Inject()(
 
         for {
           _  <- registrationsRepository.set(updatedAnswers)
+          taskList <- registrationProgress.items(updatedAnswers, draftId)
+          isTaskListComplete <- registrationProgress.isTaskListComplete(updatedAnswers)
         } yield {
 
           val sections = if (config.removeTaxLiabilityOnTaskList) {
             val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId).url
-            registrationProgress.items(updatedAnswers, draftId).filterNot(removeTaxLiabilityFromTaskList)
+            taskList.filterNot(removeTaxLiabilityFromTaskList)
           } else {
-            registrationProgress.items(updatedAnswers, draftId)
+            taskList
           }
-
-          val isTaskListComplete = registrationProgress.isTaskListComplete(updatedAnswers)
 
           Logger.debug(s"[TaskList][sections] $sections")
 

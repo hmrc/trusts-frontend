@@ -21,6 +21,8 @@ import models.requests.RegistrationDataRequest
 import pages.register.RegistrationProgress
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,10 +33,11 @@ class TaskListCompleteActionRefinerImpl @Inject()(
 
   override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
 
-    if (registrationProgress.isTaskListComplete(request.userAnswers)) {
-      Future.successful(Right(request))
-    } else {
-      Future.successful(Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId))))
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+    registrationProgress.isTaskListComplete(request.userAnswers) map {
+      case true => Right(request)
+      case false => Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))
     }
   }
 }

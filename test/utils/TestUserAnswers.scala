@@ -30,8 +30,6 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.AddABeneficiaryPage
-import pages.register.beneficiaries.individual._
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
@@ -86,20 +84,6 @@ object TestUserAnswers extends TryValues {
       .set(TrusteeOrgAddressUkPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
       .set(TelephoneNumberPage(index), "0191 1111111").success.value
       .set(TrusteeStatus(index), Completed).success.value
-  }
-
-  def withIndividualBeneficiary(userAnswers: UserAnswers): UserAnswers = {
-    val index = 0
-    userAnswers
-      .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
-      .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
-      .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.of(1500, 10, 10)).success.value
-      .set(IndividualBeneficiaryIncomeYesNoPage(index), false).success.value
-      .set(IndividualBeneficiaryIncomePage(index), "100").success.value
-      .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
-      .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
-      .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
-      .set(IndividualBeneficiaryStatus(index), Completed).success.value
   }
 
   def withDeceasedSettlor(userAnswers: UserAnswers): UserAnswers = {
@@ -167,7 +151,6 @@ object TestUserAnswers extends TryValues {
   def withCompleteSections(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(AddATrusteePage, AddATrustee.NoComplete).success.value
-      .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
       .set(AddAssetsPage, AddAssets.NoComplete).success.value
   }
 
@@ -175,8 +158,7 @@ object TestUserAnswers extends TryValues {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
     val userAnswers = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
 
     userAnswers

@@ -25,6 +25,8 @@ import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import play.api.Logger
+import play.api.libs.json.Json
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -33,7 +35,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class DefaultSubmissionService @Inject()(
                                           registrationMapper: RegistrationMapper,
                                           trustConnector: TrustConnector,
-                                          auditService: AuditService
+                                          auditService: AuditService,
+                                          registrationsRepository: RegistrationsRepository
                                         )
   extends SubmissionService {
 
@@ -43,37 +46,40 @@ class DefaultSubmissionService @Inject()(
 
     registrationMapper.build(userAnswers) match {
       case Some(registration) =>
-        trustConnector.register(registration, userAnswers.draftId) map {
-          case response @ RegistrationTRNResponse(_) =>
+        registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)) flatMap {
+          fullRegistrationJson =>
+            trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
+              case response@RegistrationTRNResponse(_) =>
 
-            auditService.audit(
-              event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-              registration = registration,
-              draftId = userAnswers.draftId,
-              internalId = userAnswers.internalAuthId,
-              response = response
-            )
+                auditService.audit(
+                  event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                  registration = registration,
+                  draftId = userAnswers.draftId,
+                  internalId = userAnswers.internalAuthId,
+                  response = response
+                )
 
-            response
-          case AlreadyRegistered =>
+                response
+              case AlreadyRegistered =>
 
-            auditService.audit(
-              event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-              registration = registration,
-              draftId = userAnswers.draftId,
-              internalId = userAnswers.internalAuthId,
-              response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
-            )
-            AlreadyRegistered
-          case other =>
-            auditService.audit(
-              event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-              registration = registration,
-              draftId = userAnswers.draftId,
-              internalId = userAnswers.internalAuthId,
-              response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
-            )
-            other
+                auditService.audit(
+                  event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                  registration = registration,
+                  draftId = userAnswers.draftId,
+                  internalId = userAnswers.internalAuthId,
+                  response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
+                )
+                AlreadyRegistered
+              case other =>
+                auditService.audit(
+                  event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                  registration = registration,
+                  draftId = userAnswers.draftId,
+                  internalId = userAnswers.internalAuthId,
+                  response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
+                )
+                other
+            }
         }
       case None =>
 

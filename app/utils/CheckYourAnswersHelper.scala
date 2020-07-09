@@ -25,14 +25,12 @@ import models.core.UserAnswers
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
-import pages.register.asset.business.{BusinessAddressUkYesNoPage, BusinessDescriptionPage, BusinessInternationalAddressPage, BusinessNamePage, BusinessUkAddressPage, BusinessValuePage}
+import pages.register.asset.business._
 import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
+import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
-import pages.register.beneficiaries.individual._
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
@@ -588,54 +586,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     }
   }
 
-  def individualBeneficiaries: Option[Seq[AnswerSection]] = {
-    for {
-      beneficiaries <- userAnswers.get(IndividualBeneficiaries)
-      indexed = beneficiaries.zipWithIndex
-    } yield indexed.map {
-      case (beneficiary, index) =>
-
-        val questions = Seq(
-          individualBeneficiaryName(index),
-          individualBeneficiaryDateOfBirthYesNo(index),
-          individualBeneficiaryDateOfBirth(index),
-          individualBeneficiaryIncomeYesNo(index),
-          individualBeneficiaryIncome(index),
-          individualBeneficiaryNationalInsuranceYesNo(index),
-          individualBeneficiaryNationalInsuranceNumber(index),
-          individualBeneficiaryAddressYesNo(index),
-          individualBeneficiaryAddressUKYesNo(index),
-          individualBeneficiaryAddressUK(index),
-          individualBeneficiaryVulnerableYesNo(index)
-        ).flatten
-
-        AnswerSection(Some(Messages("answerPage.section.individualBeneficiary.subheading") + " " + (index + 1)),
-          questions, if (index == 0) {
-            Some(Messages("answerPage.section.beneficiaries.heading"))
-          } else None)
-    }
-  }
-
-  def classOfBeneficiaries(individualBeneficiariesExist: Boolean): Option[Seq[AnswerSection]] = {
-    for {
-      beneficiaries <- userAnswers.get(ClassOfBeneficiaries)
-      indexed = beneficiaries.zipWithIndex
-    } yield indexed.map {
-      case (beneficiary, index) =>
-
-        val questions = Seq(
-          classBeneficiaryDescription(index)
-        ).flatten
-
-        val sectionKey = if (index == 0 && !individualBeneficiariesExist) {
-          Some(Messages("answerPage.section.beneficiaries.heading"))
-        } else None
-
-        AnswerSection(Some(Messages("answerPage.section.classOfBeneficiary.subheading") + " " + (index + 1)),
-          questions, sectionKey)
-    }
-  }
-
   def money: Seq[AnswerSection] = {
     val answers = userAnswers.get(Assets).getOrElse(Nil).zipWithIndex.collect {
       case (x: MoneyAsset, index) => (x, index)
@@ -884,16 +834,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def classBeneficiaryDescription(index: Int): Option[AnswerRow] = userAnswers.get(ClassBeneficiaryDescriptionPage(index)) map {
-    x =>
-      AnswerRow(
-        "classBeneficiaryDescription.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        Some(controllers.register.beneficiaries.routes.ClassBeneficiaryDescriptionController.onPageLoad(NormalMode, index, draftId).url),
-        canEdit = canEdit
-      )
-  }
-
   def shareCompanyName(index: Int): Option[AnswerRow] = userAnswers.get(ShareCompanyNamePage(index)) map {
     x =>
       AnswerRow(
@@ -1019,142 +959,12 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
       )
   }
 
-  def individualBeneficiaryAddressUKYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressUKYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressUKYesNoController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
   def agentName: Option[AnswerRow] = userAnswers.get(AgentNamePage) map {
     x =>
       AnswerRow(
         "agentName.checkYourAnswersLabel",
         HtmlFormat.escape(x),
         Some(controllers.register.agents.routes.AgentNameController.onPageLoad(NormalMode, draftId).url),
-        canEdit = canEdit
-      )
-  }
-
-  def addABeneficiary: Option[AnswerRow] = userAnswers.get(AddABeneficiaryPage) map {
-    x =>
-      AnswerRow(
-        "addABeneficiary.checkYourAnswersLabel",
-        HtmlFormat.escape(messages(s"addABeneficiary.$x")),
-        Some(controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId).url),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryVulnerableYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryVulnerableYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryVulnerableYesNoController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryAddressUK(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressUKPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryAddressUK.checkYourAnswersLabel",
-        ukAddress(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressUKController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryAddressYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryAddressYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryAddressYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryAddressYesNoController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryNationalInsuranceNumber(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceNumberPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel",
-        HtmlFormat.escape(formatNino(x)),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryNationalInsuranceNumberController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryNationalInsuranceYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNationalInsuranceYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryNationalInsuranceYesNoController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryIncome(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryIncomePage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryIncome.checkYourAnswersLabel",
-        percentage(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryIncomeController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryIncomeYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryIncomeYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryIncomeYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryIncomeYesNoController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryDateOfBirth(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryDateOfBirth.checkYourAnswersLabel",
-        HtmlFormat.escape(x.format(dateFormatter)),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryDateOfBirthController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryDateOfBirthYesNo(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryDateOfBirthYesNoPage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryDateOfBirthYesNoController.onPageLoad(NormalMode, index, draftId).url),
-        indBeneficiaryName(index, userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def individualBeneficiaryName(index: Int): Option[AnswerRow] = userAnswers.get(IndividualBeneficiaryNamePage(index)) map {
-    x =>
-      AnswerRow(
-        "individualBeneficiaryName.checkYourAnswersLabel",
-        HtmlFormat.escape(s"${x.firstName} ${x.middleName.getOrElse("")} ${x.lastName}"),
-        Some(controllers.register.beneficiaries.routes.IndividualBeneficiaryNameController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
   }

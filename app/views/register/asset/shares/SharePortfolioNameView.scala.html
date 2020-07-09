@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("sharePortfolioName.title")}"
     ) {
 
-    @formHelper(action = SharePortfolioNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = SharePortfolioNameController.onSubmit(mode, index, draftId), 'autoComplete -> "on") {
 
         @components.back_link()
 
@@ -38,7 +38,9 @@
           field = form("value"),
           label = messages("sharePortfolioName.heading"),
           labelClass=Some("heading-large"),
-          labelAsHeading = true
+          labelAsHeading = true,
+          autocomplete = Some("name")
+
         )
 
         @components.submit_button()

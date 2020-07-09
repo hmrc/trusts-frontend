@@ -24,7 +24,6 @@ class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
                                     correspondenceMapper: CorrespondenceMapper,
                                     trustDetailsMapper: TrustDetailsMapper,
-                                    beneficiariesMapper: BeneficiariesMapper,
                                     assetMapper: AssetMapper,
                                     leadTrusteeMapper: LeadTrusteeMapper,
                                     agentMapper: AgentMapper,
@@ -41,7 +40,6 @@ class RegistrationMapper @Inject()(
       trustDetails <- trustDetailsMapper.build(userAnswers)
       assets <- assetMapper.build(userAnswers)
       correspondence <- correspondenceMapper.build(userAnswers)
-      beneficiaries <- beneficiariesMapper.build(userAnswers)
       leadTrustees <- leadTrusteeMapper.build(userAnswers)
       declaration <- declarationMapper.build(userAnswers)
     } yield {
@@ -54,7 +52,7 @@ class RegistrationMapper @Inject()(
 
       val entities = TrustEntitiesType(
         naturalPerson = None,
-        beneficiary = beneficiaries,
+        beneficiary = BeneficiaryType(None, None, None, None, None, None, None),
         deceased = deceasedSettlor,
         leadTrustees = leadTrustees,
         trustees = trustees,

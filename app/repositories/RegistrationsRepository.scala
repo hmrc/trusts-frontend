@@ -16,129 +16,127 @@
 
 package repositories
 
-import akka.stream.Materializer
+import connector.SubmissionDraftConnector
 import javax.inject.Inject
+import models.RegistrationSubmission
+import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.core.UserAnswers
-import models.registration.pages.RegistrationStatus
+import models.registration.pages.RegistrationStatus.Complete
+import models.registration.pages.Status
 import pages.register.agents.AgentInternalReferencePage
-import play.api.Configuration
+import play.api.http
 import play.api.libs.json._
-import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.api.Cursor
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONDocument
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
-import reactivemongo.play.json.collection.JSONCollection
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.DateFormatter
-import viewmodels.DraftRegistration
+import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultRegistrationsRepository @Inject()(
-                                          mongo: ReactiveMongoApi,
-                                          config: Configuration,
-                                          dateFormatter: DateFormatter
-                                        )(implicit ec: ExecutionContext, m: Materializer) extends RegistrationsRepository {
+class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
+                                          submissionDraftConnector: SubmissionDraftConnector
+                                        )(implicit ec: ExecutionContext) extends RegistrationsRepository {
 
-
-  private val collectionName: String = "user-answers"
-
-  private val cacheTtl = config.get[Int]("mongodb.registration.ttlSeconds")
-
-  private def collection: Future[JSONCollection] =
-    mongo.database.map(_.collection[JSONCollection](collectionName))
-
-  private val createdAtIndex = Index(
-    key = Seq("createdAt" -> IndexType.Ascending),
-    name = Some("user-answers-created-at-index"),
-    options = BSONDocument("expireAfterSeconds" -> cacheTtl)
-  )
-
-  private val internalAuthIdIndex = Index(
-    key = Seq("internalId" -> IndexType.Ascending),
-    name = Some("internal-auth-id-index")
-  )
-
-    val started : Future[Unit] = {
-      Future.sequence {
-        Seq(
-          collection.map(_.indexesManager.ensure(createdAtIndex)),
-          collection.map(_.indexesManager.ensure(internalAuthIdIndex))
-        )
-      }.map(_ => ())
+  override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
+    submissionDraftConnector.getDraftMain(draftId).map {
+      response => Some(response.data.as[UserAnswers])
     }
-
-  override def get(draftId: String, internalId: String): Future[Option[UserAnswers]] = {
-      val selector = Json.obj(
-        "_id" -> draftId,
-        "internalId" -> internalId
-      )
-
-      collection.flatMap(_.find(
-        selector = selector, None).one[UserAnswers])
   }
 
-  override def getDraftRegistrations(internalId: String): Future[List[UserAnswers]] = {
-    val draftIdLimit = 20
-
-    val selector = Json.obj(
-      "internalId" -> internalId,
-      "progress" -> Json.obj("$ne" -> RegistrationStatus.Complete.toString)
-    )
-
-    collection.flatMap(
-      _.find(
-        selector = selector,
-        projection = None
-      )
-        .sort(Json.obj("createdAt" -> -1))
-        .cursor[UserAnswers]()
-        .collect[List](draftIdLimit, Cursor.FailOnError[List[UserAnswers]]()))
-  }
-
-  override def listDrafts(internalId : String) : Future[List[DraftRegistration]] = {
-    getDraftRegistrations(internalId).map {
-      drafts =>
-
-        drafts.flatMap {
-          x =>
-            x.get(AgentInternalReferencePage).map {
-              reference =>
-                DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
-            }
-
+  override def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]] = {
+    submissionDraftConnector.getCurrentDraftIds().map {
+      draftIds =>
+        draftIds.flatMap {
+          x => x.reference.map {
+            reference => DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
+          }
         }
     }
   }
 
-  override def set(userAnswers: UserAnswers): Future[Boolean] = {
+  override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
 
-    val selector = Json.obj(
-      "_id" -> userAnswers.draftId
-    )
+    val reference =
+        userAnswers.get(AgentInternalReferencePage).map {
+          reference => reference
+        }.orElse(None)
 
-    val modifier = Json.obj(
-      "$set" -> userAnswers
-    )
-
-    collection.flatMap {
-      _.update(ordered = false).one(selector, modifier, upsert = true).map {
-        lastError =>
-          lastError.ok
-      }
+    submissionDraftConnector.setDraftMain(
+      userAnswers.draftId,
+      Json.toJson(userAnswers),
+      userAnswers.progress != Complete,
+      reference
+    ).map {
+      response => response.status == http.Status.OK
     }
   }
+
+  private def decodePath(encodedPath: String): JsPath =
+    encodedPath.split('/').foldLeft[JsPath](
+      JsPath
+    )(
+      (cur: JsPath, component: String) => cur \ component
+    )
+
+  private def addSection(key: String, section: JsValue, data: JsValue): JsResult[JsValue] = {
+    val path = decodePath(key).json
+    val transform = data.transform(path.pick) match {
+      case JsSuccess(_,_) => path.prune andThen __.json.update(path.put(section))
+      case _ => __.json.update(path.put(section))
+    }
+
+    data.transform(transform)
+  }
+
+  override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue] = {
+    submissionDraftConnector.getRegistrationPieces(draftId).map {
+      pieces =>
+        val added: JsResult[JsValue] = pieces.keys.foldLeft[JsResult[JsValue]](
+          JsSuccess(registrationJson)
+        )(
+          (cur, key) => cur.flatMap(addSection(key, pieces(key), _))
+        )
+
+        added match {
+          case JsSuccess(value, _) => value
+          case _ => registrationJson
+        }
+    }
+  }
+
+  override def getAllStatus(draftId: String)(implicit hc: HeaderCarrier) : Future[AllStatus] = {
+    submissionDraftConnector.getStatus(draftId)
+  }
+
+  override def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = {
+    submissionDraftConnector.getAnswerSections(draftId).map {
+      sections => RegistrationAnswerSections(
+        beneficiaries = convert(sections.beneficiaries)
+      )
+    }
+  }
+
+  private def convert(row: RegistrationSubmission.AnswerRow): AnswerRow =
+    AnswerRow(row.label, HtmlFormat.raw(row.answer), None, row.labelArg, canEdit = false)
+
+  private def convert(section: RegistrationSubmission.AnswerSection): AnswerSection =
+    AnswerSection(section.headingKey, section.rows.map(convert), section.sectionKey)
+
+  private def convert(section: Option[List[RegistrationSubmission.AnswerSection]]): Option[List[AnswerSection]] =
+    section map { _.map(convert) }
+
 }
 
 trait RegistrationsRepository {
+  def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]]
 
-  val started: Future[Unit]
+  def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
 
-  def get(draftId: String, internalId: String): Future[Option[UserAnswers]]
+  def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]]
 
-  def set(userAnswers: UserAnswers): Future[Boolean]
+  def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
 
-  def getDraftRegistrations(internalId: String): Future[List[UserAnswers]]
+  def getAllStatus(draftId: String)(implicit hc: HeaderCarrier) : Future[AllStatus]
 
-  def listDrafts(internalId : String) : Future[List[DraftRegistration]]
+  def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections]
 }
