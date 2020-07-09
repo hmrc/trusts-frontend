@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} $heading"
     ) {
 
-    @formHelper(action = TrusteesNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = TrusteesNameController.onSubmit(mode, index, draftId),  'autoComplete -> "on") {
 
         @components.back_link()
 
@@ -42,17 +42,20 @@
 
             @components.input_text(
             field = form("firstName"),
-            label = messages("trusteesName.firstName")
+            label = messages("trusteesName.firstName"),
+            autocomplete = Some("given-name")
             )
 
             @components.input_text(
             field = form("middleName"),
-            label = messages("trusteesName.middleName")
+            label = messages("trusteesName.middleName"),
+            autocomplete = Some("additional-name")
             )
 
             @components.input_text(
             field = form("lastName"),
-            label = messages("trusteesName.lastName")
+            label = messages("trusteesName.lastName"),
+            autocomplete = Some("family-name")
             )
         </fieldset>
 

@@ -28,7 +28,7 @@
     title = s"${errorPrefix(form)} ${messages("trusteeBusinessName.title")}"
     ) {
 
-    @formHelper(action = TrusteeBusinessNameController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {
+    @formHelper(action = TrusteeBusinessNameController.onSubmit(mode, index, draftId), 'autoComplete -> "on") {
 
         @components.back_link()
 
@@ -40,7 +40,8 @@
           label = messages("trusteeBusinessName.heading"),
           labelAsHeading = true,
           hint = if(isUKRegisteredCompany) Some(messages("trusteeBusinessName.hint")) else None,
-          labelClass=Some("heading-large")
+          labelClass=Some("heading-large"),
+          autocomplete = Some("name")
         )
 
         @components.submit_button()
