@@ -18,13 +18,11 @@ package connector
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import generators.Generators
 import mapping.Mapping
 import mapping.registration.{Registration, RegistrationMapper}
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{FreeSpec, Inside, MustMatchers, OptionValues}
+import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -37,7 +35,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 class TrustConnectorSpec extends FreeSpec with MustMatchers
-  with OptionValues with Generators with SpecBaseHelpers with WireMockHelper with ScalaFutures with Inside {
+  with OptionValues with SpecBaseHelpers with WireMockHelper {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
@@ -68,8 +66,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val userAnswers = TestUserAnswers.withDeclaration(asset)
 
@@ -96,7 +93,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
     }
@@ -120,7 +117,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
                              """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe AlreadyRegistered
       }
     }
@@ -143,7 +140,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
                              """.stripMargin
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }
@@ -162,7 +159,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           expectedResponse = ""
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }
@@ -181,7 +178,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
           expectedResponse = ""
         )
 
-        val result  = Await.result(connector.register(registration, TestUserAnswers.draftId),Duration.Inf)
+        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
         result mustBe InternalServerError
       }
     }

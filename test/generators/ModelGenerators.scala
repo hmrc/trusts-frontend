@@ -49,16 +49,6 @@ trait ModelGenerators {
       Gen.oneOf(ShareClass.allValues.toSeq)
     }
 
-  implicit lazy val arbitraryWhatTypeOfBeneficiary: Arbitrary[WhatTypeOfBeneficiary] =
-    Arbitrary {
-      Gen.oneOf(WhatTypeOfBeneficiary.values.toSeq)
-    }
-
-  implicit lazy val arbitraryAddABeneficiary: Arbitrary[AddABeneficiary] =
-    Arbitrary {
-      Gen.oneOf(AddABeneficiary.values.toSeq)
-    }
-
   implicit lazy val arbitraryFullName : Arbitrary[FullName] = {
     Arbitrary {
       for {

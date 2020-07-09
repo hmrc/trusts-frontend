@@ -16,6 +16,7 @@
 
 package navigation.registration
 
+import config.FrontendAppConfig
 import controllers.register.routes
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
@@ -25,10 +26,9 @@ import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
-import sections.beneficiaries.{ClassOfBeneficiaries, IndividualBeneficiaries}
 
 @Singleton
-class TaskListNavigator @Inject()() {
+class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
 
   def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
     {
@@ -70,20 +70,8 @@ class TaskListNavigator @Inject()() {
     }
   }
 
-  def beneficiariesJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    if (isAnyBeneficiaryAdded(userAnswers)) {
-      controllers.register.beneficiaries.routes.AddABeneficiaryController.onPageLoad(draftId)
-    } else {
-      controllers.register.beneficiaries.routes.IndividualBeneficiaryInfoController.onPageLoad(draftId)
-    }
-  }
-
-  private def isAnyBeneficiaryAdded(answers: UserAnswers) = {
-
-    val individuals = answers.get(IndividualBeneficiaries).getOrElse(Nil)
-    val classes = answers.get(ClassOfBeneficiaries).getOrElse(Nil)
-
-    individuals.nonEmpty || classes.nonEmpty
+  def beneficiariesJourneyUrl(draftId: String): String = {
+    frontendAppConfig.beneficiariesFrontendUrl(draftId)
   }
 
   def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {

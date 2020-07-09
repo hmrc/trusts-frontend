@@ -24,25 +24,34 @@ import models.registration.pages._
 import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
 import pages.register.asset.AddAssetsPage
-import pages.register.beneficiaries.AddABeneficiaryPage
 import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.trustees.AddATrusteePage
+import repositories.RegistrationsRepository
 import sections._
-import sections.beneficiaries.{Beneficiaries, ClassOfBeneficiaries, IndividualBeneficiaries}
+import sections.beneficiaries.Beneficiaries
+import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
-class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
+import scala.concurrent.{ExecutionContext, Future}
 
-  def items(userAnswers: UserAnswers, draftId: String) = List(
-    Task(Link(TrustDetails, navigator.trustDetailsJourney(userAnswers, draftId).url), isTrustDetailsComplete(userAnswers)),
-    Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), isSettlorsComplete(userAnswers)),
-    Task(Link(Trustees, navigator.trusteesJourney(userAnswers, draftId).url), isTrusteesComplete(userAnswers)),
-    Task(Link(Beneficiaries, navigator.beneficiariesJourney(userAnswers, draftId).url), isBeneficiariesComplete(userAnswers)),
-    Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
-    Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId).url), None)
-  )
+class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrationsRepository: RegistrationsRepository)
+                                    (implicit ec: ExecutionContext) {
+
+  def items(userAnswers: UserAnswers, draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+    for {
+      allStatus <- registrationsRepository.getAllStatus(draftId)
+    } yield {
+      List(
+        Task(Link(TrustDetails, navigator.trustDetailsJourney(userAnswers, draftId).url), trustDetailsStatus(userAnswers)),
+        Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), settlorsStatus(userAnswers)),
+        Task(Link(Trustees, navigator.trusteesJourney(userAnswers, draftId).url), trusteesStatus(userAnswers)),
+        Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
+        Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
+        Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId).url), None)
+      )
+    }
 
   private def determineStatus(complete: Boolean): Option[Status] = {
     if (complete) {
@@ -52,7 +61,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
     }
   }
 
-  def isTrustDetailsComplete(userAnswers: UserAnswers): Option[Status] = {
+  def trustDetailsStatus(userAnswers: UserAnswers): Option[Status] = {
     userAnswers.get(WhenTrustSetupPage) match {
       case None => None
       case Some(_) =>
@@ -61,7 +70,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
     }
   }
 
-  def isTrusteesComplete(userAnswers: UserAnswers): Option[Status] = {
+  def trusteesStatus(userAnswers: UserAnswers): Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddATrusteePage).contains(AddATrustee.NoComplete)
 
     userAnswers.get(_root_.sections.Trustees) match {
@@ -80,7 +89,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
     }
   }
 
-  def isSettlorsComplete(userAnswers: UserAnswers): Option[Status] = {
+  def settlorsStatus(userAnswers: UserAnswers): Option[Status] = {
     val setUpAfterSettlorDied = userAnswers.get(SetUpAfterSettlorDiedYesNoPage)
     val inAdditionToWillTrust = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage).getOrElse(false)
 
@@ -108,43 +117,6 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
     }
   }
 
-  def isBeneficiariesComplete(userAnswers: UserAnswers): Option[Status] = {
-
-    def individualBeneficiariesComplete: Boolean = {
-      val individuals = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
-
-      if (individuals.isEmpty) {
-        false
-      } else {
-        !individuals.exists(_.status == InProgress)
-      }
-    }
-
-    def classComplete: Boolean = {
-      val classes = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty)
-      if (classes.isEmpty) {
-        false
-      } else {
-        !classes.exists(_.status == InProgress)
-      }
-    }
-
-    val noMoreToAdd = userAnswers.get(AddABeneficiaryPage).contains(AddABeneficiary.NoComplete)
-
-    val individuals = userAnswers.get(IndividualBeneficiaries).getOrElse(List.empty)
-    val classes = userAnswers.get(ClassOfBeneficiaries).getOrElse(List.empty)
-
-    (individuals, classes) match {
-      case (Nil, Nil) => None
-      case (ind, Nil) =>
-        determineStatus(individualBeneficiariesComplete && noMoreToAdd)
-      case (Nil, c) =>
-        determineStatus(classComplete && noMoreToAdd)
-      case (ind, c) =>
-        determineStatus(individualBeneficiariesComplete && classComplete && noMoreToAdd)
-    }
-  }
-
   def assetsStatus(userAnswers: UserAnswers): Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
     val assets = userAnswers.get(sections.Assets).getOrElse(List.empty)
@@ -158,11 +130,16 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator) {
     }
   }
 
-  def isTaskListComplete(userAnswers: UserAnswers): Boolean =
-    isTrustDetailsComplete(userAnswers).contains(Completed) &&
-      isSettlorsComplete(userAnswers).contains(Completed) &&
-      isTrusteesComplete(userAnswers).contains(Completed) &&
-      isBeneficiariesComplete(userAnswers).contains(Completed) &&
-      assetsStatus(userAnswers).contains(Completed)
-
+  def isTaskListComplete(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
+    if (trustDetailsStatus(userAnswers).contains(Completed) &&
+      settlorsStatus(userAnswers).contains(Completed) &&
+      trusteesStatus(userAnswers).contains(Completed) &&
+      assetsStatus(userAnswers).contains(Completed)) {
+      registrationsRepository.getAllStatus(userAnswers.draftId).map {
+        status => status.beneficiaries.contains(Completed)
+      }
+    } else {
+      Future.successful(false)
+    }
+  }
 }

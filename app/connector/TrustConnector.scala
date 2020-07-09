@@ -30,12 +30,12 @@ class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
 
   val registrationUrl = s"${config.trustsUrl}/trusts/register"
 
-  def register(registration: Registration, draftId : String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustResponse] = {
+  def register(registrationJson: JsValue, draftId : String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustResponse] = {
 
     val newHc : HeaderCarrier = hc.withExtraHeaders(
       Headers.DraftRegistrationId -> draftId
     )
 
-    http.POST[JsValue, TrustResponse](registrationUrl, Json.toJson(registration))(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
+    http.POST[JsValue, TrustResponse](registrationUrl, registrationJson)(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
   }
 }

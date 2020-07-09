@@ -14,23 +14,8 @@
  * limitations under the License.
  */
 
-package views.register.asset.other
+package viewmodels
 
-import views.behaviours.ViewBehaviours
-import views.html.register.asset.other.OtherAssetAnswersView
-
-class OtherAssetAnswersViewSpec extends ViewBehaviours {
-
-  val index = 0
-
-  "OtherAssetAnswersView" must {
-
-    val view = viewFor[OtherAssetAnswersView](Some(emptyUserAnswers))
-
-    val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
-
-    behave like normalPage(applyView, "assets.other.checkDetails")
-
-    behave like pageWithBackLink(applyView)
-  }
-}
+case class RegistrationAnswerSections(
+                                       beneficiaries: Option[List[AnswerSection]] = None
+                                     )

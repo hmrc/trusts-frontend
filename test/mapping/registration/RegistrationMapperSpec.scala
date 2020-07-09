@@ -29,8 +29,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
   private lazy val intervivosUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithLead)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
     val intervivosSettlementTrust = TestUserAnswers.withInterVivosTrust(livingSettlor)
@@ -41,8 +40,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
   private lazy val heritageUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithLead)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
     val heritageSettlementTrust = TestUserAnswers.withHeritageTrust(livingSettlor)
@@ -54,8 +52,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
   private lazy val flatManagementUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
-    val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithLead)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithLead)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
     val flatManagementTrust = TestUserAnswers.withFlatManagementTrust(livingSettlor)
@@ -97,8 +94,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
           val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
           val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-          val uaWithIndBen = TestUserAnswers.withIndividualBeneficiary(uaWithDeceased)
-          val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithIndBen)
+          val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
           val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
           val userAnswers = TestUserAnswers.withDeclaration(asset)
 

@@ -20,17 +20,18 @@ import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime, ZoneOffset}
 
 import base.RegistrationSpecBase
+import models.RegistrationSubmission.AllStatus
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.entitystatus._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.beneficiaries.individual._
-import pages.register.beneficiaries.{AddABeneficiaryPage, ClassBeneficiaryDescriptionPage}
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
@@ -43,14 +44,36 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.countryOptions.CountryOptions
 import utils.{CheckYourAnswersHelper, TestUserAnswers}
-import viewmodels.AnswerSection
+import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.ConfirmationAnswerPageView
+
+import scala.concurrent.Future
 
 class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
   val index = 0
 
   "ConfirmationAnswersController" must {
+
+    val beneficiarySections = List(
+      AnswerSection(
+        Some("headingKey1"),
+        List.empty,
+        Some("sectionKey1")
+      ),
+      AnswerSection(
+        Some("headingKey2"),
+        List.empty,
+        Some("sectionKey2")
+      )
+    )
+
+    val registrationSections = RegistrationAnswerSections(
+      beneficiaries = Some(beneficiarySections)
+    )
+
+    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
+    when(registrationsRepository.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {
 
@@ -64,23 +87,6 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           .set(EstablishedUnderScotsLawPage, true).success.value
           .set(TrustResidentOffshorePage, false).success.value
           .set(TrustDetailsStatus, Completed).success.value
-
-          .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
-          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
-          .set(IndividualBeneficiaryIncomeYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryIncomePage(index), "100").success.value
-          .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
-          .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
-          .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
-
-          .set(ClassBeneficiaryDescriptionPage(index), "Class of beneficary description").success.value
-          .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
-          .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
           .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
@@ -168,30 +174,8 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           ),
           Some("Trustees")
         ),
-        AnswerSection(
-          Some("Individual beneficiary 1"),
-          Seq(
-            checkYourAnswersHelper.individualBeneficiaryName(index).value,
-            checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryDateOfBirth(index).value,
-            checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryIncome(index).value,
-            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceNumber(index).value,
-            checkYourAnswersHelper.individualBeneficiaryAddressYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryAddressUKYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
-            checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
-          ),
-          Some("Beneficiaries")
-        ),
-        AnswerSection(
-          Some("Class of beneficiary 1"),
-          Seq(
-            checkYourAnswersHelper.classBeneficiaryDescription(index).value
-          ),
-          None
-        )
+        beneficiarySections(0),
+        beneficiarySections(1)
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -252,23 +236,6 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           .set(EstablishedUnderScotsLawPage, true).success.value
           .set(TrustResidentOffshorePage, false).success.value
           .set(TrustDetailsStatus, Completed).success.value
-
-          .set(IndividualBeneficiaryNamePage(index), FullName("first name", None, "last name")).success.value
-          .set(IndividualBeneficiaryDateOfBirthYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
-          .set(IndividualBeneficiaryIncomeYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryIncomePage(index), "100").success.value
-          .set(IndividualBeneficiaryNationalInsuranceYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryNationalInsuranceNumberPage(index), "AB123456C").success.value
-          .set(IndividualBeneficiaryAddressYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryAddressUKYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryAddressUKPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
-          .set(IndividualBeneficiaryVulnerableYesNoPage(index), true).success.value
-          .set(IndividualBeneficiaryStatus(index), Status.Completed).success.value
-
-          .set(ClassBeneficiaryDescriptionPage(index), "Class of beneficary description").success.value
-          .set(ClassBeneficiaryStatus(index), Status.Completed).success.value
-          .set(AddABeneficiaryPage, AddABeneficiary.NoComplete).success.value
 
           .set(IsThisLeadTrusteePage(index), true).success.value
           .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
@@ -352,30 +319,8 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           ),
           Some("Trustees")
         ),
-        AnswerSection(
-          Some("Individual beneficiary 1"),
-          Seq(
-            checkYourAnswersHelper.individualBeneficiaryName(index).value,
-            checkYourAnswersHelper.individualBeneficiaryDateOfBirthYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryDateOfBirth(index).value,
-            checkYourAnswersHelper.individualBeneficiaryIncomeYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryIncome(index).value,
-            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryNationalInsuranceNumber(index).value,
-            checkYourAnswersHelper.individualBeneficiaryAddressYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryAddressUKYesNo(index).value,
-            checkYourAnswersHelper.individualBeneficiaryAddressUK(index).value,
-            checkYourAnswersHelper.individualBeneficiaryVulnerableYesNo(index).value
-          ),
-          Some("Beneficiaries")
-        ),
-        AnswerSection(
-          Some("Class of beneficiary 1"),
-          Seq(
-            checkYourAnswersHelper.classBeneficiaryDescription(index).value
-          ),
-          None
-        )
+        beneficiarySections(0),
+        beneficiarySections(1)
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
