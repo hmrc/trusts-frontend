@@ -492,6 +492,16 @@ POST       /:draftId/settlors/deceased/check-answers                            
 
 ### Living Settlor
 
+GET        /:draftId/settlors/living/employer-financed-rbs                                          controllers.register.settlors.living_settlor.EmployerFinancedRbsYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/living/employer-financed-rbs                                          controllers.register.settlors.living_settlor.EmployerFinancedRbsYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/living/change-employer-financed-rbs                                   controllers.register.settlors.living_settlor.EmployerFinancedRbsYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/living/change-employer-financed-rbs                                   controllers.register.settlors.living_settlor.EmployerFinancedRbsYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/settlors/living/employer-financed-rbs-start                                    controllers.register.settlors.living_settlor.EmployerFinancedRbsStartDateController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/settlors/living/employer-financed-rbs-start                                    controllers.register.settlors.living_settlor.EmployerFinancedRbsStartDateController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/settlors/living/change-employer-financed-rbs-start                             controllers.register.settlors.living_settlor.EmployerFinancedRbsStartDateController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/settlors/living/change-employer-financed-rbs-start                             controllers.register.settlors.living_settlor.EmployerFinancedRbsStartDateController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
 GET        /:draftId/settlors/living/:index/individual-or-business                                  controllers.register.settlors.living_settlor.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = NormalMode, index: Int, draftId: String)
 POST       /:draftId/settlors/living/:index/individual-or-business                                  controllers.register.settlors.living_settlor.SettlorIndividualOrBusinessController.onSubmit(mode: Mode = NormalMode, index: Int, draftId: String)
 GET        /:draftId/settlors/living/:index/change-individual-or-business                           controllers.register.settlors.living_settlor.SettlorIndividualOrBusinessController.onPageLoad(mode: Mode = CheckMode, index: Int, draftId: String)

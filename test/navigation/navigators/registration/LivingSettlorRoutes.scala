@@ -16,6 +16,8 @@
 
 package navigation.navigators.registration
 
+import java.time.LocalDate
+
 import base.RegistrationSpecBase
 import controllers.register.settlors.living_settlor.routes
 import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
@@ -288,7 +290,7 @@ trait LivingSettlorRoutes {
 
         val answers = emptyUserAnswers.set(page, answer).success.value
 
-        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, fakeDraftId))
+        navigator.nextPage(page, NormalMode, fakeDraftId)(answers).mustBe(routes.EmployerFinancedRbsYesNoController.onPageLoad(NormalMode, fakeDraftId))
       }
 
     }
@@ -304,6 +306,38 @@ trait LivingSettlorRoutes {
       }
     }
 
+    "go to EfrbsStartDatePage from EfrbsYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(EfrbsYesNoPage, value = true).success.value
+
+          navigator.nextPage(EfrbsYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.EmployerFinancedRbsStartDateController.onPageLoad(NormalMode, fakeDraftId))
+      }
+    }
+
+    "go to SettlorIndividualOrBusinessPage from EfrbsYesNoPage when user answers no" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(EfrbsYesNoPage, value = false).success.value
+
+          navigator.nextPage(EfrbsYesNoPage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
+
+    "go to SettlorIndividualOrBusinessPage from EfrbsStartDatePage" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+
+          val answers = userAnswers.set(EfrbsStartDatePage, value = LocalDate.now).success.value
+
+          navigator.nextPage(EfrbsStartDatePage, NormalMode, fakeDraftId)(answers)
+            .mustBe(routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, index, fakeDraftId))
+      }
+    }
     "go to HowDeedOfVariationCreatedPage from SetUpInAdditionToWillTrustYesNoPage when user answers no" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
