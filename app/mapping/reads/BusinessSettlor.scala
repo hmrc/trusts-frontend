@@ -23,7 +23,7 @@ final case class BusinessSettlor(name: String,
                                  utr: Option[String],
                                  address : Option[Address],
                                  companyType: Option[String],
-                                 companyTime: Option[Boolean])
+                                 companyTime: Option[Boolean]) extends Settlor
 
 object BusinessSettlor {
   import play.api.libs.functional.syntax._
