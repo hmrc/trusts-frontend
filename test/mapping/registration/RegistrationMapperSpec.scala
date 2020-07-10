@@ -16,10 +16,13 @@
 
 package mapping.registration
 
+import java.time.LocalDate
+
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.Mapping
-import mapping.TypeOfTrust.{FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
+import mapping.TypeOfTrust.{EmployeeRelated, FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
+import models.registration.pages.KindOfTrust.Employees
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import utils.TestUserAnswers
 
@@ -56,6 +59,18 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
     val flatManagementTrust = TestUserAnswers.withFlatManagementTrust(livingSettlor)
+    val userAnswers = TestUserAnswers.withDeclaration(flatManagementTrust)
+
+    userAnswers
+  }
+
+  private def employmentRelatedUserAnswers(efrbsStartDate: LocalDate) = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
+    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithLead)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
+    val flatManagementTrust = TestUserAnswers.withEmploymentRelatedTrust(livingSettlor, efrbsStartDate)
     val userAnswers = TestUserAnswers.withDeclaration(flatManagementTrust)
 
     userAnswers
@@ -218,6 +233,28 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
         result.trust.details.deedOfVariation mustNot be(defined)
         result.trust.details.interVivos mustNot be(defined)
         result.trust.details.efrbsStartDate mustNot be(defined)
+
+        result.trust.entities.deceased mustNot be(defined)
+        result.trust.entities.settlors.value.settlor.value mustNot be(empty)
+        result.trust.entities.settlors.value.settlorCompany mustNot be(defined)
+      }
+
+      "must generate an Employment related trust for an Employer Financed RBS " in {
+        val date = LocalDate.of(2010, 10, 10)
+
+        val userAnswers = employmentRelatedUserAnswers(date)
+
+        val result = registrationMapper.build(userAnswers).value
+
+        result.agentDetails mustNot be(defined)
+        result.yearsReturns mustNot be(defined)
+        result.matchData mustNot be(defined)
+        result.declaration mustBe a[Declaration]
+
+        result.trust.details.typeOfTrust mustBe EmployeeRelated
+        result.trust.details.deedOfVariation mustNot be(defined)
+        result.trust.details.interVivos mustNot be(defined)
+        result.trust.details.efrbsStartDate mustBe Some(date)
 
         result.trust.entities.deceased mustNot be(defined)
         result.trust.entities.settlors.value.settlor.value mustNot be(empty)
