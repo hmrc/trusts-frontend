@@ -101,7 +101,6 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   }
 
   private def addSettlorRoute(draftId: String)(answers: UserAnswers) = {
-    val addAnother = answers.get(AddASettlorPage)
 
     def routeToSettlorIndex = {
       val settlors = answers.get(sections.LivingSettlors).getOrElse(List.empty)
@@ -113,7 +112,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
       }
     }
 
-    addAnother match {
+    answers.get(AddASettlorPage) match {
       case Some(AddASettlor.YesNow) =>
         routeToSettlorIndex
       case Some(AddASettlor.YesLater) =>
