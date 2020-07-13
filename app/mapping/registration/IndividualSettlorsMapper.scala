@@ -18,7 +18,7 @@ package mapping.registration
 
 import javax.inject.Inject
 import mapping._
-import mapping.reads.IndividualSettlor
+import mapping.reads.{BusinessSettlor, IndividualSettlor}
 import models.core.UserAnswers
 import models.registration.pages.PassportOrIdCardDetails
 
@@ -27,8 +27,11 @@ class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: 
    def build(userAnswers: UserAnswers): Option[List[Settlor]] = {
      val settlors = userAnswers.get(mapping.reads.LivingSettlors).getOrElse(List.empty[IndividualSettlor])
 
-     val mappedSettlors = settlors.map { ls =>
-       Settlor(nameMapper.build(ls.name), ls.dateOfBirth, identificationMap(ls))
+     val mappedSettlors = settlors.flatMap {
+       case ls: IndividualSettlor =>
+       Some(Settlor(nameMapper.build(ls.name), ls.dateOfBirth, identificationMap(ls)))
+       case _: BusinessSettlor =>
+         None
      }
 
      mappedSettlors match {
@@ -36,8 +39,6 @@ class IndividualSettlorsMapper @Inject()(nameMapper: NameMapper, addressMapper: 
        case _ => Some(mappedSettlors)
      }
   }
-
-
 
   private def identificationMap(settlor: IndividualSettlor): Option[IdentificationType] = {
 

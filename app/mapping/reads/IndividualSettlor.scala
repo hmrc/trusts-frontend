@@ -22,12 +22,13 @@ import models.core.pages.{Address, FullName}
 import models.registration.pages.PassportOrIdCardDetails
 import play.api.libs.json.{Format, Json}
 
+
 final case class IndividualSettlor(name: FullName,
                                    dateOfBirth: Option[LocalDate],
                                    nino: Option[String],
                                    address : Option[Address],
                                    passport: Option[PassportOrIdCardDetails],
-                                   idCard: Option[PassportOrIdCardDetails]) {
+                                   idCard: Option[PassportOrIdCardDetails]) extends Settlor {
 
   def passportOrId: Option[PassportOrIdCardDetails] = if (passport.isDefined) passport else idCard
 }
