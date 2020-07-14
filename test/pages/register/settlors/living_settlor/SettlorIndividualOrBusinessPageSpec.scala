@@ -17,14 +17,15 @@
 package pages.register.settlors.living_settlor
 
 import models.core.UserAnswers
-import models.core.pages.{FullName, IndividualOrBusiness}
+import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.registration.pages.KindOfBusiness.Trading
 import models.registration.pages.KindOfTrust
 import models.registration.pages.Status.InProgress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.LivingSettlorStatus
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
+import pages.register.settlors.living_settlor.business.{SettlorBusinessAddressUKPage, SettlorBusinessAddressUKYesNoPage, SettlorBusinessAddressYesNoPage, SettlorBusinessNamePage, SettlorBusinessTimeYesNoPage, SettlorBusinessTypePage, SettlorBusinessUtrPage, SettlorBusinessUtrYesNoPage}
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
@@ -43,14 +44,28 @@ class SettlorIndividualOrBusinessPageSpec extends PageBehaviours {
       (initial, str) =>
         val answers: UserAnswers = initial
           .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-          .set(HoldoverReliefYesNoPage, true).success.value
+          .set(KindOfTrustPage, KindOfTrust.Employees).success.value
           .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
           .set(SettlorBusinessNamePage(0), "AWS").success.value
+          .set(SettlorBusinessUtrYesNoPage(0), false).success.value
+          .set(SettlorBusinessAddressYesNoPage(0), true).success.value
+          .set(SettlorBusinessAddressUKYesNoPage(0), true).success.value
+          .set(SettlorBusinessAddressUKPage(0), UKAddress("line1", "line2", None, None, "AB11AB")).success.value
+          .set(SettlorBusinessTypePage(0), Trading).success.value
+          .set(SettlorBusinessTimeYesNoPage(0), true).success.value
           .set(LivingSettlorStatus(0), InProgress).success.value
 
         val result = answers.set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
 
+        result.get(SettlorBusinessNamePage(0)) mustNot be(defined)
+        result.get(SettlorBusinessUtrYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorBusinessUtrPage(0)) mustNot be(defined)
+        result.get(SettlorBusinessAddressYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorBusinessAddressUKYesNoPage(0)) mustNot be(defined)
+        result.get(SettlorAddressUKPage(0)) mustNot be(defined)
+        result.get(SettlorAddressInternationalPage(0)) mustNot be(defined)
+        result.get(SettlorBusinessTypePage(0)) mustNot be(defined)
+        result.get(SettlorBusinessTimeYesNoPage(0)) mustNot be(defined)
         result.get(LivingSettlorStatus(0)) mustNot be(defined)
     }
   }

@@ -27,7 +27,7 @@ final case class SettlorBusinessAddressUKYesNoPage(index : Int) extends Question
 
   override def path: JsPath = LivingSettlors.path \ index \ toString
 
-  override def toString: String = "ukAddressYesNo"
+  override def toString: String = "ukBusinessAddressYesNo"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {

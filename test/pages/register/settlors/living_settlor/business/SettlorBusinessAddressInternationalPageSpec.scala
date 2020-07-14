@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.business
 
+import models.core.pages.InternationalAddress
 import pages.behaviours.PageBehaviours
-import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 
-class HoldoverReliefYesNoPageSpec extends PageBehaviours {
+class SettlorBusinessAddressInternationalPageSpec extends PageBehaviours {
 
-  "HoldoverReliefYesNoPage" must {
+  "SettlorBusinessAddressInternationalPage" must {
 
-    beRetrievable[Boolean](HoldoverReliefYesNoPage)
+    beRetrievable[InternationalAddress](SettlorBusinessAddressInternationalPage(0))
 
-    beSettable[Boolean](HoldoverReliefYesNoPage)
+    beSettable[InternationalAddress](SettlorBusinessAddressInternationalPage(0))
 
-    beRemovable[Boolean](HoldoverReliefYesNoPage)
+    beRemovable[InternationalAddress](SettlorBusinessAddressInternationalPage(0))
   }
 }

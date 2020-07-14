@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.trust_type
 
 import models.core.UserAnswers
-import models.registration.pages.DeedOfVariation
 import models.registration.pages.DeedOfVariation.ReplacedWill
 import models.registration.pages.KindOfTrust.Deed
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import pages.register.settlors.living_settlor.trust_type.{HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
 import sections.{DeceasedSettlor, LivingSettlors}
 
 class SetUpInAdditionToWillTrustYesNoPageSpec extends PageBehaviours {
