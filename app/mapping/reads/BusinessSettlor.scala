@@ -23,13 +23,13 @@ final case class BusinessSettlor(name: String,
                                  utr: Option[String],
                                  address : Option[Address],
                                  companyType: Option[String],
-                                 companyTime: Option[Boolean])
+                                 companyTime: Option[Boolean]) extends Settlor
 
 object BusinessSettlor {
   import play.api.libs.functional.syntax._
 
   implicit lazy val reads: Reads[BusinessSettlor] = {
-    ((__ \ "name").read[String] and
+    ((__ \ "businessName").read[String] and
       (__ \ "utr").readNullable[String] and
       readAddress() and
       (__ \ "companyType").readNullable[String] and

@@ -33,7 +33,7 @@ import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trust_details._
 import pages.register.trustees._
 import pages.register.trustees.individual._
@@ -178,6 +178,13 @@ object TestUserAnswers extends TryValues {
   def withFlatManagementTrust(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
+  }
+
+  def withEmploymentRelatedTrust(userAnswers: UserAnswers, date: LocalDate): UserAnswers = {
+    userAnswers
+      .set(KindOfTrustPage, KindOfTrust.Employees).success.value
+      .set(EfrbsYesNoPage, true).success.value
+      .set(EfrbsStartDatePage, date).success.value
   }
 
 }

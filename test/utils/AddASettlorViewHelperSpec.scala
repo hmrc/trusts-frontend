@@ -26,6 +26,7 @@ import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, SettlorBusinessUtrPage, SettlorBusinessUtrYesNoPage}
 import pages.register.settlors.living_settlor.trust_type.{KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
 import viewmodels.AddRow
 
@@ -34,8 +35,15 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
   val index = 0
   val indexOne = 1
   val settlorName = FullName("first name", Some("middle name"), "last name")
+  val settlorBusinessName = "Business Name"
+  val utr = "1234567890"
   def individualSettlorStartRoute(index: Int) = controllers.register.settlors.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+  def businessSettlorStartRoute(index: Int) = controllers.register.settlors.living_settlor.business.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
   def deceasedSettlorStartRoute = controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
+
+  def individualSettlorCYARoute(index: Int) = controllers.register.settlors.living_settlor.routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId).url
+  def businessSettlorCYARoute(index: Int) = controllers.register.settlors.living_settlor.business.routes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId).url
+  def deceasedSettlorCYARoute = controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId).url
 
   def removeSettlorRoute(index : Int) =
     routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
@@ -54,7 +62,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
       }
 
       "generate rows from user answers for settlors in progress" when {
-        "living" in {
+        "individual" in {
 
           val userAnswers = emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
@@ -70,6 +78,22 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
           rows.inProgress mustBe List(
             AddRow("No name added", typeLabel = "Individual Settlor", individualSettlorStartRoute(index), removeSettlorRoute(index)),
             AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorStartRoute(indexOne), removeSettlorRoute(indexOne))
+          )
+          rows.complete mustBe Nil
+        }
+
+        "business" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
+            .set(SettlorBusinessNamePage(0), settlorBusinessName).success.value
+            .set(SettlorBusinessUtrYesNoPage(0), false).success.value
+            .set(LivingSettlorStatus(0), InProgress).success.value
+
+          val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
+          rows.inProgress mustBe List(
+            AddRow("Business Name", typeLabel = "Business Settlor", businessSettlorStartRoute(index), removeSettlorRoute(index))
           )
           rows.complete mustBe Nil
         }
@@ -90,7 +114,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
       }
 
       "generate rows from user answers for complete settlors" when {
-        "living" in {
+        "individual" in {
 
           val userAnswers = emptyUserAnswers
             .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
@@ -103,7 +127,23 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorStartRoute(index), removeSettlorRoute(index))
+            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorCYARoute(index), removeSettlorRoute(index))
+          )
+          rows.inProgress mustBe Nil
+        }
+        "business" in {
+
+          val userAnswers = emptyUserAnswers
+            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+            .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Business).success.value
+            .set(SettlorBusinessNamePage(0), settlorBusinessName).success.value
+            .set(SettlorBusinessUtrYesNoPage(0), false).success.value
+            .set(SettlorAddressYesNoPage(0), false).success.value
+            .set(LivingSettlorStatus(0), Completed).success.value
+
+          val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
+          rows.complete mustBe List(
+            AddRow("Business Name", typeLabel = "Business Settlor", businessSettlorCYARoute(index), removeSettlorRoute(index))
           )
           rows.inProgress mustBe Nil
         }
@@ -122,7 +162,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorStartRoute, removeSettlorRoute)
+            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorCYARoute, removeSettlorRoute)
           )
           rows.inProgress mustBe Nil
         }

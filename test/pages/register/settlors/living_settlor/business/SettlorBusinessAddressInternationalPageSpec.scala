@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package pages.register.settlors.living_settlor.business
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import models.core.pages.InternationalAddress
+import pages.behaviours.PageBehaviours
 
-case object BusinessSettlors extends QuestionPage[List[BusinessSettlor]] {
+class SettlorBusinessAddressInternationalPageSpec extends PageBehaviours {
 
-  override def path: JsPath = Settlors.path \ toString
+  "SettlorBusinessAddressInternationalPage" must {
 
-  override def toString: String = "living"
+    beRetrievable[InternationalAddress](SettlorBusinessAddressInternationalPage(0))
 
+    beSettable[InternationalAddress](SettlorBusinessAddressInternationalPage(0))
+
+    beRemovable[InternationalAddress](SettlorBusinessAddressInternationalPage(0))
+  }
 }

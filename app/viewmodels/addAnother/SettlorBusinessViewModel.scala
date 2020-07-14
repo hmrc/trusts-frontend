@@ -36,7 +36,7 @@ object SettlorBusinessViewModel {
     val businessNameReads: Reads[SettlorBusinessViewModel] =
     {
       (__ \ "individualOrBusiness").read[IndividualOrBusiness].filter(x => x == Business).flatMap { _ =>
-        ((__ \ "name").read[String] and
+        ((__ \ "businessName").read[String] and
           (__ \ "status").readWithDefault[Status](InProgress)
           ) ((name, status) => {
           SettlorBusinessTypeViewModel(

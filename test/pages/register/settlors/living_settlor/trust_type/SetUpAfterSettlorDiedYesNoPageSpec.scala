@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pages.register.settlors
+package pages.register.settlors.living_settlor.trust_type
 
 import java.time.LocalDate
 
@@ -25,10 +25,10 @@ import models.registration.pages.{KindOfTrust, Status}
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 class SetUpAfterSettlorDiedYesNoPageSpec extends PageBehaviours {
 

@@ -25,6 +25,7 @@ import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.PassportOrIdCardDetails
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, SettlorBusinessUtrPage, SettlorBusinessUtrYesNoPage}
 
 class SettlorsMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers  {
@@ -79,6 +80,40 @@ class SettlorsMapperSpec extends FreeSpec with MustMatchers
             Some(IdentificationType(None, Some(PassportType("1234567", expiryDate, "UK")),None))))
         ),
         settlorCompany = None)
+    }
+
+    "must be able to create a Settlors model with an individual and business" in {
+
+      val dateOfBirth: LocalDate = LocalDate.of(1944, 10, 10)
+      val expiryDate = LocalDate.of(2020, 10, 10)
+
+      val userAnswers =
+        emptyUserAnswers
+          .set(SettlorIndividualOrBusinessPage(0), IndividualOrBusiness.Individual).success.value
+          .set(SettlorIndividualNamePage(0), FullName("First", None, "Last")).success.value
+          .set(SettlorIndividualDateOfBirthYesNoPage(0), true).success.value
+          .set(SettlorIndividualDateOfBirthPage(0), dateOfBirth).success.value
+          .set(SettlorAddressYesNoPage(0), true).success.value
+          .set(SettlorIndividualNINOYesNoPage(0), false).success.value
+          .set(SettlorIndividualPassportYesNoPage(0), true).success.value
+          .set(SettlorIndividualPassportPage(0), PassportOrIdCardDetails("UK", "2345678", expiryDate)).success.value
+          .set(SettlorIndividualOrBusinessPage(1), IndividualOrBusiness.Business).success.value
+          .set(SettlorBusinessNamePage(1), "Business Name").success.value
+          .set(SettlorBusinessUtrYesNoPage(1), true).success.value
+          .set(SettlorBusinessUtrPage(1), "1234567890").success.value
+
+      settlorsMapper.build(userAnswers).value mustBe Settlors(
+        settlor = Some(List(
+          Settlor(
+            NameType("First", None, "Last"), Some(dateOfBirth),
+            Some(IdentificationType(None, Some(PassportType("2345678", expiryDate, "UK")),None))))),
+        Some(List(SettlorCompany(
+            "Business Name",
+            None,
+            None,
+            Some(IdentificationOrgType(Some("1234567890"), None))
+        )))
+      )
     }
   }
 }

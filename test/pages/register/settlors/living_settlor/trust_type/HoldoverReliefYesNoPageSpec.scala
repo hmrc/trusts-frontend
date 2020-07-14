@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.trust_type
 
 import pages.behaviours.PageBehaviours
-import pages.register.settlors.living_settlor.trust_type.HoldoverReliefYesNoPage
 
 class HoldoverReliefYesNoPageSpec extends PageBehaviours {
 

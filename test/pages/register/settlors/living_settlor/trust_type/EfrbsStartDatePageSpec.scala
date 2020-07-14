@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package pages.register.settlors.living_settlor.trust_type
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import java.time.LocalDate
 
-case object LivingSettlors extends QuestionPage[List[Settlor]] {
+import org.scalacheck.Arbitrary
+import pages.behaviours.PageBehaviours
 
-  override def path: JsPath = Settlors.path \ toString
+class EfrbsStartDatePageSpec extends PageBehaviours {
 
-  override def toString: String = "living"
+  "EfrbsStartDatePage" must {
 
+    implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] = Arbitrary {
+      datesBetween(LocalDate.of(1900, 1, 1), LocalDate.of(2100, 1, 1))
+    }
+
+    beRetrievable[LocalDate](EfrbsStartDatePage)
+
+    beSettable[LocalDate](EfrbsStartDatePage)
+
+    beRemovable[LocalDate](EfrbsStartDatePage)
+  }
 }

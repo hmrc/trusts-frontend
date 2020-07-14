@@ -18,16 +18,19 @@ package mapping.registration
 
 import javax.inject.Inject
 import mapping._
-import mapping.reads.BusinessSettlor
+import mapping.reads.{BusinessSettlor, IndividualSettlor}
 import models.core.UserAnswers
 
 class BusinessSettlorsMapper @Inject()(addressMapper: AddressMapper) extends Mapping[List[SettlorCompany]] {
 
    def build(userAnswers: UserAnswers): Option[List[SettlorCompany]] = {
-     val settlors = userAnswers.get(mapping.reads.BusinessSettlors).getOrElse(List.empty[BusinessSettlor])
+     val settlors = userAnswers.get(mapping.reads.LivingSettlors).getOrElse(List.empty[BusinessSettlor])
 
-     val mappedSettlors = settlors.map { ls =>
-       SettlorCompany(ls.name, ls.companyType, ls.companyTime, identificationOrgMap(ls))
+     val mappedSettlors = settlors.flatMap {
+       case ls: BusinessSettlor =>
+       Some(SettlorCompany(ls.name, ls.companyType, ls.companyTime, identificationOrgMap(ls)))
+       case _: IndividualSettlor =>
+         None
      }
 
      mappedSettlors match {
@@ -50,5 +53,4 @@ class BusinessSettlorsMapper @Inject()(addressMapper: AddressMapper) extends Map
       case _ => Some(identificationType)
     }
   }
-
 }

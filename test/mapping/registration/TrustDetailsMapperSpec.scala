@@ -20,13 +20,14 @@ import java.time.LocalDate
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
+import mapping.TypeOfTrust.{EmployeeRelated, WillTrustOrIntestacyTrust}
 import mapping.{registration, _}
 import models.registration.pages.DeedOfVariation
+import models.registration.pages.KindOfTrust.Employees
 import models.registration.pages.NonResidentType.Domiciled
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.register.settlors.living_settlor.trust_type.{HowDeedOfVariationCreatedPage, SetUpInAdditionToWillTrustYesNoPage}
+import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
 import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import utils.TestUserAnswers
 
@@ -87,6 +88,44 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         }
 
+        "an Employment Related trust with an Employer financed RBS" in {
+          val date = LocalDate.of(2010, 10, 10)
+          val index = 0
+          val userAnswers =
+            emptyUserAnswers
+              .set(TrustNamePage, "New Trust").success.value
+              .set(WhenTrustSetupPage, date).success.value
+              .set(GovernedInsideTheUKPage, true).success.value
+              .set(AdministrationInsideUKPage, true).success.value
+              .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
+              .set(EstablishedUnderScotsLawPage, true).success.value
+              .set(TrustResidentOffshorePage, false).success.value
+              .set(KindOfTrustPage, Employees).success.value
+              .set(EfrbsYesNoPage, true).success.value
+              .set(EfrbsStartDatePage, date).success.value
+
+          val uaWithSettlor = TestUserAnswers.withIndividualLivingSettlor(index, userAnswers)
+
+          trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
+            startDate = date,
+            lawCountry = None,
+            administrationCountry = Some("GB"),
+            residentialStatus = Some(ResidentialStatusType(
+              uk = Some(
+                UkType(
+                  scottishLaw = true,
+                  preOffShore = None
+                )
+              ),
+              nonUK = None
+            )),
+            typeOfTrust = EmployeeRelated,
+            deedOfVariation = None,
+            interVivos = None,
+            efrbsStartDate = Some(date)
+          )
+
+        }
         "a UK resident trust with trust previously resident offshore " in {
           val date = LocalDate.of(2010, 10, 10)
 

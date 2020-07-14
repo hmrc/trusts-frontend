@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package pages.register.settlors.living_settlor.business
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import pages.behaviours.PageBehaviours
 
-case object LivingSettlors extends QuestionPage[List[Settlor]] {
+class SettlorBusinessAddressUKYesNoPageSpec extends PageBehaviours {
 
-  override def path: JsPath = Settlors.path \ toString
+  "SettlorBusinessAddressUKYesNoPage" must {
 
-  override def toString: String = "living"
+    beRetrievable[Boolean](SettlorBusinessAddressUKYesNoPage(0))
 
+    beSettable[Boolean](SettlorBusinessAddressUKYesNoPage(0))
+
+    beRemovable[Boolean](SettlorBusinessAddressUKYesNoPage(0))
+
+  }
 }

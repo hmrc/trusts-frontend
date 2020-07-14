@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.business
 
+import models.core.pages.UKAddress
 import pages.behaviours.PageBehaviours
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 
+class SettlorBusinessAddressUKPageSpec extends PageBehaviours {
 
-class SettlorBusinessNamePageSpec extends PageBehaviours {
+  "SettlorBusinessAddressUKPage" must {
 
-  "SettlorBusinessDetailsPage" must {
+    beRetrievable[UKAddress](SettlorBusinessAddressUKPage(0))
 
-    beRetrievable[String](SettlorBusinessNamePage(0))
+    beSettable[UKAddress](SettlorBusinessAddressUKPage(0))
 
-    beSettable[String](SettlorBusinessNamePage(0))
-
-    beRemovable[String](SettlorBusinessNamePage(0))
+    beRemovable[UKAddress](SettlorBusinessAddressUKPage(0))
   }
 }

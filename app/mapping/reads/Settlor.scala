@@ -16,13 +16,26 @@
 
 package mapping.reads
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.libs.json.Reads
 
-case object LivingSettlors extends QuestionPage[List[Settlor]] {
+import scala.language.implicitConversions
 
-  override def path: JsPath = Settlors.path \ toString
+trait Settlor
 
-  override def toString: String = "living"
+object Settlor {
+
+  implicit class ReadsWithContravariantOr[A](a: Reads[A]) {
+
+    def or[B >: A](b: Reads[B]): Reads[B] =
+      a.map[B](identity).orElse(b)
+  }
+
+  implicit def convertToSupertype[A, B >: A](a: Reads[A]): Reads[B] =
+    a.map(identity)
+
+  implicit lazy val reads : Reads[Settlor] = {
+    IndividualSettlor.classFormat or
+      BusinessSettlor.reads
+  }
 
 }
