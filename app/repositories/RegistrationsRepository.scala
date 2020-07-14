@@ -108,6 +108,12 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.getStatus(draftId)
   }
 
+  override def setAllStatus(draftId: String, status: AllStatus)(implicit hc: HeaderCarrier) : Future[Boolean] = {
+    submissionDraftConnector.setStatus(draftId, status).map {
+      response => response.status == http.Status.OK
+    }
+  }
+
   override def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = {
     submissionDraftConnector.getAnswerSections(draftId).map {
       sections => RegistrationAnswerSections(
@@ -137,6 +143,8 @@ trait RegistrationsRepository {
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
 
   def getAllStatus(draftId: String)(implicit hc: HeaderCarrier) : Future[AllStatus]
+
+  def setAllStatus(draftId: String, status: AllStatus)(implicit hc: HeaderCarrier) : Future[Boolean]
 
   def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections]
 }
