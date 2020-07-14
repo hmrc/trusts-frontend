@@ -22,7 +22,7 @@ import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
-import models.registration.pages.Status.Completed
+import models.registration.pages.Status.{Completed, InProgress}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.MustMatchers
@@ -186,9 +186,9 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         verify(mockConnector).getRegistrationPieces(draftId)(hc, executionContext)
       }
     }
-    "reading status got sections" must {
+    "reading status" must {
 
-      "read existing status when there isn't any" in {
+      "read existing status from connector" in {
 
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -209,6 +209,30 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         verify(mockConnector).getStatus(draftId)(hc, executionContext)
       }
     }
+
+    "setting status" must {
+
+      "write status to draft" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val status = AllStatus(beneficiaries = Some(InProgress))
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        when(mockConnector.setStatus(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
+
+        val result = Await.result(repository.setAllStatus(draftId, status), Duration.Inf)
+
+        result mustBe true
+        verify(mockConnector).setStatus(draftId, status)(hc, executionContext)
+      }
+    }
+
     "reading answer sections" must {
       "return deserialised answer sections" in {
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()

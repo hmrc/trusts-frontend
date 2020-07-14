@@ -61,6 +61,8 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getAllStatus(draftId: String)
                              (implicit hc: HeaderCarrier) : Future[AllStatus] = Future.successful(AllStatus())
 
+    override def setAllStatus(draftId: String, status: AllStatus)(implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
+
     override def getAnswerSections(draftId: String)
                                   (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
   }
