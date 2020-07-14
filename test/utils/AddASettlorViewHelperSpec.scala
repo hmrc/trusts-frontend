@@ -17,7 +17,10 @@
 package utils
 
 import base.RegistrationSpecBase
-import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.routes
+import controllers.register.settlors.living_settlor.{routes => individualRoutes}
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
+import controllers.register.settlors.deceased_settlor.{routes => deceasedRoutes}
 import models.NormalMode
 import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.KindOfTrust.Deed
@@ -26,7 +29,7 @@ import pages.entitystatus.{DeceasedSettlorStatus, LivingSettlorStatus}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, SettlorBusinessUtrPage, SettlorBusinessUtrYesNoPage}
+import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, SettlorBusinessUtrYesNoPage}
 import pages.register.settlors.living_settlor.trust_type.{KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
 import viewmodels.AddRow
 
@@ -34,22 +37,20 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
   val index = 0
   val indexOne = 1
-  val settlorName = FullName("first name", Some("middle name"), "last name")
+  val settlorName: FullName = FullName("first name", Some("middle name"), "last name")
   val settlorBusinessName = "Business Name"
   val utr = "1234567890"
-  def individualSettlorStartRoute(index: Int) = controllers.register.settlors.living_settlor.routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
-  def businessSettlorStartRoute(index: Int) = controllers.register.settlors.living_settlor.business.routes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
-  def deceasedSettlorStartRoute = controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
 
-  def individualSettlorCYARoute(index: Int) = controllers.register.settlors.living_settlor.routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId).url
-  def businessSettlorCYARoute(index: Int) = controllers.register.settlors.living_settlor.business.routes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId).url
-  def deceasedSettlorCYARoute = controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId).url
+  def individualSettlorStartRoute(index: Int): String = individualRoutes.SettlorIndividualNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+  def businessSettlorStartRoute(index: Int): String = businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
+  def deceasedSettlorStartRoute: String = deceasedRoutes.SettlorsNameController.onPageLoad(NormalMode, fakeDraftId).url
 
-  def removeSettlorRoute(index : Int) =
-    routes.RemoveSettlorController.onPageLoad(index, fakeDraftId).url
+  def individualSettlorCYARoute(index: Int): String = individualRoutes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId).url
+  def businessSettlorCYARoute(index: Int): String = businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId).url
+  def deceasedSettlorCYARoute: String = deceasedRoutes.DeceasedSettlorAnswerController.onPageLoad(fakeDraftId).url
 
-  def removeSettlorRoute =
-    controllers.register.settlors.deceased_settlor.routes.RemoveSettlorController.onPageLoad(fakeDraftId).url
+  def removeLivingSettlorRoute(index: Int): String = routes.RemoveSettlorYesNoController.onPageLoadLiving(index, fakeDraftId).url
+  def removeDeceasedSettlorRoute(): String = routes.RemoveSettlorYesNoController.onPageLoadDeceased(fakeDraftId).url
 
   "AddSettlorViewHelper" when {
 
@@ -76,8 +77,8 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.inProgress mustBe List(
-            AddRow("No name added", typeLabel = "Individual Settlor", individualSettlorStartRoute(index), removeSettlorRoute(index)),
-            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorStartRoute(indexOne), removeSettlorRoute(indexOne))
+            AddRow("No name added", typeLabel = "Individual Settlor", individualSettlorStartRoute(index), removeLivingSettlorRoute(index)),
+            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorStartRoute(indexOne), removeLivingSettlorRoute(indexOne))
           )
           rows.complete mustBe Nil
         }
@@ -93,7 +94,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.inProgress mustBe List(
-            AddRow("Business Name", typeLabel = "Business Settlor", businessSettlorStartRoute(index), removeSettlorRoute(index))
+            AddRow("Business Name", typeLabel = "Business Settlor", businessSettlorStartRoute(index), removeLivingSettlorRoute(index))
           )
           rows.complete mustBe Nil
         }
@@ -107,7 +108,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.inProgress mustBe List(
-            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorStartRoute, removeSettlorRoute)
+            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorStartRoute, removeDeceasedSettlorRoute())
           )
           rows.complete mustBe Nil
         }
@@ -127,7 +128,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorCYARoute(index), removeSettlorRoute(index))
+            AddRow("first name last name", typeLabel = "Individual Settlor", individualSettlorCYARoute(index), removeLivingSettlorRoute(index))
           )
           rows.inProgress mustBe Nil
         }
@@ -143,7 +144,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("Business Name", typeLabel = "Business Settlor", businessSettlorCYARoute(index), removeSettlorRoute(index))
+            AddRow("Business Name", typeLabel = "Business Settlor", businessSettlorCYARoute(index), removeLivingSettlorRoute(index))
           )
           rows.inProgress mustBe Nil
         }
@@ -162,7 +163,7 @@ class AddASettlorViewHelperSpec extends RegistrationSpecBase   {
 
           val rows = new AddASettlorViewHelper(userAnswers, fakeDraftId).rows
           rows.complete mustBe List(
-            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorCYARoute, removeSettlorRoute)
+            AddRow("first name last name", typeLabel = "Will Trust", deceasedSettlorCYARoute, removeDeceasedSettlorRoute())
           )
           rows.inProgress mustBe Nil
         }
