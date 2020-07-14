@@ -29,7 +29,7 @@ object BusinessSettlor {
   import play.api.libs.functional.syntax._
 
   implicit lazy val reads: Reads[BusinessSettlor] = {
-    ((__ \ "name").read[String] and
+    ((__ \ "businessName").read[String] and
       (__ \ "utr").readNullable[String] and
       readAddress() and
       (__ \ "companyType").readNullable[String] and

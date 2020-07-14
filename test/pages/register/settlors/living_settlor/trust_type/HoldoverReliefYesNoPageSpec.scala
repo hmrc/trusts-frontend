@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.trust_type
 
 import pages.behaviours.PageBehaviours
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 
+class HoldoverReliefYesNoPageSpec extends PageBehaviours {
 
-class SettlorBusinessNamePageSpec extends PageBehaviours {
+  "HoldoverReliefYesNoPage" must {
 
-  "SettlorBusinessDetailsPage" must {
+    beRetrievable[Boolean](HoldoverReliefYesNoPage)
 
-    beRetrievable[String](SettlorBusinessNamePage(0))
+    beSettable[Boolean](HoldoverReliefYesNoPage)
 
-    beSettable[String](SettlorBusinessNamePage(0))
-
-    beRemovable[String](SettlorBusinessNamePage(0))
+    beRemovable[Boolean](HoldoverReliefYesNoPage)
   }
 }

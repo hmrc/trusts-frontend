@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor
+package pages.register.settlors.living_settlor.trust_type
 
 import models.core.UserAnswers
 import models.registration.pages.KindOfTrust
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
-class uKindOfTrustPageSpec extends PageBehaviours {
+class KindOfTrustPageSpec extends PageBehaviours {
 
   "KindOfTrustPage" must {
 

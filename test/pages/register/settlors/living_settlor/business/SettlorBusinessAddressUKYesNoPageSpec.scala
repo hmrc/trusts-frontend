@@ -16,13 +16,17 @@
 
 package pages.register.settlors.living_settlor.business
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import pages.behaviours.PageBehaviours
 
-case class SettlorBusinessNamePage(index : Int) extends QuestionPage[String] {
+class SettlorBusinessAddressUKYesNoPageSpec extends PageBehaviours {
 
-  override def path: JsPath = LivingSettlors.path \ index \ toString
+  "SettlorBusinessAddressUKYesNoPage" must {
 
-  override def toString: String = "businessName"
+    beRetrievable[Boolean](SettlorBusinessAddressUKYesNoPage(0))
+
+    beSettable[Boolean](SettlorBusinessAddressUKYesNoPage(0))
+
+    beRemovable[Boolean](SettlorBusinessAddressUKYesNoPage(0))
+
+  }
 }
