@@ -143,6 +143,25 @@ entities.trustee.business = Trustee Company
 
 entities.propertyOrLand.default = No address or description added
 
+individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
+individualBeneficiaryRoleInCompany.checkYourAnswersLabel =  What is {0}’s role in the company the trust was created for?
+individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+individualBeneficiaryDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
+individualBeneficiaryRoleInCompany.checkYourAnswersLabel = What is {0}’s role in the company that the trust was created for?
+individualBeneficiaryPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
+individualBeneficiaryPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
+individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
+individualBeneficiaryPassportYeNo.checkYourAnswersLabel = Do you know {0}’s passport details
+individualBeneficiaryPassport.checkYourAnswersLabel = What are {0}’s passport details?
+individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
 createAgentServicesAccount.paragraph1 = Before you can register a trust you will need to create an agent services account. You can do this now.

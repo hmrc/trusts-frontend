@@ -168,6 +168,27 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         result mustEqual allStatus
       }
 
+      "can set status for a draft" in {
+
+        val status = AllStatus(beneficiaries = Some(Completed))
+
+        val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
+
+        server.stubFor(
+          post(urlEqualTo(statusUrl))
+            .withHeader(CONTENT_TYPE, containing("application/json"))
+            .withRequestBody(equalTo(Json.toJson(submissionDraftData).toString()))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+            )
+        )
+
+        val result = Await.result(connector.setStatus(testDraftId, status), Duration.Inf)
+        result.status mustBe Status.OK
+      }
+
+
       "can retrieve registrations for a draft" in {
 
         val resultJson = Json.obj(

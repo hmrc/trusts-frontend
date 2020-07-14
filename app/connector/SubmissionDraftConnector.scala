@@ -56,6 +56,12 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
       section => section.data.as[AllStatus]
     }
 
+  def setStatus(draftId : String, status: AllStatus)
+                  (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
+    val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
+    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/status", Json.toJson(submissionDraftData))
+  }
+
   def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[JsObject] =
     getDraftSection(draftId, registrationSection).map {
       section => section.data.as[JsObject]
