@@ -344,6 +344,11 @@ POST       /:draftId/settlors/change-how-was-deed-of-variation-created          
 
 GET        /:draftId/settlors/information-you-need                                                  controllers.register.settlors.SettlorInfoController.onPageLoad(draftId: String)
 
+GET        /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.RemoveSettlorYesNoController.onPageLoadDeceased(draftId: String)
+POST       /:draftId/settlors/deceased/remove                                                       controllers.register.settlors.RemoveSettlorYesNoController.onSubmitDeceased(draftId: String)
+GET        /:draftId/settlors/:index/remove                                                         controllers.register.settlors.RemoveSettlorYesNoController.onPageLoadLiving(index: Int, draftId: String)
+POST       /:draftId/settlors/:index/remove                                                         controllers.register.settlors.RemoveSettlorYesNoController.onSubmitLiving(index: Int, draftId: String)
+
 ### Deceased Settlor
 
 GET        /:draftId/settlors/deceased/do-you-know-date-of-birth                                    controllers.register.settlors.deceased_settlor.SettlorDateOfBirthYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
