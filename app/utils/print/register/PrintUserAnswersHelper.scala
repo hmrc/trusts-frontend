@@ -20,6 +20,7 @@ import javax.inject.Inject
 import models.core.UserAnswers
 import play.api.i18n.Messages
 import repositories.RegistrationsRepository
+import services.DraftRegistrationService
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
@@ -27,13 +28,15 @@ import viewmodels.AnswerSection
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PrintUserAnswersHelper @Inject()(countryOptions: CountryOptions, registrationsRepository: RegistrationsRepository)
+class PrintUserAnswersHelper @Inject()(
+                                        countryOptions: CountryOptions,
+                                        draftRegistrationService: DraftRegistrationService)
                                       (implicit ec: ExecutionContext){
 
   def summary(draftId: String, userAnswers : UserAnswers)
              (implicit messages: Messages, hc: HeaderCarrier) : Future[List[AnswerSection]] = {
 
-    registrationsRepository.getAnswerSections(draftId).map {
+    draftRegistrationService.getAnswerSections(draftId).map {
       registrationAnswerSections =>
 
       val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, draftId, canEdit = false)

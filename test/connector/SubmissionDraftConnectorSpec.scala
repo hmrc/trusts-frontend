@@ -150,6 +150,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44), None)
         )
       }
+
       "can retrieve status for a draft" in {
 
         val allStatus = AllStatus(beneficiaries = Some(Completed))
@@ -187,7 +188,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result = Await.result(connector.setStatus(testDraftId, status), Duration.Inf)
         result.status mustBe Status.OK
       }
-
 
       "can retrieve registrations for a draft" in {
 

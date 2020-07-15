@@ -19,19 +19,27 @@ package services
 import java.util.UUID
 
 import akka.stream.Materializer
+import connector.SubmissionDraftConnector
 import javax.inject.Inject
-import models.core.UserAnswers
+import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
+import models.core.{ReadOnlyUserAnswers, ReadableUserAnswers, UserAnswers}
+import models.registration.pages.RoleInCompany
+import models.registration.pages.Status.InProgress
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
+import pages.register.beneficiaries.individual.RoleInCompanyPage
 import repositories.RegistrationsRepository
+import sections.beneficiaries.IndividualBeneficiaries
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
+import viewmodels.RegistrationAnswerSections
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CreateDraftRegistrationService @Inject()(
-                                                registrationsRepository: RegistrationsRepository,
-                                                auditConnector: AuditConnector
-                                              )(implicit ec: ExecutionContext, m: Materializer) {
+class DraftRegistrationService @Inject()(
+                                          registrationsRepository: RegistrationsRepository,
+                                          submissionDraftConnector: SubmissionDraftConnector,
+                                          auditConnector: AuditConnector
+                                        )(implicit ec: ExecutionContext, m: Materializer) {
 
   private def build[A](request: OptionalRegistrationDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] = {
     val draftId = UUID.randomUUID().toString
@@ -50,6 +58,30 @@ class CreateDraftRegistrationService @Inject()(
 
   def create[A](request : OptionalRegistrationDataRequest[A])(implicit hc : HeaderCarrier) : Future[String] =
     build(request)
+
+  def getAnswerSections(draftId: String)(implicit hc : HeaderCarrier): Future[RegistrationAnswerSections] =
+    registrationsRepository.getAnswerSections(draftId)
+
+  def setBeneficiaryStatus(draftId: String)(implicit hc : HeaderCarrier): Future[Boolean] =
+    submissionDraftConnector.getDraftBeneficiaries(draftId: String) flatMap { response =>
+      val answers = response.data.as[ReadOnlyUserAnswers]
+
+      val requiredPagesAnswered: Boolean =
+        answers
+          .get(IndividualBeneficiaries)
+          .forall {
+            _.zipWithIndex.exists{ x =>
+              answers.get(RoleInCompanyPage(x._2)).isDefined
+            }
+          }
+
+      if(!requiredPagesAnswered){
+        registrationsRepository.setAllStatus(draftId, AllStatus(beneficiaries = Some(InProgress)))
+      } else {
+        Future.successful(true)
+      }
+
+    }
 
 }
 

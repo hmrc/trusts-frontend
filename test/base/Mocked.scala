@@ -24,7 +24,7 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.AnyContent
 import repositories.RegistrationsRepository
-import services.{CreateDraftRegistrationService, SubmissionService}
+import services.{DraftRegistrationService, SubmissionService}
 import utils.TestUserAnswers
 import viewmodels.RegistrationAnswerSections
 
@@ -35,7 +35,7 @@ trait Mocked extends MockitoSugar {
   val registrationsRepository : RegistrationsRepository = mock[RegistrationsRepository]
 
   val mockSubmissionService : SubmissionService = mock[SubmissionService]
-  val mockCreateDraftRegistrationService : CreateDraftRegistrationService = mock[CreateDraftRegistrationService]
+  val mockCreateDraftRegistrationService : DraftRegistrationService = mock[DraftRegistrationService]
 
   when(mockCreateDraftRegistrationService.create(any[OptionalRegistrationDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))

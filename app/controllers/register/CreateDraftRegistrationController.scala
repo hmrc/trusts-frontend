@@ -21,14 +21,14 @@ import javax.inject.Inject
 import models.NormalMode
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.CreateDraftRegistrationService
+import services.DraftRegistrationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 
 import scala.concurrent.ExecutionContext
 
 class CreateDraftRegistrationController @Inject()(
                                                    val controllerComponents: MessagesControllerComponents,
-                                                   draftService : CreateDraftRegistrationService,
+                                                   draftService : DraftRegistrationService,
                                                    identify: RegistrationIdentifierAction
                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
