@@ -28,6 +28,7 @@ import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import play.api.inject.bind
 import pages.entitystatus._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
@@ -42,6 +43,7 @@ import pages.register.trustees.individual._
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.DraftRegistrationService
 import utils.countryOptions.CountryOptions
 import utils.{CheckYourAnswersHelper, TestUserAnswers}
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
@@ -73,7 +75,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
     )
 
     when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
-    when(registrationsRepository.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
+    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {
 
@@ -178,7 +180,8 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         beneficiarySections(1)
       )
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
 
       val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad(fakeDraftId).url)
 

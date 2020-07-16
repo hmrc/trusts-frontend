@@ -104,10 +104,8 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
 
     val name = "First Last"
-    val benName = "BenFirst BenLast"
     val trusteeName = "TrusteeFirst TrusteeLast"
     val yes = "Yes"
-    val no = "No"
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))
 

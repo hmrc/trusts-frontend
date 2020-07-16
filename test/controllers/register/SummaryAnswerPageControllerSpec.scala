@@ -70,7 +70,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     beneficiaries = Some(beneficiarySections)
   )
 
-  when(registrationsRepository.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
+  when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
 
   "SummaryAnswersController" must {
 
