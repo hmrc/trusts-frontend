@@ -47,9 +47,9 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private lazy val connector = injector.instanceOf[SubmissionDraftConnector]
 
   private val testDraftId = "draftId"
-  private val testSection = "section"
   private val submissionsUrl = s"/trusts/register/submission-drafts"
   private val mainUrl = s"$submissionsUrl/$testDraftId/main"
+  private val beneficiariesUrl = s"$submissionsUrl/$testDraftId/beneficiaries"
   private val statusUrl = s"$submissionsUrl/$testDraftId/status"
   private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
@@ -83,6 +83,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result = Await.result(connector.setDraftMain(testDraftId, sectionData, inProgress = true, Some("ref")), Duration.Inf)
         result.status mustBe Status.OK
       }
+
       "can be retrieved for main" in {
 
         val draftData = Json.parse(
@@ -114,6 +115,41 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         )
 
         val result: SubmissionDraftResponse = Await.result(connector.getDraftMain(testDraftId), Duration.Inf)
+        result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
+        result.data mustBe draftData
+      }
+
+      "can be retrieved for beneficiaries" in {
+
+        val draftData = Json.parse(
+          """
+            |{
+            | "field1": "value1",
+            | "field2": "value2"
+            |}
+            |""".stripMargin)
+
+        val draftResponseJson =
+          """
+            |{
+            | "createdAt": "2012-02-03T09:30:00",
+            | "data": {
+            |  "field1": "value1",
+            |  "field2": "value2"
+            | }
+            |}
+            |""".stripMargin
+
+        server.stubFor(
+          get(urlEqualTo(beneficiariesUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(draftResponseJson)
+            )
+        )
+
+        val result: SubmissionDraftResponse = Await.result(connector.getDraftBeneficiaries(testDraftId), Duration.Inf)
         result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
         result.data mustBe draftData
       }
