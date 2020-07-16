@@ -41,7 +41,8 @@
           symbol = Some("currency"),
           symbolText = Some(messages(s"symbolText.asSterling")),
           hint = Some(messages(s"currentValue.hint")),
-          labelAsHeading = true
+          labelAsHeading = true,
+          inputMode = Some("numeric")
         )
 
         @components.submit_button()
