@@ -94,6 +94,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case SettlorBusinessAddressInternationalPage(index) => _ => displayAdditionalQuestionsForEmploymentTrusts(draftId, index)
     case SettlorBusinessTypePage(index) => _ => _ => businessRoutes.SettlorBusinessTimeYesNoController.onPageLoad(NormalMode, index, draftId)
     case SettlorBusinessTimeYesNoPage(index) => _ => _ => businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, draftId)
+    case SettlorBusinessAnswerPage => _ => _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
     case AddASettlorPage => _ => addSettlorRoute(draftId)
     case AddASettlorYesNoPage  => _ => yesNoNav(AddASettlorYesNoPage,
       yesCall = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId),
