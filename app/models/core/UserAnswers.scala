@@ -27,16 +27,8 @@ import queries.{Gettable, Settable}
 
 import scala.util.{Failure, Success, Try}
 
-final case class UserAnswers(
-                              draftId: String,
-                              data: JsObject = Json.obj(),
-                              progress : RegistrationStatus = NotStarted,
-                              createdAt : LocalDateTime = LocalDateTime.now,
-                              internalAuthId :String
-                            ) {
-
-  import UserAnswerImplicits._
-
+trait ReadableUserAnswers {
+  val data: JsObject
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] = {
     Reads.at(page.path).reads(data) match {
       case JsSuccess(value, _) => Some(value)
@@ -45,6 +37,23 @@ final case class UserAnswers(
         None
     }
   }
+}
+
+case class ReadOnlyUserAnswers(data: JsObject) extends ReadableUserAnswers
+
+object ReadOnlyUserAnswers {
+  implicit lazy val formats: OFormat[ReadOnlyUserAnswers] = Json.format[ReadOnlyUserAnswers]
+}
+
+final case class UserAnswers(
+                              draftId: String,
+                              data: JsObject = Json.obj(),
+                              progress : RegistrationStatus = NotStarted,
+                              createdAt : LocalDateTime = LocalDateTime.now,
+                              internalAuthId :String
+                            ) extends ReadableUserAnswers {
+
+  import UserAnswerImplicits._
 
   def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 

@@ -21,6 +21,8 @@ import java.time.{LocalDate, ZoneOffset}
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import models.NormalMode
+import org.mockito.Mockito._
+import org.mockito.Matchers._
 import models.core.UserAnswers
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.registration.pages.{DeedOfVariation, KindOfTrust, PassportOrIdCardDetails}
@@ -54,308 +56,311 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
   "SettlorIndividualAnswer Controller" must {
 
-    "settlor individual -  no date of birth, no nino, no address" must {
+    "settlor individual" when {
 
-      "return OK and the correct view for a GET" in {
+      "no date of birth, no nino, no address" must {
 
-        val userAnswers: UserAnswers =
-          emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
-            .set(HoldoverReliefYesNoPage, false).success.value
-            .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-            .set(SettlorIndividualNamePage(index), settlorName).success.value
-            .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
-            .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorAddressYesNoPage(index), false).success.value
+        "return OK and the correct view for a GET" in {
 
-        val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+          val userAnswers: UserAnswers =
+            emptyUserAnswers
+              .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+              .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+              .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
+              .set(HoldoverReliefYesNoPage, false).success.value
+              .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+              .set(SettlorIndividualNamePage(index), settlorName).success.value
+              .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
+              .set(SettlorIndividualNINOYesNoPage(index), false).success.value
+              .set(SettlorAddressYesNoPage(index), false).success.value
 
-        val expectedSections = Seq(
-          AnswerSection(
-            None,
-            Seq(
-              checkYourAnswersHelper.setUpAfterSettlorDied.value,
-              checkYourAnswersHelper.kindOfTrust.value,
-              checkYourAnswersHelper.deedOfVariation.value,
-              checkYourAnswersHelper.holdoverReliefYesNo.value,
-              checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
-              checkYourAnswersHelper.settlorIndividualName(index).value,
-              checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value
+          val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+
+          val expectedSections = Seq(
+            AnswerSection(
+              None,
+              Seq(
+                checkYourAnswersHelper.setUpAfterSettlorDied.value,
+                checkYourAnswersHelper.kindOfTrust.value,
+                checkYourAnswersHelper.deedOfVariation.value,
+                checkYourAnswersHelper.holdoverReliefYesNo.value,
+                checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
+                checkYourAnswersHelper.settlorIndividualName(index).value,
+                checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value
+              )
             )
           )
-        )
 
-        val application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+          val application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        val request = FakeRequest(GET, settlorIndividualAnswerRoute)
+          val request = FakeRequest(GET, settlorIndividualAnswerRoute)
 
-        val result: Future[Result] = route(application, request).value
+          val result: Future[Result] = route(application, request).value
 
-        val view: SettlorIndividualAnswersView = application.injector.instanceOf[SettlorIndividualAnswersView]
+          val view: SettlorIndividualAnswersView = application.injector.instanceOf[SettlorIndividualAnswersView]
 
-        status(result) mustEqual OK
+          status(result) mustEqual OK
 
-        contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+          contentAsString(result) mustEqual
+            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
 
-        application.stop()
+          application.stop()
+        }
+
+      }
+
+      "with date of birth, with nino, and no address" must {
+
+        "return OK and the correct view for a GET" in {
+
+          val userAnswers: UserAnswers =
+            emptyUserAnswers
+              .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+              .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+              .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplaceAbsolute).success.value
+              .set(HoldoverReliefYesNoPage, false).success.value
+              .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+              .set(SettlorIndividualNamePage(index), settlorName).success.value
+              .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
+              .set(SettlorIndividualDateOfBirthPage(index), validDate).success.value
+              .set(SettlorIndividualNINOYesNoPage(index), true).success.value
+              .set(SettlorIndividualNINOPage(index), nino).success.value
+              .set(SettlorAddressYesNoPage(index), false).success.value
+
+          val countryOptions = injector.instanceOf[CountryOptions]
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+
+          val expectedSections = Seq(
+            AnswerSection(
+              None,
+              Seq(
+                checkYourAnswersHelper.setUpAfterSettlorDied.value,
+                checkYourAnswersHelper.kindOfTrust.value,
+                checkYourAnswersHelper.deedOfVariation.value,
+                checkYourAnswersHelper.holdoverReliefYesNo.value,
+                checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
+                checkYourAnswersHelper.settlorIndividualName(index).value,
+                checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualDateOfBirth(index).value,
+                checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualNINO(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value
+              )
+            )
+          )
+
+          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+          val request = FakeRequest(GET, settlorIndividualAnswerRoute)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[SettlorIndividualAnswersView]
+
+          status(result) mustEqual OK
+
+          contentAsString(result) mustEqual
+            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+          application.stop()
+        }
+
+      }
+
+      "no date of birth, no nino, UK address, no passport, no ID card" must {
+
+        "return OK and the correct view for a GET" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+              .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+              .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
+              .set(HoldoverReliefYesNoPage, false).success.value
+              .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+              .set(SettlorIndividualNamePage(index), settlorName).success.value
+              .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
+              .set(SettlorIndividualNINOYesNoPage(index), false).success.value
+              .set(SettlorAddressYesNoPage(index), true).success.value
+              .set(SettlorAddressUKYesNoPage(index), true).success.value
+              .set(SettlorAddressUKPage(index), AddressUK).success.value
+              .set(SettlorIndividualPassportYesNoPage(index), false).success.value
+              .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
+
+          val countryOptions = injector.instanceOf[CountryOptions]
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+
+          val expectedSections = Seq(
+            AnswerSection(
+              None,
+              Seq(
+                checkYourAnswersHelper.setUpAfterSettlorDied.value,
+                checkYourAnswersHelper.kindOfTrust.value,
+                checkYourAnswersHelper.deedOfVariation.value,
+                checkYourAnswersHelper.holdoverReliefYesNo.value,
+                checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
+                checkYourAnswersHelper.settlorIndividualName(index).value,
+                checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressUKYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressUK(index).value,
+                checkYourAnswersHelper.settlorIndividualPassportYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualIDCardYesNo(index).value
+              )
+            )
+          )
+
+          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+          val request = FakeRequest(GET, settlorIndividualAnswerRoute)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[SettlorIndividualAnswersView]
+
+          status(result) mustEqual OK
+
+          contentAsString(result) mustEqual
+            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+          application.stop()
+        }
+
+      }
+
+      "no date of birth, no nino, International address, no passport, no ID card" must {
+
+        "return OK and the correct view for a GET" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+              .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+              .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
+              .set(HoldoverReliefYesNoPage, false).success.value
+              .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+              .set(SettlorIndividualNamePage(index), settlorName).success.value
+              .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
+              .set(SettlorIndividualNINOYesNoPage(index), false).success.value
+              .set(SettlorAddressYesNoPage(index), true).success.value
+              .set(SettlorAddressUKYesNoPage(index), false).success.value
+              .set(SettlorAddressInternationalPage(index), AddressInternational).success.value
+              .set(SettlorIndividualPassportYesNoPage(index), false).success.value
+              .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
+
+          val countryOptions = injector.instanceOf[CountryOptions]
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+
+          val expectedSections = Seq(
+            AnswerSection(
+              None,
+              Seq(
+                checkYourAnswersHelper.setUpAfterSettlorDied.value,
+                checkYourAnswersHelper.kindOfTrust.value,
+                checkYourAnswersHelper.deedOfVariation.value,
+                checkYourAnswersHelper.holdoverReliefYesNo.value,
+                checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
+                checkYourAnswersHelper.settlorIndividualName(index).value,
+                checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressUKYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressInternational(index).value,
+                checkYourAnswersHelper.settlorIndividualPassportYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualIDCardYesNo(index).value
+              )
+            )
+          )
+
+          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+          val request = FakeRequest(GET, settlorIndividualAnswerRoute)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[SettlorIndividualAnswersView]
+
+          status(result) mustEqual OK
+
+          contentAsString(result) mustEqual
+            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+          application.stop()
+        }
+
+      }
+
+      "no date of birth, no nino, UK address, passport, ID card" must {
+
+        "return OK and the correct view for a GET" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
+              .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
+              .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
+              .set(HoldoverReliefYesNoPage, false).success.value
+              .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
+              .set(SettlorIndividualNamePage(index), settlorName).success.value
+              .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
+              .set(SettlorIndividualNINOYesNoPage(index), false).success.value
+              .set(SettlorAddressYesNoPage(index), true).success.value
+              .set(SettlorAddressUKYesNoPage(index), true).success.value
+              .set(SettlorAddressUKPage(index), AddressUK).success.value
+              .set(SettlorIndividualPassportYesNoPage(index), true).success.value
+              .set(SettlorIndividualPassportPage(index), passportOrIDCardDetails).success.value
+              .set(SettlorIndividualIDCardYesNoPage(index), true).success.value
+              .set(SettlorIndividualIDCardPage(index), passportOrIDCardDetails).success.value
+
+          val countryOptions = injector.instanceOf[CountryOptions]
+          val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+
+          val expectedSections = Seq(
+            AnswerSection(
+              None,
+              Seq(
+                checkYourAnswersHelper.setUpAfterSettlorDied.value,
+                checkYourAnswersHelper.kindOfTrust.value,
+                checkYourAnswersHelper.deedOfVariation.value,
+                checkYourAnswersHelper.holdoverReliefYesNo.value,
+                checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
+                checkYourAnswersHelper.settlorIndividualName(index).value,
+                checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressUKYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualAddressUK(index).value,
+                checkYourAnswersHelper.settlorIndividualPassportYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualPassport(index).value,
+                checkYourAnswersHelper.settlorIndividualIDCardYesNo(index).value,
+                checkYourAnswersHelper.settlorIndividualIDCard(index).value
+              )
+            )
+          )
+
+          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+          val request = FakeRequest(GET, settlorIndividualAnswerRoute)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[SettlorIndividualAnswersView]
+
+          status(result) mustEqual OK
+
+          contentAsString(result) mustEqual
+            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+          application.stop()
+        }
+
       }
 
     }
-
-    "settlor individual -  with date of birth, with nino, and no address" must {
-
-      "return OK and the correct view for a GET" in {
-
-        val userAnswers: UserAnswers =
-          emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplaceAbsolute).success.value
-            .set(HoldoverReliefYesNoPage, false).success.value
-            .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-            .set(SettlorIndividualNamePage(index), settlorName).success.value
-            .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
-            .set(SettlorIndividualDateOfBirthPage(index), validDate).success.value
-            .set(SettlorIndividualNINOYesNoPage(index), true).success.value
-            .set(SettlorIndividualNINOPage(index), nino).success.value
-            .set(SettlorAddressYesNoPage(index), false).success.value
-
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
-
-        val expectedSections = Seq(
-          AnswerSection(
-            None,
-            Seq(
-              checkYourAnswersHelper.setUpAfterSettlorDied.value,
-              checkYourAnswersHelper.kindOfTrust.value,
-              checkYourAnswersHelper.deedOfVariation.value,
-              checkYourAnswersHelper.holdoverReliefYesNo.value,
-              checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
-              checkYourAnswersHelper.settlorIndividualName(index).value,
-              checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualDateOfBirth(index).value,
-              checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualNINO(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value
-            )
-          )
-        )
-
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-        val request = FakeRequest(GET, settlorIndividualAnswerRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[SettlorIndividualAnswersView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
-
-        application.stop()
-      }
-
-    }
-
-    "settlor individual -  no date of birth, no nino, UK address, no passport, no ID card" must {
-
-      "return OK and the correct view for a GET" in {
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
-            .set(HoldoverReliefYesNoPage, false).success.value
-            .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-            .set(SettlorIndividualNamePage(index), settlorName).success.value
-            .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
-            .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorAddressYesNoPage(index), true).success.value
-            .set(SettlorAddressUKYesNoPage(index), true).success.value
-            .set(SettlorAddressUKPage(index), AddressUK).success.value
-            .set(SettlorIndividualPassportYesNoPage(index), false).success.value
-            .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
-
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
-
-        val expectedSections = Seq(
-          AnswerSection(
-            None,
-            Seq(
-              checkYourAnswersHelper.setUpAfterSettlorDied.value,
-              checkYourAnswersHelper.kindOfTrust.value,
-              checkYourAnswersHelper.deedOfVariation.value,
-              checkYourAnswersHelper.holdoverReliefYesNo.value,
-              checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
-              checkYourAnswersHelper.settlorIndividualName(index).value,
-              checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressUKYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressUK(index).value,
-              checkYourAnswersHelper.settlorIndividualPassportYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualIDCardYesNo(index).value
-            )
-          )
-        )
-
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-        val request = FakeRequest(GET, settlorIndividualAnswerRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[SettlorIndividualAnswersView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
-
-        application.stop()
-      }
-
-    }
-
-    "settlor individual -  no date of birth, no nino, International address, no passport, no ID card" must {
-
-      "return OK and the correct view for a GET" in {
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
-            .set(HoldoverReliefYesNoPage, false).success.value
-            .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-            .set(SettlorIndividualNamePage(index), settlorName).success.value
-            .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
-            .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorAddressYesNoPage(index), true).success.value
-            .set(SettlorAddressUKYesNoPage(index), false).success.value
-            .set(SettlorAddressInternationalPage(index), AddressInternational).success.value
-            .set(SettlorIndividualPassportYesNoPage(index), false).success.value
-            .set(SettlorIndividualIDCardYesNoPage(index), false).success.value
-
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
-
-        val expectedSections = Seq(
-          AnswerSection(
-            None,
-            Seq(
-              checkYourAnswersHelper.setUpAfterSettlorDied.value,
-              checkYourAnswersHelper.kindOfTrust.value,
-              checkYourAnswersHelper.deedOfVariation.value,
-              checkYourAnswersHelper.holdoverReliefYesNo.value,
-              checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
-              checkYourAnswersHelper.settlorIndividualName(index).value,
-              checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressUKYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressInternational(index).value,
-              checkYourAnswersHelper.settlorIndividualPassportYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualIDCardYesNo(index).value
-            )
-          )
-        )
-
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-        val request = FakeRequest(GET, settlorIndividualAnswerRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[SettlorIndividualAnswersView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
-
-        application.stop()
-      }
-
-    }
-
-    "settlor individual -  no date of birth, no nino, UK address, passport, ID card" must {
-
-      "return OK and the correct view for a GET" in {
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-            .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-            .set(HowDeedOfVariationCreatedPage, DeedOfVariation.ReplacedWill).success.value
-            .set(HoldoverReliefYesNoPage, false).success.value
-            .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-            .set(SettlorIndividualNamePage(index), settlorName).success.value
-            .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
-            .set(SettlorIndividualNINOYesNoPage(index), false).success.value
-            .set(SettlorAddressYesNoPage(index), true).success.value
-            .set(SettlorAddressUKYesNoPage(index), true).success.value
-            .set(SettlorAddressUKPage(index), AddressUK).success.value
-            .set(SettlorIndividualPassportYesNoPage(index), true).success.value
-            .set(SettlorIndividualPassportPage(index), passportOrIDCardDetails).success.value
-            .set(SettlorIndividualIDCardYesNoPage(index), true).success.value
-            .set(SettlorIndividualIDCardPage(index), passportOrIDCardDetails).success.value
-
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
-
-        val expectedSections = Seq(
-          AnswerSection(
-            None,
-            Seq(
-              checkYourAnswersHelper.setUpAfterSettlorDied.value,
-              checkYourAnswersHelper.kindOfTrust.value,
-              checkYourAnswersHelper.deedOfVariation.value,
-              checkYourAnswersHelper.holdoverReliefYesNo.value,
-              checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
-              checkYourAnswersHelper.settlorIndividualName(index).value,
-              checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressUKYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualAddressUK(index).value,
-              checkYourAnswersHelper.settlorIndividualPassportYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualPassport(index).value,
-              checkYourAnswersHelper.settlorIndividualIDCardYesNo(index).value,
-              checkYourAnswersHelper.settlorIndividualIDCard(index).value
-            )
-          )
-        )
-
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-        val request = FakeRequest(GET, settlorIndividualAnswerRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[SettlorIndividualAnswersView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
-
-        application.stop()
-      }
-
-    }
-
 
     "redirect to SettlorIndividualOrBusinessPage on a GET if no answer for 'Is the settlor an individual or business?' at index" in {
       val answers =
@@ -392,6 +397,52 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+
+      application.stop()
+    }
+
+    "update beneficiary status when kindOfTrustPage is set to Employees" in {
+
+      val userAnswers =
+        emptyUserAnswers
+          .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+          .set(KindOfTrustPage, KindOfTrust.Employees).success.value
+
+      when(mockCreateDraftRegistrationService.setBeneficiaryStatus(any())(any()))
+        .thenReturn(Future.successful(true))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(POST, settlorIndividualAnswerRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustBe fakeNavigator.desiredRoute.url
+
+      verify(mockCreateDraftRegistrationService)
+        .setBeneficiaryStatus(any())(any())
+
+      application.stop()
+    }
+
+    "not update beneficiary status when kindOfTrustPage is not set to Employees" in {
+
+      val userAnswers =
+        emptyUserAnswers
+          .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
+          .set(KindOfTrustPage, KindOfTrust.Deed).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      val request = FakeRequest(POST, settlorIndividualAnswerRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustBe fakeNavigator.desiredRoute.url
+
+      verifyZeroInteractions(mockCreateDraftRegistrationService)
 
       application.stop()
     }

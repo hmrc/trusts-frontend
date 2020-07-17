@@ -20,13 +20,17 @@ import controllers.actions._
 import controllers.actions.register._
 import javax.inject.Inject
 import models.NormalMode
+import models.core.UserAnswers
+import models.registration.pages.KindOfTrust.Employees
 import models.registration.pages.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.LivingSettlorStatus
+import pages.register.settlors.living_settlor.trust_type.KindOfTrustPage
 import pages.register.settlors.living_settlor.{SettlorIndividualAnswerPage, SettlorIndividualOrBusinessPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
+import services.DraftRegistrationService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.CheckYourAnswersHelper
 import utils.annotations.LivingSettlor
@@ -35,10 +39,12 @@ import viewmodels.AnswerSection
 import views.html.register.settlors.living_settlor.SettlorIndividualAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 class SettlorIndividualAnswerController @Inject()(
                                                    override val messagesApi: MessagesApi,
                                                    registrationsRepository: RegistrationsRepository,
+                                                   draftRegistrationService: DraftRegistrationService,
                                                    @LivingSettlor navigator: Navigator,
                                                    identify: RegistrationIdentifierAction,
                                                    getData: DraftIdRetrievalActionProvider,
@@ -97,10 +103,20 @@ class SettlorIndividualAnswerController @Inject()(
 
       val answers = request.userAnswers.set(LivingSettlorStatus(index), Completed)
 
-      for {
-        updatedAnswers <- Future.fromTry(answers)
-        _ <- registrationsRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(SettlorIndividualAnswerPage, NormalMode, draftId)(request.userAnswers))
+      Future.fromTry(answers) flatMap { updatedAnswers =>
 
+        if(updatedAnswers.get(KindOfTrustPage).contains(Employees)){
+          for {
+            _ <- draftRegistrationService.setBeneficiaryStatus(draftId)
+            _ <- registrationsRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(SettlorIndividualAnswerPage, NormalMode, draftId)(request.userAnswers))
+        } else {
+          registrationsRepository.set(updatedAnswers) map { _ =>
+            Redirect(navigator.nextPage(SettlorIndividualAnswerPage, NormalMode, draftId)(request.userAnswers))
+          }
+        }
+
+      }
   }
+
 }

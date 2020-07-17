@@ -28,6 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
   private val mainSection = "main"
+  private val beneficiariesSection = "beneficiaries"
   private val registrationSection = "registration"
   private val statusSection = "status"
   private val answerSectionsSection = "answerSections"
@@ -47,6 +48,9 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
   def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] =
     getDraftSection(draftId, mainSection)
 
+  def getDraftBeneficiaries(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[SubmissionDraftResponse] =
+    getDraftSection(draftId, beneficiariesSection)
+
   def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[List[SubmissionDraftId]] = {
     http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
   }
@@ -57,7 +61,7 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
     }
 
   def setStatus(draftId : String, status: AllStatus)
-                  (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
+               (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
     val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
     http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/status", Json.toJson(submissionDraftData))
   }
