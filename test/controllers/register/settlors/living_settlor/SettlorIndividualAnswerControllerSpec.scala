@@ -21,11 +21,11 @@ import java.time.{LocalDate, ZoneOffset}
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import models.NormalMode
-import org.mockito.Mockito._
-import org.mockito.Matchers._
 import models.core.UserAnswers
 import models.core.pages.{FullName, IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.registration.pages.{DeedOfVariation, KindOfTrust, PassportOrIdCardDetails}
+import org.mockito.Matchers._
+import org.mockito.Mockito._
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage}
 import pages.register.settlors.living_settlor.{SettlorIndividualOrBusinessPage, _}
@@ -53,6 +53,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
   val index: Int = 0
 
   lazy val settlorIndividualAnswerRoute: String = routes.SettlorIndividualAnswerController.onPageLoad(index, fakeDraftId).url
+  lazy val onSubmit: Call = routes.SettlorIndividualAnswerController.onSubmit(index, fakeDraftId)
 
   "SettlorIndividualAnswer Controller" must {
 
@@ -105,7 +106,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -163,7 +164,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -225,7 +226,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -287,7 +288,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
           application.stop()
         }
@@ -353,7 +354,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
           application.stop()
         }

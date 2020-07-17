@@ -230,6 +230,17 @@ trait LivingSettlorRoutes {
         navigator.nextPage(SettlorBusinessTimeYesNoPage(index), mode, fakeDraftId)(answers)
           .mustBe(businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId))
       }
+
+      "Check details page -> Add a settlor page" in {
+
+        val page = SettlorBusinessAnswerPage
+
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+            navigator.nextPage(page, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(controllers.register.settlors.routes.AddASettlorController.onPageLoad(fakeDraftId))
+        }
+      }
     }
   }
 
