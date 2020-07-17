@@ -138,7 +138,7 @@ class DraftRegistrationServiceSpec extends WordSpec with MustMatchers with Mocki
         when(submissionDraftConnector.getDraftBeneficiaries(eqTo(draftId))(any(), any()))
           .thenReturn(Future.successful(SubmissionDraftResponse(
             LocalDateTime.now(),
-            answers(Json.arr()),
+            Json.obj(),
             None
           )))
 
