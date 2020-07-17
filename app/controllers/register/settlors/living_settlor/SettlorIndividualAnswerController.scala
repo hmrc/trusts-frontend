@@ -18,9 +18,9 @@ package controllers.register.settlors.living_settlor
 
 import controllers.actions._
 import controllers.actions.register._
+import controllers.register.settlors.living_settlor.routes.SettlorIndividualAnswerController
 import javax.inject.Inject
 import models.NormalMode
-import models.core.UserAnswers
 import models.registration.pages.KindOfTrust.Employees
 import models.registration.pages.Status.Completed
 import navigation.Navigator
@@ -39,7 +39,6 @@ import viewmodels.AnswerSection
 import views.html.register.settlors.living_settlor.SettlorIndividualAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
 
 class SettlorIndividualAnswerController @Inject()(
                                                    override val messagesApi: MessagesApi,
@@ -95,7 +94,7 @@ class SettlorIndividualAnswerController @Inject()(
         )
       )
 
-      Ok(view(index, draftId, sections))
+      Ok(view(SettlorIndividualAnswerController.onSubmit(index, draftId), sections))
   }
 
   def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {
