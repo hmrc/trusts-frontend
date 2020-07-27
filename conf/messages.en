@@ -143,24 +143,6 @@ entities.trustee.business = Trustee Company
 
 entities.propertyOrLand.default = No address or description added
 
-individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
-individualBeneficiaryRoleInCompany.checkYourAnswersLabel = What is {0}’s role in the company that the trust was created for?
-individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
-individualBeneficiaryDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
-individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
-individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
-individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
-individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
-individualBeneficiaryAddressInternational.checkYourAnswersLabel = What is {0}’s address?
-individualBeneficiaryPassportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
-individualBeneficiaryPassportDetails.checkYourAnswersLabel = What are {0}’s passport details?
-individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
-individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
-individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
-
 createAgentServicesAccount.title = Create an agent services account
 createAgentServicesAccount.heading = Create an agent services account
 createAgentServicesAccount.paragraph1 = Before you can register a trust you will need to create an agent services account. You can do this now.
@@ -1590,3 +1572,46 @@ partnershipAnswers.title = Check asset details
 partnershipAnswers.heading = Check asset details
 
 classBeneficiaryDescription.checkYourAnswersLabel = What is the description for the class of beneficiaries?
+
+individualBeneficiaryName.checkYourAnswersLabel = What is the name of the individual?
+individualBeneficiaryRoleInCompany.checkYourAnswersLabel = What is {0}’s role in the company that the trust was created for?
+individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+individualBeneficiaryDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+individualBeneficiaryAddressUK.checkYourAnswersLabel = What is {0}’s address?
+individualBeneficiaryAddressInternational.checkYourAnswersLabel = What is {0}’s address?
+individualBeneficiaryPassportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+individualBeneficiaryPassportDetails.checkYourAnswersLabel = What are {0}’s passport details?
+individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
+
+charityBeneficiaryName.checkYourAnswersLabel = What is the name of the charity?
+charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+charityBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+charityBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+charityBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
+charityBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+
+trustBeneficiaryName.checkYourAnswersLabel = What is the name of the trust?
+trustBeneficiaryDiscretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+trustBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+trustBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
+trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+trustBeneficiary.checkDetails.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
+
+companyBeneficiary.name.checkYourAnswersLabel = What is the company’s name?
+companyBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+companyBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+companyBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+companyBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+companyBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+companyBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
