@@ -1591,13 +1591,13 @@ individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}�
 individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 
-charityBeneficiaryName.checkYourAnswersLabel = What is the name of the charity?
-charityBeneficiaryShareOfIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-charityBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
-charityBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-charityBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-charityBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
-charityBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+charity.name.checkYourAnswersLabel = What is the charity’s name?
+charity.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+charity.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+charity.addressInTheUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+charity.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+charity.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
 
 trustBeneficiaryName.checkYourAnswersLabel = What is the name of the trust?
 trustBeneficiaryDiscretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
