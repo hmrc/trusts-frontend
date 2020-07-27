@@ -16,8 +16,10 @@
 
 package utils
 
-import controllers.register.settlors.living_settlor.routes
+import controllers.register.settlors.routes
+import controllers.register.settlors.living_settlor.{routes => individualRoutes}
 import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
+import controllers.register.settlors.deceased_settlor.{routes => deceasedRoutes}
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.Status._
@@ -64,41 +66,56 @@ class AddASettlorViewHelper(userAnswers: UserAnswers, draftId: String)(implicit 
     Some(parseToRows(vm, index))
   }
 
-  private def parseToRows(mvm: SettlorViewModel, index: Int): AddRow = {
-    val defaultName = messages("entities.no.name.added")
+  private def parseToRows(vm: SettlorViewModel, index: Int): AddRow = {
 
-    mvm match {
+    vm match {
+
       case SettlorLivingIndividualViewModel(_, name, status) => AddRow(
-        name,
-        messages("entity.settlor.individual"),
-        if (status == InProgress) routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url
-        else routes.SettlorIndividualAnswerController.onPageLoad(index, draftId).url,
-        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
+        name = name,
+        typeLabel = messages("entity.settlor.individual"),
+        changeUrl = if (status == InProgress) {
+          individualRoutes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url
+        } else {
+          individualRoutes.SettlorIndividualAnswerController.onPageLoad(index, draftId).url
+        },
+        removeUrl = routes.RemoveSettlorYesNoController.onPageLoadLiving(index, draftId).url
       )
+
       case SettlorBusinessTypeViewModel(_, name, status) => AddRow(
-        name,
-        messages("entity.settlor.business"),
-        if (status == InProgress) businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url
-        else businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, draftId).url,
-        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
+        name = name,
+        typeLabel = messages("entity.settlor.business"),
+        changeUrl = if (status == InProgress) {
+          businessRoutes.SettlorBusinessNameController.onPageLoad(NormalMode, index, draftId).url
+        } else {
+          businessRoutes.SettlorBusinessAnswerController.onPageLoad(index, draftId).url
+        },
+        removeUrl = routes.RemoveSettlorYesNoController.onPageLoadLiving(index, draftId).url
       )
+
       case SettlorDeceasedIndividualViewModel(_, name, status) => AddRow(
-        name,
-        messages("entity.settlor.deceased"),
-        if (status == InProgress) controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId).url
-        else controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId).url,
-        removeUrl = controllers.register.settlors.deceased_settlor.routes.RemoveSettlorController.onPageLoad(draftId).url
+        name = name,
+        typeLabel = messages("entity.settlor.deceased"),
+        changeUrl = if (status == InProgress) {
+          deceasedRoutes.SettlorsNameController.onPageLoad(NormalMode, draftId).url
+        } else {
+          deceasedRoutes.DeceasedSettlorAnswerController.onPageLoad(draftId).url
+        },
+        removeUrl = routes.RemoveSettlorYesNoController.onPageLoadDeceased(draftId).url
       )
+
       case DefaultSettlorViewModel(_, status) => AddRow(
-        defaultName,
-        messages("entity.settlor.individual"),
-        if (status == InProgress) routes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url
-        else routes.SettlorIndividualAnswerController.onPageLoad(index, draftId).url,
-        removeUrl = routes.RemoveSettlorController.onPageLoad(index, draftId).url
+        name = messages("entities.no.name.added"),
+        typeLabel = messages("entity.settlor.individual"),
+        changeUrl = if (status == InProgress) {
+          individualRoutes.SettlorIndividualNameController.onPageLoad(NormalMode, index, draftId).url
+        } else {
+          individualRoutes.SettlorIndividualAnswerController.onPageLoad(index, draftId).url
+        },
+        removeUrl = routes.RemoveSettlorYesNoController.onPageLoadLiving(index, draftId).url
       )
+
     }
 
   }
-
 
 }

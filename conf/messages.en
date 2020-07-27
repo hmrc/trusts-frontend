@@ -1315,6 +1315,12 @@ addAnotherSettlorYesNo.title = Are there any additional settlors for the trust?
 addAnotherSettlorYesNo.heading = Are there any additional settlors for the trust?
 addAnotherSettlorYesNo.error.required = Select yes if you want to add a settlor
 
+settlors.defaultText = the settlor
+
+settlors.removeYesNo.title = Are you sure you want to remove the settlor?
+settlors.removeYesNo.heading = Are you sure you want to remove {0}?
+settlors.removeYesNo.error.required = Select yes if you want to remove the settlor
+
 kindOfTrust.title = What kind of trust did the settlor create?
 kindOfTrust.heading = What kind of trust did the settlor create?
 kindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets
