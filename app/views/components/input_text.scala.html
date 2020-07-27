@@ -26,7 +26,8 @@
     optionalHtmlContent: Option[Html] = None,
     symbolText: Option[String] = None,
     inputMode: Option[String] = None,
-    autocomplete: Option[String] = None
+    autocomplete: Option[String] = None,
+    pattern: Option[String] = None
 )(implicit messages: Messages)
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
@@ -58,6 +59,9 @@
         }
         @if(inputMode.nonEmpty) {
             inputmode="@{inputMode.get}"
+        }
+        @if(pattern.nonEmpty) {
+        pattern="@{pattern.get}"
         }
         @if(symbolText.nonEmpty) {
             aria-label='@{label} @{symbolText.get}'

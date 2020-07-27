@@ -45,7 +45,8 @@
             hint = Some(messages(s"assetMoneyValue.hint")),
             optionalHtmlContent = Some(optionalHtmlContent),
             labelAsHeading = true,
-            inputMode = Some("numeric")
+            inputMode = Some("numeric"),
+            pattern = Some("[0-9]*")
         )
 
         @components.submit_button()
