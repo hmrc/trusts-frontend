@@ -39,8 +39,8 @@ class LivingSettlorNavigator @Inject()(
                                         config: FrontendAppConfig
                                       ) extends Navigator(config) {
 
-  override protected def route(draftId: String, ntt: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
-    ntt match {
+  override protected def route(draftId: String, isNonTaxable: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    isNonTaxable match {
       case Some(true) => routeNonTaxable(draftId)
       case _          => routeTaxable(draftId)
     }
