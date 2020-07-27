@@ -1591,8 +1591,6 @@ individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}�
 individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 
-
-charityOrTrust.checkYourAnswersLabel = Is the beneficiary a charity or trust?
 charity.name.checkYourAnswersLabel = What is the charity’s name?
 charity.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
