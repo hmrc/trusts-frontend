@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package navigation
+package navigation.routes.non_taxable
 
-import config.FrontendAppConfig
 import models.core.UserAnswers
-import models.{Mode, NormalMode}
-import pages._
+import pages.Page
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
-class FakeNavigator(config: FrontendAppConfig,
-                    val desiredRoute: Call = Call("GET", "/foo"),
-                    mode: Mode = NormalMode
-                   ) extends Navigator(config) {
-  override def nextPage(page: Page, mode: Mode, fakeDraftId: String, isNonTaxable: Option[Boolean], affinityGroup: AffinityGroup): UserAnswers => Call = _ => desiredRoute
+object NonTaxableDeceasedSettlorRoutes {
+  def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    //TODO - add routing here for NTT
+    ???
+  }
 }

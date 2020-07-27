@@ -94,7 +94,7 @@ trait MatchingRoutes {
                 val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
                   .set(TrustHaveAUTRPage, false).success.value
 
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(answers)
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, None, AffinityGroup.Agent)(answers)
                   .mustBe(controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId))
             }
           }
@@ -109,7 +109,7 @@ trait MatchingRoutes {
                 val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
                   .set(TrustHaveAUTRPage, false).success.value
 
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Organisation)(answers)
+                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, None, AffinityGroup.Organisation)(answers)
                   .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
             }
           }

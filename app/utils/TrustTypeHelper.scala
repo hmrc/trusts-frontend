@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package navigation
+package utils
 
-import config.FrontendAppConfig
 import models.core.UserAnswers
-import models.{Mode, NormalMode}
-import pages._
-import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
 
-class FakeNavigator(config: FrontendAppConfig,
-                    val desiredRoute: Call = Call("GET", "/foo"),
-                    mode: Mode = NormalMode
-                   ) extends Navigator(config) {
-  override def nextPage(page: Page, mode: Mode, fakeDraftId: String, isNonTaxable: Option[Boolean], affinityGroup: AffinityGroup): UserAnswers => Call = _ => desiredRoute
+class TrustTypeHelper {
+
+  def isNonTaxable(userAnswers: UserAnswers): Option[Boolean] = {
+    //TODO - Implement this page: userAnswers.get(TrustTaxableYesNoPage)
+    Some(false)
+  }
+
 }

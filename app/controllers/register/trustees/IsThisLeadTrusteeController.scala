@@ -29,6 +29,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import sections.Trustees
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.TrustTypeHelper
 import viewmodels.addAnother.TrusteeViewModel
 import views.html.register.trustees.IsThisLeadTrusteeView
 
@@ -44,7 +45,8 @@ class IsThisLeadTrusteeController @Inject()(
                                              validateIndex : IndexActionFilterProvider,
                                              YesNoFormProvider: YesNoFormProvider,
                                              val controllerComponents: MessagesControllerComponents,
-                                             view: IsThisLeadTrusteeView
+                                             view: IsThisLeadTrusteeView,
+                                             trustTypeHelper: TrustTypeHelper
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = YesNoFormProvider.withPrefix("isThisLeadTrustee")
@@ -100,7 +102,16 @@ class IsThisLeadTrusteeController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(IsThisLeadTrusteePage(index), value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(IsThisLeadTrusteePage(index), mode, draftId)(updatedAnswers))
+          } yield {
+              Redirect(
+                navigator.nextPage(
+                  IsThisLeadTrusteePage(index),
+                  mode,
+                  draftId,
+                  trustTypeHelper.isNonTaxable(request.userAnswers)
+                )(updatedAnswers)
+              )
+          }
         }
       )
   }

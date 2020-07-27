@@ -21,6 +21,7 @@ import javax.inject.{Inject, Singleton}
 import models._
 import models.core.UserAnswers
 import navigation.routes._
+import navigation.routes.non_taxable._
 import pages._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -34,7 +35,14 @@ class Navigator @Inject()(
     case _ => _ => _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
-  protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] =
+  protected def route(draftId: String, ntt: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    ntt match {
+      case Some(true) => routeNonTaxable(draftId)
+      case _          => routeTaxable(draftId)
+    }
+  }
+
+  protected def routeTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     AgentRoutes.route(draftId) orElse
       AssetsRoutes.route(draftId) orElse
       DeceasedSettlorRoutes.route(draftId) orElse
@@ -42,12 +50,28 @@ class Navigator @Inject()(
       TrusteeRoutes.route(draftId) orElse
       TrustDetailRoutes.route(draftId) orElse
       defaultRoute
+  }
 
-  def nextPage(page: Page, mode: Mode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
-    case NormalMode =>
-      route(draftId)(page)(af)
-    case CheckMode =>
-      route(draftId)(page)(af)
+  protected def routeNonTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    NonTaxableAgentRoutes.route(draftId) orElse
+      NonTaxableAssetsRoutes.route(draftId) orElse
+      NonTaxableDeceasedSettlorRoutes.route(draftId) orElse
+      NonTaxableMatchingRoutes.route(draftId, config) orElse
+      NonTaxableTrusteeRoutes.route(draftId) orElse
+      NonTaxableTrustDetailRoutes.route(draftId) orElse
+      defaultRoute
+  }
+
+  def nextPage(
+                page: Page,
+                mode: Mode,
+                draftId: String,
+                isNonTaxable: Option[Boolean] = Some(false),
+                af :AffinityGroup = AffinityGroup.Organisation
+              ): UserAnswers => Call = mode match {
+
+    case NormalMode => route(draftId, isNonTaxable)(page)(af)
+    case CheckMode  => route(draftId, isNonTaxable)(page)(af)
   }
 
 }

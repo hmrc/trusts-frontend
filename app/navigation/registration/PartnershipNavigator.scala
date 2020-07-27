@@ -28,12 +28,26 @@ import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class PartnershipNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
+class PartnershipNavigator @Inject()(
+                                      config: FrontendAppConfig
+                                    ) extends Navigator(config) {
 
-  override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  override protected def route(draftId: String, ntt: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    ntt match {
+      case Some(true) => routeNonTaxable(draftId)
+      case _          => routeTaxable(draftId)
+    }
+  }
+
+  override protected def routeTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case PartnershipDescriptionPage(index) => _ => _ => routes.PartnershipStartDateController.onPageLoad(NormalMode, index, draftId)
     case PartnershipStartDatePage(index) => _ => _ => routes.PartnershipAnswerController.onPageLoad(index, draftId)
     case PartnershipAnswerPage => _ => _ => controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
+  }
+
+  override protected def routeNonTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    //TODO - add routing here for NTT
+    ???
   }
 
 }

@@ -51,6 +51,20 @@ object TrusteeRoutes {
     case AddATrusteePage => _ => addATrusteeRoute(draftId)
     case AddATrusteeYesNoPage => _ => addATrusteeYesNoRoute(draftId)
   }
+
+  //TODO - Example to route based on taxable / non taxable question.
+//  private def addATrusteeYesNoRouteNonTaxableExample(draftId: String)(answers: UserAnswers) : Call = {
+//    (answers.get(TrustTaxableYesNoPage), answers.get(AddATrusteeYesNoPage)) match {
+//      case (Some(false), Some(true)) =>
+//        controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId)
+//      case (Some(false), Some(false)) =>
+//        routes.TaskListController.onPageLoad(draftId)
+//      case (Some(true), _) =>
+//        controllers.register.trustees.routes.NewNonTaxableQuestionRoutePage.onPageLoad(NormalMode, 0, draftId)
+//      case _ => routes.SessionExpiredController.onPageLoad()
+//    }
+//  }
+
   private def addATrusteeYesNoRoute(draftId: String)(answers: UserAnswers) : Call = {
     answers.get(AddATrusteeYesNoPage) match {
       case Some(true) =>

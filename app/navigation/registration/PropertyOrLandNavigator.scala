@@ -28,9 +28,18 @@ import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class PropertyOrLandNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
+class PropertyOrLandNavigator @Inject()(
+                                         config: FrontendAppConfig
+                                       ) extends Navigator(config) {
 
-  override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  override protected def route(draftId: String, ntt: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    ntt match {
+      case Some(true) => routeNonTaxable(draftId)
+      case _          => routeTaxable(draftId)
+    }
+  }
+
+  override protected def routeTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case PropertyOrLandAddressYesNoPage(index) => _ => propertyOrLandAddressYesNoPage(draftId, index)
     case PropertyOrLandAddressUkYesNoPage(index) => _ => propertyOrLandAddressUkYesNoPage(draftId, index)
     case PropertyOrLandDescriptionPage(index) => _ => _ => routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, draftId)
@@ -40,6 +49,11 @@ class PropertyOrLandNavigator @Inject()(config: FrontendAppConfig) extends Navig
     case TrustOwnAllThePropertyOrLandPage(index) => _ => trustOwnAllThePropertyOrLandPage(draftId, index)
     case PropertyLandValueTrustPage(index) => _ => _ => routes.PropertyOrLandAnswerController.onPageLoad(index, draftId)
     case PropertyOrLandAnswerPage => _ => _ => controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
+  }
+
+  override protected def routeNonTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    //TODO - add routing here for NTT
+    ???
   }
 
   private def propertyOrLandAddressYesNoPage(draftId: String, index: Int)(answers: UserAnswers) = answers.get(PropertyOrLandAddressYesNoPage(index)) match {

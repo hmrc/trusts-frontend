@@ -35,9 +35,18 @@ import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Navigator(config) {
+class LivingSettlorNavigator @Inject()(
+                                        config: FrontendAppConfig
+                                      ) extends Navigator(config) {
 
-  override protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  override protected def route(draftId: String, ntt: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    ntt match {
+      case Some(true) => routeNonTaxable(draftId)
+      case _          => routeTaxable(draftId)
+    }
+  }
+
+  override protected def routeTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case SetUpAfterSettlorDiedYesNoPage  => _ => yesNoNav(SetUpAfterSettlorDiedYesNoPage,
       yesCall = controllers.register.settlors.deceased_settlor.routes.SettlorsNameController.onPageLoad(NormalMode, draftId),
       noCall = controllers.register.settlors.living_settlor.routes.KindOfTrustController.onPageLoad(NormalMode, draftId))
@@ -99,6 +108,11 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
     case AddASettlorYesNoPage  => _ => yesNoNav(AddASettlorYesNoPage,
       yesCall = routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId),
       noCall = controllers.register.routes.TaskListController.onPageLoad(draftId))
+  }
+
+  override protected def routeNonTaxable(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    //TODO - add routing here for NTT
+    ???
   }
 
   private def addSettlorRoute(draftId: String)(answers: UserAnswers) = {
