@@ -22,6 +22,7 @@ import models.core.UserAnswers
 import models.core.pages.IndividualOrBusiness
 import models.registration.pages.AddATrustee
 import pages.Page
+import pages.register.IsTrustTaxableYesNoPage
 import pages.register.trustees.individual._
 import pages.register.trustees.organisation._
 import pages.register.trustees._
@@ -52,18 +53,20 @@ object TrusteeRoutes {
     case AddATrusteeYesNoPage => _ => addATrusteeYesNoRoute(draftId)
   }
 
-  //TODO - Example to route based on taxable / non taxable question.
-//  private def addATrusteeYesNoRouteNonTaxableExample(draftId: String)(answers: UserAnswers) : Call = {
-//    (answers.get(TrustTaxableYesNoPage), answers.get(AddATrusteeYesNoPage)) match {
-//      case (Some(false), Some(true)) =>
-//        controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId)
-//      case (Some(false), Some(false)) =>
-//        routes.TaskListController.onPageLoad(draftId)
-//      case (Some(true), _) =>
-//        controllers.register.trustees.routes.NewNonTaxableQuestionRoutePage.onPageLoad(NormalMode, 0, draftId)
-//      case _ => routes.SessionExpiredController.onPageLoad()
-//    }
-//  }
+  //TODO - Example 2: Route based on taxable / non taxable
+  // question making changes directly to the current routing mechanism.
+  private def addATrusteeYesNoRouteNonTaxableExample(draftId: String)(answers: UserAnswers) : Call = {
+    (answers.get(IsTrustTaxableYesNoPage), answers.get(AddATrusteeYesNoPage)) match {
+      case (Some(false), Some(true)) =>
+        controllers.register.trustees.routes.IsThisLeadTrusteeController.onPageLoad(NormalMode, 0, draftId)
+      case (Some(false), Some(false)) =>
+        routes.TaskListController.onPageLoad(draftId)
+      case (Some(true), _) =>
+        // Simply an example of different routing based on taxable question (need to add new pages and route)
+        controllers.register.trustees.routes.TrusteeIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)
+      case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
 
   private def addATrusteeYesNoRoute(draftId: String)(answers: UserAnswers) : Call = {
     answers.get(AddATrusteeYesNoPage) match {

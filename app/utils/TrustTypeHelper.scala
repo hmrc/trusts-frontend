@@ -17,12 +17,12 @@
 package utils
 
 import models.core.UserAnswers
+import pages.register.IsTrustTaxableYesNoPage
 
 class TrustTypeHelper {
 
   def isNonTaxable(userAnswers: UserAnswers): Option[Boolean] = {
-    //TODO - Implement this page: userAnswers.get(TrustTaxableYesNoPage)
-    Some(false)
+    userAnswers.get(IsTrustTaxableYesNoPage)
   }
 
 }

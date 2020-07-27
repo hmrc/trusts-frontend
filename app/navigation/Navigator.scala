@@ -35,8 +35,9 @@ class Navigator @Inject()(
     case _ => _ => _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
-  protected def route(draftId: String, ntt: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
-    ntt match {
+  //TODO - Example 1: Alter the routing here providing an alternate route for non taxable
+  protected def route(draftId: String, isNonTaxable: Option[Boolean]): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    isNonTaxable match {
       case Some(true) => routeNonTaxable(draftId)
       case _          => routeTaxable(draftId)
     }
@@ -62,6 +63,9 @@ class Navigator @Inject()(
       defaultRoute
   }
 
+  //TODO - Example 1: - Pass the taxable trust answer into the navigator here as an option
+  // Where the routing needs to change for non taxable pass in else leave call to nextpage as is and
+  // it will default to taxable
   def nextPage(
                 page: Page,
                 mode: Mode,
