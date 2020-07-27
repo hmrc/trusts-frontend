@@ -195,20 +195,6 @@ $(document).ready(function() {
 
   function numberInputs() {
       // =====================================================
-      // Set currency fields to number inputs on touch devices
-      // this ensures on-screen keyboards display the correct style
-      // don't do this for FF as it has issues with trailing zeroes
-      // =====================================================
-      if($('html.touchevents').length > 0 && window.navigator.userAgent.indexOf("Firefox") == -1){
-          $('[data-type="currency"] > input[type="text"], [data-type="percentage"] > input[type="text"]').each(function(){
-            $(this).attr('type', 'number');
-            $(this).attr('step', 'any'); 
-            $(this).attr('min', '0');
-            $('form').attr('novalidate','novalidate');
-          });
-      }
-
-      // =====================================================
       // Disable mouse wheel and arrow keys (38,40) for number inputs to prevent mis-entry
       // also disable commas (188) as they will silently invalidate entry on Safari 10.0.3 and IE11
       // =====================================================
