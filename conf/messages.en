@@ -1621,11 +1621,3 @@ companyBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s addr
 companyBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 companyBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 companyBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
-
-trustBeneficiaryName.checkYourAnswersLabel = What is the name of the trust?
-trustBeneficiaryDiscretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-trustBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
-trustBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
-trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
