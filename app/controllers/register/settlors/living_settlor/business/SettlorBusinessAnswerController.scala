@@ -18,11 +18,14 @@ package controllers.register.settlors.living_settlor.business
 
 import controllers.actions._
 import controllers.actions.register._
+import controllers.register.settlors.living_settlor.business.routes.SettlorBusinessAnswerController
+import controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.LivingSettlorStatus
+import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.settlors.living_settlor.business._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -32,8 +35,6 @@ import utils.CheckYourAnswersHelper
 import utils.annotations.LivingSettlor
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController
-import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import views.html.register.settlors.living_settlor.SettlorIndividualAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -87,7 +88,7 @@ class SettlorBusinessAnswerController @Inject()(
         )
       )
 
-      Ok(view(index, draftId, sections))
+      Ok(view(SettlorBusinessAnswerController.onSubmit(index, draftId), sections))
   }
 
   def onSubmit(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId).async {

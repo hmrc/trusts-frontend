@@ -20,14 +20,15 @@ import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
+import controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.pages.{IndividualOrBusiness, InternationalAddress, UKAddress}
 import models.registration.pages.{DeedOfVariation, KindOfTrust, PassportOrIdCardDetails}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage}
 import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
-import pages.register.settlors.living_settlor.business._
+import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, _}
+import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage}
 import play.api.Application
 import play.api.mvc.{Call, Result}
 import play.api.test.FakeRequest
@@ -35,8 +36,6 @@ import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
-import controllers.register.settlors.living_settlor.routes.SettlorIndividualOrBusinessController
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import views.html.register.settlors.living_settlor.SettlorIndividualAnswersView
 
 import scala.concurrent.Future
@@ -54,6 +53,7 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
   val index: Int = 0
 
   lazy val settlorIndividualAnswerRoute: String = routes.SettlorBusinessAnswerController.onPageLoad(index, fakeDraftId).url
+  lazy val onSubmit: Call = routes.SettlorBusinessAnswerController.onSubmit(index, fakeDraftId)
 
   "SettlorBusinessAnswer Controller" must {
 
@@ -102,7 +102,7 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+          view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -156,7 +156,7 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+          view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -212,7 +212,7 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+          view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }
@@ -268,7 +268,7 @@ class SettlorBusinessAnswerControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(index, fakeDraftId, expectedSections)(fakeRequest, messages).toString
+          view(onSubmit, expectedSections)(fakeRequest, messages).toString
 
         application.stop()
       }

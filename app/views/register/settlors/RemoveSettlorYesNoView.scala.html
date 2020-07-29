@@ -14,31 +14,33 @@
  * limitations under the License.
  *@
 
-@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
+@import controllers.register.settlors.routes._
+@import models.Mode
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(onSubmit: Call, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], draftId: String, onSubmit: Call, settlor: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("settlorIndividualAnswers.title")
+    title = s"${errorPrefix(form)} ${messages("settlors.removeYesNo.title")}"
 ) {
 
-    @components.back_link()
-
-    @components.heading("settlorIndividualAnswers.heading")
-
-    @for(section <- answerSections){
-        @{section match {
-            case a: AnswerSection => components.answer_section(a)
-            case r: RepeaterAnswerSection => components.repeater_answer_section(r)
-        }}
-    }
-
     @formHelper(action = onSubmit, 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.input_yes_no(
+            field = form("value"),
+            label = messages("settlors.removeYesNo.heading", settlor),
+            legendClass = Some("heading-large"),
+            legendAsHeading = true
+        )
+
         @components.submit_button()
     }
 }
