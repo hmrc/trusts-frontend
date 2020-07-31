@@ -1621,3 +1621,11 @@ companyBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s addr
 companyBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 companyBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 companyBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+otherBeneficiary.description.checkYourAnswersLabel = What is the description of the other beneficiary?
+otherBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
+otherBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+otherBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+otherBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+otherBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+otherBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
