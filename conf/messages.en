@@ -1622,6 +1622,15 @@ companyBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in 
 companyBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 companyBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
+employmentRelatedBeneficiary.name.checkYourAnswersLabel = What is the business name?
+employmentRelatedBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+employmentRelatedBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+employmentRelatedBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+employmentRelatedBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+employmentRelatedBeneficiary.description.checkYourAnswersLabel = What is the description of the beneficiary?
+employmentRelatedBeneficiary.numberOfBeneficiaries.checkYourAnswersLabel = What is the approximate number of beneficiaries held in the trust?
+employmentRelatedBeneficiary.checkDetails.heading = Check employment related beneficiary details
+
 otherBeneficiary.description.checkYourAnswersLabel = What is the description of the other beneficiary?
 otherBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 otherBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
