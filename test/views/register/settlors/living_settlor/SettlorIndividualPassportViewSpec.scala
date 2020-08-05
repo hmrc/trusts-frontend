@@ -65,7 +65,7 @@ class SettlorIndividualPassportViewSpec extends QuestionViewBehaviours[PassportO
         form,
         applyView,
         messageKeyPrefix,
-        Seq(("country", None), ("number", None)),
+        Seq(("number", None)),
         name.toString
       )
     }
