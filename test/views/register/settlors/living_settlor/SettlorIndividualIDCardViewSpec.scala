@@ -65,7 +65,7 @@ class SettlorIndividualIDCardViewSpec extends QuestionViewBehaviours[PassportOrI
         form,
         applyView,
         messageKeyPrefix,
-        Seq(("country", None), ("number", None)),
+        Seq(("number", None)),
         name.toString
       )
     }
