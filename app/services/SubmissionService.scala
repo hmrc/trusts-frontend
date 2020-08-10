@@ -53,7 +53,7 @@ class DefaultSubmissionService @Inject()(
 
                 auditService.audit(
                   event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                  registration = registration,
+                  registration = fullRegistrationJson,
                   draftId = userAnswers.draftId,
                   internalId = userAnswers.internalAuthId,
                   response = response
@@ -64,7 +64,7 @@ class DefaultSubmissionService @Inject()(
 
                 auditService.audit(
                   event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                  registration = registration,
+                  registration = fullRegistrationJson,
                   draftId = userAnswers.draftId,
                   internalId = userAnswers.internalAuthId,
                   response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
@@ -73,7 +73,7 @@ class DefaultSubmissionService @Inject()(
               case other =>
                 auditService.audit(
                   event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                  registration = registration,
+                  registration = fullRegistrationJson,
                   draftId = userAnswers.draftId,
                   internalId = userAnswers.internalAuthId,
                   response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
