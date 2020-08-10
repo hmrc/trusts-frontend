@@ -19,9 +19,9 @@ package services
 import auditing.{TrustAuditing, TrustRegistrationSubmissionAuditEvent}
 import config.FrontendAppConfig
 import javax.inject.Inject
-import mapping.registration.Registration
 import models.core.UserAnswers
 import models.core.http.TrustResponse
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
@@ -30,7 +30,7 @@ import scala.concurrent.ExecutionContext.Implicits._
 class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig){
 
   def audit(event: String,
-            registration: Registration,
+            registration: JsValue,
             draftId: String,
             internalId: String,
             response: TrustResponse)(implicit hc: HeaderCarrier) = {

@@ -18,15 +18,15 @@ package services
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import mapping.registration.Registration
 import models.core.UserAnswers
 import models.core.http.TrustResponse
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 class FakeAuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig) extends AuditService(auditConnector, config) {
 
-  override def audit(event: String, registration: Registration, draftId: String, internalId: String, response: TrustResponse)
+  override def audit(event: String, registration: JsValue, draftId: String, internalId: String, response: TrustResponse)
                     (implicit hc: HeaderCarrier): Unit = ()
 
   override def cannotSubmit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Unit = ()

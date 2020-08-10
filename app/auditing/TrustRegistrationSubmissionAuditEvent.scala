@@ -16,12 +16,11 @@
 
 package auditing
 
-import mapping.registration.Registration
 import models.core.http.TrustResponse
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, JsValue, Json}
 
 case class TrustRegistrationSubmissionAuditEvent(
-                                                  registration: Registration,
+                                                  registration: JsValue,
                                                   draftId : String,
                                                   internalAuthId : String,
                                                   response: TrustResponse
