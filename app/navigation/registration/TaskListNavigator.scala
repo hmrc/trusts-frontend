@@ -41,13 +41,8 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     }
   }
 
-  def trusteesJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    userAnswers.get(sections.Trustees).getOrElse(Nil) match {
-      case Nil =>
-        controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
-      case _ :: _ =>
-        controllers.register.trustees.routes.AddATrusteeController.onPageLoad(draftId)
-    }
+  def trusteesJourneyUrl(draftId: String): String = {
+    frontendAppConfig.trusteesFrontendUrl(draftId)
   }
 
   def settlorsJourney(userAnswers: UserAnswers, draftId: String): Call = {

@@ -32,7 +32,6 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
-import pages.register.trustees.IsThisLeadTrusteePage
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
@@ -157,25 +156,12 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     "for trustee task" when {
 
-      "there are no trustees" must {
+      "it always" must {
 
-        "go to TrusteeInfoPage" in {
-          navigator.trusteesJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(fakeDraftId)
+        "go to Trustee service start" in {
+          navigator.trusteesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.trusteesFrontendUrl(fakeDraftId)
         }
-
       }
-
-      "there are trustees" must {
-
-        "go to AddATrustee" in {
-          val answers = emptyUserAnswers
-            .set(IsThisLeadTrusteePage(0), false).success.value
-
-          navigator.trusteesJourney(answers, fakeDraftId) mustBe controllers.register.trustees.routes.AddATrusteeController.onPageLoad(fakeDraftId)
-        }
-
-      }
-
     }
 
     "for task liability task" must {
