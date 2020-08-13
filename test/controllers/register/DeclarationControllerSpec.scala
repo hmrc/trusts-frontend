@@ -54,7 +54,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
     reset(mockSubmissionService)
   }
 
-  when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
+  when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
   "Declaration Controller" must {
 

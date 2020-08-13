@@ -19,6 +19,7 @@ package models
 import java.time.LocalDateTime
 
 import models.registration.pages.Status
+import models.registration.pages.Status.Completed
 import play.api.libs.json.{JsValue, Json, OFormat}
 
 case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgress: Option[Boolean])
@@ -55,11 +56,16 @@ object RegistrationSubmission {
   }
 
   case class AllStatus(
-                        beneficiaries: Option[Status] = None
-                      )
+                        beneficiaries: Option[Status] = None,
+                        trustees: Option[Status] = None
+                      ) {
+    def allComplete: Boolean = beneficiaries.contains(Completed) &&
+                                trustees.contains(Completed)
+  }
 
   object AllStatus {
     implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
+    val withAllComplete = AllStatus(Some(Completed), Some(Completed))
   }
 
   case class AllAnswerSections(

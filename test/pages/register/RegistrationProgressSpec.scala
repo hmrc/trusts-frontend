@@ -85,96 +85,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
     }
   }
 
-  "Trustee section" must {
-
-    "render no tag" when {
-
-      "no trustees in user answers" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-
-        registrationProgress.trusteesStatus(userAnswers) mustBe None
-      }
-
-      "trustees list is empty" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val json = Json.parse(
-          """
-            |{
-            |        "trustees" : [],
-            |        "addATrustee" : "no-complete"
-            |}
-            |""".stripMargin)
-
-        val userAnswers = UserAnswers(draftId = fakeDraftId, data = json.as[JsObject], internalAuthId = "id")
-
-        registrationProgress.trusteesStatus(userAnswers) mustBe None
-      }
-    }
-
-    "render in-progress tag" when {
-
-      "there are trustees that are incomplete" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(IsThisLeadTrusteePage(0), true).success.value
-          .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Status.Completed).success.value
-
-        registrationProgress.trusteesStatus(userAnswers).value mustBe InProgress
-      }
-
-      "there are trustees that are complete, but section flagged not complete" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(IsThisLeadTrusteePage(0), true).success.value
-          .set(TrusteeStatus(0), Status.Completed).success.value
-          .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Status.Completed).success.value
-          .set(AddATrusteePage, AddATrustee.YesLater).success.value
-
-        registrationProgress.trusteesStatus(userAnswers).value mustBe InProgress
-      }
-
-      "there are completed trustees, the section is flagged as completed, but there is no lead trustee" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(IsThisLeadTrusteePage(0), false).success.value
-          .set(TrusteeStatus(0), Status.Completed).success.value
-          .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Status.Completed).success.value
-          .set(AddATrusteePage, AddATrustee.NoComplete).success.value
-
-        registrationProgress.trusteesStatus(userAnswers).value mustBe InProgress
-      }
-    }
-
-    "render complete tag" when {
-
-      "there are trustees that are complete, and section flagged as complete" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(IsThisLeadTrusteePage(0), true).success.value
-          .set(TrusteeStatus(0), Status.Completed).success.value
-          .set(IsThisLeadTrusteePage(1), false).success.value
-          .set(TrusteeStatus(1), Status.Completed).success.value
-          .set(AddATrusteePage, AddATrustee.NoComplete).success.value
-
-        registrationProgress.trusteesStatus(userAnswers).value mustBe Completed
-      }
-    }
-
-  }
-
   "Settlor section" must {
 
     "render no tag" when {
@@ -332,7 +242,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
     "all entities marked as complete" in {
 
-      when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
+      when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
       val application = applicationBuilder().build()
       val registrationProgress = application.injector.instanceOf[RegistrationProgress]
@@ -340,11 +250,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
       val userAnswers = emptyUserAnswers
         .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
         .set(TrustDetailsStatus, Completed).success.value
-        .set(IsThisLeadTrusteePage(0), false).success.value
-        .set(TrusteeStatus(0), Status.Completed).success.value
-        .set(IsThisLeadTrusteePage(1), true).success.value
-        .set(TrusteeStatus(1), Status.Completed).success.value
-        .set(AddATrusteePage, AddATrustee.NoComplete).success.value
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
         .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value

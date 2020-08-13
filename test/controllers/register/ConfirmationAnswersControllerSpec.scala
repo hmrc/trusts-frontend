@@ -74,7 +74,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       beneficiaries = Some(beneficiarySections)
     )
 
-    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
+    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
     when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {

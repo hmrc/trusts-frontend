@@ -173,7 +173,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       beneficiarySections(1)
     )
 
-    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
+    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 

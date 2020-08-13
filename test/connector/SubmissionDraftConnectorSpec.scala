@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
-import models.registration.pages.Status.Completed
+import models.registration.pages.Status.{Completed, InProgress}
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
@@ -207,7 +207,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
       "can set status for a draft" in {
 
-        val status = AllStatus(beneficiaries = Some(Completed))
+        val status = AllStatus(beneficiaries = Some(Completed), trustees = Some(InProgress))
 
         val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
 
