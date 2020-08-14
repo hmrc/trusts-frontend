@@ -32,8 +32,6 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.AccessibilityHelper._
@@ -58,18 +56,6 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
       .set(EstablishedUnderScotsLawPage, true).success.value
       .set(TrustResidentOffshorePage, false).success.value
       .set(TrustDetailsStatus, Completed).success.value
-
-      .set(IsThisLeadTrusteePage(index), true).success.value
-      .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-      .set(TrusteesNamePage(index), FullName("TrusteeFirst", None, "TrusteeLast")).success.value
-      .set(TrusteesDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
-      .set(TrusteeAUKCitizenPage(index), true).success.value
-      .set(TrusteesNinoPage(index), "AB123456C").success.value
-      .set(TelephoneNumberPage(index), "0191 1111111").success.value
-      .set(TrusteeAddressInTheUKPage(index), true).success.value
-      .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
-      .set(TrusteeStatus(index), Status.Completed).success.value
-      .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
       .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
       .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
@@ -144,24 +130,13 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 3
-      subHeaders.size mustBe 2
+      headers.size mustBe 2
+      subHeaders.size mustBe 1
     }
 
     "assert question labels for Trusts" in {
       assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
       assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
-    }
-
-    "assert question labels for Trustees" in {
-      assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
-      assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
-      assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
-      assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
-      assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
-      assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
     }
 
     "assert question labels for Settlors" in {

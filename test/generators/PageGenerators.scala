@@ -247,9 +247,6 @@ trait PageGenerators {
   implicit lazy val arbitraryTelephoneNumberPage: Arbitrary[TelephoneNumberPage] =
     Arbitrary(TelephoneNumberPage(0))
 
-  implicit lazy val arbitraryAddATrusteePage: Arbitrary[AddATrusteePage.type] =
-    Arbitrary(AddATrusteePage)
-
   implicit lazy val arbitraryTrusteesNamePage: Arbitrary[TrusteesNamePage] =
     Arbitrary(TrusteesNamePage(0))
 

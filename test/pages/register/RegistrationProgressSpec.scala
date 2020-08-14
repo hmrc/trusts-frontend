@@ -34,7 +34,7 @@ import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details.WhenTrustSetupPage
-import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
+import pages.register.trustees.IsThisLeadTrusteePage
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 

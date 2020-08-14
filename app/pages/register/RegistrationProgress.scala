@@ -27,7 +27,6 @@ import pages.register.asset.AddAssetsPage
 import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details.WhenTrustSetupPage
-import pages.register.trustees.AddATrusteePage
 import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries

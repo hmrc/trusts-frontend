@@ -29,7 +29,6 @@ class NavigatorSpec extends RegistrationSpecBase
   with Generators
   with TrustDetailsRoutes
   with MatchingRoutes
-  with TrusteeRoutes
   with AgentRoutes
   with AssetRoutes
   with DeceasedSettlorRoutes
@@ -51,8 +50,6 @@ class NavigatorSpec extends RegistrationSpecBase
       behave like matchingRoutes
 
       behave like trustDetailsRoutes
-
-      behave like trusteeRoutes
 
       behave like agentRoutes
 

@@ -150,7 +150,6 @@ object TestUserAnswers extends TryValues {
 
   def withCompleteSections(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(AddATrusteePage, AddATrustee.NoComplete).success.value
       .set(AddAssetsPage, AddAssets.NoComplete).success.value
   }
 

@@ -45,7 +45,7 @@ class PrintUserAnswersHelper @Inject()(
         helper.trustDetails,
         helper.deceasedSettlor,
         helper.livingSettlors,
-        helper.trustees,
+        registrationAnswerSections.trustees,
         registrationAnswerSections.beneficiaries
       ).flatten.flatten
 
