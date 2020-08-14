@@ -19,12 +19,11 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.registration.RegistrationMapper
+import mapping.registration.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType, RegistrationMapper}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
-import models.registration.pages.Status
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
@@ -65,6 +64,8 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def getAnswerSections(draftId: String)
                                   (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
+
+    override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] = Future.successful(testLeadTrusteeOrg)
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]
@@ -118,23 +119,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
       "must not able to submit data  when all data not available for registration" in {
 
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-        val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
-        val userAnswers = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-
-
-        intercept[UnableToRegister] {
-          Await.result( submissionService.submit(userAnswers),Duration.Inf)
-        }
-      }
-
-      "must not able to submit data  when lead details not available" in {
-
-        val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-        val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
-        val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
-        val userAnswers = TestUserAnswers.withDeclaration(asset)
-
+        val userAnswers = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
 
         intercept[UnableToRegister] {
           Await.result( submissionService.submit(userAnswers),Duration.Inf)
@@ -145,8 +130,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
-    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
     val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
     val userAnswers = TestUserAnswers.withDeclaration(asset)

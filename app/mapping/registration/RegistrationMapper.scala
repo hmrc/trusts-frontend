@@ -19,42 +19,45 @@ package mapping.registration
 import javax.inject.Inject
 import mapping._
 import models.core.UserAnswers
+import repositories.RegistrationsRepository
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.ExecutionContext
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
                                     correspondenceMapper: CorrespondenceMapper,
                                     trustDetailsMapper: TrustDetailsMapper,
                                     assetMapper: AssetMapper,
-                                    leadTrusteeMapper: LeadTrusteeMapper,
                                     agentMapper: AgentMapper,
                                     deceasedSettlorMapper: DeceasedSettlorMapper,
                                     taxLiabilityMapper: TaxLiabilityMapper,
-                                    trusteeMapper: TrusteeMapper,
                                     settlorMapper: SettlorsMapper,
                                     matchingMapper: MatchingMapper
-                                  ) extends Mapping[Registration] {
+                                  ) {
 
-  override def build(userAnswers: UserAnswers): Option[Registration] = {
+  def build(userAnswers: UserAnswers, leadTrustee: LeadTrusteeType): Option[Registration] = {
 
     for {
       trustDetails <- trustDetailsMapper.build(userAnswers)
       assets <- assetMapper.build(userAnswers)
-      correspondence <- correspondenceMapper.build(userAnswers)
-      leadTrustees <- leadTrusteeMapper.build(userAnswers)
-      declaration <- declarationMapper.build(userAnswers)
+      leadTrusteeAddress <- getLeadTrusteeAddress(leadTrustee)
+      leadTrusteePhoneNumber <- getLeadTrusteePhoneNumber(leadTrustee)
+      correspondence <- correspondenceMapper.build(userAnswers, leadTrusteeAddress, leadTrusteePhoneNumber)
+      declaration <- declarationMapper.build(userAnswers, leadTrusteeAddress)
     } yield {
 
       val agent = agentMapper.build(userAnswers)
       val deceasedSettlor = deceasedSettlorMapper.build(userAnswers)
       val taxLiability = taxLiabilityMapper.build(userAnswers)
-      val trustees = trusteeMapper.build(userAnswers)
+      val trustees = None
       val settlors = settlorMapper.build(userAnswers)
 
       val entities = TrustEntitiesType(
         naturalPerson = None,
         beneficiary = BeneficiaryType(None, None, None, None, None, None, None),
         deceased = deceasedSettlor,
-        leadTrustees = leadTrustees,
+        leadTrustees = LeadTrusteeType(None, Some(LeadTrusteeOrgType("", "", None, IdentificationOrgType(None, None)))),
         trustees = trustees,
         protectors = None,
         settlors = settlors
@@ -76,4 +79,19 @@ class RegistrationMapper @Inject()(
 
   }
 
+  private def getLeadTrusteeAddress(leadTrustee: LeadTrusteeType): Option[AddressType] = {
+    leadTrustee match {
+      case LeadTrusteeType(Some(trusteeInd), None) => trusteeInd.identification.address
+      case LeadTrusteeType(None, Some(trusteeOrg)) => trusteeOrg.identification.address
+      case _ => None
+    }
+  }
+
+  private def getLeadTrusteePhoneNumber(leadTrustee: LeadTrusteeType): Option[String] = {
+    leadTrustee match {
+      case LeadTrusteeType(Some(trusteeInd), None) => Some(trusteeInd.phoneNumber)
+      case LeadTrusteeType(None, Some(trusteeOrg)) => Some(trusteeOrg.phoneNumber)
+      case _ => None
+    }
+  }
 }

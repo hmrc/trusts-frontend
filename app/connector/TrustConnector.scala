@@ -18,9 +18,8 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import mapping.registration.Registration
 import models.core.http.TrustResponse
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json.{JsValue, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 

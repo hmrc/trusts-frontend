@@ -18,6 +18,7 @@ package base
 
 import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
+import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}
@@ -41,6 +42,16 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
   def emptyUserAnswers = TestUserAnswers.emptyUserAnswers
 
   lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
+
+  val testLeadTrusteeOrg = LeadTrusteeType(
+    None,
+    Some(LeadTrusteeOrgType(
+      "Lead Org",
+      "07911234567",
+      None,
+      IdentificationOrgType(None, Some(AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")))))
+  )
+
 
   private def fakeDraftIdAction(userAnswers: Option[UserAnswers]) = new FakeDraftIdRetrievalActionProvider(
       "draftId",

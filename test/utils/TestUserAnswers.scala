@@ -153,7 +153,7 @@ object TestUserAnswers extends TryValues {
       .set(AddAssetsPage, AddAssets.NoComplete).success.value
   }
 
-  def newTrustCompleteUserAnswers = {
+  def newTrustCompleteUserAnswers: UserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)

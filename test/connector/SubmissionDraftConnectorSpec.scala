@@ -20,9 +20,10 @@ import java.time.LocalDateTime
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
+import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
 import models.registration.pages.Status.{Completed, InProgress}
-import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
+import models.{RegistrationSubmission, SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -53,6 +54,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val statusUrl = s"$submissionsUrl/$testDraftId/status"
   private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
+  private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
 
   "SubmissionDraftConnector" - {
 
@@ -266,6 +268,22 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
                 ),
                 Some("sectionKey2"))
             )
+          ),
+          trustees = Some(
+            List(
+              RegistrationSubmission.AnswerSection(
+                Some("trusteeHeadingKey1"),
+                List(
+                  RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
+                ),
+                Some("trusteeSectionKey1")),
+              RegistrationSubmission.AnswerSection(
+                Some("trusteeHeadingKey2"),
+                List(
+                  RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
+                ),
+                Some("trusteeSectionKey2"))
+            )
           )
         )
 
@@ -284,6 +302,47 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         result mustEqual allAnswerSections
       }
 
+      "can retrieve lead trustee for a draft" in {
+
+        val response = Json.parse(
+          """
+            |{
+            |  "leadTrusteeOrg": {
+            |    "name": "Lead Org",
+            |    "phoneNumber": "07911234567",
+            |    "identification": {
+            |      "address": {
+            |        "line1": "line1",
+            |        "line2": "line2",
+            |        "postCode": "AA1 1AA",
+            |        "country": "GB"
+            |      }
+            |    }
+            |  }
+            |}
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(leadTrusteeUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val expectedLeadTrustee = LeadTrusteeType(
+          None,
+          Some(LeadTrusteeOrgType(
+            "Lead Org",
+            "07911234567",
+            None,
+            IdentificationOrgType(None, Some(AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")))))
+        )
+
+        val result = Await.result(connector.getLeadTrustee(testDraftId), Duration.Inf)
+        result mustEqual expectedLeadTrustee
+      }
     }
   }
 }
