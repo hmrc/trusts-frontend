@@ -18,7 +18,7 @@ package connector
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import mapping.registration.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType, RegistrationMapper}
+import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType, RegistrationMapper}
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
@@ -42,6 +42,8 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       "microservice.services.trusts.port" -> server.port(),
       "auditing.enabled" -> false): _*
     ).build()
+
+  private val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
@@ -77,7 +79,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
       "valid payload to trusts is sent" in {
 
-        val registration = registrationMapper.build(newTrustUserAnswers, testLeadTrusteeOrg).value
+        val registration = registrationMapper.build(newTrustUserAnswers, correspondenceAddress).value
 
         val payload = Json.stringify(Json.toJson(registration))
 
@@ -100,7 +102,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
       "already registered trusts is sent " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         val payload = Json.stringify(Json.toJson(registration))
 
@@ -123,7 +125,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
     "return InternalServerError response " - {
       "api returns internal server error response " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         val payload = Json.stringify(Json.toJson(registration))
 
@@ -147,7 +149,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
       "api returns bad request response " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         val payload = Json.stringify(Json.toJson(registration))
 
@@ -166,7 +168,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
 
       "api returns service unavailable response " in {
         val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         val payload = Json.stringify(Json.toJson(registration))
 

@@ -49,9 +49,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
       "Lead Org",
       "07911234567",
       None,
-      IdentificationOrgType(None, Some(AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")))))
+      IdentificationOrgType(Some("utr"), None)))
   )
-
 
   private def fakeDraftIdAction(userAnswers: Option[UserAnswers]) = new FakeDraftIdRetrievalActionProvider(
       "draftId",

@@ -34,61 +34,15 @@ class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
 
   "CorrespondenceMapper" - {
 
-    "when user answers is empty" - {
-
-      "must not be able to create Correspondence" in {
-        val userAnswers = emptyUserAnswers
-
-        correspondenceMapper.build(userAnswers, leadTrusteeUkAddress, leadTrusteePhoneNumber) mustNot be(defined)
-      }
-
+    "must not be able to create a correspondence when do not have all answers" in {
+      correspondenceMapper.build(emptyUserAnswers) mustNot be(defined)
     }
 
-    "when user answers is not empty" - {
+    "must be able to create a correspondence with required answer" - {
+      val userAnswers = emptyUserAnswers
+        .set(TrustNamePage, "Trust of a Will").success.value
 
-      "must not be able to create a correspondence when do not have all answers" in {
-        correspondenceMapper.build(emptyUserAnswers, leadTrusteeUkAddress, leadTrusteePhoneNumber) mustNot be(defined)
-      }
-
-      "must be able to create a correspondence for a UK lead trustee" - {
-        val userAnswers = emptyUserAnswers
-          .set(TrustNamePage, "Trust of a Will").success.value
-
-        correspondenceMapper.build(userAnswers, leadTrusteeUkAddress, leadTrusteePhoneNumber).value mustBe Correspondence(
-          abroadIndicator = false,
-          name = "Trust of a Will",
-          address = AddressType(
-            line1 = "First line",
-            line2 = "Second line",
-            line3 = None,
-            line4 = Some("Newcastle"),
-            postCode = Some("NE981ZZ"),
-            country = "GB"
-          ),
-          phoneNumber = "0191 222222"
-        )
-      }
-
-      "must be able to create a correspondence when have all required answers" in {
-        val address = InternationalAddress("First line", "Second line", None, "DE")
-
-        val userAnswers = emptyUserAnswers
-          .set(TrustNamePage, "Trust of a Will").success.value
-
-        correspondenceMapper.build(userAnswers, leadTrusteeInternationalAddress, leadTrusteePhoneNumber).value mustBe Correspondence(
-          abroadIndicator = true,
-          name = "Trust of a Will",
-          address = AddressType(
-            line1 = "First line",
-            line2 = "Second line",
-            line3 = None,
-            line4 = None,
-            postCode = None,
-            country = "DE"
-          ),
-          phoneNumber = "0191 222222"
-        )
-      }
+      correspondenceMapper.build(userAnswers).value.name mustBe "Trust of a Will"
     }
   }
 }

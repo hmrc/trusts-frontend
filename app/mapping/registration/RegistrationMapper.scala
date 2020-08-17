@@ -17,12 +17,7 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping._
 import models.core.UserAnswers
-import repositories.RegistrationsRepository
-import uk.gov.hmrc.http.HeaderCarrier
-
-import scala.concurrent.ExecutionContext
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
@@ -36,15 +31,13 @@ class RegistrationMapper @Inject()(
                                     matchingMapper: MatchingMapper
                                   ) {
 
-  def build(userAnswers: UserAnswers, leadTrustee: LeadTrusteeType): Option[Registration] = {
+  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType): Option[Registration] = {
 
     for {
       trustDetails <- trustDetailsMapper.build(userAnswers)
       assets <- assetMapper.build(userAnswers)
-      leadTrusteeAddress <- getLeadTrusteeAddress(leadTrustee)
-      leadTrusteePhoneNumber <- getLeadTrusteePhoneNumber(leadTrustee)
-      correspondence <- correspondenceMapper.build(userAnswers, leadTrusteeAddress, leadTrusteePhoneNumber)
-      declaration <- declarationMapper.build(userAnswers, leadTrusteeAddress)
+      correspondence <- correspondenceMapper.build(userAnswers)
+      declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
     } yield {
 
       val agent = agentMapper.build(userAnswers)
@@ -65,9 +58,9 @@ class RegistrationMapper @Inject()(
 
       Registration(
         matchData = matchingMapper.build(userAnswers),
-        correspondence = correspondence,
         yearsReturns = taxLiability,
         declaration = declaration,
+        correspondence = correspondence,
         trust = Trust(
           details = trustDetails,
           entities = entities,

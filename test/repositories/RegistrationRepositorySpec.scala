@@ -356,5 +356,29 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         verify(mockConnector).getLeadTrustee(draftId)(hc, executionContext)
       }
     }
+    "reading correspondence address" must {
+
+      "read existing correspondence address from connector" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+
+        when(mockConnector.getCorrespondenceAddress(any())(any(), any())).thenReturn(Future.successful(correspondenceAddress))
+
+        val result = Await.result(repository.getCorrespondenceAddress(draftId), Duration.Inf)
+
+        result mustBe correspondenceAddress
+
+        verify(mockConnector).getCorrespondenceAddress(draftId)(hc, executionContext)
+      }
+    }
+
   }
 }

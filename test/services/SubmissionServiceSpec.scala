@@ -19,7 +19,7 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.registration.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType, RegistrationMapper}
+import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType, RegistrationMapper}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
@@ -44,7 +44,8 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private val mockConnector : TrustConnector = mock[TrustConnector]
 
-  private val stubbedRegistrationsRepository = new RegistrationsRepository {
+  private val stubbedRegistrationsRepository: RegistrationsRepository = new RegistrationsRepository {
+    private val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
     override def get(draftId: String)
                     (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = Future.successful(None)
 
@@ -66,6 +67,8 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
                                   (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
 
     override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] = Future.successful(testLeadTrusteeOrg)
+
+    override def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier): Future[AddressType] = Future.successful(correspondenceAddress)
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]

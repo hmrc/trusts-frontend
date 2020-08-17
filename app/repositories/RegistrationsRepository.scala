@@ -18,7 +18,7 @@ package repositories
 
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
-import mapping.registration.LeadTrusteeType
+import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.core.UserAnswers
@@ -121,6 +121,9 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType] =
     submissionDraftConnector.getLeadTrustee(draftId)
+
+  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
+    submissionDraftConnector.getCorrespondenceAddress(draftId)
 }
 
 trait RegistrationsRepository {
@@ -139,4 +142,6 @@ trait RegistrationsRepository {
   def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections]
 
   def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType]
+
+  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType]
 }

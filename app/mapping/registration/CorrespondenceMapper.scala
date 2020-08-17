@@ -22,15 +22,17 @@ import pages.register.trust_details.TrustNamePage
 
 class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) {
 
-  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType, leadTrusteeTelephoneNumber: String): Option[Correspondence] = {
+  def build(userAnswers: UserAnswers): Option[Correspondence] = {
 
     userAnswers.get(TrustNamePage).map {
       trustName =>
         Correspondence(
-          abroadIndicator = !leadTrusteeAddress.isInUk,
           name = trustName,
-          address = leadTrusteeAddress,
-          phoneNumber = leadTrusteeTelephoneNumber
+          // Following are filled in by correspondence registration pieces
+          // set by trustees frontend into submission draft data.
+          abroadIndicator = false,
+          address = AddressType("", "", None, None, None, ""),
+          phoneNumber = ""
         )
     }
   }

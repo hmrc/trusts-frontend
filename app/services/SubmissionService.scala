@@ -44,10 +44,10 @@ class DefaultSubmissionService @Inject()(
 
     Logger.info("[SubmissionService][submit] submitting registration")
 
-    registrationsRepository.getLeadTrustee(userAnswers.draftId) flatMap {
-      leadTrustee =>
+    registrationsRepository.getCorrespondenceAddress(userAnswers.draftId) flatMap {
+      correspondenceAddress =>
 
-        registrationMapper.build(userAnswers, leadTrustee) match {
+        registrationMapper.build(userAnswers, correspondenceAddress) match {
           case Some(registration) =>
             registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)) flatMap {
               fullRegistrationJson =>

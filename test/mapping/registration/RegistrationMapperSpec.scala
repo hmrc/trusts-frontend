@@ -27,6 +27,8 @@ import utils.TestUserAnswers
 class RegistrationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
+  private val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+
   private lazy val intervivosUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(emptyUserAnswers)
@@ -90,7 +92,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers = TestUserAnswers.emptyUserAnswers
 
-        registrationMapper.build(userAnswers, testLeadTrusteeOrg) mustNot be(defined)
+        registrationMapper.build(userAnswers, correspondenceAddress) mustNot be(defined)
       }
     }
 
@@ -114,7 +116,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
           "registering an existing trust" in {
             val userAnswers = TestUserAnswers.withMatchingSuccess(willTypeUserAnswers)
 
-            val result = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+            val result = registrationMapper.build(userAnswers, correspondenceAddress).value
 
             result.agentDetails mustNot be(defined)
             result.yearsReturns mustNot be(defined)
@@ -126,7 +128,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
           "registering a new trust" in {
 
-            val result = registrationMapper.build(willTypeUserAnswers, testLeadTrusteeOrg).value
+            val result = registrationMapper.build(willTypeUserAnswers, correspondenceAddress).value
 
             result.agentDetails mustNot be(defined)
             result.yearsReturns mustNot be(defined)
@@ -144,7 +146,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
             val userAnswers = TestUserAnswers.withMatchingSuccess(willTypeUserAnswers)
             val userAnswersWithAgent = TestUserAnswers.withAgent(userAnswers)
 
-            val result = registrationMapper.build(userAnswersWithAgent, testLeadTrusteeOrg).value
+            val result = registrationMapper.build(userAnswersWithAgent, correspondenceAddress).value
 
             result.agentDetails must be(defined)
             result.yearsReturns mustNot be(defined)
@@ -158,7 +160,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
             val userAnswers = TestUserAnswers.withAgent(willTypeUserAnswers)
 
-            val result = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+            val result = registrationMapper.build(userAnswers, correspondenceAddress).value
 
             result.agentDetails mustBe defined
             result.yearsReturns mustNot be(defined)
@@ -174,7 +176,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
       "must generate an Intervivos trust" in {
         val userAnswers = intervivosUserAnswers
 
-        val result = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val result = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         result.agentDetails mustNot be(defined)
         result.yearsReturns mustNot be(defined)
@@ -194,7 +196,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
       "must generate a Heritage trust for repair of historic buildings " in {
         val userAnswers = heritageUserAnswers
 
-        val result = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val result = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         result.agentDetails mustNot be(defined)
         result.yearsReturns mustNot be(defined)
@@ -215,7 +217,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
       "must generate a Flat management trust for a building or building with tenants " in {
         val userAnswers = flatManagementUserAnswers
 
-        val result = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val result = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         result.agentDetails mustNot be(defined)
         result.yearsReturns mustNot be(defined)
@@ -237,7 +239,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers = employmentRelatedUserAnswers(date)
 
-        val result = registrationMapper.build(userAnswers, testLeadTrusteeOrg).value
+        val result = registrationMapper.build(userAnswers, correspondenceAddress).value
 
         result.agentDetails mustNot be(defined)
         result.yearsReturns mustNot be(defined)

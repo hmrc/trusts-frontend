@@ -55,6 +55,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
   private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
+  private val correspondenceAddressUrl = s"$submissionsUrl/$testDraftId/correspondence-address"
 
   "SubmissionDraftConnector" - {
 
@@ -343,6 +344,34 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result = Await.result(connector.getLeadTrustee(testDraftId), Duration.Inf)
         result mustEqual expectedLeadTrustee
       }
+
+      "can retrieve correspondence address for a draft" in {
+
+        val response = Json.parse(
+          """
+            |{
+            | "line1": "Address line1",
+            | "line2": "Address line2",
+            | "postCode": "NE1 1EN",
+            | "country": "GB"
+            |}
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(correspondenceAddressUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val expectedAddress = AddressType("Address line1", "Address line2", None, None, Some("NE1 1EN"), "GB")
+
+        val result = Await.result(connector.getCorrespondenceAddress(testDraftId), Duration.Inf)
+        result mustEqual expectedAddress
+      }
+
     }
   }
 }
