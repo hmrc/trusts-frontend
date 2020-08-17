@@ -17,13 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.Mapping
-import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
 import models.core.UserAnswers
 import pages.register.trust_details.TrustNamePage
-import pages.register.trustees.individual._
-import pages.register.trustees.organisation._
-import play.api.Logger
 
 class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) {
 

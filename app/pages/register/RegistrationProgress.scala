@@ -17,7 +17,6 @@
 package pages.register
 
 import javax.inject.Inject
-import mapping.reads.{Assets, Trustees}
 import models.core.UserAnswers
 import models.registration.pages.Status._
 import models.registration.pages._

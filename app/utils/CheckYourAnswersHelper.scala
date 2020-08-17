@@ -16,8 +16,8 @@
 
 package utils
 
-import controllers.register.settlors.living_settlor.routes
 import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
+import controllers.register.settlors.living_settlor.routes
 import javax.inject.Inject
 import mapping.reads._
 import models.NormalMode
@@ -37,9 +37,6 @@ import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.business._
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
-import pages.register.trustees.organisation._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import sections.LivingSettlors

@@ -17,14 +17,9 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.Mapping
-import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustee, Trustees}
 import models.core.UserAnswers
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
-import pages.register.trustees.individual._
-import pages.register.trustees.organisation._
-import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper,
                                   addressMapper: AddressMapper) {

@@ -102,11 +102,6 @@ trait ModelGenerators {
       } yield UKAddress(line1, line2, Some(line3), Some(line4), postcode)
     }
 
-  implicit lazy val arbitraryAddATrustee: Arbitrary[AddATrustee] =
-    Arbitrary {
-      Gen.oneOf(AddATrustee.values)
-    }
-
   implicit lazy val arbitraryTrusteeOrIndividual: Arbitrary[IndividualOrBusiness] =
     Arbitrary {
       Gen.oneOf(IndividualOrBusiness.values.toSeq)
