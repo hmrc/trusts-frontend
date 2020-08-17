@@ -31,8 +31,6 @@ import pages.register.settlors.deceased_settlor.{RemoveSettlorPage => RemoveDece
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
 
 trait PageGenerators {
 
@@ -228,33 +226,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryAgentTelephoneNumberPage: Arbitrary[AgentTelephoneNumberPage.type] =
     Arbitrary(AgentTelephoneNumberPage)
-
-  implicit lazy val arbitraryTrusteesNinoPage: Arbitrary[TrusteesNinoPage] =
-    Arbitrary(TrusteesNinoPage(0))
-
-  implicit lazy val arbitraryTrusteeLiveInTheUKPage: Arbitrary[TrusteeAddressInTheUKPage] =
-    Arbitrary(TrusteeAddressInTheUKPage(0))
-
-  implicit lazy val arbitraryTrusteesUkAddressPage: Arbitrary[TrusteesUkAddressPage] =
-    Arbitrary(TrusteesUkAddressPage(0))
-
-  implicit lazy val arbitrarytrusteeAUKCitizenPage: Arbitrary[TrusteeAUKCitizenPage] =
-    Arbitrary(TrusteeAUKCitizenPage(0))
-
-  implicit lazy val arbitraryTrusteesDateOfBirthPage: Arbitrary[TrusteesDateOfBirthPage] =
-    Arbitrary(TrusteesDateOfBirthPage(0))
-
-  implicit lazy val arbitraryTelephoneNumberPage: Arbitrary[TelephoneNumberPage] =
-    Arbitrary(TelephoneNumberPage(0))
-
-  implicit lazy val arbitraryTrusteesNamePage: Arbitrary[TrusteesNamePage] =
-    Arbitrary(TrusteesNamePage(0))
-
-  implicit lazy val arbitraryTrusteeOrIndividualPage: Arbitrary[TrusteeIndividualOrBusinessPage] =
-    Arbitrary(TrusteeIndividualOrBusinessPage(0))
-
-  implicit lazy val arbitraryIsThisLeadTrusteePage: Arbitrary[IsThisLeadTrusteePage] =
-    Arbitrary(IsThisLeadTrusteePage(0))
 
   implicit lazy val arbitraryPostcodeForTheTrustPage: Arbitrary[PostcodeForTheTrustPage.type] =
     Arbitrary(PostcodeForTheTrustPage)

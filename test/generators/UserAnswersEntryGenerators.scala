@@ -33,8 +33,6 @@ import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
@@ -545,77 +543,6 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryTelephoneNumberUserAnswersEntry: Arbitrary[(TelephoneNumberPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TelephoneNumberPage]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrusteesNinoUserAnswersEntry: Arbitrary[(TrusteesNinoPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrusteesNinoPage]
-        value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrusteeLiveInTheUKUserAnswersEntry: Arbitrary[(TrusteeAddressInTheUKPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrusteeAddressInTheUKPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrusteesUkAddressUserAnswersEntry: Arbitrary[(TrusteesUkAddressPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrusteesUkAddressPage]
-        value <- arbitrary[UKAddress].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitrarytrusteeAUKCitizenUserAnswersEntry: Arbitrary[(TrusteeAUKCitizenPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrusteeAUKCitizenPage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrusteesNameUserAnswersEntry: Arbitrary[(TrusteesNamePage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrusteesNamePage]
-        value <- arbitrary[FullName].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrusteeIndividualOrBusinessUserAnswersEntry: Arbitrary[(TrusteeIndividualOrBusinessPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrusteeIndividualOrBusinessPage]
-        value <- arbitrary[IndividualOrBusiness].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryIsThisLeadTrusteeUserAnswersEntry: Arbitrary[(IsThisLeadTrusteePage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[IsThisLeadTrusteePage]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryTrusteesDateOfBirthUserAnswersEntry: Arbitrary[(TrusteesDateOfBirthPage, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[TrusteesDateOfBirthPage]
-        value <- arbitrary[Int].map(Json.toJson(_))
-      } yield (page, value)
-    }
 
   implicit lazy val arbitraryPostcodeForTheTrustUserAnswersEntry: Arbitrary[(PostcodeForTheTrustPage.type, JsValue)] =
     Arbitrary {
