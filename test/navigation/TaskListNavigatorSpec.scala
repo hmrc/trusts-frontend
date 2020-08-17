@@ -167,7 +167,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
     "for task liability task" must {
 
       "go to TaxLiabilityPage" in {
-        navigator.taxLiabilityJourney(fakeDraftId) mustBe TaskListController.onPageLoad(fakeDraftId)
+        navigator.taxLiabilityJourney(fakeDraftId) mustBe frontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)
       }
 
     }
