@@ -50,6 +50,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   private lazy val beneficiariesFrontendUrlTemplate: String = loadConfig("urls.beneficiariesFrontend")
   def beneficiariesFrontendUrl(draftId: String): String = beneficiariesFrontendUrlTemplate.replace(":draftId", draftId)
 
+  private lazy val taxLiabilityFrontendUrlTemplate: String = loadConfig("urls.taxLiabilityFrontend")
+  def taxLiabilityFrontendUrl(draftId: String): String = taxLiabilityFrontendUrlTemplate.replace(":draftId", draftId)
+
   private lazy val trusteesFrontendUrlTemplate: String = loadConfig("urls.trusteesFrontend")
   def trusteesFrontendUrl(draftId: String): String = trusteesFrontendUrlTemplate.replace(":draftId", draftId)
 

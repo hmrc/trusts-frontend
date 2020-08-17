@@ -78,6 +78,8 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     }
   }
 
-  def taxLiabilityJourney(draftId: String): Call = routes.TaskListController.onPageLoad(draftId)
+  def taxLiabilityJourney(draftId: String): String = {
+    frontendAppConfig.taxLiabilityFrontendUrl(draftId)
+  }
 
 }
