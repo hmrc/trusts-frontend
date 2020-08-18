@@ -19,6 +19,7 @@ package pages.register
 import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
+import pages.register.suitability.{TaxLiabilityInCurrentTaxYearYesNoPage, UndeclaredTaxLiabilityYesNoPage}
 import pages.register.trust_details.TrustNamePage
 
 class TrustHaveAUTRPageSpec extends PageBehaviours {
@@ -50,4 +51,19 @@ class TrustHaveAUTRPageSpec extends PageBehaviours {
 
   }
 
+  "remove relevant data when TrustHaveAUTRPage is set to true" in {
+
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean]) {
+      (initial, bool) =>
+
+        val answers = initial
+          .set(TaxLiabilityInCurrentTaxYearYesNoPage, bool).success.value
+          .set(UndeclaredTaxLiabilityYesNoPage, bool).success.value
+
+        val result = answers.set(TrustHaveAUTRPage, true).success.value
+
+        result.get(TaxLiabilityInCurrentTaxYearYesNoPage) mustNot be (defined)
+        result.get(UndeclaredTaxLiabilityYesNoPage) mustNot be (defined)
+    }
+  }
 }

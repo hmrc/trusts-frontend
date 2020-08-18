@@ -16,13 +16,25 @@
 
 package pages.register.suitability
 
+import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object TaxLiabilityInCurrentTaxYearYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "hasTaxLiabilityInCurrentTaxYear"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(true) =>
+        userAnswers.remove(UndeclaredTaxLiabilityYesNoPage)
+      case _ =>
+        super.cleanup(value, userAnswers)
+    }
+  }
 }
 
