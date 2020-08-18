@@ -110,6 +110,51 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
+  def dynamicTitlePage(view: HtmlFormat.Appendable,
+                       messageKeyPrefix: String,
+                       args: Seq[String],
+                       expectedGuidanceKeys: String*): Unit = {
+
+    "behave like a dynamic title page" when {
+
+      "rendered" must {
+
+        "have the correct banner title" in {
+
+          val doc = asDocument(view)
+          val nav = doc.getElementById("proposition-menu")
+          val span = nav.children.first
+          span.text mustBe messages("site.service_name")
+        }
+
+        "display the correct browser title" in {
+
+          val doc = asDocument(view)
+          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", args: _*)
+        }
+
+        "display the correct page title" in {
+
+          val doc = asDocument(view)
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", args: _*)
+        }
+
+        "display the correct guidance" in {
+
+          val doc = asDocument(view)
+          for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
+        }
+
+        "display language toggles" in {
+
+          val doc = asDocument(view)
+          assertNotRenderedById(doc, "cymraeg-switch")
+        }
+
+      }
+    }
+  }
+
   def confirmationPage(view: HtmlFormat.Appendable,
                        messageKeyPrefix: String,
                        messageKeyParam: String,

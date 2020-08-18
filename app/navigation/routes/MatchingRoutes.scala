@@ -38,7 +38,7 @@ object MatchingRoutes {
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
-      case (Some(false), Some(false)) => routeToRegistration(af, draftId)
+      case (Some(false), Some(false)) => controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routeToMaintain(config)
       case _ => routes.SessionExpiredController.onPageLoad()
@@ -47,14 +47,6 @@ object MatchingRoutes {
 
   private def routeToMaintain(config: FrontendAppConfig) : Call = {
     Call("GET", config.maintainATrustFrontendUrl)
-  }
-
-  private def routeToRegistration(affinityGroup: AffinityGroup, draftId: String) = {
-    if(affinityGroup == AffinityGroup.Organisation){
-      routes.TaskListController.onPageLoad(draftId)
-    } else {
-      controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)
-    }
   }
 }
 

@@ -21,10 +21,13 @@ import java.time.format.DateTimeFormatter
 
 import com.google.inject.Inject
 import config.FrontendAppConfig
+import org.joda.time.LocalDate
 
 trait DateFormatter {
 
   def formatDate(dateTime: LocalDateTime): String
+
+  def formatDate(date: LocalDate): String
 
   def savedUntil(date: LocalDateTime) : String
 }
@@ -36,6 +39,10 @@ class TrustsDateFormatter @Inject()(config: FrontendAppConfig) extends DateForma
   def formatDate(dateTime: LocalDateTime): String = {
     val dateFormatter = DateTimeFormatter.ofPattern(format)
     dateTime.format(dateFormatter)
+  }
+
+  def formatDate(date: LocalDate): String = {
+    date.toString(format)
   }
 
   def savedUntil(date: LocalDateTime) : String = {

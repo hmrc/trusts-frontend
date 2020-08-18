@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-package pages.register
+package pages.register.suitability
 
 import models.core.UserAnswers
 import pages.QuestionPage
-import pages.register.suitability.{TaxLiabilityInCurrentTaxYearYesNoPage, UndeclaredTaxLiabilityYesNoPage}
-import pages.register.trust_details.TrustNamePage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
 
-case object TrustHaveAUTRPage extends QuestionPage[Boolean] {
+case object TaxLiabilityInCurrentTaxYearYesNoPage extends QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "trustHaveAUTR"
+  override def toString: String = "hasTaxLiabilityInCurrentTaxYear"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
-      case Some(false) =>
-        userAnswers.remove(WhatIsTheUTRPage)
-          .flatMap(_.remove(TrustNamePage))
-          .flatMap(_.remove(PostcodeForTheTrustPage))
       case Some(true) =>
-        userAnswers.remove(TaxLiabilityInCurrentTaxYearYesNoPage)
-          .flatMap(_.remove(UndeclaredTaxLiabilityYesNoPage))
+        userAnswers.remove(UndeclaredTaxLiabilityYesNoPage)
       case _ =>
         super.cleanup(value, userAnswers)
     }
   }
 }
+

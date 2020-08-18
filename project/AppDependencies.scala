@@ -15,7 +15,8 @@ object AppDependencies {
     "uk.gov.hmrc"       %% "play-whitelist-filter"          % "3.4.0-play-26",
     "uk.gov.hmrc"       %% "domain"                         % "5.9.0-play-26",
     "com.typesafe.play" %% "play-json-joda"                 % "2.7.4",
-    "org.typelevel"     %% "cats-core"                      % "2.0.0"
+    "org.typelevel"     %% "cats-core"                      % "2.0.0",
+    "uk.gov.hmrc"       %% "tax-year"                       % "1.1.0"
   )
 
   val test: Seq[ModuleID] = Seq(

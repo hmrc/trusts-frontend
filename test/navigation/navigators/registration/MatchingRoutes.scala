@@ -83,41 +83,18 @@ trait MatchingRoutes {
 
       }
 
-      "the user does not have a UTR for the trust" when {
+      "the user does not have a UTR for the trust" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-        "user is an agent" must {
+            val answers = userAnswers
+              .set(TrustRegisteredOnlinePage, false).success.value
+              .set(TrustHaveAUTRPage, false).success.value
 
-          "go to AgentInternalReference from TrustHaveAUTR when user answers no" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-
-                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-                  .set(TrustHaveAUTRPage, false).success.value
-
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(answers)
-                  .mustBe(controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId))
-            }
-          }
+            navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
         }
-
-        "user is an organisation" must {
-
-          "go to TaskList from TrustHaveAUTR when user answers no" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-
-                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-                  .set(TrustHaveAUTRPage, false).success.value
-
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Organisation)(answers)
-                  .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
-            }
-          }
-
-        }
-
       }
-
     }
 
     "navigate when trust is registered online" when {
