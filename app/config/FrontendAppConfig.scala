@@ -42,9 +42,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   val betaFeedbackUrl = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
   val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
 
-  val whoShouldRegisterUrl: String = "https://www.gov.uk/guidance/register-your-clients-trust#who-should-register"
-  val trustAndTaxesUrl: String = "https://www.gov.uk/trusts-taxes"
-  val trustsHelplineUrl: String = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
+  val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
+  val trustAndTaxesUrl: String = configuration.get[String]("urls.trustAndTaxes")
+  val trustsHelplineUrl: String = configuration.get[String]("urls.trustsHelpline")
 
   lazy val loginUrl: String = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
