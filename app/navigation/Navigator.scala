@@ -41,6 +41,7 @@ class Navigator @Inject()(
       MatchingRoutes.route(draftId, config) orElse
       TrusteeRoutes.route(draftId) orElse
       TrustDetailRoutes.route(draftId) orElse
+      SuitabilityRoutes.route(draftId) orElse
       defaultRoute
 
   def nextPage(page: Page, mode: Mode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {

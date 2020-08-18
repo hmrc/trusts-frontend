@@ -38,7 +38,7 @@ object MatchingRoutes {
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
-      case (Some(false), Some(false)) => routeToRegistration(af, draftId)
+      case (Some(false), Some(false)) => controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routeToMaintain(config)
       case _ => routes.SessionExpiredController.onPageLoad()

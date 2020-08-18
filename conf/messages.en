@@ -582,6 +582,34 @@ trusteesInfo.paragraph6 = If the trustee is a business, tell us their registered
 trusteesInfo.warning = All trustees have the same legal responsibilities.
 trusteesInfo.continue = Continue
 
+suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
+suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?
+suitability.taxLiabilityInCurrentTaxYear.error.required = Select yes if the trust has any tax liability in the current tax year
+
+suitability.beforeYouContinue.title = Before you continue
+suitability.beforeYouContinue.heading = Before you continue
+suitability.beforeYouContinue.p1 = After you have registered the trust, the appointed lead trustee will be sent a Unique Taxpayer Reference (UTR) for the trust and any official letters, like:
+suitability.beforeYouContinue.bullet1 = Trust and Estate (SA900) tax return
+suitability.beforeYouContinue.bullet2 = notice to file (SA316)
+suitability.beforeYouContinue.p2 = You can find out more:
+suitability.beforeYouContinue.link1 = Who should register (opens in a new window or tab)
+suitability.beforeYouContinue.link2 = Trusts and taxes (opens in a new window or tab)
+suitability.beforeYouContinue.continue = Continue to register the trust
+
+suitability.undeclaredTaxLiability.title = Does the trust have any undeclared tax liability since 10 July 2017?
+suitability.undeclaredTaxLiability.heading = Does the trust have any undeclared tax liability since 10 July 2017?
+suitability.undeclaredTaxLiability.error.required = Select yes if the trust currently has any tax liability
+
+suitability.noNeedToRegister.title = You do not need to register this trust
+suitability.noNeedToRegister.heading = You do not need to register this trust
+suitability.noNeedToRegister.p1 = When the trust has tax to pay, you will need to come back to this service to register.
+suitability.noNeedToRegister.p2 = You can find out more about
+suitability.noNeedToRegister.p2.link = who should register (opens in a new window or tab)
+suitability.noNeedToRegister.p3 = If you need help using this service,
+suitability.noNeedToRegister.p3.link = contact the trusts helpline (opens in a new window or tab)
+suitability.noNeedToRegister.p4 = You can
+suitability.noNeedToRegister.p4.link = return to register and maintain a trust for a client
+
 agentTelephoneNumber.title = What is the agency’s telephone number?
 agentTelephoneNumber.heading = What is {0}’s telephone number?
 agentTelephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?

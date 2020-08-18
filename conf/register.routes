@@ -65,6 +65,18 @@ GET        /:draftId/your-draft-registration                                    
 
 GET        /:draftId/your-declared-registration                                                     controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId : String)
 
+## Suitability
+
+GET        /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-has-tax-liability-in-current-tax-year                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-has-tax-liability-in-current-tax-year                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
 ## Agents
 
 GET        /:draftId/client-reference                                                               controllers.register.agents.AgentInternalReferenceController.onPageLoad(mode: Mode = NormalMode, draftId: String)
