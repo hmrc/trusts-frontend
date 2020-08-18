@@ -42,7 +42,7 @@ class RegistrationMapper @Inject()(
 
       val agent = agentMapper.build(userAnswers)
       val deceasedSettlor = deceasedSettlorMapper.build(userAnswers)
-      val taxLiability = taxLiabilityMapper.build(userAnswers)
+      val taxLiability = None
       val trustees = None
       val settlors = settlorMapper.build(userAnswers)
 

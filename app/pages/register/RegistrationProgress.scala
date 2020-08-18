@@ -16,6 +16,8 @@
 
 package pages.register
 
+import java.time.LocalDate
+
 import javax.inject.Inject
 import models.core.UserAnswers
 import models.registration.pages.Status._
@@ -30,6 +32,7 @@ import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.time.TaxYear
 import viewmodels._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -109,12 +112,14 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
     }
   }
 
+
+
   def isTaskListComplete(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
     if (trustDetailsStatus(userAnswers).contains(Completed) &&
       settlorsStatus(userAnswers).contains(Completed) &&
       assetsStatus(userAnswers).contains(Completed)) {
       registrationsRepository.getAllStatus(userAnswers.draftId).map {
-        status => status.allComplete
+        status => status.allComplete(userAnswers)
       }
     } else {
       Future.successful(false)

@@ -36,7 +36,7 @@ import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import uk.gov.hmrc.time.TaxYear
-import utils.DateFormatter
+import utils.{DateFormatter, TaxLiabilityHelper}
 import viewmodels.Task
 import views.html.register.TaskListView
 
@@ -83,13 +83,7 @@ class TaskListController @Inject()(
           isTaskListComplete <- registrationProgress.isTaskListComplete(updatedAnswers)
         } yield {
 
-          def showTaxLiability: Boolean = {
-            val taxYearStart = TaxYear.current.starts
-              (request.userAnswers.get(WhenTrustSetupPage).getOrElse(LocalDate.now()) isBefore
-                LocalDate.of(taxYearStart.getYear, taxYearStart.getMonthOfYear, taxYearStart.getDayOfMonth))
-          }
-
-          val sections = if (showTaxLiability) {
+          val sections = if (TaxLiabilityHelper.showTaxLiability(request.userAnswers)) {
             taskList
           } else {
             val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)

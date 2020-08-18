@@ -84,4 +84,8 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
   def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[AddressType] =
     http.GET[AddressType](s"$submissionsBaseUrl/$draftId/correspondence-address")
 
+  def resetTaxLiabilityStatus(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[HttpResponse] = {
+    http.POST[String, HttpResponse](s"$submissionsBaseUrl/$draftId/reset-status/taxLiability", "")
+  }
+
 }

@@ -18,9 +18,11 @@ package models
 
 import java.time.LocalDateTime
 
+import models.core.UserAnswers
 import models.registration.pages.Status
 import models.registration.pages.Status.Completed
 import play.api.libs.json.{JsValue, Json, OFormat}
+import utils.TaxLiabilityHelper
 
 case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgress: Option[Boolean])
 
@@ -60,9 +62,9 @@ object RegistrationSubmission {
                         trustees: Option[Status] = None,
                         taxLiability: Option[Status] = None
                       ) {
-    def allComplete: Boolean = beneficiaries.contains(Completed) &&
+    def allComplete(userAnswers: UserAnswers): Boolean = beneficiaries.contains(Completed) &&
                                 trustees.contains(Completed) &&
-                                taxLiability.contains(Completed)
+      (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(userAnswers))
   }
 
   object AllStatus {
