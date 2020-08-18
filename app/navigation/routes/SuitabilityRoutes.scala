@@ -16,6 +16,7 @@
 
 package navigation.routes
 
+import controllers.register.suitability.routes
 import models.NormalMode
 import models.core.UserAnswers
 import pages.register.suitability._
@@ -24,13 +25,21 @@ import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 object SuitabilityRoutes {
+
   def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
       yesNoNav(
         ua,
         TaxLiabilityInCurrentTaxYearYesNoPage,
-        ???,
-        controllers.register.suitability.routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, draftId)
+        routes.BeforeYouContinueController.onPageLoad(draftId),
+        routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, draftId)
+      )
+    case UndeclaredTaxLiabilityYesNoPage => _ => ua =>
+      yesNoNav(
+        ua,
+        UndeclaredTaxLiabilityYesNoPage,
+        routes.BeforeYouContinueController.onPageLoad(draftId),
+        routes.NoNeedToRegisterController.onPageLoad(draftId)
       )
   }
 

@@ -39,7 +39,7 @@ trait SuitabilityRoutes {
             val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
 
             navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(???)
+              .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
         }
       }
       "-> NO -> Any undeclared tax liability?" in {
@@ -60,7 +60,7 @@ trait SuitabilityRoutes {
             val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, true).success.value
 
             navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(???)
+              .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
         }
       }
       "-> NO -> You do not need to register" ignore {
@@ -69,7 +69,7 @@ trait SuitabilityRoutes {
             val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, false).success.value
 
             navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(???)
+              .mustBe(routes.NoNeedToRegisterController.onPageLoad(fakeDraftId))
         }
       }
 

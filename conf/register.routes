@@ -77,6 +77,11 @@ POST       /:draftId/has-undeclared-tax-liability                               
 GET        /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onPageLoad(draftId: String)
+POST       /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onSubmit(draftId: String)
+
+GET        /:draftId/no-need-to-register                                                            controllers.register.suitability.NoNeedToRegisterController.onPageLoad(draftId: String)
+
 ## Agents
 
 GET        /:draftId/client-reference                                                               controllers.register.agents.AgentInternalReferenceController.onPageLoad(mode: Mode = NormalMode, draftId: String)

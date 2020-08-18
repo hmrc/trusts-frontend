@@ -48,13 +48,5 @@ object MatchingRoutes {
   private def routeToMaintain(config: FrontendAppConfig) : Call = {
     Call("GET", config.maintainATrustFrontendUrl)
   }
-
-  private def routeToRegistration(affinityGroup: AffinityGroup, draftId: String) = {
-    if(affinityGroup == AffinityGroup.Organisation){
-      routes.TaskListController.onPageLoad(draftId)
-    } else {
-      controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)
-    }
-  }
 }
 
