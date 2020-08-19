@@ -311,6 +311,15 @@ trustAlreadyRegistered.bullet2 = if this trust does not have Government Gateway 
 trustAlreadyRegistered.p2 = You can
 trustAlreadyRegistered.p2.link = contact the trusts helpline if you have lost the Government Gateway sign-in details for this trust (opens in a new tab)
 
+matchingDown.title = Sorry, there is a problem with the service
+matchingDown.heading = Sorry, there is a problem with the service
+matchingDown.p1 = Try again later.
+matchingDown.p2.beforeLink = You can
+matchingDown.p2.link = contact the trusts helpline (opens in a new window or tab)
+matchingDown.p2.afterLink = if you need to speak to someone about registering and maintaining a trust.
+matchingDown.p3 = You can
+matchingDown.p3.link = return to register a trust for a client
+
 cannotMakeChanges.title = You cannot make changes to the trust online
 cannotMakeChanges.heading = You cannot make changes to the trust online
 cannotMakeChanges.paragraph1 = You can
