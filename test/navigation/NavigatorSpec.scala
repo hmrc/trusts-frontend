@@ -34,6 +34,7 @@ class NavigatorSpec extends RegistrationSpecBase
   with DeceasedSettlorRoutes
   with PropertyOrLandRoutes
   with LivingSettlorRoutes
+  with SuitabilityRoutes
 {
 
   implicit val navigator : Navigator = injector.instanceOf[Navigator]
@@ -62,6 +63,8 @@ class NavigatorSpec extends RegistrationSpecBase
       behave like livingSettlorRoutes
 
       behave like livingBusinessSettlorRoutes
+
+      behave like suitabilityRoutes
 
     }
 
