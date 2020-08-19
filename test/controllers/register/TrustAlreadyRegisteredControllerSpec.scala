@@ -19,7 +19,12 @@ package controllers.register
 import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.any
+import org.mockito.Mockito.verify
 import pages.register.WhatIsTheUTRPage
+import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.money.AssetMoneyValuePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup._
@@ -91,7 +96,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "remove WhatIsTheUTRPage and redirect to WhatIsTheUtrController for a POST" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -103,6 +108,10 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
 
       redirectLocation(result).value mustEqual
         routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
+
+      val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+      verify(registrationsRepository).set(uaCaptor.capture)(any())
+      uaCaptor.getValue.get(WhatIsTheUTRPage) mustNot be(defined)
 
       application.stop()
     }

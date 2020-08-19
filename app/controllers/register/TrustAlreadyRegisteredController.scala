@@ -22,14 +22,16 @@ import models.NormalMode
 import pages.register.WhatIsTheUTRPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.TrustAlreadyRegisteredView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class TrustAlreadyRegisteredController @Inject()(
                                                   override val messagesApi: MessagesApi,
+                                                  registrationsRepository: RegistrationsRepository,
                                                   standardActionSets: StandardActionSets,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: TrustAlreadyRegisteredView
@@ -49,9 +51,12 @@ class TrustAlreadyRegisteredController @Inject()(
       }
   }
 
-  def onSubmit(draftId : String): Action[AnyContent] = actions(draftId) {
+  def onSubmit(draftId : String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      redirect(draftId)
+      for {
+        updatedAnswers <- Future.fromTry(request.userAnswers.remove(WhatIsTheUTRPage))
+        _ <- registrationsRepository.set(updatedAnswers)
+      } yield redirect(draftId)
   }
 }
