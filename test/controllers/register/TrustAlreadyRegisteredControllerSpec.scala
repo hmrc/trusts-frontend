@@ -22,9 +22,10 @@ import models.core.UserAnswers
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.verify
-import pages.register.WhatIsTheUTRPage
+import pages.register.{PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.trust_details.TrustNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup._
@@ -34,12 +35,11 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
 
   private lazy val trustAlreadyRegisteredRoute: String = routes.TrustAlreadyRegisteredController.onPageLoad(fakeDraftId).url
 
-  private val fakeUtr: String = "utr"
-
   "TrustAlreadyRegistered Controller" must {
 
     "return OK and the correct view for a GET" when {
 
+      val fakeUtr: String = "utr"
       val userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRPage, fakeUtr).success.value
 
       "agent user" in {
@@ -96,9 +96,15 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "remove WhatIsTheUTRPage and redirect to WhatIsTheUtrController for a POST" in {
+    "cleanup pages and redirect to WhatIsTheUtrController for a POST" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers
+        .set(WhatIsTheUTRPage, "utr").success.value
+        .set(TrustNamePage, "name").success.value
+        .set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
+        .set(PostcodeForTheTrustPage, "postcode").success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(POST, trustAlreadyRegisteredRoute)
 
@@ -112,6 +118,9 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(registrationsRepository).set(uaCaptor.capture)(any())
       uaCaptor.getValue.get(WhatIsTheUTRPage) mustNot be(defined)
+      uaCaptor.getValue.get(TrustNamePage) mustNot be(defined)
+      uaCaptor.getValue.get(TrustRegisteredWithUkAddressYesNoPage) mustNot be(defined)
+      uaCaptor.getValue.get(PostcodeForTheTrustPage) mustNot be(defined)
 
       application.stop()
     }

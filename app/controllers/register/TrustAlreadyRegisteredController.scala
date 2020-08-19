@@ -19,7 +19,8 @@ package controllers.register
 import controllers.actions.StandardActionSets
 import javax.inject.Inject
 import models.NormalMode
-import pages.register.WhatIsTheUTRPage
+import pages.register.{PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
+import pages.register.trust_details.TrustNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
@@ -55,7 +56,12 @@ class TrustAlreadyRegisteredController @Inject()(
     implicit request =>
 
       for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.remove(WhatIsTheUTRPage))
+        updatedAnswers <- Future.fromTry(request.userAnswers
+          .remove(WhatIsTheUTRPage)
+          .flatMap(_.remove(TrustNamePage))
+          .flatMap(_.remove(TrustRegisteredWithUkAddressYesNoPage))
+          .flatMap(_.remove(PostcodeForTheTrustPage))
+        )
         _ <- registrationsRepository.set(updatedAnswers)
       } yield redirect(draftId)
   }
