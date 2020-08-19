@@ -21,19 +21,27 @@ import controllers.register.routes
 import models.NormalMode
 import models.core.UserAnswers
 import pages.Page
-import pages.register.{PostcodeForTheTrustPage, TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
+import pages.register._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
-object MatchingRoutes {
+object MatchingRoutes extends Routes {
+
   def route(draftId: String, config: FrontendAppConfig): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
-    case TrustHaveAUTRPage => af => userAnswers => trustHaveAUTRRoute(userAnswers, af, draftId, config)
+    case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config)
     case WhatIsTheUTRPage => _ => _ => controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+    case TrustRegisteredWithUkAddressYesNoPage => _ => ua =>
+      yesNoNav(
+        ua,
+        TrustRegisteredWithUkAddressYesNoPage,
+        routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId),
+        routes.FailedMatchController.onPageLoad(draftId)
+      )
     case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad(draftId)
   }
 
-  private def trustHaveAUTRRoute(answers: UserAnswers, af: AffinityGroup, draftId: String, config: FrontendAppConfig) = {
+  private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
