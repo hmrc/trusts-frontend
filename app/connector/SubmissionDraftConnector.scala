@@ -20,7 +20,6 @@ import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
-import models.core.pages.Address
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -84,8 +83,8 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
   def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[AddressType] =
     http.GET[AddressType](s"$submissionsBaseUrl/$draftId/correspondence-address")
 
-  def resetTaxLiabilityStatus(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[HttpResponse] = {
-    http.POST[String, HttpResponse](s"$submissionsBaseUrl/$draftId/reset-status/taxLiability", "")
+  def resetTaxLiability(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[HttpResponse] = {
+    http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/reset/taxLiability")
   }
 
 }
