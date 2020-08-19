@@ -39,7 +39,6 @@ class Navigator @Inject()(
       AssetsRoutes.route(draftId) orElse
       DeceasedSettlorRoutes.route(draftId) orElse
       MatchingRoutes.route(draftId, config) orElse
-      TrusteeRoutes.route(draftId) orElse
       TrustDetailRoutes.route(draftId) orElse
       SuitabilityRoutes.route(draftId) orElse
       defaultRoute

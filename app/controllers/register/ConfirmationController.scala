@@ -20,15 +20,17 @@ import config.FrontendAppConfig
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
+import mapping.registration.{LeadTrusteeType, NameType}
 import models.NormalMode
 import models.core.UserAnswers
+import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
@@ -45,24 +47,18 @@ class ConfirmationController @Inject()(
                                         viewIndividual: ConfirmationIndividualView,
                                         viewAgent: ConfirmationAgentView,
                                         viewExisting: ConfirmationExistingView,
-                                        errorHandler: ErrorHandler
+                                        errorHandler: ErrorHandler,
+                                        registrationsRepository: RegistrationsRepository
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def fullName(name: NameType): FullName = FullName(name.firstName, name.middleName, name.lastName)
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
-
-    val trustees = userAnswers.get(Trustees).getOrElse(Nil)
-
     val isAgent = request.affinityGroup == Agent
-
-    trustees.find(_.isLead) match {
-      case Some(lt : LeadTrusteeIndividual) =>
-        render(userAnswers, draftId, isAgent, trn, lt.name.toString)
-      case Some(lt: LeadTrusteeOrganisation) =>
-        render(userAnswers, draftId, isAgent, trn, lt.name)
-      case _ =>
-        errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
+    registrationsRepository.getLeadTrustee(draftId) flatMap {
+      case LeadTrusteeType(Some(ltInd), None) => render(userAnswers, draftId, isAgent, trn, fullName(ltInd.name).toString)
+      case LeadTrusteeType(None, Some(ltOrg)) => render(userAnswers, draftId, isAgent, trn, ltOrg.name)
+      case _ => errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
     }
-
   }
 
   private def render(userAnswers: UserAnswers,

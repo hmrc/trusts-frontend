@@ -16,47 +16,47 @@
 
 package models
 
-import models.registration.pages.AddATrustee
+import models.core.pages.IndividualOrBusiness
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import play.api.libs.json.{JsError, JsString, Json}
 
-class AddATrusteeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
+class IndividualOrBusinessSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "AddATrustee" must {
+  "IndividualOrBusiness" must {
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(AddATrustee.values.toSeq)
+      val gen = Gen.oneOf(IndividualOrBusiness.values.toSeq)
 
       forAll(gen) {
-        addATrustee =>
+        trusteeIndividualOrBusiness =>
 
-          JsString(addATrustee.toString).validate[AddATrustee].asOpt.value mustEqual addATrustee
+          JsString(trusteeIndividualOrBusiness.toString).validate[IndividualOrBusiness].asOpt.value mustEqual trusteeIndividualOrBusiness
       }
     }
 
     "fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!AddATrustee.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!IndividualOrBusiness.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
 
-          JsString(invalidValue).validate[AddATrustee] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[IndividualOrBusiness] mustEqual JsError("error.invalid")
       }
     }
 
     "serialise" in {
 
-      val gen = Gen.oneOf(AddATrustee.values.toSeq)
+      val gen = Gen.oneOf(IndividualOrBusiness.values.toSeq)
 
       forAll(gen) {
-        addATrustee =>
+        trusteeIndividualOrBusiness =>
 
-          Json.toJson(addATrustee) mustEqual JsString(addATrustee.toString)
+          Json.toJson(trusteeIndividualOrBusiness) mustEqual JsString(trusteeIndividualOrBusiness.toString)
       }
     }
   }

@@ -24,7 +24,6 @@ import models.NormalMode
 import models.core.pages.InternationalAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.register.asset.business.{BusinessInternationalAddressPage, BusinessNamePage}
-import pages.register.trustees.organisation.TrusteeOrgAddressInternationalPage
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -199,7 +198,7 @@ class BusinessInternationalAddressControllerSpec extends RegistrationSpecBase wi
 
       validateIndex(
         arbitrary[InternationalAddress],
-        TrusteeOrgAddressInternationalPage.apply,
+        BusinessInternationalAddressPage.apply,
         getForIndex
       )
 
@@ -218,7 +217,7 @@ class BusinessInternationalAddressControllerSpec extends RegistrationSpecBase wi
 
       validateIndex(
         arbitrary[InternationalAddress],
-        TrusteeOrgAddressInternationalPage.apply,
+        BusinessInternationalAddressPage.apply,
         postForIndex
       )
     }

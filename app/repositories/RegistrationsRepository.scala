@@ -18,6 +18,7 @@ package repositories
 
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
+import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.core.UserAnswers
@@ -115,22 +116,14 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   }
 
   override def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = {
-    submissionDraftConnector.getAnswerSections(draftId).map {
-      sections => RegistrationAnswerSections(
-        beneficiaries = convert(sections.beneficiaries)
-      )
-    }
+    submissionDraftConnector.getAnswerSections(draftId).map(RegistrationAnswerSections.fromAllAnswerSections)
   }
 
-  private def convert(row: RegistrationSubmission.AnswerRow): AnswerRow =
-    AnswerRow(row.label, HtmlFormat.raw(row.answer), None, row.labelArg, canEdit = false)
+  def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType] =
+    submissionDraftConnector.getLeadTrustee(draftId)
 
-  private def convert(section: RegistrationSubmission.AnswerSection): AnswerSection =
-    AnswerSection(section.headingKey, section.rows.map(convert), section.sectionKey)
-
-  private def convert(section: Option[List[RegistrationSubmission.AnswerSection]]): Option[List[AnswerSection]] =
-    section map { _.map(convert) }
-
+  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
+    submissionDraftConnector.getCorrespondenceAddress(draftId)
 }
 
 trait RegistrationsRepository {
@@ -147,4 +140,8 @@ trait RegistrationsRepository {
   def setAllStatus(draftId: String, status: AllStatus)(implicit hc: HeaderCarrier) : Future[Boolean]
 
   def getAnswerSections(draftId: String)(implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections]
+
+  def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType]
+
+  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType]
 }

@@ -17,62 +17,23 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.Mapping
-import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
 import models.core.UserAnswers
 import pages.register.trust_details.TrustNamePage
-import pages.register.trustees.individual._
-import pages.register.trustees.organisation._
-import play.api.Logger
 
-class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) extends Mapping[Correspondence] {
+class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) {
 
-  override def build(userAnswers: UserAnswers): Option[Correspondence] = {
+  def build(userAnswers: UserAnswers): Option[Correspondence] = {
 
-    userAnswers.get(TrustNamePage).flatMap {
+    userAnswers.get(TrustNamePage).map {
       trustName =>
-        userAnswers.get(Trustees).getOrElse(Nil) match {
-          case Nil => None
-          case list =>
-            list.find(_.isLead).flatMap {
-              case lti: LeadTrusteeIndividual =>
-                val index = list.indexOf(lti)
-                addressMapper.build(
-                  userAnswers,
-                  TrusteeAddressInTheUKPage(index),
-                  TrusteesUkAddressPage(index),
-                  TrusteesInternationalAddressPage(index)
-                ) map {
-                  address =>
-                    Correspondence(
-                      abroadIndicator = !lti.liveInUK,
-                      name = trustName,
-                      address = address,
-                      phoneNumber = lti.telephoneNumber
-                    )
-                }
-              case lto: LeadTrusteeOrganisation =>
-                val index = list.indexOf(lto)
-                addressMapper.build(
-                  userAnswers,
-                  TrusteeOrgAddressUkYesNoPage(index),
-                  TrusteeOrgAddressUkPage(index),
-                  TrusteeOrgAddressInternationalPage(index)
-                ) map {
-                  address =>
-                    Correspondence(
-                      abroadIndicator = !lto.liveInUK,
-                      name = trustName,
-                      address = address,
-                      phoneNumber = lto.telephoneNumber
-                    )
-                }
-              case _ =>
-                Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to unexpected lead trustee type")
-                None
-            }
-        }
+        Correspondence(
+          name = trustName,
+          // Following are filled in by correspondence registration pieces
+          // set by trustees frontend into submission draft data.
+          abroadIndicator = false,
+          address = AddressType("", "", None, None, None, ""),
+          phoneNumber = ""
+        )
     }
   }
-
 }

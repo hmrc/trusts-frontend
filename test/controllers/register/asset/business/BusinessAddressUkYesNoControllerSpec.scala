@@ -22,8 +22,7 @@ import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.asset.business.BusinessNamePage
-import pages.register.trustees.organisation.TrusteeOrgAddressUkYesNoPage
+import pages.register.asset.business.{BusinessAddressUkYesNoPage, BusinessNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -188,7 +187,7 @@ class BusinessAddressUkYesNoControllerSpec extends RegistrationSpecBase with Ind
 
       validateIndex(
         arbitrary[Boolean],
-        TrusteeOrgAddressUkYesNoPage.apply,
+        BusinessAddressUkYesNoPage.apply,
         getForIndex
       )
 
@@ -206,7 +205,7 @@ class BusinessAddressUkYesNoControllerSpec extends RegistrationSpecBase with Ind
 
       validateIndex(
         arbitrary[Boolean],
-        TrusteeOrgAddressUkYesNoPage.apply,
+        BusinessAddressUkYesNoPage.apply,
         postForIndex
       )
     }

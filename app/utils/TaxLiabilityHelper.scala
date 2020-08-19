@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package pages.register.trustees
+package utils
 
-import pages.{MetaData, QuestionPage}
-import play.api.libs.json.JsPath
-import sections.Trustees
+import java.time.LocalDate
 
-case class TrusteeMetaData(index: Int) extends QuestionPage[MetaData] {
+import models.core.UserAnswers
+import pages.register.trust_details.WhenTrustSetupPage
+import uk.gov.hmrc.time.TaxYear
 
-  override def path: JsPath = Trustees.path \ index \ toString
+object TaxLiabilityHelper {
 
-  override def toString: String = "metaData"
-
+  def showTaxLiability(userAnswers: UserAnswers): Boolean = {
+    val taxYearStart = TaxYear.current.starts
+    (userAnswers.get(WhenTrustSetupPage).getOrElse(LocalDate.now()) isBefore
+      LocalDate.of(taxYearStart.getYear, taxYearStart.getMonthOfYear, taxYearStart.getDayOfMonth))
+  }
 }
