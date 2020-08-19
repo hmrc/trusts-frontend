@@ -283,21 +283,23 @@ postcodeForTheTrust.error.required = Enter the trust’s postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
 postcodeForTheTrust.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return. For example, A,A,1,  1,A,A.
 
-FailedMatch.title = We cannot match the details you have given us to our records
-FailedMatch.heading = We cannot match the details you have given us to our records
-FailedMatch.paragraph1 = Check that you have entered the correct:
-FailedMatch.bulletpoint1 = Unique Taxpayer Reference (UTR)
-FailedMatch.bulletpoint2 = trust name
-FailedMatch.bulletpoint3 = postcode
-FailedMatch.paragraph2 = You can find this information on any letter about the trust sent by HMRC, including the latest:
-FailedMatch.bulletpoint4 = Trust and Estate (SA900) tax return
-FailedMatch.bulletpoint5 = notice to file (SA316)
-FailedMatch.bulletpoint6 = statement of account
-FailedMatch.paragraph3 = The trust name must be entered exactly as it is shown on the letter.
-FailedMatch.h2 = What to do next
-FailedMatch.paragraph4 = If we still cannot match your trust details to our records, you can
-FailedMatch.paragraph5 = . You will need the details of the trust to answer some security questions.
-FailedMatch.contactLink =  contact the trusts helpline
+failedMatch.title = We cannot match the details you have given us to our records
+failedMatch.heading = We cannot match the details you have given us to our records
+failedMatch.paragraph1 = Check that you have entered the correct:
+failedMatch.bulletpoint1 = Unique Taxpayer Reference (UTR)
+failedMatch.bulletpoint2 = trust name
+failedMatch.bulletpoint3 = postcode
+failedMatch.paragraph2 = You can find this information on any letter about the trust sent by HMRC, including the latest:
+failedMatch.bulletpoint4 = Trust and Estate (SA900) tax return
+failedMatch.bulletpoint5 = notice to file (SA316)
+failedMatch.bulletpoint6 = statement of account
+failedMatch.paragraph3 = The trust name must be entered exactly as it is shown on the letter.
+failedMatch.h2 = What to do next
+failedMatch.paragraph4 = If we still cannot match your trust details to our records, you can
+failedMatch.paragraph5 = . You will need the details of the trust to answer some security questions.
+failedMatch.contactLink =  contact the trusts helpline
+
+
 
 cannotMakeChanges.title = You cannot make changes to the trust online
 cannotMakeChanges.heading = You cannot make changes to the trust online
