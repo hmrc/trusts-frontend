@@ -71,20 +71,4 @@ class RegistrationMapper @Inject()(
     }
 
   }
-
-  private def getLeadTrusteeAddress(leadTrustee: LeadTrusteeType): Option[AddressType] = {
-    leadTrustee match {
-      case LeadTrusteeType(Some(trusteeInd), None) => trusteeInd.identification.address
-      case LeadTrusteeType(None, Some(trusteeOrg)) => trusteeOrg.identification.address
-      case _ => None
-    }
-  }
-
-  private def getLeadTrusteePhoneNumber(leadTrustee: LeadTrusteeType): Option[String] = {
-    leadTrustee match {
-      case LeadTrusteeType(Some(trusteeInd), None) => Some(trusteeInd.phoneNumber)
-      case LeadTrusteeType(None, Some(trusteeOrg)) => Some(trusteeOrg.phoneNumber)
-      case _ => None
-    }
-  }
 }

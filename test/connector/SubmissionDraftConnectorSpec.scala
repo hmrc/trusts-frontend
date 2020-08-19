@@ -50,6 +50,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val testDraftId = "draftId"
   private val submissionsUrl = s"/trusts/register/submission-drafts"
   private val mainUrl = s"$submissionsUrl/$testDraftId/main"
+  private val resetTaxLiabilityUrl = s"$submissionsUrl/$testDraftId/reset/taxLiability"
   private val beneficiariesUrl = s"$submissionsUrl/$testDraftId/beneficiaries"
   private val statusUrl = s"$submissionsUrl/$testDraftId/status"
   private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
@@ -370,6 +371,24 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
         val result = Await.result(connector.getCorrespondenceAddress(testDraftId), Duration.Inf)
         result mustEqual expectedAddress
+      }
+
+    }
+
+    ".resetTaxLiability" - {
+
+      "resets tax liability" in {
+
+        server.stubFor(
+          post(urlEqualTo(resetTaxLiabilityUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+            )
+        )
+
+        val result = Await.result(connector.resetTaxLiability(testDraftId), Duration.Inf)
+        result.status mustBe Status.OK
       }
 
     }
