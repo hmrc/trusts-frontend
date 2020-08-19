@@ -16,14 +16,11 @@
 
 package connector
 
-import akka.http.javadsl.model.ContentType
 import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
-import models.core.pages.Address
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
-import play.api.http.HeaderNames
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
