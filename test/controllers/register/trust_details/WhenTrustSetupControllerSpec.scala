@@ -35,6 +35,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
   val form = formProvider.withConfig()
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val differentStartDate = validAnswer.minusYears(2)
 
   lazy val whenTrustSetupRoute = routes.WhenTrustSetupController.onPageLoad(NormalMode,fakeDraftId).url
 
@@ -79,6 +80,28 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
     }
 
     "redirect to the next page when valid data is submitted" in {
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request =
+        FakeRequest(POST, whenTrustSetupRoute)
+          .withFormUrlEncodedBody(
+            "value.day"   -> validAnswer.getDayOfMonth.toString,
+            "value.month" -> validAnswer.getMonthValue.toString,
+            "value.year"  -> validAnswer.getYear.toString
+          )
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+      application.stop()
+    }
+
+    "reset tax liability status when start date has changed" in {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()

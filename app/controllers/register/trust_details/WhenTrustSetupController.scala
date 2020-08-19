@@ -76,13 +76,18 @@ class WhenTrustSetupController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
         value => {
-          if (!request.userAnswers.get(WhenTrustSetupPage).contains(value)) {
-            submissionDraftConnector.resetTaxLiabilityStatus(draftId)
+          if (request.userAnswers.get(WhenTrustSetupPage).contains(value) || request.userAnswers.get(WhenTrustSetupPage).isEmpty) {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenTrustSetupPage, value))
+              _              <- registrationsRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
+          } else {
+            for {
+              _              <- submissionDraftConnector.resetTaxLiabilityStatus(draftId)
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenTrustSetupPage, value))
+              _              <- registrationsRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
           }
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenTrustSetupPage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
         }
       )
   }
