@@ -55,6 +55,8 @@ GET        /:draftId/matching-failed                                            
 GET        /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onPageLoad(draftId: String)
 POST       /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onSubmit(draftId: String)
 
+GET        /problem-with-service                                                                    controllers.register.MatchingDownController.onPageLoad()
+
 GET        /cannot-change                                                                           controllers.register.CannotMakeChangesController.onPageLoad()
 
 GET        /trust-utr-post                                                                          controllers.register.UTRSentByPostController.onPageLoad()
