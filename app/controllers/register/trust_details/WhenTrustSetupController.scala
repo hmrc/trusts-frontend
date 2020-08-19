@@ -75,20 +75,19 @@ class WhenTrustSetupController @Inject()(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
-        value => {
-          if (request.userAnswers.get(WhenTrustSetupPage).contains(value) || request.userAnswers.get(WhenTrustSetupPage).isEmpty) {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenTrustSetupPage, value))
-              _              <- registrationsRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
-          } else {
-            for {
-              _              <- submissionDraftConnector.resetTaxLiabilityStatus(draftId)
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenTrustSetupPage, value))
-              _              <- registrationsRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
-          }
-        }
+        value =>
+          for {
+           _ <- {
+             val previousAnswer = request.userAnswers.get(WhenTrustSetupPage)
+             if (previousAnswer.isDefined && !previousAnswer.contains(value)) {
+               submissionDraftConnector.resetTaxLiability(draftId).map(_ => ())
+             } else {
+               Future.successful(())
+             }
+           }
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenTrustSetupPage, value))
+            _              <- registrationsRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
       )
   }
 

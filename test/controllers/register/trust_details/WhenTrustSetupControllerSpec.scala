@@ -114,7 +114,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       val mockConnector = mock[SubmissionDraftConnector]
       val userAnswers = emptyUserAnswers.set(WhenTrustSetupPage, differentStartDate).success.value
 
-      when(mockConnector.resetTaxLiabilityStatus(any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
+      when(mockConnector.resetTaxLiability(any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
       
       val application =
         applicationBuilder(userAnswers = Some(userAnswers)).overrides(
@@ -134,7 +134,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       status(result) mustEqual SEE_OTHER
 
       verify(mockConnector)
-        .resetTaxLiabilityStatus(any())(any(), any())
+        .resetTaxLiability(any())(any(), any())
 
       application.stop()
     }
