@@ -52,6 +52,9 @@ POST       /:draftId/change-trust-postcode                                      
 
 GET        /:draftId/matching-failed                                                                controllers.register.FailedMatchController.onPageLoad(draftId: String)
 
+GET        /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onPageLoad(draftId: String)
+POST       /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onSubmit(draftId: String)
+
 GET        /cannot-change                                                                           controllers.register.CannotMakeChangesController.onPageLoad()
 
 GET        /trust-utr-post                                                                          controllers.register.UTRSentByPostController.onPageLoad()

@@ -299,7 +299,17 @@ failedMatch.paragraph4 = If we still cannot match your trust details to our reco
 failedMatch.paragraph5 = . You will need the details of the trust to answer some security questions.
 failedMatch.contactLink =  contact the trusts helpline
 
-
+trustAlreadyRegistered.title = This trust has already been registered
+trustAlreadyRegistered.heading = This trust has already been registered
+trustAlreadyRegistered.subHeading = This trust’s UTR: {0}
+trustAlreadyRegistered.continue = Register another trust
+trustAlreadyRegistered.agent.p1 = You can
+trustAlreadyRegistered.agent.p1.link = return to register and maintain a trust for a client
+trustAlreadyRegistered.p1 = If you do not need to register another trust:
+trustAlreadyRegistered.bullet1 = you can sign in with the Government Gateway sign-in details for this this trust
+trustAlreadyRegistered.bullet2 = if this trust does not have Government Gateway sign-in details, you will need to claim or authorise this trust as an agent
+trustAlreadyRegistered.p2 = You can
+trustAlreadyRegistered.p2.link = contact the trusts helpline if you have lost the Government Gateway sign-in details for this trust (opens in a new tab)
 
 cannotMakeChanges.title = You cannot make changes to the trust online
 cannotMakeChanges.heading = You cannot make changes to the trust online

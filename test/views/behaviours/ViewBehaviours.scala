@@ -245,6 +245,18 @@ trait ViewBehaviours extends ViewSpecBase {
       }
     }
   }
+
+  def pageWithSubHeading(view: HtmlFormat.Appendable, text: String): Unit = {
+
+    "behave like a page with a sub-heading" must {
+
+      "have a sub-heading" in {
+
+        val doc = asDocument(view)
+        assertContainsText(doc, text)
+      }
+    }
+  }
 }
 
 
