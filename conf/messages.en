@@ -127,7 +127,6 @@ entity.settlor.individual = Individual Settlor
 entity.settlor.business = Business Settlor
 entity.settlor.deceased = Will Trust
 
-entity.trustee = Trustees
 entity.asset = Assets
 entity.settlor = Settlors
 
@@ -135,11 +134,6 @@ entities.no.name.added = No name added
 entities.no.value.added = No value added
 entities.no.address.added = No address added
 entities.no.description.added = No description added
-
-entities.lead = Lead
-entities.trustee = Trustee
-entities.trustee.individual = Trustee Individual
-entities.trustee.business = Trustee Company
 
 entities.propertyOrLand.default = No address or description added
 
@@ -308,76 +302,8 @@ UTRSentByPost.link.contactHelpline = Contact the trusts helpline (opens in a new
 UTRSentByPost.paragraph3 = You can
 UTRSentByPost.link.returnToRegister = return to register and maintain a trust for a client
 
-isThisLeadTrustee.title = Is this the lead trustee?
-isThisLeadTrustee.heading = Is this the lead trustee?
-isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
-isThisLeadTrustee.error.required = Select yes if this is the trust’s lead trustee
-isThisLeadTrustee.hint = The lead trustee is the main point of contact for the trust. Do not enter agent details here unless they are legally a trustee.
-
-trusteeIndividualOrBusiness.title = Is the trustee an individual or a business?
-trusteeIndividualOrBusiness.heading = Is the trustee an individual or a business?
-trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
-trusteeIndividualOrBusiness.error.required = Select if the trustee is an individual or a business
-
-leadTrusteeIndividualOrBusiness.title = Is the lead trustee an individual or a business?
-leadTrusteeIndividualOrBusiness.heading = Is the lead trustee an individual or a business?
-leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
-leadTrusteeIndividualOrBusiness.error.required = Select if the lead trustee is an individual or a business
-
 trustDetailsAnswerPage.title = Check trust details
 trustDetailsAnswerPage.heading = Check trust details
-
-trusteeBusinessName.heading = What is the business’s name?
-trusteeBusinessName.title = What is the business’s name?
-trusteeBusinessName.hint = Enter the name as it appears on tax returns and other letters about Corporation Tax.
-trusteeBusinessName.error.required = Enter the business’s name
-trusteeBusinessName.error.length = Business name must be 56 characters or less
-trusteeBusinessName.error.invalidFormat = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-trusteeBusinessName.checkYourAnswersLabel = What is the business’s name?
-
-trusteeBusinessAddressInUK.checkYourAnswersLabel = Is {0}’s address in the UK?
-
-trusteesName.title = What is the trustee’s name?
-trusteesName.heading = What is the trustee’s name?
-trusteesName.checkYourAnswersLabel = What is the trustee’s name?
-trusteesName.firstName = First name
-trusteesName.middleName = Middle names (optional)
-trusteesName.lastName = Last name
-trusteesName.error.firstnamerequired = Enter the trustee’s first name
-trusteesName.error.lastnamerequired = Enter the trustee’s last name
-trusteesName.error.lengthfirstname = Trustee’s first name must be 35 characters or less
-trusteesName.error.lengthmiddlename = Trustee’s middle names must be 35 characters or less
-trusteesName.error.lengthlastname = Trustee’s last name must be 35 characters or less
-trusteesName.error.invalidFirstNameCharacters = Trustee’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-trusteesName.error.invalidMiddleNameCharacters = Trustee’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-trusteesName.error.invalidLastNameCharacters = Trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-
-leadTrusteesName.title = What is the lead trustee’s name?
-leadTrusteesName.heading = What is the lead trustee’s name?
-leadTrusteesName.checkYourAnswersLabel = What is the lead trustee’s name?
-leadTrusteesName.firstName = First name
-leadTrusteesName.middleName = Middle names (optional)
-leadTrusteesName.lastName = Last name
-leadTrusteesName.error.firstnamerequired = Enter the lead trustee’s first name
-leadTrusteesName.error.lastnamerequired = Enter the lead trustee’s last name
-leadTrusteesName.error.lengthfirstname = Lead trustee’s first name must be 35 characters or less
-leadTrusteesName.error.lengthmiddlename = Lead trustee’s middle names must be 35 characters or less
-leadTrusteesName.error.lengthlastname = Lead trustee’s last name must be 35 characters or less
-leadTrusteesName.error.invalidFirstNameCharacters = Lead trustee’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-leadTrusteesName.error.invalidMiddleNameCharacters = Lead trustee’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-leadTrusteesName.error.invalidLastNameCharacters = Lead trustee’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-
-trusteesAnswerPage.title = Check trustee details
-trusteesAnswerPage.heading = Check trustee details
-
-leadTrusteesAnswerPage.title = Check lead trustee details
-leadTrusteesAnswerPage.heading = Check lead trustee details
-
-addATrustee.title = Add a trustee
-
-addATrustee.heading = Add a trustee
-addATrustee.singular.heading = Add a trustee
-addATrustee.count.heading = You have added {0} trustees
 
 addASettlor.heading = Add a settlor
 addASettlor.title = Add a settlor
@@ -397,121 +323,11 @@ addASettlor.add-them-later = Yes, I want to add them later
 addASettlor.no-complete = No, I have added all of the settlors
 addASettlor.error.required = Select yes if you want to add another settlor
 
-addATrustee.additional-content = Do you need to add another trustee?
-addATrustee.add-them-now = Yes, I want to add them now
-addATrustee.add-them-later = Yes, I want to add them later
-addATrustee.no-complete = No, I have added all trustees
-addATrustee.checkYourAnswersLabel = Add A Trustee
-addATrustee.individual = Trustee Individual
-addATrustee.business = Trustee Company
-addATrustee.error.required = Select yes if you want to add another trustee
-addATrustee.lead-trustee.required = You need to add or nominate a lead trustee.
-
-removeATrustee.title = Are you sure you want to remove the trustee?
-removeATrustee.heading = Are you sure you want to remove {0}?
-removeATrustee.default = the trustee
-removeATrustee.error.required = Select yes if you want to remove the trustee
-
-removeATrusteeOrg.title = Are you sure you want to remove the trustee?
-removeATrusteeOrg.heading = Are you sure you want to remove {0}?
-removeATrusteeOrg.default = the trustee
-removeATrusteeOrg.error.required = Select yes if you want to remove the trustee
-
 removeAsset.title = Are you sure you want to remove this asset?
 removeAsset.heading = Are you sure you want to remove this asset?
 removeAsset.error.required = Select yes if you want to remove this asset
 
-telephoneNumber.title = What is the trustee’s telephone number?
-telephoneNumber.heading = What is {0}’s telephone number?
-telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
-telephoneNumber.error.required = Enter trustee’s telephone number
-telephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
-telephoneNumber.hint = For international numbers include the country code
-
 emailAddress.checkYourAnswersLabel = What is {0}’s email address?
-
-leadTrusteesTelephoneNumber.title = What is the lead trustee’s telephone number?
-leadTrusteesTelephoneNumber.error.required = Enter lead trustee’s telephone number
-
-trusteeAUKCitizen.title = Is the trustee a UK citizen?
-trusteeAUKCitizen.heading = Is {0} a UK citizen?
-trusteeAUKCitizen.checkYourAnswersLabel = Is {0} a UK citizen?
-trusteeAUKCitizen.error.required = Select yes if the trustee is a UK citizen
-
-leadTrusteeAUKCitizen.title = Is the lead trustee a UK citizen?
-leadTrusteeAUKCitizen.error.required = Select yes if the lead trustee is a UK citizen
-
-trusteeDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
-trusteeUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-
-trusteeUtr.checkYourAnswersLabel = What is {0} Unique Taxpayer Reference (UTR) number?
-trusteeUtr.title = What is the trustee’s Unique Taxpayer Reference?
-trusteeUtr.heading = What is {0} Unique Taxpayer Reference (UTR) number?
-trusteeUtr.error.required = Enter the trustee’s Unique Taxpayer Reference
-trusteeUtr.error.length = Unique Taxpayer Reference must be a 10 digit number
-trusteeUtr.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
-trusteeUtr.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
-trusteeUtr.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. It will be on tax returns and other letters about Self Assessment. It may be called ‘reference’, ‘UTR’ or ‘official use’.
-trusteeUtr.p1 = You can
-trusteeUtr.link = find a lost UTR number (opens in a new window or tab)
-
-leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
-leadTrusteeUtrYesNo.title = Is this trustee a UK registered company?
-leadTrusteeUtrYesNo.heading = Is this trustee a UK registered company?
-leadTrusteeUtrYesNo.error.required = Select yes if the trustee is a UK registered company
-
-trusteesDateOfBirth.title = What is the trustee’s date of birth?
-trusteesDateOfBirth.heading = What is {0}’s date of birth?
-trusteesDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-trusteesDateOfBirth.hint = For example, 31 3 1980
-trusteesDateOfBirth.error.required.all = Enter a date of birth
-trusteesDateOfBirth.error.required.two = Date of birth must include a {0} and a {1}
-trusteesDateOfBirth.error.required = Date of birth must include a {0}
-trusteesDateOfBirth.error.invalid = Enter a real date of birth
-trusteesDateOfBirth.error.future = Date of birth must be today or in the past
-trusteesDateOfBirth.error.past = Date of birth must be after 31 December 1499
-
-leadTrusteesDateOfBirth.title = What is the lead trustee’s date of birth?
-
-trusteeNinoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
-
-trusteesNino.title = What is the trustee’s National Insurance number?
-trusteesNino.heading = What is {0}’s National Insurance number?
-trusteesNino.checkYourAnswersLabel = What is {0}’s National Insurance number?
-trusteesNino.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
-trusteesNino.hint.reader = It is on their National Insurance card, benefit letter, payslip or P60. For example, Q Q 1 2 3 4 5 6 C.
-trusteesNino.error.required = Enter the trustee’s National Insurance number
-trusteesNino.error.invalidFormat = Enter the trustee’s National Insurance number in the correct format
-
-leadTrusteesNino.title = What is the lead trustee’s National Insurance number?
-leadTrusteesNino.error.required = Enter the lead trustee’s National Insurance number
-leadTrusteesNino.error.invalidFormat = Enter the lead trustee’s National Insurance number in the correct format
-
-trusteeLiveInTheUK.title = Does the trustee live in the UK?
-trusteeLiveInTheUK.heading = Does {0} live in the UK?
-trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
-trusteeLiveInTheUK.error.required = Select yes if the trustee lives in the UK
-
-leadTrusteeLiveInTheUK.title = Does the lead trustee live in the UK?
-leadTrusteeLiveInTheUK.error.required = Select yes if the lead trustee lives in the UK
-
-trusteeUkAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-trusteeTelephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
-trusteeEmailAddressYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
-trusteeEmailAddress.checkYourAnswersLabel = What is {0}’s email address?
-
-trusteesUkAddress.title = What is the trustee’s address?
-trusteesUkAddress.heading = What is {0}’s address?
-trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
-
-trusteesNonUkAddress.checkYourAnswersLabel = What is {0}’s address?
-
-trusteesPassportOrIdCard.checkYourAnswersLabel = What are {0}’s Passport or ID card details
-
-leadTrusteeUkAddress.title = What is the lead trustee’s address?
-
-trusteePassportOrIdCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
-trusteePassportOrIdCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 
 agentInternalReference.title = What is your internal reference for this client?
 agentInternalReference.heading = What is your internal reference for this client?
@@ -560,27 +376,6 @@ agentOverview.h2 = Saved registrations
 agentOverview.start = Start now
 agentOverview.internalClientReference = Internal client reference
 agentOverview.savedUntil = Saved until
-
-trusteesInfo.title = Trustee: information you’ll need to provide
-trusteesInfo.heading = Trustee: information you’ll need to provide
-trusteesInfo.subheading1 = Lead trustee
-trusteesInfo.paragraph1 = You must have a lead trustee. They are the main contact point for the trust. They will be sent all official documents like the trust’s Unique Taxpayer Reference (UTR) and notice to file tax returns.
-trusteesInfo.paragraph2 = If the lead trustee is a UK citizen, tell us their:
-trusteesInfo.bulletpoint1 = National Insurance number
-trusteesInfo.bulletpoint2 = address
-trusteesInfo.bulletpoint3 = telephone number
-trusteesInfo.paragraph3 = For an international lead trustee who does not have a National Insurance number, tell us their address and either their passport or ID card details.
-trusteesInfo.paragraph4 = If the lead trustee is a UK-registered company, tell us the UTR.
-trusteesInfo.subheading2 = Trustee
-trusteesInfo.paragraph5 = Tell us their name. If you know more details, tell us their:
-trusteesInfo.bulletpoint4 = date of birth
-trusteesInfo.bulletpoint5 = National Insurance number
-trusteesInfo.bulletpoint6 = address
-trusteesInfo.bulletpoint7 = passport details and address
-trusteesInfo.bulletpoint8 = ID card details and address
-trusteesInfo.paragraph6 = If the trustee is a business, tell us their registered name. If you know more details, tell us the UTR or business address.
-trusteesInfo.warning = All trustees have the same legal responsibilities.
-trusteesInfo.continue = Continue
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?
@@ -1002,9 +797,6 @@ answerPage.section.trustsDetails.heading = Trust details
 answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
-answerPage.section.leadTrustee.subheading = Lead trustee
-answerPage.section.trustees.heading = Trustees
-answerPage.section.trustee.subheading = Trustee
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
@@ -1275,10 +1067,6 @@ addAnAssetYesNo.title = Do you want to add an asset?
 addAnAssetYesNo.heading = Do you want to add an asset?
 addAnAssetYesNo.error.required = Select yes if you want to add an asset
 
-addATrusteeYesNo.title = Do you want to add a trustee?
-addATrusteeYesNo.heading = Do you want to add a trustee?
-addATrusteeYesNo.error.required = Select yes if you want to add a trustee
-
 settlorBusinessName.title = What is the business’s name?
 settlorBusinessName.heading = What is the business’s name?
 settlorBusinessName.checkYourAnswersLabel = What is the business’s name?
@@ -1469,19 +1257,6 @@ employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When d
 deedOfVariation.replaceAbsoluteInterestOverWill = to replace an absolute interest over a will
 deedOfVariation.replaceWillTrust = to replace a will trust
 
-trusteeOrgAddressUkYesNo.title = Is the trustee’s address in the UK?
-trusteeOrgAddressUkYesNo.heading = Is {0}’s address in the UK?
-trusteeOrgAddressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-trusteeOrgAddressUkYesNo.error.required = Select yes if the trustee’s address is in the UK
-
-trusteesOrgUkAddress.title = What is the trustee’s address?
-trusteesOrgUkAddress.heading = What is {0}’s address?
-trusteesOrgUkAddress.checkYourAnswersLabel = What is {0}’s address?
-
-trusteeOrgAddressInternational.title = What is the trustee’s address?
-trusteeOrgAddressInternational.heading = What is {0}’s address?
-trusteeOrgAddressInternational.checkYourAnswersLabel = What is {0}’s address?
-
 accessibilityStatement.title = Accessibility statement for Register and Maintain a Trust
 accessibilityStatement.heading = Accessibility statement for Register and Maintain a Trust
 
@@ -1666,3 +1441,52 @@ otherBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s addres
 otherBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 otherBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 otherBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
+trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
+leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+trusteeBusinessAddressInUK.checkYourAnswersLabel = Is {0}’s address in the UK?
+trusteesName.checkYourAnswersLabel = What is the trustee’s name?
+leadTrusteesName.checkYourAnswersLabel = What is the lead trustee’s name?
+addATrustee.checkYourAnswersLabel = Add A Trustee
+telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+emailAddress.checkYourAnswersLabel = What is {0}’s email address?
+trusteeAUKCitizen.checkYourAnswersLabel = Is {0} a UK citizen?
+trusteeDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+trusteeUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+leadTrusteeUtrYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
+trusteesDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+trusteeNinoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+trusteesNino.checkYourAnswersLabel = What is {0}’s National Insurance number?
+trusteeLiveInTheUK.checkYourAnswersLabel = Does {0} live in the UK?
+trusteeUkAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trusteeTelephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+trusteeEmailAddressYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
+trusteeEmailAddress.checkYourAnswersLabel = What is {0}’s email address?
+trusteesUkAddress.checkYourAnswersLabel = What is {0}’s address?
+trusteesNonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+trusteesPassportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+trusteesPassportDetails.checkYourAnswersLabel = What are {0}’s passport details?
+trusteesIdCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+trusteesIdCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+trusteesPassportOrIdCard.checkYourAnswersLabel = What are {0}’s Passport or ID card details
+trusteePassportOrIdCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
+trusteePassportOrIdCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
+trustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
+trustee.organisation.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+trustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+trustee.organisation.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trustee.organisation.addressYesNo.checkYourAnswersLabel = Select yes if you know the trustee’s address
+trustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+trustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+trustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+leadTrustee.organisation.ukRegisteredYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
+leadTrustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
+leadTrustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+leadTrustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+leadTrustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+leadTrustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+leadTrustee.organisation.emailYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
+leadTrustee.organisation.email.checkYourAnswersLabel = What is {0}’s email address?
+leadTrustee.organisation.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
