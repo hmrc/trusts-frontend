@@ -276,8 +276,8 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
                 ),
                 Some("trusteeSectionKey2"))
             )
-          )
-
+          ),
+          protectors = None
         )
 
         when(mockConnector.getAnswerSections(any())(any(), any())).thenReturn(Future.successful(answerSections))

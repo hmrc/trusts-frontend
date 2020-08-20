@@ -76,7 +76,8 @@ object RegistrationSubmission {
 
   case class AllAnswerSections(
                                 beneficiaries: Option[List[AnswerSection]],
-                                trustees: Option[List[AnswerSection]]
+                                trustees: Option[List[AnswerSection]],
+                                protectors: Option[List[AnswerSection]]
                               )
 
   object AllAnswerSections {
