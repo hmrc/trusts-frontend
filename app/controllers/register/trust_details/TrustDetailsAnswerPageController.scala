@@ -20,10 +20,11 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
+import models.registration.Matched.Success
 import models.registration.pages.Status.Completed
 import navigation.Navigator
 import pages.entitystatus.TrustDetailsStatus
-import pages.register.TrustDetailsAnswerPage
+import pages.register.{ExistingTrustMatched, TrustDetailsAnswerPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.MessagesControllerComponents
 import repositories.RegistrationsRepository
@@ -57,11 +58,13 @@ class TrustDetailsAnswerPageController @Inject()(
 
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
 
+      val canEditTrustName: Boolean = !request.userAnswers.get(ExistingTrustMatched).contains(Success)
+
       val sections = Seq(
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.trustName,
+            checkYourAnswersHelper.trustName(canEditTrustName),
             checkYourAnswersHelper.whenTrustSetup,
             checkYourAnswersHelper.governedInsideTheUK,
             checkYourAnswersHelper.countryGoverningTrust,
