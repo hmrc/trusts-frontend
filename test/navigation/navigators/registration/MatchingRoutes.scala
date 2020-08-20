@@ -79,38 +79,6 @@ trait MatchingRoutes {
                 .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
           }
         }
-
-        "go to PostcodeForTheTrust from TrustRegisteredWithUkAddressYesNo when YES answered" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-
-              val answers = userAnswers.set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
-
-              navigator.nextPage(TrustRegisteredWithUkAddressYesNoPage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId))
-          }
-        }
-
-        "go to FailedMatch from TrustRegisteredWithUkAddressYesNo when NO answered" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-
-              val answers = userAnswers.set(TrustRegisteredWithUkAddressYesNoPage, false).success.value
-
-              navigator.nextPage(TrustRegisteredWithUkAddressYesNoPage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.FailedMatchController.onPageLoad(fakeDraftId))
-          }
-        }
-
-        "go to FailedMatch from PostcodeForTheTrust" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-
-              navigator.nextPage(PostcodeForTheTrustPage, NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(routes.FailedMatchController.onPageLoad(fakeDraftId))
-          }
-        }
-
       }
 
       "the user does not have a UTR for the trust" in {

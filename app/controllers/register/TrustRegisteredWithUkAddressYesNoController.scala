@@ -20,12 +20,12 @@ import controllers.actions._
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
+import services.MatchingService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.TrustRegisteredWithUkAddressYesNoView
 
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class TrustRegisteredWithUkAddressYesNoController @Inject()(
                                                              override val messagesApi: MessagesApi,
                                                              registrationsRepository: RegistrationsRepository,
-                                                             navigator: Navigator,
+                                                             matchingService: MatchingService,
                                                              standardActionSets: StandardActionSets,
                                                              yesNoFormProvider: YesNoFormProvider,
                                                              val controllerComponents: MessagesControllerComponents,
@@ -67,8 +67,15 @@ class TrustRegisteredWithUkAddressYesNoController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredWithUkAddressYesNoPage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustRegisteredWithUkAddressYesNoPage, mode, draftId)(updatedAnswers))
+            _ <- registrationsRepository.set(updatedAnswers)
+            redirect <- {
+              if (value) {
+                Future.successful(Redirect(routes.PostcodeForTheTrustController.onPageLoad(mode, draftId)))
+              } else {
+                matchingService.matching(updatedAnswers, draftId)
+              }
+            }
+          } yield redirect
         }
       )
   }

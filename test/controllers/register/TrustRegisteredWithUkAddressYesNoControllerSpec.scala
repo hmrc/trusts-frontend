@@ -17,20 +17,29 @@
 package controllers.register
 
 import base.RegistrationSpecBase
+import controllers.Assets.Redirect
 import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
 import play.api.data.Form
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.MatchingService
 import views.html.register.TrustRegisteredWithUkAddressYesNoView
+
+import scala.concurrent.Future
 
 class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBase {
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("trustRegisteredWithUkAddress")
 
   private lazy val trustRegisteredWithUkAddressYesNoRoute: String = routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+  private lazy val postcodeRoute: String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId).url
+  private lazy val taskListRoute: String = routes.TaskListController.onPageLoad(fakeDraftId).url
 
   "TrustRegisteredWithUkAddressYesNo Controller" must {
 
@@ -73,7 +82,7 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to PostcodeForTheTrust page when YES submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -84,7 +93,30 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual postcodeRoute
+
+      application.stop()
+    }
+
+    "redirect to Task List when valid data is submitted" in {
+
+      val mockMatchingService: MatchingService = mock[MatchingService]
+      when(mockMatchingService.matching(any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[MatchingService].toInstance(mockMatchingService))
+          .build()
+
+      val request =
+        FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
+          .withFormUrlEncodedBody(("value", "false"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual taskListRoute
 
       application.stop()
     }

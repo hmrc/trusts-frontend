@@ -31,14 +31,6 @@ object MatchingRoutes extends Routes {
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config)
     case WhatIsTheUTRPage => _ => _ => controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
-    case TrustRegisteredWithUkAddressYesNoPage => _ => ua =>
-      yesNoNav(
-        ua,
-        TrustRegisteredWithUkAddressYesNoPage,
-        routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId),
-        routes.FailedMatchController.onPageLoad(draftId)
-      )
-    case PostcodeForTheTrustPage => _ => _ => routes.FailedMatchController.onPageLoad(draftId)
   }
 
   private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig): Call = {
