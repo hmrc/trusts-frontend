@@ -343,6 +343,7 @@ taskList.heading = Registration progress
 taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
 taskList.savedUntil.heading = Saved until
 taskList.sections.heading = Sections to be completed
+taskList.additionalSections.heading = Additional sections to be completed
 
 taskList.trustDetails.label = Trust details
 taskList.settlors.label = Settlors
@@ -350,6 +351,7 @@ taskList.trustees.label = Trustees
 taskList.beneficiaries.label = Beneficiaries
 taskList.assets.label = Assets
 taskList.taxLiability.label = Years of tax liability
+taskList.protectors.label = Protectors
 taskList.agent.savedRegistrations = Return to saved registrations
 taskList.agent.agentDetails = Agent details
 
