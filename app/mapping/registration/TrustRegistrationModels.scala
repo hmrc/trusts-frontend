@@ -55,7 +55,7 @@ object MatchData {
   implicit val matchDataFormat: Format[MatchData] = Json.format[MatchData]
 
   val writes: Writes[MatchData] =
-    ((__ \ "sa-utr").write[String] and
+    ((__ \ "utr").write[String] and
       (__ \ "name").write[String] and
       (__ \ "postcode").writeNullable[String]
       ).apply(unlift(MatchData.unapply))

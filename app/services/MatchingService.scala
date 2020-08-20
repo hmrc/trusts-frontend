@@ -60,7 +60,6 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
         case _ =>
           Future.successful(Redirect(MatchingDownController.onPageLoad()))
       }
-
     }).getOrElse(Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId))))
   }
 
