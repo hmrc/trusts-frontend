@@ -716,10 +716,7 @@ agentAddressYesNo.error.required = Select yes if the agency’s address is in th
 confirmation.title = Registration received
 confirmation.heading1 = Registration received
 confirmation.heading2 = Your reference is:
-
 confirmation.print.link = Print or save a declared copy of the trust’s registration
-confirmation.post.link = post the changes to HMRC (opens in a new window or tab)
-confirmation.contact.link = contact HMRC to find out why (opens in a new window or tab)
 
 confirmation.new.individual.subheading1 = What happens next
 confirmation.new.individual.p1 = We will post {0} the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
