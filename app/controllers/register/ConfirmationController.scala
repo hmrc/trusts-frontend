@@ -16,7 +16,6 @@
 
 package controllers.register
 
-import config.FrontendAppConfig
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
@@ -33,7 +32,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
+import views.html.register.confirmation._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -42,11 +41,11 @@ class ConfirmationController @Inject()(
                                         identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: RegistrationDataRequiredAction,
-                                        config: FrontendAppConfig,
                                         val controllerComponents: MessagesControllerComponents,
-                                        viewIndividual: ConfirmationIndividualView,
-                                        viewAgent: ConfirmationAgentView,
-                                        viewExisting: ConfirmationExistingView,
+                                        newIndividualView: newTrust.IndividualView,
+                                        newAgentView: newTrust.AgentView,
+                                        existingIndividualView: existingTrust.IndividualView,
+                                        existingAgentView: existingTrust.AgentView,
                                         errorHandler: ErrorHandler,
                                         registrationsRepository: RegistrationsRepository
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -68,12 +67,14 @@ class ConfirmationController @Inject()(
                       name: String)(implicit request : RegistrationDataRequest[AnyContent]) = {
 
     userAnswers.get(TrustHaveAUTRPage) match {
+      case Some(true) if isAgent =>
+        Future.successful(Ok(existingAgentView(draftId, trn, name)))
       case Some(true) =>
-        Future.successful(Ok(viewExisting(draftId, isAgent, trn, name)))
+        Future.successful(Ok(existingIndividualView(draftId, trn, name)))
       case Some(false) if isAgent =>
-        Future.successful(Ok(viewAgent(draftId, trn, name)))
+        Future.successful(Ok(newAgentView(draftId, trn, name)))
       case Some(false) =>
-        Future.successful(Ok(viewIndividual(draftId, trn, name)))
+        Future.successful(Ok(newIndividualView(draftId, trn, name)))
       case None =>
         errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }

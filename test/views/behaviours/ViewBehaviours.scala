@@ -157,8 +157,9 @@ trait ViewBehaviours extends ViewSpecBase {
 
   def confirmationPage(view: HtmlFormat.Appendable,
                        messageKeyPrefix: String,
-                       messageKeyParam: String,
-                       accessibleKeyParam: String): Unit = {
+                       refNumber: String,
+                       leadTrusteeName: String,
+                       expectedGuidanceKeys: String*): Unit = {
 
     "behave like a confirmation page" when {
 
@@ -175,13 +176,22 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct browser title" in {
 
           val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", accessibleKeyParam)
+          assertEqualsMessage(doc, "title", "confirmation.title")
         }
 
         "display the correct page title" in {
 
           val doc = asDocument(view)
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", messageKeyParam + " " + accessibleKeyParam)
+          assertContainsText(doc, messages("confirmation.heading1"))
+          assertContainsText(doc, messages("confirmation.heading2"))
+          assertContainsText(doc, refNumber)
+        }
+
+        "display the correct guidance" in {
+
+          val doc = asDocument(view)
+          for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
+          assertContainsText(doc, messages(s"$messageKeyPrefix.p1", leadTrusteeName))
         }
 
         "display language toggles" in {
