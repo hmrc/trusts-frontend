@@ -19,12 +19,12 @@ package navigation.routes
 import controllers.register.suitability.routes
 import models.NormalMode
 import models.core.UserAnswers
+import pages.Page
 import pages.register.suitability._
-import pages.{Page, QuestionPage}
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
-object SuitabilityRoutes {
+object SuitabilityRoutes extends Routes {
 
   def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
@@ -41,12 +41,6 @@ object SuitabilityRoutes {
         routes.BeforeYouContinueController.onPageLoad(draftId),
         routes.NoNeedToRegisterController.onPageLoad(draftId)
       )
-  }
-
-  private def yesNoNav(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
-    ua.get(fromPage)
-      .map(if (_) yesCall else noCall)
-      .getOrElse(controllers.register.routes.SessionExpiredController.onPageLoad())
   }
 }
 

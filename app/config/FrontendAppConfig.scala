@@ -45,6 +45,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
   val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
   val trustsHelplineUrl: String = configuration.get[String]("urls.trustsHelpline")
+  val ggSignInUrl: String = configuration.get[String]("urls.ggSignIn")
 
   lazy val loginUrl: String = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")

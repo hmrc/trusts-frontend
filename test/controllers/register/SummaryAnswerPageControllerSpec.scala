@@ -145,7 +145,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       AnswerSection(
         None,
         Seq(
-          checkYourAnswersHelper.trustName.value,
+          checkYourAnswersHelper.trustName().value,
           checkYourAnswersHelper.whenTrustSetup.value
         ),
         Some("Trust details")
@@ -286,7 +286,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       AnswerSection(
         None,
         Seq(
-          checkYourAnswersHelper.trustName.value,
+          checkYourAnswersHelper.trustName().value,
           checkYourAnswersHelper.whenTrustSetup.value
         ),
         Some("Trust details")

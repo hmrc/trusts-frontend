@@ -40,12 +40,22 @@ POST       /:draftId/trust-utr                                                  
 GET        /:draftId/change-trust-utr                                                               controllers.register.WhatIsTheUTRController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-utr                                                               controllers.register.WhatIsTheUTRController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/trust-registered-with-uk-address                                               controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/trust-registered-with-uk-address                                               controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/change-trust-registered-with-uk-address                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
+POST       /:draftId/change-trust-registered-with-uk-address                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
 GET        /:draftId/trust-postcode                                                                 controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-postcode                                                                 controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-postcode                                                          controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-postcode                                                          controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/matching-failed                                                                controllers.register.FailedMatchController.onPageLoad(draftId: String)
+
+GET        /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onPageLoad(draftId: String)
+POST       /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onSubmit(draftId: String)
+
+GET        /problem-with-service                                                                    controllers.register.MatchingDownController.onPageLoad()
 
 GET        /cannot-change                                                                           controllers.register.CannotMakeChangesController.onPageLoad()
 

@@ -264,6 +264,12 @@ whatIsTheUTR.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. 
 whatIsTheUTR.linkMessage = You can
 whatIsTheUTR.linkText = find a lost UTR number (opens in a new window or tab)
 
+trustRegisteredWithUkAddress.title = Was the trust registered with a UK address?
+trustRegisteredWithUkAddress.heading = Was the trust registered with a UK address?
+trustRegisteredWithUkAddress.checkYourAnswersLabel = Was the trust registered with a UK address?
+trustRegisteredWithUkAddress.hint = It will be on the trust’s most recent Self Assessment notice to file (SA316). For example, AB1 1AB.
+trustRegisteredWithUkAddress.error.required = Select yes if the trust was registered with a UK address
+
 postcodeForTheTrust.title = What is the trust’s postcode?
 postcodeForTheTrust.heading = What is the trust’s postcode?
 postcodeForTheTrust.checkYourAnswersLabel = What is the trust’s postcode?
@@ -271,21 +277,42 @@ postcodeForTheTrust.error.required = Enter the trust’s postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
 postcodeForTheTrust.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return. For example, A,A,1,  1,A,A.
 
-FailedMatch.title = We cannot match the details you have given us to our records
-FailedMatch.heading = We cannot match the details you have given us to our records
-FailedMatch.paragraph1 = Check that you have entered the correct:
-FailedMatch.bulletpoint1 = Unique Taxpayer Reference (UTR)
-FailedMatch.bulletpoint2 = trust name
-FailedMatch.bulletpoint3 = postcode
-FailedMatch.paragraph2 = You can find this information on any letter about the trust sent by HMRC, including the latest:
-FailedMatch.bulletpoint4 = Trust and Estate (SA900) tax return
-FailedMatch.bulletpoint5 = notice to file (SA316)
-FailedMatch.bulletpoint6 = statement of account
-FailedMatch.paragraph3 = The trust name must be entered exactly as it is shown on the letter.
-FailedMatch.h2 = What to do next
-FailedMatch.paragraph4 = If we still cannot match your trust details to our records, you can
-FailedMatch.paragraph5 = . You will need the details of the trust to answer some security questions.
-FailedMatch.contactLink =  contact the trusts helpline
+failedMatch.title = We cannot match the details you have given us to our records
+failedMatch.heading = We cannot match the details you have given us to our records
+failedMatch.paragraph1 = Check that you have entered the correct:
+failedMatch.bulletpoint1 = Unique Taxpayer Reference (UTR)
+failedMatch.bulletpoint2 = trust name
+failedMatch.bulletpoint3 = postcode
+failedMatch.paragraph2 = You can find this information on any letter about the trust sent by HMRC, including the latest:
+failedMatch.bulletpoint4 = Trust and Estate (SA900) tax return
+failedMatch.bulletpoint5 = notice to file (SA316)
+failedMatch.bulletpoint6 = statement of account
+failedMatch.paragraph3 = The trust name must be entered exactly as it is shown on the letter.
+failedMatch.h2 = What to do next
+failedMatch.paragraph4 = If we still cannot match your trust details to our records, you can
+failedMatch.paragraph5 = . You will need the details of the trust to answer some security questions.
+failedMatch.contactLink =  contact the trusts helpline
+
+trustAlreadyRegistered.title = This trust has already been registered
+trustAlreadyRegistered.heading = This trust has already been registered
+trustAlreadyRegistered.subHeading = This trust’s UTR: {0}
+trustAlreadyRegistered.continue = Register another trust
+trustAlreadyRegistered.agent.p1 = You can
+trustAlreadyRegistered.agent.p1.link = return to register and maintain a trust for a client
+trustAlreadyRegistered.p1 = If you do not need to register another trust:
+trustAlreadyRegistered.bullet1 = you can sign in with the Government Gateway sign-in details for this this trust
+trustAlreadyRegistered.bullet2 = if this trust does not have Government Gateway sign-in details, you will need to claim or authorise this trust as an agent
+trustAlreadyRegistered.p2 = You can
+trustAlreadyRegistered.p2.link = contact the trusts helpline if you have lost the Government Gateway sign-in details for this trust (opens in a new tab)
+
+matchingDown.title = Sorry, there is a problem with the service
+matchingDown.heading = Sorry, there is a problem with the service
+matchingDown.p1 = Try again later.
+matchingDown.p2.beforeLink = You can
+matchingDown.p2.link = contact the trusts helpline (opens in a new window or tab)
+matchingDown.p2.afterLink = if you need to speak to someone about registering and maintaining a trust.
+matchingDown.p3 = You can
+matchingDown.p3.link = return to register a trust for a client
 
 cannotMakeChanges.title = You cannot make changes to the trust online
 cannotMakeChanges.heading = You cannot make changes to the trust online
@@ -688,77 +715,70 @@ agentAddressYesNo.heading = Is {0}’s address in the UK?
 agentAddressYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
 
-confirmationPage.printsave.link = Print or save a declared copy of the trust’s registration
-confirmationPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
-confirmationPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
+confirmation.title = Registration received
+confirmation.heading1 = Registration received
+confirmation.heading2 = Your reference is:
+confirmation.print.link = Print or save a declared copy of the trust’s registration
 
-confirmationIndividualPage.heading1 = Registration received
-confirmationIndividualPage.heading2 = Your reference is:
+confirmation.new.individual.subheading1 = What happens next
+confirmation.new.individual.p1 = We will post {0} the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
+confirmation.new.individual.subheading2 = What you need to do next
+confirmation.new.individual.p2 = Keep a note of your reference in case you need to contact HMRC.
+confirmation.new.individual.p3 = If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service once the trust’s UTR has been received.
+confirmation.new.individual.subheading3 = Where to declare the trust is up to date
+confirmation.new.individual.p4 = If the trust has a tax liability, you have a legal responsibility to declare every year that the details we hold are up to date.
+confirmation.new.individual.p5 = You need to make a declaration through the Trust Registration Service and Self Assessment online or the Trust and Estate Tax Return form (SA900).
+confirmation.new.individual.p6 = If you need help with the service
+confirmation.new.individual.p6.a = contact the trusts helpline (opens in a new window or tab)
 
-confirmationIndividualPage.title = Registration received, your reference is: {0}
-confirmationIndividualPage.heading = Registration received Your reference is: {0}
+confirmation.new.agent.subheading1 = What happens next
+confirmation.new.agent.p1 = We will post {0} the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
+confirmation.new.agent.subheading2 = What you need to do next
+confirmation.new.agent.p2 = Keep a note of your reference in case you need to contact HMRC.
+confirmation.new.agent.p3 = One of the trustees will need to complete the next 2 steps once the trust’s UTR has been received. You will then be able to maintain the trust online on their behalf.
+confirmation.new.agent.bullet1 = Trustee needs to claim the trust
+confirmation.new.agent.bullet1.p1 = A trustee needs to log onto the Trust Registration Service using their Government Gateway account. The account they use must be an organisation account, not an individual account.
+confirmation.new.agent.bullet1.p2 = If they do not have an account, they can register for
+confirmation.new.agent.bullet1.p2.a = one here (opens in a new window or tab)
+confirmation.new.agent.bullet1.p3 = The trustee needs to correctly answer questions about the trust so HMRC can prove the connection between the trustee and the trust.
+confirmation.new.agent.bullet1.p4 = The trustee must complete this step before you can request authorisation from them to maintain the trust.
+confirmation.new.agent.bullet2 = Trustee needs to authorise your online access to the trust
+confirmation.new.agent.bullet2.p1 = Through Agent Services you can create an authorisation link to send to the trustee.
+confirmation.new.agent.bullet2.p2 = The trustee needs to use the same Government Gateway organisation account used to claim the trust to approve your request.
+confirmation.new.agent.bullet2.p3 = If you need help with the service
+confirmation.new.agent.bullet2.p3.a = contact the trusts helpline (opens in a new window or tab)
+confirmation.new.agent.bullet2.p4 = You can
+confirmation.new.agent.bullet2.p4.a = return to register and maintain a trust for a client
 
-confirmationIndividualPage.printsave.link = Print or save a declared copy of the trust’s registration (opens in a new window or tab)
-confirmationIndividualPage.posthmrc.link = post the changes to HMRC (opens in a new window or tab)
-confirmationIndividualPage.contacthmrc.link = contact HMRC to find out why (opens in a new window or tab)
+confirmation.existing.individual.subheading1 = What happens next
+confirmation.existing.individual.p1 = You can continue to use the trust’s Unique Taxpayer Reference (UTR) as usual. If there is a problem with the registration, we will contact {0}.
+confirmation.existing.individual.subheading2 = What you need to do next
+confirmation.existing.individual.p2 = Keep a note of your reference in case you need to contact HMRC.
+confirmation.existing.individual.p3 = If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service.
+confirmation.existing.individual.subheading3 = You must declare the trust is up to date every year
+confirmation.existing.individual.p4 = If the trust has a tax liability, you have a legal responsibility to declare every year that the details we hold are up to date.
+confirmation.existing.individual.p5 = You need to make a declaration through the Register and Maintain a Trust Service and Self Assessment online or the Trust and Estate Tax Return form (SA900).
+confirmation.existing.individual.p6 = If you need help with this service
+confirmation.existing.individual.p6.a = contact the trusts helpline (opens in a new window or tab)
 
-confirmationIndividualPage.subheading1 = What happens next
-
-confirmationIndividualPage.paragraph1 = We will post {0} the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
-
-confirmationIndividualPage.subheading2 = What you need to do next
-
-confirmationIndividualPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
-
-confirmationIndividualPage.paragraph3 = If any of the settlor, trustee or beneficiary details change (before you make your next declaration) you will need to update them using the online service once the trust’s UTR has been received.
-
-confirmationIndividualPage.subheading3 = Where to declare the trust is up to date
-
-confirmationIndividualPage.paragraph4 = If the trust has a tax liability, you have a legal responsibility to declare every year that the details we hold are up to date.
-confirmationIndividualPage.paragraph5 = You need to make a declaration through the Trust Registration Service and Self Assessment online or the Trust and Estate Tax Return form (SA900).
-confirmationIndividualPage.paragraph6 = If you need help with the service
-confirmationIndividualPage.paragraph6.a = contact the trusts helpline (opens in a new window or tab)
-
-
-confirmationAgentPage.heading1 = Registration received
-confirmationAgentPage.heading2 = Your reference is:
-
-confirmationAgentPage.title = Registration received, your reference is: {0}
-confirmationAgentPage.heading = Registration received Your reference is: {0}
-
-confirmationAgentPage.subheading1 = What happens next
-
-confirmationAgentPage.paragraph1 = We will post {0} the trust’s Unique Taxpayer Reference (UTR). If they are based in the UK, this can take 15 working days. For international trustees, this can take up to 21 working days.
-
-confirmationAgentPage.subheading2 = What you need to do next
-
-confirmationAgentPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
-confirmationAgentPage.paragraph3 = One of the trustees will need to complete the next 2 steps once the trust’s UTR has been received. You will then be able to maintain the trust online on their behalf.
-
-confirmationAgentPage.bullet1 = Trustee needs to claim the trust
-confirmationAgentPage.paragraph4 = A trustee needs to log onto the Trust Registration Service using their Government Gateway account. The account they use must be an organisation account, not an individual account.
-confirmationAgentPage.paragraph5 = If they do not have an account, they can register for
-confirmationAgentPage.paragraph5.a = one here (opens in a new window or tab)
-confirmationAgentPage.paragraph6 = The trustee needs to correctly answer questions about the trust so HMRC can prove the connection between the trustee and the trust.
-confirmationAgentPage.paragraph7 = The trustee must complete this step before you can request authorisation from them to maintain the trust.
-
-confirmationAgentPage.bullet2 = Trustee needs to authorise your online access to the trust
-confirmationAgentPage.paragraph8 = Through Agent Services you can create an authorisation link to send to the trustee.
-confirmationAgentPage.paragraph9 = The trustee needs to use the same Government Gateway organisation account used to claim the trust to approve your request.
-confirmationAgentPage.paragraph10 = If you need help with the service
-confirmationAgentPage.paragraph10.a = contact the trusts helpline (opens in a new window or tab)
-
-confirmationAgentPage.agent.you.can = You can
-confirmationAgentPage.agent.link = return to register and maintain a trust for a client
-
-confirmationExistingPage.heading1 = Registration received
-confirmationExistingPage.heading2 = Your reference is:
-
-confirmationExistingPage.title = Registration received, your reference is: {0}
-confirmationExistingPage.heading = Registration received Your reference is: {0}
-
-confirmationExistingPage.paragraph1 = You can continue to use your Unique Taxpayer Reference as usual. If there is a problem with your registration, we will contact {0}.
-confirmationExistingPage.paragraph2 = Keep a note of your reference in case you need to contact HMRC.
+confirmation.existing.agent.subheading1 = What happens next
+confirmation.existing.agent.p1 = You can continue to use the trust’s Unique Taxpayer Reference (UTR) as usual. If there is a problem with the registration, we will contact {0}.
+confirmation.existing.agent.subheading2 = What you need to do next
+confirmation.existing.agent.p2 = Keep a note of your reference in case you need to contact HMRC.
+confirmation.existing.agent.p3 = One of the trustees will need to complete the next 2 steps once the trust’s UTR has been received so you can maintain the trust online on their behalf.
+confirmation.existing.agent.bullet1 = Trustee needs to claim the trust
+confirmation.existing.agent.bullet1.p1 = A trustee needs to log onto the Register and Maintain a Trust Service using their Government Gateway account. The account they use must be an organisation account, not an individual account.
+confirmation.existing.agent.bullet1.p2 = If they do not have an account, they can register for
+confirmation.existing.agent.bullet1.p2.a = one here (opens in a new tab or window)
+confirmation.existing.agent.bullet1.p3 = The trustee needs to correctly answer questions about the trust so HMRC can prove the connection between the trustee and the trust.
+confirmation.existing.agent.bullet1.p4 = The trustee must complete this step before you can request authorisation from them to maintain the trust.
+confirmation.existing.agent.bullet2 = Trustee needs to authorise your online access to the trust
+confirmation.existing.agent.bullet2.p1 = Through Agent Services you can create an authorisation link to send to the trustee.
+confirmation.existing.agent.bullet2.p2 = The trustee needs to use the same Government Gateway organisation account used to claim the trust to approve your request.
+confirmation.existing.agent.bullet2.p3 = If you need help with this service
+confirmation.existing.agent.bullet2.p3.a = contact the trusts helpline (opens in a new window or tab)
+confirmation.existing.agent.bullet2.p4 = You can
+confirmation.existing.agent.bullet2.p4.a = return to register and maintain a trust for a client
 
 declaration.title = Declaration
 declaration.heading = Declaration

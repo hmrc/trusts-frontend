@@ -17,24 +17,30 @@
 package controllers.register
 
 import base.RegistrationSpecBase
+import controllers.Assets.Redirect
 import forms.PostcodeForTheTrustFormProvider
 import models.NormalMode
-import navigation.Navigator
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.register.PostcodeForTheTrustPage
 import play.api.data.Form
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.MatchingService
 import views.html.register.PostcodeForTheTrustView
+
+import scala.concurrent.Future
 
 class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new PostcodeForTheTrustFormProvider()
-  val form : Form[Option[String]] = formProvider()
+  val form : Form[String] = formProvider()
 
-  lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode,fakeDraftId).url
-  lazy val matchingFailedRoute : String = routes.FailedMatchController.onPageLoad(fakeDraftId).url
+  lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val taskListRoute: String = routes.TaskListController.onPageLoad(fakeDraftId).url
 
-  val navigator = injector.instanceOf[Navigator]
+  val validAnswer: String = "AA9A 9AA"
 
   "PostcodeForTheTrust Controller" must {
 
@@ -51,14 +57,14 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PostcodeForTheTrustPage, "AA9A 9AA").success.value
+      val userAnswers = emptyUserAnswers.set(PostcodeForTheTrustPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -71,59 +77,30 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Some("AA9A 9AA")), NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "redirect to Task List when valid data is submitted" in {
+
+      val mockMatchingService: MatchingService = mock[MatchingService]
+      when(mockMatchingService.matching(any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = navigator).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[MatchingService].toInstance(mockMatchingService))
+          .build()
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", "AA9A 9AA"))
+          .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual matchingFailedRoute
-
-      application.stop()
-    }
-
-    "redirect to the next page when no data is submitted" in {
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = navigator).build()
-
-      val request =
-        FakeRequest(POST, postcodeForTheTrustRoute)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual matchingFailedRoute
-
-      application.stop()
-    }
-
-    "redirect to the next page when an empty string is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), navigator = navigator).build()
-
-      val request =
-        FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", ""))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual matchingFailedRoute
+      redirectLocation(result).value mustEqual taskListRoute
 
       application.stop()
     }
@@ -134,9 +111,9 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", "AA1 1A"))
+          .withFormUrlEncodedBody(("value", ""))
 
-      val boundForm = form.bind(Map("value" -> "AA1 1A"))
+      val boundForm = form.bind(Map("value" -> ""))
 
       val view = application.injector.instanceOf[PostcodeForTheTrustView]
 
@@ -145,7 +122,7 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
 
       application.stop()
     }
@@ -171,7 +148,7 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
 
       val request =
         FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+          .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 

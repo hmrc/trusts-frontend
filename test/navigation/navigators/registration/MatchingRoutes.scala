@@ -26,8 +26,7 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.trust_details.TrustNamePage
-import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import pages.register._
 
 trait MatchingRoutes {
 
@@ -70,17 +69,16 @@ trait MatchingRoutes {
           }
         }
 
-        "go to PostcodeForTheTrust from TrustName" in {
+        "go to TrustRegisteredWithUkAddressYesNo from TrustName" in {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
 
               val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
 
               navigator.nextPage(TrustNamePage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
           }
         }
-
       }
 
       "the user does not have a UTR for the trust" in {
