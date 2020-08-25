@@ -316,7 +316,6 @@ isThisLeadTrustee.hint = The lead trustee is the main point of contact for the t
 
 trusteeIndividualOrBusiness.title = Is the trustee an individual or a business?
 trusteeIndividualOrBusiness.heading = Is the trustee an individual or a business?
-trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
 trusteeIndividualOrBusiness.error.required = Select if the trustee is an individual or a business
 
 leadTrusteeIndividualOrBusiness.title = Is the lead trustee an individual or a business?
@@ -1621,3 +1620,59 @@ companyBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s addr
 companyBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 companyBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 companyBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
+
+
+
+leadTrustee.individual.ninoYesNo.checkYourAnswersLabel = Does {0} have a National Insurance number?
+leadTrustee.individual.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+leadTrustee.individual.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+leadTrustee.individual.trusteeDetailsChoice.checkYourAnswersLabel = Which of {0}’s details can you provide?
+leadTrustee.individual.iDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+leadTrustee.individual.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+leadTrustee.individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
+leadTrustee.individual.nino.checkYourAnswersLabel = What is {0}’s National Insurance number?
+leadTrustee.individual.liveInTheUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+leadTrustee.individual.emailAddressYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
+leadTrustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+leadTrustee.individual.name.checkYourAnswersLabel = What is the lead trustee’s name?
+leadTrustee.individual.email.checkYourAnswersLabel = What is {0}’s email address?
+leadTrustee.individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+
+leadTrustee.organisation.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+leadTrustee.organisation.email.checkYourAnswersLabel = What is {0}’s email address?
+leadTrustee.organisation.emailYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
+leadTrustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+leadTrustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+leadTrustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+leadTrustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+leadTrustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
+leadTrustee.organisation.ukRegisteredYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
+
+leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+
+trustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+trustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+trustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+trustee.organisation.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+trustee.organisation.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+trustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
+
+trustee.individual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+trustee.individual.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+trustee.individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
+trustee.individual.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+trustee.individual.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+trustee.individual.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+trustee.individual.addressUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+trustee.individual.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+trustee.individual.nino.checkYourAnswersLabel = What is {0}’s National Insurance number?
+trustee.individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+trustee.individual.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+trustee.individual.ninoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+trustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+trustee.individual.name.checkYourAnswersLabel = What is the trustee’s name?
+addATrustee.checkYourAnswersLabel = Add A Trustee
+
+leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+isThisLeadTrustee.checkYourAnswersLabel = Is this the lead trustee?
