@@ -18,7 +18,8 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import models.core.http.TrustResponse
+import mapping.registration.MatchData
+import models.core.http.{MatchedResponse, TrustResponse}
 import play.api.libs.json.{JsValue, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -36,5 +37,10 @@ class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
     )
 
     http.POST[JsValue, TrustResponse](registrationUrl, registrationJson)(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
+  }
+
+  def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[MatchedResponse] = {
+    val matchingUrl = s"${config.trustsUrl}/trusts/check"
+    http.POST[MatchData, MatchedResponse](matchingUrl, matchData: MatchData)(MatchData.writes, MatchedResponse.httpReads, hc, ec)
   }
 }

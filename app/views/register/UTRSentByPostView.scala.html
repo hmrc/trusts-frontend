@@ -36,7 +36,7 @@ title = messages("UTRSentByPost.title")
 <p><a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank">@messages("UTRSentByPost.link.contactHelpline")</a> @messages("UTRSentByPost.paragraph2")</p>
 
 @if(isAgent: Boolean) {
-<p>@messages("confirmationPage.agent.you.can")@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>}
+<p>@messages("UTRSentByPost.paragraph3")@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>}
 
 }
 

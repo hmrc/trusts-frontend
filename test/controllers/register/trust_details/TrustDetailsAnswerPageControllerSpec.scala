@@ -20,8 +20,10 @@ import java.time.LocalDate
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
+import models.registration.Matched.Success
 import models.registration.pages.NonResidentType
 import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
+import pages.register.ExistingTrustMatched
 import pages.register.trust_details.{AgentOtherThanBarristerPage, _}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -58,7 +60,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.trustName().value,
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
@@ -110,7 +112,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.trustName().value,
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
@@ -162,7 +164,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.trustName().value,
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
@@ -214,7 +216,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.trustName().value,
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
@@ -267,7 +269,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.trustName().value,
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.administrationInsideUK.value,
@@ -322,7 +324,7 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
           AnswerSection(
             None,
             Seq(
-              checkYourAnswersHelper.trustName.value,
+              checkYourAnswersHelper.trustName().value,
               checkYourAnswersHelper.whenTrustSetup.value,
               checkYourAnswersHelper.governedInsideTheUK.value,
               checkYourAnswersHelper.countryGoverningTrust.value,
@@ -332,6 +334,58 @@ class TrustDetailsAnswerPageControllerSpec extends RegistrationSpecBase {
               checkYourAnswersHelper.establishedUnderScotsLaw.value,
               checkYourAnswersHelper.trustResidentOffshore.value,
               checkYourAnswersHelper.trustPreviouslyResident.value
+            )
+          )
+        )
+
+        val request = FakeRequest(GET, routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[TrustDetailsAnswerPageView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+    "trust successfully matched" must {
+
+      "not render change link for trust name" in {
+
+        val answers =
+          emptyUserAnswers
+            .set(TrustNamePage, "New Trust").success.value
+            .set(ExistingTrustMatched, Success).success.value
+            .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
+            .set(GovernedInsideTheUKPage, true).success.value
+            .set(AdministrationInsideUKPage, true).success.value
+            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
+            .set(RegisteringTrustFor5APage, true).success.value
+            .set(NonResidentTypePage, NonResidentType.NonDomiciled).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
+
+        val countryOptions = application.injector.instanceOf[CountryOptions]
+
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
+
+        val expectedSections = Seq(
+          AnswerSection(
+            None,
+            Seq(
+              checkYourAnswersHelper.trustName(false).value,
+              checkYourAnswersHelper.whenTrustSetup.value,
+              checkYourAnswersHelper.governedInsideTheUK.value,
+              checkYourAnswersHelper.administrationInsideUK.value,
+              checkYourAnswersHelper.trusteesBasedInUK.value,
+              checkYourAnswersHelper.registeringTrustFor5A.value,
+              checkYourAnswersHelper.nonresidentType.value
             )
           )
         )
