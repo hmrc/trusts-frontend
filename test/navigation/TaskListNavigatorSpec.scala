@@ -19,14 +19,15 @@ package navigation
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
 import models.NormalMode
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
+import models.registration.Matched.Success
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Money
 import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.register.ExistingTrustMatched
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
@@ -53,10 +54,22 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
       }
 
-      "trust details has not been answered" must {
+      "trust details has not been answered" when {
 
-        "go to TrustName Page" in {
-          navigator.trustDetailsJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
+        "trust has been matched" must {
+          "go to WhenTrustSetup Page" in {
+            val answers = emptyUserAnswers
+              .set(ExistingTrustMatched, Success).success.value
+            navigator.trustDetailsJourney(answers, fakeDraftId) mustBe
+              controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId)
+          }
+        }
+
+        "trust has not been matched" must {
+          "go to TrustName page" in {
+            navigator.trustDetailsJourney(emptyUserAnswers, fakeDraftId) mustBe
+              controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
+          }
         }
 
       }

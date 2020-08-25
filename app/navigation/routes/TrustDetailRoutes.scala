@@ -50,7 +50,7 @@ object TrustDetailRoutes {
     val hasUTR = answers.get(TrustHaveAUTRPage).contains(true)
 
     if (hasUTR) {
-      routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId)
+      routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, draftId)
     } else {
       controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId)
     }

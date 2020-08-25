@@ -1,0 +1,44 @@
+@*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+@import controllers.register.routes._
+
+@this(
+    main_template: MainTemplate,
+    config: FrontendAppConfig
+)
+
+@(isAgent: Boolean)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("matchingDown.title")
+) {
+
+    @components.back_link()
+
+    @components.heading("matchingDown.heading")
+
+    <p>@messages("matchingDown.p1")</p>
+
+    <p>@messages("matchingDown.p2.beforeLink") <a href="@config.trustsHelplineUrl" target="_blank">@messages("matchingDown.p2.link")</a> @messages("matchingDown.p2.afterLink")</p>
+
+    @if(isAgent) {
+        <p>@messages("matchingDown.p3") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "matchingDown.p3.link", false).</p>
+    }
+
+    @components.sign_out_button()
+}

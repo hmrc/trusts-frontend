@@ -137,7 +137,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.trustName.value,
+            checkYourAnswersHelper.trustName().value,
             checkYourAnswersHelper.whenTrustSetup.value
           ),
           Some("Trust details")
@@ -259,7 +259,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         AnswerSection(
           None,
           Seq(
-            checkYourAnswersHelper.trustName.value,
+            checkYourAnswersHelper.trustName().value,
             checkYourAnswersHelper.whenTrustSetup.value
           ),
           Some("Trust details")

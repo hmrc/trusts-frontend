@@ -453,7 +453,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
 
   def trustDetails: Option[Seq[AnswerSection]] = {
     val questions = Seq(
-      trustName,
+      trustName(canEdit),
       whenTrustSetup
     ).flatten
 
@@ -1195,7 +1195,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x => AnswerRow("governedInsideTheUK.checkYourAnswersLabel", yesOrNo(x), Some(controllers.register.trust_details.routes.GovernedInsideTheUKController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
-  def trustName: Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
+  def trustName(canEdit: Boolean = canEdit): Option[AnswerRow] = userAnswers.get(TrustNamePage) map {
     x => AnswerRow("trustName.checkYourAnswersLabel", escape(x), Some(controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId).url),canEdit = canEdit)
   }
 
