@@ -23,12 +23,13 @@ import play.api.test.Helpers._
 class SignedOutControllerSpec extends RegistrationSpecBase {
 
   "SignedOutController" must {
-    "return a 200 OK status" in {
+    "redirect to logout" in {
       val application = applicationBuilder(userAnswers = None).build()
       val request = FakeRequest(GET, routes.SignedOutController.onPageLoad().url)
       val result = route(application, request).value
 
-      status(result) mustBe OK
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result) mustBe Some(frontendAppConfig.logoutUrl)
     }
   }
 }

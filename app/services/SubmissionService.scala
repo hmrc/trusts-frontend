@@ -20,7 +20,7 @@ import auditing.{RegistrationErrorAuditEvent, TrustAuditing}
 import com.google.inject.ImplementedBy
 import connector.TrustConnector
 import javax.inject.Inject
-import mapping.registration.RegistrationMapper
+import mapping.registration.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType, RegistrationMapper}
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
@@ -44,53 +44,57 @@ class DefaultSubmissionService @Inject()(
 
     Logger.info("[SubmissionService][submit] submitting registration")
 
-    registrationMapper.build(userAnswers) match {
-      case Some(registration) =>
-        registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)) flatMap {
-          fullRegistrationJson =>
-            trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
-              case response@RegistrationTRNResponse(_) =>
+    registrationsRepository.getCorrespondenceAddress(userAnswers.draftId) flatMap {
+      correspondenceAddress =>
 
-                auditService.audit(
-                  event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                  registration = registration,
-                  draftId = userAnswers.draftId,
-                  internalId = userAnswers.internalAuthId,
-                  response = response
-                )
+        registrationMapper.build(userAnswers, correspondenceAddress) match {
+          case Some(registration) =>
+            registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)) flatMap {
+              fullRegistrationJson =>
+                trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
+                  case response@RegistrationTRNResponse(_) =>
 
-                response
-              case AlreadyRegistered =>
+                    auditService.audit(
+                      event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                      registration = fullRegistrationJson,
+                      draftId = userAnswers.draftId,
+                      internalId = userAnswers.internalAuthId,
+                      response = response
+                    )
 
-                auditService.audit(
-                  event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                  registration = registration,
-                  draftId = userAnswers.draftId,
-                  internalId = userAnswers.internalAuthId,
-                  response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
-                )
-                AlreadyRegistered
-              case other =>
-                auditService.audit(
-                  event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                  registration = registration,
-                  draftId = userAnswers.draftId,
-                  internalId = userAnswers.internalAuthId,
-                  response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
-                )
-                other
+                    response
+                  case AlreadyRegistered =>
+
+                    auditService.audit(
+                      event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                      registration = fullRegistrationJson,
+                      draftId = userAnswers.draftId,
+                      internalId = userAnswers.internalAuthId,
+                      response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
+                    )
+                    AlreadyRegistered
+                  case other =>
+                    auditService.audit(
+                      event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                      registration = fullRegistrationJson,
+                      draftId = userAnswers.draftId,
+                      internalId = userAnswers.internalAuthId,
+                      response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
+                    )
+                    other
+                }
             }
+          case None =>
+
+            auditService.cannotSubmit(
+              userAnswers
+            )
+
+            Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
+            Future.failed(UnableToRegister())
         }
-      case None =>
-
-        auditService.cannotSubmit(
-          userAnswers
-        )
-
-        Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
-        Future.failed(UnableToRegister())
-      }
     }
+  }
 }
 
 @ImplementedBy(classOf[DefaultSubmissionService])

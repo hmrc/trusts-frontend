@@ -17,26 +17,21 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping.Mapping
-import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustee, Trustees}
 import models.core.UserAnswers
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
-import pages.register.trustees.individual._
-import pages.register.trustees.organisation._
-import play.api.Logger
 
 class DeclarationMapper @Inject()(nameMapper: NameMapper,
-                                  addressMapper: AddressMapper) extends Mapping[Declaration] {
+                                  addressMapper: AddressMapper) {
 
-  override def build(userAnswers: UserAnswers): Option[Declaration] = {
+  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType): Option[Declaration] = {
 
     val declaration = userAnswers.get(DeclarationPage)
     val agentInternalReference = userAnswers.get(AgentInternalReferencePage)
 
     val address = agentInternalReference match {
       case Some(_) => getAgentAddress(userAnswers)
-      case _ => getLeadTrusteeAddress(userAnswers)
+      case _ => Some(leadTrusteeAddress)
     }
 
     address flatMap {
@@ -47,37 +42,6 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
               name = nameMapper.build(dec.name),
               address = declarationAddress
             )
-        }
-    }
-  }
-
-  private def getLeadTrusteeAddress(userAnswers: UserAnswers): Option[AddressType] = {
-    val trustees: List[Trustee] = userAnswers.get(Trustees).getOrElse(List.empty[Trustee])
-    trustees match {
-      case Nil =>
-        Logger.info(s"[DeclarationMapper][build] unable to create declaration due to not having any trustees")
-        None
-      case list =>
-        list.find(_.isLead).flatMap {
-          case lti: LeadTrusteeIndividual =>
-            val index = list.indexOf(lti)
-            addressMapper.build(
-              userAnswers,
-              TrusteeAddressInTheUKPage(index),
-              TrusteesUkAddressPage(index),
-              TrusteesInternationalAddressPage(index)
-            )
-          case lto: LeadTrusteeOrganisation =>
-            val index = list.indexOf(lto)
-            addressMapper.build(
-              userAnswers,
-              TrusteeOrgAddressUkYesNoPage(index),
-              TrusteeOrgAddressUkPage(index),
-              TrusteeOrgAddressInternationalPage(index)
-            )
-          case _ =>
-            Logger.info(s"[CorrespondenceMapper][build] unable to create correspondence due to trustees not having a lead")
-            None
         }
     }
   }

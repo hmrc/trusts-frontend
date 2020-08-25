@@ -19,15 +19,23 @@ package controllers.register.trust_details
 import java.time.{LocalDate, ZoneOffset}
 
 import base.RegistrationSpecBase
+import connector.SubmissionDraftConnector
 import controllers.register.routes._
 import forms.WhenTrustSetupFormProvider
 import models.NormalMode
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.register.settlors.deceased_settlor.SettlorDateOfDeathPage
 import pages.register.trust_details.WhenTrustSetupPage
+import play.api.http
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HttpResponse
 import views.html.register.trust_details.WhenTrustSetupView
+
+import scala.concurrent.Future
 
 class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
@@ -35,6 +43,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
   val form = formProvider.withConfig()
 
   val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val differentStartDate = validAnswer.minusYears(2)
 
   lazy val whenTrustSetupRoute = routes.WhenTrustSetupController.onPageLoad(NormalMode,fakeDraftId).url
 
@@ -96,6 +105,36 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+      application.stop()
+    }
+
+    "reset tax liability status when start date has changed" in {
+
+      val mockConnector = mock[SubmissionDraftConnector]
+      val userAnswers = emptyUserAnswers.set(WhenTrustSetupPage, differentStartDate).success.value
+
+      when(mockConnector.resetTaxLiability(any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
+      
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers)).overrides(
+          bind[SubmissionDraftConnector].toInstance(mockConnector)
+        ).build()
+
+      val request =
+        FakeRequest(POST, whenTrustSetupRoute)
+          .withFormUrlEncodedBody(
+            "value.day"   -> validAnswer.getDayOfMonth.toString,
+            "value.month" -> validAnswer.getMonthValue.toString,
+            "value.year"  -> validAnswer.getYear.toString
+          )
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      verify(mockConnector)
+        .resetTaxLiability(any())(any(), any())
 
       application.stop()
     }

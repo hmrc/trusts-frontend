@@ -16,187 +16,33 @@
 
 package mapping.registration
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.Mapping
-import models.core.pages.IndividualOrBusiness._
-import models.core.pages.{FullName, InternationalAddress, UKAddress}
+import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.trust_details.TrustNamePage
-import pages.register.trustees._
-import pages.register.trustees.individual._
-import pages.register.trustees.organisation._
 
 class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
-  private val correspondenceMapper: Mapping[Correspondence] = injector.instanceOf[CorrespondenceMapper]
+  private val correspondenceMapper: CorrespondenceMapper = injector.instanceOf[CorrespondenceMapper]
+
+  private val addressMapper: AddressMapper = injector.instanceOf[AddressMapper]
+  private val leadTrusteeUkAddress = addressMapper.build(UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ"))
+  private val leadTrusteeInternationalAddress = addressMapper.build(InternationalAddress("First line", "Second line", None, "DE"))
+  private val leadTrusteePhoneNumber = "0191 222222"
 
   "CorrespondenceMapper" - {
 
-    "when user answers is empty" - {
-
-      "must not be able to create Correspondence" in {
-        val userAnswers = emptyUserAnswers
-
-        correspondenceMapper.build(userAnswers) mustNot be(defined)
-      }
-
+    "must not be able to create a correspondence when do not have all answers" in {
+      correspondenceMapper.build(emptyUserAnswers) mustNot be(defined)
     }
 
-    "when user answers is not empty" - {
+    "must be able to create a correspondence with required answer" - {
+      val userAnswers = emptyUserAnswers
+        .set(TrustNamePage, "Trust of a Will").success.value
 
-      "for a UK lead trustee individual" - {
-
-        "must not be able to create a correspondence when do not have all answers" in {
-          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
-
-          val userAnswers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of a Will").success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
-            .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
-            .set(TrusteesUkAddressPage(0), address).success.value
-            .set(TelephoneNumberPage(0), "0191 222222").success.value
-
-          correspondenceMapper.build(userAnswers) mustNot be(defined)
-        }
-
-        "must be able to create a correspondence when have all required answers" in {
-          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
-
-          val userAnswers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of a Will").success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Individual).success.value
-            .set(TrusteesNamePage(0), FullName("First", None, "Last")).success.value
-            .set(TrusteesDateOfBirthPage(0), LocalDate.of(2010, 10, 10)).success.value
-            .set(TrusteeAUKCitizenPage(0), true).success.value
-            .set(TrusteeAddressInTheUKPage(0), true).success.value
-            .set(TrusteesUkAddressPage(0), address).success.value
-            .set(TelephoneNumberPage(0), "0191 222222").success.value
-
-          correspondenceMapper.build(userAnswers).value mustBe Correspondence(
-            abroadIndicator = false,
-            name = "Trust of a Will",
-            address = AddressType(
-              line1 = "First line",
-              line2 = "Second line",
-              line3 = None,
-              line4 = Some("Newcastle"),
-              postCode = Some("NE981ZZ"),
-              country = "GB"
-            ),
-            phoneNumber = "0191 222222"
-          )
-        }
-
-      }
-
-      "for a UK lead trustee organisation" - {
-
-        "must not be able to create a correspondence when do not have all answers" in {
-          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
-
-          val userAnswers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of a Will").success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Business).success.value
-            .set(TrusteeOrgNamePage(0), "Org Name").success.value
-            .set(TrusteeOrgAddressUkPage(0), address).success.value
-            .set(TelephoneNumberPage(0), "0191 222222").success.value
-
-          correspondenceMapper.build(userAnswers) mustNot be(defined)
-        }
-
-        "must be able to create a correspondence when have all required answers" in {
-          val address = UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ")
-
-          val userAnswers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of a Will").success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Business).success.value
-            .set(TrusteeUtrYesNoPage(0), true).success.value
-            .set(TrusteeOrgNamePage(0), "Org Name").success.value
-            .set(TrusteesUtrPage(0), "1234567890").success.value
-            .set(TrusteeOrgAddressUkYesNoPage(0), true).success.value
-            .set(TrusteeOrgAddressUkPage(0), address).success.value
-            .set(TelephoneNumberPage(0), "0191 222222").success.value
-
-          correspondenceMapper.build(userAnswers).value mustBe Correspondence(
-            abroadIndicator = false,
-            name = "Trust of a Will",
-            address = AddressType(
-              line1 = "First line",
-              line2 = "Second line",
-              line3 = None,
-              line4 = Some("Newcastle"),
-              postCode = Some("NE981ZZ"),
-              country = "GB"
-            ),
-            phoneNumber = "0191 222222"
-          )
-        }
-
-      }
-
-      "must not be able to create a correspondence for a Non-UK lead trustee individual" in {
-        val userAnswers = emptyUserAnswers
-
-        correspondenceMapper.build(userAnswers) mustNot be(defined)
-      }
-
-      "for a Non-UK lead trustee organisation" - {
-
-        "must not be able to create a correspondence when do not have all answers" in {
-          val address = InternationalAddress("First line", "Second line", None, "DE")
-
-          val userAnswers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of a Will").success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Business).success.value
-            .set(TrusteeOrgNamePage(0), "Org Name").success.value
-            .set(TrusteeOrgAddressInternationalPage(0), address).success.value
-            .set(TelephoneNumberPage(0), "0191 222222").success.value
-
-          correspondenceMapper.build(userAnswers) mustNot be(defined)
-        }
-
-        "must be able to create a correspondence when have all required answers" in {
-          val address = InternationalAddress("First line", "Second line", None, "DE")
-
-          val userAnswers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of a Will").success.value
-            .set(IsThisLeadTrusteePage(0), true).success.value
-            .set(TrusteeIndividualOrBusinessPage(0), Business).success.value
-            .set(TrusteeUtrYesNoPage(0), true).success.value
-            .set(TrusteeOrgNamePage(0), "Org Name").success.value
-            .set(TrusteesUtrPage(0), "1234567890").success.value
-            .set(TrusteeOrgAddressUkYesNoPage(0), false).success.value
-            .set(TrusteeOrgAddressInternationalPage(0), address).success.value
-            .set(TelephoneNumberPage(0), "0191 222222").success.value
-
-          correspondenceMapper.build(userAnswers).value mustBe Correspondence(
-            abroadIndicator = true,
-            name = "Trust of a Will",
-            address = AddressType(
-              line1 = "First line",
-              line2 = "Second line",
-              line3 = None,
-              line4 = None,
-              postCode = None,
-              country = "DE"
-            ),
-            phoneNumber = "0191 222222"
-          )
-        }
-
-      }
-
+      correspondenceMapper.build(userAnswers).value.name mustBe "Trust of a Will"
     }
-
   }
-
 }

@@ -19,20 +19,20 @@ package navigation
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
 import models.NormalMode
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
+import models.registration.Matched.Success
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Money
 import navigation.registration.TaskListNavigator
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.register.ExistingTrustMatched
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
 import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
-import pages.register.trustees.IsThisLeadTrusteePage
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
@@ -54,10 +54,22 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
       }
 
-      "trust details has not been answered" must {
+      "trust details has not been answered" when {
 
-        "go to TrustName Page" in {
-          navigator.trustDetailsJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
+        "trust has been matched" must {
+          "go to WhenTrustSetup Page" in {
+            val answers = emptyUserAnswers
+              .set(ExistingTrustMatched, Success).success.value
+            navigator.trustDetailsJourney(answers, fakeDraftId) mustBe
+              controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId)
+          }
+        }
+
+        "trust has not been matched" must {
+          "go to TrustName page" in {
+            navigator.trustDetailsJourney(emptyUserAnswers, fakeDraftId) mustBe
+              controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
+          }
         }
 
       }
@@ -157,31 +169,18 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     "for trustee task" when {
 
-      "there are no trustees" must {
+      "it always" must {
 
-        "go to TrusteeInfoPage" in {
-          navigator.trusteesJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(fakeDraftId)
+        "go to Trustee service start" in {
+          navigator.trusteesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.trusteesFrontendUrl(fakeDraftId)
         }
-
       }
-
-      "there are trustees" must {
-
-        "go to AddATrustee" in {
-          val answers = emptyUserAnswers
-            .set(IsThisLeadTrusteePage(0), false).success.value
-
-          navigator.trusteesJourney(answers, fakeDraftId) mustBe controllers.register.trustees.routes.AddATrusteeController.onPageLoad(fakeDraftId)
-        }
-
-      }
-
     }
 
     "for task liability task" must {
 
       "go to TaxLiabilityPage" in {
-        navigator.taxLiabilityJourney(fakeDraftId) mustBe TaskListController.onPageLoad(fakeDraftId)
+        navigator.taxLiabilityJourney(fakeDraftId) mustBe frontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)
       }
 
     }

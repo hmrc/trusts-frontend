@@ -19,10 +19,10 @@ package controllers.register.asset.business
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import forms.trustees.TrusteeBusinessNameFormProvider
+import forms.assets.AssetNameFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.trustees.organisation.{TrusteeOrgNamePage, TrusteeUtrYesNoPage}
+import pages.register.asset.business.BusinessNamePage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -30,7 +30,7 @@ import views.html.register.asset.buisness.BusinessNameView
 
 class BusinessNameControllerSpec extends RegistrationSpecBase  with IndexValidation {
 
-  val formProvider = new TrusteeBusinessNameFormProvider()
+  val formProvider = new AssetNameFormProvider()
   val form = formProvider()
   val index = 0
 
@@ -41,7 +41,6 @@ class BusinessNameControllerSpec extends RegistrationSpecBase  with IndexValidat
     "return OK and the correct view for a GET" in {
 
       val userAnswers = emptyUserAnswers
-        .set(TrusteeUtrYesNoPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -158,7 +157,7 @@ class BusinessNameControllerSpec extends RegistrationSpecBase  with IndexValidat
 
       validateIndex(
         arbitrary[String],
-        TrusteeOrgNamePage.apply,
+        BusinessNamePage.apply,
         getForIndex
       )
 
@@ -177,7 +176,7 @@ class BusinessNameControllerSpec extends RegistrationSpecBase  with IndexValidat
 
       validateIndex(
         arbitrary[String],
-        TrusteeOrgNamePage.apply,
+        BusinessNamePage.apply,
         postForIndex
       )
     }

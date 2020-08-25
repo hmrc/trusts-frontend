@@ -19,13 +19,17 @@ package forms
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
-import uk.gov.voa.play.form.ConditionalMappings._
 
 class PostcodeForTheTrustFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Option[String]] =
+  def apply(): Form[String] =
     Form(
-      "value"-> mandatoryIfNot("value", "", postcode(
-        requiredKey = "postcodeForTheTrust.error.required"))
+      "value" -> postcode("postcodeForTheTrust.error.required")
+        .verifying(
+          firstError(
+            isNotEmpty("value", "postcodeForTheTrust.error.required"),
+            regexp(Validation.postcodeRegex, "error.postcodeInvalid")
+          )
+        )
     )
 }

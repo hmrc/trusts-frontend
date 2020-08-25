@@ -32,8 +32,6 @@ import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 import utils.print.register.PrintUserAnswersHelper
@@ -55,18 +53,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(EstablishedUnderScotsLawPage, true).success.value
         .set(TrustResidentOffshorePage, false).success.value
         .set(TrustDetailsStatus, Completed).success.value
-
-        .set(IsThisLeadTrusteePage(index), true).success.value
-        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-        .set(TrusteesNamePage(index), FullName("TrusteeFirst", None, "TrusteeLast")).success.value
-        .set(TrusteesDateOfBirthPage(index), LocalDate.of(2010, 10, 10)).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
-        .set(TrusteesNinoPage(index), "AB123456C").success.value
-        .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(TrusteeAddressInTheUKPage(index), true).success.value
-        .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
-        .set(TrusteeStatus(index), Status.Completed).success.value
-        .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
@@ -170,20 +156,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         doc =>
           assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
           assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
-      }
-    }
-
-    "assert question labels for Trustees" in {
-      orgDoc.map {
-        doc =>
-          assertContainsQuestionAnswerPair(doc, messages("leadTrusteeIndividualOrBusiness.checkYourAnswersLabel"), "Individual")
-          assertContainsQuestionAnswerPair(doc, messages("leadTrusteesName.checkYourAnswersLabel"), trusteeName)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesDateOfBirth.checkYourAnswersLabel", trusteeName), "10 October 2010")
-          assertContainsQuestionAnswerPair(doc, messages("trusteeAUKCitizen.checkYourAnswersLabel", trusteeName), yes)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesNino.checkYourAnswersLabel", trusteeName), "AB 12 34 56 C")
-          assertContainsQuestionAnswerPair(doc, messages("telephoneNumber.checkYourAnswersLabel", trusteeName), "0191 1111111")
-          assertContainsQuestionAnswerPair(doc, messages("trusteeLiveInTheUK.checkYourAnswersLabel", trusteeName), yes)
-          assertContainsQuestionAnswerPair(doc, messages("trusteesUkAddress.checkYourAnswersLabel", trusteeName), "line1 line2 line3 line4 AB1 1AB")
       }
     }
 

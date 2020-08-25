@@ -28,8 +28,6 @@ import pages.register.asset.shares.ShareCompanyNamePage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.SettlorIndividualNamePage
 import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
-import pages.register.trustees.individual.TrusteesNamePage
-import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.domain.Nino
@@ -59,12 +57,6 @@ object CheckAnswersFormatters {
   def currency(value: String): Html = escape(s"£$value")
 
   def percentage(value: String): Html = escape(s"$value%")
-
-  def trusteeName(index: Int, userAnswers: UserAnswers): String =
-    userAnswers.get(TrusteesNamePage(index)).map(_.toString).getOrElse("")
-
-  def orgName(index: Int, userAnswers: UserAnswers): String =
-    userAnswers.get(TrusteeOrgNamePage(index)).getOrElse("")
 
   def answer[T](key: String, answer: T)(implicit messages: Messages): Html =
     HtmlFormat.escape(messages(s"$key.$answer"))

@@ -17,7 +17,6 @@
 package mapping.registration
 
 import javax.inject.Inject
-import mapping._
 import models.core.UserAnswers
 
 class RegistrationMapper @Inject()(
@@ -25,36 +24,33 @@ class RegistrationMapper @Inject()(
                                     correspondenceMapper: CorrespondenceMapper,
                                     trustDetailsMapper: TrustDetailsMapper,
                                     assetMapper: AssetMapper,
-                                    leadTrusteeMapper: LeadTrusteeMapper,
                                     agentMapper: AgentMapper,
                                     deceasedSettlorMapper: DeceasedSettlorMapper,
                                     taxLiabilityMapper: TaxLiabilityMapper,
-                                    trusteeMapper: TrusteeMapper,
                                     settlorMapper: SettlorsMapper,
                                     matchingMapper: MatchingMapper
-                                  ) extends Mapping[Registration] {
+                                  ) {
 
-  override def build(userAnswers: UserAnswers): Option[Registration] = {
+  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType): Option[Registration] = {
 
     for {
       trustDetails <- trustDetailsMapper.build(userAnswers)
       assets <- assetMapper.build(userAnswers)
       correspondence <- correspondenceMapper.build(userAnswers)
-      leadTrustees <- leadTrusteeMapper.build(userAnswers)
-      declaration <- declarationMapper.build(userAnswers)
+      declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
     } yield {
 
       val agent = agentMapper.build(userAnswers)
       val deceasedSettlor = deceasedSettlorMapper.build(userAnswers)
-      val taxLiability = taxLiabilityMapper.build(userAnswers)
-      val trustees = trusteeMapper.build(userAnswers)
+      val taxLiability = None
+      val trustees = None
       val settlors = settlorMapper.build(userAnswers)
 
       val entities = TrustEntitiesType(
         naturalPerson = None,
         beneficiary = BeneficiaryType(None, None, None, None, None, None, None),
         deceased = deceasedSettlor,
-        leadTrustees = leadTrustees,
+        leadTrustees = LeadTrusteeType(None, Some(LeadTrusteeOrgType("", "", None, IdentificationOrgType(None, None)))),
         trustees = trustees,
         protectors = None,
         settlors = settlors
@@ -62,9 +58,9 @@ class RegistrationMapper @Inject()(
 
       Registration(
         matchData = matchingMapper.build(userAnswers),
-        correspondence = correspondence,
         yearsReturns = taxLiability,
         declaration = declaration,
+        correspondence = correspondence,
         trust = Trust(
           details = trustDetails,
           entities = entities,
@@ -75,5 +71,4 @@ class RegistrationMapper @Inject()(
     }
 
   }
-
 }

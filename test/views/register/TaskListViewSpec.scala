@@ -31,7 +31,6 @@ import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.trust_details.WhenTrustSetupPage
-import pages.register.trustees.{AddATrusteePage, IsThisLeadTrusteePage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
@@ -80,11 +79,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           val userAnswers = emptyUserAnswers
             .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
             .set(TrustDetailsStatus, Completed).success.value
-            .set(IsThisLeadTrusteePage(0), false).success.value
-            .set(TrusteeStatus(0), Status.Completed).success.value
-            .set(IsThisLeadTrusteePage(1), true).success.value
-            .set(TrusteeStatus(1), Status.Completed).success.value
-            .set(AddATrusteePage, AddATrustee.NoComplete).success.value
             .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value

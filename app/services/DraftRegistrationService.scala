@@ -78,7 +78,10 @@ class DraftRegistrationService @Inject()(
           }
 
       if (!requiredPagesAnswered) {
-        registrationsRepository.setAllStatus(draftId, AllStatus(beneficiaries = Some(InProgress)))
+        registrationsRepository.getAllStatus(draftId) flatMap {
+          allStatus =>
+            registrationsRepository.setAllStatus(draftId, allStatus.copy(beneficiaries = Some(InProgress)))
+        }
       } else {
         Future.successful(true)
       }

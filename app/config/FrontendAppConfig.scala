@@ -42,6 +42,11 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   val betaFeedbackUrl = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
   val betaFeedbackUnauthenticatedUrl = s"$contactHost/contact/beta-feedback-unauthenticated?service=$contactFormServiceIdentifier"
 
+  val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
+  val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
+  val trustsHelplineUrl: String = configuration.get[String]("urls.trustsHelpline")
+  val ggSignInUrl: String = configuration.get[String]("urls.ggSignIn")
+
   lazy val loginUrl: String = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
@@ -49,6 +54,12 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   private lazy val beneficiariesFrontendUrlTemplate: String = loadConfig("urls.beneficiariesFrontend")
   def beneficiariesFrontendUrl(draftId: String): String = beneficiariesFrontendUrlTemplate.replace(":draftId", draftId)
+
+  private lazy val taxLiabilityFrontendUrlTemplate: String = loadConfig("urls.taxLiabilityFrontend")
+  def taxLiabilityFrontendUrl(draftId: String): String = taxLiabilityFrontendUrlTemplate.replace(":draftId", draftId)
+
+  private lazy val trusteesFrontendUrlTemplate: String = loadConfig("urls.trusteesFrontend")
+  def trusteesFrontendUrl(draftId: String): String = trusteesFrontendUrlTemplate.replace(":draftId", draftId)
 
   lazy val otacUrl : String = configuration.get[String]("urls.otacLogin")
 
