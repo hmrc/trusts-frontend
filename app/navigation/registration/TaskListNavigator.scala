@@ -89,4 +89,9 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     frontendAppConfig.taxLiabilityFrontendUrl(draftId)
   }
 
+  def protectorsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.protectorsFrontendUrl(draftId)
+  }
+
+
 }

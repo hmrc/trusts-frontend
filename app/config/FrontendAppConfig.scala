@@ -52,14 +52,19 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
   lazy val logoutUrl: String = loadConfig("urls.logout")
 
+  private def insertDraftId(url: String, draftId: String) = url.replace(":draftId", draftId)
+
   private lazy val beneficiariesFrontendUrlTemplate: String = loadConfig("urls.beneficiariesFrontend")
-  def beneficiariesFrontendUrl(draftId: String): String = beneficiariesFrontendUrlTemplate.replace(":draftId", draftId)
+  def beneficiariesFrontendUrl(draftId: String): String = insertDraftId(beneficiariesFrontendUrlTemplate, draftId)
 
   private lazy val taxLiabilityFrontendUrlTemplate: String = loadConfig("urls.taxLiabilityFrontend")
-  def taxLiabilityFrontendUrl(draftId: String): String = taxLiabilityFrontendUrlTemplate.replace(":draftId", draftId)
+  def taxLiabilityFrontendUrl(draftId: String): String = insertDraftId(taxLiabilityFrontendUrlTemplate, draftId)
 
   private lazy val trusteesFrontendUrlTemplate: String = loadConfig("urls.trusteesFrontend")
-  def trusteesFrontendUrl(draftId: String): String = trusteesFrontendUrlTemplate.replace(":draftId", draftId)
+  def trusteesFrontendUrl(draftId: String): String = insertDraftId(trusteesFrontendUrlTemplate, draftId)
+
+  private lazy val protectorsFrontendUrlTemplate: String = loadConfig("urls.protectorsFrontend")
+  def protectorsFrontendUrl(draftId: String): String = insertDraftId(protectorsFrontendUrlTemplate, draftId)
 
   lazy val otacUrl : String = configuration.get[String]("urls.otacLogin")
 

@@ -370,6 +370,7 @@ taskList.heading = Registration progress
 taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
 taskList.savedUntil.heading = Saved until
 taskList.sections.heading = Sections to be completed
+taskList.additionalSections.heading = Additional sections to be completed
 
 taskList.trustDetails.label = Trust details
 taskList.settlors.label = Settlors
@@ -377,6 +378,7 @@ taskList.trustees.label = Trustees
 taskList.beneficiaries.label = Beneficiaries
 taskList.assets.label = Assets
 taskList.taxLiability.label = Years of tax liability
+taskList.protectors.label = Protectors
 taskList.agent.savedRegistrations = Return to saved registrations
 taskList.agent.agentDetails = Agent details
 
@@ -1258,12 +1260,24 @@ otherIndividualAddress.checkYourAnswersLabel = What is {0}’s address?
 otherIndividualPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
 otherIndividualPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
 
-companyProtectorName.checkYourAnswersLabel = What is the business’s name?
-companyProtectorUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-companyProtectorUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
-companyProtectorAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-companyProtectorAddressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-companyProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
+businessProtector.name.checkYourAnswersLabel = What is the business’s name?
+businessProtector.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+businessProtector.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+businessProtector.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+businessProtector.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+businessProtector.address.checkYourAnswersLabel = What is {0}’s address?
+
+individualProtector.name.checkYourAnswersLabel = What is the individual’s name?
+individualProtector.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+individualProtector.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+individualProtector.nationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+individualProtector.nationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+individualProtector.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+individualProtector.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+individualProtector.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+individualProtector.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
+individualProtector.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+individualProtector.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 
 protectorIndividualOrBusiness.checkYourAnswersLabel = Is the protector an individual or a business?
 

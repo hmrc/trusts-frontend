@@ -60,21 +60,24 @@ object RegistrationSubmission {
   case class AllStatus(
                         beneficiaries: Option[Status] = None,
                         trustees: Option[Status] = None,
-                        taxLiability: Option[Status] = None
+                        taxLiability: Option[Status] = None,
+                        protectors: Option[Status] = None
                       ) {
     def allComplete(userAnswers: UserAnswers): Boolean = beneficiaries.contains(Completed) &&
                                 trustees.contains(Completed) &&
+                                protectors.contains(Completed) &&
       (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(userAnswers))
   }
 
   object AllStatus {
     implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
-    val withAllComplete = AllStatus(Some(Completed), Some(Completed), Some(Completed))
+    val withAllComplete = AllStatus(Some(Completed), Some(Completed), Some(Completed), Some(Completed))
   }
 
   case class AllAnswerSections(
                                 beneficiaries: Option[List[AnswerSection]],
-                                trustees: Option[List[AnswerSection]]
+                                trustees: Option[List[AnswerSection]],
+                                protectors: Option[List[AnswerSection]]
                               )
 
   object AllAnswerSections {

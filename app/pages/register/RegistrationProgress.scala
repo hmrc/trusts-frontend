@@ -16,8 +16,6 @@
 
 package pages.register
 
-import java.time.LocalDate
-
 import javax.inject.Inject
 import models.core.UserAnswers
 import models.registration.pages.Status._
@@ -32,7 +30,6 @@ import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.time.TaxYear
 import viewmodels._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -51,6 +48,15 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
         Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
         Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
         Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability)
+      )
+    }
+
+  def additionalItems(userAnswers: UserAnswers, draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+    for {
+      allStatus <- registrationsRepository.getAllStatus(draftId)
+    } yield {
+      List(
+        Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors)
       )
     }
 
