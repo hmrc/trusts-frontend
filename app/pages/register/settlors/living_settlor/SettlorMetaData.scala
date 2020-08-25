@@ -18,7 +18,7 @@ package pages.register.settlors.living_settlor
 
 import pages.{MetaData, QuestionPage}
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 
 final case class SettlorMetaData(index : Int) extends QuestionPage[MetaData] {
 

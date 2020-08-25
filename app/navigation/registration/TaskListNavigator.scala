@@ -27,6 +27,7 @@ import pages.register.ExistingTrustMatched
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
+import sections.settlors.LivingSettlors
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {

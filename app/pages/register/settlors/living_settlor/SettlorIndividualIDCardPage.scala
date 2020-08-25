@@ -19,7 +19,7 @@ package pages.register.settlors.living_settlor
 import models.registration.pages.PassportOrIdCardDetails
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 
 final case class SettlorIndividualIDCardPage(index : Int) extends QuestionPage[PassportOrIdCardDetails] {
 

@@ -29,6 +29,7 @@ import pages.register.trust_details.WhenTrustSetupPage
 import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries
+import sections.settlors.{LivingSettlors, Settlors}
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
@@ -118,8 +119,6 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
         determineStatus(status)
     }
   }
-
-
 
   def isTaskListComplete(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
     if (trustDetailsStatus(userAnswers).contains(Completed) &&

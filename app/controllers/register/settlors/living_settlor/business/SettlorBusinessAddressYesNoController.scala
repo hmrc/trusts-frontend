@@ -25,11 +25,11 @@ import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.settlors.living_settlor.business.SettlorBusinessAddressYesNoPage
-  import play.api.data.Form
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.LivingSettlor
 import views.html.register.settlors.living_settlor.business.SettlorBusinessAddressYesNoView

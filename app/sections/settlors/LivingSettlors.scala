@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package sections
+package sections.settlors
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import viewmodels.addAnother.SettlorViewModel
 
-case object DeceasedSettlor extends QuestionPage[SettlorViewModel]{
+case object LivingSettlors extends QuestionPage[List[SettlorViewModel]] {
 
   override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "deceased"
+  override def toString: String = "living"
 
 }
