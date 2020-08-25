@@ -30,7 +30,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.{AnyContent, Call, MessagesControllerComponents}
 import queries.{RemoveSettlorQuery, Settable}
 import repositories.RegistrationsRepository
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 import views.html.RemoveIndexView
 
 import scala.concurrent.ExecutionContext

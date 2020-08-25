@@ -26,7 +26,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.{JsPath, JsValue}
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import sections.{DeceasedSettlor, LivingSettlors}
+import sections.settlors.{DeceasedSettlor, LivingSettlors}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import viewmodels.addAnother._
 import views.html.register.settlors.RemoveSettlorYesNoView
@@ -58,7 +58,7 @@ class RemoveSettlorYesNoController @Inject()(
     identify andThen getData(draftId) andThen requireData
 
   private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    actions(draftId) andThen validateIndex(index, sections.LivingSettlors)
+    actions(draftId) andThen validateIndex(index, LivingSettlors)
 
   def onPageLoadLiving(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.DeceasedSettlor
+import sections.settlors.DeceasedSettlor
 
 case object SettlorsDateOfBirthPage extends QuestionPage[LocalDate] {
 

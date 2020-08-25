@@ -19,7 +19,7 @@ package pages.entitystatus
 import models.registration.pages.Status
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.{DeceasedSettlor, Settlors}
+import sections.settlors.{DeceasedSettlor, Settlors}
 
 case object DeceasedSettlorStatus extends QuestionPage[Status] {
 

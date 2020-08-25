@@ -29,6 +29,7 @@ import pages.register.trust_details.WhenTrustSetupPage
 import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries
+import sections.settlors.{LivingSettlors, Settlors}
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
@@ -51,12 +52,13 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
       )
     }
 
-  def additionalItems(userAnswers: UserAnswers, draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+  def additionalItems(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
       List(
-        Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors)
+        Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
+        Task(Link(OtherIndividuals, navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
       )
     }
 
@@ -117,8 +119,6 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
         determineStatus(status)
     }
   }
-
-
 
   def isTaskListComplete(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
     if (trustDetailsStatus(userAnswers).contains(Completed) &&

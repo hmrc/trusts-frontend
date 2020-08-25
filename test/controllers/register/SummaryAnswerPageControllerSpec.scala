@@ -90,10 +90,24 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     )
   )
 
+  val otherIndividualSections = List(
+    AnswerSection(
+      Some("otherIndividualHeadingKey1"),
+      List.empty,
+      Some("otherIndividualSectionKey1")
+    ),
+    AnswerSection(
+      Some("otherIndividualHeadingKey2"),
+      List.empty,
+      Some("otherIndividualSectionKey2")
+    )
+  )
+
   val registrationSections = RegistrationAnswerSections(
     beneficiaries = Some(beneficiarySections),
     trustees = Some(trusteeSections),
-    protectors = Some(protectorSections)
+    protectors = Some(protectorSections),
+    otherIndividuals = Some(otherIndividualSections)
   )
 
   when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
@@ -171,7 +185,9 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       beneficiarySections(0),
       beneficiarySections(1),
       protectorSections(0),
-      protectorSections(1)
+      protectorSections(1),
+      otherIndividualSections(0),
+      otherIndividualSections(1)
     )
 
     when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
@@ -310,7 +326,9 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       beneficiarySections(0),
       beneficiarySections(1),
       protectorSections(0),
-      protectorSections(1)
+      protectorSections(1),
+      otherIndividualSections(0),
+      otherIndividualSections(1)
     )
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {

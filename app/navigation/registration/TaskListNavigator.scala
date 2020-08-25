@@ -27,6 +27,7 @@ import pages.register.ExistingTrustMatched
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
+import sections.settlors.LivingSettlors
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
@@ -93,5 +94,7 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     frontendAppConfig.protectorsFrontendUrl(draftId)
   }
 
-
+  def otherIndividualsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.otherIndividualsFrontendUrl(draftId)
+  }
 }

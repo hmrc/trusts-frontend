@@ -18,7 +18,7 @@ package pages.register.settlors.living_settlor.business
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 
 case class SettlorBusinessUtrPage(index : Int) extends QuestionPage[String] {
 

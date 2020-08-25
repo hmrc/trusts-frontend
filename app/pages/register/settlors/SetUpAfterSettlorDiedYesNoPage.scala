@@ -20,7 +20,7 @@ import models.core.UserAnswers
 import pages.QuestionPage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.JsPath
-import sections.{DeceasedSettlor, LivingSettlors, Settlors}
+import sections.settlors.{DeceasedSettlor, LivingSettlors, Settlors}
 
 import scala.util.Try
 
