@@ -75,7 +75,7 @@ class TaskListController @Inject()(
         for {
           _  <- registrationsRepository.set(updatedAnswers)
           sections <- registrationProgress.items(updatedAnswers, draftId)
-          additionalSections <- registrationProgress.additionalItems(updatedAnswers, draftId)
+          additionalSections <- registrationProgress.additionalItems(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(updatedAnswers)
         } yield {
 

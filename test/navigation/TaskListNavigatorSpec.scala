@@ -167,5 +167,11 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
         navigator.protectorsJourneyUrl(fakeDraftId) mustBe frontendAppConfig.protectorsFrontendUrl(fakeDraftId)
       }
     }
+
+    "for other individuals task" must {
+      "go to Other Individual service start" in {
+        navigator.otherIndividualsJourneyUrl(fakeDraftId) mustBe frontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)
+      }
+    }
   }
 }

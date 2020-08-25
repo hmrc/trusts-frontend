@@ -352,6 +352,7 @@ taskList.beneficiaries.label = Beneficiaries
 taskList.assets.label = Assets
 taskList.taxLiability.label = Years of tax liability
 taskList.protectors.label = Protectors
+taskList.otherIndividuals.label = Other individuals
 taskList.agent.savedRegistrations = Return to saved registrations
 taskList.agent.agentDetails = Agent details
 
@@ -1263,6 +1264,21 @@ protectorIndividualOrBusiness.checkYourAnswersLabel = Is the protector an indivi
 
 answerPage.section.protectors.heading = Protectors
 answerPage.section.protectors.subheading = Protector {0}
+
+otherIndividual.name.checkYourAnswersLabel = What is the other individual’s name?
+otherIndividual.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+otherIndividual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+otherIndividual.nationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+otherIndividual.nationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+otherIndividual.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+otherIndividual.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+otherIndividual.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+otherIndividual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
+otherIndividual.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+otherIndividual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+
+answerPage.section.protectors.heading = Other individuals
+answerPage.section.protectors.subheading = Other individual {0}
 
 answerPage.section.trustType.heading = Trust type
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?

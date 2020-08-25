@@ -287,7 +287,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
                 Some("trusteeSectionKey2"))
             )
           ),
-          protectors = None
+          protectors = None,
+          otherIndividuals = None
         )
 
         val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allAnswerSections), None)

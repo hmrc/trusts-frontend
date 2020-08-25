@@ -43,7 +43,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(frontendAppConfig), registrationsRepository)
 
   private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers, fakeDraftId)
-  private def additionalSections(answers: UserAnswers) = newRegistrationProgress.additionalItems(answers, fakeDraftId)
+  private lazy val additionalSections = newRegistrationProgress.additionalItems(fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) = newRegistrationProgress.isTaskListComplete(answers)
 
@@ -113,7 +113,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
           for {
             mainSections <- sections(answers)
-            additionalSections <- additionalSections(answers)
+            additionalSections <- additionalSections
             isTaskListComplete <- isTaskListComplete(answers)
           } yield {
             val view = application.injector.instanceOf[TaskListView]
@@ -215,7 +215,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
         for {
           sections <- sections(answers)
-          additionalSections <- additionalSections(answers)
+          additionalSections <- additionalSections
           isTaskListComplete <- isTaskListComplete(answers)
         } yield {
           val view = application.injector.instanceOf[TaskListView]

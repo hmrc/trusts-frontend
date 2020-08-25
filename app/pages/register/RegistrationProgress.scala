@@ -51,12 +51,13 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
       )
     }
 
-  def additionalItems(userAnswers: UserAnswers, draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+  def additionalItems(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
       List(
-        Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors)
+        Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
+        Task(Link(OtherIndividuals, navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
       )
     }
 

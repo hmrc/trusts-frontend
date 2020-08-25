@@ -17,7 +17,6 @@
 package navigation.registration
 
 import config.FrontendAppConfig
-import controllers.register.routes
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
@@ -86,5 +85,7 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     frontendAppConfig.protectorsFrontendUrl(draftId)
   }
 
-
+  def otherIndividualsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.otherIndividualsFrontendUrl(draftId)
+  }
 }

@@ -45,7 +45,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(frontendAppConfig), registrationsRepository)
 
   private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers,fakeDraftId)
-  private def additionalSections(answers: UserAnswers) = newRegistrationProgress.additionalItems(answers,fakeDraftId)
+  private lazy val additionalSections = newRegistrationProgress.additionalItems(fakeDraftId)
   private def isTaskListComplete(answers: UserAnswers) = newRegistrationProgress.isTaskListComplete(answers)
 
   "TaskList view" when {
@@ -60,7 +60,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         for {
           sections <- sections(answers)
-          additionalSections <- additionalSections(answers)
+          additionalSections <- additionalSections
           isTaskListComplete <- isTaskListComplete(answers)
         } yield {
 
@@ -96,7 +96,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
           for {
             sections <- sections(userAnswers)
-            additionalSections <- additionalSections(userAnswers)
+            additionalSections <- additionalSections
             isTaskListComplete <- isTaskListComplete(userAnswers)
           } yield {
             val view = viewFor[TaskListView](Some(userAnswers))
@@ -127,7 +127,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
           for {
             sections <- sections(userAnswers)
-            additionalSections <- additionalSections(userAnswers)
+            additionalSections <- additionalSections
             isTaskListComplete <- isTaskListComplete(userAnswers)
           } yield {
             val view = viewFor[TaskListView](Some(userAnswers))
@@ -157,7 +157,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "render Saved Until" in {
         for {
           sections <- sections(emptyUserAnswers)
-          additionalSections <- additionalSections(emptyUserAnswers)
+          additionalSections <- additionalSections
           isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
@@ -180,7 +180,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "render return to saved registrations link" in {
         for {
           sections <- sections(emptyUserAnswers)
-          additionalSections <- additionalSections(emptyUserAnswers)
+          additionalSections <- additionalSections
           isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
@@ -205,7 +205,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "render agent details link" in {
         for {
           sections <- sections(emptyUserAnswers)
-          additionalSections <- additionalSections(emptyUserAnswers)
+          additionalSections <- additionalSections
           isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
@@ -230,7 +230,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       "not render saved until" in {
         for {
           sections <- sections(emptyUserAnswers)
-          additionalSections <- additionalSections(emptyUserAnswers)
+          additionalSections <- additionalSections
           isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
