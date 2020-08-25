@@ -21,9 +21,7 @@ import java.util.UUID
 import akka.stream.Materializer
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
-import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
-import models.core.{ReadOnlyUserAnswers, ReadableUserAnswers, UserAnswers}
-import models.registration.pages.RoleInCompany
+import models.core.{ReadOnlyUserAnswers, UserAnswers}
 import models.registration.pages.Status.InProgress
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import pages.register.beneficiaries.individual.RoleInCompanyPage
@@ -78,7 +76,10 @@ class DraftRegistrationService @Inject()(
           }
 
       if (!requiredPagesAnswered) {
-        registrationsRepository.setAllStatus(draftId, AllStatus(beneficiaries = Some(InProgress)))
+        registrationsRepository.getAllStatus(draftId) flatMap {
+          allStatus =>
+            registrationsRepository.setAllStatus(draftId, allStatus.copy(beneficiaries = Some(InProgress)))
+        }
       } else {
         Future.successful(true)
       }

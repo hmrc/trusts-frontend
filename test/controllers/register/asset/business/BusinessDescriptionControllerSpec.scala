@@ -23,7 +23,6 @@ import forms.DescriptionFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
 import pages.register.asset.business.BusinessNamePage
-import pages.register.trustees.organisation.TrusteeOrgNamePage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{route, _}
@@ -184,7 +183,7 @@ class BusinessDescriptionControllerSpec extends RegistrationSpecBase  with Index
 
       validateIndex(
         arbitrary[String],
-        TrusteeOrgNamePage.apply,
+        BusinessNamePage.apply,
         getForIndex
       )
 
@@ -203,7 +202,7 @@ class BusinessDescriptionControllerSpec extends RegistrationSpecBase  with Index
 
       validateIndex(
         arbitrary[String],
-        TrusteeOrgNamePage.apply,
+        BusinessNamePage.apply,
         postForIndex
       )
     }

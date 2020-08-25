@@ -35,9 +35,6 @@ import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
-import pages.register.trustees.organisation._
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -55,35 +52,6 @@ object TestUserAnswers extends TryValues {
       .set(AgentTelephoneNumberPage, "+1234567890").success.value
       .set(AgentInternalReferencePage, "1234-5678").success.value
       .set(AgentAddressYesNoPage, true).success.value
-  }
-
-  def withLeadTrusteeIndividual(userAnswers: UserAnswers): UserAnswers = {
-    val index = 0
-    userAnswers
-      .set(IsThisLeadTrusteePage(index), true).success.value
-      .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-      .set(TrusteesNamePage(index), FullName("first name", Some("middle name"), "Last Name")).success.value
-      .set(TrusteesDateOfBirthPage(index), LocalDate.of(1500, 10, 10)).success.value
-      .set(TrusteeAUKCitizenPage(index), true).success.value
-      .set(TrusteeAddressInTheUKPage(index), true).success.value
-      .set(TrusteesNinoPage(index), "AB123456C").success.value
-      .set(TelephoneNumberPage(index), "0191 1111111").success.value
-      .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
-      .set(TrusteeStatus(index), Completed).success.value
-  }
-
-  def withLeadTrusteeOrganisation(userAnswers: UserAnswers): UserAnswers = {
-    val index = 0
-    userAnswers
-      .set(IsThisLeadTrusteePage(index), true).success.value
-      .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Business).success.value
-      .set(TrusteeUtrYesNoPage(index), true).success.value
-      .set(TrusteeOrgNamePage(index), "Org Name").success.value
-      .set(TrusteesUtrPage(index), "1234567890").success.value
-      .set(TrusteeOrgAddressUkYesNoPage(index), true).success.value
-      .set(TrusteeOrgAddressUkPage(index), UKAddress("line1", "line2", None, None, "NE65QA")).success.value
-      .set(TelephoneNumberPage(index), "0191 1111111").success.value
-      .set(TrusteeStatus(index), Completed).success.value
   }
 
   def withDeceasedSettlor(userAnswers: UserAnswers): UserAnswers = {
@@ -150,14 +118,12 @@ object TestUserAnswers extends TryValues {
 
   def withCompleteSections(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(AddATrusteePage, AddATrustee.NoComplete).success.value
       .set(AddAssetsPage, AddAssets.NoComplete).success.value
   }
 
-  def newTrustCompleteUserAnswers = {
+  def newTrustCompleteUserAnswers: UserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
-    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
+    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
     val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
     val userAnswers = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
 

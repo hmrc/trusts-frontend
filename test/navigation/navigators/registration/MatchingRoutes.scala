@@ -26,8 +26,7 @@ import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.trust_details.TrustNamePage
-import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage, WhatIsTheUTRPage}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import pages.register._
 
 trait MatchingRoutes {
 
@@ -70,54 +69,30 @@ trait MatchingRoutes {
           }
         }
 
-        "go to PostcodeForTheTrust from TrustName" in {
+        "go to TrustRegisteredWithUkAddressYesNo from TrustName" in {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
 
               val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
 
               navigator.nextPage(TrustNamePage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
           }
         }
-
       }
 
-      "the user does not have a UTR for the trust" when {
+      "the user does not have a UTR for the trust" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
 
-        "user is an agent" must {
+            val answers = userAnswers
+              .set(TrustRegisteredOnlinePage, false).success.value
+              .set(TrustHaveAUTRPage, false).success.value
 
-          "go to AgentInternalReference from TrustHaveAUTR when user answers no" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-
-                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-                  .set(TrustHaveAUTRPage, false).success.value
-
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(answers)
-                  .mustBe(controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId))
-            }
-          }
+            navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
+              .mustBe(controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
         }
-
-        "user is an organisation" must {
-
-          "go to TaskList from TrustHaveAUTR when user answers no" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-
-                val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-                  .set(TrustHaveAUTRPage, false).success.value
-
-                navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, AffinityGroup.Organisation)(answers)
-                  .mustBe(routes.TaskListController.onPageLoad(fakeDraftId))
-            }
-          }
-
-        }
-
       }
-
     }
 
     "navigate when trust is registered online" when {

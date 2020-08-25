@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import java.time.{LocalDate, ZoneOffset}
+import java.time.LocalDate
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
@@ -37,8 +37,6 @@ import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -53,21 +51,63 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
   private val index = 0
 
-  private val beneficiarySections = List(
+  val beneficiarySections = List(
     AnswerSection(
-      Some("headingKey1"),
+      Some("beneficiaryHeadingKey1"),
       List.empty,
-      Some("sectionKey1")
+      Some("beneficiarySectionKey1")
     ),
     AnswerSection(
-      Some("headingKey2"),
+      Some("beneficiaryHeadingKey2"),
       List.empty,
-      Some("sectionKey2")
+      Some("beneficiarySectionKey2")
     )
   )
 
-  private val registrationSections = RegistrationAnswerSections(
-    beneficiaries = Some(beneficiarySections)
+  val trusteeSections = List(
+    AnswerSection(
+      Some("trusteeHeadingKey1"),
+      List.empty,
+      Some("trusteeSectionKey1")
+    ),
+    AnswerSection(
+      Some("trusteeHeadingKey2"),
+      List.empty,
+      Some("trusteeSectionKey2")
+    )
+  )
+
+  val protectorSections = List(
+    AnswerSection(
+      Some("protectorHeadingKey1"),
+      List.empty,
+      Some("protectorSectionKey1")
+    ),
+    AnswerSection(
+      Some("protectorHeadingKey2"),
+      List.empty,
+      Some("protectorSectionKey2")
+    )
+  )
+
+  val otherIndividualSections = List(
+    AnswerSection(
+      Some("otherIndividualHeadingKey1"),
+      List.empty,
+      Some("otherIndividualSectionKey1")
+    ),
+    AnswerSection(
+      Some("otherIndividualHeadingKey2"),
+      List.empty,
+      Some("otherIndividualSectionKey2")
+    )
+  )
+
+  val registrationSections = RegistrationAnswerSections(
+    beneficiaries = Some(beneficiarySections),
+    trustees = Some(trusteeSections),
+    protectors = Some(protectorSections),
+    otherIndividuals = Some(otherIndividualSections)
   )
 
   when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
@@ -84,18 +124,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(EstablishedUnderScotsLawPage, true).success.value
         .set(TrustResidentOffshorePage, false).success.value
         .set(TrustDetailsStatus, Completed).success.value
-
-        .set(IsThisLeadTrusteePage(index), true).success.value
-        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-        .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
-        .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
-        .set(TrusteesNinoPage(index), "AB123456C").success.value
-        .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(TrusteeAddressInTheUKPage(index), true).success.value
-        .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
-        .set(TrusteeStatus(index), Status.Completed).success.value
-        .set(AddATrusteePage, AddATrustee.NoComplete).success.value
 
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
@@ -127,14 +155,11 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     val countryOptions = injector.instanceOf[CountryOptions]
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
 
-    val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
-    val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
-
     val expectedSections = Seq(
       AnswerSection(
         None,
         Seq(
-          checkYourAnswersHelper.trustName.value,
+          checkYourAnswersHelper.trustName().value,
           checkYourAnswersHelper.whenTrustSetup.value
         ),
         Some("Trust details")
@@ -155,25 +180,17 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         ),
         Some("Settlor")
       ),
-      AnswerSection(
-        Some("Trustee 1"),
-        Seq(
-          checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
-          checkYourAnswersHelper.trusteeFullName(index, leadTrusteeFullNameMessagePrefix).value,
-          checkYourAnswersHelper.trusteesDateOfBirth(index).value,
-          checkYourAnswersHelper.trusteeAUKCitizen(index).value,
-          checkYourAnswersHelper.trusteesNino(index).value,
-          checkYourAnswersHelper.trusteeLiveInTheUK(index).value,
-          checkYourAnswersHelper.trusteesUkAddress(index).value,
-          checkYourAnswersHelper.telephoneNumber(index).value
-        ),
-        Some("Trustees")
-      ),
+      trusteeSections(0),
+      trusteeSections(1),
       beneficiarySections(0),
-      beneficiarySections(1)
+      beneficiarySections(1),
+      protectorSections(0),
+      protectorSections(1),
+      otherIndividualSections(0),
+      otherIndividualSections(1)
     )
 
-    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus(Some(Completed))))
+    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 
@@ -253,18 +270,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(TrustResidentOffshorePage, false).success.value
         .set(TrustDetailsStatus, Completed).success.value
 
-        .set(IsThisLeadTrusteePage(index), true).success.value
-        .set(TrusteeIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-        .set(TrusteesNamePage(index), FullName("First", None, "Trustee")).success.value
-        .set(TrusteesDateOfBirthPage(index), LocalDate.now(ZoneOffset.UTC)).success.value
-        .set(TrusteeAUKCitizenPage(index), true).success.value
-        .set(TrusteesNinoPage(index), "AB123456C").success.value
-        .set(TelephoneNumberPage(index), "0191 1111111").success.value
-        .set(TrusteeAddressInTheUKPage(index), true).success.value
-        .set(TrusteesUkAddressPage(index), UKAddress("line1", "line2", Some("line3"), Some("line4"), "AB1 1AB")).success.value
-        .set(TrusteeStatus(index), Status.Completed).success.value
-        .set(AddATrusteePage, AddATrustee.NoComplete).success.value
-
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
         .set(HoldoverReliefYesNoPage, true).success.value
@@ -293,14 +298,11 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     val countryOptions = injector.instanceOf[CountryOptions]
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
 
-    val leadTrusteeIndividualOrBusinessMessagePrefix = "leadTrusteeIndividualOrBusiness"
-    val leadTrusteeFullNameMessagePrefix = "leadTrusteesName"
-
     val expectedSections = Seq(
       AnswerSection(
         None,
         Seq(
-          checkYourAnswersHelper.trustName.value,
+          checkYourAnswersHelper.trustName().value,
           checkYourAnswersHelper.whenTrustSetup.value
         ),
         Some("Trust details")
@@ -319,22 +321,14 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         ),
         Some("Settlors")
       ),
-      AnswerSection(
-        Some("Trustee 1"),
-        Seq(
-          checkYourAnswersHelper.trusteeIndividualOrBusiness(index, leadTrusteeIndividualOrBusinessMessagePrefix).value,
-          checkYourAnswersHelper.trusteeFullName(index, leadTrusteeFullNameMessagePrefix).value,
-          checkYourAnswersHelper.trusteesDateOfBirth(index).value,
-          checkYourAnswersHelper.trusteeAUKCitizen(index).value,
-          checkYourAnswersHelper.trusteesNino(index).value,
-          checkYourAnswersHelper.trusteeLiveInTheUK(index).value,
-          checkYourAnswersHelper.trusteesUkAddress(index).value,
-          checkYourAnswersHelper.telephoneNumber(index).value
-        ),
-        Some("Trustees")
-      ),
+      trusteeSections(0),
+      trusteeSections(1),
       beneficiarySections(0),
-      beneficiarySections(1)
+      beneficiarySections(1),
+      protectorSections(0),
+      protectorSections(1),
+      otherIndividualSections(0),
+      otherIndividualSections(1)
     )
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {

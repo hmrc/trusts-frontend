@@ -20,6 +20,7 @@ import java.time.LocalDate
 
 import mapping.TypeOfTrust
 import models.registration.pages.DeedOfVariation
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 /**
@@ -52,6 +53,12 @@ case class MatchData(utr: String,
 
 object MatchData {
   implicit val matchDataFormat: Format[MatchData] = Json.format[MatchData]
+
+  val writes: Writes[MatchData] =
+    ((__ \ "utr").write[String] and
+      (__ \ "name").write[String] and
+      (__ \ "postcode").writeNullable[String]
+      ).apply(unlift(MatchData.unapply))
 }
 
 case class Correspondence(abroadIndicator: Boolean,
@@ -457,7 +464,9 @@ case class AddressType(line1: String,
                        line3: Option[String],
                        line4: Option[String],
                        postCode: Option[String],
-                       country: String)
+                       country: String) {
+  def isInUk: Boolean = country == "GB"
+}
 
 object AddressType {
   implicit val addressTypeFormat: Format[AddressType] = Json.format[AddressType]

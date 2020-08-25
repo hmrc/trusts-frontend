@@ -24,7 +24,12 @@
     main_template: MainTemplate
 )
 
-@(draftId: String, savedUntil : String, sections : List[Task], isTaskListComplete: Boolean, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
+@(draftId: String,
+    savedUntil : String,
+    sections : List[Task],
+    additionalSections : List[Task],
+    isTaskListComplete: Boolean,
+    affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
@@ -45,7 +50,7 @@
         <p id="saved-until">@savedUntil</p>
     }
 
-    @components.task_list(sections)
+    @components.task_list(sections, additionalSections)
 
     @if(isTaskListComplete) {
         <h2 id="summaryHeading">@messages("taskList.summary.heading1")</h2>

@@ -18,47 +18,45 @@
 @import models.Mode
 
 @this(
-main_template: MainTemplate
+    main_template: MainTemplate
 )
 
 @(draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = messages("FailedMatch.title")
+    title = messages("failedMatch.title")
 ) {
 
-@components.heading("FailedMatch.heading")
+    @components.heading("failedMatch.heading")
 
-<p>@messages("FailedMatch.paragraph1")</p>
+    <p>@messages("failedMatch.paragraph1")</p>
 
-@components.bullet_list("FailedMatch",
- List(
-  "bulletpoint1",
-  "bulletpoint2",
-  "bulletpoint3"
- )
-)
+    @components.bullet_list(
+        "failedMatch",
+        List(
+            "bulletpoint1",
+            "bulletpoint2",
+            "bulletpoint3"
+        )
+    )
 
-<p>@messages("FailedMatch.paragraph2")</p>
+    <p>@messages("failedMatch.paragraph2")</p>
 
-@components.bullet_list("FailedMatch",
-List(
-"bulletpoint4",
-"bulletpoint5",
-"bulletpoint6"
-)
-)
+    @components.bullet_list(
+        "failedMatch",
+        List(
+            "bulletpoint4",
+            "bulletpoint5",
+            "bulletpoint6"
+        )
+    )
 
-<p>@messages("FailedMatch.paragraph3")</p>
+    <p>@messages("failedMatch.paragraph3")</p>
 
-@components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url)
+    @components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url)
 
-<h2>@messages("FailedMatch.h2")</h2>
+    <h2>@messages("failedMatch.h2")</h2>
 
-<p>@messages("FailedMatch.paragraph4") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" rel="external">@messages("FailedMatch.contactLink")</a> @messages("FailedMatch.paragraph5")</p>
-
-
-
+    <p>@messages("failedMatch.paragraph4") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" rel="external">@messages("failedMatch.contactLink")</a> @messages("failedMatch.paragraph5")</p>
 
 }
-

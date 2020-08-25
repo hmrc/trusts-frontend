@@ -20,9 +20,10 @@ import java.time.LocalDateTime
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
+import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
-import models.registration.pages.Status.Completed
-import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
+import models.registration.pages.Status.{Completed, InProgress}
+import models.{RegistrationSubmission, SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -49,10 +50,13 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val testDraftId = "draftId"
   private val submissionsUrl = s"/trusts/register/submission-drafts"
   private val mainUrl = s"$submissionsUrl/$testDraftId/main"
+  private val resetTaxLiabilityUrl = s"$submissionsUrl/$testDraftId/reset/taxLiability"
   private val beneficiariesUrl = s"$submissionsUrl/$testDraftId/beneficiaries"
   private val statusUrl = s"$submissionsUrl/$testDraftId/status"
   private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
+  private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
+  private val correspondenceAddressUrl = s"$submissionsUrl/$testDraftId/correspondence-address"
 
   "SubmissionDraftConnector" - {
 
@@ -207,7 +211,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
       "can set status for a draft" in {
 
-        val status = AllStatus(beneficiaries = Some(Completed))
+        val status = AllStatus(beneficiaries = Some(Completed), trustees = Some(InProgress))
 
         val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
 
@@ -266,7 +270,25 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
                 ),
                 Some("sectionKey2"))
             )
-          )
+          ),
+          trustees = Some(
+            List(
+              RegistrationSubmission.AnswerSection(
+                Some("trusteeHeadingKey1"),
+                List(
+                  RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
+                ),
+                Some("trusteeSectionKey1")),
+              RegistrationSubmission.AnswerSection(
+                Some("trusteeHeadingKey2"),
+                List(
+                  RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
+                ),
+                Some("trusteeSectionKey2"))
+            )
+          ),
+          protectors = None,
+          otherIndividuals = None
         )
 
         val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allAnswerSections), None)
@@ -282,6 +304,93 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
         val result = Await.result(connector.getAnswerSections(testDraftId), Duration.Inf)
         result mustEqual allAnswerSections
+      }
+
+      "can retrieve lead trustee for a draft" in {
+
+        val response = Json.parse(
+          """
+            |{
+            |  "leadTrusteeOrg": {
+            |    "name": "Lead Org",
+            |    "phoneNumber": "07911234567",
+            |    "identification": {
+            |      "address": {
+            |        "line1": "line1",
+            |        "line2": "line2",
+            |        "postCode": "AA1 1AA",
+            |        "country": "GB"
+            |      }
+            |    }
+            |  }
+            |}
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(leadTrusteeUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val expectedLeadTrustee = LeadTrusteeType(
+          None,
+          Some(LeadTrusteeOrgType(
+            "Lead Org",
+            "07911234567",
+            None,
+            IdentificationOrgType(None, Some(AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")))))
+        )
+
+        val result = Await.result(connector.getLeadTrustee(testDraftId), Duration.Inf)
+        result mustEqual expectedLeadTrustee
+      }
+
+      "can retrieve correspondence address for a draft" in {
+
+        val response = Json.parse(
+          """
+            |{
+            | "line1": "Address line1",
+            | "line2": "Address line2",
+            | "postCode": "NE1 1EN",
+            | "country": "GB"
+            |}
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(correspondenceAddressUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val expectedAddress = AddressType("Address line1", "Address line2", None, None, Some("NE1 1EN"), "GB")
+
+        val result = Await.result(connector.getCorrespondenceAddress(testDraftId), Duration.Inf)
+        result mustEqual expectedAddress
+      }
+
+    }
+
+    ".resetTaxLiability" - {
+
+      "resets tax liability" in {
+
+        server.stubFor(
+          post(urlEqualTo(resetTaxLiabilityUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+            )
+        )
+
+        val result = Await.result(connector.resetTaxLiability(testDraftId), Duration.Inf)
+        result.status mustBe Status.OK
       }
 
     }

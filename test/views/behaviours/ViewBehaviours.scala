@@ -110,10 +110,56 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
+  def dynamicTitlePage(view: HtmlFormat.Appendable,
+                       messageKeyPrefix: String,
+                       args: Seq[String],
+                       expectedGuidanceKeys: String*): Unit = {
+
+    "behave like a dynamic title page" when {
+
+      "rendered" must {
+
+        "have the correct banner title" in {
+
+          val doc = asDocument(view)
+          val nav = doc.getElementById("proposition-menu")
+          val span = nav.children.first
+          span.text mustBe messages("site.service_name")
+        }
+
+        "display the correct browser title" in {
+
+          val doc = asDocument(view)
+          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", args: _*)
+        }
+
+        "display the correct page title" in {
+
+          val doc = asDocument(view)
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", args: _*)
+        }
+
+        "display the correct guidance" in {
+
+          val doc = asDocument(view)
+          for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
+        }
+
+        "display language toggles" in {
+
+          val doc = asDocument(view)
+          assertNotRenderedById(doc, "cymraeg-switch")
+        }
+
+      }
+    }
+  }
+
   def confirmationPage(view: HtmlFormat.Appendable,
                        messageKeyPrefix: String,
-                       messageKeyParam: String,
-                       accessibleKeyParam: String): Unit = {
+                       refNumber: String,
+                       leadTrusteeName: String,
+                       expectedGuidanceKeys: String*): Unit = {
 
     "behave like a confirmation page" when {
 
@@ -130,13 +176,22 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct browser title" in {
 
           val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", accessibleKeyParam)
+          assertEqualsMessage(doc, "title", "confirmation.title")
         }
 
         "display the correct page title" in {
 
           val doc = asDocument(view)
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", messageKeyParam + " " + accessibleKeyParam)
+          assertContainsText(doc, messages("confirmation.heading1"))
+          assertContainsText(doc, messages("confirmation.heading2"))
+          assertContainsText(doc, refNumber)
+        }
+
+        "display the correct guidance" in {
+
+          val doc = asDocument(view)
+          for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
+          assertContainsText(doc, messages(s"$messageKeyPrefix.p1", leadTrusteeName))
         }
 
         "display language toggles" in {
@@ -197,6 +252,28 @@ trait ViewBehaviours extends ViewSpecBase {
           "href",
           url
         )
+      }
+    }
+  }
+
+  def pageWithASignOutButton(view: HtmlFormat.Appendable): Unit = {
+
+    "behave like a page with a sign-out button" must {
+      "have a sign-out button" in {
+        val doc = asDocument(view)
+        assertRenderedById(doc, "sign-out")
+      }
+    }
+  }
+
+  def pageWithSubHeading(view: HtmlFormat.Appendable, text: String): Unit = {
+
+    "behave like a page with a sub-heading" must {
+
+      "have a sub-heading" in {
+
+        val doc = asDocument(view)
+        assertContainsText(doc, text)
       }
     }
   }

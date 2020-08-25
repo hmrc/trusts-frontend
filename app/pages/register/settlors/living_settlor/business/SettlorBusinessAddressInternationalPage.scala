@@ -19,7 +19,7 @@ package pages.register.settlors.living_settlor.business
 import models.core.pages.InternationalAddress
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 
 final case class SettlorBusinessAddressInternationalPage(index : Int) extends QuestionPage[InternationalAddress] {
 

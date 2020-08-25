@@ -34,8 +34,6 @@ import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.trust_details._
-import pages.register.trustees._
-import pages.register.trustees.individual._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
@@ -107,19 +105,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(AgentInternalReferencePage.type, JsValue)] ::
     arbitrary[(WhatKindOfAssetPage, JsValue)] ::
     arbitrary[(AgentTelephoneNumberPage.type, JsValue)] ::
-    arbitrary[(TrusteeAddressInTheUKPage, JsValue)] ::
-    arbitrary[(TrusteesNinoPage, JsValue)] ::
-    arbitrary[(TrusteesUkAddressPage, JsValue)] ::
-    arbitrary[(TrusteeAUKCitizenPage, JsValue)] ::
-    arbitrary[(TelephoneNumberPage, JsValue)] ::
-    arbitrary[(TrusteeAUKCitizenPage, JsValue)] ::
-    arbitrary[(TrusteesNamePage, JsValue)] ::
-    arbitrary[(TrusteeIndividualOrBusinessPage, JsValue)] ::
-    arbitrary[(IsThisLeadTrusteePage, JsValue)] ::
-    arbitrary[(TrusteesDateOfBirthPage, JsValue)] ::
-    arbitrary[(TrusteesNamePage, JsValue)] ::
-    arbitrary[(TrusteeIndividualOrBusinessPage, JsValue)] ::
-    arbitrary[(IsThisLeadTrusteePage, JsValue)] ::
     arbitrary[(PostcodeForTheTrustPage.type, JsValue)] ::
     arbitrary[(WhatIsTheUTRPage.type, JsValue)] ::
     arbitrary[(TrustHaveAUTRPage.type, JsValue)] ::

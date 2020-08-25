@@ -21,7 +21,7 @@ import models.registration.pages.DeedOfVariation.ReplacedWill
 import models.registration.pages.KindOfTrust.Deed
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
-import sections.{DeceasedSettlor, LivingSettlors}
+import sections.settlors.{DeceasedSettlor, LivingSettlors}
 
 class SetUpInAdditionToWillTrustYesNoPageSpec extends PageBehaviours {
 

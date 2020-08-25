@@ -16,6 +16,34 @@
 
 package viewmodels
 
+import models.RegistrationSubmission
+import models.RegistrationSubmission.AllAnswerSections
+import play.twirl.api.HtmlFormat
+
 case class RegistrationAnswerSections(
-                                       beneficiaries: Option[List[AnswerSection]] = None
+                                       beneficiaries: Option[List[AnswerSection]] = None,
+                                       trustees: Option[List[AnswerSection]] = None,
+                                       protectors: Option[List[AnswerSection]] = None,
+                                       otherIndividuals: Option[List[AnswerSection]] = None
                                      )
+
+object RegistrationAnswerSections {
+  def fromAllAnswerSections(sections: AllAnswerSections): RegistrationAnswerSections = {
+    RegistrationAnswerSections(
+      beneficiaries = convert(sections.beneficiaries),
+      trustees = convert(sections.trustees),
+      protectors = convert(sections.protectors),
+      otherIndividuals = convert(sections.otherIndividuals)
+    )
+  }
+
+  private def convert(row: RegistrationSubmission.AnswerRow): AnswerRow =
+    AnswerRow(row.label, HtmlFormat.raw(row.answer), None, row.labelArg, canEdit = false)
+
+  private def convert(section: RegistrationSubmission.AnswerSection): AnswerSection =
+    AnswerSection(section.headingKey, section.rows.map(convert), section.sectionKey)
+
+  private def convert(section: Option[List[RegistrationSubmission.AnswerSection]]): Option[List[AnswerSection]] =
+    section map { _.map(convert) }
+}
+

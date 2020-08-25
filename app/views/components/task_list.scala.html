@@ -17,7 +17,7 @@
 @import viewmodels.Task
 @import views.html._
 
-@(sections: List[Task])(implicit messages: Messages)
+@(sections: List[Task], additionalSections: List[Task])(implicit messages: Messages)
 
 <ol role="list" class="app-task-list">
     <li>
@@ -25,7 +25,16 @@
 
         <ul class="app-task-list__items">
             @for(task <- sections){
-                @components.task(task)
+               @components.task(task)
+            }
+        </ul>
+    </li>
+    <li>
+        <h2 id="task-list-additional--heading" class="app-task-list__section">@messages("taskList.additionalSections.heading")</h2>
+
+        <ul class="app-task-list__items">
+            @for(task <- additionalSections){
+               @components.task(task)
             }
         </ul>
     </li>

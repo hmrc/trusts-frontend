@@ -18,10 +18,10 @@ package connector
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import mapping.Mapping
-import mapping.registration.{Registration, RegistrationMapper}
-import models.core.http.RegistrationTRNResponse
-import models.core.http.TrustResponse._
+import mapping.registration.{AddressType, MatchData, RegistrationMapper}
+import models.core.http.TrustResponse
+import models.core.http.MatchedResponse
+import models.core.http.{RegistrationTRNResponse, SuccessOrFailureResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -34,8 +34,8 @@ import utils.{TestUserAnswers, WireMockHelper}
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class TrustConnectorSpec extends FreeSpec with MustMatchers
-  with OptionValues with SpecBaseHelpers with WireMockHelper {
+class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues with SpecBaseHelpers with WireMockHelper {
+
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
@@ -44,142 +44,234 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers
       "auditing.enabled" -> false): _*
     ).build()
 
-  private lazy val registrationMapper: Mapping[Registration] = injector.instanceOf[RegistrationMapper]
-
   private lazy val connector = injector.instanceOf[TrustConnector]
 
-  private val registerUrl : String = "/trusts/register"
-
-  private def wiremock(payload: String, expectedStatus: Int, expectedResponse : String)=
-    server.stubFor(
-      post(urlEqualTo(registerUrl))
-    .withHeader(CONTENT_TYPE, containing("application/json"))
-    .withRequestBody(equalTo(payload))
-    .willReturn(
-      aResponse()
-        .withStatus(expectedStatus)
-        .withBody(expectedResponse)
-      )
-    )
-
-  private val newTrustUserAnswers = {
-    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithLead = TestUserAnswers.withLeadTrusteeIndividual(emptyUserAnswers)
-    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(uaWithLead)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
-    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
-    val userAnswers = TestUserAnswers.withDeclaration(asset)
-
-    userAnswers
-  }
+  private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
   "TrustConnector" - {
 
-    "return a Trust Registration Number (TRN)" - {
+    ".register" - {
 
-      "valid payload to trusts is sent" in {
+      val registerUrl : String = "/trusts/register"
 
-        val registration = registrationMapper.build(newTrustUserAnswers).value
+      def wiremock(payload: String, expectedStatus: Int, expectedResponse : String)=
+        server.stubFor(
+          post(urlEqualTo(registerUrl))
+            .withHeader(CONTENT_TYPE, containing("application/json"))
+            .withRequestBody(equalTo(payload))
+            .willReturn(
+              aResponse()
+                .withStatus(expectedStatus)
+                .withBody(expectedResponse)
+            )
+        )
 
-        val payload = Json.stringify(Json.toJson(registration))
+      val newTrustUserAnswers = {
+        val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+        val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
+        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
+        val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+        val userAnswers = TestUserAnswers.withDeclaration(asset)
 
-        wiremock(
-          payload = payload,
-          expectedStatus = Status.OK,
-          expectedResponse = """
-            |{
-            | "trn": "XTRN1234567"
-            |}
+        userAnswers
+      }
+
+      val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+
+      "return a Trust Registration Number (TRN)" - {
+
+        "valid payload to trusts is sent" in {
+
+          val registration = registrationMapper.build(newTrustUserAnswers, correspondenceAddress).value
+
+          val payload = Json.stringify(Json.toJson(registration))
+
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.OK,
+            expectedResponse = """
+                                 |{
+                                 | "trn": "XTRN1234567"
+                                 |}
           """.stripMargin
-        )
+          )
 
-        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
-        result mustBe RegistrationTRNResponse("XTRN1234567")
+          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          result mustBe RegistrationTRNResponse("XTRN1234567")
+        }
       }
-    }
 
-    "return AlreadyRegistered response " - {
+      "return AlreadyRegistered response " - {
 
-      "already registered trusts is sent " in {
-        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers).value
+        "already registered trusts is sent " in {
+          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
 
-        val payload = Json.stringify(Json.toJson(registration))
+          val payload = Json.stringify(Json.toJson(registration))
 
-        wiremock(
-          payload = payload,
-          expectedStatus = Status.CONFLICT,
-          expectedResponse = """
-                               |{
-                               | "code": "ALREADY_REGISTERED",
-                               |  "message": "Trusts already registered."
-                               |}
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.CONFLICT,
+            expectedResponse = """
+                                 |{
+                                 | "code": "ALREADY_REGISTERED",
+                                 |  "message": "Trusts already registered."
+                                 |}
                              """.stripMargin
-        )
+          )
 
-        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
-        result mustBe AlreadyRegistered
+          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          result mustBe TrustResponse.AlreadyRegistered
+        }
       }
-    }
 
-    "return InternalServerError response " - {
-      "api returns internal server error response " in {
-        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers).value
+      "return InternalServerError response " - {
+        "api returns internal server error response " in {
+          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
 
-        val payload = Json.stringify(Json.toJson(registration))
+          val payload = Json.stringify(Json.toJson(registration))
 
-        wiremock(
-          payload = payload,
-          expectedStatus = Status.INTERNAL_SERVER_ERROR,
-          expectedResponse = """
-                               |{
-                               | "code": "INTERNAL_SERVER_ERROR",
-                               |  "message": "Internal server error."
-                               |}
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.INTERNAL_SERVER_ERROR,
+            expectedResponse = """
+                                 |{
+                                 | "code": "INTERNAL_SERVER_ERROR",
+                                 |  "message": "Internal server error."
+                                 |}
                              """.stripMargin
-        )
+          )
 
-        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
-        result mustBe InternalServerError
+          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          result mustBe TrustResponse.InternalServerError
+        }
+      }
+
+      "return InternalServerError response " - {
+
+        "api returns bad request response " in {
+          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
+
+          val payload = Json.stringify(Json.toJson(registration))
+
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.BAD_REQUEST,
+            expectedResponse = ""
+          )
+
+          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          result mustBe TrustResponse.InternalServerError
+        }
+      }
+
+      "return InternalServerError response " - {
+
+        "api returns service unavailable response " in {
+          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
+
+          val payload = Json.stringify(Json.toJson(registration))
+
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.SERVICE_UNAVAILABLE,
+            expectedResponse = ""
+          )
+
+          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          result mustBe TrustResponse.InternalServerError
+        }
       }
     }
 
-    "return InternalServerError response " - {
+    ".matching" - {
 
-      "api returns bad request response " in {
-        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers).value
+      val matchingUrl: String = "/trusts/check"
 
-        val payload = Json.stringify(Json.toJson(registration))
-
-        wiremock(
-          payload = payload,
-          expectedStatus = Status.BAD_REQUEST,
-          expectedResponse = ""
+      def wiremock(payload: String, expectedStatus: Int, expectedResponse: String)=
+        server.stubFor(
+          post(urlEqualTo(matchingUrl))
+            .withHeader(CONTENT_TYPE, containing("application/json"))
+            .withRequestBody(equalTo(payload))
+            .willReturn(
+              aResponse()
+                .withStatus(expectedStatus)
+                .withBody(expectedResponse)
+            )
         )
 
-        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
-        result mustBe InternalServerError
+      val matchData: MatchData = MatchData("utr", "name", Some("postcode"))
+      val payload: String = Json.stringify(Json.toJson(matchData)(MatchData.writes))
+
+      "must return a Matched response" - {
+        "when trust is successfully matched" in {
+
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.OK,
+            expectedResponse = """{"match": true}""".stripMargin
+          )
+
+          val result = Await.result(connector.matching(matchData), Duration.Inf)
+
+          result mustBe SuccessOrFailureResponse(true)
+        }
       }
-    }
 
-    "return InternalServerError response " - {
+      "must return a NotMatched response" - {
+        "when trust fails matching" in {
 
-      "api returns service unavailable response " in {
-        val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-        val registration = registrationMapper.build(userAnswers).value
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.OK,
+            expectedResponse = """{"match": false}""".stripMargin
+          )
 
-        val payload = Json.stringify(Json.toJson(registration))
+          val result = Await.result(connector.matching(matchData), Duration.Inf)
 
-        wiremock(
-          payload = payload,
-          expectedStatus = Status.SERVICE_UNAVAILABLE,
-          expectedResponse = ""
-        )
+          result mustBe SuccessOrFailureResponse(false)
+        }
+      }
 
-        val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
-        result mustBe InternalServerError
+      "return AlreadyRegistered response " - {
+        "when trust has already been registered" in {
+
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.CONFLICT,
+            expectedResponse = """
+                                 |{
+                                 | "code": "ALREADY_REGISTERED",
+                                 | "message": "The trust is already registered."
+                                 |}
+                             """.stripMargin
+          )
+
+          val result = Await.result(connector.matching(matchData), Duration.Inf)
+          result mustBe MatchedResponse.AlreadyRegistered
+        }
+      }
+
+      "return InternalServerError response " - {
+        "when there is an internal server error" in {
+
+          wiremock(
+            payload = payload,
+            expectedStatus = Status.INTERNAL_SERVER_ERROR,
+            expectedResponse = """
+                                 |{
+                                 | "code": "INTERNAL_SERVER_ERROR",
+                                 | "message": "Internal server error."
+                                 |}
+                             """.stripMargin
+          )
+
+          val result = Await.result(connector.matching(matchData), Duration.Inf)
+          result mustBe MatchedResponse.InternalServerError
+        }
       }
     }
   }

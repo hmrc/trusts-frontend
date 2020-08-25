@@ -16,22 +16,23 @@
 
 package controllers.register
 
-import config.FrontendAppConfig
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import mapping.reads.{LeadTrusteeIndividual, LeadTrusteeOrganisation, Trustees}
+import mapping.registration.{LeadTrusteeType, NameType}
 import models.NormalMode
 import models.core.UserAnswers
+import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
+import views.html.register.confirmation._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,29 +41,23 @@ class ConfirmationController @Inject()(
                                         identify: RegistrationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: RegistrationDataRequiredAction,
-                                        config: FrontendAppConfig,
                                         val controllerComponents: MessagesControllerComponents,
-                                        viewIndividual: ConfirmationIndividualView,
-                                        viewAgent: ConfirmationAgentView,
-                                        viewExisting: ConfirmationExistingView,
-                                        errorHandler: ErrorHandler
+                                        newIndividualView: newTrust.IndividualView,
+                                        newAgentView: newTrust.AgentView,
+                                        existingIndividualView: existingTrust.IndividualView,
+                                        existingAgentView: existingTrust.AgentView,
+                                        errorHandler: ErrorHandler,
+                                        registrationsRepository: RegistrationsRepository
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def fullName(name: NameType): FullName = FullName(name.firstName, name.middleName, name.lastName)
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
-
-    val trustees = userAnswers.get(Trustees).getOrElse(Nil)
-
     val isAgent = request.affinityGroup == Agent
-
-    trustees.find(_.isLead) match {
-      case Some(lt : LeadTrusteeIndividual) =>
-        render(userAnswers, draftId, isAgent, trn, lt.name.toString)
-      case Some(lt: LeadTrusteeOrganisation) =>
-        render(userAnswers, draftId, isAgent, trn, lt.name)
-      case _ =>
-        errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
+    registrationsRepository.getLeadTrustee(draftId) flatMap {
+      case LeadTrusteeType(Some(ltInd), None) => render(userAnswers, draftId, isAgent, trn, fullName(ltInd.name).toString)
+      case LeadTrusteeType(None, Some(ltOrg)) => render(userAnswers, draftId, isAgent, trn, ltOrg.name)
+      case _ => errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
     }
-
   }
 
   private def render(userAnswers: UserAnswers,
@@ -72,12 +67,14 @@ class ConfirmationController @Inject()(
                       name: String)(implicit request : RegistrationDataRequest[AnyContent]) = {
 
     userAnswers.get(TrustHaveAUTRPage) match {
+      case Some(true) if isAgent =>
+        Future.successful(Ok(existingAgentView(draftId, trn, name)))
       case Some(true) =>
-        Future.successful(Ok(viewExisting(draftId, isAgent, trn, name)))
+        Future.successful(Ok(existingIndividualView(draftId, trn, name)))
       case Some(false) if isAgent =>
-        Future.successful(Ok(viewAgent(draftId, trn, name)))
+        Future.successful(Ok(newAgentView(draftId, trn, name)))
       case Some(false) =>
-        Future.successful(Ok(viewIndividual(draftId, trn, name)))
+        Future.successful(Ok(newIndividualView(draftId, trn, name)))
       case None =>
         errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }

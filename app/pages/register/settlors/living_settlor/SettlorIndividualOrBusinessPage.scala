@@ -23,7 +23,7 @@ import pages.QuestionPage
 import pages.entitystatus.LivingSettlorStatus
 import pages.register.settlors.living_settlor.business._
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 
 import scala.util.Try
 

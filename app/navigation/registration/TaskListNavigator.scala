@@ -17,15 +17,17 @@
 package navigation.registration
 
 import config.FrontendAppConfig
-import controllers.register.routes
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
+import models.registration.Matched.Success
 import models.registration.pages.Status.Completed
 import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.register.ExistingTrustMatched
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections._
+import sections.settlors.LivingSettlors
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
@@ -33,21 +35,22 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
   def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
     {
       val completed = userAnswers.get(TrustDetailsStatus).contains(Completed)
+      val successfullyMatched = userAnswers.get(ExistingTrustMatched).contains(Success)
+
       if (completed) {
         controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
       } else {
-        controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+        if (successfullyMatched) {
+          controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId)
+        } else {
+          controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+        }
       }
     }
   }
 
-  def trusteesJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    userAnswers.get(sections.Trustees).getOrElse(Nil) match {
-      case Nil =>
-        controllers.register.trustees.routes.TrusteesInfoController.onPageLoad(draftId)
-      case _ :: _ =>
-        controllers.register.trustees.routes.AddATrusteeController.onPageLoad(draftId)
-    }
+  def trusteesJourneyUrl(draftId: String): String = {
+    frontendAppConfig.trusteesFrontendUrl(draftId)
   }
 
   def settlorsJourney(userAnswers: UserAnswers, draftId: String): Call = {
@@ -83,6 +86,15 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     }
   }
 
-  def taxLiabilityJourney(draftId: String): Call = routes.TaskListController.onPageLoad(draftId)
+  def taxLiabilityJourney(draftId: String): String = {
+    frontendAppConfig.taxLiabilityFrontendUrl(draftId)
+  }
 
+  def protectorsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.protectorsFrontendUrl(draftId)
+  }
+
+  def otherIndividualsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.otherIndividualsFrontendUrl(draftId)
+  }
 }

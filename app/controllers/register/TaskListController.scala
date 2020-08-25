@@ -31,7 +31,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.DateFormatter
+import utils.{DateFormatter, TaxLiabilityHelper}
 import viewmodels.Task
 import views.html.register.TaskListView
 
@@ -74,20 +74,21 @@ class TaskListController @Inject()(
 
         for {
           _  <- registrationsRepository.set(updatedAnswers)
-          taskList <- registrationProgress.items(updatedAnswers, draftId)
+          sections <- registrationProgress.items(updatedAnswers, draftId)
+          additionalSections <- registrationProgress.additionalItems(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(updatedAnswers)
         } yield {
 
-          val sections = if (config.removeTaxLiabilityOnTaskList) {
-            val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId).url
-            taskList.filterNot(removeTaxLiabilityFromTaskList)
+          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(request.userAnswers)) {
+            sections
           } else {
-            taskList
+            val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)
+            sections.filterNot(removeTaxLiabilityFromTaskList)
           }
 
           Logger.debug(s"[TaskList][sections] $sections")
 
-          Ok(view(draftId ,savedUntil, sections, isTaskListComplete, affinityGroup))        }
+          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get

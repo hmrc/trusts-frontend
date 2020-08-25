@@ -43,6 +43,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(frontendAppConfig), registrationsRepository)
 
   private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers, fakeDraftId)
+  private lazy val additionalSections = newRegistrationProgress.additionalItems(fakeDraftId)
 
   private def isTaskListComplete(answers: UserAnswers) = newRegistrationProgress.isTaskListComplete(answers)
 
@@ -111,12 +112,18 @@ class TaskListControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           for {
-            taskList <- sections(answers)
+            mainSections <- sections(answers)
+            additionalSections <- additionalSections
             isTaskListComplete <- isTaskListComplete(answers)
           } yield {
             val view = application.injector.instanceOf[TaskListView]
             contentAsString(result) mustEqual
-              view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
+              view(
+                fakeDraftId,
+                savedUntil,
+                mainSections,
+                additionalSections,
+                isTaskListComplete, Organisation)(fakeRequest, messages).toString
           }
 
           application.stop()
@@ -207,12 +214,19 @@ class TaskListControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         for {
-          taskList <- sections(answers)
+          sections <- sections(answers)
+          additionalSections <- additionalSections
           isTaskListComplete <- isTaskListComplete(answers)
         } yield {
           val view = application.injector.instanceOf[TaskListView]
           contentAsString(result) mustEqual
-            view(fakeDraftId, savedUntil, taskList, isTaskListComplete, Organisation)(fakeRequest, messages).toString
+            view(
+              fakeDraftId,
+              savedUntil,
+              sections,
+              additionalSections,
+              isTaskListComplete,
+              Organisation)(fakeRequest, messages).toString
         }
 
         application.stop()

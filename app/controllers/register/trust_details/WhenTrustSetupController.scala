@@ -19,6 +19,7 @@ package controllers.register.trust_details
 import java.time.LocalDate
 
 import config.FrontendAppConfig
+import connector.SubmissionDraftConnector
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.WhenTrustSetupFormProvider
 import javax.inject.Inject
@@ -39,6 +40,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class WhenTrustSetupController @Inject()(
                                           override val messagesApi: MessagesApi,
                                           registrationsRepository: RegistrationsRepository,
+                                          submissionDraftConnector: SubmissionDraftConnector,
                                           navigator: Navigator,
                                           identify: RegistrationIdentifierAction,
                                           getData: DraftIdRetrievalActionProvider,
@@ -73,12 +75,19 @@ class WhenTrustSetupController @Inject()(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
 
-        value => {
+        value =>
           for {
+           _ <- {
+             val previousAnswer = request.userAnswers.get(WhenTrustSetupPage)
+             if (previousAnswer.isDefined && !previousAnswer.contains(value)) {
+               submissionDraftConnector.resetTaxLiability(draftId).map(_ => ())
+             } else {
+               Future.successful(())
+             }
+           }
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhenTrustSetupPage, value))
             _              <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(WhenTrustSetupPage, mode, draftId)(updatedAnswers))
-        }
       )
   }
 

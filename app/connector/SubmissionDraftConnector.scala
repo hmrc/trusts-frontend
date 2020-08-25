@@ -18,6 +18,7 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
+import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import play.api.libs.json.{JsObject, JsValue, Json}
@@ -75,4 +76,15 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
     getDraftSection(draftId, answerSectionsSection).map {
       section => section.data.as[AllAnswerSections]
     }
+
+  def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[LeadTrusteeType] =
+    http.GET[LeadTrusteeType](s"$submissionsBaseUrl/$draftId/lead-trustee")
+
+  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[AddressType] =
+    http.GET[AddressType](s"$submissionsBaseUrl/$draftId/correspondence-address")
+
+  def resetTaxLiability(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[HttpResponse] = {
+    http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/reset/taxLiability")
+  }
+
 }

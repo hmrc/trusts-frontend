@@ -16,34 +16,57 @@
 
 package controllers.register
 
+import java.time.LocalDate
+
 import base.RegistrationSpecBase
+import mapping.registration.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType, NameType}
 import models.NormalMode
 import models.registration.pages.RegistrationStatus
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import utils.TestUserAnswers
-import views.html.register.{ConfirmationAgentView, ConfirmationExistingView, ConfirmationIndividualView}
+import views.html.register.confirmation._
+
+import scala.concurrent.Future
 
 class ConfirmationControllerSpec extends RegistrationSpecBase {
 
-  val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
+  private val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
 
-  def agentUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
+  private def agentUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
+
+  private val leadTrusteeInd = LeadTrusteeType(
+    Some(LeadTrusteeIndType(
+      NameType("first name", Some("middle name"), "Last Name"),
+      LocalDate.of(1500, 10, 10),
+      "0191 1111111",
+      None,
+      IdentificationType(
+        Some("AB123456C"),
+        None,
+        None
+      )
+    )),
+    None
+  )
 
   "Confirmation Controller" must {
 
     "return OK and the correct view for a GET when TRN is available" when {
-      "registering trust" when {
+
+      "registering new trust" when {
+
         "agent" when {
 
           "lead trustee individual" in {
-            val userAnswers = TestUserAnswers.withLeadTrusteeIndividual(
-              emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
-            )
+
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
@@ -51,7 +74,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val result = route(application, request).value
 
-            val view = application.injector.instanceOf[ConfirmationAgentView]
+            val view = application.injector.instanceOf[newTrust.AgentView]
 
             val content = contentAsString(result)
 
@@ -66,11 +89,11 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           }
 
           "lead trustee organisation" in {
-            val userAnswers = TestUserAnswers.withLeadTrusteeOrganisation(
-              emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
-            )
+
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
@@ -78,14 +101,14 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val result = route(application, request).value
 
-            val view = application.injector.instanceOf[ConfirmationAgentView]
+            val view = application.injector.instanceOf[newTrust.AgentView]
 
             val content = contentAsString(result)
 
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Org Name")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
 
             content must include(agentUrl)
 
@@ -97,19 +120,19 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
         "org" when {
 
           "lead trustee individual" in {
-            val userAnswers = TestUserAnswers.withLeadTrusteeIndividual(
-              emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
-            )
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
+
+            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
             val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
-            val view = application.injector.instanceOf[ConfirmationIndividualView]
+            val view = application.injector.instanceOf[newTrust.IndividualView]
 
             val content = contentAsString(result)
 
@@ -124,26 +147,26 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           }
 
           "lead trustee organisation" in {
-            val userAnswers = TestUserAnswers.withLeadTrusteeOrganisation(
-              emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
-            )
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+
+            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
             val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
-            val view = application.injector.instanceOf[ConfirmationIndividualView]
+            val view = application.injector.instanceOf[newTrust.IndividualView]
 
             val content = contentAsString(result)
 
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Org Name")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
 
             content mustNot include(agentUrl)
 
@@ -153,52 +176,104 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
         }
       }
 
-      "maintaining trust" when {
+      "registering existing trust" when {
 
-        "lead trustee individual" in {
-          val userAnswers = TestUserAnswers.withLeadTrusteeIndividual(
-            emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+        "agent" when {
+
+          "lead trustee individual" in {
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
               .set(RegistrationTRNPage, "xTRN1234678").success.value
               .set(TrustHaveAUTRPage, true).success.value
-          )
 
-          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
 
-          val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
-          val result = route(application, request).value
+            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
-          val view = application.injector.instanceOf[ConfirmationExistingView]
+            val result = route(application, request).value
 
-          status(result) mustEqual OK
+            val view = application.injector.instanceOf[existingTrust.AgentView]
 
-          contentAsString(result) mustEqual
-            view(draftId = fakeDraftId, false, "xTRN1234678", "first name Last Name")(fakeRequest, messages).toString
+            status(result) mustEqual OK
 
-          application.stop()
+            contentAsString(result) mustEqual
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(fakeRequest, messages).toString
+
+            application.stop()
+          }
+
+          "lead trustee organisation" in {
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678").success.value
+              .set(TrustHaveAUTRPage, true).success.value
+
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+
+            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
+
+            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+
+            val result = route(application, request).value
+
+            val view = application.injector.instanceOf[existingTrust.AgentView]
+
+            status(result) mustEqual OK
+
+            contentAsString(result) mustEqual
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
+
+            application.stop()
+          }
         }
 
-        "lead trustee organisation" in {
-          val userAnswers = TestUserAnswers.withLeadTrusteeOrganisation(
-            emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+        "org" when {
+
+          "lead trustee individual" in {
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
               .set(RegistrationTRNPage, "xTRN1234678").success.value
               .set(TrustHaveAUTRPage, true).success.value
-          )
 
-          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
 
-          val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
-          val result = route(application, request).value
+            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
 
-          val view = application.injector.instanceOf[ConfirmationExistingView]
+            val result = route(application, request).value
 
-          status(result) mustEqual OK
+            val view = application.injector.instanceOf[existingTrust.IndividualView]
 
-          contentAsString(result) mustEqual
-            view(draftId = fakeDraftId, false, "xTRN1234678", "Org Name")(fakeRequest, messages).toString
+            status(result) mustEqual OK
 
-          application.stop()
+            contentAsString(result) mustEqual
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(fakeRequest, messages).toString
+
+            application.stop()
+          }
+
+          "lead trustee organisation" in {
+            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678").success.value
+              .set(TrustHaveAUTRPage, true).success.value
+
+            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+
+            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+
+            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+
+            val result = route(application, request).value
+
+            val view = application.injector.instanceOf[existingTrust.IndividualView]
+
+            status(result) mustEqual OK
+
+            contentAsString(result) mustEqual
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
+
+            application.stop()
+          }
         }
 
       }

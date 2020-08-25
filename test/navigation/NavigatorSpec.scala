@@ -29,12 +29,12 @@ class NavigatorSpec extends RegistrationSpecBase
   with Generators
   with TrustDetailsRoutes
   with MatchingRoutes
-  with TrusteeRoutes
   with AgentRoutes
   with AssetRoutes
   with DeceasedSettlorRoutes
   with PropertyOrLandRoutes
   with LivingSettlorRoutes
+  with SuitabilityRoutes
 {
 
   implicit val navigator : Navigator = injector.instanceOf[Navigator]
@@ -52,8 +52,6 @@ class NavigatorSpec extends RegistrationSpecBase
 
       behave like trustDetailsRoutes
 
-      behave like trusteeRoutes
-
       behave like agentRoutes
 
       behave like assetRoutes
@@ -65,6 +63,8 @@ class NavigatorSpec extends RegistrationSpecBase
       behave like livingSettlorRoutes
 
       behave like livingBusinessSettlorRoutes
+
+      behave like suitabilityRoutes
 
     }
 

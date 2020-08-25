@@ -19,7 +19,7 @@ package pages.register.settlors.living_settlor.trust_type
 import models.core.UserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.settlors.Settlors
 
 import scala.util.Try
 

@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 
 import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
+import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
 import models.registration.pages.Status.{Completed, InProgress}
@@ -259,14 +260,32 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
                 ),
                 Some("sectionKey2"))
             )
-          )
+          ),
+          trustees = Some(
+            List(
+              RegistrationSubmission.AnswerSection(
+                Some("trusteeHeadingKey1"),
+                List(
+                  RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
+                ),
+                Some("trusteeSectionKey1")),
+              RegistrationSubmission.AnswerSection(
+                Some("trusteeHeadingKey2"),
+                List(
+                  RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
+                ),
+                Some("trusteeSectionKey2"))
+            )
+          ),
+          protectors = None,
+          otherIndividuals = None
         )
 
         when(mockConnector.getAnswerSections(any())(any(), any())).thenReturn(Future.successful(answerSections))
 
         val result = Await.result(repository.getAnswerSections(draftId), Duration.Inf)
 
-        val expected = Some(List(
+        val expectedBeneficiaries = Some(List(
           AnswerSection(
             Some("headingKey1"),
             List(
@@ -283,9 +302,84 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
           )
         ))
 
-        result mustBe RegistrationAnswerSections(beneficiaries = expected)
+        val expectedTrustees = Some(List(
+          AnswerSection(
+            Some("trusteeHeadingKey1"),
+            List(
+              AnswerRow("label1", HtmlFormat.raw("answer1"), None, "labelArg1", canEdit = false)
+            ),
+            Some("trusteeSectionKey1")
+          ),
+          AnswerSection(
+            Some("trusteeHeadingKey2"),
+            List(
+              AnswerRow("label2", HtmlFormat.raw("answer2"), None, "labelArg2", canEdit = false)
+            ),
+            Some("trusteeSectionKey2")
+          )
+        ))
+
+        result mustBe RegistrationAnswerSections(
+          beneficiaries = expectedBeneficiaries,
+          trustees = expectedTrustees
+        )
         verify(mockConnector).getAnswerSections(draftId)(hc, executionContext)
       }
     }
+
+    "reading lead trustee" must {
+
+      "read existing lead trustee from connector" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val leadTrusteeOrg = LeadTrusteeType(
+          None,
+          Some(LeadTrusteeOrgType(
+            "Lead Org",
+            "07911234567",
+            None,
+            IdentificationOrgType(None, Some(AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")))))
+        )
+
+        when(mockConnector.getLeadTrustee(any())(any(), any())).thenReturn(Future.successful(leadTrusteeOrg))
+
+        val result = Await.result(repository.getLeadTrustee(draftId), Duration.Inf)
+
+        result mustBe leadTrusteeOrg
+
+        verify(mockConnector).getLeadTrustee(draftId)(hc, executionContext)
+      }
+    }
+    "reading correspondence address" must {
+
+      "read existing correspondence address from connector" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+
+        when(mockConnector.getCorrespondenceAddress(any())(any(), any())).thenReturn(Future.successful(correspondenceAddress))
+
+        val result = Await.result(repository.getCorrespondenceAddress(draftId), Duration.Inf)
+
+        result mustBe correspondenceAddress
+
+        verify(mockConnector).getCorrespondenceAddress(draftId)(hc, executionContext)
+      }
+    }
+
   }
 }
