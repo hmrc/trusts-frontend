@@ -41,6 +41,8 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 
 class RegistrationRepositorySpec extends PlaySpec with MustMatchers with MockitoSugar {
 
+  private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
+
   private implicit val executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
   private def createRepository(mockConnector: SubmissionDraftConnector) = {
@@ -57,7 +59,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val draftId = "DraftId"
 
-        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId")
+        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -80,7 +82,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val draftId = "DraftId"
 
-        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId")
+        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -119,7 +121,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
         val draftId = "DraftId"
 
-        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId")
+        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
 
         val mockConnector = mock[SubmissionDraftConnector]
 
