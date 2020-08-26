@@ -26,7 +26,7 @@ import pages.entitystatus.DeceasedSettlorStatus
 import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
 import pages.register.trust_details.{AgentOtherThanBarristerPage, SettlorsBasedInTheUKPage, _}
 import play.api.Logger
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 
 class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 

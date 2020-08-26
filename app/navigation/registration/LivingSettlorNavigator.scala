@@ -32,6 +32,7 @@ import pages.register.settlors.living_settlor.business._
 import pages.register.settlors.living_settlor.trust_type._
 import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.mvc.Call
+import sections.settlors.LivingSettlors
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
@@ -104,7 +105,7 @@ class LivingSettlorNavigator @Inject()(config: FrontendAppConfig) extends Naviga
   private def addSettlorRoute(draftId: String)(answers: UserAnswers) = {
 
     def routeToSettlorIndex = {
-      val settlors = answers.get(sections.LivingSettlors).getOrElse(List.empty)
+      val settlors = answers.get(LivingSettlors).getOrElse(List.empty)
       settlors match {
         case Nil =>
           routes.SettlorIndividualOrBusinessController.onPageLoad(NormalMode, 0, draftId)

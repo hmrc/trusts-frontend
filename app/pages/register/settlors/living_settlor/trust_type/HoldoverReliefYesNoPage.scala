@@ -18,7 +18,7 @@ package pages.register.settlors.living_settlor.trust_type
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.settlors.Settlors
 
 case object HoldoverReliefYesNoPage extends QuestionPage[Boolean] {
 

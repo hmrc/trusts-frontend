@@ -16,8 +16,6 @@
 
 package controllers.register
 
-import java.time.LocalDate
-
 import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register._
@@ -25,9 +23,7 @@ import javax.inject.Inject
 import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
-import models.registration.pages.Status.Completed
 import navigation.registration.TaskListNavigator
-import pages.register.trust_details.WhenTrustSetupPage
 import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -35,7 +31,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import uk.gov.hmrc.time.TaxYear
 import utils.{DateFormatter, TaxLiabilityHelper}
 import viewmodels.Task
 import views.html.register.TaskListView
@@ -79,20 +74,21 @@ class TaskListController @Inject()(
 
         for {
           _  <- registrationsRepository.set(updatedAnswers)
-          taskList <- registrationProgress.items(updatedAnswers, draftId)
+          sections <- registrationProgress.items(updatedAnswers, draftId)
+          additionalSections <- registrationProgress.additionalItems(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(updatedAnswers)
         } yield {
 
-          val sections = if (TaxLiabilityHelper.showTaxLiability(request.userAnswers)) {
-            taskList
+          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(request.userAnswers)) {
+            sections
           } else {
             val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)
-            taskList.filterNot(removeTaxLiabilityFromTaskList)
+            sections.filterNot(removeTaxLiabilityFromTaskList)
           }
 
           Logger.debug(s"[TaskList][sections] $sections")
 
-          Ok(view(draftId ,savedUntil, sections, isTaskListComplete, affinityGroup))        }
+          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get

@@ -19,7 +19,7 @@ package pages.register.settlors.deceased_settlor
 import models.core.pages.FullName
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.DeceasedSettlor
+import sections.settlors.DeceasedSettlor
 
 case object SettlorsNamePage extends QuestionPage[FullName] {
 

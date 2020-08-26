@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.settlors.Settlors
 
 case object EfrbsStartDatePage extends QuestionPage[LocalDate] {
 

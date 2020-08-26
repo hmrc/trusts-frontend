@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package pages.register.protectors.business
+package sections.settlors
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.Protectors
+import viewmodels.addAnother.SettlorViewModel
 
-case class BusinessProtectorUtrPage(index: Int) extends QuestionPage[String] {
+case object DeceasedSettlor extends QuestionPage[SettlorViewModel] {
 
-  override def path: JsPath = Protectors.path \ index \ toString
+  override def path: JsPath = Settlors.path \ toString
 
-  override def toString: String = "utr"
+  override def toString: String = "deceased"
+
 }

@@ -22,14 +22,18 @@ import play.twirl.api.HtmlFormat
 
 case class RegistrationAnswerSections(
                                        beneficiaries: Option[List[AnswerSection]] = None,
-                                       trustees: Option[List[AnswerSection]] = None
+                                       trustees: Option[List[AnswerSection]] = None,
+                                       protectors: Option[List[AnswerSection]] = None,
+                                       otherIndividuals: Option[List[AnswerSection]] = None
                                      )
 
 object RegistrationAnswerSections {
   def fromAllAnswerSections(sections: AllAnswerSections): RegistrationAnswerSections = {
     RegistrationAnswerSections(
       beneficiaries = convert(sections.beneficiaries),
-      trustees = convert(sections.trustees)
+      trustees = convert(sections.trustees),
+      protectors = convert(sections.protectors),
+      otherIndividuals = convert(sections.otherIndividuals)
     )
   }
 

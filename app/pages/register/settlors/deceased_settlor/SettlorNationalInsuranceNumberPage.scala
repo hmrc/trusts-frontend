@@ -18,7 +18,7 @@ package pages.register.settlors.deceased_settlor
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.DeceasedSettlor
+import sections.settlors.DeceasedSettlor
 
 case object SettlorNationalInsuranceNumberPage extends QuestionPage[String] {
 

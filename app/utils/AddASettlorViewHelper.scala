@@ -16,15 +16,15 @@
 
 package utils
 
-import controllers.register.settlors.routes
-import controllers.register.settlors.living_settlor.{routes => individualRoutes}
-import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
 import controllers.register.settlors.deceased_settlor.{routes => deceasedRoutes}
+import controllers.register.settlors.living_settlor.business.{routes => businessRoutes}
+import controllers.register.settlors.living_settlor.{routes => individualRoutes}
+import controllers.register.settlors.routes
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.pages.Status._
 import play.api.i18n.Messages
-import sections.{DeceasedSettlor, LivingSettlors}
+import sections.settlors.{DeceasedSettlor, LivingSettlors}
 import viewmodels.addAnother.{SettlorViewModel, _}
 import viewmodels.{AddRow, AddToRows}
 

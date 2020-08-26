@@ -17,13 +17,12 @@
 package sections
 
 import pages.QuestionPage
-import play.api.libs.json.JsPath
-import viewmodels.addAnother.SettlorViewModel
+import play.api.libs.json.{JsArray, JsPath}
 
-case object DeceasedSettlor extends QuestionPage[SettlorViewModel]{
+case object OtherIndividuals extends QuestionPage[JsArray]{
 
-  override def path: JsPath = Settlors.path \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "deceased"
+  override def toString: String = "otherIndividuals"
 
 }

@@ -134,13 +134,9 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       }
     }
 
-    "for beneficiaries task" when {
-
-      "it always" must {
-
-        "go to BeneficiaryInfoPage" in {
-          navigator.beneficiariesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)
-        }
+    "for beneficiaries task" must {
+      "go to BeneficiaryInfoPage" in {
+        navigator.beneficiariesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)
       }
     }
 
@@ -167,22 +163,28 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     }
 
-    "for trustee task" when {
-
-      "it always" must {
-
-        "go to Trustee service start" in {
-          navigator.trusteesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.trusteesFrontendUrl(fakeDraftId)
-        }
+    "for trustee task" must {
+      "go to Trustee service start" in {
+        navigator.trusteesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.trusteesFrontendUrl(fakeDraftId)
       }
     }
 
     "for task liability task" must {
-
       "go to TaxLiabilityPage" in {
         navigator.taxLiabilityJourney(fakeDraftId) mustBe frontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)
       }
+    }
 
+    "for protectors task" must {
+      "go to Protector service start" in {
+        navigator.protectorsJourneyUrl(fakeDraftId) mustBe frontendAppConfig.protectorsFrontendUrl(fakeDraftId)
+      }
+    }
+
+    "for other individuals task" must {
+      "go to Other Individual service start" in {
+        navigator.otherIndividualsJourneyUrl(fakeDraftId) mustBe frontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)
+      }
     }
   }
 }

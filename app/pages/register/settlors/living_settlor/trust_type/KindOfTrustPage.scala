@@ -22,7 +22,7 @@ import models.registration.pages.KindOfTrust.{Employees, Intervivos}
 import pages.QuestionPage
 import pages.register.settlors.living_settlor.business.{SettlorBusinessTimeYesNoPage, SettlorBusinessTypePage}
 import play.api.libs.json.JsPath
-import sections.Settlors
+import sections.settlors.Settlors
 
 import scala.util.Try
 

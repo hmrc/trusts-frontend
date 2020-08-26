@@ -17,7 +17,7 @@
 package queries
 
 import play.api.libs.json.JsPath
-import sections.LivingSettlors
+import sections.settlors.LivingSettlors
 
 final case class  RemoveSettlorQuery(index : Int) extends Settable[Boolean] {
 

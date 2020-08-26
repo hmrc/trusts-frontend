@@ -19,7 +19,6 @@ package utils.print.register
 import javax.inject.Inject
 import models.core.UserAnswers
 import play.api.i18n.Messages
-import repositories.RegistrationsRepository
 import services.DraftRegistrationService
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.CheckYourAnswersHelper
@@ -30,8 +29,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PrintUserAnswersHelper @Inject()(
                                         countryOptions: CountryOptions,
-                                        draftRegistrationService: DraftRegistrationService)
-                                      (implicit ec: ExecutionContext){
+                                        draftRegistrationService: DraftRegistrationService
+                                      )(implicit ec: ExecutionContext){
 
   def summary(draftId: String, userAnswers : UserAnswers)
              (implicit messages: Messages, hc: HeaderCarrier) : Future[List[AnswerSection]] = {
@@ -46,7 +45,9 @@ class PrintUserAnswersHelper @Inject()(
         helper.deceasedSettlor,
         helper.livingSettlors,
         registrationAnswerSections.trustees,
-        registrationAnswerSections.beneficiaries
+        registrationAnswerSections.beneficiaries,
+        registrationAnswerSections.protectors,
+        registrationAnswerSections.otherIndividuals
       ).flatten.flatten
 
       List(
