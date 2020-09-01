@@ -94,7 +94,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val doc = asDocument(view)
 
-    behave like normalPage(view, "confirmationAnswerPage")
+    behave like normalPage(view, None, "confirmationAnswerPage")
 
     "assert header content" in {
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))

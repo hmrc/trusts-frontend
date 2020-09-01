@@ -38,11 +38,11 @@ class AgentTelephoneNumberViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, agencyName, "hint")
+    behave like dynamicTitlePage(applyView(form), None, messageKeyPrefix, agencyName, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, agencyName, Some(hintKey))
+    behave like stringPageWithDynamicTitle(form, applyView, None, messageKeyPrefix, agencyName, Some(hintKey))
 
     behave like pageWithASubmitButton(applyView(form))
   }

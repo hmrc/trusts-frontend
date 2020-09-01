@@ -27,7 +27,8 @@
 @(form: Form[_], countryOptions:Seq[InputOption], mode: Mode, draftId: String, index: Int, name: FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorIndividualPassport.title")}"
+    title = s"${errorPrefix(form)}${messages("settlorIndividualPassport.title")}",
+    section = Some(messages("taskList.settlors.label"))
     ) {
 
     @formHelper(action = SettlorIndividualPassportController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

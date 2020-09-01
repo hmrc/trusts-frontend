@@ -38,11 +38,11 @@ class SharePortfolioOnStockExchangeViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, Some(messageKeyPrefix))
+    behave like yesNoPage(form, applyView, Some("taskList.assets.label"), messageKeyPrefix, Some(messageKeyPrefix))
 
     behave like pageWithASubmitButton(applyView(form))
 

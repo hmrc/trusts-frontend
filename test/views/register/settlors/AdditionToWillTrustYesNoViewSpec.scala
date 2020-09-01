@@ -36,11 +36,11 @@ class AdditionToWillTrustYesNoViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix)
+    behave like yesNoPage(form, applyView, Some("taskList.settlors.label"), messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
 

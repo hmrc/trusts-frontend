@@ -25,7 +25,7 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("postcodeForTheTrust.title")}"
+    title = s"${errorPrefix(form)}${messages("postcodeForTheTrust.title")}"
     ) {
 
     @formHelper(action = PostcodeForTheTrustController.onSubmit(mode, draftId), 'autoComplete -> "off") {

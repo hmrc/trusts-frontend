@@ -38,11 +38,11 @@ class TaxLiabilityInCurrentTaxYearYesNoViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, Seq(currentTaxYearStartAndEnd._1, currentTaxYearStartAndEnd._2))
+    behave like dynamicTitlePage(applyView(form), None, messageKeyPrefix, Seq(currentTaxYearStartAndEnd._1, currentTaxYearStartAndEnd._2))
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(currentTaxYearStartAndEnd._1, currentTaxYearStartAndEnd._2))
+    behave like yesNoPage(form, applyView, None, messageKeyPrefix, None, Seq(currentTaxYearStartAndEnd._1, currentTaxYearStartAndEnd._2))
 
     behave like pageWithASubmitButton(applyView(form))
   }

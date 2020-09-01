@@ -40,12 +40,13 @@ class SettlorBusinessAddressUKViewSpec extends UkAddressViewBehaviours {
       view.apply(form, NormalMode, fakeDraftId, index, name)(fakeRequest, messages)
 
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, name)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like ukAddressPage(
       applyView,
+      Some("taskList.settlors.label"),
       Some(messageKeyPrefix),
       name.toString
     )

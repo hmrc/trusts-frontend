@@ -41,11 +41,11 @@ class RemoveAssetYesNoViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, fakeDraftId, index, assetLabel)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, assetLabel)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix, assetLabel)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(assetLabel))
+    behave like yesNoPage(form, applyView, Some("taskList.assets.label"), messageKeyPrefix, None, Seq(assetLabel))
 
     behave like pageWithASubmitButton(applyView(form))
   }

@@ -39,9 +39,10 @@ class SettlorBusinessUtrViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index, settlorBusinessBusinessName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, settlorBusinessBusinessName, "hint")
+    behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, settlorBusinessBusinessName, "hint")
 
     behave like stringPageWithDynamicTitle(form, applyView,
+      Some("taskList.settlors.label"),
       messageKeyPrefix,
       settlorBusinessBusinessName,
       Some(hintKey)

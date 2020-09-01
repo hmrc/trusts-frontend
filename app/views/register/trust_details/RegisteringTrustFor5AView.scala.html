@@ -25,7 +25,8 @@
 @(form: Form[_], mode: Mode, draftId:String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("registeringTrustFor5A.title")}"
+    title = s"${errorPrefix(form)}${messages("registeringTrustFor5A.title")}",
+    section = Some(messages("taskList.trustDetails.label"))
     ) {
 
     @formHelper(action = RegisteringTrustFor5AController.onSubmit(mode, draftId), 'autoComplete -> "off") {

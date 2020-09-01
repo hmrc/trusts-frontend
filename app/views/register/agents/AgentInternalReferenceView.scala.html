@@ -27,7 +27,7 @@
 @optionalHtmlContent = {<p>@messages("agentInternalReference.paragraph1")</p>}
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("agentInternalReference.title")}"
+    title = s"${errorPrefix(form)}${messages("agentInternalReference.title")}"
     ) {
 
     @formHelper(action = AgentInternalReferenceController.onSubmit(mode, draftId), 'autoComplete -> "off") {

@@ -39,12 +39,13 @@ class SettlorsUKAddressViewSpec extends  UkAddressViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like ukAddressPage(
       applyView,
+      Some("taskList.settlors.label"),
       Some(messageKeyPrefix),
       name.toString
     )

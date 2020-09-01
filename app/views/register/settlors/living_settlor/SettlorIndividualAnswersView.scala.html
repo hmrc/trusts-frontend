@@ -24,7 +24,8 @@
 @(onSubmit: Call, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("settlorIndividualAnswers.title")
+    title = s"${messages("settlorIndividualAnswers.title")}",
+    section = Some(messages("taskList.settlors.label"))
 ) {
 
     @components.back_link()

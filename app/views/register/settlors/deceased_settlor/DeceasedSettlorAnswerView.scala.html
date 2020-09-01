@@ -25,7 +25,8 @@ formHelper: FormWithCSRF
 @(draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = messages("deceasedSettlorAnswer.title")
+title = s"${messages("deceasedSettlorAnswer.title")}",
+    section = Some(messages("taskList.settlors.label"))
 ) {
 
 @components.back_link()

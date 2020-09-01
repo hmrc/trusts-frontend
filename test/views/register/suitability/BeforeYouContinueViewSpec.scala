@@ -31,6 +31,7 @@ class BeforeYouContinueViewSpec extends ViewBehaviours {
 
     behave like normalPage(
       applyView,
+      None,
       "suitability.beforeYouContinue",
       "p1", "bullet1", "bullet2", "p2", "link1", "link2"
     )

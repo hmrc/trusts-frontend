@@ -72,7 +72,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             isTaskListComplete,
             Organisation)(fakeRequest, messages)
 
-          behave like normalPage(applyView, "taskList")
+          behave like normalPage(applyView, None, "taskList")
 
           behave like pageWithBackLink(applyView)
 

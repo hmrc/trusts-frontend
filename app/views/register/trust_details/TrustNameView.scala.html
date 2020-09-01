@@ -26,7 +26,8 @@
 @(form: Form[_], mode: Mode, draftId: String, hintTextShown: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trustName.title")}"
+    title = s"${errorPrefix(form)}${messages("trustName.title")}",
+    section = Some(messages("taskList.trustDetails.label"))
     ) {
 
     @formHelper(action = TrustNameController.onSubmit(mode, draftId), 'autoComplete -> "on") {

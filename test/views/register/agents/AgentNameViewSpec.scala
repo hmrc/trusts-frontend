@@ -36,11 +36,11 @@ class AgentNameViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), None, messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix)
+    behave like stringPage(form, applyView, None, messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
   }

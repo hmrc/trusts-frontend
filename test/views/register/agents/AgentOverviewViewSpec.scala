@@ -30,7 +30,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now.toString)))(fakeRequest, messages)
 
-    behave like normalPage(applyView, "agentOverview",
+    behave like normalPage(applyView, None, "agentOverview",
       "paragraph1",
       "paragraph2",
       "paragraph3",

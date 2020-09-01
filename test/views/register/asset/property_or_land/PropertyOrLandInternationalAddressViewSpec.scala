@@ -48,6 +48,7 @@ class PropertyOrLandInternationalAddressViewSpec extends InternationalAddressVie
 
     behave like internationalAddress(
       applyView,
+      Some("taskList.assets.label"),
       None,
       routes.PropertyOrLandInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url
     )

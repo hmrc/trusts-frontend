@@ -53,7 +53,7 @@ class AddAssetsViewSpec extends OptionsViewBehaviours with TabularDataViewBehavi
   "AddAssetsView" when {
 
     "there are no assets" must {
-      behave like normalPage(applyView(form), messageKeyPrefix)
+      behave like normalPage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix)
 
       behave like pageWithNoTabularData(applyView(form))
 
@@ -66,7 +66,7 @@ class AddAssetsViewSpec extends OptionsViewBehaviours with TabularDataViewBehavi
 
       val viewWithData = applyView(form, inProgressAssets, Nil, 1)
 
-      behave like dynamicTitlePage(viewWithData, "addAssets.singular", "1")
+      behave like dynamicTitlePage(viewWithData, Some("taskList.assets.label"), "addAssets.singular", "1")
 
       behave like pageWithBackLink(viewWithData)
 
@@ -80,7 +80,7 @@ class AddAssetsViewSpec extends OptionsViewBehaviours with TabularDataViewBehavi
 
       val viewWithData = applyView(form, Nil, completeAssets, 2)
 
-      behave like dynamicTitlePage(viewWithData, "addAssets.count", "2")
+      behave like dynamicTitlePage(viewWithData, Some("taskList.assets.label"), "addAssets.count", "2")
 
       behave like pageWithBackLink(viewWithData)
 

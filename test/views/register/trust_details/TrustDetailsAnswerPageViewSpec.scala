@@ -27,7 +27,7 @@ class TrustDetailsAnswerPageViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(fakeDraftId, Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "trustDetailsAnswerPage")
+    behave like normalPage(applyView, Some("taskList.trustDetails.label"), "trustDetailsAnswerPage")
 
     behave like pageWithBackLink(applyView)
   }

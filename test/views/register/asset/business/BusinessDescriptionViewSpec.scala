@@ -35,11 +35,11 @@ class BusinessDescriptionViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, 0, businessName)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, businessName)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix, businessName)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, businessName)
+    behave like stringPageWithDynamicTitle(form, applyView, Some("taskList.assets.label"), messageKeyPrefix, businessName)
 
     behave like pageWithASubmitButton(applyView(form))
   }

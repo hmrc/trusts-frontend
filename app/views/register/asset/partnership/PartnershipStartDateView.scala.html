@@ -24,7 +24,8 @@
 @(form: Form[_], mode: Mode, index: Int, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("partnershipStartDate.title")}"
+    title = s"${errorPrefix(form)}${messages("partnershipStartDate.title")}",
+    section = Some(messages("taskList.assets.label"))
 ) {
 
     @formHelper(action = PartnershipStartDateController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

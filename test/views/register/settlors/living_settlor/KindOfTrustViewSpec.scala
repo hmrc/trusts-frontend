@@ -37,7 +37,7 @@ class KindOfTrustViewSpec extends ViewBehaviours {
 
   "KindOfTrustView" must {
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 

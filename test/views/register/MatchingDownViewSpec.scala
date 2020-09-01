@@ -34,6 +34,7 @@ class MatchingDownViewSpec extends ViewBehaviours {
 
       behave like normalPage(
         applyView,
+        None,
         "matchingDown",
         "p1", "p2.beforeLink", "p2.link", "p2.afterLink", "p3", "p3.link"
       )
@@ -47,6 +48,7 @@ class MatchingDownViewSpec extends ViewBehaviours {
 
       behave like normalPage(
         applyView,
+        None,
         "matchingDown",
         "p1", "p2.beforeLink", "p2.link", "p2.afterLink"
       )

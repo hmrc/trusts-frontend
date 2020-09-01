@@ -19,6 +19,7 @@ package views.behaviours
 import models.core.pages.InternationalAddress
 import play.api.data.{Form, FormError}
 import play.twirl.api.HtmlFormat
+import views.ViewUtils
 
 
 trait InternationalAddressViewBehaviours extends ViewBehaviours {
@@ -31,6 +32,7 @@ trait InternationalAddressViewBehaviours extends ViewBehaviours {
   val form: Form[InternationalAddress]
 
   def internationalAddress(createView: Form[InternationalAddress] => HtmlFormat.Appendable,
+                           sectionKey: Option[String],
                            titleMessagePrefix: Option[String],
                            expectedFormAction: String,
                            args: String*) = {
@@ -70,7 +72,11 @@ trait InternationalAddressViewBehaviours extends ViewBehaviours {
           assertEqualsValue(
             doc,
             "title",
-            s"""${messages("error.browser.title.prefix")} ${messages(s"$titlePrefix.title", args: _*)}""")
+            ViewUtils.breadcrumbTitle(
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$titlePrefix.title", args: _*)}""",
+              sectionKey.map(messages(_))
+            )
+          )
         }
       }
 

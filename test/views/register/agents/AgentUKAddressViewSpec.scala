@@ -39,12 +39,13 @@ class AgentUKAddressViewSpec extends UkAddressViewBehaviours {
       view.apply(form, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages)
 
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, agencyName)
+    behave like dynamicTitlePage(applyView(form), None, messageKeyPrefix, agencyName)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like ukAddressPage(
       applyView,
+      None,
       Some(messageKeyPrefix),
       agencyName
     )

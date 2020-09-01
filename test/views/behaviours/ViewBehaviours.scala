@@ -22,6 +22,7 @@ import views.ViewSpecBase
 trait ViewBehaviours extends ViewSpecBase {
 
   def normalPage(view: HtmlFormat.Appendable,
+                 sectionKey: Option[String],
                  messageKeyPrefix: String,
                  expectedGuidanceKeys: String*): Unit = {
 
@@ -40,7 +41,7 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct browser title" in {
 
           val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title")
+          assertEqualsMessage(doc, "title", sectionKey, s"$messageKeyPrefix.title")
         }
 
         "display the correct page title" in {
@@ -66,6 +67,7 @@ trait ViewBehaviours extends ViewSpecBase {
   }
 
   def dynamicTitlePage(view: HtmlFormat.Appendable,
+                       sectionKey: Option[String],
                        messageKeyPrefix: String,
                        messageKeyParam: String,
                        expectedGuidanceKeys: String*): Unit = {
@@ -85,7 +87,7 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct browser title" in {
 
           val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", messageKeyParam)
+          assertEqualsMessage(doc, "title", sectionKey, s"$messageKeyPrefix.title", messageKeyParam)
         }
 
         "display the correct page title" in {
@@ -111,6 +113,7 @@ trait ViewBehaviours extends ViewSpecBase {
   }
 
   def dynamicTitlePage(view: HtmlFormat.Appendable,
+                       sectionKey: Option[String],
                        messageKeyPrefix: String,
                        args: Seq[String],
                        expectedGuidanceKeys: String*): Unit = {
@@ -130,7 +133,7 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct browser title" in {
 
           val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", args: _*)
+          assertEqualsMessage(doc, "title", sectionKey, s"$messageKeyPrefix.title", args: _*)
         }
 
         "display the correct page title" in {
@@ -159,6 +162,7 @@ trait ViewBehaviours extends ViewSpecBase {
                        messageKeyPrefix: String,
                        refNumber: String,
                        leadTrusteeName: String,
+                       sectionKey: Option[String],
                        expectedGuidanceKeys: String*): Unit = {
 
     "behave like a confirmation page" when {
@@ -176,7 +180,7 @@ trait ViewBehaviours extends ViewSpecBase {
         "display the correct browser title" in {
 
           val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", "confirmation.title")
+          assertEqualsMessage(doc, "title", sectionKey, "confirmation.title")
         }
 
         "display the correct page title" in {

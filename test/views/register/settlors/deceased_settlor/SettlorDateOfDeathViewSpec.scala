@@ -44,11 +44,12 @@ class SettlorDateOfDeathViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString, "hint")
+    behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, name.toString, "hint")
 
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithDateFields(form, applyViewF,
+      Some("taskList.settlors.label"),
       messageKeyPrefix,
       "value",
       name.toString

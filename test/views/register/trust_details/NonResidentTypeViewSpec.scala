@@ -37,7 +37,7 @@ class NonResidentTypeViewSpec extends ViewBehaviours {
 
   "NonResidentTypeView" must {
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.trustDetails.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 

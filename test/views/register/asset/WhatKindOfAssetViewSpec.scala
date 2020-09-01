@@ -44,12 +44,12 @@ class WhatKindOfAssetViewSpec extends ViewBehaviours {
 
     "when no assets have been added" must {
 
-      behave like normalPage(applyView(form, 0), messageKeyPrefixFirst)
+      behave like normalPage(applyView(form, 0), Some("taskList.assets.label"), messageKeyPrefixFirst)
     }
 
     "when an asset has been added" must {
 
-      behave like normalPage(applyView(form, 1), messageKeyPrefixNext)
+      behave like normalPage(applyView(form, 1), Some("taskList.assets.label"), messageKeyPrefixNext)
     }
 
 

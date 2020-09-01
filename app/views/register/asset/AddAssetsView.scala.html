@@ -28,7 +28,8 @@
 @(form: Form[_], mode: Mode, draftId: String, inProgressAssets: Seq[AddRow] ,completeAssets: Seq[AddRow], heading : String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} $heading"
+    title = s"${errorPrefix(form)}$heading",
+    section = Some(messages("taskList.assets.label"))
     ) {
 
     @formHelper(action = AddAssetsController.submitAnother(draftId), 'autoComplete -> "off") {

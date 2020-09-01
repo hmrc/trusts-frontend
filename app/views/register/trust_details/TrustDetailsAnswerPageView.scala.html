@@ -25,7 +25,8 @@
 @(draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("trustDetailsAnswerPage.title")
+    title = s"${messages("trustDetailsAnswerPage.title")}",
+    section = Some(messages("taskList.trustDetails.label"))
     ) {
 
     @components.back_link()

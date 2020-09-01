@@ -41,9 +41,10 @@ class WhenTrustSetupViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like normalPage(applyView(form), messageKeyPrefix,s"hint")
+    behave like normalPage(applyView(form), Some("taskList.trustDetails.label"), messageKeyPrefix,s"hint")
 
     behave like pageWithDateFields(form, applyViewF,
+      Some("taskList.trustDetails.label"),
       messageKeyPrefix,
       "value"
     )

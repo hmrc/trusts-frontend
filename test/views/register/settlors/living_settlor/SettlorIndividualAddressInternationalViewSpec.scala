@@ -44,12 +44,13 @@ class SettlorIndividualAddressInternationalViewSpec extends InternationalAddress
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, countryOptions, NormalMode, index, fakeDraftId, name)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like internationalAddress(
       applyView,
+      Some("taskList.settlors.label"),
       Some(messageKeyPrefix),
       routes.SettlorIndividualAddressInternationalController.onSubmit(NormalMode, index, fakeDraftId).url,
       name.toString

@@ -27,7 +27,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(isAgent = false)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "UTRSentByPost", "paragraph1", "paragraph2")
+    behave like normalPage(applyView, None, "UTRSentByPost", "paragraph1", "paragraph2")
 
     behave like pageWithBackLink(applyView)
   }

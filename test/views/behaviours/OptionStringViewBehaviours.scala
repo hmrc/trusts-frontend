@@ -18,6 +18,7 @@ package views.behaviours
 
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import views.ViewUtils
 
 trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] {
 
@@ -26,6 +27,7 @@ trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] 
 
   def optionalStringPage(form: Form[Option[String]],
                         createView: Form[Option[String]] => HtmlFormat.Appendable,
+                        sectionKey: Option[String],
                         messageKeyPrefix: String,
                         expectedHintKey: Option[String] = None) = {
 
@@ -80,7 +82,7 @@ trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] 
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""")
+          assertEqualsValue(doc, "title", ViewUtils.breadcrumbTitle(s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""", sectionKey.map(messages(_))))
         }
       }
     }

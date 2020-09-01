@@ -118,7 +118,7 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
 
   "ConfirmationAnswerPage view" must {
 
-    behave like normalPage(view, "confirmationAnswerPage")
+    behave like normalPage(view, None, "confirmationAnswerPage")
 
     "assert header content" in {
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
