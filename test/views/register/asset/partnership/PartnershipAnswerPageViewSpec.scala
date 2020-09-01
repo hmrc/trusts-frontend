@@ -28,7 +28,7 @@ class PartnershipAnswerPageViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "partnershipAnswers")
+    behave like normalPage(applyView, Some("taskList.assets.label"), "partnershipAnswers")
 
     behave like pageWithBackLink(applyView)
   }

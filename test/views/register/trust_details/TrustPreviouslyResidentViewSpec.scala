@@ -40,11 +40,11 @@ class TrustPreviouslyResidentViewSpec extends SelectCountryViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, countryOptions, NormalMode, fakeDraftId)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.trustDetails.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like selectCountryPage(form, applyView, messageKeyPrefix)
+    behave like selectCountryPage(form, applyView, Some("taskList.trustDetails.label"), messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
   }

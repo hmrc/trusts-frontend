@@ -40,9 +40,10 @@ class PartnershipStartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix)
 
     behave like pageWithDateFields(form, applyViewF,
+      Some("taskList.assets.label"),
       messageKeyPrefix,
       "value"
     )

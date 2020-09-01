@@ -108,7 +108,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         sections =>
           val applyOrganisationView = view.apply(sections, isAgent = false, "")(fakeRequest, messages)
 
-          behave like normalPage(applyOrganisationView, "summaryAnswerPage", "paragraph1", "paragraph2")
+          behave like normalPage(applyOrganisationView, None, "summaryAnswerPage", "paragraph1", "paragraph2")
 
           asDocument(applyOrganisationView)
       }

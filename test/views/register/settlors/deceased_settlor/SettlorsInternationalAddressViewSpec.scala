@@ -48,6 +48,7 @@ class SettlorsInternationalAddressViewSpec extends InternationalAddressViewBehav
 
     behave like internationalAddress(
       applyView,
+      Some("taskList.settlors.label"),
       Some(messageKeyPrefix),
       routes.SettlorsInternationalAddressController.onSubmit(NormalMode, fakeDraftId).url
     )

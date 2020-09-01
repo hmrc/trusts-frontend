@@ -41,11 +41,12 @@ class EmployerFinancedRbsStartDateViewSpec extends QuestionViewBehaviours[LocalD
 
     val applyViewF = (form : Form[_]) => applyView(form)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithDateFields(form, applyViewF,
+      Some("taskList.settlors.label"),
       messageKeyPrefix,
       "value"
     )

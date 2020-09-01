@@ -38,13 +38,14 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), None, messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithTextFields(
       form,
       applyView,
+      None,
       messageKeyPrefix,
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )

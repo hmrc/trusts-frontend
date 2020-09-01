@@ -36,8 +36,8 @@ trait ViewSpecBase extends RegistrationSpecBase {
     assert(answer == answerText, "\n\nquestion: " + questionText + " answer: " + answerText + " was not rendered on the page.\n")
   }
 
-  def assertEqualsMessage(doc: Document, cssSelector: String, expectedMessageKey: String, args: Any*): Assertion =
-    assertEqualsValue(doc, cssSelector, messages(expectedMessageKey, args: _*))
+  def assertEqualsMessage(doc: Document, cssSelector: String, sectionKey: Option[String], expectedMessageKey: String, args: Any*): Assertion =
+    assertEqualsValue(doc, cssSelector, ViewUtils.breadcrumbTitle(messages(expectedMessageKey, args: _*), sectionKey.map(messages(_))))
 
   def assertEqualsValue(doc: Document, cssSelector: String, expectedValue: String): Assertion = {
     val elements = doc.select(cssSelector)

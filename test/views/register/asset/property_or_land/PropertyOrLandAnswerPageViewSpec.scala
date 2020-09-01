@@ -28,7 +28,7 @@ class PropertyOrLandAnswerPageViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "propertyOrLandAnswers")
+    behave like normalPage(applyView, Some("taskList.assets.label"), "propertyOrLandAnswers")
 
     behave like pageWithBackLink(applyView)
   }

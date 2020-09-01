@@ -18,6 +18,7 @@ package views.behaviours
 
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import views.ViewUtils
 
 trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
 
@@ -25,6 +26,7 @@ trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
 
   def intPage(form: Form[Int],
               createView: Form[Int] => HtmlFormat.Appendable,
+              sectionKey: Option[String],
               messageKeyPrefix: String): Unit = {
 
     "behave like a page with an integer value field" when {
@@ -72,7 +74,7 @@ trait IntViewBehaviours extends QuestionViewBehaviours[Int] {
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""")
+          assertEqualsValue(doc, "title", ViewUtils.breadcrumbTitle(s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""", sectionKey.map(messages(_))))
         }
       }
     }

@@ -29,7 +29,7 @@ class ShareAnswerPageViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "shareAnswers")
+    behave like normalPage(applyView, Some("taskList.assets.label"), "shareAnswers")
 
     behave like pageWithBackLink(applyView)
   }

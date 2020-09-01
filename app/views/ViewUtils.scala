@@ -22,6 +22,13 @@ import play.api.i18n.Messages
 object ViewUtils {
 
   def errorPrefix(form: Form[_])(implicit messages: Messages): String = {
-    if (form.hasErrors || form.hasGlobalErrors) messages("error.browser.title.prefix") else ""
+    if (form.hasErrors || form.hasGlobalErrors) s"${messages("error.browser.title.prefix")} " else ""
+  }
+
+  def breadcrumbTitle(title: String, section: Option[String])(implicit messages: Messages): String = {
+    section match {
+      case Some(sect) => s"$title - $sect - ${messages("site.service_name")} - GOV.UK"
+      case _ => s"$title - ${messages("site.service_name")} - GOV.UK"
+    }
   }
 }

@@ -25,7 +25,7 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("trustRegisteredWithUkAddress.title")}"
+    title = s"${errorPrefix(form)}${messages("trustRegisteredWithUkAddress.title")}"
 ) {
 
     @formHelper(action = TrustRegisteredWithUkAddressYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {

@@ -26,7 +26,8 @@
 @(form: Form[_], countryOptions: Seq[InputOption], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("countryGoverningTrust.title")}"
+    title = s"${errorPrefix(form)}${messages("countryGoverningTrust.title")}",
+    section = Some(messages("taskList.trustDetails.label"))
     ) {
 
     @formHelper(action = CountryGoverningTrustController.onSubmit(mode, draftId), 'autoComplete -> "off") {

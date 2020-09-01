@@ -26,7 +26,8 @@
 @(form: Form[_], countryOptions: Seq[InputOption], mode: Mode, draftId: String, index: Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("site.address.international.title")}"
+    title = s"${errorPrefix(form)}${messages("site.address.international.title")}",
+    section = Some(messages("taskList.assets.label"))
     ) {
 
     @formHelper(action = PropertyOrLandInternationalAddressController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

@@ -47,6 +47,7 @@ class BusinessInternationalAddressViewSpec extends InternationalAddressViewBehav
 
     behave like internationalAddress(
       applyView,
+      Some("taskList.assets.label"),
       Some(messageKeyPrefix),
       routes.BusinessInternationalAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
       buisnessName

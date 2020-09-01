@@ -25,7 +25,8 @@
 @(index: Int, draftId: String, answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("assets.other.checkDetails.title")
+    title = s"${messages("assets.other.checkDetails.title")}",
+    section = Some(messages("taskList.assets.label"))
 ) {
 
     @components.back_link()

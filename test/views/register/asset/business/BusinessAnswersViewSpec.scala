@@ -35,7 +35,7 @@ class BusinessAnswersViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, titlePrefix)
+    behave like normalPage(applyView, Some("taskList.assets.label"), titlePrefix)
 
     behave like pageWithBackLink(applyView)
   }

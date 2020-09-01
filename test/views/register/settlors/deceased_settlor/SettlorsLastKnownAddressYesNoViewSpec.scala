@@ -39,11 +39,11 @@ class SettlorsLastKnownAddressYesNoViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, name)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, name.toString)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, name.toString)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(name.toString))
+    behave like yesNoPage(form, applyView, Some("taskList.settlors.label"), messageKeyPrefix, None, Seq(name.toString))
 
     behave like pageWithASubmitButton(applyView(form))
   }

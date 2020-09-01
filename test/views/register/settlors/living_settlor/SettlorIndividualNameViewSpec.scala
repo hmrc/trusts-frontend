@@ -39,13 +39,14 @@ class SettlorIndividualNameViewSpec extends QuestionViewBehaviours[FullName] {
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithTextFields(
       form,
       applyView,
+      Some("taskList.settlors.label"),
       messageKeyPrefix,
       Seq(("firstName", None), ("middleName", None), ("lastName", None))
     )

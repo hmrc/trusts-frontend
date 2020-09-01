@@ -25,7 +25,8 @@
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorsBasedInTheUK.title")}"
+    title = s"${errorPrefix(form)}${messages("settlorsBasedInTheUK.title")}",
+    section = Some(messages("taskList.trustDetails.label"))
     ) {
 
     @formHelper(action = SettlorsBasedInTheUKController.onSubmit(mode, draftId), 'autoComplete -> "off") {

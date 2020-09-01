@@ -42,6 +42,6 @@ class SettlorBusinessUtrYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(settlorBusinessName))
+    behave like yesNoPage(form, applyView, Some("taskList.settlors.label"), messageKeyPrefix, None, Seq(settlorBusinessName))
   }
 }

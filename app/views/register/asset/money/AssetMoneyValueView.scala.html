@@ -27,7 +27,8 @@
 @optionalHtmlContent = {<p>@messages("assetMoneyValue.paragraph1")</p>}
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("assetMoneyValue.title")}"
+    title = s"${errorPrefix(form)}${messages("assetMoneyValue.title")}",
+    section = Some(messages("taskList.assets.label"))
     ) {
 
     @formHelper(action = AssetMoneyValueController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

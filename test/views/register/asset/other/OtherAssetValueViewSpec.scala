@@ -43,11 +43,11 @@ class OtherAssetValueViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index, description)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), prefix, description)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.assets.label"), prefix, description)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, prefix, description, Some(hintKey))
+    behave like stringPageWithDynamicTitle(form, applyView, Some("taskList.assets.label"), prefix, description, Some(hintKey))
 
     behave like pageWithASubmitButton(applyView(form))
 

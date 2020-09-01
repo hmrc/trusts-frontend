@@ -18,7 +18,7 @@ class $className$ViewSpec extends QuestionViewBehaviours[$className$] {
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), None, messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 

@@ -27,7 +27,7 @@ class AssetInterruptPageViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(fakeDraftId)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "assetInterruptPage", "title",
+    behave like normalPage(applyView, Some("taskList.assets.label"), "assetInterruptPage", "title",
       "subheading1",
       "paragraph1",
       "subheading2",

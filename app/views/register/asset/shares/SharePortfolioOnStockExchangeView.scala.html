@@ -25,7 +25,8 @@
 @(form: Form[_], mode: Mode, draftId: String, index : Int)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("sharePortfolioOnStockExchange.title")}"
+    title = s"${errorPrefix(form)}${messages("sharePortfolioOnStockExchange.title")}",
+    section = Some(messages("taskList.assets.label"))
     ) {
 
     @formHelper(action = SharePortfolioOnStockExchangeController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

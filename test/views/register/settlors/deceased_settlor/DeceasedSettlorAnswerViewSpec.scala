@@ -27,7 +27,7 @@ class DeceasedSettlorAnswerViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(fakeDraftId, Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "deceasedSettlorAnswer")
+    behave like normalPage(applyView, Some("taskList.settlors.label"), "deceasedSettlorAnswer")
 
     behave like pageWithBackLink(applyView)
   }

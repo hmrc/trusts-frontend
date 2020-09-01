@@ -27,7 +27,8 @@
 
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorIndividualOrBusiness.title")}"
+    title = s"${errorPrefix(form)}${messages("settlorIndividualOrBusiness.title")}",
+    section = Some(messages("taskList.settlors.label"))
     ) {
 
     @formHelper(action = SettlorIndividualOrBusinessController.onSubmit(mode, index, draftId), 'autoComplete -> "off") {

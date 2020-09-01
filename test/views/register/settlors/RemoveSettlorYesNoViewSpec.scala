@@ -45,11 +45,11 @@ class RemoveSettlorYesNoViewSpec extends YesNoViewBehaviours {
           settlorLabel
         )(fakeRequest, messages)
 
-      behave like dynamicTitlePage(applyView(form), messageKeyPrefix, settlorLabel)
+      behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, settlorLabel)
 
       behave like pageWithBackLink(applyView(form))
 
-      behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(settlorLabel))
+      behave like yesNoPage(form, applyView, Some("taskList.settlors.label"), messageKeyPrefix, None, Seq(settlorLabel))
 
       behave like pageWithASubmitButton(applyView(form))
     }
@@ -68,11 +68,11 @@ class RemoveSettlorYesNoViewSpec extends YesNoViewBehaviours {
           settlorLabel
         )(fakeRequest, messages)
 
-      behave like dynamicTitlePage(applyView(form), messageKeyPrefix, settlorLabel)
+      behave like dynamicTitlePage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix, settlorLabel)
 
       behave like pageWithBackLink(applyView(form))
 
-      behave like yesNoPage(form, applyView, messageKeyPrefix, None, Seq(settlorLabel))
+      behave like yesNoPage(form, applyView, Some("taskList.settlors.label"), messageKeyPrefix, None, Seq(settlorLabel))
 
       behave like pageWithASubmitButton(applyView(form))
     }

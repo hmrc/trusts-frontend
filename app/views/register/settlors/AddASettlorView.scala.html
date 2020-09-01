@@ -33,7 +33,8 @@
 )(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} $heading"
+    title = s"${errorPrefix(form)}$heading",
+    section = Some(messages("taskList.settlors.label"))
     ) {
 
     @formHelper(action = AddASettlorController.submitAnother(draftId), 'autoComplete -> "off") {

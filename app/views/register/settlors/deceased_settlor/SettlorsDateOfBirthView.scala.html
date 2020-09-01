@@ -25,7 +25,8 @@
 @(form: Form[_], mode: Mode, draftId: String, name : FullName)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)} ${messages("settlorsDateOfBirth.title")}"
+    title = s"${errorPrefix(form)}${messages("settlorsDateOfBirth.title")}",
+    section = Some(messages("taskList.settlors.label"))
 ) {
 
     @formHelper(action = SettlorsDateOfBirthController.onSubmit(mode, draftId), 'autoComplete -> "off") {

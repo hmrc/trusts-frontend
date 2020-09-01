@@ -38,11 +38,11 @@ class SharePortfolioQuantityInTrustViewSpec extends StringViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix, Some(s"$messageKeyPrefix.hint"))
+    behave like stringPage(form, applyView, Some("taskList.assets.label"), messageKeyPrefix, Some(s"$messageKeyPrefix.hint"))
 
     behave like pageWithASubmitButton(applyView(form))
 

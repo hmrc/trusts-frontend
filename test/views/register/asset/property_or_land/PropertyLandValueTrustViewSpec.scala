@@ -39,11 +39,11 @@ class PropertyLandValueTrustViewSpec extends StringViewBehaviours {
       view.apply(form, NormalMode, index, fakeDraftId)(fakeRequest, messages)
 
 
-    behave like normalPage(applyView(form), messageKeyPrefix)
+    behave like normalPage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, messageKeyPrefix)
+    behave like stringPage(form, applyView, Some("taskList.assets.label"), messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
   }

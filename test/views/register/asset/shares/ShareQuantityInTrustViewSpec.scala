@@ -42,7 +42,7 @@ class ShareQuantityInTrustViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPageWithDynamicTitle(form, applyView, messageKeyPrefix, companyName, Some(messages(s"$messageKeyPrefix.hint")))
+    behave like stringPageWithDynamicTitle(form, applyView, Some("taskList.assets.label"), messageKeyPrefix, companyName, Some(messages(s"$messageKeyPrefix.hint")))
 
     pageWithASubmitButton(applyView(form))
   }

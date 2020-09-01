@@ -29,7 +29,7 @@ class OtherAssetAnswersViewSpec extends ViewBehaviours {
 
     val applyView = view.apply(index, fakeDraftId, Nil)(fakeRequest, messages)
 
-    behave like normalPage(applyView, "assets.other.checkDetails")
+    behave like normalPage(applyView, Some("taskList.assets.label"), "assets.other.checkDetails")
 
     behave like pageWithBackLink(applyView)
   }

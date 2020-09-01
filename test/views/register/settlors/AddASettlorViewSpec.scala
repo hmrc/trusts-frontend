@@ -56,7 +56,7 @@ class AddASettlorViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
   "AddASettlorView" when {
 
     "there are no settlors" must {
-      behave like normalPage(applyView(form), messageKeyPrefix)
+      behave like normalPage(applyView(form), Some("taskList.settlors.label"), messageKeyPrefix)
 
       behave like pageWithNoTabularData(applyView(form))
 
@@ -69,7 +69,7 @@ class AddASettlorViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
       val viewWithData = applyView(form, inProgressSettlors, Nil, 1)
 
-      behave like dynamicTitlePage(viewWithData, "addASettlor.singular", "1")
+      behave like dynamicTitlePage(viewWithData, Some("taskList.settlors.label"), "addASettlor.singular", "1")
 
       behave like pageWithBackLink(viewWithData)
 
@@ -83,7 +83,7 @@ class AddASettlorViewSpec extends OptionsViewBehaviours with TabularDataViewBeha
 
       val viewWithData = applyView(form, Nil, completeSettlors, 2)
 
-      behave like dynamicTitlePage(viewWithData, "addASettlor.count", "2")
+      behave like dynamicTitlePage(viewWithData, Some("taskList.settlors.label"), "addASettlor.count", "2")
 
       behave like pageWithBackLink(viewWithData)
 

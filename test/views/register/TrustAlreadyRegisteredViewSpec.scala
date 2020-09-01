@@ -38,6 +38,7 @@ class TrustAlreadyRegisteredViewSpec extends ViewBehaviours {
 
       behave like normalPage(
         applyView,
+        None,
         "trustAlreadyRegistered",
         "agent.p1", "agent.p1.link"
       )
@@ -53,6 +54,7 @@ class TrustAlreadyRegisteredViewSpec extends ViewBehaviours {
 
       behave like normalPage(
         applyView,
+        None,
         "trustAlreadyRegistered",
         "p1", "bullet1", "bullet2", "p2", "p2.link"
       )

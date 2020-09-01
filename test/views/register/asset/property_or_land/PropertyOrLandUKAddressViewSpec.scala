@@ -39,12 +39,13 @@ class PropertyOrLandUKAddressViewSpec extends UkAddressViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId, index)(fakeRequest, messages)
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, entityName)
+    behave like dynamicTitlePage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix, entityName)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like ukAddressPage(
       applyView,
+      Some("taskList.assets.label"),
       Some(messageKeyPrefix),
       routes.PropertyOrLandUKAddressController.onSubmit(NormalMode, index, fakeDraftId).url,
       entityName

@@ -18,11 +18,13 @@ package views.behaviours
 
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import views.ViewUtils
 
 trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
   def yesNoPage(form: Form[Boolean],
                 createView: Form[Boolean] => HtmlFormat.Appendable,
+                sectionKey: Option[String],
                 messageKeyPrefix: String,
                 hintTextPrefix : Option[String] = None,
                 args : Seq[String] = Nil) : Unit = {
@@ -93,7 +95,7 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""")
+          assertEqualsValue(doc, "title", ViewUtils.breadcrumbTitle(s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""", sectionKey.map(messages(_))))
         }
       }
     }

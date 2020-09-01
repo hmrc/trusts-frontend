@@ -25,6 +25,7 @@
 )
 
 @(title: String,
+section: Option[String] = None,
     sidebarLinks: Option[Html] = None,
     contentHeader: Option[Html] = None,
     bodyClasses: Option[String] = None,
@@ -61,8 +62,9 @@
     }
 }
 
+
 @govuk_wrapper(appConfig = appConfig,
-                title = title,
+                title = breadcrumbTitle(title, section),
                 mainClass = mainClass,
                 bodyClasses = bodyClasses,
                 sidebar = sidebarContent,

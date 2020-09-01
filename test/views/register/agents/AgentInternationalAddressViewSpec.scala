@@ -43,13 +43,14 @@ class AgentInternationalAddressViewSpec extends QuestionViewBehaviours[Internati
       view.apply(form, countryOptions, NormalMode, fakeDraftId, agencyName)(fakeRequest, messages)
 
 
-    behave like dynamicTitlePage(applyView(form), messageKeyPrefix, agencyName)
+    behave like dynamicTitlePage(applyView(form), None, messageKeyPrefix, agencyName)
 
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithTextFields(
       form,
       applyView,
+      None,
       messageKeyPrefix,
       Seq(("line1",None), ("line2",None), ("line3", None)),
       agencyName
