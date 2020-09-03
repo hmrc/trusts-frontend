@@ -641,7 +641,7 @@ settlorNationalInsuranceNumber.hint.reader = It is on their National Insurance c
 settlorNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
 settlorNationalInsuranceNumber.error.required = Enter the settlor’s National Insurance number
 settlorNationalInsuranceNumber.error.length = Settlor’s National Insurance number must be 9 characters or less
-settlorNationalInsuranceNumber.error.invalid = Enter the settlor’s National Insurance number in the correct format
+settlorNationalInsuranceNumber.error.invalid = Enter a valid National Insurance number
 
 settlorsDateOfBirth.title = What is the settlor’s date of birth?
 settlorsDateOfBirth.heading = What is {0}’s date of birth?
