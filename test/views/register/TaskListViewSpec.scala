@@ -42,7 +42,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
   private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(frontendAppConfig), registrationsRepository)
+  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
   private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers,fakeDraftId)
   private lazy val additionalSections = newRegistrationProgress.additionalItems(fakeDraftId)

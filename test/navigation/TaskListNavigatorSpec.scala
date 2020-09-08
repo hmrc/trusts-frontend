@@ -36,7 +36,7 @@ import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
-  val navigator : TaskListNavigator = new TaskListNavigator(frontendAppConfig)
+  val navigator : TaskListNavigator = new TaskListNavigator(fakeFrontendAppConfig)
 
   "TaskList Navigator" must {
 
@@ -136,7 +136,7 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     "for beneficiaries task" must {
       "go to BeneficiaryInfoPage" in {
-        navigator.beneficiariesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)
+        navigator.beneficiariesJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)
       }
     }
 
@@ -165,25 +165,25 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     "for trustee task" must {
       "go to Trustee service start" in {
-        navigator.trusteesJourneyUrl(fakeDraftId) mustBe frontendAppConfig.trusteesFrontendUrl(fakeDraftId)
+        navigator.trusteesJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)
       }
     }
 
     "for task liability task" must {
       "go to TaxLiabilityPage" in {
-        navigator.taxLiabilityJourney(fakeDraftId) mustBe frontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)
+        navigator.taxLiabilityJourney(fakeDraftId) mustBe fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)
       }
     }
 
     "for protectors task" must {
       "go to Protector service start" in {
-        navigator.protectorsJourneyUrl(fakeDraftId) mustBe frontendAppConfig.protectorsFrontendUrl(fakeDraftId)
+        navigator.protectorsJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)
       }
     }
 
     "for other individuals task" must {
       "go to Other Individual service start" in {
-        navigator.otherIndividualsJourneyUrl(fakeDraftId) mustBe frontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)
+        navigator.otherIndividualsJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)
       }
     }
   }

@@ -32,7 +32,7 @@ import views.html.register.settlors.living_settlor.EmployerFinancedRbsStartDateV
 
 class EmployerFinancedRbsStartDateControllerSpec extends RegistrationSpecBase with IndexValidation {
 
-  val formProvider = new EfrbsStartDateFormProvider(frontendAppConfig)
+  val formProvider = new EfrbsStartDateFormProvider(fakeFrontendAppConfig)
   val form = formProvider()
 
   val name = FullName("First", Some("Middle"), "Last")

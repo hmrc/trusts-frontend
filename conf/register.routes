@@ -2,7 +2,7 @@
 
 GET        /                                                                                        controllers.register.IndexController.onPageLoad()
 
-GET        /accessibility   controllers.register.AccessibilityStatementController.onPageLoad
+GET        /accessibility   controllers.register.AccessibilityStatementController.onPageLoad(userAction: String)
 
 GET        /create-draft-registration                                                               controllers.register.CreateDraftRegistrationController.create()
 

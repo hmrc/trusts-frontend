@@ -24,7 +24,7 @@ import play.api.data.FormError
 
 class WhenTrustSetupFormProviderSpec extends DateBehaviours with FakeTrustsApp {
 
-  val form = new WhenTrustSetupFormProvider(frontendAppConfig).withConfig()
+  val form = new WhenTrustSetupFormProvider(fakeFrontendAppConfig).withConfig()
 
   private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)

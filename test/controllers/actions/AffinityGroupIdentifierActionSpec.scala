@@ -142,7 +142,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
 
         status(result) mustBe SEE_OTHER
 
-        redirectLocation(result).get must startWith(frontendAppConfig.loginUrl)
+        redirectLocation(result).get must startWith(fakeFrontendAppConfig.loginUrl)
         application.stop()
       }
     }
@@ -158,7 +158,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
 
         status(result) mustBe SEE_OTHER
 
-        redirectLocation(result).get must startWith(frontendAppConfig.loginUrl)
+        redirectLocation(result).get must startWith(fakeFrontendAppConfig.loginUrl)
         application.stop()
       }
     }

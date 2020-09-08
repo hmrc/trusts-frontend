@@ -30,7 +30,7 @@ class EmployerFinancedRbsStartDateViewSpec extends QuestionViewBehaviours[LocalD
 
   val messageKeyPrefix = "employerFinancedRbsStartDate"
 
-  val form = new EfrbsStartDateFormProvider(frontendAppConfig)()
+  val form = new EfrbsStartDateFormProvider(fakeFrontendAppConfig)()
 
   "EmployerFinancedRbsStartDate view" must {
 

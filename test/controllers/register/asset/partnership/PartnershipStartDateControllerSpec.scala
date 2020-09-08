@@ -32,7 +32,7 @@ import views.html.register.asset.partnership.PartnershipStartDateView
 
 class PartnershipStartDateControllerSpec extends RegistrationSpecBase with IndexValidation {
 
-  val formProvider = new PartnershipStartDateFormProvider(frontendAppConfig)
+  val formProvider = new PartnershipStartDateFormProvider(fakeFrontendAppConfig)
   val form = formProvider.withConfig()
   val index = 0
 
