@@ -20,9 +20,10 @@ import config.FrontendAppConfig
 import controllers.actions.TrustsAuthorisedFunctions
 import org.scalatest.TestSuite
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Configuration
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.Injector
-import play.api.mvc.BodyParsers
+import play.api.mvc.{BodyParsers, Request}
 import play.api.test.FakeRequest
 
 import scala.concurrent.ExecutionContext
@@ -32,7 +33,14 @@ trait FakeTrustsApp extends GuiceOneAppPerSuite {
 
   def injector: Injector = app.injector
 
-  def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+  private lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+
+  def fakeFrontendAppConfig: FrontendAppConfig = {
+    new FrontendAppConfig(config) {
+      override def accessibilityLinkUrl(implicit request: Request[_]): String =
+        s"http://localhost:9781/trusts-registration/accessibility?userAction=[]"
+    }
+  }
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 

@@ -29,7 +29,7 @@ class AccessibilityStatementControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.AccessibilityStatementController.onPageLoad().url)
+      val request = FakeRequest(GET, routes.AccessibilityStatementController.onPageLoad("/some/referring/uri").url)
 
       val result = route(application, request).value
 
@@ -38,7 +38,7 @@ class AccessibilityStatementControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(fakeRequest, messages).toString
+        view("%2Fsome%2Freferring%2Furi")(fakeRequest, messages).toString
 
       application.stop()
     }

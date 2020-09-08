@@ -28,7 +28,7 @@ class SettlorsDateOfBirthFormProviderSpec extends DateBehaviours with FakeTrusts
   private val min = LocalDate.of(1500, 1, 1)
   private val max = LocalDate.now(ZoneOffset.UTC)
 
-  val form = new SettlorsDateOfBirthFormProvider(frontendAppConfig).withConfig()
+  val form = new SettlorsDateOfBirthFormProvider(fakeFrontendAppConfig).withConfig()
 
   ".value" should {
 

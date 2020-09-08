@@ -37,10 +37,10 @@ import views.html.register.TaskListView
 class TaskListControllerSpec extends RegistrationSpecBase {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-  private val savedUntil : String = LocalDateTime.now.plusSeconds(frontendAppConfig.ttlInSeconds).format(dateFormatter)
+  private val savedUntil : String = LocalDateTime.now.plusSeconds(fakeFrontendAppConfig.ttlInSeconds).format(dateFormatter)
   private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(frontendAppConfig), registrationsRepository)
+  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
   private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers, fakeDraftId)
   private lazy val additionalSections = newRegistrationProgress.additionalItems(fakeDraftId)

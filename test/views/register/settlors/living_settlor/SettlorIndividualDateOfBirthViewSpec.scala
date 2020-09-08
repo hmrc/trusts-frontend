@@ -32,7 +32,7 @@ class SettlorIndividualDateOfBirthViewSpec extends QuestionViewBehaviours[LocalD
   val index = 0
   val name = FullName("First", Some("middle"), "Last")
 
-  val form = new DateOfBirthFormProvider(frontendAppConfig)()
+  val form = new DateOfBirthFormProvider(fakeFrontendAppConfig)()
 
   "SettlorIndividualDateOfBirthView view" must {
 

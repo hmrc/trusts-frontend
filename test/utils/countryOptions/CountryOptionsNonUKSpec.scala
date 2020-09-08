@@ -19,6 +19,7 @@ package utils.countryOptions
 import base.RegistrationSpecBase
 import com.typesafe.config.ConfigException
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.inject.guice.GuiceApplicationBuilder
 import utils.InputOption
 
 class CountryOptionsNonUKSpec extends RegistrationSpecBase with MockitoSugar {
@@ -27,7 +28,7 @@ class CountryOptionsNonUKSpec extends RegistrationSpecBase with MockitoSugar {
 
     "build correctly the InputOptions with non-UK country list and country code" in {
 
-      val application = applicationBuilder()
+      val application = new GuiceApplicationBuilder()
         .configure(Map(
           "location.canonical.list.nonUK" -> "non-uk-countries-canonical-list-test.json"
         ))
@@ -41,7 +42,7 @@ class CountryOptionsNonUKSpec extends RegistrationSpecBase with MockitoSugar {
 
     "throw the error if the country json does not exist" in {
 
-      val application = applicationBuilder()
+      val application = new GuiceApplicationBuilder()
         .configure(Map(
           "location.canonical.list.all" -> "countries-canonical-test.json"
         ))

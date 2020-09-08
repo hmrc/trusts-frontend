@@ -29,7 +29,7 @@ class PartnershipStartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
 
   val messageKeyPrefix = "partnershipStartDate"
 
-  val form = new PartnershipStartDateFormProvider(frontendAppConfig).withConfig()
+  val form = new PartnershipStartDateFormProvider(fakeFrontendAppConfig).withConfig()
 
   "PartnershipStartDateView view" must {
 

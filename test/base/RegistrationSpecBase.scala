@@ -16,6 +16,7 @@
 
 package base
 
+import config.FrontendAppConfig
 import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
@@ -41,7 +42,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
 
   def emptyUserAnswers = TestUserAnswers.emptyUserAnswers
 
-  lazy val fakeNavigator = new FakeNavigator(frontendAppConfig)
+  lazy val fakeNavigator = new FakeNavigator(fakeFrontendAppConfig)
 
   val testLeadTrusteeOrg = LeadTrusteeType(
     None,
@@ -67,7 +68,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
     new GuiceApplicationBuilder()
       .overrides(
         bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
-        bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup, frontendAppConfig)(injectedParsers, trustsAuth, enrolments)),
+        bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup, fakeFrontendAppConfig)(injectedParsers, trustsAuth, enrolments)),
         bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
@@ -77,7 +78,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[Navigator].toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[Partnership]).toInstance(navigator),
         bind[Navigator].qualifiedWith(classOf[PropertyOrLand]).toInstance(navigator),
-        bind[Navigator].qualifiedWith(classOf[LivingSettlor]).toInstance(navigator)
+        bind[Navigator].qualifiedWith(classOf[LivingSettlor]).toInstance(navigator),
+        bind[FrontendAppConfig].to(fakeFrontendAppConfig)
       )
 
 }

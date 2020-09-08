@@ -16,6 +16,8 @@
 
 package controllers.register
 
+import java.net.URLEncoder
+
 import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -30,8 +32,8 @@ class AccessibilityStatementController @Inject()(
                                              view: AccessibilityStatementView)
                                              (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = Action {
+  def onPageLoad(userAction: String): Action[AnyContent] = Action {
     implicit request =>
-      Ok(view())
+      Ok(view(URLEncoder.encode(userAction, "UTF-8")))
   }
 }

@@ -21,11 +21,13 @@
 main_template: MainTemplate
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(userAction: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
 title = messages("accessibilityStatement.title")
 ) {
+
+    @components.back_link()
 
     @components.heading("accessibilityStatement.heading")
 
@@ -68,7 +70,7 @@ title = messages("accessibilityStatement.title")
 
     <h2 class="govuk-heading-l">@messages("accessibilityStatement.reporting.problems")</h2>
     <p class="govuk-body">@messages("accessibilityStatement.reporting.pre.link")
-      <a target="_blank" href="https://www.tax.service.gov.uk/contact/accessibility-unauthenticated?service=trusts">@messages("accessibilityStatement.reporting.link")</a>.
+      <a target="_blank" href="https://www.tax.service.gov.uk/contact/accessibility-unauthenticated?service=trusts&userAction=@userAction">@messages("accessibilityStatement.reporting.link")</a>.
       </p>
 
     <h2 class="govuk-heading-l">@messages("accessibilityStatement.what.to.do")</h2>
@@ -105,8 +107,6 @@ title = messages("accessibilityStatement.title")
     <p class="govuk-body">@messages("accessibilityStatement.non.compliance.keyboard.pre.link") <a href="https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html">@messages("accessibilityStatement.non.compliance.keyboard.link")</a> @messages("accessibilityStatement.non.compliance.keyboard.post.link"), <a href="https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html">@messages("accessibilityStatement.non.compliance.bypass.link")</a> @messages("accessibilityStatement.non.compliance.bypass.post.link")</p>
 
     <p class="govuk-body">@messages("accessibilityStatement.non.compliance.change.pre.link") <a href="https://www.w3.org/TR/WCAG21/#link-purpose-in-context">@messages("accessibilityStatement.non.compliance.change.link")</a> @messages("accessibilityStatement.non.compliance.change.post.link")</p>
-
-    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.page.titles.pre.link") <a href="https://www.w3.org/TR/WCAG21/#page-titled">@messages("accessibilityStatement.non.compliance.page.titles.link")</a> @messages("accessibilityStatement.non.compliance.page.titles.post.link")</p>
 
     <h2 class="govuk-heading-l">@messages("accessibilityStatement.how.we.tested")</h2>
     <p class="govuk-body">@messages("accessibilityStatement.service.last.tested.on")</p>
