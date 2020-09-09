@@ -62,7 +62,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -82,7 +82,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -156,7 +156,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -193,7 +193,7 @@ class WhenTrustSetupControllerSpec extends RegistrationSpecBase with MockitoSuga
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }

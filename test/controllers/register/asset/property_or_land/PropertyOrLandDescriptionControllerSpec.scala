@@ -53,7 +53,7 @@ class PropertyOrLandDescriptionControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -73,7 +73,7 @@ class PropertyOrLandDescriptionControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -112,7 +112,7 @@ class PropertyOrLandDescriptionControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }

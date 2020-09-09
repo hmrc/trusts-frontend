@@ -47,7 +47,7 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -68,7 +68,7 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -105,7 +105,7 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }

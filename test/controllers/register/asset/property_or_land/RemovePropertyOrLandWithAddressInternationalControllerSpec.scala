@@ -59,7 +59,7 @@ class RemovePropertyOrLandWithAddressInternationalControllerSpec extends Registr
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the property or land", formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the property or land", formRoute)(request, messages).toString
 
         application.stop()
       }
@@ -86,7 +86,7 @@ class RemovePropertyOrLandWithAddressInternationalControllerSpec extends Registr
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(request, messages).toString
 
         application.stop()
       }
@@ -150,7 +150,7 @@ class RemovePropertyOrLandWithAddressInternationalControllerSpec extends Registr
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(messagesPrefix, boundForm, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        view(messagesPrefix, boundForm, index, fakeDraftId, content, formRoute)(request, messages).toString
 
       application.stop()
     }

@@ -72,7 +72,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, fakeDraftId, index, "£4000")(fakeRequest, messages).toString
+          view(form, fakeDraftId, index, "£4000")(request, messages).toString
 
         application.stop()
       }
@@ -102,7 +102,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form, fakeDraftId, index, "Line 1")(fakeRequest, messages).toString
+              view(form, fakeDraftId, index, "Line 1")(request, messages).toString
 
             application.stop()
           }
@@ -127,7 +127,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form, fakeDraftId, index, "Property or land description")(fakeRequest, messages).toString
+              view(form, fakeDraftId, index, "Property or land description")(request, messages).toString
 
             application.stop()
           }
@@ -150,7 +150,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(form, fakeDraftId, index, "the asset")(fakeRequest, messages).toString
+            view(form, fakeDraftId, index, "the asset")(request, messages).toString
 
           application.stop()
         }
@@ -181,7 +181,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form, fakeDraftId, index, "Portfolio Name")(fakeRequest, messages).toString
+              view(form, fakeDraftId, index, "Portfolio Name")(request, messages).toString
 
             application.stop()
           }
@@ -208,7 +208,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form, fakeDraftId, index, "Company Name")(fakeRequest, messages).toString
+              view(form, fakeDraftId, index, "Company Name")(request, messages).toString
 
             application.stop()
           }
@@ -231,7 +231,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(form, fakeDraftId, index, "the asset")(fakeRequest, messages).toString
+            view(form, fakeDraftId, index, "the asset")(request, messages).toString
 
           application.stop()
         }
@@ -258,7 +258,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, fakeDraftId, index, "Business name")(fakeRequest, messages).toString
+          view(form, fakeDraftId, index, "Business name")(request, messages).toString
 
         application.stop()
       }
@@ -281,7 +281,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, fakeDraftId, index, "Partnership description")(fakeRequest, messages).toString
+          view(form, fakeDraftId, index, "Partnership description")(request, messages).toString
 
         application.stop()
       }
@@ -304,7 +304,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(form, fakeDraftId, index, "Other description")(fakeRequest, messages).toString
+          view(form, fakeDraftId, index, "Other description")(request, messages).toString
 
         application.stop()
       }
@@ -374,7 +374,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, fakeDraftId, index, "the asset")(fakeRequest, messages).toString
+        view(boundForm, fakeDraftId, index, "the asset")(request, messages).toString
 
       application.stop()
     }

@@ -52,7 +52,7 @@ class RemoveSettlorControllerSpec extends RegistrationSpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(prefix, form, fakeDraftId, "the settlor")(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(prefix, form, fakeDraftId, "the settlor")(request, messages).toString
 
         application.stop()
       }
@@ -77,7 +77,7 @@ class RemoveSettlorControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(prefix, form, fakeDraftId, fakeName)(fakeRequest, messages).toString
+        view(prefix, form, fakeDraftId, fakeName)(request, messages).toString
 
       application.stop()
     }
@@ -123,7 +123,7 @@ class RemoveSettlorControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(prefix, boundForm, fakeDraftId, fakeName)(fakeRequest, messages).toString
+        view(prefix, boundForm, fakeDraftId, fakeName)(request, messages).toString
 
       application.stop()
     }

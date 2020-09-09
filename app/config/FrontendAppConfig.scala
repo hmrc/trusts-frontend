@@ -121,12 +121,12 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val countdownLength: String = configuration.get[String]("timeout.countdown")
   lazy val timeoutLength: String = configuration.get[String]("timeout.length")
 
-  private lazy val accessibilityBaseLinkUrl: String = configuration.get[String]("urls.accessibility")
-
   private val day: Int = configuration.get[Int]("minimumDate.day")
   private val month: Int = configuration.get[Int]("minimumDate.month")
   private val year: Int = configuration.get[Int]("minimumDate.year")
   lazy val minDate: LocalDate = LocalDate.of(year, month, day)
+
+  private lazy val accessibilityBaseLinkUrl: String = configuration.get[String]("urls.accessibility")
 
   def accessibilityLinkUrl(implicit request: Request[_]): String = {
     val userAction = URLEncoder.encode(new URI(request.uri).getPath, "UTF-8")

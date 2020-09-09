@@ -58,7 +58,7 @@ class RemoveMoneyAssetControllerSpec extends RegistrationSpecBase with ScalaChec
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the money", formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the money", formRoute)(request, messages).toString
 
         application.stop()
       }
@@ -81,7 +81,7 @@ class RemoveMoneyAssetControllerSpec extends RegistrationSpecBase with ScalaChec
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(request, messages).toString
 
         application.stop()
       }
@@ -136,7 +136,7 @@ class RemoveMoneyAssetControllerSpec extends RegistrationSpecBase with ScalaChec
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(messagesPrefix, boundForm, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        view(messagesPrefix, boundForm, index, fakeDraftId, content, formRoute)(request, messages).toString
 
       application.stop()
     }

@@ -48,7 +48,7 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, onSubmit)(fakeRequest, messages).toString
+        view(form, onSubmit)(request, messages).toString
 
       application.stop()
     }
@@ -68,7 +68,7 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1111111111"), onSubmit)(fakeRequest, messages).toString
+        view(form.fill("1111111111"), onSubmit)(request, messages).toString
 
       application.stop()
     }
@@ -107,7 +107,7 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, onSubmit)(fakeRequest, messages).toString
+        view(boundForm, onSubmit)(request, messages).toString
 
       application.stop()
     }

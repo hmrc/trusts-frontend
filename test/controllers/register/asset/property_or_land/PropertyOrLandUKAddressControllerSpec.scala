@@ -53,7 +53,7 @@ class PropertyOrLandUKAddressControllerSpec extends RegistrationSpecBase with Mo
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }
@@ -74,7 +74,7 @@ class PropertyOrLandUKAddressControllerSpec extends RegistrationSpecBase with Mo
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"line 5")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"line 5")), NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }
@@ -113,7 +113,7 @@ class PropertyOrLandUKAddressControllerSpec extends RegistrationSpecBase with Mo
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }

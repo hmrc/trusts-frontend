@@ -42,7 +42,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId)(fakeRequest, messages).toString
+        view(fakeDraftId)(request, messages).toString
 
       application.stop()
     }

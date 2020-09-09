@@ -57,7 +57,7 @@ class SettlorBusinessUtrControllerSpec extends RegistrationSpecBase with IndexVa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index, fakeBusinessName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, fakeBusinessName)(request, messages).toString
 
       application.stop()
     }
@@ -79,7 +79,7 @@ class SettlorBusinessUtrControllerSpec extends RegistrationSpecBase with IndexVa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(fakeUtr), NormalMode, fakeDraftId, index, fakeBusinessName)(fakeRequest, messages).toString
+        view(form.fill(fakeUtr), NormalMode, fakeDraftId, index, fakeBusinessName)(request, messages).toString
 
       application.stop()
     }
@@ -139,7 +139,7 @@ class SettlorBusinessUtrControllerSpec extends RegistrationSpecBase with IndexVa
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index, fakeBusinessName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, fakeBusinessName)(request, messages).toString
 
       application.stop()
     }

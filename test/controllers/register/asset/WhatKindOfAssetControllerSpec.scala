@@ -57,7 +57,7 @@ class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValid
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, options)(request, messages).toString
 
       application.stop()
     }
@@ -77,7 +77,7 @@ class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValid
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
+        view(form.fill(WhatKindOfAsset.values.head), NormalMode, fakeDraftId, index, options)(request, messages).toString
 
       application.stop()
     }
@@ -137,7 +137,7 @@ class WhatKindOfAssetControllerSpec extends RegistrationSpecBase with IndexValid
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index, options)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, options)(request, messages).toString
 
       application.stop()
     }

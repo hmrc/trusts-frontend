@@ -92,7 +92,7 @@ class SettlorIndividualPassportControllerSpec extends RegistrationSpecBase with 
 
       contentAsString(result) mustEqual
         view(form.fill(PassportOrIdCardDetails("Field 1", "Field 2", validAnswer)),
-          countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
+          countryOptions, NormalMode, fakeDraftId, index, name)(request, messages).toString
 
       application.stop()
     }
@@ -162,7 +162,7 @@ class SettlorIndividualPassportControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode, fakeDraftId, index, name)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId, index, name)(request, messages).toString
 
       application.stop()
     }

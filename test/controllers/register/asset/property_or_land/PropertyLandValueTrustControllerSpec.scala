@@ -85,7 +85,7 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1"), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("1"), NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -125,7 +125,7 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }

@@ -83,7 +83,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends RegistrationSpecB
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), "country")), countryOptions, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", Some("line 3"), "country")), countryOptions, NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }
@@ -125,7 +125,7 @@ class PropertyOrLandInternationalAddressControllerSpec extends RegistrationSpecB
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }

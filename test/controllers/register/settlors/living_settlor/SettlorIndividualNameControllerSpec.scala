@@ -76,7 +76,7 @@ class SettlorIndividualNameControllerSpec extends RegistrationSpecBase with Inde
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(FullName("first name", Some("middle name"), "last name")), NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(form.fill(FullName("first name", Some("middle name"), "last name")), NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }
@@ -116,7 +116,7 @@ class SettlorIndividualNameControllerSpec extends RegistrationSpecBase with Inde
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index)(request, messages).toString
 
       application.stop()
     }

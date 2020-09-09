@@ -123,7 +123,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
                 savedUntil,
                 mainSections,
                 additionalSections,
-                isTaskListComplete, Organisation)(fakeRequest, messages).toString
+                isTaskListComplete, Organisation)(request, messages).toString
           }
 
           application.stop()
@@ -226,7 +226,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation)(fakeRequest, messages).toString
+              Organisation)(request, messages).toString
         }
 
         application.stop()

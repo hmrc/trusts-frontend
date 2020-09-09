@@ -87,7 +87,7 @@ class SettlorsInternationalAddressControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(InternationalAddress("line 1", "line 2", None, "country")), countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(form.fill(InternationalAddress("line 1", "line 2", None, "country")), countryOptions, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -135,7 +135,7 @@ class SettlorsInternationalAddressControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }

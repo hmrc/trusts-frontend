@@ -51,7 +51,7 @@ class CountryGoverningTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form, countryOptions, NormalMode,fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -73,7 +73,7 @@ class CountryGoverningTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("Spain"), countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill("Spain"), countryOptions, NormalMode,fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -114,7 +114,7 @@ class CountryGoverningTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, countryOptions, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, countryOptions, NormalMode,fakeDraftId)(request, messages).toString
 
       application.stop()
     }
