@@ -205,7 +205,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, isAgent = false, agentClientRef = "")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = false, agentClientRef = "")(request, messages).toString
 
       application.stop()
     }
@@ -223,7 +223,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(request, messages).toString
 
       application.stop()
     }
@@ -344,7 +344,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, isAgent = false, agentClientRef = "")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = false, agentClientRef = "")(request, messages).toString
 
       application.stop()
     }
@@ -362,7 +362,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(fakeRequest, messages).toString
+        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(request, messages).toString
 
       application.stop()
     }

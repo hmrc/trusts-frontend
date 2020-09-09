@@ -179,7 +179,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val trnDateTime = LocalDateTime.now.format(dateFormatter)
 
       contentAsString(result) mustEqual
-        view(expectedSections, "XNTRN000000001", trnDateTime)(fakeRequest, messages).toString
+        view(expectedSections, "XNTRN000000001", trnDateTime)(request, messages).toString
 
       application.stop()
     }
@@ -298,7 +298,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val trnDateTime = LocalDateTime.now.format(dateFormatter)
 
       contentAsString(result) mustEqual
-        view(expectedSections, "XNTRN000000001", trnDateTime)(fakeRequest, messages).toString
+        view(expectedSections, "XNTRN000000001", trnDateTime)(request, messages).toString
 
       application.stop()
     }

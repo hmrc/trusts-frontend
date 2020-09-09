@@ -63,7 +63,7 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId, name)(fakeRequest, messages).toString
+        view(form, NormalMode,fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -84,7 +84,7 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode,fakeDraftId, name)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode,fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -128,7 +128,7 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -160,7 +160,7 @@ class SettlorsDateOfBirthControllerSpec extends RegistrationSpecBase with Mockit
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }

@@ -74,7 +74,7 @@ class SettlorsUKAddressControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"line 5")), NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(form.fill(UKAddress("line 1", "line 2", Some("line 3"), Some("line 4"),"line 5")), NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -120,7 +120,7 @@ class SettlorsUKAddressControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }

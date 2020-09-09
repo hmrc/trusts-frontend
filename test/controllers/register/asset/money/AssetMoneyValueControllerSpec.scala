@@ -49,7 +49,7 @@ class AssetMoneyValueControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId,index)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId,index)(request, messages).toString
 
       application.stop()
     }
@@ -69,7 +69,7 @@ class AssetMoneyValueControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, fakeDraftId,index)(fakeRequest, messages).toString
+        view(form.fill("answer"), NormalMode, fakeDraftId,index)(request, messages).toString
 
       application.stop()
     }
@@ -108,7 +108,7 @@ class AssetMoneyValueControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId,index)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId,index)(request, messages).toString
 
       application.stop()
     }

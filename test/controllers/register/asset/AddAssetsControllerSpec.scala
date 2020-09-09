@@ -120,7 +120,7 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addAssetsForm, NormalMode,fakeDraftId)(fakeRequest, messages).toString
+          view(addAssetsForm, NormalMode,fakeDraftId)(request, messages).toString
 
         application.stop()
       }
@@ -160,7 +160,7 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
 
         application.stop()
       }
@@ -181,7 +181,7 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addAssetsForm, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
+          view(addAssetsForm, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(request, messages).toString
 
         application.stop()
       }
@@ -221,7 +221,7 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId, Nil, assets, "You have added 2 assets")(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId, Nil, assets, "You have added 2 assets")(request, messages).toString
 
         application.stop()
       }

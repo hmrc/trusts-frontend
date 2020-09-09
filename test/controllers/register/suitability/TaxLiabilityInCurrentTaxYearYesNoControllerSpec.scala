@@ -59,7 +59,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(request, messages).toString
 
       application.stop()
     }
@@ -82,7 +82,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(request, messages).toString
 
       application.stop()
     }
@@ -123,7 +123,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(request, messages).toString
 
       application.stop()
     }

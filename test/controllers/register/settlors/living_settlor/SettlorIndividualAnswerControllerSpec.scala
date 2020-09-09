@@ -106,7 +106,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(onSubmit, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(request, messages).toString
 
           application.stop()
         }
@@ -164,7 +164,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(onSubmit, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(request, messages).toString
 
           application.stop()
         }
@@ -226,7 +226,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(onSubmit, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(request, messages).toString
 
           application.stop()
         }
@@ -288,7 +288,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(onSubmit, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(request, messages).toString
 
           application.stop()
         }
@@ -354,7 +354,7 @@ class SettlorIndividualAnswerControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           contentAsString(result) mustEqual
-            view(onSubmit, expectedSections)(fakeRequest, messages).toString
+            view(onSubmit, expectedSections)(request, messages).toString
 
           application.stop()
         }

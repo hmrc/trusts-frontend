@@ -79,7 +79,7 @@ class BusinessUkAddressControllerSpec extends RegistrationSpecBase with IndexVal
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index, businessName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, businessName)(request, messages).toString
 
       application.stop()
     }
@@ -141,7 +141,7 @@ class BusinessUkAddressControllerSpec extends RegistrationSpecBase with IndexVal
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index, businessName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, businessName)(request, messages).toString
 
       application.stop()
     }

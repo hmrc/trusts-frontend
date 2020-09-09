@@ -53,7 +53,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -74,7 +74,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(form.fill(true), NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }
@@ -120,7 +120,7 @@ class WasSettlorsAddressUKYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, name)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, name)(request, messages).toString
 
       application.stop()
     }

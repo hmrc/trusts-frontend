@@ -91,7 +91,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId, expectedSections)(request, messages).toString
 
       application.stop()
     }
@@ -146,7 +146,7 @@ class DeceasedSettlorAnswerControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId, expectedSections)(fakeRequest, messages).toString
+        view(fakeDraftId, expectedSections)(request, messages).toString
 
       application.stop()
     }

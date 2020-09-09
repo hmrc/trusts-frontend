@@ -57,7 +57,7 @@ class RemoveSharePortfolioAssetControllerSpec extends RegistrationSpecBase with 
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the share", formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, "the share", formRoute)(request, messages).toString
 
         application.stop()
       }
@@ -80,7 +80,7 @@ class RemoveSharePortfolioAssetControllerSpec extends RegistrationSpecBase with 
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        contentAsString(result) mustEqual view(messagesPrefix, form, index, fakeDraftId, content, formRoute)(request, messages).toString
 
         application.stop()
       }
@@ -134,7 +134,7 @@ class RemoveSharePortfolioAssetControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(messagesPrefix, boundForm, index, fakeDraftId, content, formRoute)(fakeRequest, messages).toString
+        view(messagesPrefix, boundForm, index, fakeDraftId, content, formRoute)(request, messages).toString
 
       application.stop()
     }

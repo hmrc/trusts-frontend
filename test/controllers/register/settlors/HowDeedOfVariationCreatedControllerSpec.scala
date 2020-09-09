@@ -54,7 +54,7 @@ class HowDeedOfVariationCreatedControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -75,7 +75,7 @@ class HowDeedOfVariationCreatedControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(DeedOfVariation.values.head), NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(DeedOfVariation.values.head), NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -119,7 +119,7 @@ class HowDeedOfVariationCreatedControllerSpec extends RegistrationSpecBase with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
 
       application.stop()
     }

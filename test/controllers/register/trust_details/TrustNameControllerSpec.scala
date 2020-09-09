@@ -61,7 +61,7 @@ class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar wit
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form, NormalMode, fakeDraftId, true)(fakeRequest, messages).toString
+              view(form, NormalMode, fakeDraftId, true)(request, messages).toString
 
             application.stop()
 
@@ -87,7 +87,7 @@ class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar wit
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form.fill("answer"), NormalMode, fakeDraftId, true)(fakeRequest, messages).toString
+              view(form.fill("answer"), NormalMode, fakeDraftId, true)(request, messages).toString
 
             application.stop()
         }
@@ -115,7 +115,7 @@ class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar wit
             status(result) mustEqual BAD_REQUEST
 
             contentAsString(result) mustEqual
-              view(boundForm, NormalMode, fakeDraftId, true)(fakeRequest, messages).toString
+              view(boundForm, NormalMode, fakeDraftId, true)(request, messages).toString
 
             application.stop()
         }
@@ -144,7 +144,7 @@ class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar wit
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form, NormalMode, fakeDraftId, false)(fakeRequest, messages).toString
+              view(form, NormalMode, fakeDraftId, false)(request, messages).toString
 
             application.stop()
         }
@@ -169,7 +169,7 @@ class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar wit
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(form.fill("answer"), NormalMode, fakeDraftId, false)(fakeRequest, messages).toString
+              view(form.fill("answer"), NormalMode, fakeDraftId, false)(request, messages).toString
 
             application.stop()
         }
@@ -197,7 +197,7 @@ class TrustNameControllerSpec extends RegistrationSpecBase with MockitoSugar wit
             status(result) mustEqual BAD_REQUEST
 
             contentAsString(result) mustEqual
-              view(boundForm, NormalMode, fakeDraftId, false)(fakeRequest, messages).toString
+              view(boundForm, NormalMode, fakeDraftId, false)(request, messages).toString
 
             application.stop()
         }

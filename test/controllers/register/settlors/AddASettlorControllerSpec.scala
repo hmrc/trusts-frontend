@@ -102,7 +102,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(yesNoForm, NormalMode, fakeDraftId, Some(hint))(fakeRequest, messages).toString
+          view(yesNoForm, NormalMode, fakeDraftId, Some(hint))(request, messages).toString
 
         application.stop()
       }
@@ -152,7 +152,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId, Some(hint))(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId, Some(hint))(request, messages).toString
 
         application.stop()
       }
@@ -173,7 +173,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addSettlorForm, NormalMode, fakeDraftId,Nil, settlors, heading = "Do you want to add a settlor?", Some(hint))(fakeRequest, messages).toString
+          view(addSettlorForm, NormalMode, fakeDraftId,Nil, settlors, heading = "Do you want to add a settlor?", Some(hint))(request, messages).toString
 
         application.stop()
       }
@@ -221,7 +221,7 @@ class AddASettlorControllerSpec extends RegistrationSpecBase {
             settlors,
             heading = "Add a settlor",
             Some(hint)
-          )(fakeRequest, messages).toString
+          )(request, messages).toString
 
         application.stop()
       }

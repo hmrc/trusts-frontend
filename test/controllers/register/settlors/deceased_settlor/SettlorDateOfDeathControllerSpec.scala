@@ -59,7 +59,7 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, fullName)(request, messages).toString
 
       application.stop()
     }
@@ -80,7 +80,7 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, fullName)(request, messages).toString
 
       application.stop()
     }
@@ -149,7 +149,7 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, fullName)(request, messages).toString
 
       application.stop()
     }
@@ -191,7 +191,7 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId, fullName)(request, messages).toString
 
         application.stop()
       }
@@ -231,7 +231,7 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, NormalMode, fakeDraftId, fullName)(fakeRequest, messages).toString
+          view(boundForm, NormalMode, fakeDraftId, fullName)(request, messages).toString
 
         application.stop()
       }

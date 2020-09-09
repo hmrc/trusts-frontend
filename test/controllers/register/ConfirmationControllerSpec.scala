@@ -81,7 +81,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
 
             content must include(agentUrl)
 
@@ -108,7 +108,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
 
             content must include(agentUrl)
 
@@ -139,7 +139,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
 
             content mustNot include(agentUrl)
 
@@ -166,7 +166,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
 
             content mustNot include(agentUrl)
 
@@ -198,7 +198,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
 
             application.stop()
           }
@@ -221,7 +221,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
 
             application.stop()
           }
@@ -247,7 +247,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
 
             application.stop()
           }
@@ -270,7 +270,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(fakeRequest, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
 
             application.stop()
           }

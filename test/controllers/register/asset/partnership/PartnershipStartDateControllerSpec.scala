@@ -55,7 +55,7 @@ class PartnershipStartDateControllerSpec extends RegistrationSpecBase with Index
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form, NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -75,7 +75,7 @@ class PartnershipStartDateControllerSpec extends RegistrationSpecBase with Index
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -119,7 +119,7 @@ class PartnershipStartDateControllerSpec extends RegistrationSpecBase with Index
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }

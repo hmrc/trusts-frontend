@@ -54,7 +54,7 @@ class OtherAssetValueControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, index, description)(fakeRequest, messages).toString
+        view(form, NormalMode, fakeDraftId, index, description)(request, messages).toString
 
       application.stop()
     }
@@ -75,7 +75,7 @@ class OtherAssetValueControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, description)(fakeRequest, messages).toString
+        view(form.fill(validAnswer), NormalMode, fakeDraftId, index, description)(request, messages).toString
 
       application.stop()
     }
@@ -114,7 +114,7 @@ class OtherAssetValueControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, index, description)(fakeRequest, messages).toString
+        view(boundForm, NormalMode, fakeDraftId, index, description)(request, messages).toString
 
       application.stop()
     }

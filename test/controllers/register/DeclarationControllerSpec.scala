@@ -144,7 +144,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       contentAsString(result) mustEqual
         view(form.fill(Declaration(FullName("First",None, "Last"), Some("email@email.com"))),
-          NormalMode,fakeDraftId,AffinityGroup.Agent)(fakeRequest, messages).toString
+          NormalMode,fakeDraftId,AffinityGroup.Agent)(request, messages).toString
 
       application.stop()
     }
@@ -255,7 +255,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId,AffinityGroup.Agent)(fakeRequest, messages).toString
+        view(boundForm, NormalMode,fakeDraftId,AffinityGroup.Agent)(request, messages).toString
 
       application.stop()
     }

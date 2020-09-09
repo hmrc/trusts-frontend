@@ -56,7 +56,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(Nil)(fakeRequest, messages).toString
+          view(Nil)(request, messages).toString
 
         application.stop()
       }
@@ -102,7 +102,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(draft)(fakeRequest, messages).toString
+          view(draft)(request, messages).toString
 
         application.stop()
       }

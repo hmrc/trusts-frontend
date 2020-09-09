@@ -38,7 +38,7 @@ class AccessibilityStatementControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view("%2Fsome%2Freferring%2Furi")(fakeRequest, messages).toString
+        view("%2Fsome%2Freferring%2Furi")(request, messages).toString
 
       application.stop()
     }

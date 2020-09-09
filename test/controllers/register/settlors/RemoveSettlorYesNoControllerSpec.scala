@@ -89,7 +89,7 @@ class RemoveSettlorYesNoControllerSpec extends RegistrationSpecBase {
             fakeDraftId,
             routes.RemoveSettlorYesNoController.onSubmitDeceased(fakeDraftId),
             name.toString
-          )(fakeRequest, messages).toString
+          )(request, messages).toString
 
         application.stop()
       }
@@ -114,7 +114,7 @@ class RemoveSettlorYesNoControllerSpec extends RegistrationSpecBase {
               fakeDraftId,
               routes.RemoveSettlorYesNoController.onSubmitLiving(index, fakeDraftId),
               name.toString
-            )(fakeRequest, messages).toString
+            )(request, messages).toString
 
           application.stop()
         }
@@ -137,7 +137,7 @@ class RemoveSettlorYesNoControllerSpec extends RegistrationSpecBase {
               fakeDraftId,
               routes.RemoveSettlorYesNoController.onSubmitLiving(index, fakeDraftId),
               businessName
-            )(fakeRequest, messages).toString
+            )(request, messages).toString
 
           application.stop()
         }
@@ -270,7 +270,7 @@ class RemoveSettlorYesNoControllerSpec extends RegistrationSpecBase {
           fakeDraftId,
           routes.RemoveSettlorYesNoController.onSubmitLiving(index, fakeDraftId),
           "the settlor"
-        )(fakeRequest, messages).toString
+        )(request, messages).toString
 
       application.stop()
     }
