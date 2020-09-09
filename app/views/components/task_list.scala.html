@@ -19,23 +19,20 @@
 
 @(sections: List[Task], additionalSections: List[Task])(implicit messages: Messages)
 
-<ol role="list" class="app-task-list">
-    <li>
-        <h2 id="task-list--heading" class="app-task-list__section">@messages("taskList.sections.heading")</h2>
 
-        <ul class="app-task-list__items">
-            @for(task <- sections){
-               @components.task(task)
-            }
-        </ul>
-    </li>
-    <li>
-        <h2 id="task-list-additional--heading" class="app-task-list__section">@messages("taskList.additionalSections.heading")</h2>
+<h2 id="task-list--heading" class="app-task-list__section">@messages("taskList.sections.heading")</h2>
 
-        <ul class="app-task-list__items">
-            @for(task <- additionalSections){
-               @components.task(task)
-            }
-        </ul>
-    </li>
-</ol>
+<ul class="app-task-list__items">
+    @for(task <- sections){
+       @components.task(task)
+    }
+</ul>
+
+<h2 id="task-list-additional--heading" class="app-task-list__section">@messages("taskList.additionalSections.heading")</h2>
+
+<ul class="app-task-list__items">
+    @for(task <- additionalSections){
+       @components.task(task)
+    }
+</ul>
+
