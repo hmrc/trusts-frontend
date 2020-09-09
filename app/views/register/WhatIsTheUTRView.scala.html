@@ -31,17 +31,18 @@
 
         @components.error_summary(form.errors)
 
-        @components.input_text(
+        @components.input_utr(
             field = form("value"),
             label = messages("whatIsTheUTR.heading"),
             labelAsHeading = true,
             hint = Some(messages("whatIsTheUTR.hint")),
             readerHint = Some(messages("whatIsTheUTR.hint.reader")),
             labelClass = Some("heading-large"),
-            inputMode = Some("numeric")
+            inputMode = Some("numeric"),
+            optionalHtmlContent = Some(
+                Html(s"""<p>${messages("whatIsTheUTR.linkMessage")} <a href="https://www.gov.uk/find-lost-utr-number" target="_blank">${messages("whatIsTheUTR.linkText")}</a>.</p>""")
+            )
         )
-
-        <p>@messages("whatIsTheUTR.linkMessage") <a href="https://www.gov.uk/find-lost-utr-number" target="_blank">@messages("whatIsTheUTR.linkText")</a>.</p>
 
         @components.submit_button()
     }
