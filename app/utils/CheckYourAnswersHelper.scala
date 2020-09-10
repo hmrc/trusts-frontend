@@ -22,6 +22,7 @@ import javax.inject.Inject
 import mapping.reads._
 import models.NormalMode
 import models.core.UserAnswers
+import models.registration.Matched.Success
 import pages.register._
 import pages.register.agents._
 import pages.register.asset.WhatKindOfAssetPage
@@ -452,10 +453,19 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
   }
 
   def trustDetails: Option[Seq[AnswerSection]] = {
-    val questions = Seq(
-      trustName(canEdit),
-      whenTrustSetup
-    ).flatten
+    val isExistingTrust: Boolean = userAnswers.get(ExistingTrustMatched).contains(Success)
+
+    val existingTrustRows = if (isExistingTrust) {
+      Seq(
+        trustRegisteredWithUkAddress,
+        postcodeForTheTrust,
+        whatIsTheUTR
+      )
+    } else {
+      Nil
+    }
+
+    val questions = (trustName(canEdit) +: (existingTrustRows :+ whenTrustSetup)).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(messages("answerPage.section.trustsDetails.heading"))))) else None
   }
@@ -1220,6 +1230,15 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
         currency(x),
         Some(controllers.register.asset.other.routes.OtherAssetValueController.onPageLoad(NormalMode, index, draftId).url),
         description,
+        canEdit = canEdit
+      )
+  }
+
+  def trustRegisteredWithUkAddress: Option[AnswerRow] = userAnswers.get(TrustRegisteredWithUkAddressYesNoPage) map {
+    x =>
+      AnswerRow(
+        "trustRegisteredWithUkAddress.checkYourAnswersLabel",
+        yesOrNo(x),
         canEdit = canEdit
       )
   }
