@@ -18,7 +18,7 @@ package controllers.register.agents
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
-import forms.AgentTelephoneNumber
+import forms.AgentTelephoneNumberFormProvider
 import models.NormalMode
 import models.core.UserAnswers
 import pages.register.agents.{AgentNamePage, AgentTelephoneNumberPage}
@@ -34,13 +34,13 @@ import scala.concurrent.Future
 
 class AgentTelephoneNumberControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new AgentTelephoneNumber()
+  val formProvider = new AgentTelephoneNumberFormProvider()
   val form: Form[String] = formProvider()
   val agencyName = "FirstName LastName"
 
   lazy val agentTelephoneNumberRoute: String = routes.AgentTelephoneNumberController.onPageLoad(NormalMode, fakeDraftId).url
 
-  "AgentTelephoneNumber Controller" must {
+  "TelephoneNumberFormProvider Controller" must {
 
     "return OK and the correct view for a GET" in {
 

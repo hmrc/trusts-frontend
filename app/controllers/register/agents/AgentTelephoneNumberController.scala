@@ -18,7 +18,7 @@ package controllers.register.agents
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import forms.AgentTelephoneNumber
+import forms.AgentTelephoneNumberFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
 import navigation.Navigator
@@ -41,7 +41,7 @@ class AgentTelephoneNumberController @Inject()(
                                                 getData: DraftIdRetrievalActionProvider,
                                                 requireData: RegistrationDataRequiredAction,
                                                 requiredAnswer: RequiredAnswerActionProvider,
-                                                formProvider: AgentTelephoneNumber,
+                                                formProvider: AgentTelephoneNumberFormProvider,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: AgentTelephoneNumberView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
