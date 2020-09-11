@@ -40,7 +40,7 @@ class AgentTelephoneNumberControllerSpec extends RegistrationSpecBase {
 
   lazy val agentTelephoneNumberRoute: String = routes.AgentTelephoneNumberController.onPageLoad(NormalMode, fakeDraftId).url
 
-  "TelephoneNumberFormProvider Controller" must {
+  "AgentTelephoneNumber Controller" must {
 
     "return OK and the correct view for a GET" in {
 

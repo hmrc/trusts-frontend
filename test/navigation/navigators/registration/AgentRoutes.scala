@@ -60,7 +60,7 @@ trait AgentRoutes {
       }
     }
 
-    "go to TelephoneNumberFormProvider from AgentUKAddress Page" in {
+    "go to AgentTelephoneNumber from AgentUKAddress Page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(AgentUKAddressPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
@@ -77,7 +77,7 @@ trait AgentRoutes {
       }
     }
 
-    "go to TelephoneNumberFormProvider from AgentInternationalAddress Page" in {
+    "go to AgentTelephoneNumber from AgentInternationalAddress Page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
           navigator.nextPage(AgentInternationalAddressPage, NormalMode, fakeDraftId, AffinityGroup.Agent)(userAnswers)
@@ -85,7 +85,7 @@ trait AgentRoutes {
       }
     }
 
-    "go to CheckAgentAnswer Page from TelephoneNumberFormProvider page" in {
+    "go to CheckAgentAnswer Page from AgentTelephoneNumber page" in {
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
 
