@@ -22,7 +22,6 @@ import play.api.data.FormError
 class AgentTelephoneNumberFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "agentTelephoneNumber.error.required"
-  val lengthKey = "agentTelephoneNumber.error.length"
   val invalidCharKey = "agentTelephoneNumber.error.invalid.characters"
   val minLength = 6
 
