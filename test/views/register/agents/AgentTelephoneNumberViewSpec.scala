@@ -16,7 +16,7 @@
 
 package views.register.agents
 
-import forms.AgentTelephoneNumber
+import forms.AgentTelephoneNumberFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -29,7 +29,7 @@ class AgentTelephoneNumberViewSpec extends StringViewBehaviours {
   val agencyName = "FirstName LastName"
   val hintKey = "agentTelephoneNumber.hint"
 
-  val form = new AgentTelephoneNumber()()
+  val form = new AgentTelephoneNumberFormProvider()()
 
   "AgentTelephoneNumberView view" must {
 
