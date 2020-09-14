@@ -18,12 +18,12 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import wolfendale.scalacheck.regexp.RegexpGen
 
 class AgentTelephoneNumberFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "agentTelephoneNumber.error.required"
   val invalidCharKey = "agentTelephoneNumber.error.invalid.characters"
-  val minLength = 6
 
   val form = new AgentTelephoneNumberFormProvider()()
 
@@ -34,7 +34,7 @@ class AgentTelephoneNumberFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsLongerThan(minLength)
+      validDataGenerator = RegexpGen.from(Validation.telephoneRegex)
     )
 
     behave like mandatoryField(
@@ -49,19 +49,10 @@ class AgentTelephoneNumberFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
 
-    behave like fieldWithRegexpWithGenerator(
+    behave like telephoneNumberField(
       form,
       fieldName,
-      regexp = Validation.telephoneRegex,
-      generator = stringsLongerThan(minLength),
-      error = FormError(fieldName, invalidCharKey, Seq(Validation.telephoneRegex))
-    )
-
-    behave like fieldWithMinLength(
-      form = form,
-      fieldName = fieldName,
-      minLength = minLength,
-      lengthError = FormError(fieldName, invalidCharKey, Seq(minLength))
+      requiredError = FormError(fieldName, invalidCharKey, Seq(fieldName))
     )
   }
 }
