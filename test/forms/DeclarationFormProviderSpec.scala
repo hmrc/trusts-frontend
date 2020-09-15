@@ -113,15 +113,6 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
   ".email" must {
 
     val fieldName = "email"
-    val lengthKey = "declaration.error.email.length"
-    val maxLength = 35
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
 
     behave like optionalField(
       form,

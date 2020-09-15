@@ -30,7 +30,6 @@ class DeclarationFormProvider @Inject() extends Mappings {
         "" -> fullName,
         "email" -> optional(text().verifying(
           firstError(
-            maxLength(35, s"declaration.error.email.length"),
             regexp(Validation.emailRegex, s"declaration.error.email.invalid"))
         ))
       )(Declaration.apply)(Declaration.unapply)
