@@ -35,30 +35,27 @@
 
         @components.error_summary(form.errors)
 
-        <fieldset>
+        <legend>
+            @components.heading("settlorIndividualName.heading")
+        </legend>
 
-            <legend>
-                @components.heading("settlorIndividualName.heading")
-            </legend>
+        @components.input_text(
+            field = form("firstName"),
+            label = messages("settlorIndividualName.firstName"),
+            autocomplete = Some("given-name")
+        )
 
-            @components.input_text(
-                field = form("firstName"),
-                label = messages("settlorIndividualName.firstName"),
-                autocomplete = Some("given-name")
-            )
+        @components.input_text(
+            field = form("middleName"),
+            label = messages("settlorIndividualName.middleName"),
+            autocomplete = Some("additional-name")
+        )
 
-            @components.input_text(
-                field = form("middleName"),
-                label = messages("settlorIndividualName.middleName"),
-                autocomplete = Some("additional-name")
-            )
-
-            @components.input_text(
-                field = form("lastName"),
-                label = messages("settlorIndividualName.lastName"),
-                autocomplete = Some("family-name")
-            )
-        </fieldset>
+        @components.input_text(
+            field = form("lastName"),
+            label = messages("settlorIndividualName.lastName"),
+            autocomplete = Some("family-name")
+        )
 
         @components.submit_button()
     }
