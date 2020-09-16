@@ -832,7 +832,7 @@ answerPage.section.propertyOrLandAsset.subheading = Property or land
 answerPage.section.partnershipAsset.subheading = Partnership
 answerPage.section.otherAsset.subheading = Other
 answerPage.agentClientRef = Client reference number: {0}
-answerPage.section.other.individual.heading = Other individual
+answerPage.section.trustType.heading = Trust type
 
 sharePortfolioName.title = What is the share portfolio’s name?
 sharePortfolioName.heading = What is the share portfolio’s name?
@@ -1244,28 +1244,6 @@ settlorInfo.bulletpoint8 = if it’s an employer-financed retirement scheme, and
 settlorInfo.bulletpoint9 = the business type (trading or investment) if the scheme’s settlor is a business
 settlorInfo.bulletpoint10 = if the business had existed for at least 2 years when any asset was added to the trust
 
-individualProtectorName.checkYourAnswersLabel = What is the protector’s name?
-individualProtectorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
-individualProtectorDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-individualProtectorNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
-individualProtectorNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
-individualProtectorAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-individualProtectorAddressUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
-individualProtectorAddress.checkYourAnswersLabel = What is {0}’s address?
-individualProtectorPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
-individualProtectorPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
-
-otherIndividualName.checkYourAnswersLabel = What is the name of the individual?
-otherIndividualDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
-otherIndividualDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-otherIndividualNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
-otherIndividualNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
-otherIndividualAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-otherIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
-otherIndividualAddress.checkYourAnswersLabel = What is {0}’s address?
-otherIndividualPassportIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
-otherIndividualPassportIDCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
-
 businessProtector.name.checkYourAnswersLabel = What is the business’s name?
 businessProtector.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 businessProtector.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
@@ -1287,9 +1265,6 @@ individualProtector.idCardDetails.checkYourAnswersLabel = What are {0}’s ID ca
 
 protectorIndividualOrBusiness.checkYourAnswersLabel = Is the protector an individual or a business?
 
-answerPage.section.protectors.heading = Protectors
-answerPage.section.protectors.subheading = Protector {0}
-
 otherIndividual.name.checkYourAnswersLabel = What is the other individual’s name?
 otherIndividual.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 otherIndividual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
@@ -1302,10 +1277,6 @@ otherIndividual.passportDetails.checkYourAnswersLabel = What are {0}’s passpor
 otherIndividual.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 otherIndividual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 
-answerPage.section.protectors.heading = Other individuals
-answerPage.section.protectors.subheading = Other individual {0}
-
-answerPage.section.trustType.heading = Trust type
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
 employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
 
@@ -1499,7 +1470,6 @@ trustee.individual.name.checkYourAnswersLabel = What is the trustee’s name?
 trustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
 trustee.individual.ninoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 trustee.individual.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
-trustee.individual.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 trustee.individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 trustee.individual.nino.checkYourAnswersLabel = What is {0}’s National Insurance number?
 trustee.individual.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
@@ -1532,7 +1502,6 @@ leadTrustee.individual.ukAddress.checkYourAnswersLabel = What is {0}’s address
 leadTrustee.individual.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
 leadTrustee.individual.trusteeDetailsChoice.checkYourAnswersLabel = Which of {0}’s details can you provide?
 leadTrustee.individual.iDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
-leadTrustee.individual.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
 leadTrustee.individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
 leadTrustee.individual.nino.checkYourAnswersLabel = What is {0}’s National Insurance number?
 leadTrustee.individual.liveInTheUkYesNo.checkYourAnswersLabel = Does {0} live in the UK?
