@@ -33,7 +33,7 @@ trait SuitabilityRoutes {
   def suitabilityRoutes()(implicit navigator : Navigator): Unit = {
 
     "Any tax liability in current tax year?" when {
-      "-> YES -> Before you continue" ignore {
+      "-> YES -> Before you continue" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
             val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
@@ -54,7 +54,7 @@ trait SuitabilityRoutes {
     }
 
     "Any undeclared tax liability?" when {
-      "-> YES -> Before you continue" ignore {
+      "-> YES -> Before you continue" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
             val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, true).success.value
@@ -63,7 +63,7 @@ trait SuitabilityRoutes {
               .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
         }
       }
-      "-> NO -> You do not need to register" ignore {
+      "-> NO -> You do not need to register" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
             val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, false).success.value

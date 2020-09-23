@@ -20,7 +20,7 @@ import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class AgentTelephoneNumber @Inject() extends Mappings {
+class AgentTelephoneNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
@@ -28,7 +28,8 @@ class AgentTelephoneNumber @Inject() extends Mappings {
         .verifying(
           firstError(
             isNotEmpty("value", "agentTelephoneNumber.error.required"),
-            regexp(Validation.telephoneRegex, "agentTelephoneNumber.error.invalid.characters")
-          ))
+            isTelephoneNumberValid("value", "agentTelephoneNumber.error.invalid.characters")
+          )
+        )
     )
 }
