@@ -447,8 +447,10 @@ agentTelephoneNumber.hint = We will use this number to contact you about this tr
 agentTelephoneNumber.error.required = Enter the agency’s telephone number
 agentTelephoneNumber.error.invalid.characters = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
-assetInterruptPage.title = Assets: information you’ll need to provide
-assetInterruptPage.heading = Assets: information you’ll need to provide
+assetInterruptPage.title = Information you’ll need to provide
+assetInterruptPage.heading = Information you’ll need to provide
+assetInterruptPage.caption = Assets
+assetInterruptPage.caption.hidden = This section is
 
 assetInterruptPage.subheading1 = Money
 assetInterruptPage.paragraph1 = Tell us the total amount of money in the trust. If more than one amount has been added to the trust, add them together.
