@@ -1222,9 +1222,10 @@ removeSettlor.heading = Are you sure you want to remove {0}?
 removeSettlor.checkYourAnswersLabel = Are you sure you want to remove {0}?
 removeSettlor.error.required = Select yes if you want to remove the settlor
 
-settlorInfo.title = Settlor: information you’ll need to provide
-settlorInfo.heading = Settlor: information you’ll need to provide
+settlorInfo.title = Information you’ll need to provide
+settlorInfo.heading = Information you’ll need to provide
 settlorInfo.caption = Settlors
+settlorInfo.caption.hidden = This section is
 settlorInfo.subheading1 = Individual settlor
 settlorInfo.paragraph1 = If the trust was created after the settlor died, tell us their name. If you know more details, tell us their:
 settlorInfo.bulletpoint1 = date of death
