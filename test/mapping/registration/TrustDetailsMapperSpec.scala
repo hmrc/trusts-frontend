@@ -53,7 +53,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
       "must able to create TrustDetails for" - {
 
         "a UK resident trust" in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
 
           val userAnswers =
             emptyUserAnswers
@@ -70,16 +70,8 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
             lawCountry = None,
-            administrationCountry = Some("GB"),
-            residentialStatus = Some(ResidentialStatusType(
-              uk = Some(
-                UkType(
-                  scottishLaw = true,
-                  preOffShore = None
-                )
-              ),
-              nonUK = None
-            )),
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -89,7 +81,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
         }
 
         "an Employment Related trust with an Employer financed RBS" in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
           val index = 0
           val userAnswers =
             emptyUserAnswers
@@ -109,16 +101,8 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
             lawCountry = None,
-            administrationCountry = Some("GB"),
-            residentialStatus = Some(ResidentialStatusType(
-              uk = Some(
-                UkType(
-                  scottishLaw = true,
-                  preOffShore = None
-                )
-              ),
-              nonUK = None
-            )),
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = EmployeeRelated,
             deedOfVariation = None,
             interVivos = None,
@@ -127,7 +111,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
         }
         "a UK resident trust with trust previously resident offshore " in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
 
           val userAnswers =
             emptyUserAnswers
@@ -145,16 +129,8 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
             lawCountry = None,
-            administrationCountry = Some("GB"),
-            residentialStatus = Some(ResidentialStatusType(
-              uk = Some(
-                UkType(
-                  scottishLaw = true,
-                  preOffShore = Some("FR")
-                )
-              ),
-              nonUK = None
-            )),
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -164,7 +140,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
         }
 
         "a non-UK governed, non-UK admin, for schedule 5A, resident type domiciled" in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
 
           val userAnswers =
             emptyUserAnswers
@@ -182,13 +158,9 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
-            lawCountry = Some("FR"),
-            administrationCountry = Some("FR"),
-            residentialStatus = Some(ResidentialStatusType(
-              uk = None,
-              nonUK = Some(NonUKType(true, None, None, Some("Non Resident Domiciled")))
-            )),
-
+            lawCountry = None,
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -198,7 +170,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
         }
 
         "a non-UK governed, UK admin, not for schedule 5A, Inheritance tax act 1984" in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
 
           val userAnswers =
             emptyUserAnswers
@@ -216,13 +188,9 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
-            lawCountry = Some("FR"),
-            administrationCountry = Some("GB"),
-            residentialStatus = Some(ResidentialStatusType(
-              uk = None,
-              nonUK = Some(NonUKType(false, Some(true), Some(true), None))
-            )),
-
+            lawCountry = None,
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -232,7 +200,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
         }
 
         "a non-UK governed, UK admin, not for schedule 5A, no Inheritance tax act 1984" in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
 
           val userAnswers =
             emptyUserAnswers
@@ -249,13 +217,9 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
-            lawCountry = Some("FR"),
-            administrationCountry = Some("GB"),
-            residentialStatus = Some(ResidentialStatusType(
-              uk = None,
-              nonUK = Some(NonUKType(false, Some(false), None, None))
-            )),
-
+            lawCountry = None,
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -265,7 +229,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
         }
 
         "a UK resident with mixed trustees when a settlor is based in the UK" in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
 
           val userAnswers =
             emptyUserAnswers
@@ -283,17 +247,9 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
-            lawCountry = Some("GB"),
-            administrationCountry = Some("GB"),
-            residentialStatus = Some(ResidentialStatusType(
-              uk = Some(
-                UkType(
-                  scottishLaw = true,
-                  preOffShore = None
-                )
-              ),
-              nonUK = None
-            )),
+            lawCountry = None,
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -303,7 +259,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
         }
 
         "a non-UK resident with mixed trustees when all settlors are international" in {
-          val date = LocalDate.of(2010, 10, 10)
+          val date = LocalDate.now
 
           val userAnswers =
             emptyUserAnswers
@@ -322,13 +278,9 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
             startDate = date,
-            lawCountry = Some("FR"),
-            administrationCountry = Some("GB"),
-            residentialStatus = Some(
-              ResidentialStatusType(
-                uk = None,
-                nonUK = Some(NonUKType(false,Some(false),None,None))
-              )),
+            lawCountry = None,
+            administrationCountry = None,
+            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -340,7 +292,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
         "a deed of variation for" - {
 
           "an answer taken from DeedOfVariation" in {
-            val date = LocalDate.of(2010, 10, 10)
+            val date = LocalDate.now
 
             val userAnswers =
               emptyUserAnswers
@@ -358,16 +310,8 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
               startDate = date,
               lawCountry = None,
-              administrationCountry = Some("GB"),
-              residentialStatus = Some(ResidentialStatusType(
-                uk = Some(
-                  UkType(
-                    scottishLaw = true,
-                    preOffShore = None
-                  )
-                ),
-                nonUK = None
-              )),
+              administrationCountry = None,
+              residentialStatus = None,
               typeOfTrust = WillTrustOrIntestacyTrust,
               deedOfVariation = Some(DeedOfVariation.ReplacedWill),
               interVivos = None,
@@ -377,7 +321,7 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           }
 
           "an answer taken from AdditionToAWillTrust" in {
-            val date = LocalDate.of(2010, 10, 10)
+            val date = LocalDate.now
 
             val userAnswers =
               emptyUserAnswers
@@ -395,16 +339,8 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
               startDate = date,
               lawCountry = None,
-              administrationCountry = Some("GB"),
-              residentialStatus = Some(ResidentialStatusType(
-                uk = Some(
-                  UkType(
-                    scottishLaw = true,
-                    preOffShore = None
-                  )
-                ),
-                nonUK = None
-              )),
+              administrationCountry = None,
+              residentialStatus = None,
               typeOfTrust = WillTrustOrIntestacyTrust,
               deedOfVariation = Some(DeedOfVariation.AdditionToWill),
               interVivos = None,
@@ -417,38 +353,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
 
       }
 
-      "must not able  to create TrustDetails for a non-UK governed, UK admin, not for schedule 5A and no inheritance tax available" in {
-        val date = LocalDate.of(2010, 10, 10)
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(TrustNamePage, "New Trust").success.value
-            .set(WhenTrustSetupPage, date).success.value
-            .set(GovernedInsideTheUKPage, false).success.value
-            .set(CountryGoverningTrustPage, "FR").success.value
-            .set(AdministrationInsideUKPage, true).success.value
-            .set(TrusteesBasedInTheUKPage, NonUkBasedTrustees).success.value
-            .set(RegisteringTrustFor5APage, false).success.value
-
-        val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
-
-        trustDetailsMapper.build(uaWithSettlor) mustBe None
-
-      }
-
-      "must not able to create TrustDetails when only trust name and setup details available" in {
-        val date = LocalDate.of(2010, 10, 10)
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(TrustNamePage, "New Trust").success.value
-            .set(WhenTrustSetupPage, date).success.value
-
-        val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
-
-        trustDetailsMapper.build(uaWithSettlor) mustBe None
-
-      }
     }
 
   }
