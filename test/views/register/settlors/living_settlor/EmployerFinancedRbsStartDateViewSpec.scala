@@ -18,13 +18,12 @@ package views.register.settlors.living_settlor
 
 import java.time.LocalDate
 
-import forms.{DateOfBirthFormProvider, EfrbsStartDateFormProvider}
+import forms.EfrbsStartDateFormProvider
 import models.NormalMode
-import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.QuestionViewBehaviours
-import views.html.register.settlors.living_settlor.{EmployerFinancedRbsStartDateView, SettlorIndividualDateOfBirthView}
+import views.html.register.settlors.living_settlor.EmployerFinancedRbsStartDateView
 
 class EmployerFinancedRbsStartDateViewSpec extends QuestionViewBehaviours[LocalDate] {
 

@@ -16,7 +16,6 @@
 
 package models.registration.pages
 
-import models.registration.pages.AddASettlor.values
 import models.{Enumerable, WithName}
 import viewmodels.RadioOption
 

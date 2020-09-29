@@ -17,7 +17,7 @@
 package mapping.reads
 
 import models.core.pages.Address
-import play.api.libs.json.{JsResult, JsSuccess, Reads, __}
+import play.api.libs.json.{JsSuccess, Reads, __}
 
 final case class BusinessSettlor(name: String,
                                  utr: Option[String],

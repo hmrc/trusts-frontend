@@ -19,18 +19,15 @@ package repositories
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
-import models.RegistrationSubmission
-import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
+import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus.Complete
-import models.registration.pages.Status
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
 import play.api.libs.json._
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.DateFormatter
-import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
+import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -21,7 +21,7 @@ import java.time.{LocalDate, ZoneOffset}
 import base.RegistrationSpecBase
 import controllers.IndexValidation
 import controllers.register.routes._
-import forms.{DateOfBirthFormProvider, EfrbsStartDateFormProvider}
+import forms.EfrbsStartDateFormProvider
 import models.NormalMode
 import models.core.pages.FullName
 import pages.register.settlors.living_settlor.trust_type.EfrbsStartDatePage

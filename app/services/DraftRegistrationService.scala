@@ -18,7 +18,6 @@ package services
 
 import java.util.UUID
 
-import akka.stream.Materializer
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import models.core.{ReadOnlyUserAnswers, UserAnswers}
@@ -28,16 +27,13 @@ import pages.register.beneficiaries.individual.RoleInCompanyPage
 import repositories.RegistrationsRepository
 import sections.beneficiaries.IndividualBeneficiaries
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import viewmodels.RegistrationAnswerSections
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DraftRegistrationService @Inject()(
-                                          registrationsRepository: RegistrationsRepository,
-                                          submissionDraftConnector: SubmissionDraftConnector,
-                                          auditConnector: AuditConnector
-                                        )(implicit ec: ExecutionContext, m: Materializer) {
+class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsRepository,
+                                         submissionDraftConnector: SubmissionDraftConnector)
+                                        (implicit ec: ExecutionContext) {
 
   private def build[A](request: OptionalRegistrationDataRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
     val draftId = UUID.randomUUID().toString

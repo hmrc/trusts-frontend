@@ -23,7 +23,6 @@ import javax.inject.Inject
 import models.core.UserAnswers
 import models.registration.pages.WhatKindOfAsset
 import models.registration.pages.WhatKindOfAsset._
-import models.requests.RegistrationDataRequest
 import models.{Enumerable, Mode}
 import navigation.Navigator
 import pages.register.asset.WhatKindOfAssetPage

@@ -80,10 +80,6 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       "transforms received from connector" in {
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-        val draftId = "DraftId"
-
-        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
-
         val mockConnector = mock[SubmissionDraftConnector]
 
         val repository = createRepository(mockConnector)
@@ -100,8 +96,6 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
             Some("reference2")
           )
         )
-
-        val response = SubmissionDraftResponse(LocalDateTime.now, Json.toJson(userAnswers), None)
 
         when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
 

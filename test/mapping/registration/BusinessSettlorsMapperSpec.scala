@@ -16,8 +16,6 @@
 
 package mapping.registration
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping._

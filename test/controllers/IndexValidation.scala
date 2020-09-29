@@ -81,7 +81,7 @@ trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks
                                        answers: List[(A, Int)],
                                        application: Application,
                                        requestForIndex: Int => Request[B]
-                                     )(implicit writes: Writes[A], writeable: Writeable[B]) = {
+                                     )(implicit writeable: Writeable[B]) = {
     val gen = for {
       index <- Gen.oneOf(
         Gen.chooseNum(answers.size + 1, answers.size + 100),

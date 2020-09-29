@@ -18,7 +18,7 @@ package forms
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.registration.pages.{DeedOfVariation, KindOfTrust}
+import models.registration.pages.DeedOfVariation
 import play.api.data.Form
 
 class DeedOfVariationFormProvider @Inject() extends Mappings {

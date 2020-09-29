@@ -18,9 +18,9 @@ package controllers.register.settlors.deceased_settlor
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
-import forms.{AddASettlorFormProvider, YesNoFormProvider}
+import forms.AddASettlorFormProvider
 import models.registration.pages.AddASettlor
-import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
+import pages.register.settlors.AddASettlorPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.AddAnotherSettlorYesNoView

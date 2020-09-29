@@ -16,15 +16,14 @@
 
 package controllers.register.settlors.living_settlor.business
 
-import controllers.actions._
 import controllers.actions.register.settlors.living_settlor.business.NameRequiredActionProvider
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import controllers.filters.IndexActionFilterProvider
 import forms.UtrFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode}
+import models.Mode
 import navigation.Navigator
-import pages.register.settlors.living_settlor.business.{SettlorBusinessNamePage, SettlorBusinessUtrPage}
+import pages.register.settlors.living_settlor.business.SettlorBusinessUtrPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

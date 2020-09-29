@@ -18,7 +18,7 @@ package views.register
 
 import java.time.{LocalDate, LocalDateTime}
 
-import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.core.pages.{FullName, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
@@ -90,7 +90,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
         .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
 
     val name = "First Last"
-    val trusteeName = "TrusteeFirst TrusteeLast"
     val yes = "Yes"
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))

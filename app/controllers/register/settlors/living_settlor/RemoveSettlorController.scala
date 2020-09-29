@@ -23,7 +23,6 @@ import forms.RemoveIndexFormProvider
 import javax.inject.Inject
 import models.core.pages.FullName
 import models.requests.RegistrationDataRequest
-import navigation.Navigator
 import pages.QuestionPage
 import pages.register.settlors.living_settlor.SettlorIndividualNamePage
 import play.api.i18n.{Messages, MessagesApi}
@@ -33,21 +32,15 @@ import repositories.RegistrationsRepository
 import sections.settlors.LivingSettlors
 import views.html.RemoveIndexView
 
-import scala.concurrent.ExecutionContext
-
-
-class RemoveSettlorController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         override val registrationsRepository: RegistrationsRepository,
-                                         navigator: Navigator,
-                                         identify: RegistrationIdentifierAction,
-                                         validateIndex : IndexActionFilterProvider,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: RegistrationDataRequiredAction,
-                                         override val formProvider: RemoveIndexFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         override val removeView: RemoveIndexView
-                                 )(implicit ec: ExecutionContext) extends RemoveIndexController {
+class RemoveSettlorController @Inject()(override val messagesApi: MessagesApi,
+                                        override val registrationsRepository: RegistrationsRepository,
+                                        identify: RegistrationIdentifierAction,
+                                        validateIndex: IndexActionFilterProvider,
+                                        getData: DraftIdRetrievalActionProvider,
+                                        requireData: RegistrationDataRequiredAction,
+                                        override val formProvider: RemoveIndexFormProvider,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        override val removeView: RemoveIndexView) extends RemoveIndexController {
 
   override def page(index: Int): QuestionPage[FullName] = SettlorIndividualNamePage(index)
 

@@ -19,7 +19,7 @@ package controllers.register.settlors.living_settlor
 import controllers.actions.register._
 import forms.AddASettlorFormProvider
 import javax.inject.Inject
-import models.{Enumerable, NormalMode}
+import models.NormalMode
 import models.registration.pages.AddASettlor
 import navigation.Navigator
 import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}

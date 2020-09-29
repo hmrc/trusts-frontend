@@ -17,9 +17,8 @@
 package models
 
 import models.registration.pages.DeedOfVariation.{AdditionToWill, ReplaceAbsolute, ReplacedWill}
-import models.registration.pages.{DeedOfVariation, ShareClass}
+import models.registration.pages.DeedOfVariation
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Gen
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
