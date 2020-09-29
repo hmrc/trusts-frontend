@@ -20,7 +20,7 @@ import base.RegistrationSpecBase
 import config.FrontendAppConfig
 import org.mockito.Matchers.any
 import org.mockito.Mockito._
-import play.api.mvc.{Action, AnyContent, Results}
+import play.api.mvc.{Action, AnyContent, DefaultActionBuilder, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
@@ -30,10 +30,10 @@ import scala.concurrent.Future
 class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
 
   type RetrievalType = Option[String] ~ Option[AffinityGroup] ~ Enrolments
-
+  val action: DefaultActionBuilder = app.injector.instanceOf[DefaultActionBuilder]
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
-  val fakeAction: Action[AnyContent] = Action { _ => Results.Ok }
+  val fakeAction: Action[AnyContent] = action { _ => Results.Ok }
 
   val utr = "0987654321"
 

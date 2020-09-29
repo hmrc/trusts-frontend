@@ -19,7 +19,7 @@ package views.register.confirmation.existingTrust
 import play.api.Application
 import utils.AccessibilityHelper.formatReferenceNumber
 import views.behaviours.ViewBehaviours
-import views.html.register.confirmation.existingTrust.{AgentView, IndividualView}
+import views.html.register.confirmation.existingTrust.IndividualView
 
 class IndividualViewSpec extends ViewBehaviours {
 

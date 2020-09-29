@@ -19,7 +19,7 @@ package base
 import config.FrontendAppConfig
 import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
-import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
+import mapping.registration.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}

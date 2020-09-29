@@ -16,13 +16,11 @@
 
 package controllers.register.settlors
 
-import controllers.actions._
 import controllers.actions.register._
 import forms.YesNoFormProvider
 import javax.inject.Inject
-import models.{Mode, NormalMode}
+import models.Mode
 import navigation.Navigator
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}

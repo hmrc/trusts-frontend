@@ -25,9 +25,9 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor._
+import pages.register.settlors.living_settlor.{RemoveSettlorPage => RemoveLivingSettlorPage, _}
 import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
-import pages.register.settlors.deceased_settlor.{RemoveSettlorPage => RemoveDeceasedSettlorPage, _}
+import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.trust_details._
@@ -56,8 +56,8 @@ trait PageGenerators {
   implicit lazy val arbitraryHoldoverReliefYesNoPage: Arbitrary[HoldoverReliefYesNoPage.type] =
     Arbitrary(HoldoverReliefYesNoPage)
 
-  implicit lazy val arbitraryRemoveSettlorPage: Arbitrary[RemoveSettlorPage] =
-    Arbitrary(RemoveSettlorPage(0))
+  implicit lazy val arbitraryRemoveSettlorPage: Arbitrary[RemoveLivingSettlorPage] =
+    Arbitrary(RemoveLivingSettlorPage(0))
 
   implicit lazy val arbitrarySettlorIndividualPassportYesNoPage: Arbitrary[SettlorIndividualPassportYesNoPage] =
     Arbitrary(SettlorIndividualPassportYesNoPage(0))

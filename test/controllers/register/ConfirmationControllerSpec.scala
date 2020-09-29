@@ -34,8 +34,6 @@ import scala.concurrent.Future
 
 class ConfirmationControllerSpec extends RegistrationSpecBase {
 
-  private val postHMRC = "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
-
   private def agentUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
 
   private val leadTrusteeInd = LeadTrusteeType(

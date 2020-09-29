@@ -23,8 +23,6 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.verify
 import pages.register.{PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
-import pages.register.asset.WhatKindOfAssetPage
-import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.trust_details.TrustNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

@@ -29,7 +29,6 @@ import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.DeedOfVariation.{ReplaceAbsolute, ReplacedWill}
 import models.registration.pages.KindOfBusiness.Trading
 import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement}
-import models.registration.pages.RoleInCompany.Employee
 import models.registration.pages.{AddASettlor, KindOfTrust}
 import navigation.Navigator
 import navigation.registration.LivingSettlorNavigator
@@ -38,7 +37,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.business._
 import pages.register.settlors.living_settlor.trust_type._
-import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, AddAnotherSettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
+import pages.register.settlors.{AddASettlorPage, AddASettlorYesNoPage, SetUpAfterSettlorDiedYesNoPage}
 
 trait LivingSettlorRoutes {
 

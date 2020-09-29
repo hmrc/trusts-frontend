@@ -18,7 +18,7 @@ package pages.register.trust_details
 
 import models.core.UserAnswers
 import models.registration.pages.TrusteesBasedInTheUK
-import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
+import models.registration.pages.TrusteesBasedInTheUK.{NonUkBasedTrustees, UKBasedTrustees}
 import pages.QuestionPage
 import pages.entitystatus.TrustDetailsStatus
 import play.api.libs.json.JsPath

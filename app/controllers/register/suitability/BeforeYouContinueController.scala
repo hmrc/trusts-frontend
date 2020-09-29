@@ -25,14 +25,12 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.suitability.BeforeYouContinueView
 
-import scala.concurrent.ExecutionContext
-
 class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              standardActionSets: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: BeforeYouContinueView
-                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                           ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
     standardActionSets.identifiedUserWithData(draftId)

@@ -17,7 +17,6 @@
 package viewmodels
 
 import generators.{Generators, ModelGenerators}
-import models.core.pages.UKAddress
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages.WhatKindOfAsset._
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks

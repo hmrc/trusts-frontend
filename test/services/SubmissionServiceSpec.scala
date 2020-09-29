@@ -19,7 +19,7 @@ package services
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType, RegistrationMapper}
+import mapping.registration.{AddressType, LeadTrusteeType, RegistrationMapper}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse

@@ -24,13 +24,10 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.AccessibilityStatementView
 
-import scala.concurrent.ExecutionContext
-
 class AccessibilityStatementController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              val controllerComponents: MessagesControllerComponents,
-                                             view: AccessibilityStatementView)
-                                             (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                             view: AccessibilityStatementView) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(userAction: String): Action[AnyContent] = Action {
     implicit request =>

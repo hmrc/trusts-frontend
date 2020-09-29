@@ -18,7 +18,7 @@ package views.register.settlors.living_settlor
 
 import java.time.{LocalDate, LocalDateTime}
 
-import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
+import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
@@ -95,7 +95,6 @@ class ConfirmationAnswerPageLivingSettlorViewSpec extends ViewBehaviours {
 
   private val trnDateTime : String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
   private val name = "First Last"
-  private val trusteeName = "TrusteeFirst TrusteeLast"
   private val yes = "Yes"
   private val no = "No"
 

@@ -18,7 +18,6 @@ package views.register.settlors.deceased_settlor
 
 import java.time.LocalDate
 
-import base.RegistrationSpecBase
 import forms.deceased_settlor.SettlorDateOfDeathFormProvider
 import models.NormalMode
 import models.core.pages.FullName
