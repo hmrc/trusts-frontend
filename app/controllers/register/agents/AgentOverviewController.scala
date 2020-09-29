@@ -16,7 +16,6 @@
 
 package controllers.register.agents
 
-import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
@@ -30,17 +29,15 @@ import views.html.register.agents.AgentOverviewView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgentOverviewController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         identify: RegistrationIdentifierAction,
-                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                         registrationsRepository: RegistrationsRepository,
-                                         config: FrontendAppConfig,
-                                         getData: DraftIdRetrievalActionProvider,
-                                         requireData: RegistrationDataRequiredAction,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: AgentOverviewView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
+                                        identify: RegistrationIdentifierAction,
+                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                        registrationsRepository: RegistrationsRepository,
+                                        getData: DraftIdRetrievalActionProvider,
+                                        requireData: RegistrationDataRequiredAction,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        view: AgentOverviewView)
+                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions = identify andThen hasAgentAffinityGroup()
 
@@ -53,7 +50,6 @@ class AgentOverviewController @Inject()(
   }
 
   def onSubmit() = actions.async {
-    implicit request =>
       Future.successful(Redirect(controllers.register.routes.CreateDraftRegistrationController.create()))
   }
 

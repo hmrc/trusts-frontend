@@ -18,7 +18,6 @@ package views.register.settlors.living_settlor.business
 
 import forms.UKAddressFormProvider
 import models.NormalMode
-import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.UkAddressViewBehaviours

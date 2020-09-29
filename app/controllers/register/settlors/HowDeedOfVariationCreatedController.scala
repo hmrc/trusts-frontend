@@ -16,14 +16,12 @@
 
 package controllers.register.settlors
 
-import controllers.actions._
 import controllers.actions.register._
 import forms.DeedOfVariationFormProvider
 import javax.inject.Inject
+import models.Mode
 import models.registration.pages.DeedOfVariation
-import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.living_settlor.trust_type.HowDeedOfVariationCreatedPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}

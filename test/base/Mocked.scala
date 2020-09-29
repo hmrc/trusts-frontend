@@ -17,7 +17,6 @@
 package base
 
 import models.RegistrationSubmission.AllStatus
-import models.registration.pages.Status.Completed
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when

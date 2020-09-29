@@ -19,9 +19,8 @@ package navigation.routes
 import controllers.register.routes
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.AddASettlor
 import pages.Page
-import pages.register.settlors.{AddASettlorPage, AddAnotherSettlorYesNoPage}
+import pages.register.settlors.AddAnotherSettlorYesNoPage
 import pages.register.settlors.deceased_settlor._
 import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup

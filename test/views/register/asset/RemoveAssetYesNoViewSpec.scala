@@ -17,13 +17,10 @@
 package views.register.asset
 
 import forms.YesNoFormProvider
-import models.NormalMode
-import models.core.pages.FullName
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
 import views.html.register.asset.RemoveAssetYesNoView
-import views.html.register.settlors.deceased_settlor.SettlorsNINoYesNoView
 
 class RemoveAssetYesNoViewSpec extends YesNoViewBehaviours {
 

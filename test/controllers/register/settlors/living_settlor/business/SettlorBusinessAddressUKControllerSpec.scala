@@ -21,7 +21,7 @@ import controllers.IndexValidation
 import controllers.register.routes._
 import forms.UKAddressFormProvider
 import models.NormalMode
-import models.core.pages.{FullName, UKAddress}
+import models.core.pages.UKAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.register.settlors.living_settlor.business.{SettlorBusinessAddressUKPage, SettlorBusinessNamePage}
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}

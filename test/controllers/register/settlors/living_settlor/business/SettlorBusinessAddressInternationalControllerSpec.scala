@@ -22,7 +22,7 @@ import controllers.register.routes._
 import forms.InternationalAddressFormProvider
 import models.NormalMode
 import models.core.UserAnswers
-import models.core.pages.{FullName, InternationalAddress}
+import models.core.pages.InternationalAddress
 import org.scalacheck.Arbitrary.arbitrary
 import pages.register.settlors.living_settlor.business.{SettlorBusinessAddressInternationalPage, SettlorBusinessNamePage}
 import play.api.Application

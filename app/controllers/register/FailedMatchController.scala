@@ -23,14 +23,11 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.FailedMatchView
 
-import scala.concurrent.ExecutionContext
-
 class FailedMatchController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: RegistrationIdentifierAction,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: FailedMatchView
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                       view: FailedMatchView) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(draftId: String): Action[AnyContent] = identify {
     implicit request =>

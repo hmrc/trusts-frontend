@@ -19,7 +19,6 @@ package forms.asset
 import forms.Validation
 import forms.assets.CurrentValueFormProvider
 import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
-import org.scalacheck.Gen
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 

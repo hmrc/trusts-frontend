@@ -18,7 +18,7 @@ package forms.living_settlor
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.registration.pages.{KindOfBusiness, KindOfTrust}
+import models.registration.pages.KindOfBusiness
 import play.api.data.Form
 
 class SettlorBusinessTypeFormProvider @Inject() extends Mappings {

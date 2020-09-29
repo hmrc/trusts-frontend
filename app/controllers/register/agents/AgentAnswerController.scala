@@ -30,8 +30,6 @@ import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.agents.AgentAnswerView
 
-import scala.concurrent.ExecutionContext
-
 class AgentAnswerController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: RegistrationIdentifierAction,
@@ -41,7 +39,7 @@ class AgentAnswerController @Inject()(
                                        requireData: RegistrationDataRequiredAction,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AgentAnswerView, countryOptions : CountryOptions
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                     ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
     identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData

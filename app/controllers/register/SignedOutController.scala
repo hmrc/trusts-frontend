@@ -22,15 +22,12 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 
-import scala.concurrent.{ExecutionContext, Future}
-
 class SignedOutController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
                                  frontendAppConfig: FrontendAppConfig
-                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                               ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = Action {
-    implicit request =>
       Redirect(frontendAppConfig.logoutUrl).withNewSession
   }
 }

@@ -16,7 +16,6 @@
 
 package controllers.register
 
-import config.FrontendAppConfig
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
 import javax.inject.Inject
@@ -40,13 +39,10 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
                                         requireData: RegistrationDataRequiredAction,
                                         formProvider: YesNoFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
-                                        view: TrustHaveAUTRView,
-                                        config : FrontendAppConfig
-                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                        view: TrustHaveAUTRView)
+                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
-
-  private val lostUtrKey: String = "trustHaveAUTR.link"
 
   val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 

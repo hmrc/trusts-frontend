@@ -25,7 +25,6 @@ import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
 import models.registration.pages.RegistrationStatus.InProgress
-import models.registration.pages.Status.Completed
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when, _}
 import pages.register.DeclarationPage

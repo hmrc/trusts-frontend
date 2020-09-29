@@ -18,7 +18,6 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.trust_details.TrustNamePage
 
@@ -26,11 +25,6 @@ class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
   private val correspondenceMapper: CorrespondenceMapper = injector.instanceOf[CorrespondenceMapper]
-
-  private val addressMapper: AddressMapper = injector.instanceOf[AddressMapper]
-  private val leadTrusteeUkAddress = addressMapper.build(UKAddress("First line", "Second line", None, Some("Newcastle"), "NE981ZZ"))
-  private val leadTrusteeInternationalAddress = addressMapper.build(InternationalAddress("First line", "Second line", None, "DE"))
-  private val leadTrusteePhoneNumber = "0191 222222"
 
   "CorrespondenceMapper" - {
 

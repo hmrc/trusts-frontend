@@ -48,7 +48,7 @@ class RemoveSettlorController @Inject()(
   lazy val form: Form[Boolean] = formProvider(messagesPrefix)
 
   private def view(form: Form[_], draftId: String)
-          (implicit request: RegistrationDataRequest[AnyContent], messagesApi: MessagesApi): HtmlFormat.Appendable = {
+          (implicit request: RegistrationDataRequest[AnyContent]): HtmlFormat.Appendable = {
     removeView(messagesPrefix, form, draftId, content)
   }
 
@@ -67,8 +67,6 @@ class RemoveSettlorController @Inject()(
 
   def onSubmit(draftId : String) = actions(draftId).async {
     implicit request =>
-
-      import scala.concurrent.ExecutionContext.Implicits._
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>

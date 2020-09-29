@@ -21,8 +21,6 @@ import java.time.LocalDateTime
 import connector.SubmissionDraftConnector
 import models.RegistrationSubmission.AllStatus
 import models.SubmissionDraftResponse
-import models.core.{ReadOnlyUserAnswers, ReadableUserAnswers, UserAnswers}
-import models.registration.pages.RegistrationStatus
 import models.registration.pages.Status.InProgress
 import org.mockito.Mockito._
 import org.mockito.Matchers.{eq => eqTo, _}

@@ -27,14 +27,14 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class IndexController @Inject()(
                                  identify: RegistrationIdentifierAction,
                                  getData: RegistrationDataRetrievalAction,
                                  config: FrontendAppConfig,
                                  val controllerComponents: MessagesControllerComponents
-                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                               ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData).async {
     implicit request =>

@@ -17,7 +17,7 @@
 package controllers.register.settlors.deceased_settlor
 
 import controllers.actions.register._
-import forms.{AddASettlorFormProvider, YesNoFormProvider}
+import forms.AddASettlorFormProvider
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.AddASettlor
