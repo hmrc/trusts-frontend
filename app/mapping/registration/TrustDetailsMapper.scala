@@ -74,10 +74,6 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
       typeOfTrust <- trustType(userAnswers)
     } yield {
       registration.TrustDetailsType(
-        startDate = LocalDate.now,
-        lawCountry = None,
-        administrationCountry = None,
-        residentialStatus = None,
         typeOfTrust = typeOfTrust,
         deedOfVariation = deedOfVariation(userAnswers),
         interVivos = userAnswers.get(HoldoverReliefYesNoPage),

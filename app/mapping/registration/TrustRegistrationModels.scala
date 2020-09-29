@@ -354,14 +354,11 @@ object IdentificationType {
   implicit val identificationTypeFormat: Format[IdentificationType] = Json.format[IdentificationType]
 }
 
-case class TrustDetailsType(startDate: LocalDate,
-                            lawCountry: Option[String],
-                            administrationCountry: Option[String],
-                            residentialStatus: Option[ResidentialStatusType],
-                            typeOfTrust: TypeOfTrust,
+case class TrustDetailsType(typeOfTrust: TypeOfTrust,
                             deedOfVariation: Option[DeedOfVariation],
                             interVivos: Option[Boolean],
-                            efrbsStartDate: Option[LocalDate])
+                            efrbsStartDate: Option[LocalDate]
+                           )
 
 object TrustDetailsType {
 

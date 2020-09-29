@@ -68,10 +68,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -94,19 +90,14 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
               .set(TrustResidentOffshorePage, false).success.value
               .set(KindOfTrustPage, Employees).success.value
               .set(EfrbsYesNoPage, true).success.value
-              .set(EfrbsStartDatePage, date).success.value
 
           val uaWithSettlor = TestUserAnswers.withIndividualLivingSettlor(index, userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = EmployeeRelated,
             deedOfVariation = None,
             interVivos = None,
-            efrbsStartDate = Some(date)
+            efrbsStartDate = None
           )
 
         }
@@ -127,10 +118,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -157,10 +144,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -187,10 +170,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -216,10 +195,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -246,10 +221,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -277,10 +248,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
           val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
           trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-            startDate = date,
-            lawCountry = None,
-            administrationCountry = None,
-            residentialStatus = None,
             typeOfTrust = WillTrustOrIntestacyTrust,
             deedOfVariation = None,
             interVivos = None,
@@ -308,10 +275,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
             trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-              startDate = date,
-              lawCountry = None,
-              administrationCountry = None,
-              residentialStatus = None,
               typeOfTrust = WillTrustOrIntestacyTrust,
               deedOfVariation = Some(DeedOfVariation.ReplacedWill),
               interVivos = None,
@@ -337,10 +300,6 @@ class TrustDetailsMapperSpec extends FreeSpec with MustMatchers
             val uaWithSettlor = TestUserAnswers.withDeceasedSettlor(userAnswers)
 
             trustDetailsMapper.build(uaWithSettlor).value mustBe registration.TrustDetailsType(
-              startDate = date,
-              lawCountry = None,
-              administrationCountry = None,
-              residentialStatus = None,
               typeOfTrust = WillTrustOrIntestacyTrust,
               deedOfVariation = Some(DeedOfVariation.AdditionToWill),
               interVivos = None,
