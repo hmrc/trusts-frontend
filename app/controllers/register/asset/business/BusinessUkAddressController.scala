@@ -32,6 +32,7 @@ import repositories.RegistrationsRepository
 import sections.Assets
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.asset.buisness.BusinessUkAddressView
+import viewmodels.addAnother.AssetViewModel
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -39,12 +40,8 @@ class BusinessUkAddressController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
-                                             validateIndex: IndexActionFilterProvider,
-                                             identify: RegistrationIdentifierAction,
-                                             getData: DraftIdRetrievalActionProvider,
-                                             requireData: RegistrationDataRequiredAction,
-                                             requiredAnswer: RequiredAnswerActionProvider,
                                              formProvider: UKAddressFormProvider,
+                                             actionSets: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: BusinessUkAddressView
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -52,11 +49,9 @@ class BusinessUkAddressController @Inject()(
   val form: Form[UKAddress] = formProvider()
 
   private def actions(index: Int, draftId: String) =
-    identify andThen
-      getData(draftId) andThen
-      requireData andThen
-      validateIndex(index, Assets) andThen
-      requiredAnswer(RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
+    actionSets.identifiedUserWithDataAnswerAndIndex(
+      draftId, RequiredAnswer(BusinessNamePage(index),
+        routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)),index, Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

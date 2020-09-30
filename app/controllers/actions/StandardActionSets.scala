@@ -17,15 +17,20 @@
 package controllers.actions
 
 import controllers.actions.register._
+import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import play.api.libs.json.Reads
 import play.api.mvc.{ActionBuilder, AnyContent}
+import queries.Gettable
+
+import scala.concurrent.ExecutionContext
 
 class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
                                    getData: DraftIdRetrievalActionProvider,
                                    requireData: RegistrationDataRequiredAction,
-                                   requiredAnswerAction: RequiredAnswerActionProvider) {
+                                   requiredAnswerAction: RequiredAnswerActionProvider,
+                                   validateIndex: IndexActionFilterProvider) {
 
   def identifiedUserWithData(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getData(draftId) andThen requireData
@@ -33,4 +38,8 @@ class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
   def identifiedUserWithRequiredAnswer[T](draftId: String, requiredAnswer: RequiredAnswer[T])
                                       (implicit reads: Reads[T]) :ActionBuilder[RegistrationDataRequest, AnyContent] =
     identifiedUserWithData(draftId) andThen requiredAnswerAction(requiredAnswer)
+
+  def identifiedUserWithDataAnswerAndIndex[T,U](draftId: String, requiredAnswer: RequiredAnswer[T], index: Int, entity : Gettable[List[U]])
+                                       (implicit rAReads : Reads[T], eReads : Reads[U],  executionContext: ExecutionContext): ActionBuilder[RegistrationDataRequest, AnyContent] =
+    identifiedUserWithRequiredAnswer(draftId, requiredAnswer) andThen validateIndex(index, entity)
 }

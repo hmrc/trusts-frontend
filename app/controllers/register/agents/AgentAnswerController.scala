@@ -32,17 +32,14 @@ import views.html.register.agents.AgentAnswerView
 
 class AgentAnswerController @Inject()(
                                        override val messagesApi: MessagesApi,
-                                       identify: RegistrationIdentifierAction,
                                        navigator: Navigator,
-                                       hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: RegistrationDataRequiredAction,
+                                       actionSet: AgentActionSets,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AgentAnswerView, countryOptions : CountryOptions
                                      ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
-    identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
+    actionSet.identifiedUserWithData(draftId)
 
   def onPageLoad(draftId: String)= actions(draftId) {
     implicit request =>

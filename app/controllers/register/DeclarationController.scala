@@ -48,20 +48,18 @@ class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        navigator: Navigator,
-                                       identify: RegistrationIdentifierAction,
-                                       getData: DraftIdRetrievalActionProvider,
-                                       requireData: RegistrationDataRequiredAction,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,
                                        registrationComplete : TaskListCompleteActionRefiner,
-                                       requireDraft : RequireDraftRegistrationActionRefiner
+                                       requireDraft : RequireDraftRegistrationActionRefiner,
+                                       standardAction: StandardActionSets
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form = formProvider()
 
-  def actions(draftId: String) = identify andThen getData(draftId) andThen requireData andThen registrationComplete andThen requireDraft
+  def actions(draftId: String) = standardAction.identifiedUserWithData(draftId) andThen registrationComplete andThen requireDraft
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

@@ -38,22 +38,14 @@ class BusinessAddressUkYesNoController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
                                                   navigator: Navigator,
-                                                  validateIndex: IndexActionFilterProvider,
-                                                  identify: RegistrationIdentifierAction,
-                                                  getData: DraftIdRetrievalActionProvider,
-                                                  requireData: RegistrationDataRequiredAction,
-                                                  requiredAnswer: RequiredAnswerActionProvider,
                                                   formProvider: YesNoFormProvider,
+                                                  actionSet: StandardActionSets,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: BusinessAddressUkYesNoView
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
-    identify andThen
-      getData(draftId) andThen
-      requireData andThen
-      validateIndex(index, Assets) andThen
-      requiredAnswer(RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
+    actionSet.identifiedUserWithRequiredAnswer(draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

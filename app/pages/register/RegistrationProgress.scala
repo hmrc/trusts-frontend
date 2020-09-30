@@ -43,7 +43,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
       List(
-        Task(Link(TrustDetails, navigator.trustDetailsJourney(userAnswers, draftId).url), trustDetailsStatus(userAnswers)),
+        Task(Link(TrustDetails, navigator.trustDetailsJourney(draftId)), trustDetailsStatus(userAnswers)),
         Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), settlorsStatus(userAnswers)),
         Task(Link(Trustees, navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
         Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),

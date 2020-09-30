@@ -42,39 +42,11 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     "for trust details task" when {
 
-      "trust details has been answered" must {
-
         "go to Check Trust Answers Page" in {
-          val answers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of John").success.value
-              .set(WhenTrustSetupPage, LocalDate.of(2010,10,10)).success.value
-              .set(TrustDetailsStatus, Completed).success.value
-          navigator.trustDetailsJourney(answers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId)
-        }
 
+          navigator.trustDetailsJourney(fakeDraftId) mustBe fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)
+        }
       }
-
-      "trust details has not been answered" when {
-
-        "trust has been matched" must {
-          "go to WhenTrustSetup Page" in {
-            val answers = emptyUserAnswers
-              .set(ExistingTrustMatched, Success).success.value
-            navigator.trustDetailsJourney(answers, fakeDraftId) mustBe
-              controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId)
-          }
-        }
-
-        "trust has not been matched" must {
-          "go to TrustName page" in {
-            navigator.trustDetailsJourney(emptyUserAnswers, fakeDraftId) mustBe
-              controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
-          }
-        }
-
-      }
-
-    }
 
     "for settlors task" when {
 

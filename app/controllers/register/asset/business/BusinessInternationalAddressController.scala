@@ -40,12 +40,8 @@ class BusinessInternationalAddressController @Inject()(
                                                         override val messagesApi: MessagesApi,
                                                         registrationsRepository: RegistrationsRepository,
                                                         navigator: Navigator,
-                                                        validateIndex: IndexActionFilterProvider,
-                                                        identify: RegistrationIdentifierAction,
-                                                        getData: DraftIdRetrievalActionProvider,
-                                                        requireData: RegistrationDataRequiredAction,
-                                                        requiredAnswer: RequiredAnswerActionProvider,
                                                         formProvider: InternationalAddressFormProvider,
+                                                        actionSet: StandardActionSets,
                                                         val controllerComponents: MessagesControllerComponents,
                                                         view: BusinessInternationalAddressView,
                                                         val countryOptions: CountryOptionsNonUK
@@ -54,11 +50,7 @@ class BusinessInternationalAddressController @Inject()(
   val form: Form[InternationalAddress] = formProvider()
 
   private def actions(index: Int, draftId: String) =
-    identify andThen
-      getData(draftId) andThen
-      requireData andThen
-      validateIndex(index, Assets) andThen
-      requiredAnswer(RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
+    actionSet.identifiedUserWithRequiredAnswer(draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

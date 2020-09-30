@@ -36,12 +36,8 @@ class AgentAddressYesNoController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              registrationsRepository: RegistrationsRepository,
                                              navigator: Navigator,
-                                             identify: RegistrationIdentifierAction,
-                                             hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                             getData: DraftIdRetrievalActionProvider,
-                                             requireData: RegistrationDataRequiredAction,
-                                             requiredAnswer: RequiredAnswerActionProvider,
                                              yesNoFormProvider: YesNoFormProvider,
+                                             actionSet: AgentActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: AgentAddressYesNoView
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -49,11 +45,7 @@ class AgentAddressYesNoController @Inject()(
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("agentAddressYesNo")
 
   private def actions(draftId: String) =
-    identify andThen
-      hasAgentAffinityGroup() andThen
-      getData(draftId) andThen
-      requireData andThen
-      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
+    actionSet.requiredAnswerWithAgent(draftId, RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
