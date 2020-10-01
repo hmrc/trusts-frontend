@@ -45,7 +45,8 @@ class BusinessAddressUkYesNoController @Inject()(
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String) =
-    actionSet.identifiedUserWithRequiredAnswer(draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
+    actionSet.identifiedUserWithDataAnswerAndIndex(
+      draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)),index,  Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

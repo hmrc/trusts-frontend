@@ -41,5 +41,5 @@ class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
 
   def identifiedUserWithDataAnswerAndIndex[T,U](draftId: String, requiredAnswer: RequiredAnswer[T], index: Int, entity : Gettable[List[U]])
                                        (implicit rAReads : Reads[T], eReads : Reads[U],  executionContext: ExecutionContext): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    identifiedUserWithRequiredAnswer(draftId, requiredAnswer) andThen validateIndex(index, entity)
+    identify andThen getData(draftId) andThen requireData andThen validateIndex(index, entity) andThen requiredAnswerAction(requiredAnswer)
 }

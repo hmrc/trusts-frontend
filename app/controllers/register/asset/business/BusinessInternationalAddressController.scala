@@ -50,7 +50,8 @@ class BusinessInternationalAddressController @Inject()(
   val form: Form[InternationalAddress] = formProvider()
 
   private def actions(index: Int, draftId: String) =
-    actionSet.identifiedUserWithRequiredAnswer(draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
+    actionSet.identifiedUserWithDataAnswerAndIndex(
+      draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)),index, Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
