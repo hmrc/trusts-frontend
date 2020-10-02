@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package views.register.trust_details
+package views.register
 
 import forms.TrustNameFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.trust_details.TrustNameView
+import views.html.register.MatchingNameView
 
-class TrustNameViewSpec extends StringViewBehaviours {
+class MatchingNameViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "trustName"
   val hintKey = "trustName.hint.hasUtr"
@@ -34,10 +33,10 @@ class TrustNameViewSpec extends StringViewBehaviours {
 
     "the trust is an existing trust" must {
 
-      val view = viewFor[TrustNameView](Some(emptyUserAnswers))
+      val view = viewFor[MatchingNameView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, fakeDraftId, hintTextShown = true)(fakeRequest, messages)
+        view.apply(form, fakeDraftId)(fakeRequest, messages)
 
       behave like normalPage(applyView(form), Some("taskList.trustDetails.label"), messageKeyPrefix)
 
@@ -55,10 +54,10 @@ class TrustNameViewSpec extends StringViewBehaviours {
 
     "the trust is a new trust" must {
 
-      val view = viewFor[TrustNameView](Some(emptyUserAnswers))
+      val view = viewFor[MatchingNameView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, fakeDraftId, hintTextShown = false)(fakeRequest, messages)
+        view.apply(form, fakeDraftId )(fakeRequest, messages)
 
       behave like normalPage(applyView(form), Some("taskList.trustDetails.label"), messageKeyPrefix)
 

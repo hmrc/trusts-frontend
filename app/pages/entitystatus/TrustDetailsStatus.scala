@@ -19,11 +19,10 @@ package pages.entitystatus
 import models.registration.pages.Status
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.TrustDetails
 
 case object TrustDetailsStatus extends QuestionPage[Status] {
 
-  override def path: JsPath = JsPath \ TrustDetails \ toString
+  override def path: JsPath = JsPath \ toString
 
   override def toString: String = "status"
 }

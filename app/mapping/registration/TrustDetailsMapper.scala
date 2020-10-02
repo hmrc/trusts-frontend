@@ -16,17 +16,13 @@
 
 package mapping.registration
 
-import java.time.LocalDate
-
 import mapping.TypeOfTrust.WillTrustOrIntestacyTrust
 import mapping.{registration, _}
 import models.core.UserAnswers
 import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
-import models.registration.pages.TrusteesBasedInTheUK.{InternationalAndUKTrustees, NonUkBasedTrustees, UKBasedTrustees}
-import models.registration.pages.{DeedOfVariation, KindOfTrust, NonResidentType}
+import models.registration.pages.{DeedOfVariation, KindOfTrust}
 import pages.entitystatus.DeceasedSettlorStatus
-import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, HoldoverReliefYesNoPage, HowDeedOfVariationCreatedPage, KindOfTrustPage, SetUpInAdditionToWillTrustYesNoPage}
-import pages.register.trust_details.{AgentOtherThanBarristerPage, SettlorsBasedInTheUKPage, _}
+import pages.register.settlors.living_settlor.trust_type._
 import play.api.Logger
 import sections.settlors.LivingSettlors
 

@@ -21,7 +21,7 @@ import play.api.libs.json.JsPath
 
 case object WhatIsTheUTRPage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ "matching" \ toString
 
   override def toString: String = "whatIsTheUTR"
 }

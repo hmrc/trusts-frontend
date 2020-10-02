@@ -21,11 +21,10 @@ import models.core.UserAnswers
 import models.registration.pages.Status._
 import models.registration.pages._
 import navigation.registration.TaskListNavigator
-import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
+import pages.entitystatus.DeceasedSettlorStatus
 import pages.register.asset.AddAssetsPage
 import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
-import pages.register.trust_details.WhenTrustSetupPage
 import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries
@@ -43,7 +42,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
       List(
-        Task(Link(TrustDetails, navigator.trustDetailsJourney(draftId)), trustDetailsStatus(userAnswers)),
+        Task(Link(TrustDetails, navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
         Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), settlorsStatus(userAnswers)),
         Task(Link(Trustees, navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
         Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
@@ -67,15 +66,6 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
       Some(Completed)
     } else {
       Some(InProgress)
-    }
-  }
-
-  def trustDetailsStatus(userAnswers: UserAnswers): Option[Status] = {
-    userAnswers.get(WhenTrustSetupPage) match {
-      case None => None
-      case Some(_) =>
-        val completed = userAnswers.get(TrustDetailsStatus).contains(Completed)
-        determineStatus(completed)
     }
   }
 
@@ -121,11 +111,14 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
   }
 
   def isTaskListComplete(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
-    if (trustDetailsStatus(userAnswers).contains(Completed) &&
-      settlorsStatus(userAnswers).contains(Completed) &&
+    if (settlorsStatus(userAnswers).contains(Completed) &&
       assetsStatus(userAnswers).contains(Completed)) {
-      registrationsRepository.getAllStatus(userAnswers.draftId).map {
-        status => status.allComplete(userAnswers)
+      registrationsRepository.getAllStatus(userAnswers.draftId).flatMap {
+        status =>
+        registrationsRepository.getTrustSetupDate(userAnswers.draftId).map {
+          trustSetUpDate =>
+           status.allComplete(trustSetUpDate)
+        }
       }
     } else {
       Future.successful(false)

@@ -18,6 +18,7 @@ package mapping.registration
 
 import javax.inject.Inject
 import models.core.UserAnswers
+import uk.gov.hmrc.http.HeaderCarrier
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
@@ -26,17 +27,16 @@ class RegistrationMapper @Inject()(
                                     assetMapper: AssetMapper,
                                     agentMapper: AgentMapper,
                                     deceasedSettlorMapper: DeceasedSettlorMapper,
-                                    taxLiabilityMapper: TaxLiabilityMapper,
                                     settlorMapper: SettlorsMapper,
                                     matchingMapper: MatchingMapper
                                   ) {
 
-  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType): Option[Registration] = {
+  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String)(implicit hc:HeaderCarrier): Option[Registration] = {
 
     for {
       trustDetails <- trustDetailsMapper.build(userAnswers)
       assets <- assetMapper.build(userAnswers)
-      correspondence <- correspondenceMapper.build(userAnswers)
+      correspondence <- correspondenceMapper.build(trustName)
       declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
     } yield {
 
@@ -57,7 +57,7 @@ class RegistrationMapper @Inject()(
       )
 
       Registration(
-        matchData = matchingMapper.build(userAnswers),
+        matchData = matchingMapper.build(userAnswers, trustName),
         yearsReturns = taxLiability,
         declaration = declaration,
         correspondence = correspondence,

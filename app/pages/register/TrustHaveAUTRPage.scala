@@ -19,7 +19,6 @@ package pages.register
 import models.core.UserAnswers
 import pages.QuestionPage
 import pages.register.suitability.{TaxLiabilityInCurrentTaxYearYesNoPage, UndeclaredTaxLiabilityYesNoPage}
-import pages.register.trust_details.TrustNamePage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -34,7 +33,7 @@ case object TrustHaveAUTRPage extends QuestionPage[Boolean] {
     value match {
       case Some(false) =>
         userAnswers.remove(WhatIsTheUTRPage)
-          .flatMap(_.remove(TrustNamePage))
+          .flatMap(_.remove(MatchingNamePage))
           .flatMap(_.remove(PostcodeForTheTrustPage))
       case Some(true) =>
         userAnswers.remove(TaxLiabilityInCurrentTaxYearYesNoPage)

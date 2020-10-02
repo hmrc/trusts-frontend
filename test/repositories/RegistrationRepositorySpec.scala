@@ -377,5 +377,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       }
     }
 
+    //TODO Add test for get whentrustsetupdate
+
   }
 }

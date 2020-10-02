@@ -375,6 +375,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         result mustEqual expectedAddress
       }
 
+      //TODO add test case for get trust setup date
+
     }
 
     ".resetTaxLiability" - {

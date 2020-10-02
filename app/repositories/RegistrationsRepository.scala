@@ -16,6 +16,8 @@
 
 package repositories
 
+import java.time.LocalDate
+
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
@@ -121,6 +123,12 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
     submissionDraftConnector.getCorrespondenceAddress(draftId)
+
+  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]] =
+    submissionDraftConnector.getTrustSetupDate(draftId)
+
+  def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
+    submissionDraftConnector.getTrustName(draftId)
 }
 
 trait RegistrationsRepository {
@@ -141,4 +149,8 @@ trait RegistrationsRepository {
   def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType]
 
   def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType]
+
+  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]]
+
+  def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String]
 }

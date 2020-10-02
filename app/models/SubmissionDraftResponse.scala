@@ -16,7 +16,7 @@
 
 package models
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 import models.core.UserAnswers
 import models.registration.pages.Status
@@ -62,18 +62,20 @@ object RegistrationSubmission {
                         trustees: Option[Status] = None,
                         taxLiability: Option[Status] = None,
                         protectors: Option[Status] = None,
-                        otherIndividuals: Option[Status] = None
+                        otherIndividuals: Option[Status] = None,
+                        trustDetails: Option[Status] = None
                       ) {
-    def allComplete(userAnswers: UserAnswers): Boolean = beneficiaries.contains(Completed) &&
+    def allComplete(trustSetUpDate: Option[LocalDate]): Boolean = beneficiaries.contains(Completed) &&
                                 trustees.contains(Completed) &&
                                 protectors.contains(Completed) &&
                                 otherIndividuals.contains(Completed) &&
-      (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(userAnswers))
+                                trustDetails.contains(Completed) &&
+      (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate))
   }
 
   object AllStatus {
     implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
-    val withAllComplete = AllStatus(Some(Completed), Some(Completed), Some(Completed), Some(Completed), Some(Completed))
+    val withAllComplete = AllStatus(Some(Completed), Some(Completed), Some(Completed), Some(Completed), Some(Completed), Some(Completed))
   }
 
   case class AllAnswerSections(

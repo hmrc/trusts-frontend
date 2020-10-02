@@ -25,8 +25,7 @@ import models.core.UserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered
 import models.core.http.SuccessOrFailureResponse
 import models.registration.Matched
-import pages.register.trust_details.TrustNamePage
-import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, WhatIsTheUTRPage}
+import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
 import play.api.mvc.{Call, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -47,7 +46,7 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
 
     (for {
       utr: String <- userAnswers.get(WhatIsTheUTRPage)
-      name: String <- userAnswers.get(TrustNamePage)
+      name: String <- userAnswers.get(MatchingNamePage)
       postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
     } yield {
       trustConnector.matching(MatchData(utr, name, postcode)) flatMap {

@@ -16,47 +16,24 @@
 
 package mapping.registration
 
-import mapping.Mapping
 import models.core.UserAnswers
-import models.registration.Matched
-import pages.register.trust_details.TrustNamePage
-import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
-import play.api.Logger
+import pages.register.{PostcodeForTheTrustPage, WhatIsTheUTRPage}
+import uk.gov.hmrc.http.HeaderCarrier
 
-class MatchingMapper extends Mapping[MatchData] {
+class MatchingMapper {
 
-  override def build(userAnswers: UserAnswers): Option[MatchData] = {
-    userAnswers.get(TrustHaveAUTRPage).flatMap {
-      haveAUTR =>
-        if (haveAUTR) {
-          userAnswers.get(ExistingTrustMatched).flatMap {
-            case Matched.Success =>
+   def build(userAnswers: UserAnswers, trustName: String)(implicit hc:HeaderCarrier): Option[MatchData] = {
 
-              Logger.info(s"[MatchingMapper][build] creating match data for a matched trust")
-
-              for {
-                utr <- userAnswers.get(WhatIsTheUTRPage)
-                name <- userAnswers.get(TrustNamePage)
-                postcode = userAnswers.get(PostcodeForTheTrustPage)
-              } yield {
-                MatchData(
-                  utr = utr,
-                  name = name,
-                  postCode = postcode
-                )
-              }
-
-            case Matched.AlreadyRegistered =>
-              Logger.info(s"[MatchingMapper][build] unable to create match data as trust is already registered")
-              None
-            case Matched.Failed =>
-              Logger.info(s"[MatchingMapper][build] unable to create match data as trust is failed matching")
-              None
-          }
-        } else {
-          None
+            for {
+              utr <- userAnswers.get(WhatIsTheUTRPage)
+              postcode = userAnswers.get(PostcodeForTheTrustPage)
+            } yield {
+              MatchData(
+                utr = utr,
+                name = trustName,
+                postCode = postcode
+              )
+            }
         }
-    }
-  }
 
 }

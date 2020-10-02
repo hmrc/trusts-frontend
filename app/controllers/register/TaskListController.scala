@@ -16,6 +16,8 @@
 
 package controllers.register
 
+import java.time.LocalDate
+
 import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register._
@@ -72,9 +74,10 @@ class TaskListController @Inject()(
           sections <- registrationProgress.items(updatedAnswers, draftId)
           additionalSections <- registrationProgress.additionalItems(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(updatedAnswers)
+          trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
         } yield {
 
-          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(request.userAnswers)) {
+          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate)) {
             sections
           } else {
             val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)

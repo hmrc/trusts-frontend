@@ -16,6 +16,8 @@
 
 package connector
 
+import java.time.LocalDate
+
 import config.FrontendAppConfig
 import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
@@ -86,5 +88,17 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
   def resetTaxLiability(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[HttpResponse] = {
     http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/reset/taxLiability")
   }
+
+  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[Option[LocalDate]] =
+    http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/when-trust-setup").map {
+      response =>
+        response.status match {
+          case 200 => Some(response.json.as[LocalDate])
+          case _ => None
+        }
+    }
+
+  def getTrustName(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[String] =
+    http.GET[String](s"$submissionsBaseUrl/$draftId/trust-name")
 
 }
