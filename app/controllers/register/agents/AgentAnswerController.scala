@@ -17,7 +17,6 @@
 package controllers.register.agents
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator

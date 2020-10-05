@@ -21,12 +21,11 @@ import forms.TrustNameFormProvider
 import javax.inject.Inject
 import models.NormalMode
 import navigation.Navigator
-import pages.register.{MatchingNamePage, TrustHaveAUTRPage}
+import pages.register.MatchingNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.MatchingNameView
 

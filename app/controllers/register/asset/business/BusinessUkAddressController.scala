@@ -17,8 +17,6 @@
 package controllers.register.asset.business
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import controllers.filters.IndexActionFilterProvider
 import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.core.pages.UKAddress
@@ -32,7 +30,6 @@ import repositories.RegistrationsRepository
 import sections.Assets
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import views.html.register.asset.buisness.BusinessUkAddressView
-import viewmodels.addAnother.AssetViewModel
 
 import scala.concurrent.{ExecutionContext, Future}
 

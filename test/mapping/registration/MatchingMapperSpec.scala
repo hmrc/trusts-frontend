@@ -18,10 +18,8 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.Mapping
-import models.registration.Matched
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
+import pages.register.{PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 

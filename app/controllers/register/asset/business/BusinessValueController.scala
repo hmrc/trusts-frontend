@@ -16,9 +16,7 @@
 
 package controllers.register.asset.business
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import controllers.actions.{RequiredAnswer, RequiredAnswerActionProvider, StandardActionSets}
-import controllers.filters.IndexActionFilterProvider
+import controllers.actions.{RequiredAnswer, StandardActionSets}
 import forms.assets.CurrentValueFormProvider
 import javax.inject.Inject
 import models.registration.pages.Status.Completed

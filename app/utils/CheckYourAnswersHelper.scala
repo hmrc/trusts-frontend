@@ -39,7 +39,6 @@ import pages.register.settlors.living_settlor.business._
 import pages.register.settlors.living_settlor.trust_type._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import repositories.RegistrationsRepository
 import sections.settlors.LivingSettlors
 import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions

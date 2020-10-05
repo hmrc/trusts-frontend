@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 class MatchingMapper {
 
-  def build(userAnswers: UserAnswers, trustName: String)(implicit hc:HeaderCarrier): Option[MatchData] = {
+  def build(userAnswers: UserAnswers, trustName: String): Option[MatchData] = {
 
     for {
       utr <- userAnswers.get(WhatIsTheUTRPage)

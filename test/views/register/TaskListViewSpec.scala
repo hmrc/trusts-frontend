@@ -16,8 +16,8 @@
 
 package views.register
 
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate, LocalDateTime}
 
 import controllers.register.agents.routes
 import models.core.UserAnswers

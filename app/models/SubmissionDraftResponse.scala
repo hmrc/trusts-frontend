@@ -18,7 +18,6 @@ package models
 
 import java.time.{LocalDate, LocalDateTime}
 
-import models.core.UserAnswers
 import models.registration.pages.Status
 import models.registration.pages.Status.Completed
 import play.api.libs.json.{JsValue, Json, OFormat}

@@ -16,8 +16,6 @@
 
 package controllers.register
 
-import java.time.LocalDate
-
 import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register._

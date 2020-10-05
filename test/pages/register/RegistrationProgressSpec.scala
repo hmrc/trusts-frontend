@@ -16,8 +16,6 @@
 
 package pages.register
 
-import java.time.LocalDate
-
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
