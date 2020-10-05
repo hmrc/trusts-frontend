@@ -19,7 +19,6 @@ package mapping.registration
 import base.SpecBaseHelpers
 import generators.Generators
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.register.trust_details.TrustNamePage
 
 class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
@@ -28,15 +27,9 @@ class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
 
   "CorrespondenceMapper" - {
 
-    "must not be able to create a correspondence when do not have all answers" in {
-      correspondenceMapper.build(emptyUserAnswers) mustNot be(defined)
-    }
-
     "must be able to create a correspondence with required answer" - {
-      val userAnswers = emptyUserAnswers
-        .set(TrustNamePage, "Trust of a Will").success.value
 
-      correspondenceMapper.build(userAnswers).value.name mustBe "Trust of a Will"
+      correspondenceMapper.build( "Trust of a Will").value.name mustBe "Trust of a Will"
     }
   }
 }

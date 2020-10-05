@@ -25,7 +25,6 @@ import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.trust_details.TrustNamePage
 import pages.register._
 
 trait MatchingRoutes {
@@ -65,7 +64,7 @@ trait MatchingRoutes {
             userAnswers =>
 
               navigator.nextPage(WhatIsTheUTRPage, NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(controllers.register.routes.MatchingNameController.onPageLoad(fakeDraftId))
           }
         }
 
@@ -75,7 +74,7 @@ trait MatchingRoutes {
 
               val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
 
-              navigator.nextPage(TrustNamePage, NormalMode, fakeDraftId)(answers)
+              navigator.nextPage(MatchingNamePage, NormalMode, fakeDraftId)(answers)
                 .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
           }
         }

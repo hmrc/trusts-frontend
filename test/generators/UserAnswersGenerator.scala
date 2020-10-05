@@ -33,7 +33,6 @@ import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type._
-import pages.register.trust_details._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
@@ -45,8 +44,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(PartnershipStartDatePage, JsValue)] ::
     arbitrary[(PartnershipDescriptionPage, JsValue)] ::
     arbitrary[(KindOfTrustPage.type, JsValue)] ::
-    arbitrary[(SettlorsBasedInTheUKPage.type, JsValue)] ::
-    arbitrary[(TrusteesBasedInTheUKPage.type, JsValue)] ::
     arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(SettlorBusinessNamePage, JsValue)] ::
     arbitrary[(RemoveSettlorPage, JsValue)] ::
@@ -109,19 +106,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(WhatIsTheUTRPage.type, JsValue)] ::
     arbitrary[(TrustHaveAUTRPage.type, JsValue)] ::
     arbitrary[(TrustRegisteredOnlinePage.type, JsValue)] ::
-    arbitrary[(WhenTrustSetupPage.type, JsValue)] ::
-    arbitrary[(AgentOtherThanBarristerPage.type, JsValue)] ::
-    arbitrary[(InheritanceTaxActPage.type, JsValue)] ::
-    arbitrary[(NonResidentTypePage.type, JsValue)] ::
-    arbitrary[(TrustPreviouslyResidentPage.type, JsValue)] ::
-    arbitrary[(TrustResidentOffshorePage.type, JsValue)] ::
-    arbitrary[(RegisteringTrustFor5APage.type, JsValue)] ::
-    arbitrary[(EstablishedUnderScotsLawPage.type, JsValue)] ::
-    arbitrary[(CountryAdministeringTrustPage.type, JsValue)] ::
-    arbitrary[(AdministrationInsideUKPage.type, JsValue)] ::
-    arbitrary[(CountryGoverningTrustPage.type, JsValue)] ::
-    arbitrary[(GovernedInsideTheUKPage.type, JsValue)] ::
-    arbitrary[(TrustNamePage.type, JsValue)] ::
     Nil
 
   implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {

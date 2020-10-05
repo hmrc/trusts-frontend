@@ -19,13 +19,10 @@ package views.register
 import java.time.{LocalDate, LocalDateTime}
 
 import models.core.pages.{FullName, UKAddress}
-import models.registration.pages.Status.Completed
-import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import pages.entitystatus._
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
-import pages.register.trust_details._
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.AccessibilityHelper._
@@ -44,15 +41,6 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
-        .set(TrustNamePage, "New Trust").success.value
-        .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(GovernedInsideTheUKPage, true).success.value
-        .set(AdministrationInsideUKPage, true).success.value
-        .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
-        .set(EstablishedUnderScotsLawPage, true).success.value
-        .set(TrustResidentOffshorePage, false).success.value
-        .set(TrustDetailsStatus, Completed).success.value
-
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
         .set(SettlorDateOfDeathYesNoPage, true).success.value
@@ -106,11 +94,6 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       headers.size mustBe 2
       subHeaders.size mustBe 0
-    }
-
-    "assert question labels for Trust details" in {
-      assertContainsQuestionAnswerPair(doc, messages("trustName.checkYourAnswersLabel"), "New Trust")
-      assertContainsQuestionAnswerPair(doc, messages("whenTrustSetup.checkYourAnswersLabel"), "10 October 2010")
     }
 
     "assert question labels for Settlors" in {

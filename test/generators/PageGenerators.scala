@@ -25,12 +25,11 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor.{RemoveSettlorPage => RemoveLivingSettlorPage, _}
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.deceased_settlor._
+import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
+import pages.register.settlors.living_settlor.{RemoveSettlorPage => RemoveLivingSettlorPage, _}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
-import pages.register.trust_details._
 
 trait PageGenerators {
 
@@ -45,13 +44,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryKindOfTrustPage: Arbitrary[KindOfTrustPage.type] =
     Arbitrary(KindOfTrustPage)
-
-
-  implicit lazy val arbitrarySettlorsBasedInTheUKPage: Arbitrary[SettlorsBasedInTheUKPage.type] =
-    Arbitrary(SettlorsBasedInTheUKPage)
-
-  implicit lazy val arbitraryTrusteesBasedInTheUKPage: Arbitrary[TrusteesBasedInTheUKPage.type] =
-    Arbitrary(TrusteesBasedInTheUKPage)
 
   implicit lazy val arbitraryHoldoverReliefYesNoPage: Arbitrary[HoldoverReliefYesNoPage.type] =
     Arbitrary(HoldoverReliefYesNoPage)
@@ -239,42 +231,4 @@ trait PageGenerators {
   implicit lazy val arbitraryTrustRegisteredOnlinePage: Arbitrary[TrustRegisteredOnlinePage.type] =
     Arbitrary(TrustRegisteredOnlinePage)
 
-  implicit lazy val arbitraryWhenTrustSetupPage: Arbitrary[WhenTrustSetupPage.type] =
-    Arbitrary(WhenTrustSetupPage)
-
-  implicit lazy val arbitraryAgentOtherThanBarristerPage: Arbitrary[AgentOtherThanBarristerPage.type] =
-    Arbitrary(AgentOtherThanBarristerPage)
-
-  implicit lazy val arbitraryInheritanceTaxActPage: Arbitrary[InheritanceTaxActPage.type] =
-    Arbitrary(InheritanceTaxActPage)
-
-  implicit lazy val arbitraryNonResidentTypePage: Arbitrary[NonResidentTypePage.type] =
-    Arbitrary(NonResidentTypePage)
-
-  implicit lazy val arbitraryTrustPreviouslyResidentPage: Arbitrary[TrustPreviouslyResidentPage.type] =
-    Arbitrary(TrustPreviouslyResidentPage)
-
-  implicit lazy val arbitraryTrustResidentOffshorePage: Arbitrary[TrustResidentOffshorePage.type] =
-    Arbitrary(TrustResidentOffshorePage)
-
-  implicit lazy val arbitraryRegisteringTrustFor5APage: Arbitrary[RegisteringTrustFor5APage.type] =
-    Arbitrary(RegisteringTrustFor5APage)
-
-  implicit lazy val arbitraryEstablishedUnderScotsLawPage: Arbitrary[EstablishedUnderScotsLawPage.type] =
-    Arbitrary(EstablishedUnderScotsLawPage)
-
-  implicit lazy val arbitraryCountryAdministeringTrustPage: Arbitrary[CountryAdministeringTrustPage.type] =
-    Arbitrary(CountryAdministeringTrustPage)
-
-  implicit lazy val arbitraryAdministrationInsideUKPage: Arbitrary[AdministrationInsideUKPage.type] =
-    Arbitrary(AdministrationInsideUKPage)
-
-  implicit lazy val arbitraryCountryGoverningTrustPage: Arbitrary[CountryGoverningTrustPage.type] =
-    Arbitrary(CountryGoverningTrustPage)
-
-  implicit lazy val arbitraryGovernedInsideTheUKPage: Arbitrary[GovernedInsideTheUKPage.type] =
-    Arbitrary(GovernedInsideTheUKPage)
-
-  implicit lazy val arbitraryTrustNamePage: Arbitrary[TrustNamePage.type] =
-    Arbitrary(TrustNamePage)
 }

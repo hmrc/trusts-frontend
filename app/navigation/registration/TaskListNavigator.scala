@@ -20,10 +20,8 @@ import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.Matched.Success
 import models.registration.pages.Status.Completed
-import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.register.ExistingTrustMatched
+import pages.entitystatus.DeceasedSettlorStatus
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections.settlors.LivingSettlors

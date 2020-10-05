@@ -48,6 +48,8 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
+  val trustName = "Trust Name"
+
   "TrustConnector" - {
 
     ".register" - {
@@ -69,8 +71,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
       val newTrustUserAnswers = {
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
         val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-        val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
-        val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+        val asset = TestUserAnswers.withMoneyAsset(uaWithDeceased)
         val userAnswers = TestUserAnswers.withDeclaration(asset)
 
         userAnswers
@@ -82,7 +83,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
         "valid payload to trusts is sent" in {
 
-          val registration = registrationMapper.build(newTrustUserAnswers, correspondenceAddress).value
+          val registration = registrationMapper.build(newTrustUserAnswers, correspondenceAddress, trustName).value
 
           val payload = Json.stringify(Json.toJson(registration))
 
@@ -105,7 +106,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
         "already registered trusts is sent " in {
           val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress, trustName).value
 
           val payload = Json.stringify(Json.toJson(registration))
 
@@ -128,7 +129,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
       "return InternalServerError response " - {
         "api returns internal server error response " in {
           val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress, trustName).value
 
           val payload = Json.stringify(Json.toJson(registration))
 
@@ -152,7 +153,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
         "api returns bad request response " in {
           val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress, trustName).value
 
           val payload = Json.stringify(Json.toJson(registration))
 
@@ -171,7 +172,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
         "api returns service unavailable response " in {
           val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = registrationMapper.build(userAnswers, correspondenceAddress).value
+          val registration = registrationMapper.build(userAnswers, correspondenceAddress, trustName).value
 
           val payload = Json.stringify(Json.toJson(registration))
 

@@ -25,7 +25,6 @@ import models.NormalMode
 import models.core.pages.FullName
 import org.scalatestplus.mockito.MockitoSugar
 import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsDateOfBirthPage, SettlorsNamePage}
-import pages.register.trust_details.WhenTrustSetupPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.settlors.deceased_settlor.SettlorDateOfDeathView
@@ -158,13 +157,11 @@ class SettlorDateOfDeathControllerSpec extends RegistrationSpecBase with Mockito
 
       "submitted date is after trust start date" in {
 
-        val trustStartDate: LocalDate = LocalDate.parse("2019-02-03")
         val submittedDate = LocalDate.parse("2020-02-03")
 
-        val form = formProvider.withConfig((trustStartDate, "afterTrustStartDate"))
+        val form = formProvider.withConfig((mockedTrustStartDate, "afterTrustStartDate"))
 
         val userAnswers = emptyUserAnswers
-          .set(WhenTrustSetupPage, trustStartDate).success.value
           .set(SettlorsNamePage, fullName).success.value
           .set(SettlorDateOfDeathPage, submittedDate).success.value
 

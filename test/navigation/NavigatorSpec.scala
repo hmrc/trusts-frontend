@@ -27,7 +27,6 @@ import pages._
 class NavigatorSpec extends RegistrationSpecBase
   with ScalaCheckPropertyChecks
   with Generators
-  with TrustDetailsRoutes
   with MatchingRoutes
   with AgentRoutes
   with AssetRoutes
@@ -49,8 +48,6 @@ class NavigatorSpec extends RegistrationSpecBase
       }
 
       behave like matchingRoutes
-
-      behave like trustDetailsRoutes
 
       behave like agentRoutes
 

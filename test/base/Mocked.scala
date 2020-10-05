@@ -16,6 +16,8 @@
 
 package base
 
+import java.time.LocalDate
+
 import models.RegistrationSubmission.AllStatus
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.any
@@ -48,4 +50,6 @@ trait Mocked extends MockitoSugar {
   when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
   when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
 
+  val mockedTrustStartDate: LocalDate = LocalDate.parse("2019-02-03")
+  when(registrationsRepository.getTrustSetupDate(any())(any())).thenReturn(Future.successful(Some(mockedTrustStartDate)))
 }

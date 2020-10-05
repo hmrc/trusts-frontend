@@ -20,11 +20,9 @@ import java.time.LocalDate
 
 import base.RegistrationSpecBase
 import controllers.register.routes._
-import controllers.register.trust_details.routes._
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.Matched.Success
-import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
 import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.twirl.api.HtmlFormat
 import utils.countryOptions.CountryOptions
@@ -50,8 +48,6 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
         val baseAnswers: UserAnswers = emptyUserAnswers
           .set(ExistingTrustMatched, Success).success.value
           .set(WhatIsTheUTRPage, utr).success.value
-          .set(TrustNamePage, trustName).success.value
-          .set(WhenTrustSetupPage, setupDate).success.value
 
         "registered with UK address" in {
 
@@ -68,7 +64,7 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
                 AnswerRow(
                   label = "trustName.checkYourAnswersLabel",
                   answer = HtmlFormat.escape(trustName),
-                  changeUrl = Some(TrustNameController.onPageLoad(NormalMode, fakeDraftId).url),
+                  changeUrl = Some(MatchingNameController.onPageLoad(fakeDraftId).url),
                   canEdit = false
                 ),
                 AnswerRow(
@@ -86,12 +82,6 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
                   label = "whatIsTheUTR.checkYourAnswersLabel",
                   answer = HtmlFormat.escape(utr),
                   changeUrl = Some(WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url),
-                  canEdit = false
-                ),
-                AnswerRow(
-                  label = "whenTrustSetup.checkYourAnswersLabel",
-                  answer = HtmlFormat.escape("3 February 1996"),
-                  changeUrl = Some(WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId).url),
                   canEdit = false
                 )
               ),
@@ -114,7 +104,7 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
                 AnswerRow(
                   label = "trustName.checkYourAnswersLabel",
                   answer = HtmlFormat.escape(trustName),
-                  changeUrl = Some(TrustNameController.onPageLoad(NormalMode, fakeDraftId).url),
+                  changeUrl = Some(MatchingNameController.onPageLoad(fakeDraftId).url),
                   canEdit = false
                 ),
                 AnswerRow(
@@ -127,48 +117,12 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
                   answer = HtmlFormat.escape(utr),
                   changeUrl = Some(WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url),
                   canEdit = false
-                ),
-                AnswerRow(
-                  label = "whenTrustSetup.checkYourAnswersLabel",
-                  answer = HtmlFormat.escape("3 February 1996"),
-                  changeUrl = Some(WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId).url),
-                  canEdit = false
                 )
               ),
               sectionKey = sectionKey
             )
           )
         }
-      }
-
-      "registering a new trust" in {
-
-        val userAnswers: UserAnswers = emptyUserAnswers
-          .set(TrustNamePage, trustName).success.value
-          .set(WhenTrustSetupPage, setupDate).success.value
-
-        val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, false)
-
-        helper.trustDetails.get mustBe Seq(
-          AnswerSection(
-            headingKey = None,
-            rows = Seq(
-              AnswerRow(
-                label = "trustName.checkYourAnswersLabel",
-                answer = HtmlFormat.escape(trustName),
-                changeUrl = Some(TrustNameController.onPageLoad(NormalMode, fakeDraftId).url),
-                canEdit = false
-              ),
-              AnswerRow(
-                label = "whenTrustSetup.checkYourAnswersLabel",
-                answer = HtmlFormat.escape("3 February 1996"),
-                changeUrl = Some(WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId).url),
-                canEdit = false
-              )
-            ),
-            sectionKey = sectionKey
-          )
-        )
       }
     }
   }

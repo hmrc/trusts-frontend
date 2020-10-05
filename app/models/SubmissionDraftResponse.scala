@@ -82,7 +82,8 @@ object RegistrationSubmission {
                                 beneficiaries: Option[List[AnswerSection]],
                                 trustees: Option[List[AnswerSection]],
                                 protectors: Option[List[AnswerSection]],
-                                otherIndividuals: Option[List[AnswerSection]]
+                                otherIndividuals: Option[List[AnswerSection]],
+                                trustDetails: Option[List[AnswerSection]]
                               )
 
   object AllAnswerSections {
