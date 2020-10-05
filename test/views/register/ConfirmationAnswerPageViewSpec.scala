@@ -92,7 +92,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 2
+      headers.size mustBe 1
       subHeaders.size mustBe 0
     }
 

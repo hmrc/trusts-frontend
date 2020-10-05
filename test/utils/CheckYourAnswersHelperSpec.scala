@@ -62,12 +62,6 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
               headingKey = None,
               rows = Seq(
                 AnswerRow(
-                  label = "trustName.checkYourAnswersLabel",
-                  answer = HtmlFormat.escape(trustName),
-                  changeUrl = Some(MatchingNameController.onPageLoad(fakeDraftId).url),
-                  canEdit = false
-                ),
-                AnswerRow(
                   label = "trustRegisteredWithUkAddress.checkYourAnswersLabel",
                   answer = HtmlFormat.escape("Yes"),
                   canEdit = false
@@ -101,12 +95,6 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
             AnswerSection(
               headingKey = None,
               rows = Seq(
-                AnswerRow(
-                  label = "trustName.checkYourAnswersLabel",
-                  answer = HtmlFormat.escape(trustName),
-                  changeUrl = Some(MatchingNameController.onPageLoad(fakeDraftId).url),
-                  canEdit = false
-                ),
                 AnswerRow(
                   label = "trustRegisteredWithUkAddress.checkYourAnswersLabel",
                   answer = HtmlFormat.escape("No"),

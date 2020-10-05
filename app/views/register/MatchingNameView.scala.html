@@ -24,7 +24,7 @@ formHelper: FormWithCSRF
 @(form: Form[_], draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-               title = s"${errorPrefix(form)} ${messages("trustName.title")}"
+               title = s"${errorPrefix(form)}${messages("trustName.title")}"
                ) {
 
 @formHelper(action = MatchingNameController.onSubmit(draftId), 'autoComplete -> "on") {

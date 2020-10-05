@@ -62,41 +62,16 @@ class MatchingMapperSpec extends FreeSpec with MustMatchers
 
       "for an existing trust" - {
 
-        "must not create matching for an AlreadyRegistered trust" in {
-          val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "1234567890").success.value
-            .set(MatchingNamePage, "Existing trust").success.value
-            .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
-            .set(ExistingTrustMatched, Matched.AlreadyRegistered).success.value
-
-          matchingMapper.build(userAnswers, trustName) mustNot be(defined)
-        }
-
-        "must not create matching for a Failed matching trust" in {
-          val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "1234567890").success.value
-            .set(MatchingNamePage, "Existing trust").success.value
-            .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
-            .set(ExistingTrustMatched, Matched.Failed).success.value
-
-          matchingMapper.build(userAnswers, trustName) mustNot be(defined)
-        }
-
         "must create matching for a successful matching trust" in {
           val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "1234567890").success.value
-            .set(MatchingNamePage, "Existing trust").success.value
             .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
-            .set(ExistingTrustMatched, Matched.Success).success.value
 
           val result = matchingMapper.build(userAnswers, trustName).value
 
           result mustBe MatchData(
             utr = "1234567890",
-            name = "Existing trust",
+            name = "Trust Name",
             postCode = Some("NE981ZZ")
           )
         }

@@ -22,18 +22,18 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 class MatchingMapper {
 
-   def build(userAnswers: UserAnswers, trustName: String)(implicit hc:HeaderCarrier): Option[MatchData] = {
+  def build(userAnswers: UserAnswers, trustName: String)(implicit hc:HeaderCarrier): Option[MatchData] = {
 
-            for {
-              utr <- userAnswers.get(WhatIsTheUTRPage)
-              postcode = userAnswers.get(PostcodeForTheTrustPage)
-            } yield {
-              MatchData(
-                utr = utr,
-                name = trustName,
-                postCode = postcode
-              )
-            }
-        }
+    for {
+      utr <- userAnswers.get(WhatIsTheUTRPage)
+      postcode = userAnswers.get(PostcodeForTheTrustPage)
+    } yield {
+      MatchData(
+        utr = utr,
+        name = trustName,
+        postCode = postcode
+      )
+    }
+  }
 
 }
