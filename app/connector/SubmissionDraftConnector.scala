@@ -23,6 +23,7 @@ import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
+import play.api.http.Status
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -89,14 +90,12 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
     http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/reset/taxLiability")
   }
 
-  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[Option[LocalDate]] =
+  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[Option[LocalDate]] = {
     http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/when-trust-setup").map {
       response =>
-        response.status match {
-          case 200 => Some(response.json.as[LocalDate])
-          case _ => None
-        }
+        (response.json \ "startDate").asOpt[LocalDate]
     }
+  }
 
   def getTrustName(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[String] =
     http.GET[String](s"$submissionsBaseUrl/$draftId/trust-name")
