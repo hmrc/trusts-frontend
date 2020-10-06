@@ -379,12 +379,16 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
       "can retrieve trust setup date for a draft" in {
 
+        val response = Json.obj(
+          "startDate" -> "2012-02-20"
+        )
+
         server.stubFor(
           get(urlEqualTo(trustSetupDateUrl))
             .willReturn(
               aResponse()
                 .withStatus(Status.OK)
-                .withBody(JsString("2012-02-20").toString)
+                .withBody(response.toString)
             )
         )
 
