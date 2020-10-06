@@ -47,7 +47,6 @@ class RegistrationMapper @Inject()(
 
       Registration(
         matchData = matchingMapper.build(userAnswers, trustName),
-        yearsReturns = None,
         declaration = declaration,
         correspondence = correspondence,
         trust = Trust(

@@ -29,7 +29,6 @@ import play.api.libs.json._
 
 case class Registration(matchData: Option[MatchData],
                         correspondence: Correspondence,
-                        yearsReturns: Option[YearsReturns],
                         declaration: Declaration,
                         trust: Trust,
                         agentDetails: Option[AgentDetails] = None
