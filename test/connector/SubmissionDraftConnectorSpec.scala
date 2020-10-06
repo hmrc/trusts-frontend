@@ -28,7 +28,7 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json.Json
 import play.api.test.Helpers.CONTENT_TYPE
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
@@ -58,6 +58,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
   private val correspondenceAddressUrl = s"$submissionsUrl/$testDraftId/correspondence-address"
   private val trustSetupDateUrl = s"$submissionsUrl/$testDraftId/when-trust-setup"
+  private val trustNameUrl = s"$submissionsUrl/$testDraftId/trust-name"
 
   "SubmissionDraftConnector" - {
 
@@ -408,6 +409,25 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
         val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
         result mustEqual None
+      }
+
+      "can retrieve trust name for a draft" in {
+
+        val response = Json.obj(
+          "trustName" -> "My Lovely Trust"
+        )
+
+        server.stubFor(
+          get(urlEqualTo(trustNameUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(response.toString)
+            )
+        )
+
+        val result = Await.result(connector.getTrustName(testDraftId), Duration.Inf)
+        result mustEqual "My Lovely Trust"
       }
     }
 

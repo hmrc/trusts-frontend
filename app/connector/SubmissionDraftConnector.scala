@@ -99,6 +99,8 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
   }
 
   def getTrustName(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[String] =
-    http.GET[String](s"$submissionsBaseUrl/$draftId/trust-name")
-
+    http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/trust-name").map {
+      response =>
+        (response.json \ "trustName").as[String]
+    }
 }
