@@ -30,7 +30,7 @@ import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import play.api.http
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, Json}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TrustsDateFormatter
@@ -144,12 +144,15 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         val repository = createRepository(mockConnector)
 
         val registrationSectionsData = Json.obj(
-          "field/subfield" -> Json.parse(
-          """
-            |{
-            |   "dataField": "newData"
-            |}
-            |""".stripMargin))
+          "field/subfield" -> Json.obj(
+            "dataField"-> "newData"
+            ),
+          "field/subfield2" -> JsArray(
+            Seq(
+              Json.obj("subSubField2"-> "newData")
+            )
+          )
+        )
 
         when(mockConnector.getRegistrationPieces(any())(any(), any())).thenReturn(Future.successful(registrationSectionsData))
 
@@ -158,6 +161,12 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
             |{
             | "existingObject": {
             |   "existingField": "existingValue"
+            | },
+            | "field" : {
+            |   "subfield": {
+            |     "otherDataField": "otherData"
+            |   },
+            |   "subfield2": []
             | }
             |}
             |""".stripMargin)
@@ -173,8 +182,14 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
             | },
             | "field" : {
             |   "subfield": {
-            |     "dataField": "newData"
-            |   }
+            |     "dataField": "newData",
+            |     "otherDataField": "otherData"
+            |   },
+            |   "subfield2": [
+            |     {
+            |       "subSubField2": "newData"
+            |     }
+            |   ]
             | }
             |}
             |""".stripMargin)

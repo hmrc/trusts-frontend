@@ -80,10 +80,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   private def addSection(key: String, section: JsValue, data: JsValue): JsResult[JsValue] = {
     val path = decodePath(key).json
-    val transform = data.transform(path.pick) match {
-      case JsSuccess(_,_) => path.prune andThen __.json.update(path.put(section))
-      case _ => __.json.update(path.put(section))
-    }
+    val transform = __.json.update(path.put(section))
 
     data.transform(transform)
   }
