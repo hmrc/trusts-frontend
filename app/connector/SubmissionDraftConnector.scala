@@ -94,6 +94,8 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
     http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/when-trust-setup").map {
       response =>
         (response.json \ "startDate").asOpt[LocalDate]
+    }.recover {
+      case _ => None
     }
   }
 
