@@ -16,7 +16,7 @@
 
 package connector
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
@@ -28,7 +28,7 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
+import play.api.libs.json.{JsString, Json}
 import play.api.test.Helpers.CONTENT_TYPE
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
@@ -57,6 +57,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
   private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
   private val correspondenceAddressUrl = s"$submissionsUrl/$testDraftId/correspondence-address"
+  private val trustSetupDateUrl = s"$submissionsUrl/$testDraftId/when-trust-setup"
 
   "SubmissionDraftConnector" - {
 
@@ -376,8 +377,34 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         result mustEqual expectedAddress
       }
 
-      //TODO add test case for get trust setup date
+      "can retrieve trust setup date for a draft" in {
 
+        server.stubFor(
+          get(urlEqualTo(trustSetupDateUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(JsString("2012-02-20").toString)
+            )
+        )
+
+        val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
+        result mustEqual Some(LocalDate.of(2012, 2, 20))
+      }
+
+      "can handle draft without trust setup date" in {
+
+        server.stubFor(
+          get(urlEqualTo(trustSetupDateUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.NOT_FOUND)
+            )
+        )
+
+        val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
+        result mustEqual None
+      }
     }
 
     ".resetTaxLiability" - {
