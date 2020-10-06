@@ -110,12 +110,8 @@ object Trust {
   implicit val trustFormat: Format[Trust] = Json.format[Trust]
 }
 
-case class TrustEntitiesType(naturalPerson: Option[List[NaturalPersonType]],
-                             beneficiary: BeneficiaryType,
+case class TrustEntitiesType(
                              deceased: Option[WillType],
-                             leadTrustees: LeadTrusteeType,
-                             trustees: Option[List[TrusteeType]],
-                             protectors: Option[ProtectorsType],
                              settlors: Option[Settlors])
 
 object TrustEntitiesType {
