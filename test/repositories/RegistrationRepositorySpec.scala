@@ -16,7 +16,7 @@
 
 package repositories
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
@@ -393,7 +393,29 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       }
     }
 
-    //TODO Add test for get whentrustsetupdate
+    "reading when trust setup date" must {
+
+      "read existing date from connector" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val expected = LocalDate.parse("2020-10-10")
+
+        when(mockConnector.getTrustSetupDate(any())(any(), any())).thenReturn(Future.successful(Some(LocalDate.parse("2020-10-10"))))
+
+        val result = Await.result(repository.getTrustSetupDate(draftId), Duration.Inf)
+
+        result.get mustBe expected
+
+        verify(mockConnector).getTrustSetupDate(draftId)(hc, executionContext)
+      }
+    }
 
   }
 }
