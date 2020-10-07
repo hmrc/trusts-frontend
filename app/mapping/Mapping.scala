@@ -21,15 +21,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 trait Mapping[T] {
 
-  def build(userAnswers: UserAnswers) : Option[T]
+  def build(userAnswers: UserAnswers): Option[T]
 
-}
-
-trait BlockingMappingWithHc[T] extends Mapping[T] {
-
-  def build(userAnswers: UserAnswers)(implicit hc:HeaderCarrier) : Option[T]
-
-  //TODO introduce blocking call for trust name, this method should never be used.
-
-  override def build(userAnswers: UserAnswers): Option[T] = None
 }
