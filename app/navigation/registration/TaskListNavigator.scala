@@ -20,10 +20,8 @@ import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
 import models.NormalMode
 import models.core.UserAnswers
-import models.registration.Matched.Success
 import models.registration.pages.Status.Completed
-import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.register.ExistingTrustMatched
+import pages.entitystatus.DeceasedSettlorStatus
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
 import sections.settlors.LivingSettlors
@@ -31,21 +29,8 @@ import sections.settlors.LivingSettlors
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
 
-  def trustDetailsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    {
-      val completed = userAnswers.get(TrustDetailsStatus).contains(Completed)
-      val successfullyMatched = userAnswers.get(ExistingTrustMatched).contains(Success)
-
-      if (completed) {
-        controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(draftId)
-      } else {
-        if (successfullyMatched) {
-          controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, draftId)
-        } else {
-          controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
-        }
-      }
-    }
+  def trustDetailsJourney(draftId: String): String = {
+    frontendAppConfig.trustDetailsFrontendUrl(draftId)
   }
 
   def trusteesJourneyUrl(draftId: String): String = {

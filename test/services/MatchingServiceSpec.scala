@@ -24,8 +24,7 @@ import models.core.http.MatchedResponse._
 import models.core.http.SuccessOrFailureResponse
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import pages.register.trust_details.TrustNamePage
-import pages.register.{PostcodeForTheTrustPage, WhatIsTheUTRPage}
+import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.duration.Duration
@@ -43,7 +42,7 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
     val userAnswers: UserAnswers = emptyUserAnswers
       .set(WhatIsTheUTRPage, "utr").success.value
-      .set(TrustNamePage, "name").success.value
+      .set(MatchingNamePage, "name").success.value
       .set(PostcodeForTheTrustPage, "postcode").success.value
 
     "redirect to TaskList when Success response" in {

@@ -16,7 +16,7 @@
 
 package repositories
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
@@ -30,7 +30,7 @@ import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import play.api.http
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, Json}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TrustsDateFormatter
@@ -144,12 +144,15 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         val repository = createRepository(mockConnector)
 
         val registrationSectionsData = Json.obj(
-          "field/subfield" -> Json.parse(
-          """
-            |{
-            |   "dataField": "newData"
-            |}
-            |""".stripMargin))
+          "field/subfield" -> Json.obj(
+            "dataField"-> "newData"
+            ),
+          "field/subfield2" -> JsArray(
+            Seq(
+              Json.obj("subSubField2"-> "newData")
+            )
+          )
+        )
 
         when(mockConnector.getRegistrationPieces(any())(any(), any())).thenReturn(Future.successful(registrationSectionsData))
 
@@ -158,6 +161,12 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
             |{
             | "existingObject": {
             |   "existingField": "existingValue"
+            | },
+            | "field" : {
+            |   "subfield": {
+            |     "otherDataField": "otherData"
+            |   },
+            |   "subfield2": []
             | }
             |}
             |""".stripMargin)
@@ -173,8 +182,14 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
             | },
             | "field" : {
             |   "subfield": {
-            |     "dataField": "newData"
-            |   }
+            |     "dataField": "newData",
+            |     "otherDataField": "otherData"
+            |   },
+            |   "subfield2": [
+            |     {
+            |       "subSubField2": "newData"
+            |     }
+            |   ]
             | }
             |}
             |""".stripMargin)
@@ -274,7 +289,8 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
             )
           ),
           protectors = None,
-          otherIndividuals = None
+          otherIndividuals = None,
+          trustDetails = None
         )
 
         when(mockConnector.getAnswerSections(any())(any(), any())).thenReturn(Future.successful(answerSections))
@@ -374,6 +390,30 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         result mustBe correspondenceAddress
 
         verify(mockConnector).getCorrespondenceAddress(draftId)(hc, executionContext)
+      }
+    }
+
+    "reading when trust setup date" must {
+
+      "read existing date from connector" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val draftId = "DraftId"
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val expected = LocalDate.parse("2020-10-10")
+
+        when(mockConnector.getTrustSetupDate(any())(any(), any())).thenReturn(Future.successful(Some(LocalDate.parse("2020-10-10"))))
+
+        val result = Await.result(repository.getTrustSetupDate(draftId), Duration.Inf)
+
+        result.get mustBe expected
+
+        verify(mockConnector).getTrustSetupDate(draftId)(hc, executionContext)
       }
     }
 

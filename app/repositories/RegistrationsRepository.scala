@@ -16,6 +16,8 @@
 
 package repositories
 
+import java.time.LocalDate
+
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
@@ -78,10 +80,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   private def addSection(key: String, section: JsValue, data: JsValue): JsResult[JsValue] = {
     val path = decodePath(key).json
-    val transform = data.transform(path.pick) match {
-      case JsSuccess(_,_) => path.prune andThen __.json.update(path.put(section))
-      case _ => __.json.update(path.put(section))
-    }
+    val transform = __.json.update(path.put(section))
 
     data.transform(transform)
   }
@@ -121,6 +120,12 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
     submissionDraftConnector.getCorrespondenceAddress(draftId)
+
+  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]] =
+    submissionDraftConnector.getTrustSetupDate(draftId)
+
+  def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
+    submissionDraftConnector.getTrustName(draftId)
 }
 
 trait RegistrationsRepository {
@@ -141,4 +146,8 @@ trait RegistrationsRepository {
   def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType]
 
   def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType]
+
+  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]]
+
+  def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String]
 }

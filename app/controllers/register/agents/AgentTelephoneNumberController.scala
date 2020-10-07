@@ -17,7 +17,6 @@
 package controllers.register.agents
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.AgentTelephoneNumberFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -36,21 +35,14 @@ class AgentTelephoneNumberController @Inject()(
                                                 override val messagesApi: MessagesApi,
                                                 registrationsRepository: RegistrationsRepository,
                                                 navigator: Navigator,
-                                                identify: RegistrationIdentifierAction,
-                                                hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                                getData: DraftIdRetrievalActionProvider,
-                                                requireData: RegistrationDataRequiredAction,
-                                                requiredAnswer: RequiredAnswerActionProvider,
                                                 formProvider: AgentTelephoneNumberFormProvider,
+                                                actionSet: AgentActionSets,
                                                 val controllerComponents: MessagesControllerComponents,
                                                 view: AgentTelephoneNumberView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
-    identify andThen
-      hasAgentAffinityGroup() andThen
-      getData(draftId) andThen requireData andThen
-      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
+    actionSet.requiredAnswerWithAgent(draftId, RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
 
   val form: Form[String] = formProvider()
 

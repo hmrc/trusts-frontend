@@ -18,15 +18,18 @@ package utils
 
 import java.time.LocalDate
 
-import models.core.UserAnswers
-import pages.register.trust_details.WhenTrustSetupPage
 import uk.gov.hmrc.time.TaxYear
 
 object TaxLiabilityHelper {
 
-  def showTaxLiability(userAnswers: UserAnswers): Boolean = {
+  def showTaxLiability(trustSetUpDate: Option[LocalDate]): Boolean = {
     val taxYearStart = TaxYear.current.starts
-    (userAnswers.get(WhenTrustSetupPage).getOrElse(LocalDate.now()) isBefore
-      LocalDate.of(taxYearStart.getYear, taxYearStart.getMonthOfYear, taxYearStart.getDayOfMonth))
+    trustSetUpDate match {
+      case None => false
+      case Some(startDate) => startDate isBefore
+    LocalDate.of (taxYearStart.getYear, taxYearStart.getMonthOfYear, taxYearStart.getDayOfMonth)
+    }
   }
 }
+
+

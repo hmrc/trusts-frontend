@@ -18,6 +18,7 @@ package mapping.registration
 
 import javax.inject.Inject
 import models.core.UserAnswers
+import uk.gov.hmrc.http.HeaderCarrier
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
@@ -26,39 +27,26 @@ class RegistrationMapper @Inject()(
                                     assetMapper: AssetMapper,
                                     agentMapper: AgentMapper,
                                     deceasedSettlorMapper: DeceasedSettlorMapper,
-                                    taxLiabilityMapper: TaxLiabilityMapper,
                                     settlorMapper: SettlorsMapper,
                                     matchingMapper: MatchingMapper
                                   ) {
 
-  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType): Option[Registration] = {
+  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String)(implicit hc:HeaderCarrier): Option[Registration] = {
 
     for {
       trustDetails <- trustDetailsMapper.build(userAnswers)
       assets <- assetMapper.build(userAnswers)
-      correspondence <- correspondenceMapper.build(userAnswers)
+      correspondence <- correspondenceMapper.build(trustName)
       declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
     } yield {
 
-      val agent = agentMapper.build(userAnswers)
-      val deceasedSettlor = deceasedSettlorMapper.build(userAnswers)
-      val taxLiability = None
-      val trustees = None
-      val settlors = settlorMapper.build(userAnswers)
-
       val entities = TrustEntitiesType(
-        naturalPerson = None,
-        beneficiary = BeneficiaryType(None, None, None, None, None, None, None),
-        deceased = deceasedSettlor,
-        leadTrustees = LeadTrusteeType(None, Some(LeadTrusteeOrgType("", "", None, IdentificationOrgType(None, None)))),
-        trustees = trustees,
-        protectors = None,
-        settlors = settlors
+        deceased = deceasedSettlorMapper.build(userAnswers),
+        settlors = settlorMapper.build(userAnswers)
       )
 
       Registration(
-        matchData = matchingMapper.build(userAnswers),
-        yearsReturns = taxLiability,
+        matchData = matchingMapper.build(userAnswers, trustName),
         declaration = declaration,
         correspondence = correspondence,
         trust = Trust(
@@ -66,7 +54,7 @@ class RegistrationMapper @Inject()(
           entities = entities,
           assets = assets
         ),
-        agentDetails = agent
+        agentDetails = agentMapper.build(userAnswers)
       )
     }
 

@@ -18,17 +18,18 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.Mapping
-import models.registration.Matched
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import pages.register.trust_details.TrustNamePage
-import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
+import pages.register.{PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
 class MatchingMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
-  val matchingMapper: Mapping[MatchData] = injector.instanceOf[MatchingMapper]
+  val matchingMapper: MatchingMapper = injector.instanceOf[MatchingMapper]
+
+  val trustName = "Trust Name"
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
   "MatchingMapper" - {
 
@@ -37,7 +38,7 @@ class MatchingMapperSpec extends FreeSpec with MustMatchers
       "must not create Matching" in {
         val userAnswers = TestUserAnswers.emptyUserAnswers
 
-        matchingMapper.build(userAnswers) mustNot be(defined)
+        matchingMapper.build(userAnswers, trustName) mustNot be(defined)
       }
 
     }
@@ -51,7 +52,7 @@ class MatchingMapperSpec extends FreeSpec with MustMatchers
           val userAnswers = TestUserAnswers.emptyUserAnswers
             .set(TrustHaveAUTRPage, false).success.value
 
-          matchingMapper.build(userAnswers) mustNot be(defined)
+          matchingMapper.build(userAnswers, trustName) mustNot be(defined)
 
         }
 
@@ -59,41 +60,16 @@ class MatchingMapperSpec extends FreeSpec with MustMatchers
 
       "for an existing trust" - {
 
-        "must not create matching for an AlreadyRegistered trust" in {
-          val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "1234567890").success.value
-            .set(TrustNamePage, "Existing trust").success.value
-            .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
-            .set(ExistingTrustMatched, Matched.AlreadyRegistered).success.value
-
-          matchingMapper.build(userAnswers) mustNot be(defined)
-        }
-
-        "must not create matching for a Failed matching trust" in {
-          val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "1234567890").success.value
-            .set(TrustNamePage, "Existing trust").success.value
-            .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
-            .set(ExistingTrustMatched, Matched.Failed).success.value
-
-          matchingMapper.build(userAnswers) mustNot be(defined)
-        }
-
         "must create matching for a successful matching trust" in {
           val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(TrustHaveAUTRPage, true).success.value
             .set(WhatIsTheUTRPage, "1234567890").success.value
-            .set(TrustNamePage, "Existing trust").success.value
             .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
-            .set(ExistingTrustMatched, Matched.Success).success.value
 
-          val result = matchingMapper.build(userAnswers).value
+          val result = matchingMapper.build(userAnswers, trustName).value
 
           result mustBe MatchData(
             utr = "1234567890",
-            name = "Existing trust",
+            name = "Trust Name",
             postCode = Some("NE981ZZ")
           )
         }

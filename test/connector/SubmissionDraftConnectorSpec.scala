@@ -16,7 +16,7 @@
 
 package connector
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
@@ -57,6 +57,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
   private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
   private val correspondenceAddressUrl = s"$submissionsUrl/$testDraftId/correspondence-address"
+  private val trustSetupDateUrl = s"$submissionsUrl/$testDraftId/when-trust-setup"
+  private val trustNameUrl = s"$submissionsUrl/$testDraftId/trust-name"
 
   "SubmissionDraftConnector" - {
 
@@ -288,7 +290,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             )
           ),
           protectors = None,
-          otherIndividuals = None
+          otherIndividuals = None,
+          trustDetails = None
         )
 
         val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allAnswerSections), None)
@@ -375,6 +378,57 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         result mustEqual expectedAddress
       }
 
+      "can retrieve trust setup date for a draft" in {
+
+        val response = Json.obj(
+          "startDate" -> "2012-02-20"
+        )
+
+        server.stubFor(
+          get(urlEqualTo(trustSetupDateUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(response.toString)
+            )
+        )
+
+        val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
+        result mustEqual Some(LocalDate.of(2012, 2, 20))
+      }
+
+      "can handle draft without trust setup date" in {
+
+        server.stubFor(
+          get(urlEqualTo(trustSetupDateUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.NOT_FOUND)
+            )
+        )
+
+        val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
+        result mustEqual None
+      }
+
+      "can retrieve trust name for a draft" in {
+
+        val response = Json.obj(
+          "trustName" -> "My Lovely Trust"
+        )
+
+        server.stubFor(
+          get(urlEqualTo(trustNameUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(response.toString)
+            )
+        )
+
+        val result = Await.result(connector.getTrustName(testDraftId), Duration.Inf)
+        result mustEqual "My Lovely Trust"
+      }
     }
 
     ".resetTaxLiability" - {

@@ -47,59 +47,66 @@ class DefaultSubmissionService @Inject()(
     registrationsRepository.getCorrespondenceAddress(userAnswers.draftId) flatMap {
       correspondenceAddress =>
 
-        registrationMapper.build(userAnswers, correspondenceAddress) match {
-          case Some(registration) =>
-            registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)) flatMap {
-              fullRegistrationJson =>
-                trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
-                  case response@RegistrationTRNResponse(_) =>
+        registrationsRepository.getTrustName(userAnswers.draftId) flatMap {
+          trustName =>
 
-                    auditService.audit(
-                      event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                      registration = fullRegistrationJson,
-                      draftId = userAnswers.draftId,
-                      internalId = userAnswers.internalAuthId,
-                      response = response
-                    )
+            registrationMapper.build(userAnswers, correspondenceAddress, trustName) match {
+              case Some(registration) =>
+                registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)) flatMap {
+                  fullRegistrationJson =>
+                    trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
+                      case response@RegistrationTRNResponse(_) =>
 
-                    response
-                  case AlreadyRegistered =>
+                        auditService.audit(
+                          event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                          registration = fullRegistrationJson,
+                          draftId = userAnswers.draftId,
+                          internalId = userAnswers.internalAuthId,
+                          response = response
+                        )
 
-                    auditService.audit(
-                      event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                      registration = fullRegistrationJson,
-                      draftId = userAnswers.draftId,
-                      internalId = userAnswers.internalAuthId,
-                      response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
-                    )
-                    AlreadyRegistered
-                  case other =>
-                    auditService.audit(
-                      event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                      registration = fullRegistrationJson,
-                      draftId = userAnswers.draftId,
-                      internalId = userAnswers.internalAuthId,
-                      response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
-                    )
-                    other
+                        response
+                      case AlreadyRegistered =>
+
+                        auditService.audit(
+                          event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                          registration = fullRegistrationJson,
+                          draftId = userAnswers.draftId,
+                          internalId = userAnswers.internalAuthId,
+                          response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
+                        )
+                        AlreadyRegistered
+                      case other =>
+                        auditService.audit(
+                          event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
+                          registration = fullRegistrationJson,
+                          draftId = userAnswers.draftId,
+                          internalId = userAnswers.internalAuthId,
+                          response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
+                        )
+                        other
+                    }
                 }
+
+              case None =>
+
+                auditService.cannotSubmit(
+                  userAnswers
+                )
+
+                Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
+                Future.failed(UnableToRegister())
             }
-          case None =>
-
-            auditService.cannotSubmit(
-              userAnswers
-            )
-
-            Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
-            Future.failed(UnableToRegister())
         }
     }
   }
 }
 
-@ImplementedBy(classOf[DefaultSubmissionService])
-trait SubmissionService {
+  @ImplementedBy(classOf[DefaultSubmissionService])
+  trait SubmissionService {
 
-  def submit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, ec: ExecutionContext) : Future[TrustResponse]
+    def submit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
 
-}
+  }
+
+

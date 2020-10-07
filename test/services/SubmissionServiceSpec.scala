@@ -16,6 +16,8 @@
 
 package services
 
+import java.time.LocalDate
+
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
@@ -69,6 +71,10 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] = Future.successful(testLeadTrusteeOrg)
 
     override def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier): Future[AddressType] = Future.successful(correspondenceAddress)
+
+    override def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String] = Future.successful("Name")
+
+    override def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]
@@ -134,8 +140,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
-    val asset = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithDeceased)
     val userAnswers = TestUserAnswers.withDeclaration(asset)
 
     userAnswers

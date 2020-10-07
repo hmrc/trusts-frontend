@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package pages.register.trust_details
+package pages.register
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.TrustDetails
 
-case object CountryGoverningTrustPage extends QuestionPage[String] {
+case object MatchingNamePage extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ TrustDetails \ toString
+  override def path: JsPath = JsPath  \ "matching" \ toString
 
-  override def toString: String = "countryGoverningTrust"
+  override def toString: String = "trustName"
 }

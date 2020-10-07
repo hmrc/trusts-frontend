@@ -41,7 +41,7 @@ class PrintUserAnswersHelper @Inject()(
       val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, draftId, canEdit = false)
 
       val entitySections = List(
-        helper.trustDetails,
+        registrationAnswerSections.trustDetails,
         helper.deceasedSettlor,
         helper.livingSettlors,
         registrationAnswerSections.trustees,

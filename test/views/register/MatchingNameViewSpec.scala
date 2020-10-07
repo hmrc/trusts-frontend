@@ -14,65 +14,42 @@
  * limitations under the License.
  */
 
-package views.register.trust_details
+package views.register
 
 import forms.TrustNameFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
-import views.html.register.trust_details.TrustNameView
+import views.html.register.MatchingNameView
 
-class TrustNameViewSpec extends StringViewBehaviours {
+class MatchingNameViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "trustName"
   val hintKey = "trustName.hint.hasUtr"
 
   val form = new TrustNameFormProvider()()
 
-  "TrustNameView view" when {
+  "MatchingNameView view" when {
 
     "the trust is an existing trust" must {
 
-      val view = viewFor[TrustNameView](Some(emptyUserAnswers))
+      val view = viewFor[MatchingNameView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, fakeDraftId, hintTextShown = true)(fakeRequest, messages)
+        view.apply(form, fakeDraftId)(fakeRequest, messages)
 
-      behave like normalPage(applyView(form), Some("taskList.trustDetails.label"), messageKeyPrefix)
+      behave like normalPage(applyView(form), None, messageKeyPrefix)
 
       behave like pageWithBackLink(applyView(form))
 
       behave like stringPage(form,
         applyView,
-        Some("taskList.trustDetails.label"),
+        None,
         messageKeyPrefix,
         Some(hintKey)
       )
 
       behave like pageWithASubmitButton(applyView(form))
     }
-
-    "the trust is a new trust" must {
-
-      val view = viewFor[TrustNameView](Some(emptyUserAnswers))
-
-      def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, fakeDraftId, hintTextShown = false)(fakeRequest, messages)
-
-      behave like normalPage(applyView(form), Some("taskList.trustDetails.label"), messageKeyPrefix)
-
-      behave like pageWithBackLink(applyView(form))
-
-      behave like stringPage(
-        form,
-        applyView,
-        Some("taskList.trustDetails.label"),
-        messageKeyPrefix
-      )
-
-      behave like pageWithASubmitButton(applyView(form))
-    }
-
   }
 }

@@ -23,7 +23,6 @@ import models.RegistrationSubmission.AllStatus
 import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
-import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -36,7 +35,6 @@ import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
-import pages.register.trust_details._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -50,6 +48,14 @@ import scala.concurrent.Future
 class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
   private val index = 0
+
+  val trustDetailsSection = List(
+    AnswerSection(
+      Some("trustDetailsHeadingKey1"),
+      List.empty,
+      Some("trustDetailsSectionKey1")
+    )
+  )
 
   val beneficiarySections = List(
     AnswerSection(
@@ -107,7 +113,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     beneficiaries = Some(beneficiarySections),
     trustees = Some(trusteeSections),
     protectors = Some(protectorSections),
-    otherIndividuals = Some(otherIndividualSections)
+    otherIndividuals = Some(otherIndividualSections),
+    trustDetails = Some(trustDetailsSection)
   )
 
   when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
@@ -116,14 +123,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
-        .set(TrustNamePage, "New Trust").success.value
-        .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(GovernedInsideTheUKPage, true).success.value
-        .set(AdministrationInsideUKPage, true).success.value
-        .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
-        .set(EstablishedUnderScotsLawPage, true).success.value
-        .set(TrustResidentOffshorePage, false).success.value
-        .set(TrustDetailsStatus, Completed).success.value
 
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
@@ -156,14 +155,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
 
     val expectedSections = Seq(
-      AnswerSection(
-        None,
-        Seq(
-          checkYourAnswersHelper.trustName().value,
-          checkYourAnswersHelper.whenTrustSetup.value
-        ),
-        Some("Trust details")
-      ),
+      trustDetailsSection(0),
       AnswerSection(
         None,
         Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
@@ -232,14 +224,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val userAnswers =
         TestUserAnswers.emptyUserAnswers
-          .set(TrustNamePage, "New Trust").success.value
-          .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-          .set(GovernedInsideTheUKPage, true).success.value
-          .set(AdministrationInsideUKPage, true).success.value
-          .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
-          .set(EstablishedUnderScotsLawPage, true).success.value
-          .set(TrustResidentOffshorePage, false).success.value
-          .set(TrustDetailsStatus, Completed).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -261,15 +245,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
-        .set(TrustNamePage, "New Trust").success.value
-        .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(GovernedInsideTheUKPage, true).success.value
-        .set(AdministrationInsideUKPage, true).success.value
-        .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
-        .set(EstablishedUnderScotsLawPage, true).success.value
-        .set(TrustResidentOffshorePage, false).success.value
-        .set(TrustDetailsStatus, Completed).success.value
-
         .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
         .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
         .set(HoldoverReliefYesNoPage, true).success.value
@@ -299,14 +274,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
 
     val expectedSections = Seq(
-      AnswerSection(
-        None,
-        Seq(
-          checkYourAnswersHelper.trustName().value,
-          checkYourAnswersHelper.whenTrustSetup.value
-        ),
-        Some("Trust details")
-      ),
+     trustDetailsSection(0),
       AnswerSection(
         headingKey = Some("Settlor 1"),
         Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
@@ -366,33 +334,5 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
       application.stop()
     }
-
-    "redirect to tasklist page when tasklist not completed" in {
-
-      val userAnswers =
-        TestUserAnswers.emptyUserAnswers
-          .set(TrustNamePage, "New Trust").success.value
-          .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-          .set(GovernedInsideTheUKPage, true).success.value
-          .set(AdministrationInsideUKPage, true).success.value
-          .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
-          .set(EstablishedUnderScotsLawPage, true).success.value
-          .set(TrustResidentOffshorePage, false).success.value
-          .set(TrustDetailsStatus, Completed).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
-
-      application.stop()
-
-    }
-
   }
 }

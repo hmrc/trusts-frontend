@@ -17,9 +17,10 @@
 package mapping
 
 import models.core.UserAnswers
+import uk.gov.hmrc.http.HeaderCarrier
 
 trait Mapping[T] {
 
-  def build(userAnswers: UserAnswers) : Option[T]
+  def build(userAnswers: UserAnswers): Option[T]
 
 }

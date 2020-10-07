@@ -39,9 +39,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListController @Inject()(
                                     override val messagesApi: MessagesApi,
-                                    identify: RegistrationIdentifierAction,
-                                    getData: DraftIdRetrievalActionProvider,
-                                    requireData: RegistrationDataRequiredAction,
                                     requiredAnswer: RequiredAnswerActionProvider,
                                     val controllerComponents: MessagesControllerComponents,
                                     view: TaskListView,
@@ -50,15 +47,13 @@ class TaskListController @Inject()(
                                     registrationsRepository: RegistrationsRepository,
                                     taskListNavigator : TaskListNavigator,
                                     requireDraft : RequireDraftRegistrationActionRefiner,
-                                    dateFormatter: DateFormatter
+                                    dateFormatter: DateFormatter,
+                                    standardAction: StandardActionSets
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
-    identify andThen getData(draftId) andThen requireData andThen
-      requiredAnswer(
-        RequiredAnswer(
-          TrustRegisteredOnlinePage, controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
-      ) andThen
+    standardAction.identifiedUserWithRequiredAnswer(draftId,
+      RequiredAnswer(TrustRegisteredOnlinePage,controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))) andThen
       requiredAnswer(
         RequiredAnswer(
           TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))
@@ -77,9 +72,10 @@ class TaskListController @Inject()(
           sections <- registrationProgress.items(updatedAnswers, draftId)
           additionalSections <- registrationProgress.additionalItems(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(updatedAnswers)
+          trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
         } yield {
 
-          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(request.userAnswers)) {
+          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate)) {
             sections
           } else {
             val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)
