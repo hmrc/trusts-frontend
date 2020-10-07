@@ -17,16 +17,7 @@
 package mapping.registration
 
 class CorrespondenceMapper {
-
   def build(trustName: String): Option[Correspondence] = {
-
-        Some(Correspondence(
-          name = trustName,
-          // Following are filled in by correspondence registration pieces
-          // set by trustees frontend into submission draft data.
-          abroadIndicator = false,
-          address = AddressType("", "", None, None, None, ""),
-          phoneNumber = ""
-        ))
-    }
+    Some(Correspondence(name = trustName))
+  }
 }

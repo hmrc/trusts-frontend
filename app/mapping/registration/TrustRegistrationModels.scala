@@ -60,10 +60,7 @@ object MatchData {
       ).apply(unlift(MatchData.unapply))
 }
 
-case class Correspondence(abroadIndicator: Boolean,
-                          name: String,
-                          address: AddressType,
-                          phoneNumber: String)
+case class Correspondence(name: String)
 
 object Correspondence {
   implicit val correspondenceFormat : Format[Correspondence] = Json.format[Correspondence]
