@@ -831,6 +831,7 @@ answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share
 answerPage.section.propertyOrLandAsset.subheading = Property or land
 answerPage.section.partnershipAsset.subheading = Partnership
+answerPage.section.businessAsset.subheading = Business
 answerPage.section.otherAsset.subheading = Other
 answerPage.agentClientRef = Client reference number: {0}
 answerPage.section.trustType.heading = Trust type
