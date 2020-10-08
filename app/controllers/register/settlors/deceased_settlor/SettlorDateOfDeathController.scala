@@ -27,7 +27,6 @@ import models.requests.RegistrationDataRequest
 import models.{Mode, NormalMode}
 import navigation.Navigator
 import pages.register.settlors.deceased_settlor.{SettlorDateOfDeathPage, SettlorsDateOfBirthPage, SettlorsNamePage}
-import pages.register.trust_details.WhenTrustSetupPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -60,17 +59,19 @@ class SettlorDateOfDeathController @Inject()(
   private def form(maxDate: (LocalDate, String), minDate: (LocalDate, String)): Form[LocalDate] =
     formProvider.withConfig(maxDate, minDate)
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
-      val preparedForm = request.userAnswers.get(SettlorDateOfDeathPage) match {
-        case None => form(maxDate, minDate)
-        case Some(value) => form(maxDate, minDate).fill(value)
-      }
+      getMaxDate(draftId).map { maxDate =>
+        val preparedForm = request.userAnswers.get(SettlorDateOfDeathPage) match {
+          case None => form(maxDate, minDate)
+          case Some(value) => form(maxDate, minDate).fill(value)
+        }
 
-      Ok(view(preparedForm, mode, draftId, name))
+        Ok(view(preparedForm, mode, draftId, name))
+      }
   }
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
@@ -78,17 +79,19 @@ class SettlorDateOfDeathController @Inject()(
 
       val name = request.userAnswers.get(SettlorsNamePage).get
 
-      form(maxDate, minDate).bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, name))),
+      getMaxDate(draftId).flatMap { maxDate =>
+        form(maxDate, minDate).bindFromRequest().fold(
+          (formWithErrors: Form[_]) =>
+            Future.successful(BadRequest(view(formWithErrors, mode, draftId, name))),
 
-        value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorDateOfDeathPage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SettlorDateOfDeathPage, mode, draftId)(updatedAnswers))
-        }
-      )
+          value => {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(SettlorDateOfDeathPage, value))
+              _ <- registrationsRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(SettlorDateOfDeathPage, mode, draftId)(updatedAnswers))
+          }
+        )
+      }
   }
 
   private def minDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
@@ -100,8 +103,8 @@ class SettlorDateOfDeathController @Inject()(
     }
   }
 
-  private def maxDate(implicit request: RegistrationDataRequest[AnyContent]): (LocalDate, String) = {
-    request.userAnswers.get(WhenTrustSetupPage) match {
+  private def getMaxDate(draftId: String)(implicit request: RegistrationDataRequest[AnyContent]): Future[(LocalDate, String)] = {
+    registrationsRepository.getTrustSetupDate(draftId).map {
       case Some(startDate) =>
         (startDate, "afterTrustStartDate")
       case None =>

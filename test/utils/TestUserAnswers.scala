@@ -22,7 +22,6 @@ import models.core.UserAnswers
 import models.core.pages.{Declaration, FullName, IndividualOrBusiness, UKAddress}
 import models.registration.Matched.{Failed, Success}
 import models.registration.pages.Status.Completed
-import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import org.scalatest.TryValues
 import pages.entitystatus._
@@ -34,7 +33,6 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.trust_details._
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -76,19 +74,6 @@ object TestUserAnswers extends TryValues {
       .set(LivingSettlorStatus(index), Completed).success.value
   }
 
-
-  def withTrustDetails(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers
-      .set(TrustNamePage, "New Trust").success.value
-      .set(WhenTrustSetupPage, LocalDate.of(1500, 10, 10)).success.value
-      .set(GovernedInsideTheUKPage, true).success.value
-      .set(AdministrationInsideUKPage, true).success.value
-      .set(TrusteesBasedInTheUKPage, UKBasedTrustees).success.value
-      .set(EstablishedUnderScotsLawPage, true).success.value
-      .set(TrustResidentOffshorePage, false).success.value
-      .set(TrustDetailsStatus, Completed).success.value
-  }
-
   def withMoneyAsset(userAnswers: UserAnswers): UserAnswers = {
     val index = 0
     userAnswers
@@ -104,7 +89,6 @@ object TestUserAnswers extends TryValues {
 
   def withMatchingSuccess(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
-      .set(TrustNamePage, "Existing Trust").success.value
       .set(TrustHaveAUTRPage, true).success.value
       .set(WhatIsTheUTRPage, "123456789").success.value
       .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
@@ -124,8 +108,7 @@ object TestUserAnswers extends TryValues {
   def newTrustCompleteUserAnswers: UserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-    val uaWithTrustDetails = TestUserAnswers.withTrustDetails(uaWithDeceased)
-    val userAnswers = TestUserAnswers.withMoneyAsset(uaWithTrustDetails)
+    val userAnswers = TestUserAnswers.withMoneyAsset(uaWithDeceased)
 
     userAnswers
   }

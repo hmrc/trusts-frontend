@@ -17,7 +17,6 @@
 package controllers.register.agents
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.AgentInternalReferenceFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -36,18 +35,15 @@ class AgentInternalReferenceController @Inject()(
                                                   override val messagesApi: MessagesApi,
                                                   registrationsRepository: RegistrationsRepository,
                                                   navigator: Navigator,
-                                                  identify: RegistrationIdentifierAction,
-                                                  hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                                  getData: DraftIdRetrievalActionProvider,
-                                                  requireData: RegistrationDataRequiredAction,
                                                   formProvider: AgentInternalReferenceFormProvider,
+                                                  actionSet: AgentActionSets,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: AgentInternalReferenceView
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
 
-  def actions(draftId: String)= identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
+  def actions(draftId: String)= actionSet.identifiedUserWithData(draftId)
 
   val form = formProvider()
 

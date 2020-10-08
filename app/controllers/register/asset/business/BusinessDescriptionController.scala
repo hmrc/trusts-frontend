@@ -17,8 +17,6 @@
 package controllers.register.asset.business
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import controllers.filters.IndexActionFilterProvider
 import forms.DescriptionFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -38,12 +36,8 @@ class BusinessDescriptionController @Inject()(
                                                override val messagesApi: MessagesApi,
                                                registrationsRepository: RegistrationsRepository,
                                                navigator: Navigator,
-                                               identify: RegistrationIdentifierAction,
-                                               getData: DraftIdRetrievalActionProvider,
-                                               requireData: RegistrationDataRequiredAction,
-                                               validateIndex: IndexActionFilterProvider,
                                                formProvider: DescriptionFormProvider,
-                                               requiredAnswer: RequiredAnswerActionProvider,
+                                               actionSet: StandardActionSets,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: BusinessDescriptionView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -51,10 +45,8 @@ class BusinessDescriptionController @Inject()(
   val form: Form[String] = formProvider.withConfig(length = 56, prefix = "assetDescription")
 
   private def actions(index: Int, draftId: String) =
-    identify andThen getData(draftId) andThen
-      requireData andThen
-      validateIndex(index, Assets) andThen
-      requiredAnswer(RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
+    actionSet.identifiedUserWithDataAnswerAndIndex(
+      draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)), index, Assets)
 
   def onPageLoad(mode: Mode, index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>

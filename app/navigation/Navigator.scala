@@ -39,11 +39,10 @@ class Navigator @Inject()(
       AssetsRoutes.route(draftId) orElse
       DeceasedSettlorRoutes.route(draftId) orElse
       MatchingRoutes.route(draftId, config) orElse
-      TrustDetailRoutes.route(draftId) orElse
       SuitabilityRoutes.route(draftId) orElse
       defaultRoute
 
-  def nextPage(page: Page, mode: Mode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
+  def nextPage(page: Page, mode: Mode = NormalMode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
     case NormalMode =>
       route(draftId)(page)(af)
     case CheckMode =>

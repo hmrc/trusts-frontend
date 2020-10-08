@@ -22,8 +22,7 @@ import models.core.UserAnswers
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.verify
-import pages.register.{PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
-import pages.register.trust_details.TrustNamePage
+import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup._
@@ -98,7 +97,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
 
       val userAnswers = emptyUserAnswers
         .set(WhatIsTheUTRPage, "utr").success.value
-        .set(TrustNamePage, "name").success.value
+        .set(MatchingNamePage, "name").success.value
         .set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
         .set(PostcodeForTheTrustPage, "postcode").success.value
 
@@ -116,7 +115,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(registrationsRepository).set(uaCaptor.capture)(any())
       uaCaptor.getValue.get(WhatIsTheUTRPage) mustNot be(defined)
-      uaCaptor.getValue.get(TrustNamePage) mustNot be(defined)
+      uaCaptor.getValue.get(MatchingNamePage) mustNot be(defined)
       uaCaptor.getValue.get(TrustRegisteredWithUkAddressYesNoPage) mustNot be(defined)
       uaCaptor.getValue.get(PostcodeForTheTrustPage) mustNot be(defined)
 

@@ -16,24 +16,8 @@
 
 package mapping.registration
 
-import javax.inject.Inject
-import models.core.UserAnswers
-import pages.register.trust_details.TrustNamePage
-
-class CorrespondenceMapper @Inject()(addressMapper: AddressMapper) {
-
-  def build(userAnswers: UserAnswers): Option[Correspondence] = {
-
-    userAnswers.get(TrustNamePage).map {
-      trustName =>
-        Correspondence(
-          name = trustName,
-          // Following are filled in by correspondence registration pieces
-          // set by trustees frontend into submission draft data.
-          abroadIndicator = false,
-          address = AddressType("", "", None, None, None, ""),
-          phoneNumber = ""
-        )
-    }
+class CorrespondenceMapper {
+  def build(trustName: String): Option[Correspondence] = {
+    Some(Correspondence(name = trustName))
   }
 }

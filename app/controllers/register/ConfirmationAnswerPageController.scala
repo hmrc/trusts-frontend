@@ -35,20 +35,18 @@ import scala.concurrent.ExecutionContext
 
 class ConfirmationAnswerPageController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  identify: RegistrationIdentifierAction,
-                                                  getData: DraftIdRetrievalActionProvider,
-                                                  requireData: RegistrationDataRequiredAction,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: ConfirmationAnswerPageView,
                                                   countryOptions : CountryOptions,
                                                   registrationComplete : TaskListCompleteActionRefiner,
                                                   printUserAnswersHelper: PrintUserAnswersHelper,
-                                                  dateFormatter: DateFormatter
+                                                  dateFormatter: DateFormatter,
+                                                  actionSet: StandardActionSets
                                             )(implicit ec: ExecutionContext)
   extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String) =
-    identify andThen getData(draftId) andThen requireData andThen registrationComplete
+    actionSet.identifiedUserWithData(draftId) andThen registrationComplete
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>

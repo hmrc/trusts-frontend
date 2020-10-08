@@ -16,8 +16,8 @@
 
 package views.register
 
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate, LocalDateTime}
 
 import controllers.register.agents.routes
 import models.core.UserAnswers
@@ -30,7 +30,6 @@ import pages.register.RegistrationProgress
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.trust_details.WhenTrustSetupPage
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
@@ -85,8 +84,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "all sections are completed" in {
 
           val userAnswers = emptyUserAnswers
-            .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-            .set(TrustDetailsStatus, Completed).success.value
             .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value

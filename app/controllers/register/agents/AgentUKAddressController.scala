@@ -17,7 +17,6 @@
 package controllers.register.agents
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.UKAddressFormProvider
 import javax.inject.Inject
 import models.{Mode, NormalMode}
@@ -36,12 +35,8 @@ class AgentUKAddressController @Inject()(
                                           override val messagesApi: MessagesApi,
                                           registrationsRepository: RegistrationsRepository,
                                           navigator: Navigator,
-                                          identify: RegistrationIdentifierAction,
-                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                          getData: DraftIdRetrievalActionProvider,
-                                          requireData: RegistrationDataRequiredAction,
-                                          requiredAnswer: RequiredAnswerActionProvider,
                                           formProvider: UKAddressFormProvider,
+                                          actionSet: AgentActionSets,
                                           val controllerComponents: MessagesControllerComponents,
                                           view: AgentUKAddressView
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -49,11 +44,7 @@ class AgentUKAddressController @Inject()(
   val form = formProvider()
 
   private def actions(draftId: String) =
-    identify andThen
-      hasAgentAffinityGroup() andThen
-      getData(draftId) andThen
-      requireData andThen
-      requiredAnswer(RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
+    actionSet.requiredAnswerWithAgent(draftId, RequiredAnswer(AgentNamePage, routes.AgentNameController.onPageLoad(NormalMode, draftId)))
 
 
   def onPageLoad(mode: Mode, draftId : String): Action[AnyContent] = actions(draftId) {

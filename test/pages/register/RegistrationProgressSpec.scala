@@ -16,8 +16,6 @@
 
 package pages.register
 
-import java.time.LocalDate
-
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
@@ -33,7 +31,6 @@ import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
 import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
-import pages.register.trust_details.WhenTrustSetupPage
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -42,47 +39,6 @@ import scala.concurrent.{Await, Future}
 
 class RegistrationProgressSpec extends RegistrationSpecBase {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-  "Trust details section" must {
-
-    "render no tag" when {
-
-      "no status value in user answers" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-
-        registrationProgress.trustDetailsStatus(userAnswers) mustBe None
-      }
-    }
-
-    "render in-progress tag" when {
-
-      "user has entered when the trust was created" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-            .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-
-        registrationProgress.trustDetailsStatus(userAnswers).value mustBe InProgress
-      }
-    }
-
-    "render complete tag" when {
-
-      "user answer has reached check-trust-details" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-          .set(TrustDetailsStatus, Completed).success.value
-
-        registrationProgress.trustDetailsStatus(userAnswers).value mustBe Completed
-      }
-    }
-  }
 
   "Settlor section" must {
 
@@ -247,8 +203,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
       val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
       val userAnswers = emptyUserAnswers
-        .set(WhenTrustSetupPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(TrustDetailsStatus, Completed).success.value
         .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
         .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value

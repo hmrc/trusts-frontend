@@ -16,23 +16,18 @@
 
 package navigation
 
-import java.time.LocalDate
-
 import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.pages.FullName
 import models.core.pages.IndividualOrBusiness.Individual
-import models.registration.Matched.Success
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset.Money
 import navigation.registration.TaskListNavigator
-import pages.entitystatus.{DeceasedSettlorStatus, TrustDetailsStatus}
-import pages.register.ExistingTrustMatched
+import pages.entitystatus.DeceasedSettlorStatus
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor.SettlorsNamePage
 import pages.register.settlors.living_settlor.{SettlorIndividualNamePage, SettlorIndividualOrBusinessPage}
-import pages.register.trust_details.{TrustNamePage, WhenTrustSetupPage}
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
@@ -42,39 +37,11 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
 
     "for trust details task" when {
 
-      "trust details has been answered" must {
-
         "go to Check Trust Answers Page" in {
-          val answers = emptyUserAnswers
-            .set(TrustNamePage, "Trust of John").success.value
-              .set(WhenTrustSetupPage, LocalDate.of(2010,10,10)).success.value
-              .set(TrustDetailsStatus, Completed).success.value
-          navigator.trustDetailsJourney(answers, fakeDraftId) mustBe controllers.register.trust_details.routes.TrustDetailsAnswerPageController.onPageLoad(fakeDraftId)
-        }
 
+          navigator.trustDetailsJourney(fakeDraftId) mustBe fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)
+        }
       }
-
-      "trust details has not been answered" when {
-
-        "trust has been matched" must {
-          "go to WhenTrustSetup Page" in {
-            val answers = emptyUserAnswers
-              .set(ExistingTrustMatched, Success).success.value
-            navigator.trustDetailsJourney(answers, fakeDraftId) mustBe
-              controllers.register.trust_details.routes.WhenTrustSetupController.onPageLoad(NormalMode, fakeDraftId)
-          }
-        }
-
-        "trust has not been matched" must {
-          "go to TrustName page" in {
-            navigator.trustDetailsJourney(emptyUserAnswers, fakeDraftId) mustBe
-              controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, fakeDraftId)
-          }
-        }
-
-      }
-
-    }
 
     "for settlors task" when {
 

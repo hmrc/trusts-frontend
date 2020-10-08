@@ -30,7 +30,8 @@ object MatchingRoutes extends Routes {
   def route(draftId: String, config: FrontendAppConfig): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config)
-    case WhatIsTheUTRPage => _ => _ => controllers.register.trust_details.routes.TrustNameController.onPageLoad(NormalMode, draftId)
+    case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad(draftId)
+    case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, draftId)
   }
 
   private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig): Call = {

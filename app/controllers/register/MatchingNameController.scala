@@ -14,67 +14,61 @@
  * limitations under the License.
  */
 
-package controllers.register.trust_details
+package controllers.register
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.StandardActionSets
 import forms.TrustNameFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.NormalMode
 import navigation.Navigator
-import pages.register.TrustHaveAUTRPage
-import pages.register.trust_details.TrustNamePage
+import pages.register.MatchingNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.trust_details.TrustNameView
+import views.html.register.MatchingNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustNameController @Inject()(
+class MatchingNameController @Inject()(
                                      override val messagesApi: MessagesApi,
                                      registrationsRepository: RegistrationsRepository,
                                      navigator: Navigator,
-                                     identify: RegistrationIdentifierAction,
-                                     getData: DraftIdRetrievalActionProvider,
-                                     requireData: RegistrationDataRequiredAction,
                                      formProvider: TrustNameFormProvider,
+                                     standardActions: StandardActionSets,
                                      val controllerComponents: MessagesControllerComponents,
-                                     view: TrustNameView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                     view: MatchingNameView
+                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+  private def actions(draftId: String) = standardActions.identifiedUserWithData(draftId)
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrustNamePage) match {
+      val preparedForm = request.userAnswers.get(MatchingNamePage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
 
-      val hintTextShown = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
+        Future.successful(Ok(view(preparedForm, draftId)))
+      }
 
-      Ok(view(preparedForm, mode, draftId, hintTextShown))
-  }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId: String).async {
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId: String).async {
     implicit request =>
-
-      val hintTextShown = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, hintTextShown))),
-
+           Future.successful(BadRequest(view(formWithErrors, draftId)))
+          ,
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustNamePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(MatchingNamePage, value))
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustNamePage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(MatchingNamePage, NormalMode ,draftId, request.affinityGroup)(updatedAnswers))
         }
       )
   }

@@ -29,7 +29,6 @@ import play.api.libs.json._
 
 case class Registration(matchData: Option[MatchData],
                         correspondence: Correspondence,
-                        yearsReturns: Option[YearsReturns],
                         declaration: Declaration,
                         trust: Trust,
                         agentDetails: Option[AgentDetails] = None
@@ -61,10 +60,7 @@ object MatchData {
       ).apply(unlift(MatchData.unapply))
 }
 
-case class Correspondence(abroadIndicator: Boolean,
-                          name: String,
-                          address: AddressType,
-                          phoneNumber: String)
+case class Correspondence(name: String)
 
 object Correspondence {
   implicit val correspondenceFormat : Format[Correspondence] = Json.format[Correspondence]
@@ -110,12 +106,8 @@ object Trust {
   implicit val trustFormat: Format[Trust] = Json.format[Trust]
 }
 
-case class TrustEntitiesType(naturalPerson: Option[List[NaturalPersonType]],
-                             beneficiary: BeneficiaryType,
+case class TrustEntitiesType(
                              deceased: Option[WillType],
-                             leadTrustees: LeadTrusteeType,
-                             trustees: Option[List[TrusteeType]],
-                             protectors: Option[ProtectorsType],
                              settlors: Option[Settlors])
 
 object TrustEntitiesType {
@@ -354,14 +346,11 @@ object IdentificationType {
   implicit val identificationTypeFormat: Format[IdentificationType] = Json.format[IdentificationType]
 }
 
-case class TrustDetailsType(startDate: LocalDate,
-                            lawCountry: Option[String],
-                            administrationCountry: Option[String],
-                            residentialStatus: Option[ResidentialStatusType],
-                            typeOfTrust: TypeOfTrust,
+case class TrustDetailsType(typeOfTrust: TypeOfTrust,
                             deedOfVariation: Option[DeedOfVariation],
                             interVivos: Option[Boolean],
-                            efrbsStartDate: Option[LocalDate])
+                            efrbsStartDate: Option[LocalDate]
+                           )
 
 object TrustDetailsType {
 

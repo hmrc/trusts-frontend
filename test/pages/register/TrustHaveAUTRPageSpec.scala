@@ -20,7 +20,6 @@ import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import pages.behaviours.PageBehaviours
 import pages.register.suitability.{TaxLiabilityInCurrentTaxYearYesNoPage, UndeclaredTaxLiabilityYesNoPage}
-import pages.register.trust_details.TrustNamePage
 
 class TrustHaveAUTRPageSpec extends PageBehaviours {
 
@@ -39,13 +38,11 @@ class TrustHaveAUTRPageSpec extends PageBehaviours {
       (initial, str) =>
 
         val answers = initial.set(WhatIsTheUTRPage, str).success.value
-          .set(TrustNamePage, str).success.value
           .set(PostcodeForTheTrustPage, str).success.value
 
         val result = answers.set(TrustHaveAUTRPage, false).success.value
 
         result.get(WhatIsTheUTRPage) mustNot be (defined)
-        result.get(TrustNamePage) mustNot be (defined)
         result.get(PostcodeForTheTrustPage) mustNot be (defined)
     }
 
