@@ -30,9 +30,7 @@ class NavigatorSpec extends RegistrationSpecBase
   with MatchingRoutes
   with AgentRoutes
   with AssetRoutes
-  with DeceasedSettlorRoutes
   with PropertyOrLandRoutes
-  with LivingSettlorRoutes
   with SuitabilityRoutes
 {
 
@@ -53,13 +51,7 @@ class NavigatorSpec extends RegistrationSpecBase
 
       behave like assetRoutes
 
-      behave like deceasedSettlorRoutes
-
       behave like propertyOrLandRoutes
-
-      behave like livingSettlorRoutes
-
-      behave like livingBusinessSettlorRoutes
 
       behave like suitabilityRoutes
 

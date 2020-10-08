@@ -33,8 +33,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
   private lazy val intervivosUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
-    val intervivosSettlementTrust = TestUserAnswers.withInterVivosTrust(livingSettlor)
+    val intervivosSettlementTrust = TestUserAnswers.withInterVivosTrust(asset)
     val userAnswers = TestUserAnswers.withDeclaration(intervivosSettlementTrust)
     userAnswers
   }
@@ -42,8 +41,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
   private lazy val heritageUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
-    val heritageSettlementTrust = TestUserAnswers.withHeritageTrust(livingSettlor)
+    val heritageSettlementTrust = TestUserAnswers.withHeritageTrust(asset)
     val userAnswers = TestUserAnswers.withDeclaration(heritageSettlementTrust)
 
     userAnswers
@@ -52,8 +50,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
   private lazy val flatManagementUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
-    val flatManagementTrust = TestUserAnswers.withFlatManagementTrust(livingSettlor)
+    val flatManagementTrust = TestUserAnswers.withFlatManagementTrust(asset)
     val userAnswers = TestUserAnswers.withDeclaration(flatManagementTrust)
 
     userAnswers
@@ -62,21 +59,10 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
   private def employmentRelatedUserAnswers(efrbsStartDate: LocalDate) = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
     val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-    val livingSettlor = TestUserAnswers.withIndividualLivingSettlor(0, asset)
-    val flatManagementTrust = TestUserAnswers.withEmploymentRelatedTrust(livingSettlor, efrbsStartDate)
+    val flatManagementTrust = TestUserAnswers.withEmploymentRelatedTrust(asset, efrbsStartDate)
     val userAnswers = TestUserAnswers.withDeclaration(flatManagementTrust)
 
     userAnswers
-  }
-
-  def assertWillTrust(result: Registration) : Unit = {
-    result.trust.details.typeOfTrust mustBe WillTrustOrIntestacyTrust
-    result.trust.details.deedOfVariation mustNot be(defined)
-    result.trust.details.interVivos mustNot be(defined)
-    result.trust.details.efrbsStartDate mustNot be(defined)
-
-    result.trust.entities.deceased must be(defined)
-    result.trust.entities.settlors mustNot be(defined)
   }
 
   lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
@@ -99,74 +85,6 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
     "when user answers is not empty" - {
 
-      "must generate a WillType Registration" - {
-
-        val willTypeUserAnswers = {
-          val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-          val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-          val asset = TestUserAnswers.withMoneyAsset(uaWithDeceased)
-          val userAnswers = TestUserAnswers.withDeclaration(asset)
-
-          userAnswers
-        }
-
-        "registration is made by an Organisation" - {
-
-          "registering an existing trust" in {
-            val userAnswers = TestUserAnswers.withMatchingSuccess(willTypeUserAnswers)
-
-            val result = registrationMapper.build(userAnswers, correspondenceAddress, trustName).value
-
-            result.agentDetails mustNot be(defined)
-            result.matchData must be(defined)
-            result.declaration mustBe a[Declaration]
-
-            assertWillTrust(result)
-          }
-
-          "registering a new trust" in {
-
-            val result = registrationMapper.build(willTypeUserAnswers, correspondenceAddress, trustName).value
-
-            result.agentDetails mustNot be(defined)
-            result.matchData mustNot be(defined)
-            result.declaration mustBe a[Declaration]
-
-            assertWillTrust(result)
-          }
-
-        }
-
-        "registration is made by an Agent" - {
-
-          "registering an existing trust" in {
-            val userAnswers = TestUserAnswers.withMatchingSuccess(willTypeUserAnswers)
-            val userAnswersWithAgent = TestUserAnswers.withAgent(userAnswers)
-
-            val result = registrationMapper.build(userAnswersWithAgent, correspondenceAddress, trustName).value
-
-            result.agentDetails must be(defined)
-            result.matchData must be(defined)
-            result.declaration mustBe a[Declaration]
-
-            assertWillTrust(result)
-          }
-
-          "registering a new trust" in {
-
-            val userAnswers = TestUserAnswers.withAgent(willTypeUserAnswers)
-
-            val result = registrationMapper.build(userAnswers, correspondenceAddress, trustName).value
-
-            result.agentDetails mustBe defined
-            result.matchData mustNot be(defined)
-            result.declaration mustBe a[Declaration]
-
-            assertWillTrust(result)
-          }
-
-        }
-      }
 
       "must generate an Intervivos trust" in {
         val userAnswers = intervivosUserAnswers

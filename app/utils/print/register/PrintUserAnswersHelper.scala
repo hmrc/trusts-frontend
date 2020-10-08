@@ -42,8 +42,6 @@ class PrintUserAnswersHelper @Inject()(
 
       val entitySections = List(
         registrationAnswerSections.trustDetails,
-        helper.deceasedSettlor,
-        helper.livingSettlors,
         registrationAnswerSections.trustees,
         registrationAnswerSections.beneficiaries,
         registrationAnswerSections.protectors,

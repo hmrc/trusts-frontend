@@ -22,7 +22,6 @@ import models.core.UserAnswers
 import models.registration.pages.KindOfTrust.{Deed, Employees, FlatManagement, HeritageMaintenanceFund, Intervivos}
 import models.registration.pages.{DeedOfVariation, KindOfTrust}
 import pages.entitystatus.DeceasedSettlorStatus
-import pages.register.settlors.living_settlor.trust_type._
 import play.api.Logger
 import sections.settlors.LivingSettlors
 
@@ -39,7 +38,7 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
         Logger.info("[TrustDetailsMapper] - Cannot build trust type for Deed of variation yet")
         None
       case (Some(_), None) =>
-        userAnswers.get(KindOfTrustPage).map(mapTrustTypeToDes)
+        ???
       case (None, Some(_)) =>
         Some(WillTrustOrIntestacyTrust)
       case (None, None) =>
@@ -49,11 +48,11 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
 
   }
 
-  private def deedOfVariation(userAnswers: UserAnswers): Option[DeedOfVariation] =
-    userAnswers.get(HowDeedOfVariationCreatedPage) orElse (userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
-      case Some(true) => Some(DeedOfVariation.AdditionToWill)
-      case _ => None
-    })
+//  private def deedOfVariation(userAnswers: UserAnswers): Option[DeedOfVariation] =
+//    userAnswers.get(HowDeedOfVariationCreatedPage) orElse (userAnswers.get(SetUpInAdditionToWillTrustYesNoPage) match {
+//      case Some(true) => Some(DeedOfVariation.AdditionToWill)
+//      case _ => None
+//    })
 
   private def mapTrustTypeToDes(kind: KindOfTrust): TypeOfTrust = {
     kind match {
@@ -71,9 +70,9 @@ class TrustDetailsMapper extends Mapping[TrustDetailsType] {
     } yield {
       registration.TrustDetailsType(
         typeOfTrust = typeOfTrust,
-        deedOfVariation = deedOfVariation(userAnswers),
-        interVivos = userAnswers.get(HoldoverReliefYesNoPage),
-        efrbsStartDate = userAnswers.get(EfrbsStartDatePage)
+        deedOfVariation = ???, //deedOfVariation(userAnswers),
+        interVivos = ???, //userAnswers.get(HoldoverReliefYesNoPage),
+        efrbsStartDate = ??? //userAnswers.get(EfrbsStartDatePage)
       )
     }
   }

@@ -20,7 +20,6 @@ import models.core.UserAnswers
 import models.registration.pages.KindOfTrust
 import models.registration.pages.KindOfTrust.{Employees, Intervivos}
 import pages.QuestionPage
-import pages.register.settlors.living_settlor.business.{SettlorBusinessTimeYesNoPage, SettlorBusinessTypePage}
 import play.api.libs.json.JsPath
 import sections.settlors.Settlors
 
@@ -37,16 +36,12 @@ case object KindOfTrustPage extends QuestionPage[KindOfTrust] {
       case Some(Intervivos) =>
         userAnswers.remove(EfrbsYesNoPage)
           .flatMap(_.remove(EfrbsStartDatePage))
-          .flatMap(_.remove(SettlorBusinessTypePage(0)))
-          .flatMap(_.remove(SettlorBusinessTimeYesNoPage(0)))
       case Some(Employees) =>
         userAnswers.remove(HoldoverReliefYesNoPage)
       case _ =>
         userAnswers.remove(HoldoverReliefYesNoPage)
           .flatMap(_.remove(EfrbsYesNoPage))
           .flatMap(_.remove(EfrbsStartDatePage))
-          .flatMap(_.remove(SettlorBusinessTypePage(0)))
-          .flatMap(_.remove(SettlorBusinessTimeYesNoPage(0)))
     }
   }
 }

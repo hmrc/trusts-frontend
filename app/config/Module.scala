@@ -21,7 +21,7 @@ import connector.OtacAuthConnectorImpl
 import controllers.actions._
 import controllers.actions.register._
 import navigation.Navigator
-import navigation.registration.{LivingSettlorNavigator, PartnershipNavigator, PropertyOrLandNavigator}
+import navigation.registration.{PartnershipNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultRegistrationsRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
 import utils.annotations.{LivingSettlor, Partnership, PropertyOrLand}
@@ -45,7 +45,6 @@ class Module extends AbstractModule {
     bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
 
     bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
-    bind(classOf[Navigator]).annotatedWith(classOf[LivingSettlor]).to(classOf[LivingSettlorNavigator])
     bind(classOf[Navigator]).annotatedWith(classOf[Partnership]).to(classOf[PartnershipNavigator])
 
     bind(classOf[DateFormatter]).to(classOf[TrustsDateFormatter])

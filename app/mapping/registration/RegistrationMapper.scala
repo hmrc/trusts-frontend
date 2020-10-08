@@ -26,8 +26,6 @@ class RegistrationMapper @Inject()(
                                     trustDetailsMapper: TrustDetailsMapper,
                                     assetMapper: AssetMapper,
                                     agentMapper: AgentMapper,
-                                    deceasedSettlorMapper: DeceasedSettlorMapper,
-                                    settlorMapper: SettlorsMapper,
                                     matchingMapper: MatchingMapper
                                   ) {
 
@@ -39,19 +37,13 @@ class RegistrationMapper @Inject()(
       correspondence <- correspondenceMapper.build(trustName)
       declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
     } yield {
-
-      val entities = TrustEntitiesType(
-        deceased = deceasedSettlorMapper.build(userAnswers),
-        settlors = settlorMapper.build(userAnswers)
-      )
-
       Registration(
         matchData = matchingMapper.build(userAnswers, trustName),
         declaration = declaration,
         correspondence = correspondence,
         trust = Trust(
           details = trustDetails,
-          entities = entities,
+          entities = ???,
           assets = assets
         ),
         agentDetails = agentMapper.build(userAnswers)

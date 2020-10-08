@@ -31,10 +31,6 @@ import pages.entitystatus._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -98,17 +94,6 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
       val userAnswers =
         TestUserAnswers.emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
-          .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
-          .set(SettlorDateOfDeathYesNoPage, true).success.value
-          .set(SettlorDateOfDeathPage, LocalDate.now).success.value
-          .set(SettlorDateOfBirthYesNoPage, true).success.value
-          .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
-          .set(SettlorsNationalInsuranceYesNoPage, true).success.value
-          .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
-          .set(SettlorsLastKnownAddressYesNoPage, true).success.value
-          .set(WasSettlorsAddressUKYesNoPage, true).success.value
-          .set(SettlorsUKAddressPage, UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
@@ -135,17 +120,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         trustDetailsSection(0),
         AnswerSection(
           None,
-          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
-            checkYourAnswersHelper.deceasedSettlorsName.value,
-            checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,
-            checkYourAnswersHelper.deceasedSettlorDateOfBirthYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorsDateOfBirth.value,
-            checkYourAnswersHelper.deceasedSettlorsNINoYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorNationalInsuranceNumber.value,
-            checkYourAnswersHelper.deceasedSettlorsLastKnownAddressYesNo.value,
-            checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorsUKAddress.value
+          Seq(
           ),
           Some("Settlor")
         ),
@@ -198,17 +173,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
       val userAnswers =
         TestUserAnswers.emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-          .set(HoldoverReliefYesNoPage, true).success.value
-          .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-          .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
-          .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
-          .set(SettlorIndividualDateOfBirthPage(index), LocalDate.now).success.value
-          .set(SettlorIndividualNINOYesNoPage(index), true).success.value
-          .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
           .set(LivingSettlorStatus(index), Status.Completed).success.value
-          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
@@ -233,15 +198,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
        trustDetailsSection(0),
         AnswerSection(
           headingKey = Some("Settlor 1"),
-          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
-            checkYourAnswersHelper.kindOfTrust.value,
-            checkYourAnswersHelper.holdoverReliefYesNo.value,
-            checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
-            checkYourAnswersHelper.settlorIndividualName(index).value,
-            checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualDateOfBirth(index).value,
-            checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualNINO(index).value
+          Seq(
           ),
           Some("Settlors")
         ),

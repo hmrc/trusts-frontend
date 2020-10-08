@@ -21,14 +21,10 @@ import models.core.UserAnswers
 import models.registration.pages.Status._
 import models.registration.pages._
 import navigation.registration.TaskListNavigator
-import pages.entitystatus.DeceasedSettlorStatus
 import pages.register.asset.AddAssetsPage
-import pages.register.settlors.living_settlor.trust_type.SetUpInAdditionToWillTrustYesNoPage
-import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries
-import sections.settlors.{LivingSettlors, Settlors}
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
@@ -43,7 +39,6 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
     } yield {
       List(
         Task(Link(TrustDetails, navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
-        Task(Link(Settlors, navigator.settlorsJourney(userAnswers, draftId).url), settlorsStatus(userAnswers)),
         Task(Link(Trustees, navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
         Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
         Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
@@ -69,34 +64,6 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
     }
   }
 
-  def settlorsStatus(userAnswers: UserAnswers): Option[Status] = {
-    val setUpAfterSettlorDied = userAnswers.get(SetUpAfterSettlorDiedYesNoPage)
-    val inAdditionToWillTrust = userAnswers.get(SetUpInAdditionToWillTrustYesNoPage).getOrElse(false)
-
-    def isDeceasedSettlorComplete: Option[Status] = {
-      val deceasedCompleted = userAnswers.get(DeceasedSettlorStatus)
-      val isComplete = deceasedCompleted.contains(Completed)
-      determineStatus(isComplete)
-    }
-
-    setUpAfterSettlorDied match {
-      case None => None
-      case Some(setupAfterDeceased) =>
-        if (setupAfterDeceased) {isDeceasedSettlorComplete}
-        else {
-          userAnswers.get(LivingSettlors).getOrElse(Nil) match {
-            case Nil =>
-              if (!setupAfterDeceased && !inAdditionToWillTrust) {Some(Status.InProgress)}
-              else { determineStatus(true) }
-            case living =>
-              val noMoreToAdd = userAnswers.get(AddASettlorPage).contains(AddASettlor.NoComplete)
-              val isComplete = !living.exists(_.status == InProgress)
-              determineStatus(isComplete && noMoreToAdd)
-          }
-        }
-    }
-  }
-
   def assetsStatus(userAnswers: UserAnswers): Option[Status] = {
     val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
     val assets = userAnswers.get(sections.Assets).getOrElse(List.empty)
@@ -111,8 +78,8 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
   }
 
   def isTaskListComplete(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
-    if (settlorsStatus(userAnswers).contains(Completed) &&
-      assetsStatus(userAnswers).contains(Completed)) {
+    if (assetsStatus(userAnswers).contains(Completed)) {
+
       registrationsRepository.getAllStatus(userAnswers.draftId).flatMap {
         status =>
         registrationsRepository.getTrustSetupDate(userAnswers.draftId).map {
@@ -120,6 +87,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
            status.allComplete(trustSetUpDate)
         }
       }
+
     } else {
       Future.successful(false)
     }

@@ -25,11 +25,7 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.settlors.living_settlor.{RemoveSettlorPage => RemoveLivingSettlorPage, _}
-import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 
 trait PageGenerators {
 
@@ -39,59 +35,11 @@ trait PageGenerators {
   implicit lazy val arbitraryPartnershipDescriptionPage: Arbitrary[PartnershipDescriptionPage] =
     Arbitrary(PartnershipDescriptionPage(0))
 
-  implicit lazy val arbitrarySettlorBusinessDetailsPage: Arbitrary[SettlorBusinessNamePage] =
-    Arbitrary(SettlorBusinessNamePage(0))
-
   implicit lazy val arbitraryKindOfTrustPage: Arbitrary[KindOfTrustPage.type] =
     Arbitrary(KindOfTrustPage)
 
   implicit lazy val arbitraryHoldoverReliefYesNoPage: Arbitrary[HoldoverReliefYesNoPage.type] =
     Arbitrary(HoldoverReliefYesNoPage)
-
-  implicit lazy val arbitraryRemoveSettlorPage: Arbitrary[RemoveLivingSettlorPage] =
-    Arbitrary(RemoveLivingSettlorPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualPassportYesNoPage: Arbitrary[SettlorIndividualPassportYesNoPage] =
-    Arbitrary(SettlorIndividualPassportYesNoPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualPassportPage: Arbitrary[SettlorIndividualPassportPage] =
-    Arbitrary(SettlorIndividualPassportPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualIDCardYesNoPage: Arbitrary[SettlorIndividualIDCardYesNoPage] =
-    Arbitrary(SettlorIndividualIDCardYesNoPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualIDCardPage: Arbitrary[SettlorIndividualIDCardPage] =
-    Arbitrary(SettlorIndividualIDCardPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualAddressUKYesNoPage: Arbitrary[SettlorAddressUKYesNoPage] =
-    Arbitrary(SettlorAddressUKYesNoPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualAddressUKPage: Arbitrary[SettlorAddressUKPage] =
-    Arbitrary(SettlorAddressUKPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualAddressInternationalPage: Arbitrary[SettlorAddressInternationalPage] =
-    Arbitrary(SettlorAddressInternationalPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualNINOYesNoPage: Arbitrary[SettlorIndividualNINOYesNoPage] =
-    Arbitrary(SettlorIndividualNINOYesNoPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualNINOPage: Arbitrary[SettlorIndividualNINOPage] =
-    Arbitrary(SettlorIndividualNINOPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualAddressYesNoPage: Arbitrary[SettlorAddressYesNoPage] =
-    Arbitrary(SettlorAddressYesNoPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualDateOfBirthPage: Arbitrary[SettlorIndividualDateOfBirthPage] =
-    Arbitrary(SettlorIndividualDateOfBirthPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualDateOfBirthYesNoPage: Arbitrary[SettlorIndividualDateOfBirthYesNoPage] =
-    Arbitrary(SettlorIndividualDateOfBirthYesNoPage(0))
-
-  implicit lazy val arbitrarySettlorIndividualNamePage: Arbitrary[SettlorIndividualNamePage] =
-    Arbitrary(SettlorIndividualNamePage(0))
-
-  implicit lazy val arbitrarySettlorIndividualOrBusinessPage: Arbitrary[SettlorIndividualOrBusinessPage] =
-    Arbitrary(SettlorIndividualOrBusinessPage(0))
 
   implicit lazy val arbitraryAddAnAssetYesNoPage: Arbitrary[AddAnAssetYesNoPage.type] =
     Arbitrary(AddAnAssetYesNoPage)
@@ -165,47 +113,8 @@ trait PageGenerators {
   implicit lazy val arbitraryAgentNamePage: Arbitrary[AgentNamePage.type] =
     Arbitrary(AgentNamePage)
 
-  implicit lazy val arbitraryWasSettlorsAddressUKYesNoPage: Arbitrary[WasSettlorsAddressUKYesNoPage.type] =
-    Arbitrary(WasSettlorsAddressUKYesNoPage)
-
-  implicit lazy val arbitrarySetUpAfterSettlorDiedPage: Arbitrary[SetUpAfterSettlorDiedYesNoPage.type] =
-    Arbitrary(SetUpAfterSettlorDiedYesNoPage)
-
-  implicit lazy val arbitrarySettlorsUKAddressPage: Arbitrary[SettlorsUKAddressPage.type] =
-    Arbitrary(SettlorsUKAddressPage)
-
-  implicit lazy val arbitrarySettlorsNINoYesNoPage: Arbitrary[SettlorsNationalInsuranceYesNoPage.type] =
-    Arbitrary(SettlorsNationalInsuranceYesNoPage)
-
-  implicit lazy val arbitrarySettlorsNamePage: Arbitrary[SettlorsNamePage.type] =
-    Arbitrary(SettlorsNamePage)
-
-  implicit lazy val arbitrarySettlorsLastKnownAddressYesNoPage: Arbitrary[SettlorsLastKnownAddressYesNoPage.type] =
-    Arbitrary(SettlorsLastKnownAddressYesNoPage)
-
-  implicit lazy val arbitrarySettlorsInternationalAddressPage: Arbitrary[SettlorsInternationalAddressPage.type] =
-    Arbitrary(SettlorsInternationalAddressPage)
-
-  implicit lazy val arbitrarySettlorsDateOfBirthPage: Arbitrary[SettlorsDateOfBirthPage.type] =
-    Arbitrary(SettlorsDateOfBirthPage)
-
-  implicit lazy val arbitrarySettlorNationalInsuranceNumberPage: Arbitrary[SettlorNationalInsuranceNumberPage.type] =
-    Arbitrary(SettlorNationalInsuranceNumberPage)
-
-  implicit lazy val arbitrarySettlorDateOfDeathYesNoPage: Arbitrary[SettlorDateOfDeathYesNoPage.type] =
-    Arbitrary(SettlorDateOfDeathYesNoPage)
-
-  implicit lazy val arbitrarySettlorDateOfDeathPage: Arbitrary[SettlorDateOfDeathPage.type] =
-    Arbitrary(SettlorDateOfDeathPage)
-
-  implicit lazy val arbitrarySettlorDateOfBirthYesNoPage: Arbitrary[SettlorDateOfBirthYesNoPage.type] =
-    Arbitrary(SettlorDateOfBirthYesNoPage)
-
   implicit lazy val arbitraryAddAssetsPage: Arbitrary[AddAssetsPage.type] =
     Arbitrary(AddAssetsPage)
-
-  implicit lazy val arbitraryAddASettlorPage: Arbitrary[AddASettlorPage.type] =
-    Arbitrary(AddASettlorPage)
 
   implicit lazy val arbitraryAssetMoneyValuePage: Arbitrary[AssetMoneyValuePage] =
     Arbitrary(AssetMoneyValuePage(0))

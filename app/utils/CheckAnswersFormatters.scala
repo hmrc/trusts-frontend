@@ -20,14 +20,10 @@ import java.time.format.DateTimeFormatter
 
 import models.core.UserAnswers
 import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
-import models.registration.pages.KindOfTrust._
-import models.registration.pages.{KindOfTrust, PassportOrIdCardDetails}
+import models.registration.pages.PassportOrIdCardDetails
 import pages.register.agents.AgentNamePage
 import pages.register.asset.business.BusinessNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
-import pages.register.settlors.deceased_settlor.SettlorsNamePage
-import pages.register.settlors.living_settlor.SettlorIndividualNamePage
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.domain.Nino
@@ -63,19 +59,8 @@ object CheckAnswersFormatters {
 
   def escape(x: String) = HtmlFormat.escape(x)
 
-  def deceasedSettlorName(userAnswers: UserAnswers): String =
-    userAnswers.get(SettlorsNamePage).map(_.toString).getOrElse("")
-
   def shareCompName(index: Int, userAnswers: UserAnswers): String = {
     userAnswers.get(ShareCompanyNamePage(index)).getOrElse("")
-  }
-
-  def livingSettlorName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(SettlorIndividualNamePage(index)).map(_.toString).getOrElse("")
-  }
-
-  def businessSettlorName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(SettlorBusinessNamePage(index)).getOrElse("")
   }
 
   def assetName(index: Int, userAnswers: UserAnswers): String = {
@@ -132,21 +117,6 @@ object CheckAnswersFormatters {
   def fullName(fullname: FullName) = {
     val middle = fullname.middleName.map(" " + _ + " ").getOrElse(" ")
     s"${fullname.firstName}${middle}${fullname.lastName}"
-  }
-
-  def kindOfTrust(kindOfTrust: KindOfTrust, messages: Messages) = {
-    kindOfTrust match {
-      case Intervivos =>
-        messages("kindOfTrust.Lifetime")
-      case Deed =>
-        messages("kindOfTrust.Deed")
-      case Employees =>
-        messages("kindOfTrust.Employees")
-      case FlatManagement =>
-        messages("kindOfTrust.Building")
-      case HeritageMaintenanceFund =>
-        messages("kindOfTrust.Repair")
-    }
   }
 
 }

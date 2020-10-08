@@ -28,10 +28,6 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors._
-import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.business.SettlorBusinessNamePage
 import pages.register.settlors.living_settlor.trust_type._
 import play.api.libs.json.{JsValue, Json}
 
@@ -45,22 +41,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(PartnershipDescriptionPage, JsValue)] ::
     arbitrary[(KindOfTrustPage.type, JsValue)] ::
     arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] ::
-    arbitrary[(SettlorBusinessNamePage, JsValue)] ::
-    arbitrary[(RemoveSettlorPage, JsValue)] ::
-    arbitrary[(SettlorIndividualPassportYesNoPage, JsValue)] ::
-    arbitrary[(SettlorIndividualPassportPage, JsValue)] ::
-    arbitrary[(SettlorIndividualIDCardYesNoPage, JsValue)] ::
-    arbitrary[(SettlorIndividualIDCardPage, JsValue)] ::
-    arbitrary[(SettlorAddressUKYesNoPage, JsValue)] ::
-    arbitrary[(SettlorAddressUKPage, JsValue)] ::
-    arbitrary[(SettlorAddressInternationalPage, JsValue)] ::
-    arbitrary[(SettlorIndividualNINOYesNoPage, JsValue)] ::
-    arbitrary[(SettlorIndividualNINOPage, JsValue)] ::
-    arbitrary[(SettlorAddressYesNoPage, JsValue)] ::
-    arbitrary[(SettlorIndividualDateOfBirthPage, JsValue)] ::
-    arbitrary[(SettlorIndividualDateOfBirthYesNoPage, JsValue)] ::
-    arbitrary[(SettlorIndividualNamePage, JsValue)] ::
-    arbitrary[(SettlorIndividualOrBusinessPage, JsValue)] ::
     arbitrary[(AddAnAssetYesNoPage.type, JsValue)] ::
     arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] ::
     arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] ::
@@ -84,19 +64,6 @@ trait UserAnswersGenerator extends TryValues {
     arbitrary[(AgentNamePage.type, JsValue)] ::
     arbitrary[(PropertyOrLandDescriptionPage, JsValue)] ::
     arbitrary[(PropertyOrLandTotalValuePage, JsValue)] ::
-    arbitrary[(WasSettlorsAddressUKYesNoPage.type, JsValue)] ::
-    arbitrary[(SetUpAfterSettlorDiedYesNoPage.type, JsValue)] ::
-    arbitrary[(SettlorsUKAddressPage.type, JsValue)] ::
-    arbitrary[(SettlorsNationalInsuranceYesNoPage.type, JsValue)] ::
-    arbitrary[(SettlorsNamePage.type, JsValue)] ::
-    arbitrary[(SettlorsLastKnownAddressYesNoPage.type, JsValue)] ::
-    arbitrary[(SettlorsInternationalAddressPage.type, JsValue)] ::
-    arbitrary[(SettlorsDateOfBirthPage.type, JsValue)] ::
-    arbitrary[(SettlorNationalInsuranceNumberPage.type, JsValue)] ::
-    arbitrary[(SettlorDateOfDeathYesNoPage.type, JsValue)] ::
-    arbitrary[(SettlorDateOfDeathPage.type, JsValue)] ::
-    arbitrary[(SettlorDateOfBirthYesNoPage.type, JsValue)] ::
-    arbitrary[(AddASettlorPage.type, JsValue)] ::
     arbitrary[(AddAssetsPage.type, JsValue)] ::
     arbitrary[(AssetMoneyValuePage, JsValue)] ::
     arbitrary[(AgentInternalReferencePage.type, JsValue)] ::
