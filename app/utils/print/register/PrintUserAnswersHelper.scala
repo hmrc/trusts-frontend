@@ -40,18 +40,32 @@ class PrintUserAnswersHelper @Inject()(
 
       val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, draftId, canEdit = false)
 
-      val entitySections = List(
+      val entitySectionsHead = List(
         helper.trustDetails,
         helper.deceasedSettlor,
         helper.livingSettlors,
         registrationAnswerSections.trustees,
-        registrationAnswerSections.beneficiaries,
+        registrationAnswerSections.beneficiaries
+      ).flatten.flatten
+
+      val entitySectionsTail = List(
         registrationAnswerSections.protectors,
         registrationAnswerSections.otherIndividuals
       ).flatten.flatten
 
-      List(
-        entitySections
+      val assetSections = List(
+        Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading")))),
+        helper.money,
+        helper.shares,
+        helper.propertyOrLand,
+        helper.businessAsset,
+        helper.other
+      ).flatten
+
+        List(
+        entitySectionsHead,
+        assetSections,
+        entitySectionsTail
       ).flatten
 
     }

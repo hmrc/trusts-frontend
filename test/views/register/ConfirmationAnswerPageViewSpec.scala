@@ -19,6 +19,7 @@ package views.register
 import java.time.{LocalDate, LocalDateTime}
 
 import models.core.pages.{FullName, UKAddress}
+import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
@@ -27,6 +28,10 @@ import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import pages.register.settlors.deceased_settlor._
 import pages.register.trust_details._
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
+import pages.register.asset._
+import pages.register.asset.money._
+import pages.register.asset.property_or_land._
+import pages.register.asset.shares._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.AccessibilityHelper._
 import utils.print.register.PrintUserAnswersHelper
@@ -66,6 +71,25 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(SettlorsUKAddressPage, UKAddress("Line1", "Line2", None, None, "NE1 1ZZ")).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
 
+        .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
+        .set(AssetMoneyValuePage(index), "100").success.value
+        .set(AssetStatus(index), Completed).success.value
+        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
+        .set(SharesInAPortfolioPage(1), true).success.value
+        .set(SharePortfolioNamePage(1), "Company").success.value
+        .set(SharePortfolioOnStockExchangePage(1), true).success.value
+        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
+        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
+        .set(AssetStatus(1), Completed).success.value
+        .set(WhatKindOfAssetPage(2), WhatKindOfAsset.PropertyOrLand).success.value
+        .set(PropertyOrLandAddressYesNoPage(2), false).success.value
+        .set(PropertyOrLandDescriptionPage(2), "Town House").success.value
+        .set(PropertyOrLandTotalValuePage(2), "10000").success.value
+        .set(TrustOwnAllThePropertyOrLandPage(2), false).success.value
+        .set(PropertyLandValueTrustPage(2), "10").success.value
+        .set(AssetStatus(2), Completed).success.value
+        .set(AddAssetsPage, NoComplete).success.value
+
         .set(RegistrationTRNPage, "XNTRN000000001").success.value
         .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
 
@@ -74,6 +98,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
     val trnDateTime: String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
     val name = "First Last"
     val yes = "Yes"
+    val no = "No"
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
@@ -104,8 +129,8 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 2
-      subHeaders.size mustBe 0
+      headers.size mustBe 3
+      subHeaders.size mustBe 3
     }
 
     "assert question labels for Trust details" in {
@@ -126,5 +151,27 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
         assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
     }
+
+    "assert question labels for Money Assets" in {
+      assertContainsQuestionAnswerPair(doc, messages("assetMoneyValue.checkYourAnswersLabel"), "£100")
+    }
+
+    "assert question labels for share assets" in {
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioName.checkYourAnswersLabel"), "Company")
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioOnStockExchange.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioQuantityInTrust.checkYourAnswersLabel"), "1234")
+      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioValueInTrust.checkYourAnswersLabel"), "£4000")
+      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
+      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
+    }
+
+    "assert question labels for property or land assets" in {
+      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandAddressYesNo.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandDescription.checkYourAnswersLabel"), "Town House")
+      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandTotalValue.checkYourAnswersLabel"), "£10000")
+      assertContainsQuestionAnswerPair(doc, messages("trustOwnAllThePropertyOrLand.checkYourAnswersLabel"), no)
+      assertContainsQuestionAnswerPair(doc, messages("propertyLandValueTrust.checkYourAnswersLabel"), "£10")
+    }
+
   }
 }
