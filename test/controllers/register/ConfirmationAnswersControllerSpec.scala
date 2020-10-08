@@ -17,11 +17,10 @@
 package controllers.register
 
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
-import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages._
@@ -117,16 +116,10 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
 
       val expectedSections = Seq(
-        trustDetailsSection(0),
-        AnswerSection(
-          None,
-          Seq(
-          ),
-          Some("Settlor")
-        ),
-        trusteeSections(0),
+        trustDetailsSection.head,
+        trusteeSections.head,
         trusteeSections(1),
-        beneficiarySections(0),
+        beneficiarySections.head,
         beneficiarySections(1),
         AnswerSection(None, Nil, Some("Assets")),
         AnswerSection(
@@ -214,16 +207,10 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
 
       val expectedSections = Seq(
-       trustDetailsSection(0),
-        AnswerSection(
-          headingKey = Some("Settlor 1"),
-          Seq(
-          ),
-          Some("Settlors")
-        ),
-        trusteeSections(0),
+       trustDetailsSection.head,
+        trusteeSections.head,
         trusteeSections(1),
-        beneficiarySections(0),
+        beneficiarySections.head,
         beneficiarySections(1),
         AnswerSection(None, Nil, Some("Assets")),
         AnswerSection(

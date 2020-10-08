@@ -141,12 +141,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
     val expectedSections = Seq(
       trustDetailsSection(0),
-      AnswerSection(
-        None,
-        Seq(
-        ),
-        Some("Settlor")
-      ),
       trusteeSections(0),
       trusteeSections(1),
       beneficiarySections(0),
@@ -235,97 +229,4 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
   }
 
-  "SummaryAnswersController with Living settlor" must {
-
-    val userAnswers =
-      TestUserAnswers.emptyUserAnswers
-        .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
-        .set(AssetMoneyValuePage(index), "100").success.value
-        .set(AssetStatus(index), Completed).success.value
-        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
-        .set(SharesInAPortfolioPage(1), true).success.value
-        .set(SharePortfolioNamePage(1), "Company").success.value
-        .set(SharePortfolioOnStockExchangePage(1), true ).success.value
-        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
-        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
-        .set(AssetStatus(1), Completed).success.value
-        .set(AddAssetsPage, NoComplete).success.value
-        .set(AgentInternalReferencePage, "agentClientReference").success.value
-
-    val countryOptions = injector.instanceOf[CountryOptions]
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
-
-    val expectedSections = Seq(
-     trustDetailsSection(0),
-      AnswerSection(
-        headingKey = Some("Settlor 1"),
-        Seq(
-        ),
-        Some("Settlors")
-      ),
-      trusteeSections(0),
-      trusteeSections(1),
-      beneficiarySections(0),
-      beneficiarySections(1),
-      AnswerSection(None, Nil, Some("Assets")),
-      AnswerSection(
-        Some("Money"),
-        Seq(
-          checkYourAnswersHelper.assetMoneyValue(index).value
-        ),
-        None
-      ),
-      AnswerSection(
-        Some("Share 1"),
-        Seq(
-          checkYourAnswersHelper.sharesInAPortfolio(1).value,
-          checkYourAnswersHelper.sharePortfolioName(1).value,
-          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
-          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
-          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
-        ),
-        None
-      ),
-      protectorSections(0),
-      protectorSections(1),
-      otherIndividualSections(0),
-      otherIndividualSections(1)
-    )
-
-    "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
-
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
-
-      val result = route(application, request).value
-
-      val view = application.injector.instanceOf[SummaryAnswerPageView]
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(expectedSections, isAgent = false, agentClientRef = "")(request, messages).toString
-
-      application.stop()
-    }
-
-    "return OK and the correct view for a GET when tasklist completed for Agent user" in {
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
-
-      val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
-
-      val result = route(application, request).value
-
-      val view = application.injector.instanceOf[SummaryAnswerPageView]
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(request, messages).toString
-
-      application.stop()
-    }
-  }
 }

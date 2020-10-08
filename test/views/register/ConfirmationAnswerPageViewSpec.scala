@@ -16,12 +16,10 @@
 
 package views.register
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 
-import models.core.pages.{FullName, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
-import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import pages.entitystatus._
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
@@ -46,8 +44,6 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
-        .set(DeceasedSettlorStatus, Status.Completed).success.value
-
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value
         .set(AssetStatus(index), Completed).success.value
@@ -106,7 +102,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 2
+      headers.size mustBe 1
       subHeaders.size mustBe 3
     }
 
