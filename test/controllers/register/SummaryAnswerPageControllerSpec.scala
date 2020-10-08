@@ -176,6 +176,25 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       trusteeSections(1),
       beneficiarySections(0),
       beneficiarySections(1),
+      AnswerSection(None, Nil, Some("Assets")),
+      AnswerSection(
+        Some("Money"),
+        Seq(
+          checkYourAnswersHelper.assetMoneyValue(index).value
+        ),
+        None
+      ),
+      AnswerSection(
+        Some("Share 1"),
+        Seq(
+          checkYourAnswersHelper.sharesInAPortfolio(1).value,
+          checkYourAnswersHelper.sharePortfolioName(1).value,
+          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
+          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
+          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
+        ),
+        None
+      ),
       protectorSections(0),
       protectorSections(1),
       otherIndividualSections(0),
@@ -293,6 +312,25 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       trusteeSections(1),
       beneficiarySections(0),
       beneficiarySections(1),
+      AnswerSection(None, Nil, Some("Assets")),
+      AnswerSection(
+        Some("Money"),
+        Seq(
+          checkYourAnswersHelper.assetMoneyValue(index).value
+        ),
+        None
+      ),
+      AnswerSection(
+        Some("Share 1"),
+        Seq(
+          checkYourAnswersHelper.sharesInAPortfolio(1).value,
+          checkYourAnswersHelper.sharePortfolioName(1).value,
+          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
+          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
+          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
+        ),
+        None
+      ),
       protectorSections(0),
       protectorSections(1),
       otherIndividualSections(0),
