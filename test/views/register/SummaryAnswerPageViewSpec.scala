@@ -40,7 +40,6 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
-        .set(DeceasedSettlorStatus, Status.Completed).success.value
 
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value

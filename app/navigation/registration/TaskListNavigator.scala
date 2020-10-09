@@ -24,6 +24,10 @@ import play.api.mvc.Call
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
 
+  def settlorsJourney(draftId: String): String = {
+    frontendAppConfig.settlorsFrontendUrl(draftId)
+  }
+
   def trustDetailsJourney(draftId: String): String = {
     frontendAppConfig.trustDetailsFrontendUrl(draftId)
   }

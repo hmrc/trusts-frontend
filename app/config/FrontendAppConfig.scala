@@ -67,6 +67,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   private lazy val trustDetailsFrontendUrlTemplate: String = loadConfig("urls.trustDetailsFrontend")
   def trustDetailsFrontendUrl(draftId: String): String = insertDraftId(trustDetailsFrontendUrlTemplate, draftId)
 
+  private lazy val settlorsFrontendUrlTemplate: String = loadConfig("urls.settlorsFrontend")
+  def settlorsFrontendUrl(draftId: String): String = insertDraftId(settlorsFrontendUrlTemplate, draftId)
+
   private lazy val protectorsFrontendUrlTemplate: String = loadConfig("urls.protectorsFrontend")
   def protectorsFrontendUrl(draftId: String): String = insertDraftId(protectorsFrontendUrlTemplate, draftId)
 

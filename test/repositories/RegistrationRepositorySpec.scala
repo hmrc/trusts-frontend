@@ -290,7 +290,8 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
           ),
           protectors = None,
           otherIndividuals = None,
-          trustDetails = None
+          trustDetails = None,
+          settlors = None
         )
 
         when(mockConnector.getAnswerSections(any())(any(), any())).thenReturn(Future.successful(answerSections))
