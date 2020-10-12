@@ -54,9 +54,10 @@ class PrintUserAnswersHelper @Inject()(
       val assetSections = List(
         Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading")))),
         helper.money,
-        helper.shares,
         helper.propertyOrLand,
+        helper.shares,
         helper.businessAsset,
+        helper.partnership,
         helper.other
       ).flatten
 
