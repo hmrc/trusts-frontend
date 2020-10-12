@@ -41,6 +41,12 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       }
     }
 
+    "for settlors task" must {
+      "go to SettlorsInfoPage" in {
+        navigator.settlorsJourney(fakeDraftId) mustBe fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)
+      }
+    }
+
     "for assets task" when {
 
       "there are no assets" must {

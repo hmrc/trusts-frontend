@@ -25,7 +25,9 @@ case class RegistrationAnswerSections(
                                        trustees: Option[List[AnswerSection]] = None,
                                        protectors: Option[List[AnswerSection]] = None,
                                        otherIndividuals: Option[List[AnswerSection]] = None,
-                                       trustDetails: Option[List[AnswerSection]] = None
+                                       trustDetails: Option[List[AnswerSection]] = None,
+                                       livingSettlor: Option[List[AnswerSection]] = None,
+                                       deceasedSettlor: Option[List[AnswerSection]] = None
                                      )
 
 object RegistrationAnswerSections {
@@ -35,7 +37,9 @@ object RegistrationAnswerSections {
       trustees = convert(sections.trustees),
       protectors = convert(sections.protectors),
       otherIndividuals = convert(sections.otherIndividuals),
-      trustDetails = convert(sections.trustDetails)
+      trustDetails = convert(sections.trustDetails),
+      livingSettlor = convert(sections.settlors),
+      deceasedSettlor = convert(sections.settlors)
     )
   }
 

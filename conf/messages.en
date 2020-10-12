@@ -336,24 +336,6 @@ UTRSentByPost.link.returnToRegister = return to register and maintain a trust fo
 trustDetailsAnswerPage.title = Check trust details
 trustDetailsAnswerPage.heading = Check trust details
 
-addASettlor.heading = Add a settlor
-addASettlor.title = Add a settlor
-addASettlor.singular.heading = Add a settlor
-addASettlor.singular.title = Add a settlor
-addASettlor.count.heading = You have added {0} settlors
-addASettlor.count.title = You have added {0} settlors
-
-addASettlor.Lifetime = This is a trust created during the settlor’s lifetime to gift or transfer assets (also known as an inter vivos trust)
-addASettlor.Deed = This trust was set up through a Deed of Variation or family agreement
-addASettlor.Employees = This trust was set up for the employees of a company
-addASettlor.Building = This trust was set up for a building or building with lots of tenants
-addASettlor.Repair = This trust was set up to pay for the repair of historic buildings
-addASettlor.additional-content = Do you need to add another settlor?
-addASettlor.add-them-now = Yes, I want to add them now
-addASettlor.add-them-later = Yes, I want to add them later
-addASettlor.no-complete = No, I have added all of the settlors
-addASettlor.error.required = Select yes if you want to add another settlor
-
 removeAsset.title = Are you sure you want to remove this asset?
 removeAsset.heading = Are you sure you want to remove this asset?
 removeAsset.error.required = Select yes if you want to remove this asset
@@ -611,104 +593,10 @@ currentValue.link = Return to registration progress
 assetAnswer.title = Check asset details
 assetAnswer.heading = Check asset details
 
-settlorDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
-settlorDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
-settlorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
-settlorDateOfBirthYesNo.error.required = Select yes if you know the settlor’s date of birth
-
-settlorDateOfDeath.title = What is the settlor’s date of death?
-settlorDateOfDeath.heading = What is {0}’s date of death?
-settlorDateOfDeath.checkYourAnswersLabel = What is {0}’s date of death?
-settlorDateOfDeath.hint = For example, 31 3 1980.
-settlorDateOfDeath.error.required.all = Enter a date of death
-settlorDateOfDeath.error.required.two = The date of death must include {0} and {1}
-settlorDateOfDeath.error.required = The date of death must include {0}
-settlorDateOfDeath.error.invalid = Enter a real date of death
-settlorDateOfDeath.error.future = Date of death must be today or in the past
-settlorDateOfDeath.error.afterTrustStartDate = Date of death must be on or before the trust’s start date
-settlorDateOfDeath.error.past = Date of death must be after 31 December 1499
-settlorDateOfDeath.error.beforeDateOfBirth = Date of death must be on or after the date of birth
-
-settlorDateOfDeathYesNo.title = Do you know the settlor’s date of death?
-settlorDateOfDeathYesNo.heading = Do you know {0}’s date of death?
-settlorDateOfDeathYesNo.checkYourAnswersLabel = Do you know {0}’s date of death?
-settlorDateOfDeathYesNo.error.required = Select yes if you know the settlor’s date of death
-
-settlorNationalInsuranceNumber.title = What is the settlor’s National Insurance number?
-settlorNationalInsuranceNumber.heading = What is {0}’s National Insurance number?
-settlorNationalInsuranceNumber.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
-settlorNationalInsuranceNumber.hint.reader = It is on their National Insurance card, benefit letter, payslip or P60. For example, Q Q 1 2 3 4 5 6 C.
-settlorNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
-settlorNationalInsuranceNumber.error.required = Enter the settlor’s National Insurance number
-settlorNationalInsuranceNumber.error.length = Settlor’s National Insurance number must be 9 characters or less
-settlorNationalInsuranceNumber.error.invalid = Enter a valid National Insurance number
-
-settlorsDateOfBirth.title = What is the settlor’s date of birth?
-settlorsDateOfBirth.heading = What is {0}’s date of birth?
-settlorsDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-settlorsDateOfBirth.hint = For example, 31 3 1980.
-settlorsDateOfBirth.error.required.all = Enter a date of birth
-settlorsDateOfBirth.error.required.two = The date of birth must include {0} and {1}
-settlorsDateOfBirth.error.required = The date of birth must include {0}
-settlorsDateOfBirth.error.invalid = Enter a real date of birth
-settlorsDateOfBirth.error.future = Date of birth must be today or in the past
-settlorsDateOfBirth.error.afterDateOfDeath = Date of birth must be on or before the date of death
-settlorsDateOfBirth.error.past = Date of birth must be after 31 December 1499
-
-settlorsInternationalAddress.title = What is the settlor’s last known address?
-settlorsInternationalAddress.heading = What is {0}’s last known address?
-settlorsInternationalAddress.checkYourAnswersLabel = What is {0}’s last known address?
-
-settlorsLastKnownAddressYesNo.title = Do you know the settlor’s last known address?
-settlorsLastKnownAddressYesNo.heading = Do you know {0}’s last known address?
-settlorsLastKnownAddressYesNo.checkYourAnswersLabel = Do you know {0}’s last known address?
-settlorsLastKnownAddressYesNo.error.required = Select yes if you know the settlor’s last known address
-
-settlorsPassportOrIdCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
-settlorsPassportOrIdCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
-
-settlorsName.title = What is the settlor’s name?
-settlorsName.heading = What is the settlor’s name?
-settlorsName.firstName = First name
-settlorsName.middleName = Middle names (optional)
-settlorsName.lastName = Last name
-settlorsName.checkYourAnswersLabel = What is the settlor’s name?
-settlorsName.error.firstName.required = Enter the settlor’s first name
-settlorsName.error.firstName.invalid = Settlor’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-settlorsName.error.lastName.required = Enter the settlor’s last name
-settlorsName.error.lastName.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-settlorsName.error.firstName.length = Settlor’s first name must be 35 characters or less
-settlorsName.error.middleName.length = Settlor’s middle names must be 35 characters or less
-settlorsName.error.middleName.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-settlorsName.error.lastName.length = Settlor’s last name must be 35 characters or less
-
-settlorsNationalInsuranceYesNo.title = Do you know the settlor’s National Insurance number?
-settlorsNationalInsuranceYesNo.heading = Do you know {0}’s National Insurance number?
-settlorsNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
-settlorsNationalInsuranceYesNo.error.required = Select yes if you know the settlor’s National Insurance number
-
-settlorsUKAddress.title = What is the settlor’s last known address?
-settlorsUKAddress.heading = What is {0}’s last known address?
-settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
-
-setUpAfterSettlorDied.title = Was the trust set up after the settlor died?
-setUpAfterSettlorDied.heading = Was the trust set up after the settlor died?
-setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
-setUpAfterSettlorDied.error.required = Select yes if the trust was set up after the settlor died
-setUpAfterSettlorDied.hint = This is also known as a will trust.
-
 setUpInAdditionToWillTrustYesNo.title = Is this in addition to a will trust?
 setUpInAdditionToWillTrustYesNo.heading = Is this in addition to a will trust?
 setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
 setUpInAdditionToWillTrustYesNo.error.required = Select yes if the trust is in addition to a will trust
-
-wasSettlorsAddressUKYesNo.title = Was the settlor’s last known address in the UK?
-wasSettlorsAddressUKYesNo.heading = Was {0}’s last known address in the UK?
-wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
-wasSettlorsAddressUKYesNo.error.required = Select yes if the settlor’s last known address was in the UK
-
-deceasedSettlorAnswer.title = Check settlor details
-deceasedSettlorAnswer.heading = Check settlor details
 
 agentName.title = What is the name of the agency registering this trust?
 agentName.heading = What is the name of the agency registering this trust?
@@ -970,38 +858,6 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
 
-settlorIndividualOrBusiness.title = Is the settlor an individual or a business?
-settlorIndividualOrBusiness.heading = Is the settlor an individual or a business?
-settlorIndividualOrBusiness.individual = Individual
-settlorIndividualOrBusiness.business = Business
-settlorIndividualOrBusiness.checkYourAnswersLabel = Is the settlor an individual or a business?
-settlorIndividualOrBusiness.error.required = Select if the settlor is an individual or a business
-
-settlorIndividualName.title = What is the settlor’s name?
-settlorIndividualName.heading = What is the settlor’s name?
-settlorIndividualName.checkYourAnswersLabel = What is the settlor’s name?
-settlorIndividualName.firstName = First name
-settlorIndividualName.middleName = Middle names (optional)
-settlorIndividualName.lastName = Last name
-settlorIndividualName.error.firstname.required = Enter the settlor’s first name
-settlorIndividualName.error.lastname.required = Enter the settlor’s last name
-settlorIndividualName.error.firstname.length = Settlor’s first name must be 35 characters or less
-settlorIndividualName.error.middlename.length = Settlor’s middle names must be 35 characters or less
-settlorIndividualName.error.lastname.length = Settlor’s last name must be 35 characters or less
-settlorIndividualName.error.firstname.invalid = Settlor’s first name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-settlorIndividualName.error.middlename.invalid = Settlor’s middle names must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-settlorIndividualName.error.lastname.invalid = Settlor’s last name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-
-settlorIndividualDateOfBirthYesNo.title = Do you know the settlor’s date of birth?
-settlorIndividualDateOfBirthYesNo.heading = Do you know {0}’s date of birth?
-settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
-settlorIndividualDateOfBirthYesNo.error.required = Select yes if you know date of birth
-
-settlorIndividualDateOfBirth.title = What is the settlor’s date of birth?
-settlorIndividualDateOfBirth.heading = What is {0}’s date of birth?
-settlorIndividualDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-settlorIndividualDateOfBirth.hint = For example, 31 3 1980.
-
 dateOfBirth.error.required.all = Enter a date of birth
 dateOfBirth.error.required.two = The date of birth must include {0} and {1}
 dateOfBirth.error.required = The date of birth must include {0}
@@ -1009,201 +865,12 @@ dateOfBirth.error.invalid = Enter a real date of birth
 dateOfBirth.error.future = Date of birth must be today or in the past
 dateOfBirth.error.past = Date of birth must be after 31 December 1499
 
-settlorIndividualAddressYesNo.title = Do you know the settlor’s address?
-settlorIndividualAddressYesNo.heading = Do you know {0}’s address?
-settlorIndividualAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-settlorIndividualAddressYesNo.error.required = Select yes if you know the settlor’s address
-
-settlorIndividualNINO.title = What is the settlor’s National Insurance number?
-settlorIndividualNINO.heading = What is {0}’s National Insurance number?
-settlorIndividualNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
-settlorIndividualNINO.hint = It is on their National Insurance card, benefit letter, payslip or P60. For example, ‘QQ 12 34 56 C’.
-settlorIndividualNINO.hint.reader = It is on their National Insurance card, benefit letter, payslip or P60. For example, Q Q 1 2 3 4 5 6 C.
-settlorIndividualNINO.error.required = Enter the settlor’s National Insurance number
-settlorIndividualNINO.error.invalidFormat = Enter the settlor’s National Insurance number in the correct format
-
-settlorIndividualNINOYesNo.title = Do you know the settlor’s National Insurance number?
-settlorIndividualNINOYesNo.heading = Do you know {0}’s National Insurance number?
-settlorIndividualNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
-settlorIndividualNINOYesNo.error.required = Select yes if you know the settlor’s National Insurance number
-
-settlorIndividualAddressInternational.title = What is the settlor’s address?
-settlorIndividualAddressInternational.heading = What is {0}’s address?
-settlorIndividualAddressInternational.checkYourAnswersLabel = What is {0}’s address?
-
-settlorIndividualAddressUK.title = What is the settlor’s address?
-settlorIndividualAddressUK.heading = What is {0}’s address?
-settlorIndividualAddressUK.checkYourAnswersLabel = What is {0}’s address?
-
-settlorIndividualAddressUKYesNo.title = Does the settlor live in the UK?
-settlorIndividualAddressUKYesNo.heading = Does {0} live in the UK?
-settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
-settlorIndividualAddressUKYesNo.error.required = Select yes if the settlor lives in the UK
-
-settlorIndividualIDCard.title = What are the settlor’s ID card details?
-settlorIndividualIDCard.heading = What are {0}’s ID card details?
-settlorIndividualIDCard.checkYourAnswersLabel = What are {0}’s ID card details?
-settlorIndividualIDCard.country = ID card country of issue
-settlorIndividualIDCard.error.country.required = Enter the settlor’s ID card country of issue
-settlorIndividualIDCard.country.error.required = Enter the settlor’s ID card country of issue
-settlorIndividualIDCard.country.error.length = The settlor’s ID card country must be 100 characters or less
-settlorIndividualIDCard.number = ID card number
-settlorIndividualIDCard.number.error.required = Enter the settlor’s ID card number
-settlorIndividualIDCard.number.error.length = ID card number must be 30 characters or less
-settlorIndividualIDCard.number.error.invalid = ID card number can only include letters and numbers
-settlorIndividualIDCard.expiryDate.title = Expiry date
-settlorIndividualIDCard.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980.
-settlorIndividualIDCard.expiryDate.error.required.all = Enter the ID card expiry date
-settlorIndividualIDCard.expiryDate.error.required.two = ID card expiry date must include a {0} and {1}
-settlorIndividualIDCard.expiryDate.error.required = ID card expiry date must include a {0}
-settlorIndividualIDCard.expiryDate.error.invalid = Enter a real date when the settlor’s ID card expires
-settlorIndividualIDCard.expiryDate.error.future = ID card expiry date must be after 31 December 1499 and before 01 January 2100
-settlorIndividualIDCard.expiryDate.error.past = ID card expiry date must be after 31 December 1499 and before 01 January 2100
-
-settlorIndividualIDCardYesNo.title = Do you know the settlor’s ID card details?
-settlorIndividualIDCardYesNo.heading = Do you know {0}’s ID card details?
-settlorIndividualIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
-settlorIndividualIDCardYesNo.error.required = Select yes if you know the settlor’s ID card details
-
-settlorIndividualPassport.title = What are the settlor’s passport details?
-settlorIndividualPassport.heading = What are {0}’s passport details?
-settlorIndividualPassport.checkYourAnswersLabel = What are {0}’s passport details?
-settlorIndividualPassport.country = Passport country of issue
-settlorIndividualPassport.country.error.required = Enter the settlor’s passport country of issue
-settlorIndividualPassport.country.error.length = The settlor’s passport country must be 100 characters or less
-settlorIndividualPassport.number = Passport number
-settlorIndividualPassport.number.hint = For example, 502135326.
-settlorIndividualPassport.number.error.required = Enter the settlor’s passport number
-settlorIndividualPassport.number.error.length = Passport number must be 30 characters or less
-settlorIndividualPassport.number.error.invalid = Passport number can only include letters and numbers
-settlorIndividualPassport.expiryDate.title = Expiry date
-settlorIndividualPassport.expiryDate.hint = Expiry date can be in the past. For example, 31 3 1980.
-settlorIndividualPassport.expiryDate.error.required.all = Enter the passport expiry date
-settlorIndividualPassport.expiryDate.error.required.two = Passport expiry date must include a {0} and {1}
-settlorIndividualPassport.expiryDate.error.required = Passport expiry date must include {0}
-settlorIndividualPassport.expiryDate.error.invalid = Enter a real date when the settlor’s passport expires
-settlorIndividualPassport.expiryDate.error.future = Passport expiry date must be after 31 December 1499 and before 01 January 2100
-settlorIndividualPassport.expiryDate.error.past = Passport expiry date must be after 31 December 1499 and before 01 January 2100
-
-settlorIndividualPassportYesNo.title = Do you know the settlor’s passport details?
-settlorIndividualPassportYesNo.heading = Do you know {0}’s passport details?
-settlorIndividualPassportYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
-settlorIndividualPassportYesNo.error.required = Select yes if you know the settlor’s passport details
-
-settlorIndividualAnswers.title = Check settlor details
-settlorIndividualAnswers.heading = Check settlor details
-
 addAnAssetYesNo.title = Do you want to add an asset?
 addAnAssetYesNo.heading = Do you want to add an asset?
 addAnAssetYesNo.error.required = Select yes if you want to add an asset
 
-settlorBusinessName.title = What is the business’s name?
-settlorBusinessName.heading = What is the business’s name?
-settlorBusinessName.checkYourAnswersLabel = What is the business’s name?
-settlorBusinessName.error.required = Enter the business’s name
-settlorBusinessName.error.length = Business’s name must be 105 characters or less
-settlorBusinessName.error.invalid = Business name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-
-settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtrYesNo.title = Do you know the business’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtrYesNo.heading = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtrYesNo.error.required = Select yes if you know the business’s Unique Taxpayer Reference (UTR) number
-
-settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtr.title = What is the business’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtr.heading = What is {0}’s Unique Taxpayer Reference (UTR) number?
-settlorBusinessUtr.error.required = Enter the business’s Unique Taxpayer Reference
-settlorBusinessUtr.error.length = Unique Taxpayer Reference must be a 10 digit number
-settlorBusinessUtr.error.invalidCharacters = Enter the business’s Unique Taxpayer Reference in the correct format
-settlorBusinessUtr.hint = This is 10 numbers, for example 1234567890. It will be on tax returns and other letters about Corporation Tax. It may be called ‘reference’, ‘UTR’ or ‘official use’.
-settlorBusinessUtr.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. It will be on tax returns and other letters about Corporation Tax. It may be called ‘reference’, ‘UTR’ or ‘official use’.
-settlorBusinessUtr.p1 = You can
-settlorBusinessUtr.link = find a lost UTR number (opens in a new window or tab)
-
-settlorBusinessAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
-settlorBusinessAddressYesNo.title = Do you know the settlor’s address?
-settlorBusinessAddressYesNo.heading = Do you know {0}’s address?
-settlorBusinessAddressYesNo.error.required = Select yes if you know the settlor’s address
-
-settlorBusinessAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
-settlorBusinessAddressUKYesNo.title = Is the settlor’s address in the UK?
-settlorBusinessAddressUKYesNo.heading = Is {0}’s address in the UK?
-settlorBusinessAddressUKYesNo.error.required = Select yes if the settlor’s address is in the UK
-
-settlorBusinessAddressInternational.checkYourAnswersLabel = What is {0}’s address?
-settlorBusinessAddressInternational.title = What is the settlor’s address?
-settlorBusinessAddressInternational.heading = What is {0}’s address?
-
-settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
-settlorBusinessAddressUK.title = What is the settlor’s address?
-settlorBusinessAddressUK.heading = What is {0}’s address?
-
-settlorBusinessType.checkYourAnswersLabel = What kind of business is {0}?
-settlorBusinessType.title = What kind of business is the settlor?
-settlorBusinessType.heading = What kind of business is {0}?
-settlorBusinessType.error.required = Select what kind of business the settlor is
-
 kindOfBusiness.Trading = Trading
 kindOfBusiness.Investment = Investment
-
-settlorBusinessTimeYesNo.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
-settlorBusinessTimeYesNo.title = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
-settlorBusinessTimeYesNo.heading = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
-settlorBusinessTimeYesNo.error.required = Select yes if the business had been in existence for at least 2 years
-
-addASettlorYesNo.title = Do you want to add a settlor?
-addASettlorYesNo.heading = Do you want to add a settlor?
-addASettlorYesNo.error.required = Select yes if you want to add a settlor
-addASettlorYesNo.add-them-now = Yes
-addASettlorYesNo.no-complete = No
-
-addAnotherSettlorYesNo.title = Are there any additional settlors for the trust?
-addAnotherSettlorYesNo.heading = Are there any additional settlors for the trust?
-addAnotherSettlorYesNo.error.required = Select yes if you want to add a settlor
-
-settlors.defaultText = the settlor
-
-settlors.removeYesNo.title = Are you sure you want to remove the settlor?
-settlors.removeYesNo.heading = Are you sure you want to remove {0}?
-settlors.removeYesNo.error.required = Select yes if you want to remove the settlor
-
-kindOfTrust.title = What kind of trust did the settlor create?
-kindOfTrust.heading = What kind of trust did the settlor create?
-kindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets
-kindOfTrust.Deed = A trust through a Deed of Variation or family agreement
-kindOfTrust.Employees = A trust for the employees of a company
-kindOfTrust.Building = A trust for a building or building with tenants
-kindOfTrust.Repair = A trust for the repair of historic buildings
-kindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
-kindOfTrust.error.required = Select what kind of trust the settlor created
-
-employerFinancedRbsYesNo.title = Is this an employer-financed retirement benefits scheme?
-employerFinancedRbsYesNo.heading = Is this an employer-financed retirement benefits scheme?
-employerFinancedRbsYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
-employerFinancedRbsYesNo.error.required = Select yes if this is an employer-financed retirement benefits scheme
-
-employerFinancedRbsStartDate.title = When did the employer-financed retirement benefits scheme start?
-employerFinancedRbsStartDate.heading = When did the employer-financed retirement benefits scheme start?
-employerFinancedRbsStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
-employerFinancedRbsStartDate.hint = For example, 31 3 1980.
-employerFinancedRbsStartDate.error.required.all = Enter the employer-financed retirement benefits scheme start date
-employerFinancedRbsStartDate.error.required.two = The employer-financed retirement benefits scheme start date must include {0} and {1}
-employerFinancedRbsStartDate.error.required = The employer-financed retirement benefits scheme start date must include {0}
-employerFinancedRbsStartDate.error.invalid = Enter a real date
-employerFinancedRbsStartDate.error.future = Employer-financed retirement benefits scheme start date must be today or in the past
-employerFinancedRbsStartDate.error.past = Employer-financed retirement benefits scheme start date must be after 31 December 1499
-
-howDeedOfVariationCreated.title = How was the deed of variation created?
-howDeedOfVariationCreated.heading = How was the deed of variation created?
-howDeedOfVariationCreated.ReplacedWill = to replace a will trust
-howDeedOfVariationCreated.ReplaceAbsolute = to replace an absolute interest over a will
-howDeedOfVariationCreated.checkYourAnswersLabel = How was the deed of variation created?
-howDeedOfVariationCreated.error.required = Select how the deed of variation was created
-
-holdoverReliefYesNo.title = Was holdover relief claimed on any assets put into the trust?
-holdoverReliefYesNo.heading = Was holdover relief claimed on any assets put into the trust?
-holdoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
-holdoverReliefYesNo.error.required = Select yes if holdover relief was claimed by any settlor on transfer into the trust
 
 trusteesBasedInTheUK.title = Are the trustees based in the UK?
 trusteesBasedInTheUK.heading =  Are the trustees based in the UK?
@@ -1212,40 +879,6 @@ trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the 
 trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains trustees based in and outside the UK
 trusteesBasedInTheUK.checkYourAnswersLabel = How many of the trustees are based in the UK?
 trusteesBasedInTheUK.error.required = Select how many of the trustees are based in the UK
-
-settlorsBasedInTheUK.title = Are any of the settlors based in the UK?
-settlorsBasedInTheUK.heading = Are any of the settlors based in the UK?
-settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
-settlorsBasedInTheUK.error.required = Select yes if the any of the settlors are based in the UK
-
-removeSettlor.title = Are you sure you want to remove the settlor?
-removeSettlor.default = the settlor
-removeSettlor.heading = Are you sure you want to remove {0}?
-removeSettlor.checkYourAnswersLabel = Are you sure you want to remove {0}?
-removeSettlor.error.required = Select yes if you want to remove the settlor
-
-settlorInfo.title = Information you’ll need to provide
-settlorInfo.heading = Information you’ll need to provide
-settlorInfo.caption = Settlors
-settlorInfo.caption.hidden = This section is
-settlorInfo.subheading1 = Individual settlor
-settlorInfo.paragraph1 = If the trust was created after the settlor died, tell us their name. If you know more details, tell us their:
-settlorInfo.bulletpoint1 = date of death
-settlorInfo.bulletpoint2 = date of birth
-settlorInfo.bulletpoint3 = National Insurance number or last known address
-settlorInfo.paragraph2 = If the settlor created a different kind of trust, tell us their name. If you know more details, tell us one of the following:
-settlorInfo.bulletpoint4 = National Insurance number
-settlorInfo.bulletpoint5 = address
-settlorInfo.bulletpoint6 = passport details and address
-settlorInfo.bulletpoint7 = ID card details and address
-settlorInfo.subheading2 = Business settlor
-settlorInfo.paragraph3 = If the settlor is a business, tell us the business’s name. If you know more details, tell us the Unique Taxpayer Reference (UTR) or business address.
-settlorInfo.subheading3 = Set up of the trust
-settlorInfo.paragraph4 = If the settlor created the trust during their lifetime to gift or transfer assets, you need to tell us if holdover relief has been claimed.
-settlorInfo.paragraph5 = For trusts set up for employees of a company, tell us:
-settlorInfo.bulletpoint8 = if it’s an employer-financed retirement scheme, and if so what date it started
-settlorInfo.bulletpoint9 = the business type (trading or investment) if the scheme’s settlor is a business
-settlorInfo.bulletpoint10 = if the business had existed for at least 2 years when any asset was added to the trust
 
 businessProtector.name.checkYourAnswersLabel = What is the business’s name?
 businessProtector.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?

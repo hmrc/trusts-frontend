@@ -25,6 +25,7 @@ import pages.register.asset.AddAssetsPage
 import repositories.RegistrationsRepository
 import sections._
 import sections.beneficiaries.Beneficiaries
+import sections.settlors.Settlors
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
@@ -39,7 +40,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
     } yield {
       List(
         Task(Link(TrustDetails, navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
-        Task(Link(TrustDetails, navigator.settlorsJourney(draftId)), allStatus.trustDetails),
+        Task(Link(Settlors, navigator.settlorsJourney(draftId)), allStatus.settlors),
         Task(Link(Trustees, navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
         Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
         Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),

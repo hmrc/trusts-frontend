@@ -80,14 +80,26 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       )
     )
 
+    val settlorsSection = List(
+      AnswerSection(
+        Some("settlorsHeadingKey1"),
+        List.empty,
+        Some("settlorsSectionKey1")
+      )
+    )
+
     val registrationSections = RegistrationAnswerSections(
       beneficiaries = Some(beneficiarySections),
       trustees = Some(trusteeSections),
-      trustDetails = Some(trustDetailsSection)
+      trustDetails = Some(trustDetailsSection),
+      settlors = Some(settlorsSection)
     )
 
-    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
-    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
+    when(registrationsRepository.getAllStatus(any())(any()))
+      .thenReturn(Future.successful(AllStatus.withAllComplete))
+
+    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any()))
+      .thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {
 
@@ -117,6 +129,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
       val expectedSections = Seq(
         trustDetailsSection.head,
+        settlorsSection.head,
         trusteeSections.head,
         trusteeSections(1),
         beneficiarySections.head,
@@ -207,7 +220,8 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
 
       val expectedSections = Seq(
-       trustDetailsSection.head,
+        trustDetailsSection.head,
+        settlorsSection.head,
         trusteeSections.head,
         trusteeSections(1),
         beneficiarySections.head,
