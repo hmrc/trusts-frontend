@@ -593,10 +593,21 @@ currentValue.link = Return to registration progress
 assetAnswer.title = Check asset details
 assetAnswer.heading = Check asset details
 
-setUpInAdditionToWillTrustYesNo.title = Is this in addition to a will trust?
-setUpInAdditionToWillTrustYesNo.heading = Is this in addition to a will trust?
+settlorDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+settlorDateOfDeath.checkYourAnswersLabel = What is {0}’s date of death?
+settlorDateOfDeathYesNo.checkYourAnswersLabel = Do you know {0}’s date of death?
+settlorNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
+settlorsDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+settlorsInternationalAddress.checkYourAnswersLabel = What is {0}’s last known address?
+settlorsLastKnownAddressYesNo.checkYourAnswersLabel = Do you know {0}’s last known address?
+settlorsPassportOrIdCardYesNo.checkYourAnswersLabel = Do you know {0}’s passport or ID card details?
+settlorsPassportOrIdCard.checkYourAnswersLabel = What are {0}’s passport or ID card details?
+settlorsName.checkYourAnswersLabel = What is the settlor’s name?
+settlorsNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
+setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
 setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
-setUpInAdditionToWillTrustYesNo.error.required = Select yes if the trust is in addition to a will trust
+wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 
 agentName.title = What is the name of the agency registering this trust?
 agentName.heading = What is the name of the agency registering this trust?
@@ -858,6 +869,12 @@ propertyOrLandAddressYesNo.error.required = Select yes if the property or land h
 propertyOrLandAnswers.title = Check property or land details
 propertyOrLandAnswers.heading = Check property or land details
 
+settlorIndividualOrBusiness.checkYourAnswersLabel = Is the settlor an individual or a business?
+settlorIndividualName.checkYourAnswersLabel = What is the settlor’s name?
+settlorIndividualDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
+settlorIndividualDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+settlorIndividualDateOfBirth.hint = For example, 31 3 1980.
+
 dateOfBirth.error.required.all = Enter a date of birth
 dateOfBirth.error.required.two = The date of birth must include {0} and {1}
 dateOfBirth.error.required = The date of birth must include {0}
@@ -865,20 +882,55 @@ dateOfBirth.error.invalid = Enter a real date of birth
 dateOfBirth.error.future = Date of birth must be today or in the past
 dateOfBirth.error.past = Date of birth must be after 31 December 1499
 
+settlorIndividualAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+settlorIndividualNINO.checkYourAnswersLabel = What is {0}’s National Insurance number?
+settlorIndividualNINOYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
+settlorIndividualAddressInternational.checkYourAnswersLabel = What is {0}’s address?
+settlorIndividualAddressUK.checkYourAnswersLabel = What is {0}’s address?
+settlorIndividualAddressUKYesNo.checkYourAnswersLabel = Does {0} live in the UK?
+settlorIndividualIDCard.checkYourAnswersLabel = What are {0}’s ID card details?
+settlorIndividualIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
+settlorIndividualPassport.checkYourAnswersLabel = What are {0}’s passport details?
+settlorIndividualPassportYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+
 addAnAssetYesNo.title = Do you want to add an asset?
 addAnAssetYesNo.heading = Do you want to add an asset?
 addAnAssetYesNo.error.required = Select yes if you want to add an asset
 
+settlorBusinessName.checkYourAnswersLabel = What is the business’s name?
+settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
+settlorBusinessAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
+settlorBusinessAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+settlorBusinessAddressInternational.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessAddressUK.checkYourAnswersLabel = What is {0}’s address?
+settlorBusinessType.checkYourAnswersLabel = What kind of business is {0}?
 kindOfBusiness.Trading = Trading
 kindOfBusiness.Investment = Investment
 
-trusteesBasedInTheUK.title = Are the trustees based in the UK?
-trusteesBasedInTheUK.heading =  Are the trustees based in the UK?
+settlorBusinessTimeYesNo.checkYourAnswersLabel = At the date of each contribution to the trust, had the business been in existence for at least 2 years?
+kindOfTrust.Lifetime = A trust created during their lifetime to gift or transfer assets
+kindOfTrust.Deed = A trust through a Deed of Variation or family agreement
+kindOfTrust.Employees = A trust for the employees of a company
+kindOfTrust.Building = A trust for a building or building with tenants
+kindOfTrust.Repair = A trust for the repair of historic buildings
+kindOfTrust.checkYourAnswersLabel = What kind of trust did the settlor create?
+
+employerFinancedRbsYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
+
+employerFinancedRbsStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
+
+howDeedOfVariationCreated.ReplacedWill = to replace a will trust
+howDeedOfVariationCreated.ReplaceAbsolute = to replace an absolute interest over a will
+howDeedOfVariationCreated.checkYourAnswersLabel = How was the deed of variation created?
+holdoverReliefYesNo.checkYourAnswersLabel = Was holdover relief claimed on any assets put into the trust?
+
 trusteesBasedInTheUK.UKBasedTrustees = All of the trustees are based in the UK
 trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the UK
 trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains trustees based in and outside the UK
 trusteesBasedInTheUK.checkYourAnswersLabel = How many of the trustees are based in the UK?
-trusteesBasedInTheUK.error.required = Select how many of the trustees are based in the UK
+
+settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
 
 businessProtector.name.checkYourAnswersLabel = What is the business’s name?
 businessProtector.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
