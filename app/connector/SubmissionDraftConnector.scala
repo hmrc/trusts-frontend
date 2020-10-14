@@ -76,7 +76,9 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
 
   def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[AllAnswerSections] =
     getDraftSection(draftId, answerSectionsSection).map {
-      section => section.data.as[AllAnswerSections]
+      section =>
+        println(">" + section)
+        section.data.as[AllAnswerSections]
     }
 
   def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier, ec : ExecutionContext) : Future[LeadTrusteeType] =

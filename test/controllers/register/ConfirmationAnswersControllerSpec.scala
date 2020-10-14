@@ -129,11 +129,11 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
       val expectedSections = Seq(
         trustDetailsSection.head,
-        settlorsSection.head,
         trusteeSections.head,
         trusteeSections(1),
         beneficiarySections.head,
         beneficiarySections(1),
+        settlorsSection.head,
         AnswerSection(None, Nil, Some("Assets")),
         AnswerSection(
           Some("Money"),
@@ -221,11 +221,11 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
       val expectedSections = Seq(
         trustDetailsSection.head,
-        settlorsSection.head,
         trusteeSections.head,
         trusteeSections(1),
         beneficiarySections.head,
         beneficiarySections(1),
+        settlorsSection.head,
         AnswerSection(None, Nil, Some("Assets")),
         AnswerSection(
           Some("Money"),
@@ -260,8 +260,10 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
       val trnDateTime = LocalDateTime.now.format(dateFormatter)
 
-      contentAsString(result) mustEqual
-        view(expectedSections, "XNTRN000000001", trnDateTime)(request, messages).toString
+      val content = contentAsString(result)
+      val expectedContent = view(expectedSections, "XNTRN000000001", trnDateTime)(request, messages).toString
+
+      content mustEqual expectedContent
 
       application.stop()
     }
