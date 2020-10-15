@@ -18,7 +18,6 @@ package mapping.registration
 
 import models.core.UserAnswers
 import pages.register.{PostcodeForTheTrustPage, WhatIsTheUTRPage}
-import uk.gov.hmrc.http.HeaderCarrier
 
 class MatchingMapper {
 

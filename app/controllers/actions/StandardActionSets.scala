@@ -24,8 +24,6 @@ import play.api.libs.json.Reads
 import play.api.mvc.{ActionBuilder, AnyContent}
 import queries.Gettable
 
-import scala.concurrent.ExecutionContext
-
 class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
                                    getData: DraftIdRetrievalActionProvider,
                                    requireData: RegistrationDataRequiredAction,
@@ -40,6 +38,6 @@ class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
     identifiedUserWithData(draftId) andThen requiredAnswerAction(requiredAnswer)
 
   def identifiedUserWithDataAnswerAndIndex[T,U](draftId: String, requiredAnswer: RequiredAnswer[T], index: Int, entity : Gettable[List[U]])
-                                       (implicit rAReads : Reads[T], eReads : Reads[U],  executionContext: ExecutionContext): ActionBuilder[RegistrationDataRequest, AnyContent] =
+                                       (implicit rAReads : Reads[T], eReads : Reads[U]): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getData(draftId) andThen requireData andThen validateIndex(index, entity) andThen requiredAnswerAction(requiredAnswer)
 }

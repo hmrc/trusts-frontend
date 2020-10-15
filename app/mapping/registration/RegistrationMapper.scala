@@ -18,7 +18,6 @@ package mapping.registration
 
 import javax.inject.Inject
 import models.core.UserAnswers
-import uk.gov.hmrc.http.HeaderCarrier
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
@@ -31,7 +30,7 @@ class RegistrationMapper @Inject()(
                                     matchingMapper: MatchingMapper
                                   ) {
 
-  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String)(implicit hc:HeaderCarrier): Option[Registration] = {
+  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String): Option[Registration] = {
 
     for {
       trustDetails <- trustDetailsMapper.build(userAnswers)
