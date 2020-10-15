@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit.DAYS
 import java.time.{LocalDateTime, ZoneOffset}
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction, RequireDraftRegistrationActionRefiner}
+import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
 import javax.inject.Inject
 import models.Mode
@@ -28,7 +28,6 @@ import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.registration.pages.RegistrationStatus
-import navigation.Navigator
 import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logger
 import play.api.data.Form
@@ -47,7 +46,6 @@ import scala.util.control.NonFatal
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
-                                       navigator: Navigator,
                                        formProvider: DeclarationFormProvider,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,

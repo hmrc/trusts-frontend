@@ -72,10 +72,9 @@
             }
         </fieldset>
 
-        @if(affinityGroup == AffinityGroup.Agent) {
-            @components.warning("declaration.agent")
-        } else {
-            @components.warning("declaration.individual")
+        @{
+            val key: String = if (affinityGroup == AffinityGroup.Agent) "agent" else "individual"
+            <p class="panel-indent">{messages(s"declaration.$key.warning")}</p>
         }
 
         @components.submit_button(Some("site.confirm-send"))

@@ -19,14 +19,12 @@ package controllers.register
 import java.time.LocalDateTime
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.DateFormatter
-import utils.countryOptions.CountryOptions
 import utils.print.register.PrintUserAnswersHelper
 import views.html.register.ConfirmationAnswerPageView
 

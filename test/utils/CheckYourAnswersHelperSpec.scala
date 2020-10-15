@@ -16,8 +16,6 @@
 
 package utils
 
-import java.time.LocalDate
-
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import models.NormalMode
@@ -37,9 +35,7 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
     "render trust details" when {
 
       val utr: String = "1234567890"
-      val trustName: String = "Trust Name"
       val postcode: String = "NE1 1NE"
-      val setupDate: LocalDate = LocalDate.parse("1996-02-03")
 
       val sectionKey = Some("Trust details")
 

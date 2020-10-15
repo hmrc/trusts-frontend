@@ -18,7 +18,6 @@ package mapping.registration
 
 import javax.inject.Inject
 import models.core.UserAnswers
-import uk.gov.hmrc.http.HeaderCarrier
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
