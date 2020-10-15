@@ -21,16 +21,15 @@ import java.time.{LocalDate, LocalDateTime}
 import models.core.pages.{FullName, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
-import models.registration.pages.TrusteesBasedInTheUK.UKBasedTrustees
 import models.registration.pages._
 import pages.entitystatus._
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.deceased_settlor._
-import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import pages.register.asset._
 import pages.register.asset.money._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
+import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
+import pages.register.settlors.deceased_settlor._
+import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.AccessibilityHelper._
 import utils.print.register.PrintUserAnswersHelper
