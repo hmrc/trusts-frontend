@@ -16,17 +16,17 @@
 
 package services
 
-import auditing.TrustAuditing.{REGISTRATION_ALREADY_SUBMITTED, REGISTRATION_SUBMISSION_FAILED}
-import auditing.{RegistrationErrorAuditEvent, TrustAuditing, TrustRegistrationSubmissionAuditEvent}
+import auditing.TrustAuditing._
+import auditing.{RegistrationErrorAuditEvent, TrustRegistrationSubmissionAuditEvent}
 import config.FrontendAppConfig
 import javax.inject.Inject
 import models.core.UserAnswers
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
+import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.http.Status._
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -38,9 +38,9 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
                                  response: RegistrationTRNResponse)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
 
     val event = if (request.affinityGroup == Agent) {
-      TrustAuditing.REGISTRATION_SUBMITTED_BY_AGENT
+      REGISTRATION_SUBMITTED_BY_AGENT
     } else {
-      TrustAuditing.REGISTRATION_SUBMITTED_BY_ORGANISATION
+      REGISTRATION_SUBMITTED_BY_ORGANISATION
     }
 
     audit(
@@ -80,7 +80,7 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
                                      errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
 
     audit(
-      event = TrustAuditing.ERROR_BUILDING_REGISTRATION,
+      event = ERROR_BUILDING_REGISTRATION,
       payload = userAnswers.data,
       draftId = userAnswers.draftId,
       internalId = request.internalId,

@@ -47,13 +47,11 @@ class DefaultSubmissionService @Inject()(
 
     registrationsRepository.getCorrespondenceAddress(userAnswers.draftId).flatMap {
       correspondenceAddress =>
-
         registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
           trustName =>
-
             registrationMapper.build(userAnswers, correspondenceAddress, trustName) match {
               case Some(registration) =>
-                registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)) flatMap {
+                registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)).flatMap {
                   fullRegistrationJson =>
                     trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
                       case response@RegistrationTRNResponse(_) =>
@@ -66,10 +64,13 @@ class DefaultSubmissionService @Inject()(
                         auditService.auditRegistrationSubmissionFailed(fullRegistrationJson, userAnswers.draftId)
                         other
                     }
+                }.recover {
+                  case _ =>
+                    auditService.auditErrorBuildingRegistration(userAnswers, "Error adding draft registration sections.")
+                    UnableToRegister()
                 }
-
               case _ =>
-                auditService.auditErrorBuildingRegistration(userAnswers, "Error mapping user answers to registration.")
+                auditService.auditErrorBuildingRegistration(userAnswers, "Error mapping UserAnswers to Registration.")
                 Future.failed(UnableToRegister())
             }
         }.recover {
