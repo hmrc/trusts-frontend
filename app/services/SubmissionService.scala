@@ -45,10 +45,10 @@ class DefaultSubmissionService @Inject()(
 
     Logger.info("[SubmissionService][submit] submitting registration")
 
-    registrationsRepository.getCorrespondenceAddress(userAnswers.draftId) flatMap {
+    registrationsRepository.getCorrespondenceAddress(userAnswers.draftId).flatMap {
       correspondenceAddress =>
 
-        registrationsRepository.getTrustName(userAnswers.draftId) flatMap {
+        registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
           trustName =>
 
             registrationMapper.build(userAnswers, correspondenceAddress, trustName) match {
@@ -69,11 +69,18 @@ class DefaultSubmissionService @Inject()(
                 }
 
               case _ =>
-                auditService.auditCannotSubmitRegistration(userAnswers)
-                Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
+                auditService.auditErrorBuildingRegistration(userAnswers, "Error mapping user answers to registration.")
                 Future.failed(UnableToRegister())
             }
+        }.recover {
+          case _ =>
+            auditService.auditErrorBuildingRegistration(userAnswers, "Error retrieving trust name transformation.")
+            UnableToRegister()
         }
+    }.recover {
+      case _ =>
+        auditService.auditErrorBuildingRegistration(userAnswers, "Error retrieving correspondence address transformation.")
+        UnableToRegister()
     }
   }
 }

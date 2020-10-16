@@ -101,19 +101,18 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     "for an empty user answers" - {
 
-      "must not able to submit data " in {
+      "must not be able to submit data " in {
 
         val userAnswers = emptyUserAnswers
 
-        intercept[UnableToRegister] {
-          Await.result(submissionService.submit(userAnswers),Duration.Inf)
-        }
+        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        result mustBe UnableToRegister()
       }
     }
 
     "when user answers is not empty" - {
 
-      "must able to submit data  when all data available for registration by organisation user" in {
+      "must be able to submit data when all data available for registration by organisation user" in {
 
         val userAnswers = newTrustUserAnswers
 
@@ -124,7 +123,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
 
-      "must able to submit data  when all data available for registration by agent" in {
+      "must be able to submit data when all data available for registration by agent" in {
 
         val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
 
@@ -135,14 +134,13 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
 
-      "must not able to submit data  when all data not available for registration" in {
+      "must not be able to submit data when not all data available for registration" in {
 
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
         val userAnswers = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
 
-        intercept[UnableToRegister] {
-          Await.result( submissionService.submit(userAnswers),Duration.Inf)
-        }
+        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        result mustBe UnableToRegister()
       }
     }
   }

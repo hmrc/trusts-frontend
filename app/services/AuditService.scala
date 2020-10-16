@@ -76,17 +76,16 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
     )
   }
 
-  def auditCannotSubmitRegistration(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Unit = {
+  def auditErrorBuildingRegistration(userAnswers: UserAnswers,
+                                     errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
 
-    if (config.auditCannotCreateRegistration) {
-
-      auditConnector.sendExplicitAudit(
-        TrustAuditing.CANNOT_SUBMIT_REGISTRATION,
-        userAnswers
-      )
-    } else {
-      ()
-    }
+    audit(
+      event = TrustAuditing.ERROR_BUILDING_REGISTRATION,
+      payload = userAnswers.data,
+      draftId = userAnswers.draftId,
+      internalId = request.internalId,
+      RegistrationErrorAuditEvent(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", errorReason)
+    )
   }
 
   private def audit(event: String,
