@@ -18,8 +18,6 @@ package auditing
 
 object TrustAuditing {
 
-  val CREATE_DRAFT_EVENT = "CreateDraftRegistration"
-  val CANNOT_BUILD_REGISTRATION = "CannotBuildRegistration"
   val REGISTRATION_SUBMITTED_BY_ORGANISATION = "RegistrationSubmittedByOrganisation"
   val REGISTRATION_SUBMITTED_BY_AGENT = "RegistrationSubmittedByAgent"
 
