@@ -45,6 +45,8 @@ class DefaultSubmissionService @Inject()(
 
     Logger.info("[SubmissionService][submit] submitting registration")
 
+    lazy val sessionId: String = hc.sessionId.map(_.value).getOrElse("")
+
     registrationsRepository.getCorrespondenceAddress(userAnswers.draftId).flatMap {
       correspondenceAddress =>
         registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
@@ -55,31 +57,38 @@ class DefaultSubmissionService @Inject()(
                   fullRegistrationJson =>
                     trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
                       case response@RegistrationTRNResponse(_) =>
+                        Logger.info("[SubmissionService][submit] Registration successfully submitted.")
                         auditService.auditRegistrationSubmitted(fullRegistrationJson, userAnswers.draftId, response)
                         response
                       case AlreadyRegistered =>
+                        Logger.warn("[SubmissionService][submit] Registration already submitted.")
                         auditService.auditRegistrationAlreadySubmitted(fullRegistrationJson, userAnswers.draftId)
                         AlreadyRegistered
                       case other =>
+                        Logger.warn(s"[SubmissionService][submit] Registration submission failed.")
                         auditService.auditRegistrationSubmissionFailed(fullRegistrationJson, userAnswers.draftId)
                         other
                     }
                 }.recover {
-                  case _ =>
+                  case e =>
+                    Logger.error(s"[SubmissionService][submit] unable to register trust for session $sessionId due to exception: ${e.getMessage}")
                     auditService.auditErrorBuildingRegistration(userAnswers, "Error adding draft registration sections.")
                     UnableToRegister()
                 }
               case _ =>
+                Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
                 auditService.auditErrorBuildingRegistration(userAnswers, "Error mapping UserAnswers to Registration.")
                 Future.failed(UnableToRegister())
             }
         }.recover {
-          case _ =>
+          case e =>
+            Logger.error(s"[SubmissionService][submit] unable to register trust for session $sessionId due to exception: ${e.getMessage}")
             auditService.auditErrorBuildingRegistration(userAnswers, "Error retrieving trust name transformation.")
             UnableToRegister()
         }
     }.recover {
-      case _ =>
+      case e =>
+        Logger.error(s"[SubmissionService][submit] unable to register trust for session $sessionId due to exception: ${e.getMessage}")
         auditService.auditErrorBuildingRegistration(userAnswers, "Error retrieving correspondence address transformation.")
         UnableToRegister()
     }
