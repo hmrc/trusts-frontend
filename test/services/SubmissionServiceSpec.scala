@@ -26,11 +26,13 @@ import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse.UnableToRegister
+import models.requests.RegistrationDataRequest
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.libs.json.JsValue
 import repositories.RegistrationsRepository
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
@@ -83,9 +85,17 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     registrationMapper,
     mockConnector,
     auditService,
-    stubbedRegistrationsRepository)
+    stubbedRegistrationsRepository
+  )
 
   private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  private implicit lazy val request: RegistrationDataRequest[_] = RegistrationDataRequest(
+    fakeRequest,
+    "internalId",
+    emptyUserAnswers,
+    AffinityGroup.Organisation,
+    Enrolments(Set())
+  )
 
   "SubmissionService" -  {
 

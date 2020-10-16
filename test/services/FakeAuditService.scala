@@ -19,16 +19,24 @@ package services
 import config.FrontendAppConfig
 import javax.inject.Inject
 import models.core.UserAnswers
-import models.core.http.TrustResponse
+import models.core.http.RegistrationTRNResponse
+import models.requests.RegistrationDataRequest
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 class FakeAuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig) extends AuditService(auditConnector, config) {
 
-  override def audit(event: String, registration: JsValue, draftId: String, internalId: String, response: TrustResponse)
-                    (implicit hc: HeaderCarrier): Unit = ()
+  override def auditRegistrationSubmitted(payload: JsValue,
+                                          draftId: String,
+                                          response: RegistrationTRNResponse)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
 
-  override def cannotSubmit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Unit = ()
+  override def auditRegistrationAlreadySubmitted(payload: JsValue,
+                                                 draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
+
+  override def auditRegistrationSubmissionFailed(payload: JsValue,
+                                                 draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
+
+  override def auditCannotSubmitRegistration(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Unit = ()
 
 }

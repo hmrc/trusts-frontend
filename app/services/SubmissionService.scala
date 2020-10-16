@@ -16,7 +16,6 @@
 
 package services
 
-import auditing.{RegistrationErrorAuditEvent, TrustAuditing}
 import com.google.inject.ImplementedBy
 import connector.TrustConnector
 import javax.inject.Inject
@@ -24,6 +23,7 @@ import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
+import models.requests.RegistrationDataRequest
 import play.api.Logger
 import play.api.libs.json.Json
 import repositories.RegistrationsRepository
@@ -40,7 +40,8 @@ class DefaultSubmissionService @Inject()(
                                         )
   extends SubmissionService {
 
-  override def submit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+  override def submit(userAnswers: UserAnswers)
+                     (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
 
     Logger.info("[SubmissionService][submit] submitting registration")
 
@@ -56,44 +57,19 @@ class DefaultSubmissionService @Inject()(
                   fullRegistrationJson =>
                     trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
                       case response@RegistrationTRNResponse(_) =>
-
-                        auditService.audit(
-                          event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                          registration = fullRegistrationJson,
-                          draftId = userAnswers.draftId,
-                          internalId = userAnswers.internalAuthId,
-                          response = response
-                        )
-
+                        auditService.auditRegistrationSubmitted(fullRegistrationJson, userAnswers.draftId, response)
                         response
                       case AlreadyRegistered =>
-
-                        auditService.audit(
-                          event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                          registration = fullRegistrationJson,
-                          draftId = userAnswers.draftId,
-                          internalId = userAnswers.internalAuthId,
-                          response = RegistrationErrorAuditEvent(403, "ALREADY_REGISTERED", "Trust is already registered.")
-                        )
+                        auditService.auditRegistrationAlreadySubmitted(fullRegistrationJson, userAnswers.draftId)
                         AlreadyRegistered
                       case other =>
-                        auditService.audit(
-                          event = TrustAuditing.TRUST_REGISTRATION_SUBMITTED,
-                          registration = fullRegistrationJson,
-                          draftId = userAnswers.draftId,
-                          internalId = userAnswers.internalAuthId,
-                          response = RegistrationErrorAuditEvent(500, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
-                        )
+                        auditService.auditRegistrationSubmissionFailed(fullRegistrationJson, userAnswers.draftId)
                         other
                     }
                 }
 
-              case None =>
-
-                auditService.cannotSubmit(
-                  userAnswers
-                )
-
+              case _ =>
+                auditService.auditCannotSubmitRegistration(userAnswers)
                 Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
                 Future.failed(UnableToRegister())
             }
@@ -105,7 +81,8 @@ class DefaultSubmissionService @Inject()(
   @ImplementedBy(classOf[DefaultSubmissionService])
   trait SubmissionService {
 
-    def submit(userAnswers: UserAnswers)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
+    def submit(userAnswers: UserAnswers)
+              (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
 
   }
 
