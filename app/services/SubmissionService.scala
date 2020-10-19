@@ -31,14 +31,12 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-
 class DefaultSubmissionService @Inject()(
                                           registrationMapper: RegistrationMapper,
                                           trustConnector: TrustConnector,
                                           auditService: AuditService,
                                           registrationsRepository: RegistrationsRepository
-                                        )
-  extends SubmissionService {
+                                        ) extends SubmissionService {
 
   override def submit(userAnswers: UserAnswers)
                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
@@ -72,24 +70,24 @@ class DefaultSubmissionService @Inject()(
                 }.recover {
                   case e =>
                     Logger.error(s"[SubmissionService][submit] unable to register trust for session $sessionId due to exception: ${e.getMessage}")
-                    auditService.auditErrorBuildingRegistration(userAnswers, "Error adding draft registration sections.")
+                    auditService.auditRegistrationPreparationFailed(userAnswers, "Error adding draft registration sections.")
                     UnableToRegister()
                 }
               case _ =>
                 Logger.warn("[SubmissionService][submit] Unable to generate registration to submit.")
-                auditService.auditErrorBuildingRegistration(userAnswers, "Error mapping UserAnswers to Registration.")
+                auditService.auditRegistrationPreparationFailed(userAnswers, "Error mapping UserAnswers to Registration.")
                 Future.failed(UnableToRegister())
             }
         }.recover {
           case e =>
             Logger.error(s"[SubmissionService][submit] unable to register trust for session $sessionId due to exception: ${e.getMessage}")
-            auditService.auditErrorBuildingRegistration(userAnswers, "Error retrieving trust name transformation.")
+            auditService.auditRegistrationPreparationFailed(userAnswers, "Error retrieving trust name transformation.")
             UnableToRegister()
         }
     }.recover {
       case e =>
         Logger.error(s"[SubmissionService][submit] unable to register trust for session $sessionId due to exception: ${e.getMessage}")
-        auditService.auditErrorBuildingRegistration(userAnswers, "Error retrieving correspondence address transformation.")
+        auditService.auditRegistrationPreparationFailed(userAnswers, "Error retrieving correspondence address transformation.")
         UnableToRegister()
     }
   }

@@ -24,7 +24,7 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 trait TrustResponse
 
-final case class RegistrationTRNResponse(trn : String) extends TrustResponse
+final case class RegistrationTRNResponse(trn: String) extends TrustResponse
 
 object RegistrationTRNResponse {
 

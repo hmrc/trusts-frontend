@@ -37,7 +37,7 @@ class FakeAuditService @Inject()(auditConnector: AuditConnector, config: Fronten
   override def auditRegistrationSubmissionFailed(payload: JsValue,
                                                  draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
 
-  override def auditErrorBuildingRegistration(userAnswers: UserAnswers,
-                                              errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
+  override def auditRegistrationPreparationFailed(userAnswers: UserAnswers,
+                                                  errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
 
 }

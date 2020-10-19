@@ -56,7 +56,7 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
                                         draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
 
     audit(
-      event = REGISTRATION_ALREADY_SUBMITTED,
+      event = REGISTRATION_SUBMISSION_FAILED,
       payload = Json.toJson(payload),
       draftId = draftId,
       internalId = request.internalId,
@@ -76,11 +76,11 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
     )
   }
 
-  def auditErrorBuildingRegistration(userAnswers: UserAnswers,
-                                     errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
+  def auditRegistrationPreparationFailed(userAnswers: UserAnswers,
+                                         errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
 
     audit(
-      event = ERROR_BUILDING_REGISTRATION,
+      event = REGISTRATION_PREPARATION_FAILED,
       payload = userAnswers.data,
       draftId = userAnswers.draftId,
       internalId = request.internalId,
