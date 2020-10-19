@@ -21,16 +21,16 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.registration.{AddressType, LeadTrusteeType, RegistrationMapper}
+import mapping.registration.{AddressType, LeadTrusteeType, Registration, RegistrationMapper}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
-import models.core.http.RegistrationTRNResponse
+import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.core.http.TrustResponse.UnableToRegister
 import models.requests.RegistrationDataRequest
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Matchers.{eq => eqTo, _}
+import org.mockito.Mockito.{verify, when}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Json}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -50,6 +50,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private val stubbedRegistrationsRepository: RegistrationsRepository = new RegistrationsRepository {
     private val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+
     override def get(draftId: String)
                     (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = Future.successful(None)
 
@@ -65,18 +66,23 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getAllStatus(draftId: String)
                              (implicit hc: HeaderCarrier) : Future[AllStatus] = Future.successful(AllStatus())
 
-    override def setAllStatus(draftId: String, status: AllStatus)(implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
+    override def setAllStatus(draftId: String, status: AllStatus)
+                             (implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
 
     override def getAnswerSections(draftId: String)
                                   (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
 
-    override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] = Future.successful(testLeadTrusteeOrg)
+    override def getLeadTrustee(draftId: String)
+                               (implicit hc: HeaderCarrier): Future[LeadTrusteeType] = Future.successful(testLeadTrusteeOrg)
 
-    override def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier): Future[AddressType] = Future.successful(correspondenceAddress)
+    override def getCorrespondenceAddress(draftId: String)
+                                         (implicit hc: HeaderCarrier): Future[AddressType] = Future.successful(correspondenceAddress)
 
-    override def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String] = Future.successful("Name")
+    override def getTrustName(draftId: String)
+                             (implicit hc: HeaderCarrier): Future[String] = Future.successful("Name")
 
-    override def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
+    override def getTrustSetupDate(draftId: String)
+                                  (implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]
@@ -96,6 +102,15 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     AffinityGroup.Organisation,
     Enrolments(Set())
   )
+
+  private val newTrustUserAnswers = {
+    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
+    val asset = TestUserAnswers.withMoneyAsset(uaWithDeceased)
+    val userAnswers = TestUserAnswers.withDeclaration(asset)
+
+    userAnswers
+  }
 
   "SubmissionService" -  {
 
@@ -143,15 +158,108 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         result mustBe UnableToRegister()
       }
     }
+
+    "must audit events" - {
+
+      val mockRegistrationMapper: RegistrationMapper = mock[RegistrationMapper]
+      val mockAuditService: AuditService = mock[AuditService]
+      val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
+
+      val submissionService = new DefaultSubmissionService(
+        mockRegistrationMapper,
+        mockConnector,
+        mockAuditService,
+        mockRegistrationsRepository
+      )
+
+      val userAnswers: UserAnswers = newTrustUserAnswers
+      val correspondenceAddress: AddressType = AddressType("Line 1", "Line 2", None, None, None, "GB")
+      val trustName: String = "Name"
+      val registration: Option[Registration] = registrationMapper.build(userAnswers, correspondenceAddress, trustName)
+
+      "when error retrieving correspondence address transformation" in {
+
+        val errorReason: String = "Error retrieving correspondence address transformation."
+
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.failed(new Throwable("")))
+
+        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+      }
+
+      "when error retrieving trust name transformation" in {
+
+        val errorReason: String = "Error retrieving trust name transformation."
+
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.failed(new Throwable("")))
+
+        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+      }
+
+      "when error mapping user answers to Registration" in {
+
+        val errorReason: String = "Error mapping UserAnswers to Registration."
+
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(None)
+
+        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+      }
+
+      "when error adding draft registration sections" in {
+
+        val errorReason: String = "Error adding draft registration sections."
+
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.failed(new Throwable("")))
+
+        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+      }
+
+      "when registration submission fails" in {
+
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
+        when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.InternalServerError))
+
+        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        verify(mockAuditService).auditRegistrationSubmissionFailed(any(), any())(any(), any())
+      }
+
+      "when registration already submitted" in {
+
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
+        when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
+
+        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        verify(mockAuditService).auditRegistrationAlreadySubmitted(any(), any())(any(), any())
+      }
+
+      "when registration successfully submitted" in {
+
+        val response: RegistrationTRNResponse = RegistrationTRNResponse("trn")
+
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
+        when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(response))
+
+        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        verify(mockAuditService).auditRegistrationSubmitted(any(), any(), eqTo(response))(any(), any())
+      }
+    }
   }
-
-  private val newTrustUserAnswers = {
-    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-    val asset = TestUserAnswers.withMoneyAsset(uaWithDeceased)
-    val userAnswers = TestUserAnswers.withDeclaration(asset)
-
-    userAnswers
-  }
-
 }
