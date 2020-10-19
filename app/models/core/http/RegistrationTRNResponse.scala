@@ -24,7 +24,7 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 trait TrustResponse
 
-final case class RegistrationTRNResponse(trn : String) extends TrustResponse
+final case class RegistrationTRNResponse(trn: String) extends TrustResponse
 
 object RegistrationTRNResponse {
 
@@ -50,21 +50,19 @@ object TrustResponse {
 
   final case class UnableToRegister() extends Exception with TrustResponse
 
-  implicit lazy val httpReads: HttpReads[TrustResponse] =
-    new HttpReads[TrustResponse] {
-      override def read(method: String, url: String, response: HttpResponse): TrustResponse = {
-        Logger.info(s"[TrustResponse] response status received from trusts api: ${response.status}")
+  implicit lazy val httpReads: HttpReads[TrustResponse] = new HttpReads[TrustResponse] {
+    override def read(method: String, url: String, response: HttpResponse): TrustResponse = {
+      Logger.info(s"[TrustResponse] response status received from trusts api: ${response.status}")
 
-        response.status match {
-          case OK =>
-            response.json.as[RegistrationTRNResponse]
-          case CONFLICT =>
-            AlreadyRegistered
-          case _ =>
-            InternalServerError
-        }
+      response.status match {
+        case OK =>
+          response.json.as[RegistrationTRNResponse]
+        case CONFLICT =>
+          AlreadyRegistered
+        case _ =>
+          InternalServerError
       }
     }
-
+  }
 
 }

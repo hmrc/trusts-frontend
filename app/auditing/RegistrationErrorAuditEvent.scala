@@ -19,7 +19,7 @@ package auditing
 import models.core.http.TrustResponse
 import play.api.libs.json.{Json, OFormat}
 
-case class RegistrationErrorAuditEvent(status: Int, code: String, message: String) extends TrustResponse
+case class RegistrationErrorAuditEvent(status: Int, code: String, errorReason: String) extends TrustResponse
 
 object RegistrationErrorAuditEvent {
   implicit val formats : OFormat[RegistrationErrorAuditEvent] = Json.format[RegistrationErrorAuditEvent]
