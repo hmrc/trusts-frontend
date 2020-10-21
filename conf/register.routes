@@ -135,6 +135,7 @@ GET        /:draftId/change-agent-uk-address                                    
 POST       /:draftId/change-agent-uk-address                                                        controllers.register.agents.AgentUKAddressController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/maintain-saved-registration                                                    controllers.register.agents.AgentOverviewController.continue(draftId: String)
+GET        /:draftId/remove-saved-registration                                                      controllers.register.agents.AgentOverviewController.remove(draftId: String)
 
 ## Assets
 

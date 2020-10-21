@@ -33,7 +33,7 @@
         </a>
     </dd>
     <dd class="hmrc-add-to-a-list__remove">
-        <a href="http://localhost:9781/trusts-registration/feature-not-available">
+        <a href="@{AgentOverviewController.remove(data.draftId)}">
             <span aria-hidden="true">@messages("site.cancel")</span>
             <span class="visually-hidden">@messages("site.hidden-cancel", data.draftId)</span>
         </a>

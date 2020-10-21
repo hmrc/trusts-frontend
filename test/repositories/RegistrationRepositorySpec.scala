@@ -102,8 +102,8 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         val result = Await.result(repository.listDrafts(), Duration.Inf)
 
         result mustBe List(
-          DraftRegistration("draft1", "reference1", "4 February 2012"),
-          DraftRegistration("draft2", "reference2", "5 January 2011")
+          DraftRegistration("draft1", Some("reference1"), "4 February 2012"),
+          DraftRegistration("draft2", Some("reference2"), "5 January 2011")
         )
         verify(mockConnector).getCurrentDraftIds()(hc, executionContext)
       }
@@ -418,5 +418,53 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       }
     }
 
+    "getting draft" must {
+      "get draft received from connector" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val draftId: String = "draftId"
+        val reference: String = "ref"
+
+        val draft = SubmissionDraftId(
+          draftId,
+          LocalDateTime.of(2012, 2, 1, 12, 30, 0),
+          Some(reference)
+        )
+
+        when(mockConnector.getDraft(any())(any(), any())).thenReturn(Future.successful(draft))
+
+        val result = Await.result(repository.getDraft(draftId), Duration.Inf)
+
+        result mustBe DraftRegistration(draftId, Some(reference), "4 February 2012")
+
+        verify(mockConnector).getDraft(draftId)(hc, executionContext)
+      }
+    }
+
+    "removing draft" must {
+      "get response from connector" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val draftId: String = "draftId"
+
+        val status: Int = 200
+
+        when(mockConnector.removeDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(status)))
+
+        val result = Await.result(repository.removeDraft(draftId), Duration.Inf)
+
+        result.status mustBe status
+
+        verify(mockConnector).removeDraft(draftId)(hc, executionContext)
+      }
+    }
   }
 }

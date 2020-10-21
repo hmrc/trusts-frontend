@@ -86,7 +86,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
       "return OK and the correct view for a GET" in {
 
-        val draft = List(DraftRegistration(fakeDraftId, "InternalRef", LocalDateTime.now().toString))
+        val draft = List(DraftRegistration(fakeDraftId, Some("InternalRef"), LocalDateTime.now().toString))
 
         when(registrationsRepository.listDrafts()(any()))
           .thenReturn(Future.successful(draft))

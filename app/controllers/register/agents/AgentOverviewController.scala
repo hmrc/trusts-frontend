@@ -64,8 +64,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
   }
 
   def remove(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithData(draftId) {
-    implicit request =>
-      Redirect(routes.RemoveTrustYesNoController.onPageLoad(draftId))
+    Redirect(routes.RemoveTrustYesNoController.onPageLoad(draftId))
   }
 
 }
