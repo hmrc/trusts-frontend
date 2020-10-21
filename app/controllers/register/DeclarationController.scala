@@ -92,10 +92,10 @@ class DeclarationController @Inject()(
 
           r.recover {
             case _ : UnableToRegister =>
-              Logger.error(s"[onSubmit] Not able to register, redirecting to registration in progress.")
+              Logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
               Redirect(routes.TaskListController.onPageLoad(draftId))
             case NonFatal(e) =>
-              Logger.error(s"[onSubmit] Non fatal exception, throwing again. ${e.getMessage}")
+              Logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
               throw e
           }
         }
@@ -103,29 +103,29 @@ class DeclarationController @Inject()(
   }
 
   private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String)
-                            (implicit hc: HeaderCarrier): Future[Result] = {
+                            (implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[Result] = {
     response match {
       case trn: RegistrationTRNResponse =>
-        Logger.info("[DeclarationController][handleResponse] Saving trust registration trn.")
+        Logger.info(s"[DeclarationController][handleResponse][Session ID: ${request.sessionId}] Saving trust registration trn.")
         saveTRNAndCompleteRegistration(updatedAnswers, trn)
       case AlreadyRegistered =>
-        Logger.info(s"[DeclarationController][handleResponse] unable to submit as trust is already registered")
+        Logger.info(s"[DeclarationController][handleResponse][Session ID: ${request.sessionId}] unable to submit as trust is already registered")
         Future.successful(Redirect(routes.UTRSentByPostController.onPageLoad()))
       case e =>
-        Logger.warn(s"[DeclarationController][handleResponse] unable to submit due to error $e")
+        Logger.warn(s"[DeclarationController][handleResponse][Session ID: ${request.sessionId}] unable to submit due to error $e")
         Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
     }
   }
 
   private def saveTRNAndCompleteRegistration(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse)
-                                            (implicit hc: HeaderCarrier): Future[Result] = {
+                                            (implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[Result] = {
     Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn)).flatMap {
       trnSaved =>
         val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
         Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate)).flatMap {
           dateSaved =>
             val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
-            Logger.info(s"[saveTRNAndCompleteRegistration] Days between creation and submission : $days")
+            Logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission : $days")
             registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
               _ =>
                 Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))

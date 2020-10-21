@@ -47,7 +47,7 @@ class RequireDraftRegistrationActionRefinerSpec extends RegistrationSpecBase wit
           val answers = TestUserAnswers.emptyUserAnswers.copy(progress = Complete)
 
           val action = new Harness()
-          val futureResult = action.callRefine(new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callRefine(new RegistrationDataRequest(fakeRequest, "id", "sessionId", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.left.value.header.headers(HeaderNames.LOCATION) mustBe ConfirmationController.onPageLoad(answers.draftId).url
@@ -61,7 +61,7 @@ class RequireDraftRegistrationActionRefinerSpec extends RegistrationSpecBase wit
       "continue with refining the request" in {
         val answers = TestUserAnswers.emptyUserAnswers.copy(progress = InProgress)
 
-        val dataRequest = new RegistrationDataRequest(fakeRequest, "id", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
+        val dataRequest = new RegistrationDataRequest(fakeRequest, "id", "sessionId", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
 
         val action = new Harness()
         val futureResult = action.callRefine(dataRequest)

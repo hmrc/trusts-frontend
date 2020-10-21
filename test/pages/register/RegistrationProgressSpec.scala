@@ -19,7 +19,6 @@ package pages.register
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
-import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages._

@@ -82,7 +82,7 @@ class TaskListController @Inject()(
             sections.filterNot(removeTaxLiabilityFromTaskList)
           }
 
-          Logger.debug(s"[TaskList][sections] $sections")
+          Logger.debug(s"[TaskList][sections][Session ID: ${request.sessionId}] $sections")
 
           Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))        }
       }

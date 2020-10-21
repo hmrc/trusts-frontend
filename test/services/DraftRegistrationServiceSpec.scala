@@ -22,10 +22,10 @@ import connector.SubmissionDraftConnector
 import models.RegistrationSubmission.AllStatus
 import models.SubmissionDraftResponse
 import models.registration.pages.Status.InProgress
-import org.mockito.Mockito._
 import org.mockito.Matchers.{eq => eqTo, _}
-import org.scalatest.{MustMatchers, WordSpec}
+import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.{MustMatchers, WordSpec}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder

@@ -51,7 +51,7 @@ class DraftIdDataRetrievalAction(
 
     registrationsRepository.get(draftId).map {
       userAnswers =>
-        OptionalRegistrationDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
+        OptionalRegistrationDataRequest(request.request, request.identifier, hc.sessionId.map(_.value).getOrElse("No Session ID available"), userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
     }
   }
 

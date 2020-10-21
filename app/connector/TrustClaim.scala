@@ -41,6 +41,7 @@ object TrustClaim {
                 if (c.utr.toLowerCase.trim == utr.toLowerCase.trim) {
                   validClaim
                 } else {
+                  Logger.info(s"[TrustClaim] UTR could not be matched")
                   None
                 }
               case None => None

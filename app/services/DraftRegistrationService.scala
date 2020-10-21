@@ -46,7 +46,7 @@ class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsR
   }
 
   def create[A](request: IdentifierRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
-    val transformed = OptionalRegistrationDataRequest(request.request, request.identifier, None, request.affinityGroup, request.enrolments, request.agentARN)
+    val transformed = OptionalRegistrationDataRequest(request.request, request.identifier, hc.sessionId.map(_.value).getOrElse("No Session ID available"), None, request.affinityGroup, request.enrolments, request.agentARN)
     build(transformed)
   }
 

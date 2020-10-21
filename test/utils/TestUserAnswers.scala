@@ -19,7 +19,7 @@ package utils
 import java.time.LocalDate
 
 import models.core.UserAnswers
-import models.core.pages.{Declaration, FullName, IndividualOrBusiness, UKAddress}
+import models.core.pages.{Declaration, FullName, UKAddress}
 import models.registration.Matched.{Failed, Success}
 import models.registration.pages.Status.Completed
 import models.registration.pages._
@@ -29,7 +29,6 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.Json
 

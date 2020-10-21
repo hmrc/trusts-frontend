@@ -24,10 +24,10 @@ import controllers.register.routes._
 import forms.asset.partnership.PartnershipStartDateFormProvider
 import models.NormalMode
 import org.scalacheck.Gen
-import play.api.test.FakeRequest
-import play.api.test.Helpers.{route, _}
 import pages.register.asset.partnership.PartnershipStartDatePage
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{route, _}
 import views.html.register.asset.partnership.PartnershipStartDateView
 
 class PartnershipStartDateControllerSpec extends RegistrationSpecBase with IndexValidation {

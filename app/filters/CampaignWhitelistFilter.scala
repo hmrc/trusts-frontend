@@ -56,14 +56,16 @@ class CampaignWhitelistFilter @Inject()(
 
             implicit val hc : HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(rh.headers, Some(rh.session))
 
-            Logger.info(s"[CampaignWhitelistFilter] token retrieved $token")
+            val sessionId = hc.sessionId.map(_.value).getOrElse("No Session ID available")
+
+            Logger.info(s"[CampaignWhitelistFilter][Session ID: $sessionId] token retrieved $token")
 
             withVerifiedPasscode("trusts", Some(token)){
               f(rh)
             }.recover {
               case NonFatal(e) =>
 
-                Logger.info(s"[CampaignWhitelistFilter] Not authorised to access Trusts ${e.getMessage}")
+                Logger.info(s"[CampaignWhitelistFilter][Session ID: $sessionId] Not authorised to access Trusts ${e.getMessage}")
 
                 Redirect(s"${appConfig.otacUrl}?p=$token")
                 .addingToSession(

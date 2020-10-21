@@ -44,8 +44,11 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
                                 action: Action[A]
                                ) = {
 
+    val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    val sessionId = hc.sessionId.map(_.value).getOrElse("No Session ID available")
+
     def redirectToCreateAgentServicesAccount(reason: String): Future[Result] = {
-      Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent]: Agent services account required - $reason")
+      Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent][Session ID: $sessionId]: Agent services account required - $reason")
       Future.successful(Redirect(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad()))
     }
 
@@ -80,23 +83,26 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     val enrolmentKey = "HMRC-TERS-ORG"
     val identifier = "SAUTR"
 
+    val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    val sessionId = hc.sessionId.map(_.value).getOrElse("No Session ID available")
+
     val continueWithoutEnrolment =
       action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
 
     enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment){
       enrolment =>
         enrolment.getIdentifier(identifier).fold{
-          logger.info("[AffinityGroupIdentifier] user is not enrolled, continuing to registered online")
+          logger.info(s"[AffinityGroupIdentifier][Session ID: $sessionId] user is not enrolled, continuing to registered online")
           continueWithoutEnrolment
         }{
           enrolmentIdentifier =>
             val utr = enrolmentIdentifier.value
 
             if(utr.isEmpty) {
-              logger.info("[AffinityGroupIdentifier] no utr for enrolment value")
+              logger.info(s"[AffinityGroupIdentifier][Session ID: $sessionId] no utr for enrolment value")
               continueWithoutEnrolment
             } else {
-              logger.info("[AffinityGroupIdentifier] user is already enrolled, redirecting to maintain")
+              logger.info(s"[AffinityGroupIdentifier][Session ID: $sessionId] user is already enrolled, redirecting to maintain")
               Future.successful(Redirect(config.maintainATrustFrontendUrl))
             }
         }
@@ -107,6 +113,7 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
   def apply(request: Request[A]): Future[Result] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    val sessionId = hc.sessionId.map(_.value).getOrElse("No Session ID available")
 
     val retrievals = Retrievals.internalId and
                      Retrievals.affinityGroup and
@@ -114,16 +121,16 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
 
     trustsAuthFunctions.authorised().retrieve(retrievals) {
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
-        logger.info("successfully identified as an Agent")
+        logger.info(s"[AffinityGroupIdentifier][Session ID: $sessionId] successfully identified as an Agent")
         authoriseAgent(request, enrolments, internalId, action)
       case Some(internalId) ~ Some(Organisation) ~ enrolments =>
-        logger.info("successfully identified as Organisation")
+        logger.info(s"[AffinityGroupIdentifier][Session ID: $sessionId] successfully identified as Organisation")
         authoriseOrg(request, enrolments, internalId, action)
       case Some(_) ~ _ ~ _ =>
-        logger.info("Unauthorised due to affinityGroup being Individual")
+        logger.info(s"[AffinityGroupIdentifier][Session ID: $sessionId] Unauthorised due to affinityGroup being Individual")
         Future.successful(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad()))
       case _ =>
-        logger.warn("Unable to retrieve internal id")
+        logger.warn(s"[AffinityGroupIdentifier][Session ID: $sessionId] Unable to retrieve internal id")
         throw new UnauthorizedException("Unable to retrieve internal Id")
     } recover trustsAuthFunctions.recoverFromAuthorisation
   }

@@ -34,7 +34,7 @@ class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository:
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
-      OptionalRegistrationDataRequest(request.request, request.identifier, userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
+      OptionalRegistrationDataRequest(request.request, request.identifier, hc.sessionId.map(_.value).getOrElse("No Session ID available"), userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
 
     registrationsRepository.listDrafts().flatMap {
       ids =>
