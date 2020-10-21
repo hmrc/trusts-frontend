@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -39,7 +39,9 @@ class RemoveTrustYesNoController @Inject()(
                                             view: RemoveTrustYesNoView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("removeTrustYesNo")
+  private val prefix: String = "removeTrustYesNo"
+
+  private val form: Form[Boolean] = yesNoFormProvider.withPrefix(prefix)
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
@@ -55,6 +57,8 @@ class RemoveTrustYesNoController @Inject()(
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
+      val redirect: Result = Redirect(routes.AgentOverviewController.onPageLoad())
+
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           clientReferenceNumber(draftId).map {
@@ -64,17 +68,17 @@ class RemoveTrustYesNoController @Inject()(
         value => {
           if (value) {
             registrationsRepository.removeDraft(draftId).map {
-              _ => Redirect(routes.AgentOverviewController.onPageLoad())
+              _ => redirect
             }
           } else {
-            Future.successful(Redirect(routes.AgentOverviewController.onPageLoad()))
+            Future.successful(redirect)
           }
         }
       )
   }
 
-  private def clientReferenceNumber(draftId: String)(implicit hc: HeaderCarrier): Future[String] = {
-    val defaultText: String = "the trust"
+  private def clientReferenceNumber(draftId: String)(implicit request: RegistrationDataRequest[AnyContent], hc: HeaderCarrier): Future[String] = {
+    val defaultText: String = request.messages(messagesApi)(s"$prefix.defaultText")
     registrationsRepository.getDraft(draftId).map {
       draft => draft.agentInternalRef.getOrElse(defaultText)
     }
