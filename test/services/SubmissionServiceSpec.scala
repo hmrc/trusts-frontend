@@ -84,7 +84,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getTrustSetupDate(draftId: String)
                                   (implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
 
-    override def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[DraftRegistration] = Future.successful(DraftRegistration("", None, ""))
+    override def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[DraftRegistration] = Future.successful(DraftRegistration("draftId", "agentInternalRef", "3 February 2020"))
 
     override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(200))
   }

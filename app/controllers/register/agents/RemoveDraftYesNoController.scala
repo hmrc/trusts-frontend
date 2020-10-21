@@ -77,10 +77,7 @@ class RemoveDraftYesNoController @Inject()(
       )
   }
 
-  private def clientReferenceNumber(draftId: String)(implicit request: RegistrationDataRequest[AnyContent], hc: HeaderCarrier): Future[String] = {
-    val defaultText: String = request.messages(messagesApi)(s"$prefix.defaultText")
-    registrationsRepository.getDraft(draftId).map {
-      draft => draft.agentInternalRef.getOrElse(defaultText)
-    }
+  private def clientReferenceNumber(draftId: String)(implicit hc: HeaderCarrier): Future[String] = {
+    registrationsRepository.getDraft(draftId).map(_.agentInternalRef)
   }
 }

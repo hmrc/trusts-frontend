@@ -28,7 +28,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(List(DraftRegistration("Fake", Some("Fake2"), LocalDateTime.now.toString)))(fakeRequest, messages)
+    val applyView = view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now.toString)))(fakeRequest, messages)
 
     behave like normalPage(applyView, None, "agentOverview",
       "paragraph1",
@@ -53,9 +53,9 @@ class AgentOverviewViewSpec extends ViewBehaviours {
   "render draft registrations" in {
 
     val drafts = List(
-      DraftRegistration("FakeDraftId1", Some("Fake2"), LocalDateTime.now.toString),
-      DraftRegistration("FakeDraftId2", Some("Fake2"), LocalDateTime.now.toString),
-      DraftRegistration("FakeDraftId3", Some("Fake2"), LocalDateTime.now.toString)
+      DraftRegistration("FakeDraftId1", "Fake2", LocalDateTime.now.toString),
+      DraftRegistration("FakeDraftId2", "Fake2", LocalDateTime.now.toString),
+      DraftRegistration("FakeDraftId3", "Fake2", LocalDateTime.now.toString)
     )
 
     val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))

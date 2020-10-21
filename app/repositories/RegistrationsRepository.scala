@@ -34,8 +34,8 @@ import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
-                                          submissionDraftConnector: SubmissionDraftConnector
-                                        )(implicit ec: ExecutionContext) extends RegistrationsRepository {
+                                               submissionDraftConnector: SubmissionDraftConnector
+                                              )(implicit ec: ExecutionContext) extends RegistrationsRepository {
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
@@ -46,8 +46,10 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   override def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]] = {
     submissionDraftConnector.getCurrentDraftIds().map {
       draftIds =>
-        draftIds.map {
-          x => DraftRegistration(x.draftId, x.reference, dateFormatter.savedUntil(x.createdAt))
+        draftIds.flatMap {
+          x => x.reference.map {
+            reference => DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
+          }
         }
     }
   }
@@ -113,21 +115,24 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.getAnswerSections(draftId).map(RegistrationAnswerSections.fromAllAnswerSections)
   }
 
-  def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType] =
+  override def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType] =
     submissionDraftConnector.getLeadTrustee(draftId)
 
-  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
+  override def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
     submissionDraftConnector.getCorrespondenceAddress(draftId)
 
-  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]] =
+  override def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]] =
     submissionDraftConnector.getTrustSetupDate(draftId)
 
-  def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
+  override def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
     submissionDraftConnector.getTrustName(draftId)
 
   override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier): Future[DraftRegistration] =
-    submissionDraftConnector.getDraft(draftId).map {
-      x => DraftRegistration(x.draftId, x.reference, dateFormatter.savedUntil(x.createdAt))
+    listDrafts().map {
+      drafts =>
+        drafts.foldLeft(drafts.head)((result, draft) => {
+          if (draft.draftId == draftId) draft else result
+        })
     }
 
   override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =

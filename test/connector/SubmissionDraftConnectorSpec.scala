@@ -30,7 +30,7 @@ import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import play.api.test.Helpers.CONTENT_TYPE
-import uk.gov.hmrc.http.{HeaderCarrier, NotFoundException}
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
 
 import scala.concurrent.Await
@@ -447,52 +447,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           result.status mustBe Status.OK
         }
 
-      }
-
-      ".getDraft" - {
-
-        val draftId: String = "draftId"
-
-        "successfully retrieves draft" in {
-
-          val reference: String = "ref"
-
-          val draftIdResponseJson =
-            s"""
-               |{
-               | "createdAt": "2012-02-03T09:30:00",
-               | "draftId": "$draftId",
-               | "reference": "$reference"
-               |}
-               |""".stripMargin
-
-          server.stubFor(
-            get(urlEqualTo(s"$submissionsUrl/$draftId"))
-              .willReturn(
-                aResponse()
-                  .withStatus(Status.OK)
-                  .withBody(draftIdResponseJson)
-              )
-          )
-
-          val result = Await.result(connector.getDraft(draftId), Duration.Inf)
-          result mustBe SubmissionDraftId(draftId, LocalDateTime.of(2012, 2, 3, 9, 30), Some(reference))
-        }
-
-        "fails to find draft" in {
-
-          server.stubFor(
-            get(urlEqualTo(s"$submissionsUrl/$draftId"))
-              .willReturn(
-                aResponse()
-                  .withStatus(Status.NOT_FOUND)
-              )
-          )
-
-          intercept[NotFoundException] {
-            Await.result(connector.getDraft(draftId), Duration.Inf)
-          }
-        }
       }
 
       ".removeDraft" in {

@@ -41,63 +41,32 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
   private val clientReferenceNumber: String = "crn"
   private val savedUntil: String = "3 February 1996"
 
-  private val draftRegistration: DraftRegistration = DraftRegistration(fakeDraftId, Some(clientReferenceNumber), savedUntil)
+  private val draftRegistration: DraftRegistration = DraftRegistration(fakeDraftId, clientReferenceNumber, savedUntil)
 
   "RemoveDraftYesNo Controller" must {
 
-    "return OK and the correct view for a GET" when {
+    "return OK and the correct view for a GET" in {
 
-      "saved registration has a client reference number" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
 
-        when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
+      val request = FakeRequest(GET, removeDraftYesNoRoute)
 
-        val request = FakeRequest(GET, removeDraftYesNoRoute)
+      val result = route(application, request).value
 
-        val result = route(application, request).value
+      val view = application.injector.instanceOf[RemoveDraftYesNoView]
 
-        val view = application.injector.instanceOf[RemoveDraftYesNoView]
+      status(result) mustEqual OK
 
-        status(result) mustEqual OK
+      val content: String = contentAsString(result)
 
-        val content: String = contentAsString(result)
+      content mustEqual
+        view(form, fakeDraftId, clientReferenceNumber)(request, messages).toString
 
-        content mustEqual
-          view(form, fakeDraftId, clientReferenceNumber)(request, messages).toString
+      content must include(s"Are you sure you want to remove $clientReferenceNumber?")
 
-        content must include(s"Are you sure you want to remove $clientReferenceNumber?")
-
-        application.stop()
-      }
-
-      "saved registration doesn't have a client reference number" in {
-
-        val defaultText: String = "the trust"
-
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-        val draftRegistration: DraftRegistration = DraftRegistration(fakeDraftId, None, savedUntil)
-
-        when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
-
-        val request = FakeRequest(GET, removeDraftYesNoRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[RemoveDraftYesNoView]
-
-        status(result) mustEqual OK
-
-        val content: String = contentAsString(result)
-
-        content mustEqual
-          view(form, fakeDraftId, defaultText)(request, messages).toString
-
-        content must include(s"Are you sure you want to remove $defaultText?")
-
-        application.stop()
-      }
+      application.stop()
     }
 
     "remove draft and redirect to agent overview when YES submitted" in {

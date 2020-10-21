@@ -396,7 +396,6 @@ agentOverview.savedUntil = Saved until
 removeDraftYesNo.title = Are you sure you want to remove the trust?
 removeDraftYesNo.heading = Are you sure you want to remove {0}?
 removeDraftYesNo.error.required = Select yes if you want to remove the trust
-removeDraftYesNo.defaultText = the trust
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?

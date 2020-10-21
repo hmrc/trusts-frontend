@@ -58,7 +58,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
       "build a userAnswers object and add it to the request" in {
 
         val registrationsRepository = mock[RegistrationsRepository]
-        val draftRegistration = DraftRegistration("draftId", Some("reference"), "saved-until-date")
+        val draftRegistration = DraftRegistration("draftId", "reference", "saved-until-date")
         when(registrationsRepository.listDrafts()(any())) thenReturn Future(List(draftRegistration))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(Some(emptyUserAnswers))
         val action = new Harness(registrationsRepository)
@@ -72,7 +72,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
       "set userAnswers to 'None' because 'get' query returns 'None'" in {
         val registrationsRepository = mock[RegistrationsRepository]
-        val draftRegistration = DraftRegistration("draftId", Some("reference"), "saved-until-date")
+        val draftRegistration = DraftRegistration("draftId", "reference", "saved-until-date")
 
         when(registrationsRepository.listDrafts()(any())) thenReturn Future(List(draftRegistration))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(None)
