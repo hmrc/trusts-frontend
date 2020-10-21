@@ -26,6 +26,7 @@ import play.api.mvc.{Filter, MessagesControllerComponents, RequestHeader, Result
 import uk.gov.hmrc.auth.otac.{OtacAuthConnector, OtacAuthorisationFunctions}
 import uk.gov.hmrc.http.{HeaderCarrier, SessionKeys}
 import uk.gov.hmrc.play.HeaderCarrierConverter
+import utils.Session
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
@@ -56,16 +57,14 @@ class CampaignWhitelistFilter @Inject()(
 
             implicit val hc : HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(rh.headers, Some(rh.session))
 
-            val sessionId = hc.sessionId.map(_.value).getOrElse("No Session ID available")
-
-            Logger.info(s"[CampaignWhitelistFilter][Session ID: $sessionId] token retrieved $token")
+            Logger.info(s"[CampaignWhitelistFilter][Session ID: ${Session.id(hc)}] token retrieved $token")
 
             withVerifiedPasscode("trusts", Some(token)){
               f(rh)
             }.recover {
               case NonFatal(e) =>
 
-                Logger.info(s"[CampaignWhitelistFilter][Session ID: $sessionId] Not authorised to access Trusts ${e.getMessage}")
+                Logger.info(s"[CampaignWhitelistFilter][Session ID: ${Session.id(hc)}] Not authorised to access Trusts ${e.getMessage}")
 
                 Redirect(s"${appConfig.otacUrl}?p=$token")
                 .addingToSession(

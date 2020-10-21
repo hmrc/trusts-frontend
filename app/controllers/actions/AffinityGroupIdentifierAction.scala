@@ -22,13 +22,14 @@ import models.requests.IdentifierRequest
 import org.slf4j.LoggerFactory
 import play.api.Logger
 import play.api.mvc.Results._
-import play.api.mvc.{Request, Result, _}
+import play.api.mvc.{Action, BodyParser, Request, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.HeaderCarrierConverter
+import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,8 +45,10 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
                              action: Action[A]
                             ) = {
 
+    val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
     def redirectToCreateAgentServicesAccount(reason: String): Future[Result] = {
-      Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent][Session ID: ${getSessionId(request)}]: Agent services account required - $reason")
+      Logger.info(s"[AuthenticatedIdentifierAction][authoriseAgent][Session ID: ${Session.id(hc)}]: Agent services account required - $reason")
       Future.successful(Redirect(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad()))
     }
 
@@ -80,23 +83,25 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     val enrolmentKey = "HMRC-TERS-ORG"
     val identifier = "SAUTR"
 
+    val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
     val continueWithoutEnrolment =
       action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
 
     enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment) {
       enrolment =>
         enrolment.getIdentifier(identifier).fold {
-          logger.info(s"[AffinityGroupIdentifier][Session ID: ${getSessionId(request)}] user is not enrolled, continuing to registered online")
+          logger.info(s"[AffinityGroupIdentifier][Session ID: ${Session.id(hc)}] user is not enrolled, continuing to registered online")
           continueWithoutEnrolment
         } {
           enrolmentIdentifier =>
             val utr = enrolmentIdentifier.value
 
             if (utr.isEmpty) {
-              logger.info(s"[AffinityGroupIdentifier][Session ID: ${getSessionId(request)}] no utr for enrolment value")
+              logger.info(s"[AffinityGroupIdentifier][Session ID: ${Session.id(hc)}] no utr for enrolment value")
               continueWithoutEnrolment
             } else {
-              logger.info(s"[AffinityGroupIdentifier][Session ID: ${getSessionId(request)}] user is already enrolled, redirecting to maintain")
+              logger.info(s"[AffinityGroupIdentifier][Session ID: ${Session.id(hc)}] user is already enrolled, redirecting to maintain")
               Future.successful(Redirect(config.maintainATrustFrontendUrl))
             }
         }
@@ -114,24 +119,19 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
 
     trustsAuthFunctions.authorised().retrieve(retrievals) {
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
-        logger.info(s"[AffinityGroupIdentifier][Session ID: ${getSessionId(request)}] successfully identified as an Agent")
+        logger.info(s"[AffinityGroupIdentifier][Session ID: ${Session.id(hc)}] successfully identified as an Agent")
         authoriseAgent(request, enrolments, internalId, action)
       case Some(internalId) ~ Some(Organisation) ~ enrolments =>
-        logger.info(s"[AffinityGroupIdentifier][Session ID: ${getSessionId(request)}] successfully identified as Organisation")
+        logger.info(s"[AffinityGroupIdentifier][Session ID: ${Session.id(hc)}] successfully identified as Organisation")
         authoriseOrg(request, enrolments, internalId, action)
       case Some(_) ~ _ ~ _ =>
-        logger.info(s"[AffinityGroupIdentifier][Session ID: ${getSessionId(request)}] Unauthorised due to affinityGroup being Individual")
+        logger.info(s"[AffinityGroupIdentifier][Session ID: ${Session.id(hc)}] Unauthorised due to affinityGroup being Individual")
         Future.successful(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad()))
       case _ =>
-        logger.warn(s"[AffinityGroupIdentifier][Session ID: ${getSessionId(request)}] Unable to retrieve internal id")
+        logger.warn(s"[AffinityGroupIdentifier][Session ID: ${Session.id(hc)}] Unable to retrieve internal id")
         throw new UnauthorizedException("Unable to retrieve internal Id")
     } recover trustsAuthFunctions.recoverFromAuthorisation
   }
-
-  private def getSessionId(request: Request[A]) = {
-    val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
-    hc.sessionId.map(_.value).getOrElse("No Session ID available")
-}
 
   override def parser: BodyParser[A] = action.parser
   override implicit def executionContext: ExecutionContext = action.executionContext
