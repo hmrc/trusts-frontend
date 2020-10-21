@@ -18,16 +18,15 @@ package navigation.registration
 
 import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
-import models.NormalMode
 import models.core.UserAnswers
-import models.registration.pages.Status.Completed
-import pages.entitystatus.DeceasedSettlorStatus
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import play.api.mvc.Call
-import sections.settlors.LivingSettlors
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
+
+  def settlorsJourney(draftId: String): String = {
+    frontendAppConfig.settlorsFrontendUrl(draftId)
+  }
 
   def trustDetailsJourney(draftId: String): String = {
     frontendAppConfig.trustDetailsFrontendUrl(draftId)
@@ -35,26 +34,6 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
 
   def trusteesJourneyUrl(draftId: String): String = {
     frontendAppConfig.trusteesFrontendUrl(draftId)
-  }
-
-  def settlorsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    userAnswers.get(DeceasedSettlorStatus) match {
-      case Some(value) =>
-        if (value.equals(Completed)) {
-          controllers.register.settlors.deceased_settlor.routes.DeceasedSettlorAnswerController.onPageLoad(draftId)
-        } else {
-          controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
-        }
-      case None =>
-        userAnswers.get(SetUpAfterSettlorDiedYesNoPage) match {
-          case None => controllers.register.settlors.routes.SettlorInfoController.onPageLoad(draftId)
-          case _ =>
-            userAnswers.get(LivingSettlors).getOrElse(Nil) match {
-              case Nil => controllers.register.settlors.routes.SetUpAfterSettlorDiedController.onPageLoad(NormalMode, draftId)
-              case _ => controllers.register.settlors.routes.AddASettlorController.onPageLoad(draftId)
-            }
-        }
-    }
   }
 
   def beneficiariesJourneyUrl(draftId: String): String = {

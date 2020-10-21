@@ -42,10 +42,9 @@ class PrintUserAnswersHelper @Inject()(
 
       val entitySectionsHead = List(
         registrationAnswerSections.trustDetails,
-        helper.deceasedSettlor,
-        helper.livingSettlors,
         registrationAnswerSections.trustees,
-        registrationAnswerSections.beneficiaries
+        registrationAnswerSections.beneficiaries,
+        registrationAnswerSections.settlors
       ).flatten.flatten
 
       val entitySectionsTail = List(

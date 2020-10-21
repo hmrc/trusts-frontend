@@ -70,8 +70,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
       val newTrustUserAnswers = {
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-        val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-        val asset = TestUserAnswers.withMoneyAsset(uaWithDeceased)
+        val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
         val userAnswers = TestUserAnswers.withDeclaration(asset)
 
         userAnswers

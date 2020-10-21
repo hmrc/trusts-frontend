@@ -62,19 +62,32 @@ object RegistrationSubmission {
                         taxLiability: Option[Status] = None,
                         protectors: Option[Status] = None,
                         otherIndividuals: Option[Status] = None,
-                        trustDetails: Option[Status] = None
+                        trustDetails: Option[Status] = None,
+                        settlors: Option[Status] = None
                       ) {
-    def allComplete(trustSetUpDate: Option[LocalDate]): Boolean = beneficiaries.contains(Completed) &&
-                                trustees.contains(Completed) &&
-                                protectors.contains(Completed) &&
-                                otherIndividuals.contains(Completed) &&
-                                trustDetails.contains(Completed) &&
-      (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate))
+
+    def allComplete(trustSetUpDate: Option[LocalDate]): Boolean =
+      beneficiaries.contains(Completed) &&
+        trustees.contains(Completed) &&
+        protectors.contains(Completed) &&
+        otherIndividuals.contains(Completed) &&
+        trustDetails.contains(Completed) &&
+        settlors.contains(Completed) &&
+        (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate))
+
   }
 
   object AllStatus {
     implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
-    val withAllComplete = AllStatus(Some(Completed), Some(Completed), Some(Completed), Some(Completed), Some(Completed), Some(Completed))
+    val withAllComplete = AllStatus(
+      Some(Completed),
+      Some(Completed),
+      Some(Completed),
+      Some(Completed),
+      Some(Completed),
+      Some(Completed),
+      Some(Completed)
+    )
   }
 
   case class AllAnswerSections(
@@ -82,7 +95,8 @@ object RegistrationSubmission {
                                 trustees: Option[List[AnswerSection]],
                                 protectors: Option[List[AnswerSection]],
                                 otherIndividuals: Option[List[AnswerSection]],
-                                trustDetails: Option[List[AnswerSection]]
+                                trustDetails: Option[List[AnswerSection]],
+                                settlors: Option[List[AnswerSection]]
                               )
 
   object AllAnswerSections {

@@ -29,8 +29,6 @@ import pages.entitystatus._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor.SettlorIndividualOrBusinessPage
-import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -39,93 +37,6 @@ import scala.concurrent.{Await, Future}
 
 class RegistrationProgressSpec extends RegistrationSpecBase {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-  "Settlor section" must {
-
-    "render no tag" when {
-
-      "no settlors in user answers" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-
-        registrationProgress.settlorsStatus(userAnswers) mustBe None
-      }
-    }
-
-    "render in-progress tag" when {
-
-      "there is a deceased settlor that is not completed" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
-            .set(DeceasedSettlorStatus, Status.InProgress).success.value
-
-        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
-      }
-
-      "there are no living settlors added and the trust was not setup after the settlor died" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-
-        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
-      }
-
-      "there are living settlors that are not completed" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-          .set(SettlorIndividualOrBusinessPage(1), Individual).success.value
-          .set(LivingSettlorStatus(1), Status.Completed).success.value
-
-        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
-      }
-
-
-      "there are living settlors that are all complete, but user answered AddMore" in {
-
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-          .set(LivingSettlorStatus(0), Status.Completed).success.value
-          .set(AddASettlorPage, AddASettlor.YesLater).success.value
-
-        registrationProgress.settlorsStatus(userAnswers).value mustBe InProgress
-      }
-    }
-
-    "render complete tag" when {
-
-      "there is a deceased settlor marked as complete" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
-          .set(DeceasedSettlorStatus, Status.Completed).success.value
-
-        registrationProgress.settlorsStatus(userAnswers).value mustBe Completed
-      }
-
-      "there are living settlors marked as complete" in {
-        val registrationProgress = injector.instanceOf[RegistrationProgress]
-
-        val userAnswers = emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(SettlorIndividualOrBusinessPage(0), Individual).success.value
-          .set(LivingSettlorStatus(0), Status.Completed).success.value
-          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
-
-        registrationProgress.settlorsStatus(userAnswers).value mustBe Completed
-      }
-    }
-  }
 
   "Assets section" must {
 
@@ -203,7 +114,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
       val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
       val userAnswers = emptyUserAnswers
-        .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
         .set(DeceasedSettlorStatus, Status.Completed).success.value
         .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(0), "2000").success.value

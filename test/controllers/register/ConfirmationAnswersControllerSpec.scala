@@ -17,11 +17,10 @@
 package controllers.register
 
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
-import models.core.pages.{FullName, IndividualOrBusiness, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages._
@@ -31,10 +30,6 @@ import pages.entitystatus._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.deceased_settlor._
-import pages.register.settlors.living_settlor._
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
-import pages.register.settlors.{AddASettlorPage, SetUpAfterSettlorDiedYesNoPage}
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -85,30 +80,31 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       )
     )
 
+    val settlorsSection = List(
+      AnswerSection(
+        Some("settlorsHeadingKey1"),
+        List.empty,
+        Some("settlorsSectionKey1")
+      )
+    )
+
     val registrationSections = RegistrationAnswerSections(
       beneficiaries = Some(beneficiarySections),
       trustees = Some(trusteeSections),
-      trustDetails = Some(trustDetailsSection)
+      trustDetails = Some(trustDetailsSection),
+      settlors = Some(settlorsSection)
     )
 
-    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
-    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
+    when(registrationsRepository.getAllStatus(any())(any()))
+      .thenReturn(Future.successful(AllStatus.withAllComplete))
+
+    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any()))
+      .thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {
 
       val userAnswers =
         TestUserAnswers.emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
-          .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
-          .set(SettlorDateOfDeathYesNoPage, true).success.value
-          .set(SettlorDateOfDeathPage, LocalDate.now).success.value
-          .set(SettlorDateOfBirthYesNoPage, true).success.value
-          .set(SettlorsDateOfBirthPage, LocalDate.now).success.value
-          .set(SettlorsNationalInsuranceYesNoPage, true).success.value
-          .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
-          .set(SettlorsLastKnownAddressYesNoPage, true).success.value
-          .set(WasSettlorsAddressUKYesNoPage, true).success.value
-          .set(SettlorsUKAddressPage, UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
@@ -132,27 +128,12 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
 
       val expectedSections = Seq(
-        trustDetailsSection(0),
-        AnswerSection(
-          None,
-          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
-            checkYourAnswersHelper.deceasedSettlorsName.value,
-            checkYourAnswersHelper.deceasedSettlorDateOfDeathYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorDateOfDeath.value,
-            checkYourAnswersHelper.deceasedSettlorDateOfBirthYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorsDateOfBirth.value,
-            checkYourAnswersHelper.deceasedSettlorsNINoYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorNationalInsuranceNumber.value,
-            checkYourAnswersHelper.deceasedSettlorsLastKnownAddressYesNo.value,
-            checkYourAnswersHelper.wasSettlorsAddressUKYesNo.value,
-            checkYourAnswersHelper.deceasedSettlorsUKAddress.value
-          ),
-          Some("Settlor")
-        ),
-        trusteeSections(0),
+        trustDetailsSection.head,
+        trusteeSections.head,
         trusteeSections(1),
-        beneficiarySections(0),
+        beneficiarySections.head,
         beneficiarySections(1),
+        settlorsSection.head,
         AnswerSection(None, Nil, Some("Assets")),
         AnswerSection(
           Some("Money"),
@@ -217,17 +198,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
 
       val userAnswers =
         TestUserAnswers.emptyUserAnswers
-          .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-          .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-          .set(HoldoverReliefYesNoPage, true).success.value
-          .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-          .set(SettlorIndividualNamePage(index), FullName("First", None, "Settlor")).success.value
-          .set(SettlorIndividualDateOfBirthYesNoPage(index), true).success.value
-          .set(SettlorIndividualDateOfBirthPage(index), LocalDate.now).success.value
-          .set(SettlorIndividualNINOYesNoPage(index), true).success.value
-          .set(SettlorIndividualNINOPage(index), "AB123456C").success.value
           .set(LivingSettlorStatus(index), Status.Completed).success.value
-          .set(AddASettlorPage, AddASettlor.NoComplete).success.value
 
           .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
           .set(AssetMoneyValuePage(index), "100").success.value
@@ -249,25 +220,12 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = false)
 
       val expectedSections = Seq(
-       trustDetailsSection(0),
-        AnswerSection(
-          headingKey = Some("Settlor 1"),
-          Seq(checkYourAnswersHelper.setUpAfterSettlorDied.value,
-            checkYourAnswersHelper.kindOfTrust.value,
-            checkYourAnswersHelper.holdoverReliefYesNo.value,
-            checkYourAnswersHelper.settlorIndividualOrBusiness(index).value,
-            checkYourAnswersHelper.settlorIndividualName(index).value,
-            checkYourAnswersHelper.settlorIndividualDateOfBirthYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualDateOfBirth(index).value,
-            checkYourAnswersHelper.settlorIndividualNINOYesNo(index).value,
-            checkYourAnswersHelper.settlorIndividualNINO(index).value
-          ),
-          Some("Settlors")
-        ),
-        trusteeSections(0),
+        trustDetailsSection.head,
+        trusteeSections.head,
         trusteeSections(1),
-        beneficiarySections(0),
+        beneficiarySections.head,
         beneficiarySections(1),
+        settlorsSection.head,
         AnswerSection(None, Nil, Some("Assets")),
         AnswerSection(
           Some("Money"),
@@ -302,8 +260,10 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
       val trnDateTime = LocalDateTime.now.format(dateFormatter)
 
-      contentAsString(result) mustEqual
-        view(expectedSections, "XNTRN000000001", trnDateTime)(request, messages).toString
+      val content = contentAsString(result)
+      val expectedContent = view(expectedSections, "XNTRN000000001", trnDateTime)(request, messages).toString
+
+      content mustEqual expectedContent
 
       application.stop()
     }

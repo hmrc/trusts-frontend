@@ -22,37 +22,22 @@ import models.core.UserAnswers
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
                                     correspondenceMapper: CorrespondenceMapper,
-                                    trustDetailsMapper: TrustDetailsMapper,
                                     assetMapper: AssetMapper,
                                     agentMapper: AgentMapper,
-                                    deceasedSettlorMapper: DeceasedSettlorMapper,
-                                    settlorMapper: SettlorsMapper,
                                     matchingMapper: MatchingMapper
                                   ) {
 
   def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String): Option[Registration] = {
-
     for {
-      trustDetails <- trustDetailsMapper.build(userAnswers)
       assets <- assetMapper.build(userAnswers)
       correspondence <- correspondenceMapper.build(trustName)
       declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
     } yield {
-
-      val entities = TrustEntitiesType(
-        deceased = deceasedSettlorMapper.build(userAnswers),
-        settlors = settlorMapper.build(userAnswers)
-      )
-
       Registration(
         matchData = matchingMapper.build(userAnswers, trustName),
         declaration = declaration,
         correspondence = correspondence,
-        trust = Trust(
-          details = trustDetails,
-          entities = entities,
-          assets = assets
-        ),
+        trust = Trust(assets = assets),
         agentDetails = agentMapper.build(userAnswers)
       )
     }

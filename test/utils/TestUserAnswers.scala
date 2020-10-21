@@ -29,8 +29,6 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.deceased_settlor._
 import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.Json
@@ -50,28 +48,6 @@ object TestUserAnswers extends TryValues {
       .set(AgentTelephoneNumberPage, "+1234567890").success.value
       .set(AgentInternalReferencePage, "1234-5678").success.value
       .set(AgentAddressYesNoPage, true).success.value
-  }
-
-  def withDeceasedSettlor(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers
-      .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
-      .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
-      .set(SettlorDateOfDeathYesNoPage, false).success.value
-      .set(SettlorDateOfBirthYesNoPage, false).success.value
-      .set(SettlorsNationalInsuranceYesNoPage, false).success.value
-      .set(SettlorsLastKnownAddressYesNoPage, false).success.value
-      .set(DeceasedSettlorStatus, Completed).success.value
-  }
-
-  def withIndividualLivingSettlor(index: Int, userAnswers: UserAnswers): UserAnswers = {
-    userAnswers
-      .set(SetUpAfterSettlorDiedYesNoPage, false).success.value
-      .set(SettlorIndividualOrBusinessPage(index), IndividualOrBusiness.Individual).success.value
-      .set(SettlorIndividualNamePage(index), FullName("First", None, "Last")).success.value
-      .set(SettlorIndividualDateOfBirthYesNoPage(index), false).success.value
-      .set(SettlorIndividualNINOYesNoPage(index), true).success.value
-      .set(SettlorIndividualNINOPage(index), "AB123456A").success.value
-      .set(LivingSettlorStatus(index), Completed).success.value
   }
 
   def withMoneyAsset(userAnswers: UserAnswers): UserAnswers = {
@@ -107,8 +83,7 @@ object TestUserAnswers extends TryValues {
 
   def newTrustCompleteUserAnswers: UserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val uaWithDeceased = TestUserAnswers.withDeceasedSettlor(emptyUserAnswers)
-    val userAnswers = TestUserAnswers.withMoneyAsset(uaWithDeceased)
+    val userAnswers = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
 
     userAnswers
   }

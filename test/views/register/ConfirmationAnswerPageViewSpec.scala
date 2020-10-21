@@ -16,9 +16,8 @@
 
 package views.register
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 
-import models.core.pages.{FullName, UKAddress}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages._
@@ -27,8 +26,6 @@ import pages.register.asset._
 import pages.register.asset.money._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
-import pages.register.settlors.deceased_settlor._
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.AccessibilityHelper._
@@ -47,19 +44,6 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
-        .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
-        .set(SettlorsNamePage, FullName("First", None, "Last")).success.value
-        .set(SettlorDateOfDeathYesNoPage, true).success.value
-        .set(SettlorDateOfDeathPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(SettlorDateOfBirthYesNoPage, true).success.value
-        .set(SettlorsDateOfBirthPage, LocalDate.of(2010, 10, 10)).success.value
-        .set(SettlorsNationalInsuranceYesNoPage, true).success.value
-        .set(SettlorNationalInsuranceNumberPage, "AB123456C").success.value
-        .set(SettlorsLastKnownAddressYesNoPage, true).success.value
-        .set(WasSettlorsAddressUKYesNoPage, true).success.value
-        .set(SettlorsUKAddressPage, UKAddress("Line1", "Line2", None, None, "NE1 1ZZ")).success.value
-        .set(DeceasedSettlorStatus, Status.Completed).success.value
-
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value
         .set(AssetStatus(index), Completed).success.value
@@ -85,9 +69,6 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
     val formatter = injector.instanceOf[DateFormatter]
 
     val trnDateTime: String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
-    val name = "First Last"
-    val yes = "Yes"
-    val no = "No"
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
@@ -118,43 +99,8 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       val headers = wrapper.getElementsByTag("h2")
       val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 2
+      headers.size mustBe 1
       subHeaders.size mustBe 3
-    }
-
-    "assert question labels for Settlors" in {
-        assertContainsQuestionAnswerPair(doc, messages("setUpAfterSettlorDied.checkYourAnswersLabel"), yes)
-        assertContainsQuestionAnswerPair(doc, messages("settlorsName.checkYourAnswersLabel"), name)
-        assertContainsQuestionAnswerPair(doc, messages("settlorDateOfBirthYesNo.checkYourAnswersLabel", name), yes)
-        assertContainsQuestionAnswerPair(doc, messages("settlorsDateOfBirth.checkYourAnswersLabel", name), "10 October 2010")
-        assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeathYesNo.checkYourAnswersLabel", name), yes)
-        assertContainsQuestionAnswerPair(doc, messages("settlorDateOfDeath.checkYourAnswersLabel", name), "10 October 2010")
-        assertContainsQuestionAnswerPair(doc, messages("settlorsNationalInsuranceYesNo.checkYourAnswersLabel", name), yes)
-        assertContainsQuestionAnswerPair(doc, messages("settlorNationalInsuranceNumber.checkYourAnswersLabel", name), "AB 12 34 56 C")
-        assertContainsQuestionAnswerPair(doc, messages("settlorsLastKnownAddressYesNo.checkYourAnswersLabel", name), yes)
-        assertContainsQuestionAnswerPair(doc, messages("wasSettlorsAddressUKYesNo.checkYourAnswersLabel", name), yes)
-        assertContainsQuestionAnswerPair(doc, messages("settlorsUKAddress.checkYourAnswersLabel", name), "Line1 Line2 NE1 1ZZ")
-    }
-
-    "assert question labels for Money Assets" in {
-      assertContainsQuestionAnswerPair(doc, messages("assetMoneyValue.checkYourAnswersLabel"), "£100")
-    }
-
-    "assert question labels for share assets" in {
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioName.checkYourAnswersLabel"), "Company")
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioOnStockExchange.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioQuantityInTrust.checkYourAnswersLabel"), "1234")
-      assertContainsQuestionAnswerPair(doc, messages("sharePortfolioValueInTrust.checkYourAnswersLabel"), "£4000")
-      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
-      assertContainsQuestionAnswerPair(doc, messages("sharesInAPortfolio.checkYourAnswersLabel"), yes)
-    }
-
-    "assert question labels for property or land assets" in {
-      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandAddressYesNo.checkYourAnswersLabel"), no)
-      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandDescription.checkYourAnswersLabel"), "Town House")
-      assertContainsQuestionAnswerPair(doc, messages("propertyOrLandTotalValue.checkYourAnswersLabel"), "£10000")
-      assertContainsQuestionAnswerPair(doc, messages("trustOwnAllThePropertyOrLand.checkYourAnswersLabel"), no)
-      assertContainsQuestionAnswerPair(doc, messages("propertyLandValueTrust.checkYourAnswersLabel"), "£10")
     }
 
   }

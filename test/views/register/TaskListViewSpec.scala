@@ -29,7 +29,6 @@ import pages.entitystatus._
 import pages.register.RegistrationProgress
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.SetUpAfterSettlorDiedYesNoPage
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
@@ -84,7 +83,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "all sections are completed" in {
 
           val userAnswers = emptyUserAnswers
-            .set(SetUpAfterSettlorDiedYesNoPage, true).success.value
             .set(DeceasedSettlorStatus, Status.Completed).success.value
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
             .set(AssetMoneyValuePage(0), "2000").success.value

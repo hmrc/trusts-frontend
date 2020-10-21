@@ -97,10 +97,7 @@ object Declaration {
   implicit val declarationFormat: Format[Declaration] = Json.format[Declaration]
 }
 
-case class Trust(
-                  details: TrustDetailsType,
-                  entities: TrustEntitiesType,
-                  assets: Assets)
+case class Trust(assets: Assets)
 
 object Trust {
   implicit val trustFormat: Format[Trust] = Json.format[Trust]
