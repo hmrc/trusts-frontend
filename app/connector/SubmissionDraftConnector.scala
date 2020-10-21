@@ -103,4 +103,12 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
       response =>
         (response.json \ "trustName").as[String]
     }
+
+  def getDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[SubmissionDraftId] = {
+    http.GET[SubmissionDraftId](s"$submissionsBaseUrl/$draftId")
+  }
+
+  def removeDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
+    http.DELETE[HttpResponse](s"$submissionsBaseUrl/$draftId")
+  }
 }

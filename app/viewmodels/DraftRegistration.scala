@@ -16,9 +16,4 @@
 
 package viewmodels
 
-final case class DraftRegistration(draftId: String, agentInternalRef: String, savedUntil: String)
-
-
-
-
-
+final case class DraftRegistration(draftId: String, agentInternalRef: Option[String], savedUntil: String)

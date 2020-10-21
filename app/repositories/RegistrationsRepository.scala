@@ -27,7 +27,7 @@ import models.registration.pages.RegistrationStatus.Complete
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
 import play.api.libs.json._
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.DateFormatter
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
@@ -46,10 +46,8 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   override def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]] = {
     submissionDraftConnector.getCurrentDraftIds().map {
       draftIds =>
-        draftIds.flatMap {
-          x => x.reference.map {
-            reference => DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
-          }
+        draftIds.map {
+          x => DraftRegistration(x.draftId, x.reference, dateFormatter.savedUntil(x.createdAt))
         }
     }
   }
@@ -126,6 +124,14 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
     submissionDraftConnector.getTrustName(draftId)
+
+  override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier): Future[DraftRegistration] =
+    submissionDraftConnector.getDraft(draftId).map {
+      x => DraftRegistration(x.draftId, x.reference, dateFormatter.savedUntil(x.createdAt))
+    }
+
+  override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+    submissionDraftConnector.removeDraft(draftId)
 }
 
 trait RegistrationsRepository {
@@ -150,4 +156,8 @@ trait RegistrationsRepository {
   def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]]
 
   def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String]
+
+  def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[DraftRegistration]
+
+  def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 }
