@@ -153,7 +153,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.RemoveTrustYesNoController.onPageLoad(fakeDraftId).url
+        redirectLocation(result).value mustEqual routes.RemoveDraftYesNoController.onPageLoad(fakeDraftId).url
 
         application.stop()
       }

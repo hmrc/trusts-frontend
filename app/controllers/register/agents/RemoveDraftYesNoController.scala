@@ -22,24 +22,24 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import views.html.register.agents.RemoveTrustYesNoView
+import views.html.register.agents.RemoveDraftYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RemoveTrustYesNoController @Inject()(
+class RemoveDraftYesNoController @Inject()(
                                             override val messagesApi: MessagesApi,
                                             registrationsRepository: RegistrationsRepository,
                                             standardActionSets: StandardActionSets,
                                             yesNoFormProvider: YesNoFormProvider,
                                             val controllerComponents: MessagesControllerComponents,
-                                            view: RemoveTrustYesNoView
+                                            view: RemoveDraftYesNoView
                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private val prefix: String = "removeTrustYesNo"
+  private val prefix: String = "removeDraftYesNo"
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix(prefix)
 

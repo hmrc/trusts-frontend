@@ -20,19 +20,19 @@ import forms.YesNoFormProvider
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
-import views.html.register.agents.RemoveTrustYesNoView
+import views.html.register.agents.RemoveDraftYesNoView
 
-class RemoveTrustYesNoViewSpec extends YesNoViewBehaviours {
+class RemoveDraftYesNoViewSpec extends YesNoViewBehaviours {
 
-  private val messageKeyPrefix = "removeTrustYesNo"
+  private val messageKeyPrefix = "removeDraftYesNo"
 
   override val form: Form[Boolean] = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
-  "RemoveTrustYesNo View" must {
+  "RemoveDraftYesNo View" must {
 
     val clientReferenceNumber: String = "crn"
 
-    val view = viewFor[RemoveTrustYesNoView](Some(emptyUserAnswers))
+    val view = viewFor[RemoveDraftYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, fakeDraftId, clientReferenceNumber)(fakeRequest, messages)

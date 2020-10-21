@@ -27,15 +27,15 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import viewmodels.DraftRegistration
-import views.html.register.agents.RemoveTrustYesNoView
+import views.html.register.agents.RemoveDraftYesNoView
 
 import scala.concurrent.Future
 
-class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
+class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
-  private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("removeTrustYesNo")
+  private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("removeDraftYesNo")
 
-  private lazy val removeTrustYesNoRoute: String = routes.RemoveTrustYesNoController.onPageLoad(fakeDraftId).url
+  private lazy val removeDraftYesNoRoute: String = routes.RemoveDraftYesNoController.onPageLoad(fakeDraftId).url
   private lazy val agentOverviewRoute: String = routes.AgentOverviewController.onPageLoad().url
 
   private val clientReferenceNumber: String = "crn"
@@ -43,7 +43,7 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
 
   private val draftRegistration: DraftRegistration = DraftRegistration(fakeDraftId, Some(clientReferenceNumber), savedUntil)
 
-  "RemoveTrustYesNo Controller" must {
+  "RemoveDraftYesNo Controller" must {
 
     "return OK and the correct view for a GET" when {
 
@@ -53,11 +53,11 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
 
         when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
 
-        val request = FakeRequest(GET, removeTrustYesNoRoute)
+        val request = FakeRequest(GET, removeDraftYesNoRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RemoveTrustYesNoView]
+        val view = application.injector.instanceOf[RemoveDraftYesNoView]
 
         status(result) mustEqual OK
 
@@ -81,11 +81,11 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
 
         when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
 
-        val request = FakeRequest(GET, removeTrustYesNoRoute)
+        val request = FakeRequest(GET, removeDraftYesNoRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RemoveTrustYesNoView]
+        val view = application.injector.instanceOf[RemoveDraftYesNoView]
 
         status(result) mustEqual OK
 
@@ -108,7 +108,7 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
 
       when(registrationsRepository.removeDraft(any())(any())).thenReturn(Future.successful(HttpResponse(OK)))
 
-      val request = FakeRequest(POST, removeTrustYesNoRoute)
+      val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
@@ -128,7 +128,7 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(POST, removeTrustYesNoRoute)
+      val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", "false"))
 
       val result = route(application, request).value
@@ -148,12 +148,12 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
 
       when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
 
-      val request = FakeRequest(POST, removeTrustYesNoRoute)
+      val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[RemoveTrustYesNoView]
+      val view = application.injector.instanceOf[RemoveDraftYesNoView]
 
       val result = route(application, request).value
 
@@ -169,7 +169,7 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, removeTrustYesNoRoute)
+      val request = FakeRequest(GET, removeDraftYesNoRoute)
 
       val result = route(application, request).value
 
@@ -185,7 +185,7 @@ class RemoveTrustYesNoControllerSpec extends RegistrationSpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, removeTrustYesNoRoute)
+        FakeRequest(POST, removeDraftYesNoRoute)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
