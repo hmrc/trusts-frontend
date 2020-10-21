@@ -27,7 +27,7 @@ import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset._
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
-import pages.register.asset.business.{BusinessAddressUkYesNoPage, BusinessDescriptionPage, BusinessNamePage, BusinessUkAddressPage, BusinessValuePage}
+import pages.register.asset.business._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePage}
 import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}

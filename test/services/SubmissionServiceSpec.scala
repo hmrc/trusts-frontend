@@ -24,8 +24,8 @@ import generators.Generators
 import mapping.registration.{AddressType, LeadTrusteeType, Registration, RegistrationMapper}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
-import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.core.http.TrustResponse.UnableToRegister
+import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito.{verify, when}
@@ -95,13 +95,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
   )
 
   private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-  private implicit lazy val request: RegistrationDataRequest[_] = RegistrationDataRequest(
-    fakeRequest,
-    "internalId",
-    emptyUserAnswers,
-    AffinityGroup.Organisation,
-    Enrolments(Set())
-  )
+  private implicit lazy val request: RegistrationDataRequest[_] = RegistrationDataRequest(fakeRequest, "internalId", "sessionId", emptyUserAnswers, AffinityGroup.Organisation, Enrolments(Set()))
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers

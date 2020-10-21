@@ -19,8 +19,8 @@ package viewmodels
 import generators.{Generators, ModelGenerators}
 import models.registration.pages.Status.{Completed, InProgress}
 import models.registration.pages.WhatKindOfAsset._
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsPath, JsSuccess, Json, KeyPathNode}
 import viewmodels.addAnother._
 

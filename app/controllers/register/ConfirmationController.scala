@@ -89,16 +89,16 @@ class ConfirmationController @Inject()(
         case RegistrationStatus.Complete =>
           userAnswers.get(RegistrationTRNPage) match {
             case None =>
-              Logger.info("[ConfirmationController][onPageLoad] No TRN available for completed trusts. Throwing exception.")
+              Logger.info(s"[ConfirmationController][onPageLoad][Session ID: ${request.sessionId}] No TRN available for completed trusts. Throwing exception.")
               errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
             case Some(trn) =>
               renderView(trn, userAnswers, draftId)
           }
         case RegistrationStatus.InProgress =>
-          Logger.info("[ConfirmationController][onPageLoad] Registration inProgress status,redirecting to task list.")
+          Logger.info(s"[ConfirmationController][onPageLoad][Session ID: ${request.sessionId}] Registration inProgress status,redirecting to task list.")
           Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
         case RegistrationStatus.NotStarted =>
-          Logger.info("[ConfirmationController][onPageLoad] Registration NotStarted status,redirecting to trust registered page online.")
+          Logger.info(s"[ConfirmationController][onPageLoad][Session ID: ${request.sessionId}] Registration NotStarted status,redirecting to trust registered page online.")
           Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))
       }
   }

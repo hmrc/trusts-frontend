@@ -19,8 +19,8 @@ package models
 import models.registration.pages.NonResidentType
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
 class NonResidentTypeSpec extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with OptionValues {

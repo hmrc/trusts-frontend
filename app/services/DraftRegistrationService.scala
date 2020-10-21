@@ -27,6 +27,7 @@ import pages.register.beneficiaries.individual.RoleInCompanyPage
 import repositories.RegistrationsRepository
 import sections.beneficiaries.IndividualBeneficiaries
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.Session
 import viewmodels.RegistrationAnswerSections
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -46,7 +47,7 @@ class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsR
   }
 
   def create[A](request: IdentifierRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
-    val transformed = OptionalRegistrationDataRequest(request.request, request.identifier, None, request.affinityGroup, request.enrolments, request.agentARN)
+    val transformed = OptionalRegistrationDataRequest(request.request, request.identifier, Session.id(hc), None, request.affinityGroup, request.enrolments, request.agentARN)
     build(transformed)
   }
 

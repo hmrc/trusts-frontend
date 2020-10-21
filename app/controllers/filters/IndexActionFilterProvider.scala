@@ -35,12 +35,12 @@ class IndexActionFilter[T](index : Int, entity : Gettable[List[T]], errorHandler
 
     lazy val entities = request.userAnswers.get(entity).getOrElse(List.empty)
 
-    Logger.info(s"[IndexActionFilter] Validating index on ${entity.path} for entities ${entities.size}")
+    Logger.info(s"[IndexActionFilter] [Session ID: ${request.sessionId}] Validating index on ${entity.path} for entities ${entities.size}")
 
     if (index >= 0 && index <= entities.size) {
       Future.successful(None)
     } else {
-      Logger.info(s"[IndexActionFilter] Out of bounds index for entity ${entity.path} index $index")
+      Logger.info(s"[IndexActionFilter] [Session ID: ${request.sessionId}] Out of bounds index for entity ${entity.path} index $index")
       errorHandler.onClientError(request, Status.NOT_FOUND).map(Some(_))
     }
 
