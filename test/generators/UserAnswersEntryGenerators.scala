@@ -27,7 +27,6 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor._
 import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.{JsValue, Json}
 

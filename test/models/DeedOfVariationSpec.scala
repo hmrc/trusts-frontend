@@ -16,8 +16,8 @@
 
 package models
 
-import models.registration.pages.DeedOfVariation.{AdditionToWill, ReplaceAbsolute, ReplacedWill}
 import models.registration.pages.DeedOfVariation
+import models.registration.pages.DeedOfVariation.{AdditionToWill, ReplaceAbsolute, ReplacedWill}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.{MustMatchers, OptionValues, WordSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks

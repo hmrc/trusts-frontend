@@ -16,8 +16,8 @@
 
 package controllers.register
 
-import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus

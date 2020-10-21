@@ -16,11 +16,8 @@
 
 package mapping.registration
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import generators.Generators
-import mapping.TypeOfTrust.{EmployeeRelated, FlatManagementTrust, HeritageTrust, IntervivosSettlementTrust, WillTrustOrIntestacyTrust}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers

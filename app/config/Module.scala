@@ -24,7 +24,7 @@ import navigation.Navigator
 import navigation.registration.{PartnershipNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultRegistrationsRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
-import utils.annotations.{LivingSettlor, Partnership, PropertyOrLand}
+import utils.annotations.{Partnership, PropertyOrLand}
 import utils.{DateFormatter, TrustsDateFormatter}
 
 class Module extends AbstractModule {

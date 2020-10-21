@@ -16,11 +16,8 @@
 
 package controllers.register
 
-import java.time.LocalDate
-
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
-import models.core.pages.{FullName, IndividualOrBusiness}
 import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
 import models.registration.pages._

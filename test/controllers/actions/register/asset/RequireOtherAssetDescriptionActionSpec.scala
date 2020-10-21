@@ -17,9 +17,9 @@
 package controllers.actions.register.asset
 
 import base.RegistrationSpecBase
-import models.{Mode, NormalMode}
 import models.requests.RegistrationDataRequest
 import models.requests.asset.OtherAssetDescriptionRequest
+import models.{Mode, NormalMode}
 import org.scalatest.concurrent.ScalaFutures
 import pages.register.asset.other.OtherAssetDescriptionPage
 import play.api.mvc.Result
@@ -48,13 +48,7 @@ class RequireOtherAssetDescriptionActionSpec extends RegistrationSpecBase with S
         val action = new Harness()
 
         val futureResult = action.callRefine(
-          RegistrationDataRequest(
-            fakeRequest,
-            "id",
-            emptyUserAnswers,
-            AffinityGroup.Organisation,
-            Enrolments(Set())
-          )
+          RegistrationDataRequest(fakeRequest, "id", "sessionId", emptyUserAnswers, AffinityGroup.Organisation, Enrolments(Set()))
         )
 
         whenReady(futureResult) { r =>
@@ -74,13 +68,7 @@ class RequireOtherAssetDescriptionActionSpec extends RegistrationSpecBase with S
         val userAnswers = emptyUserAnswers.set(OtherAssetDescriptionPage(index), description).success.value
 
         val futureResult = action.callRefine(
-          RegistrationDataRequest(
-            fakeRequest,
-            "id",
-            userAnswers,
-            AffinityGroup.Organisation,
-            Enrolments(Set())
-          )
+          RegistrationDataRequest(fakeRequest, "id", "sessionId", userAnswers, AffinityGroup.Organisation, Enrolments(Set()))
         )
 
         whenReady(futureResult) { result =>

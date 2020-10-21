@@ -19,8 +19,8 @@ package viewmodels
 import generators.{Generators, ModelGenerators}
 import models.core.pages.IndividualOrBusiness.Individual
 import models.registration.pages.Status.{Completed, InProgress}
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.{FreeSpec, MustMatchers}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsSuccess, Json}
 import viewmodels.addAnother._
 
