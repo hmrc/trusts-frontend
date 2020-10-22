@@ -49,7 +49,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
+      when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(Some(draftRegistration)))
 
       val request = FakeRequest(GET, removeDraftYesNoRoute)
 
@@ -59,12 +59,8 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual OK
 
-      val content: String = contentAsString(result)
-
-      content mustEqual
+      contentAsString(result) mustEqual
         view(form, fakeDraftId, clientReferenceNumber)(request, messages).toString
-
-      content must include(s"Are you sure you want to remove $clientReferenceNumber?")
 
       application.stop()
     }
@@ -115,7 +111,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(draftRegistration))
+      when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(Some(draftRegistration)))
 
       val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", ""))
@@ -130,6 +126,41 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       contentAsString(result) mustEqual
         view(boundForm, fakeDraftId, clientReferenceNumber)(request, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to Agent Overview if draft not found for a GET" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(None))
+
+      val request = FakeRequest(GET, removeDraftYesNoRoute)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual agentOverviewRoute
+
+      application.stop()
+    }
+
+    "redirect to Agent Overview if draft not found when invalid data submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      when(registrationsRepository.getDraft(any())(any())).thenReturn(Future.successful(None))
+
+      val request = FakeRequest(POST, removeDraftYesNoRoute)
+        .withFormUrlEncodedBody(("value", ""))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual agentOverviewRoute
 
       application.stop()
     }

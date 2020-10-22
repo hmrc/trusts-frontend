@@ -419,33 +419,49 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
     }
 
     "getting draft" must {
-      "return relevant draft from list of current drafts" in {
+
+      val drafts = List(
+        SubmissionDraftId(
+          "draft1",
+          LocalDateTime.of(2012, 2, 1, 12, 30, 0),
+          Some("reference1")
+        ),
+        SubmissionDraftId(
+          "draft2",
+          LocalDateTime.of(2011, 1, 2, 9, 42, 0),
+          Some("reference2")
+        )
+      )
+
+      "return draft from list of current drafts if it exists" in {
+
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 
         val repository = createRepository(mockConnector)
 
-        val drafts = List(
-          SubmissionDraftId(
-            "draft1",
-            LocalDateTime.of(2012, 2, 1, 12, 30, 0),
-            Some("reference1")
-          ),
-          SubmissionDraftId(
-            "draft2",
-            LocalDateTime.of(2011, 1, 2, 9, 42, 0),
-            Some("reference2")
-          )
-        )
+        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+
+        val result1 = Await.result(repository.getDraft("draft1"), Duration.Inf)
+        result1 mustBe Some(DraftRegistration("draft1", "reference1", "4 February 2012"))
+
+        val result2 = Await.result(repository.getDraft("draft2"), Duration.Inf)
+        result2 mustBe Some(DraftRegistration("draft2", "reference2", "5 January 2011"))
+      }
+
+      "return None if draft is not found" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
 
         when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
 
-        val result = Await.result(repository.getDraft("draft2"), Duration.Inf)
-
-        result mustBe DraftRegistration("draft2", "reference2", "5 January 2011")
-
-        verify(mockConnector).getCurrentDraftIds()(hc, executionContext)
+        val result1 = Await.result(repository.getDraft("draft3"), Duration.Inf)
+        result1 mustBe None
       }
     }
 

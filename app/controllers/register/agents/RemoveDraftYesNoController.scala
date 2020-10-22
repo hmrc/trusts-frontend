@@ -20,12 +20,14 @@ import controllers.actions._
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
+import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import utils.Session.id
 import views.html.register.agents.RemoveDraftYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,6 +45,8 @@ class RemoveDraftYesNoController @Inject()(
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix(prefix)
 
+  private val redirect: Result = Redirect(routes.AgentOverviewController.onPageLoad())
+
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
 
@@ -50,25 +54,26 @@ class RemoveDraftYesNoController @Inject()(
     implicit request =>
 
       clientReferenceNumber(draftId).map {
-        crn => Ok(view(form, draftId, crn))
+        case Left(redirect) => redirect
+        case Right(crn) => Ok(view(form, draftId, crn))
       }
   }
 
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      val redirect: Result = Redirect(routes.AgentOverviewController.onPageLoad())
-
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
           clientReferenceNumber(draftId).map {
-            crn => BadRequest(view(formWithErrors, draftId, crn))
+            case Left(redirect) => redirect
+            case Right(crn) => BadRequest(view(formWithErrors, draftId, crn))
           },
 
         value => {
           if (value) {
-            registrationsRepository.removeDraft(draftId).map {
-              _ => redirect
+            registrationsRepository.removeDraft(draftId).map { _ =>
+              Logger.info(s"[RemoveDraftYesNoController][onSubmit][Session ID: ${request.sessionId}] removing draft $draftId")
+              redirect
             }
           } else {
             Future.successful(redirect)
@@ -77,7 +82,14 @@ class RemoveDraftYesNoController @Inject()(
       )
   }
 
-  private def clientReferenceNumber(draftId: String)(implicit hc: HeaderCarrier): Future[String] = {
-    registrationsRepository.getDraft(draftId).map(_.agentInternalRef)
+  private def clientReferenceNumber(draftId: String)
+                                   (implicit hc: HeaderCarrier): Future[Either[Result, String]] = {
+    registrationsRepository.getDraft(draftId).map {
+      case Some(draft) =>
+        Right(draft.agentInternalRef)
+      case _ =>
+        Logger.warn(s"[RemoveDraftYesNoController][clientReferenceNumber][Session ID: ${id(hc)}] failed to find draft $draftId")
+        Left(redirect)
+    }
   }
 }

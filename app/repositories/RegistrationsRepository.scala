@@ -127,12 +127,10 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   override def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
     submissionDraftConnector.getTrustName(draftId)
 
-  override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier): Future[DraftRegistration] =
+  override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier): Future[Option[DraftRegistration]] =
     listDrafts().map {
       drafts =>
-        drafts.foldLeft(drafts.head)((result, draft) => {
-          if (draft.draftId == draftId) draft else result
-        })
+        drafts.find(_.draftId == draftId)
     }
 
   override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
@@ -162,7 +160,7 @@ trait RegistrationsRepository {
 
   def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String]
 
-  def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[DraftRegistration]
+  def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[Option[DraftRegistration]]
 
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 }
