@@ -41,12 +41,7 @@ class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository:
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
-          registrationsRepository.get(draftId).map {
-            case None =>
-              createdOptionalDataRequest(request, None)
-            case Some(userAnswers) =>
-              createdOptionalDataRequest(request, Some(userAnswers))
-          }
+          registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
     }
   }
 }
