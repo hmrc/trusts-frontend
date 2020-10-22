@@ -27,15 +27,15 @@ import models.registration.pages.RegistrationStatus.Complete
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
 import play.api.libs.json._
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.DateFormatter
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
-                                          submissionDraftConnector: SubmissionDraftConnector
-                                        )(implicit ec: ExecutionContext) extends RegistrationsRepository {
+                                               submissionDraftConnector: SubmissionDraftConnector
+                                              )(implicit ec: ExecutionContext) extends RegistrationsRepository {
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
@@ -55,17 +55,11 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   }
 
   override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
-
-    val reference =
-        userAnswers.get(AgentInternalReferencePage).map {
-          reference => reference
-        }.orElse(None)
-
     submissionDraftConnector.setDraftMain(
-      userAnswers.draftId,
-      Json.toJson(userAnswers),
-      userAnswers.progress != Complete,
-      reference
+      draftId = userAnswers.draftId,
+      draftData = Json.toJson(userAnswers),
+      inProgress = userAnswers.progress != Complete,
+      reference = userAnswers.get(AgentInternalReferencePage)
     ).map {
       response => response.status == http.Status.OK
     }
@@ -115,17 +109,26 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.getAnswerSections(draftId).map(RegistrationAnswerSections.fromAllAnswerSections)
   }
 
-  def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType] =
+  override def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier) : Future[LeadTrusteeType] =
     submissionDraftConnector.getLeadTrustee(draftId)
 
-  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
+  override def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier) : Future[AddressType] =
     submissionDraftConnector.getCorrespondenceAddress(draftId)
 
-  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]] =
+  override def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]] =
     submissionDraftConnector.getTrustSetupDate(draftId)
 
-  def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
+  override def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
     submissionDraftConnector.getTrustName(draftId)
+
+  override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier): Future[Option[DraftRegistration]] =
+    listDrafts().map {
+      drafts =>
+        drafts.find(_.draftId == draftId)
+    }
+
+  override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+    submissionDraftConnector.removeDraft(draftId)
 }
 
 trait RegistrationsRepository {
@@ -150,4 +153,8 @@ trait RegistrationsRepository {
   def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier) : Future[Option[LocalDate]]
 
   def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String]
+
+  def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[Option[DraftRegistration]]
+
+  def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 }

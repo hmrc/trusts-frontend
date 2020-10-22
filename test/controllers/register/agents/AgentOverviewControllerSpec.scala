@@ -143,6 +143,20 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
       }
 
+      "redirect to remove draft yes no page when remove selected" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+        val request = FakeRequest(GET, routes.AgentOverviewController.remove(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.RemoveDraftYesNoController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+      }
     }
   }
 }

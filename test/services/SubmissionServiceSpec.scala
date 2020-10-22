@@ -33,7 +33,7 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.libs.json.{JsValue, Json}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TestUserAnswers
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
@@ -83,6 +83,11 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def getTrustSetupDate(draftId: String)
                                   (implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
+
+    override def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[Option[DraftRegistration]] =
+      Future.successful(Some(DraftRegistration("draftId", "agentInternalRef", "3 February 2020")))
+
+    override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(200))
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]

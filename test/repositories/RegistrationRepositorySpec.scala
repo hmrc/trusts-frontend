@@ -130,7 +130,6 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       }
     }
 
-
     "adding a registration section" must {
 
       "combine into empty sections" in {
@@ -418,5 +417,73 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       }
     }
 
+    "getting draft" must {
+
+      val drafts = List(
+        SubmissionDraftId(
+          "draft1",
+          LocalDateTime.of(2012, 2, 1, 12, 30, 0),
+          Some("reference1")
+        ),
+        SubmissionDraftId(
+          "draft2",
+          LocalDateTime.of(2011, 1, 2, 9, 42, 0),
+          Some("reference2")
+        )
+      )
+
+      "return draft from list of current drafts if it exists" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+
+        val result1 = Await.result(repository.getDraft("draft1"), Duration.Inf)
+        result1 mustBe Some(DraftRegistration("draft1", "reference1", "4 February 2012"))
+
+        val result2 = Await.result(repository.getDraft("draft2"), Duration.Inf)
+        result2 mustBe Some(DraftRegistration("draft2", "reference2", "5 January 2011"))
+      }
+
+      "return None if draft is not found" in {
+
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+
+        val result1 = Await.result(repository.getDraft("draft3"), Duration.Inf)
+        result1 mustBe None
+      }
+    }
+
+    "removing draft" must {
+      "get response from connector" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val draftId: String = "draftId"
+
+        val status: Int = 200
+
+        when(mockConnector.removeDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(status)))
+
+        val result = Await.result(repository.removeDraft(draftId), Duration.Inf)
+
+        result.status mustBe status
+
+        verify(mockConnector).removeDraft(draftId)(hc, executionContext)
+      }
+    }
   }
 }
