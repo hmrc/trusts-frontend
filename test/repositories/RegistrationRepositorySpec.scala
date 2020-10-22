@@ -76,8 +76,38 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       }
     }
 
+    "getting most recent draft id" must {
+      "return the first draft's id received from connector" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
+        val mockConnector = mock[SubmissionDraftConnector]
+
+        val repository = createRepository(mockConnector)
+
+        val drafts = List(
+          SubmissionDraftId(
+            "draft1",
+            LocalDateTime.of(2012, 2, 1, 12, 30, 0),
+            Some("reference1")
+          ),
+          SubmissionDraftId(
+            "draft2",
+            LocalDateTime.of(2011, 1, 2, 9, 42, 0),
+            Some("reference2")
+          )
+        )
+
+        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+
+        val result = Await.result(repository.getMostRecentDraftId(), Duration.Inf)
+
+        result mustBe Some("draft1")
+        verify(mockConnector).getCurrentDraftIds()(hc, executionContext)
+      }
+    }
+
     "listing drafts" must {
-      "transforms received from connector" in {
+      "return the drafts received from connector" in {
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]

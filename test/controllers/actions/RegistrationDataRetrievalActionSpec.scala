@@ -25,7 +25,6 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
-import viewmodels.DraftRegistration
 
 import scala.concurrent.Future
 
@@ -42,7 +41,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
       "set userAnswers to 'None' in the request" in {
 
         val registrationsRepository = mock[RegistrationsRepository]
-        when(registrationsRepository.listDrafts()(any())) thenReturn Future(Nil)
+        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(None)
         val action = new Harness(registrationsRepository)
 
         val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
@@ -58,8 +57,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
       "build a userAnswers object and add it to the request" in {
 
         val registrationsRepository = mock[RegistrationsRepository]
-        val draftRegistration = DraftRegistration("draftId", "reference", "saved-until-date")
-        when(registrationsRepository.listDrafts()(any())) thenReturn Future(List(draftRegistration))
+        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some("draftId"))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(Some(emptyUserAnswers))
         val action = new Harness(registrationsRepository)
 
@@ -72,9 +70,8 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
       "set userAnswers to 'None' because 'get' query returns 'None'" in {
         val registrationsRepository = mock[RegistrationsRepository]
-        val draftRegistration = DraftRegistration("draftId", "reference", "saved-until-date")
 
-        when(registrationsRepository.listDrafts()(any())) thenReturn Future(List(draftRegistration))
+        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some("draftId"))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(None)
 
         val action = new Harness(registrationsRepository)

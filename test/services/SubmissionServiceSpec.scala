@@ -57,6 +57,8 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def set(userAnswers: UserAnswers)
                     (implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
 
+    override def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]] = Future.successful(None)
+
     override def listDrafts()
                            (implicit hc: HeaderCarrier): Future[List[DraftRegistration]] = Future.successful(List.empty)
 

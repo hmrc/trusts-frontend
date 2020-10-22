@@ -43,6 +43,10 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
+  override def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]] = {
+    submissionDraftConnector.getCurrentDraftIds().map(_.headOption.map(_.draftId))
+  }
+
   override def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]] = {
     submissionDraftConnector.getCurrentDraftIds().map {
       draftIds =>
@@ -56,10 +60,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
 
-    val reference =
-        userAnswers.get(AgentInternalReferencePage).map {
-          reference => reference
-        }.orElse(None)
+    val reference = userAnswers.get(AgentInternalReferencePage)
 
     submissionDraftConnector.setDraftMain(
       userAnswers.draftId,
@@ -134,6 +135,8 @@ trait RegistrationsRepository {
   def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
 
   def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]]
+
+  def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]]
 
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
 
