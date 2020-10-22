@@ -113,6 +113,9 @@ POST       /:draftId/change-agent-telephone-number                              
 GET        /agent-overview                                                                          controllers.register.agents.AgentOverviewController.onPageLoad()
 POST       /agent-overview                                                                          controllers.register.agents.AgentOverviewController.onSubmit()
 
+GET        /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onSubmit(draftId: String)
+
 GET        /:draftId/check-agent-details                                                            controllers.register.agents.AgentAnswerController.onPageLoad(draftId: String)
 POST       /:draftId/check-agent-details                                                            controllers.register.agents.AgentAnswerController.onSubmit(draftId: String)
 
@@ -132,6 +135,7 @@ GET        /:draftId/change-agent-uk-address                                    
 POST       /:draftId/change-agent-uk-address                                                        controllers.register.agents.AgentUKAddressController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
 GET        /:draftId/maintain-saved-registration                                                    controllers.register.agents.AgentOverviewController.continue(draftId: String)
+GET        /:draftId/remove-saved-registration                                                      controllers.register.agents.AgentOverviewController.remove(draftId: String)
 
 ## Assets
 

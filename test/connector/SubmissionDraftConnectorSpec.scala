@@ -430,24 +430,40 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result = Await.result(connector.getTrustName(testDraftId), Duration.Inf)
         result mustEqual "My Lovely Trust"
       }
-    }
 
-    ".resetTaxLiability" - {
+      ".resetTaxLiability" - {
 
-      "resets tax liability" in {
+        "resets tax liability" in {
+
+          server.stubFor(
+            post(urlEqualTo(resetTaxLiabilityUrl))
+              .willReturn(
+                aResponse()
+                  .withStatus(Status.OK)
+              )
+          )
+
+          val result = Await.result(connector.resetTaxLiability(testDraftId), Duration.Inf)
+          result.status mustBe Status.OK
+        }
+
+      }
+
+      ".removeDraft" in {
+
+        val draftId: String = "draftId"
 
         server.stubFor(
-          post(urlEqualTo(resetTaxLiabilityUrl))
+          delete(urlEqualTo(s"$submissionsUrl/$draftId"))
             .willReturn(
               aResponse()
                 .withStatus(Status.OK)
             )
         )
 
-        val result = Await.result(connector.resetTaxLiability(testDraftId), Duration.Inf)
+        val result = Await.result(connector.removeDraft(draftId), Duration.Inf)
         result.status mustBe Status.OK
       }
-
     }
   }
 }
