@@ -26,11 +26,9 @@ import models.core.UserAnswers
 import models.registration.pages.RegistrationStatus.Complete
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
-import play.api.Logger
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.DateFormatter
-import utils.Session.id
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -58,21 +56,17 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
 
-    val response = userAnswers.get(AgentInternalReferencePage) match {
-      case reference @ Some(_) =>
-        submissionDraftConnector.setDraftMain(
-          userAnswers.draftId,
-          Json.toJson(userAnswers),
-          userAnswers.progress != Complete,
-          reference
-        )
-      case None =>
-        Logger.info(s"[RegistrationsRepository][set][Session ID: ${id(hc)}] attempting to save draft" +
-          s"registration before entering client reference number. Removing draft ${userAnswers.draftId}")
-        submissionDraftConnector.removeDraft(userAnswers.draftId)
-    }
+    val reference =
+      userAnswers.get(AgentInternalReferencePage).map {
+        reference => reference
+      }.orElse(None)
 
-    response.map {
+    submissionDraftConnector.setDraftMain(
+      userAnswers.draftId,
+      Json.toJson(userAnswers),
+      userAnswers.progress != Complete,
+      reference
+    ).map {
       response => response.status == http.Status.OK
     }
   }

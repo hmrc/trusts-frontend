@@ -29,12 +29,10 @@ import org.mockito.Mockito.{verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
-import pages.register.agents.AgentInternalReferencePage
 import play.api.http
 import play.api.libs.json.{JsArray, Json}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import utils.TestUserAnswers.convertTryToSuccessOrFailure
 import utils.TrustsDateFormatter
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
@@ -111,52 +109,24 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
       }
     }
 
-    "setting user answers" when {
+    "setting user answers" must {
+      "write answers to main section" in {
+        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-      val draftId = "DraftId"
-      val baseAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
+        val draftId = "DraftId"
 
-      "agent internal reference has been entered" must {
-        "write answers to main section" in {
+        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
 
-          implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        val mockConnector = mock[SubmissionDraftConnector]
 
-          val agentInternalReference = "ref"
+        val repository = createRepository(mockConnector)
 
-          val userAnswers = baseAnswers
-            .set(AgentInternalReferencePage, agentInternalReference).success.value
+        when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
 
-          val mockConnector = mock[SubmissionDraftConnector]
+        val result = Await.result(repository.set(userAnswers), Duration.Inf)
 
-          val repository = createRepository(mockConnector)
-
-          when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
-
-          val result = Await.result(repository.set(userAnswers), Duration.Inf)
-
-          result mustBe true
-          verify(mockConnector).setDraftMain(draftId, Json.toJson(userAnswers), inProgress = true, Some(agentInternalReference))(hc, executionContext)
-        }
-      }
-
-      "agent internal reference has not been entered" must {
-        "remove draft" in {
-
-          implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-          val userAnswers = baseAnswers
-
-          val mockConnector = mock[SubmissionDraftConnector]
-
-          val repository = createRepository(mockConnector)
-
-          when(mockConnector.removeDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
-
-          val result = Await.result(repository.set(userAnswers), Duration.Inf)
-
-          result mustBe true
-          verify(mockConnector).removeDraft(draftId)(hc, executionContext)
-        }
+        result mustBe true
+        verify(mockConnector).setDraftMain(draftId, Json.toJson(userAnswers), inProgress = true, None)(hc, executionContext)
       }
     }
 
