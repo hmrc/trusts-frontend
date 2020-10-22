@@ -156,7 +156,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         val result = Await.result(repository.set(userAnswers), Duration.Inf)
 
         result mustBe true
-        verify(mockConnector).setDraftMain(draftId, Json.toJson(userAnswers), inProgress = true, None)(hc, executionContext)
+        verify(mockConnector).setDraftMain(draftId, Json.toJson(userAnswers), inProgress = false, None)(hc, executionContext)
       }
     }
 

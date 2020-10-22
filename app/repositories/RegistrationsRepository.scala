@@ -23,7 +23,7 @@ import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
-import models.registration.pages.RegistrationStatus.Complete
+import models.registration.pages.RegistrationStatus.InProgress
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
 import play.api.libs.json._
@@ -62,7 +62,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.setDraftMain(
       draftId = userAnswers.draftId,
       draftData = Json.toJson(userAnswers),
-      inProgress = userAnswers.progress != Complete,
+      inProgress = userAnswers.progress == InProgress,
       reference = userAnswers.get(AgentInternalReferencePage)
     ).map {
       response => response.status == http.Status.OK
