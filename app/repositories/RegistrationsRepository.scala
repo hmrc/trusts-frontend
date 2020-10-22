@@ -56,17 +56,19 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
 
-    val reference =
-        userAnswers.get(AgentInternalReferencePage).map {
-          reference => reference
-        }.orElse(None)
+    val response = userAnswers.get(AgentInternalReferencePage) match {
+      case reference @ Some(_) =>
+        submissionDraftConnector.setDraftMain(
+          userAnswers.draftId,
+          Json.toJson(userAnswers),
+          userAnswers.progress != Complete,
+          reference
+        )
+      case None =>
+        submissionDraftConnector.removeDraft(userAnswers.draftId)
+    }
 
-    submissionDraftConnector.setDraftMain(
-      userAnswers.draftId,
-      Json.toJson(userAnswers),
-      userAnswers.progress != Complete,
-      reference
-    ).map {
+    response.map {
       response => response.status == http.Status.OK
     }
   }
