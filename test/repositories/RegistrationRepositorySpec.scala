@@ -141,7 +141,7 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
       "agent internal reference has not been entered" must {
         "remove draft" in {
-          
+
           implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
           val userAnswers = baseAnswers
