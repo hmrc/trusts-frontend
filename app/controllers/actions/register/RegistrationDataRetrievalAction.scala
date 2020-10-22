@@ -37,19 +37,11 @@ class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository:
     def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
       OptionalRegistrationDataRequest(request.request, request.identifier, Session.id(hc), userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
 
-    registrationsRepository.listDrafts().flatMap {
-      ids =>
-        ids.headOption match {
-          case None =>
-            Future.successful(createdOptionalDataRequest(request, None))
-          case Some(draftRegistration) =>
-            registrationsRepository.get(draftRegistration.draftId).map {
-              case None =>
-                createdOptionalDataRequest(request, None)
-              case Some(userAnswers) =>
-                createdOptionalDataRequest(request, Some(userAnswers))
-            }
-        }
+    registrationsRepository.getMostRecentDraftId().flatMap {
+        case None =>
+          Future.successful(createdOptionalDataRequest(request, None))
+        case Some(draftId) =>
+          registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
     }
   }
 }

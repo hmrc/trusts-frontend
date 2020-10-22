@@ -23,7 +23,7 @@ import javax.inject.Inject
 import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
-import models.registration.pages.RegistrationStatus.Complete
+import models.registration.pages.RegistrationStatus.InProgress
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
 import play.api.libs.json._
@@ -43,6 +43,10 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
+  override def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]] = {
+    submissionDraftConnector.getCurrentDraftIds().map(_.headOption.map(_.draftId))
+  }
+
   override def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]] = {
     submissionDraftConnector.getCurrentDraftIds().map {
       draftIds =>
@@ -58,7 +62,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.setDraftMain(
       draftId = userAnswers.draftId,
       draftData = Json.toJson(userAnswers),
-      inProgress = userAnswers.progress != Complete,
+      inProgress = userAnswers.progress == InProgress,
       reference = userAnswers.get(AgentInternalReferencePage)
     ).map {
       response => response.status == http.Status.OK
@@ -137,6 +141,8 @@ trait RegistrationsRepository {
   def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
 
   def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]]
+
+  def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]]
 
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier) : Future[JsValue]
 
