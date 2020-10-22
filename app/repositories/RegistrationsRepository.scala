@@ -55,17 +55,11 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   }
 
   override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
-
-    val reference =
-      userAnswers.get(AgentInternalReferencePage).map {
-        reference => reference
-      }.orElse(None)
-
     submissionDraftConnector.setDraftMain(
-      userAnswers.draftId,
-      Json.toJson(userAnswers),
-      userAnswers.progress != Complete,
-      reference
+      draftId = userAnswers.draftId,
+      draftData = Json.toJson(userAnswers),
+      inProgress = userAnswers.progress != Complete,
+      reference = userAnswers.get(AgentInternalReferencePage)
     ).map {
       response => response.status == http.Status.OK
     }
