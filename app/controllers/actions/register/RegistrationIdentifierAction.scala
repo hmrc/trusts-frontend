@@ -20,8 +20,11 @@ import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.actions.{AffinityGroupIdentifierAction, TrustsAuthorisedFunctions}
 import models.requests.IdentifierRequest
-import org.slf4j.LoggerFactory
-import play.api.mvc.{Request, Result, _}
+import play.api.Logger
+import play.api.mvc.{Action, ActionBuilder, AnyContent, BodyParsers, Request, Result}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.HeaderCarrierConverter
+import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -30,16 +33,18 @@ class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
                                              trustsAuth: TrustsAuthorisedFunctions,
                                              config: FrontendAppConfig)
                                             (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] {
-  private val logger = LoggerFactory.getLogger(s"application" + classOf[RegistrationIdentifierAction].getCanonicalName)
+  private val logger: Logger = Logger(getClass)
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
+    val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
     request match {
       case req: IdentifierRequest[A] =>
-        logger.debug("[RegistrationIdentifierAction] Request is already an IdentifierRequest")
+        logger.debug(s"[Session ID: ${Session.id(hc)}] Request is already an IdentifierRequest")
         block(req)
       case _ =>
-        logger.debug("[RegistrationIdentifierAction] Redirect to Login")
+        logger.debug(s"[Session ID: ${Session.id(hc)}] Redirect to Login")
         Future.successful(trustsAuth.redirectToLogin)
     }
   }

@@ -57,6 +57,8 @@ class DeclarationController @Inject()(
                                        standardAction: StandardActionSets
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private val logger: Logger = Logger(getClass)
+
   private val form: Form[Declaration] = formProvider()
 
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
@@ -92,10 +94,10 @@ class DeclarationController @Inject()(
 
           r.recover {
             case _ : UnableToRegister =>
-              Logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
+              logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
               Redirect(routes.TaskListController.onPageLoad(draftId))
             case NonFatal(e) =>
-              Logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
+              logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
               throw e
           }
         }
@@ -106,13 +108,13 @@ class DeclarationController @Inject()(
                             (implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[Result] = {
     response match {
       case trn: RegistrationTRNResponse =>
-        Logger.info(s"[DeclarationController][handleResponse][Session ID: ${request.sessionId}] Saving trust registration trn.")
+        logger.info(s"[handleResponse][Session ID: ${request.sessionId}] Saving trust registration trn.")
         saveTRNAndCompleteRegistration(updatedAnswers, trn)
       case AlreadyRegistered =>
-        Logger.info(s"[DeclarationController][handleResponse][Session ID: ${request.sessionId}] unable to submit as trust is already registered")
+        logger.info(s"[handleResponse][Session ID: ${request.sessionId}] unable to submit as trust is already registered")
         Future.successful(Redirect(routes.UTRSentByPostController.onPageLoad()))
       case e =>
-        Logger.warn(s"[DeclarationController][handleResponse][Session ID: ${request.sessionId}] unable to submit due to error $e")
+        logger.warn(s"[handleResponse][Session ID: ${request.sessionId}] unable to submit due to error $e")
         Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
     }
   }
@@ -125,7 +127,7 @@ class DeclarationController @Inject()(
         Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate)).flatMap {
           dateSaved =>
             val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
-            Logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission : $days")
+            logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission : $days")
             registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
               _ =>
                 Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))

@@ -34,6 +34,8 @@ object RegistrationTRNResponse {
 
 object TrustResponse {
 
+  private val logger: Logger = Logger(getClass)
+
   implicit object RegistrationResponseFormats extends Format[TrustResponse] {
 
     override def reads(json: JsValue): JsResult[TrustResponse] = json.validate[RegistrationTRNResponse]
@@ -52,7 +54,7 @@ object TrustResponse {
 
   implicit lazy val httpReads: HttpReads[TrustResponse] = new HttpReads[TrustResponse] {
     override def read(method: String, url: String, response: HttpResponse): TrustResponse = {
-      Logger.info(s"[TrustResponse] response status received from trusts api: ${response.status}")
+      logger.info(s"Response status received from trusts api: ${response.status}")
 
       response.status match {
         case OK =>

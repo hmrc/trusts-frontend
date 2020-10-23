@@ -41,6 +41,8 @@ class CampaignWhitelistFilter @Inject()(
                                        )
   extends Filter with OtacAuthorisationFunctions {
 
+  private val logger: Logger = Logger(getClass)
+
   override def apply(f: RequestHeader => Future[Result])(rh: RequestHeader): Future[Result] = {
 
     import play.api.http.Status._
@@ -57,14 +59,14 @@ class CampaignWhitelistFilter @Inject()(
 
             implicit val hc : HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(rh.headers, Some(rh.session))
 
-            Logger.info(s"[CampaignWhitelistFilter][Session ID: ${Session.id(hc)}] token retrieved $token")
+            logger.info(s"[Session ID: ${Session.id(hc)}] token retrieved $token")
 
             withVerifiedPasscode("trusts", Some(token)){
               f(rh)
             }.recover {
               case NonFatal(e) =>
 
-                Logger.info(s"[CampaignWhitelistFilter][Session ID: ${Session.id(hc)}] Not authorised to access Trusts ${e.getMessage}")
+                logger.info(s"[Session ID: ${Session.id(hc)}] Not authorised to access Trusts ${e.getMessage}")
 
                 Redirect(s"${appConfig.otacUrl}?p=$token")
                 .addingToSession(

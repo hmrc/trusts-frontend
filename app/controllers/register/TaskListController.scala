@@ -51,6 +51,8 @@ class TaskListController @Inject()(
                                     standardAction: StandardActionSets
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private val logger: Logger = Logger(getClass)
+
   private def actions(draftId: String) =
     standardAction.identifiedUserWithRequiredAnswer(draftId,
       RequiredAnswer(TrustRegisteredOnlinePage,controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))) andThen
@@ -82,7 +84,7 @@ class TaskListController @Inject()(
             sections.filterNot(removeTaxLiabilityFromTaskList)
           }
 
-          Logger.debug(s"[TaskList][sections][Session ID: ${request.sessionId}] $sections")
+          logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
 
           Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))        }
       }

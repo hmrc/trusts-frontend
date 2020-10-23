@@ -31,12 +31,14 @@ object SuccessOrFailureResponse {
 
 object MatchedResponse {
 
+  private val logger: Logger = Logger(getClass)
+
   case object AlreadyRegistered extends MatchedResponse
   case object InternalServerError extends MatchedResponse
 
   implicit lazy val httpReads: HttpReads[MatchedResponse] = new HttpReads[MatchedResponse] {
     override def read(method: String, url: String, response: HttpResponse): MatchedResponse = {
-      Logger.info(s"[MatchedResponse] response status received from trusts api: ${response.status}")
+      logger.info(s"response status received from trusts api: ${response.status}")
 
       response.status match {
         case OK =>

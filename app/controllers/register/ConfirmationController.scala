@@ -50,6 +50,8 @@ class ConfirmationController @Inject()(
                                         registrationsRepository: RegistrationsRepository
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private val logger: Logger = Logger(getClass)
+
   private def fullName(name: NameType): FullName = FullName(name.firstName, name.middleName, name.lastName)
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
     val isAgent = request.affinityGroup == Agent
@@ -89,16 +91,16 @@ class ConfirmationController @Inject()(
         case RegistrationStatus.Complete =>
           userAnswers.get(RegistrationTRNPage) match {
             case None =>
-              Logger.info(s"[ConfirmationController][onPageLoad][Session ID: ${request.sessionId}] No TRN available for completed trusts. Throwing exception.")
+              logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] No TRN available for completed trusts. Throwing exception.")
               errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
             case Some(trn) =>
               renderView(trn, userAnswers, draftId)
           }
         case RegistrationStatus.InProgress =>
-          Logger.info(s"[ConfirmationController][onPageLoad][Session ID: ${request.sessionId}] Registration inProgress status,redirecting to task list.")
+          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration inProgress status,redirecting to task list.")
           Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
         case RegistrationStatus.NotStarted =>
-          Logger.info(s"[ConfirmationController][onPageLoad][Session ID: ${request.sessionId}] Registration NotStarted status,redirecting to trust registered page online.")
+          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration NotStarted status,redirecting to trust registered page online.")
           Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))
       }
   }
