@@ -30,6 +30,8 @@ class WhitelistFilter @Inject() (
                                   override val mat: Materializer
                                 ) extends AkamaiWhitelistFilter {
 
+  private val logger: Logger = Logger(getClass)
+
   override def whitelist: Seq[String] = {
     config
       .underlying
@@ -46,7 +48,7 @@ class WhitelistFilter @Inject() (
 
   override def excludedPaths: Seq[Call] = {
     val excludedPaths = config.underlying.getString("filters.whitelist.excluded").split(",")
-    Logger.info(s"[WhitelistFilter] excludedPaths $excludedPaths")
+    logger.info(s"excludedPaths $excludedPaths")
     excludedPaths.map {
       path =>
         Call("GET", path.trim)
