@@ -45,7 +45,7 @@ class RemoveDraftYesNoController @Inject()(
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix(prefix)
 
-  private val redirect: Result = Redirect(routes.AgentOverviewController.onPageLoad())
+  private def redirect: Result = Redirect(routes.AgentOverviewController.onPageLoad())
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
