@@ -136,11 +136,11 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
         val json = Json.parse(
           """
             |{
-            |"listedOnTheStockExchange" : true,
+            |"portfolioListedOnTheStockExchange" : true,
             |"sharesInAPortfolio" : true,
             |"name" : "Adam",
-            |"quantityInTheTrust" : "200",
-            |"value" : "290000",
+            |"portfolioQuantityInTheTrust" : "200",
+            |"portfolioValue" : "290000",
             |"whatKindOfAsset" : "Shares",
             |"status" : "completed"
             |}
@@ -148,11 +148,11 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
 
         json.validate[Asset] mustEqual JsSuccess(
           SharePortfolioAsset(
-            listedOnTheStockExchange = true,
+            portfolioListedOnTheStockExchange = true,
             name = "Adam",
             sharesInAPortfolio = true,
-            quantityInTheTrust = "200",
-            value = "290000",
+            portfolioQuantityInTheTrust = "200",
+            portfolioValue = "290000",
             whatKindOfAsset = WhatKindOfAsset.Shares,
             status = Status.Completed
           ))

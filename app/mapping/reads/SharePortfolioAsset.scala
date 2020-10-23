@@ -20,15 +20,8 @@ import models.registration.pages.WhatKindOfAsset.Shares
 import models.registration.pages.{Status, WhatKindOfAsset}
 import play.api.libs.json._
 
-final case class SharePortfolioAsset(override val whatKindOfAsset: WhatKindOfAsset,
-                                     listedOnTheStockExchange: Boolean,
-                                     name: String,
-                                     sharesInAPortfolio: Boolean,
-                                     quantityInTheTrust: String,
-                                     value: String,
-                                     status: Status
-                                    ) extends Asset with ShareAsset {
-  val quoted = if (this.listedOnTheStockExchange) "Quoted" else "Unquoted"
+final case class SharePortfolioAsset(override val whatKindOfAsset: WhatKindOfAsset, portfolioListedOnTheStockExchange: Boolean, name: String, sharesInAPortfolio: Boolean, portfolioQuantityInTheTrust: String, portfolioValue: String, status: Status) extends Asset with ShareAsset {
+  val quoted = if (this.portfolioListedOnTheStockExchange) "Quoted" else "Unquoted"
 }
 
 object SharePortfolioAsset {

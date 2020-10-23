@@ -39,7 +39,7 @@ class ShareAssetMapper @Inject() extends Mapping[List[SharesType]]{
             case x : ShareNonPortfolioAsset =>
               Some(SharesType(x.quantityInTheTrust, x.shareCompanyName, ShareClass.toDES(x.`class`), x.quoted, x.value.toLong))
             case x : SharePortfolioAsset =>
-              Some(SharesType(x.quantityInTheTrust, x.name, ShareClass.toDES(ShareClass.Other), x.quoted, x.value.toLong))
+              Some(SharesType(x.portfolioQuantityInTheTrust, x.name, ShareClass.toDES(ShareClass.Other), x.quoted, x.portfolioValue.toLong))
             case _ => None
           }
         )
