@@ -127,9 +127,9 @@ trait IntFieldBehaviours extends FieldBehaviours {
                           maximum: Int,
                           expectedError: FormError): Unit = {
 
-    s"not bind integers above $maximum" in {
+    s"not bind integers above and including $maximum" in {
 
-      forAll(intsAboveValue(maximum) -> "intAboveMax") {
+      forAll(intsAboveAndIncludingValue(maximum) -> "intAboveMax") {
         number: Int =>
           val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
           result.errors shouldEqual Seq(expectedError)
