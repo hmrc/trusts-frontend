@@ -264,7 +264,6 @@ whatIsTheUTR.error.required = Enter the trust’s Unique Taxpayer Reference
 whatIsTheUTR.error.length = Unique Taxpayer Reference must be a 10 digit number
 whatIsTheUTR.error.invalidCharacters = Enter the trust’s Unique Taxpayer Reference in the correct format
 whatIsTheUTR.hint = This is 10 numbers, for example 1234567890. It will be on the trust’s Self Assessment notice to file (SA316). It may be called ‘reference’, ‘UTR’ or ‘official use’.
-whatIsTheUTR.hint.reader = This is 10 numbers, for example 1 2 3 4 5 6 7 8 9 0. It will be on the trust’s Self Assessment notice to file (S A 3 1 6). It may be called ‘reference’, ‘UTR’ or ‘official use’.
 whatIsTheUTR.linkMessage = You can
 whatIsTheUTR.linkText = find a lost UTR number (opens in a new window or tab)
 
@@ -279,7 +278,6 @@ postcodeForTheTrust.heading = What is the trust’s postcode?
 postcodeForTheTrust.checkYourAnswersLabel = What is the trust’s postcode?
 postcodeForTheTrust.error.required = Enter the trust’s postcode
 postcodeForTheTrust.hint = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return. For example, AA1 1AA.
-postcodeForTheTrust.hint.reader = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (S A 3 1 6) or tax return. For example, A,A,1,  1,A,A.
 
 failedMatch.title = We cannot match the details you have given us to our records
 failedMatch.heading = We cannot match the details you have given us to our records
