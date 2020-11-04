@@ -25,11 +25,13 @@ import views.html.register.asset.property_or_land.PropertyLandValueTrustView
 
 class PropertyLandValueTrustViewSpec extends StringViewBehaviours {
 
-  val messageKeyPrefix = "propertyLandValueTrust"
+  private val messageKeyPrefix = "propertyLandValueTrust"
 
-  val form = new PropertyLandValueTrustFormProvider()()
+  private val maxValue: String = "100"
 
-  val index: Int = 0
+  override val form: Form[String] = new PropertyLandValueTrustFormProvider().withMaxValue(maxValue)
+
+  private val index: Int = 0
 
   "PropertyLandValueTrustView" must {
 

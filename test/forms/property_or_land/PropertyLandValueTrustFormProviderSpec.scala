@@ -18,36 +18,38 @@ package forms.property_or_land
 
 import forms.Validation
 import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
 
 class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
 
-  val form = new PropertyLandValueTrustFormProvider()()
+  private val fieldName = "value"
+  private val requiredKey = "propertyLandValueTrust.error.required"
+  private val zeroNumberkey = "propertyLandValueTrust.error.zero"
+  private val invalidOnlyNumbersKey = "propertyLandValueTrust.error.invalid"
+  private val invalidWholeNumberKey = "propertyLandValueTrust.error.whole"
+  private val maxValueKey = "propertyLandValueTrust.error.moreThanTotal"
 
   ".value" must {
 
-    val fieldName = "value"
-    val requiredKey = "propertyLandValueTrust.error.required"
-    val zeroNumberkey = "propertyLandValueTrust.error.zero"
-    val invalidOnlyNumbersKey = "propertyLandValueTrust.error.invalid"
-    val invalidWholeNumberKey = "propertyLandValueTrust.error.whole"
-    val lengthKey = "propertyLandValueTrust.error.length"
-    val maxLength = 12
+    val maxValue: Int = 100
+
+    val form = new PropertyLandValueTrustFormProvider().withMaxValue(maxValue.toString)
 
     behave like nonDecimalField(
       form,
       fieldName,
       wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck)),
-      maxLength = Some(maxLength)
+      maxValue
     )
 
     behave like fieldWithRegexpWithGenerator(
       form,
       fieldName,
       Validation.onlyNumbersRegex,
-      generator = stringsWithMaxLength(maxLength),
+      arbitrary[String],
       error = FormError(fieldName, invalidOnlyNumbersKey, Seq(Validation.onlyNumbersRegex))
     )
 
@@ -57,11 +59,11 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with 
       RegexpGen.from(Validation.onlyNumbersRegex)
     )
 
-    behave like fieldWithMaxLength(
+    behave like intFieldWithMaximum(
       form,
       fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      maxValue,
+      FormError(fieldName, maxValueKey, Array("100"))
     )
 
     behave like intFieldWithMinimumWithGenerator(
@@ -78,5 +80,4 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with 
       requiredError = FormError(fieldName, requiredKey)
     )
   }
-
 }

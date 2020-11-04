@@ -798,7 +798,7 @@ shareValueInTrust.heading = What is the current value of {0} shares in the trust
 shareValueInTrust.checkYourAnswersLabel = What is the current value of {0} shares in the trust?
 shareValueInTrust.hint = Rounded down to the nearest pound. For example, 4000.
 shareValueInTrust.error.required = Enter the current value of the shares in the trust
-shareValueInTrust.error.length = Total value of shares in the trust must be 12 characters or less
+shareValueInTrust.error.length = Total value of shares in the trust must be 999999999999 or less
 shareValueInTrust.error.invalid = Total value of shares in the trust must be a number
 shareValueInTrust.error.zero = Total value of shares in the trust must be 1 or more
 
@@ -852,7 +852,7 @@ propertyLandValueTrust.error.required = Enter the current value of the property 
 propertyLandValueTrust.error.invalid = Current value of the property or land owned by the trust must be a number
 propertyLandValueTrust.error.whole = Current value of the property or land owned by the trust must be a whole number
 propertyLandValueTrust.error.zero = Current value of the property or land owned by the trust must be 1 or more
-propertyLandValueTrust.error.length = Current value of the property or land owned by the trust must be 12 characters or less
+propertyLandValueTrust.error.moreThanTotal = The current value of the property or land owned by the trust must be less than the current total value of the property or land.
 
 propertyOrLandAddressUkYesNo.title = Is the property or land’s address in the UK?
 propertyOrLandAddressUkYesNo.heading = Is the property or land’s address in the UK?

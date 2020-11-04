@@ -23,17 +23,19 @@ import play.api.data.Form
 
 class PropertyLandValueTrustFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def withMaxValue(maxValue: String): Form[String] = {
+
     Form(
       "value" -> currency("propertyLandValueTrust.error.required")
         .verifying(
           firstError(
-            maxLength(12, "propertyLandValueTrust.error.length"),
             isNotEmpty("value", "propertyLandValueTrust.error.required"),
             regexp(Validation.decimalCheck, "propertyLandValueTrust.error.whole"),
             regexp(Validation.onlyNumbersRegex, "propertyLandValueTrust.error.invalid"),
+            maximumValue(maxValue, "propertyLandValueTrust.error.moreThanTotal"),
             minimumValue("1", "propertyLandValueTrust.error.zero")
           )
         )
     )
+  }
 }
