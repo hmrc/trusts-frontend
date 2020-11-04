@@ -40,21 +40,6 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
   def changeMoneyAssetRoute(index: Int): String =
     money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
-  def changePropertyOrLandAssetRoute(index: Int): String =
-    property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-  def changeSharesAssetRoute(index: Int): String =
-    shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-  def changeBusinessAssetRoute(index: Int): String =
-    controllers.register.asset.business.routes.BusinessNameController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-  def changePartnershipAssetRoute(index: Int): String =
-    partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-  def changeOtherAssetRoute(index: Int): String =
-    other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
-
   def removeAssetYesNoRoute(index: Int): String =
     routes.RemoveAssetYesNoController.onPageLoad(index, fakeDraftId).url
 
@@ -69,6 +54,18 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
       }
 
       "generate rows from user answers for assets in progress" in {
+
+        def changePropertyOrLandAssetRoute(index: Int): String =
+          property_or_land.routes.PropertyOrLandAddressYesNoController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        def changeSharesAssetRoute(index: Int): String =
+          shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        def changePartnershipAssetRoute(index: Int): String =
+          partnership.routes.PartnershipDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        def changeOtherAssetRoute(index: Int): String =
+          other.routes.OtherAssetDescriptionController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), Shares).success.value
@@ -98,6 +95,21 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
       }
 
       "generate rows from user answers for complete assets" in {
+
+        def changePropertyOrLandAssetRoute(index: Int): String =
+          property_or_land.routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
+
+        def changeSharesAssetRoute(index: Int): String =
+          shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
+
+        def changeBusinessAssetRoute(index: Int): String =
+          business.routes.BusinessAnswersController.onPageLoad(index, fakeDraftId).url
+
+        def changePartnershipAssetRoute(index: Int): String =
+          partnership.routes.PartnershipAnswerController.onPageLoad(index, fakeDraftId).url
+
+        def changeOtherAssetRoute(index: Int): String =
+          other.routes.OtherAssetAnswersController.onPageLoad(index, fakeDraftId).url
 
         val userAnswers = emptyUserAnswers
           .set(WhatKindOfAssetPage(0), Shares).success.value
