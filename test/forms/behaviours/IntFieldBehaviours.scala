@@ -35,20 +35,6 @@ trait IntFieldBehaviours extends FieldBehaviours {
     }
   }
 
-  def nonDecimalField(form: Form[_],
-                      fieldName: String,
-                      wholeNumberError: FormError,
-                      maxValue: Int): Unit = {
-
-    "not bind decimals" in {
-      forAll(decimals(None, maxValue) -> "decimal") {
-        decimal =>
-          val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
-          result.errors shouldEqual Seq(wholeNumberError)
-      }
-    }
-  }
-
   def intField(form: Form[_],
                fieldName: String,
                nonNumericError: FormError,
@@ -115,21 +101,6 @@ trait IntFieldBehaviours extends FieldBehaviours {
     s"not bind integers below $minimum" in {
 
       forAll(generator -> "intBelowMin") {
-        number: Int =>
-          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
-          result.errors shouldEqual Seq(expectedError)
-      }
-    }
-  }
-
-  def intFieldWithMaximum(form: Form[_],
-                          fieldName: String,
-                          maximum: Int,
-                          expectedError: FormError): Unit = {
-
-    s"not bind integers above and including $maximum" in {
-
-      forAll(intsAboveAndIncludingValue(maximum) -> "intAboveMax") {
         number: Int =>
           val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
           result.errors shouldEqual Seq(expectedError)
