@@ -30,7 +30,7 @@ class PropertyOrLandTotalValueFormProvider @Inject()(config: FrontendAppConfig) 
       "value" -> longValue(
         prefix,
         s"$prefix.error.length",
-        config.maximumValue
+        config.assetValueUpperLimitExclusive
       )
     )
   }

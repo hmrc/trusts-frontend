@@ -29,7 +29,7 @@ trait LongFieldBehaviours extends FieldBehaviours with FakeTrustsApp {
                 zeroError: FormError,
                 maxValue: Option[Long] = None): Unit = {
 
-    val max: Long = maxValue.getOrElse(fakeFrontendAppConfig.maximumValue)
+    val max: Long = maxValue.getOrElse(fakeFrontendAppConfig.assetValueUpperLimitExclusive)
 
     "not bind non-numeric numbers" in {
 
