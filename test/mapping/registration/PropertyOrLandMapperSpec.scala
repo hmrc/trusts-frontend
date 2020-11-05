@@ -28,7 +28,10 @@ import pages.register.asset.property_or_land._
 class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
-  val propertyOrLandMapper : Mapping[List[PropertyLandType]] = injector.instanceOf[PropertyOrLandMapper]
+  private val propertyOrLandMapper: Mapping[List[PropertyLandType]] = injector.instanceOf[PropertyOrLandMapper]
+
+  private val totalValue: Long = 1000L
+  private val trustValue: Long = 750L
 
   "propertyOrLandMapper" - {
 
@@ -49,9 +52,9 @@ class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
         .set(PropertyOrLandAddressYesNoPage(0), true).success.value
         .set(PropertyOrLandAddressUkYesNoPage(0), true).success.value
         .set(PropertyOrLandUKAddressPage(0), UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")).success.value
-        .set(PropertyOrLandTotalValuePage(0), "1000").success.value
+        .set(PropertyOrLandTotalValuePage(0), totalValue).success.value
         .set(TrustOwnAllThePropertyOrLandPage(0), false).success.value
-        .set(PropertyLandValueTrustPage(0), "750").success.value
+        .set(PropertyLandValueTrustPage(0), trustValue).success.value
 
 
       propertyOrLandMapper.build(userAnswers).value mustBe
@@ -67,8 +70,8 @@ class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
                 postCode = Some("Z99 2YY"),
                 country = "GB"
               )),
-            valueFull = 1000L,
-            valuePrevious = 750L
+            valueFull = totalValue,
+            valuePrevious = trustValue
 
           )
         )
@@ -80,7 +83,7 @@ class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
         .set(WhatKindOfAssetPage(0), WhatKindOfAsset.PropertyOrLand).success.value
         .set(PropertyOrLandAddressYesNoPage(0), false).success.value
         .set(PropertyOrLandDescriptionPage(0), "Property Or Land").success.value
-        .set(PropertyOrLandTotalValuePage(0), "1000").success.value
+        .set(PropertyOrLandTotalValuePage(0), totalValue).success.value
         .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
 
 
@@ -89,30 +92,30 @@ class PropertyOrLandMapperSpec extends FreeSpec with MustMatchers
           PropertyLandType(
             buildingLandName = Some("Property Or Land"),
             address = None,
-            valueFull = 1000L,
-            valuePrevious = 1000L
+            valueFull = totalValue,
+            valuePrevious = totalValue
 
           )
         )
     }
 
-    "must be able to create multiple Share Assets" in {
+    "must be able to create multiple property or land Assets" in {
       val userAnswers = emptyUserAnswers
 
         .set(WhatKindOfAssetPage(0), WhatKindOfAsset.PropertyOrLand).success.value
         .set(PropertyOrLandAddressYesNoPage(0), true).success.value
         .set(PropertyOrLandAddressUkYesNoPage(0), true).success.value
         .set(PropertyOrLandUKAddressPage(0), UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")).success.value
-        .set(PropertyOrLandTotalValuePage(0), "1000").success.value
+        .set(PropertyOrLandTotalValuePage(0), totalValue).success.value
         .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
-        .set(PropertyLandValueTrustPage(0), "750").success.value
+        .set(PropertyLandValueTrustPage(0), trustValue).success.value
         .set(WhatKindOfAssetPage(1), WhatKindOfAsset.PropertyOrLand).success.value
         .set(PropertyOrLandAddressYesNoPage(1), true).success.value
         .set(PropertyOrLandAddressUkYesNoPage(1), true).success.value
         .set(PropertyOrLandUKAddressPage(1), UKAddress("26", "Grangetown", Some("Tyne and Wear"), Some("Newcastle"), "Z99 2YY")).success.value
-        .set(PropertyOrLandTotalValuePage(1), "1000").success.value
+        .set(PropertyOrLandTotalValuePage(1), totalValue).success.value
         .set(TrustOwnAllThePropertyOrLandPage(1), true).success.value
-        .set(PropertyLandValueTrustPage(1), "750").success.value
+        .set(PropertyLandValueTrustPage(1), trustValue).success.value
 
       propertyOrLandMapper.build(userAnswers).value.length mustBe 2
     }

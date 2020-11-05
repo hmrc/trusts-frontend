@@ -132,6 +132,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   private val year: Int = configuration.get[Int]("minimumDate.year")
   lazy val minDate: LocalDate = LocalDate.of(year, month, day)
 
+  lazy val assetValueUpperLimitExclusive: Long = configuration.get[Long]("assetValueUpperLimitExclusive")
+
   private lazy val accessibilityBaseLinkUrl: String = configuration.get[String]("urls.accessibility")
 
   def accessibilityLinkUrl(implicit request: Request[_]): String = {

@@ -16,61 +16,32 @@
 
 package forms.property_or_land
 
-import forms.Validation
-import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
-import org.scalacheck.Gen
+import base.FakeTrustsApp
+import forms.behaviours.LongFieldBehaviours
 import play.api.data.FormError
-import wolfendale.scalacheck.regexp.RegexpGen
 
-class PropertyOrLandTotalValueFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
+class PropertyOrLandTotalValueFormProviderSpec extends LongFieldBehaviours with FakeTrustsApp {
 
-  val requiredKey = "propertyOrLandTotalValue.error.required"
-  val lengthKey = "propertyOrLandTotalValue.error.length"
-  val maxLength = 12
-  val zeroNumberkey = "propertyOrLandTotalValue.error.zero"
-  val invalidOnlyNumbersKey = "propertyOrLandTotalValue.error.invalid"
-  val invalidWholeNumberKey = "propertyOrLandTotalValue.error.wholeNumber"
+  private val requiredKey = "propertyOrLandTotalValue.error.required"
+  private val lengthKey = "propertyOrLandTotalValue.error.length"
+  private val zeroNumberkey = "propertyOrLandTotalValue.error.zero"
+  private val invalidOnlyNumbersKey = "propertyOrLandTotalValue.error.invalid"
+  private val invalidWholeNumberKey = "propertyOrLandTotalValue.error.whole"
 
-  val form = new PropertyOrLandTotalValueFormProvider()()
+  private val form = new PropertyOrLandTotalValueFormProvider(fakeFrontendAppConfig)()
 
   ".value" must {
 
     val fieldName = "value"
 
-    behave like nonDecimalField(
+    behave like longField(
       form,
       fieldName,
-      wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck)),
-      maxLength = Some(maxLength)
-    )
-
-    behave like fieldWithRegexpWithGenerator(
-      form,
-      fieldName,
-      Validation.onlyNumbersRegex,
-      generator = stringsWithMaxLength(maxLength),
-      error = FormError(fieldName, invalidOnlyNumbersKey, Seq(Validation.onlyNumbersRegex))
-    )
-
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      RegexpGen.from(Validation.onlyNumbersRegex)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like intFieldWithMinimumWithGenerator(
-      form,
-      fieldName,
-      1,
-      Gen.const(0),
-      FormError(fieldName, zeroNumberkey, Array("1"))
+      nonNumericError = FormError(fieldName, invalidOnlyNumbersKey),
+      wholeNumberError = FormError(fieldName, invalidWholeNumberKey),
+      maxNumberError = FormError(fieldName, lengthKey),
+      zeroError = FormError(fieldName, zeroNumberkey),
+      None
     )
 
     behave like mandatoryField(

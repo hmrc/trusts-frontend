@@ -44,7 +44,7 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
     money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   def changeSharesAssetRoute(index: Int): String =
-    shares.routes.SharesInAPortfolioController.onPageLoad(NormalMode, index, fakeDraftId).url
+    shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
 
   def removeAssetYesNoRoute(index: Int): String =
     routes.RemoveAssetYesNoController.onPageLoad(index, fakeDraftId).url
@@ -120,7 +120,7 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addAssetsForm, NormalMode,fakeDraftId)(request, messages).toString
+          view(addAssetsForm, NormalMode, fakeDraftId)(request, messages).toString
 
         application.stop()
       }
@@ -181,7 +181,7 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(addAssetsForm, NormalMode,fakeDraftId, Nil, assets, "You have added 2 assets")(request, messages).toString
+          view(addAssetsForm, NormalMode, fakeDraftId, Nil, assets, "You have added 2 assets")(request, messages).toString
 
         application.stop()
       }

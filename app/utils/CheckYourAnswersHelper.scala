@@ -313,7 +313,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x =>
       AnswerRow(
         "propertyLandValueTrust.checkYourAnswersLabel",
-        currency(x),
+        currency(x.toString),
         Some(controllers.register.asset.property_or_land.routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )
@@ -373,7 +373,7 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     x =>
       AnswerRow(
         "propertyOrLandTotalValue.checkYourAnswersLabel",
-        currency(x),
+        currency(x.toString),
         Some(controllers.register.asset.property_or_land.routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )

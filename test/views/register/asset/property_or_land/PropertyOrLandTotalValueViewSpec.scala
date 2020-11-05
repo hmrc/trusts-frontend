@@ -20,16 +20,16 @@ import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.register.asset.property_or_land.PropertyOrLandTotalValueView
 
-class PropertyOrLandTotalValueViewSpec extends StringViewBehaviours {
+class PropertyOrLandTotalValueViewSpec extends ViewBehaviours {
 
-  val messageKeyPrefix = "propertyOrLandTotalValue"
+  private val messageKeyPrefix: String = "propertyOrLandTotalValue"
 
-  val form = new PropertyOrLandTotalValueFormProvider()()
+  private val form: Form[Long] = new PropertyOrLandTotalValueFormProvider(fakeFrontendAppConfig)()
 
-  val index = 0
+  private val index: Int = 0
 
   "PropertyOrLandTotalValueView view" must {
 
@@ -42,7 +42,7 @@ class PropertyOrLandTotalValueViewSpec extends StringViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, Some("taskList.assets.label"), messageKeyPrefix, Some(s"$messageKeyPrefix.hint"))
+    behave like pageWithHint(form, applyView, s"$messageKeyPrefix.hint")
 
     behave like pageWithASubmitButton(applyView(form))
 

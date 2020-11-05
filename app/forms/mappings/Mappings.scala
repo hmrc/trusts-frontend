@@ -58,4 +58,14 @@ trait Mappings extends Formatters with Constraints {
                            twoRequiredKey: String,
                            requiredKey: String): FieldMapping[LocalDate] =
     of(new LocalDateFormatter(invalidKey, allRequiredKey, twoRequiredKey, requiredKey))
+
+  protected def longValue(prefix: String, maxValueKey: String, maxValue: Long): FieldMapping[Long] =
+    of(longValueFormatter(
+      s"$prefix.error.required",
+      s"$prefix.error.whole",
+      s"$prefix.error.invalid",
+      maxValueKey,
+      s"$prefix.error.zero",
+      maxValue
+    ))
 }

@@ -25,7 +25,6 @@ import models.registration.pages.WhatKindOfAsset.PropertyOrLand
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.property_or_land._
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.CheckYourAnswersHelper
@@ -35,11 +34,12 @@ import views.html.register.asset.property_or_land.PropertyOrLandAnswersView
 
 class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
+  private val index: Int = 0
+  
+  private val totalValue: Long = 10000
+  private val trustValue: Long = 10
 
-  val index: Int = 0
-
-  lazy val propertyOrLandAnswerRoute: String = routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
+  private lazy val propertyOrLandAnswerRoute: String = routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
 
   "PropertyOrLandAnswer Controller" must {
 
@@ -52,7 +52,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
             .set(PropertyOrLandAddressYesNoPage(index), false).success.value
             .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
-            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(PropertyOrLandTotalValuePage(index), totalValue).success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
 
@@ -99,9 +99,9 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
             .set(PropertyOrLandAddressYesNoPage(index), false).success.value
             .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
-            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(PropertyOrLandTotalValuePage(index), totalValue).success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
-            .set(PropertyLandValueTrustPage(index), "10").success.value
+            .set(PropertyLandValueTrustPage(index), trustValue).success.value
             .set(AssetStatus(index), Completed).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
@@ -149,7 +149,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), true).success.value
             .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
-            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(PropertyOrLandTotalValuePage(index), totalValue).success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
 
@@ -198,9 +198,9 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), true).success.value
             .set(PropertyOrLandUKAddressPage(index), UKAddress("Line1", "Line2", None, None, "NE62RT")).success.value
-            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(PropertyOrLandTotalValuePage(index), totalValue).success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
-            .set(PropertyLandValueTrustPage(index), "10").success.value
+            .set(PropertyLandValueTrustPage(index), trustValue).success.value
             .set(AssetStatus(index), Completed).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
@@ -249,7 +249,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), false).success.value
             .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), "ES")).success.value
-            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(PropertyOrLandTotalValuePage(index), totalValue).success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
 
@@ -298,9 +298,9 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(PropertyOrLandAddressYesNoPage(index), true).success.value
             .set(PropertyOrLandAddressUkYesNoPage(index), false).success.value
             .set(PropertyOrLandInternationalAddressPage(index), InternationalAddress("line1", "line2", Some("line3"), "ES")).success.value
-            .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+            .set(PropertyOrLandTotalValuePage(index), totalValue).success.value
             .set(TrustOwnAllThePropertyOrLandPage(index), false).success.value
-            .set(PropertyLandValueTrustPage(index), "10").success.value
+            .set(PropertyLandValueTrustPage(index), trustValue).success.value
             .set(AssetStatus(index), Completed).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
@@ -344,7 +344,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
         emptyUserAnswers
           .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
           .set(PropertyOrLandDescriptionPage(index), "Property Land Description").success.value
-          .set(PropertyOrLandTotalValuePage(index), "10000").success.value
+          .set(PropertyOrLandTotalValuePage(index), totalValue).success.value
           .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()

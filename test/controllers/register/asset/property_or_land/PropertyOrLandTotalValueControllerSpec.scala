@@ -23,6 +23,7 @@ import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import models.NormalMode
 import org.scalacheck.Arbitrary.arbitrary
 import pages.register.asset.property_or_land.PropertyOrLandTotalValuePage
+import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -30,11 +31,12 @@ import views.html.register.asset.property_or_land.PropertyOrLandTotalValueView
 
 class PropertyOrLandTotalValueControllerSpec extends RegistrationSpecBase with IndexValidation {
 
-  val formProvider = new PropertyOrLandTotalValueFormProvider()
-  val form = formProvider()
-  val index = 0
+  private val formProvider: PropertyOrLandTotalValueFormProvider = new PropertyOrLandTotalValueFormProvider(fakeFrontendAppConfig)
+  private val form: Form[Long] = formProvider()
+  private val index = 0
+  private val validAnswer: Long = 1000
 
-  lazy val propertyOrLandTotalValueRoute = routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId).url
+  private lazy val propertyOrLandTotalValueRoute: String = routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   "PropertyOrLandTotalValue Controller" must {
 
@@ -58,7 +60,7 @@ class PropertyOrLandTotalValueControllerSpec extends RegistrationSpecBase with I
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PropertyOrLandTotalValuePage(index), "answer").success.value
+      val userAnswers = emptyUserAnswers.set(PropertyOrLandTotalValuePage(index), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -71,7 +73,7 @@ class PropertyOrLandTotalValueControllerSpec extends RegistrationSpecBase with I
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("answer"), NormalMode, index, fakeDraftId)(request, messages).toString
+        view(form.fill(validAnswer), NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
@@ -83,7 +85,7 @@ class PropertyOrLandTotalValueControllerSpec extends RegistrationSpecBase with I
 
       val request =
         FakeRequest(POST, propertyOrLandTotalValueRoute)
-          .withFormUrlEncodedBody(("value", "12345678"))
+          .withFormUrlEncodedBody(("value", validAnswer.toString))
 
       val result = route(application, request).value
 
@@ -156,7 +158,7 @@ class PropertyOrLandTotalValueControllerSpec extends RegistrationSpecBase with I
       }
 
       validateIndex(
-        arbitrary[String],
+        arbitrary[Long],
         PropertyOrLandTotalValuePage.apply,
         getForIndex
       )
@@ -174,7 +176,7 @@ class PropertyOrLandTotalValueControllerSpec extends RegistrationSpecBase with I
       }
 
       validateIndex(
-        arbitrary[String],
+        arbitrary[Long],
         PropertyOrLandTotalValuePage.apply,
         postForIndex
       )

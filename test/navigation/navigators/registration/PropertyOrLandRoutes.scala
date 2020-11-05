@@ -36,6 +36,8 @@ trait PropertyOrLandRoutes {
 
   private val navigator: Navigator = injector.instanceOf[PropertyOrLandNavigator]
 
+  private val assetValue: Long = 100L
+
   def propertyOrLandRoutes(): Unit = {
 
     "navigate from PropertyOrLandAddressYesNoPage" when {
@@ -127,7 +129,7 @@ trait PropertyOrLandRoutes {
 
       forAll(arbitrary[UserAnswers]) {
         userAnswers =>
-          val answers = userAnswers.set(page, "100").success.value
+          val answers = userAnswers.set(page, assetValue).success.value
           navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
             .mustBe(routes.TrustOwnAllThePropertyOrLandController.onPageLoad(NormalMode, index, fakeDraftId))
       }
@@ -155,7 +157,7 @@ trait PropertyOrLandRoutes {
 
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
-            val answers = userAnswers.set(page, "100").success.value
+            val answers = userAnswers.set(page, assetValue).success.value
             navigator.nextPage(page, NormalMode, fakeDraftId)(answers)
               .mustBe(routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId))
         }

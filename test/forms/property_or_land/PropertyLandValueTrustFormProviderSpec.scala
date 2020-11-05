@@ -16,60 +16,32 @@
 
 package forms.property_or_land
 
-import forms.Validation
-import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
-import org.scalacheck.Gen
+import forms.behaviours.LongFieldBehaviours
 import play.api.data.FormError
-import wolfendale.scalacheck.regexp.RegexpGen
 
-class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
+class PropertyLandValueTrustFormProviderSpec extends LongFieldBehaviours {
 
-  val form = new PropertyLandValueTrustFormProvider()()
+  private val fieldName = "value"
+  private val requiredKey = "propertyLandValueTrust.error.required"
+  private val zeroNumberkey = "propertyLandValueTrust.error.zero"
+  private val invalidOnlyNumbersKey = "propertyLandValueTrust.error.invalid"
+  private val invalidWholeNumberKey = "propertyLandValueTrust.error.whole"
+  private val maxValueKey = "propertyLandValueTrust.error.moreThanMax"
 
   ".value" must {
 
-    val fieldName = "value"
-    val requiredKey = "propertyLandValueTrust.error.required"
-    val zeroNumberkey = "propertyLandValueTrust.error.zero"
-    val invalidOnlyNumbersKey = "propertyLandValueTrust.error.invalid"
-    val invalidWholeNumberKey = "propertyLandValueTrust.error.whole"
-    val lengthKey = "propertyLandValueTrust.error.length"
-    val maxLength = 12
+    val maxValue: Long = 100L
 
-    behave like nonDecimalField(
+    val form = new PropertyLandValueTrustFormProvider().withMaxValue(maxValue)
+
+    behave like longField(
       form,
       fieldName,
-      wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck)),
-      maxLength = Some(maxLength)
-    )
-
-    behave like fieldWithRegexpWithGenerator(
-      form,
-      fieldName,
-      Validation.onlyNumbersRegex,
-      generator = stringsWithMaxLength(maxLength),
-      error = FormError(fieldName, invalidOnlyNumbersKey, Seq(Validation.onlyNumbersRegex))
-    )
-
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      RegexpGen.from(Validation.onlyNumbersRegex)
-    )
-
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
-    )
-
-    behave like intFieldWithMinimumWithGenerator(
-      form,
-      fieldName,
-      1,
-      Gen.const(0),
-      FormError(fieldName, zeroNumberkey, Array("1"))
+      nonNumericError = FormError(fieldName, invalidOnlyNumbersKey),
+      wholeNumberError = FormError(fieldName, invalidWholeNumberKey),
+      maxNumberError = FormError(fieldName, maxValueKey),
+      zeroError = FormError(fieldName, zeroNumberkey),
+      Some(maxValue)
     )
 
     behave like mandatoryField(
@@ -78,5 +50,4 @@ class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with 
       requiredError = FormError(fieldName, requiredKey)
     )
   }
-
 }

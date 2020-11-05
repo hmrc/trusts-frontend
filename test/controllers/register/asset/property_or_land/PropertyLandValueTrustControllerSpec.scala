@@ -23,38 +23,29 @@ import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.NormalMode
 import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register.asset.property_or_land.PropertyLandValueTrustPage
-import play.api.libs.json.Json
+import pages.register.asset.property_or_land.{PropertyLandValueTrustPage, PropertyOrLandTotalValuePage}
+import play.api.data.Form
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils._
 import views.html.register.asset.property_or_land.PropertyLandValueTrustView
 
 class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with IndexValidation {
 
-  val formProvider = new PropertyLandValueTrustFormProvider()
-  val form = formProvider()
-
-  val index: Int = 0
-
-  lazy val propertyLandValueTrustRoute = routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
-
-  val userAnswers = UserAnswers(
-    draftId = fakeDraftId,
-    data = Json.obj(
-      PropertyLandValueTrustPage.toString -> Json.obj(
-        "value" -> "value 1"
-      )
-    ),
-    internalAuthId = TestUserAnswers.userInternalId
-  )
+  private val formProvider: PropertyLandValueTrustFormProvider = new PropertyLandValueTrustFormProvider()
+  private val validValue: Long = 99
+  private val maxValue: Long = 100
+  private val inValidValue: Long = 101
+  private val form: Form[Long] = formProvider.withMaxValue(maxValue)
+  private val index: Int = 0
+  private lazy val propertyLandValueTrustRoute = routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
+  private val baseAnswers: UserAnswers = emptyUserAnswers.set(PropertyOrLandTotalValuePage(index), maxValue).success.value
 
   "PropertyLandValueTrust Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
       val request = FakeRequest(GET, propertyLandValueTrustRoute)
 
@@ -72,7 +63,8 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PropertyLandValueTrustPage(index), "1").success.value
+      val userAnswers = baseAnswers
+        .set(PropertyLandValueTrustPage(index), validValue).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -85,19 +77,17 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1"), NormalMode, index, fakeDraftId)(request, messages).toString
+        view(form.fill(validValue), NormalMode, index, fakeDraftId)(request, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
-      val request =
-        FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("value", "100"))
+      val request = FakeRequest(POST, propertyLandValueTrustRoute)
+        .withFormUrlEncodedBody(("value", validValue.toString))
 
       val result = route(application, request).value
 
@@ -108,26 +98,70 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
       application.stop()
     }
 
-    "return a Bad Request and errors when invalid data is submitted" in {
+    "return a Bad Request and errors when invalid data is submitted" when {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "value is non-numeric" in {
 
-      val request =
-        FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("value", "invalid value"))
+        val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
 
-      val boundForm = form.bind(Map("value" -> "invalid value"))
+        val request = FakeRequest(POST, propertyLandValueTrustRoute)
+          .withFormUrlEncodedBody(("value", "not a number"))
 
-      val view = application.injector.instanceOf[PropertyLandValueTrustView]
+        val boundForm = form.bind(Map("value" -> "not a number"))
 
-      val result = route(application, request).value
+        val view = application.injector.instanceOf[PropertyLandValueTrustView]
 
-      status(result) mustEqual BAD_REQUEST
+        val result = route(application, request).value
 
-      contentAsString(result) mustEqual
-        view(boundForm, NormalMode, index, fakeDraftId)(request, messages).toString
+        status(result) mustEqual BAD_REQUEST
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, index, fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
+      "value is equal to total value" in {
+
+        val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
+
+        val request = FakeRequest(POST, propertyLandValueTrustRoute)
+          .withFormUrlEncodedBody(("value", maxValue.toString))
+
+        val boundForm = form.bind(Map("value" -> maxValue.toString))
+
+        val view = application.injector.instanceOf[PropertyLandValueTrustView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, index, fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
+      "value is more than total value" in {
+
+        val application = applicationBuilder(userAnswers = Some(baseAnswers)).build()
+
+        val request = FakeRequest(POST, propertyLandValueTrustRoute)
+          .withFormUrlEncodedBody(("value", inValidValue.toString))
+
+        val boundForm = form.bind(Map("value" -> inValidValue.toString))
+
+        val view = application.injector.instanceOf[PropertyLandValueTrustView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+
+        contentAsString(result) mustEqual
+          view(boundForm, NormalMode, index, fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
     }
 
     "redirect to Session Expired for a GET if no existing data is found" in {
@@ -148,9 +182,8 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, propertyLandValueTrustRoute)
-          .withFormUrlEncodedBody(("field1", "value 1"))
+      val request = FakeRequest(POST, propertyLandValueTrustRoute)
+        .withFormUrlEncodedBody(("value", validValue.toString))
 
       val result = route(application, request).value
 
@@ -159,6 +192,40 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
       redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
 
       application.stop()
+    }
+
+    "redirect to total value page when total value not in user answers" when {
+
+      "GET" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request = FakeRequest(GET, propertyLandValueTrustRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        application.stop()
+      }
+
+      "POST" in {
+
+        val application = applicationBuilder(Some(emptyUserAnswers)).build()
+
+        val request = FakeRequest(POST, propertyLandValueTrustRoute)
+          .withFormUrlEncodedBody(("value", validValue.toString))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual routes.PropertyOrLandTotalValueController.onPageLoad(NormalMode, index, fakeDraftId).url
+
+        application.stop()
+      }
     }
 
     "for a GET" must {
@@ -170,7 +237,7 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
       }
 
       validateIndex(
-        arbitrary[String],
+        arbitrary[Long],
         PropertyLandValueTrustPage.apply,
         getForIndex
       )
@@ -185,11 +252,11 @@ class PropertyLandValueTrustControllerSpec extends RegistrationSpecBase with Ind
           routes.PropertyLandValueTrustController.onPageLoad(NormalMode, index, fakeDraftId).url
 
         FakeRequest(POST, route)
-          .withFormUrlEncodedBody(("value", "1234"))
+          .withFormUrlEncodedBody(("value", validValue.toString))
       }
 
       validateIndex(
-        arbitrary[String],
+        arbitrary[Long],
         PropertyLandValueTrustPage.apply,
         postForIndex
       )
