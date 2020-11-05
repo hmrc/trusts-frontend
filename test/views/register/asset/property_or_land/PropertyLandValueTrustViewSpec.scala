@@ -20,16 +20,16 @@ import forms.property_or_land.PropertyLandValueTrustFormProvider
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.StringViewBehaviours
+import views.behaviours.ViewBehaviours
 import views.html.register.asset.property_or_land.PropertyLandValueTrustView
 
-class PropertyLandValueTrustViewSpec extends StringViewBehaviours {
+class PropertyLandValueTrustViewSpec extends ViewBehaviours {
 
   private val messageKeyPrefix = "propertyLandValueTrust"
 
-  private val maxValue: String = "100"
+  private val maxValue: Long = 100L
 
-  override val form: Form[String] = new PropertyLandValueTrustFormProvider().withMaxValue(maxValue)
+  val form: Form[Long] = new PropertyLandValueTrustFormProvider().withMaxValue(maxValue)
 
   private val index: Int = 0
 
@@ -44,8 +44,6 @@ class PropertyLandValueTrustViewSpec extends StringViewBehaviours {
     behave like normalPage(applyView(form), Some("taskList.assets.label"), messageKeyPrefix)
 
     behave like pageWithBackLink(applyView(form))
-
-    behave like stringPage(form, applyView, Some("taskList.assets.label"), messageKeyPrefix)
 
     behave like pageWithASubmitButton(applyView(form))
   }

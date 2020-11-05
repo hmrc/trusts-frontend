@@ -16,24 +16,22 @@
 
 package forms.property_or_land
 
-import forms.Validation
+import config.FrontendAppConfig
 import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class PropertyOrLandTotalValueFormProvider @Inject() extends Mappings {
+class PropertyOrLandTotalValueFormProvider @Inject()(config: FrontendAppConfig) extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[Long] = {
+
+    val prefix = "propertyOrLandTotalValue"
     Form(
-      "value" -> currency("propertyOrLandTotalValue.error.required")
-        .verifying(
-            firstError(
-            maxLength(12, "propertyOrLandTotalValue.error.length"),
-            isNotEmpty("value", "propertyOrLandTotalValue.error.required"),
-            regexp(Validation.decimalCheck, "propertyOrLandTotalValue.error.wholeNumber"),
-            regexp(Validation.onlyNumbersRegex, "propertyOrLandTotalValue.error.invalid"),
-            minimumValue("1", "propertyOrLandTotalValue.error.zero")
-          )
-        )
+      "value" -> longValue(
+        prefix,
+        s"$prefix.error.length",
+        config.maximumValue
+      )
     )
+  }
 }

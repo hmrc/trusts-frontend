@@ -57,9 +57,9 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
         .set(WhatKindOfAssetPage(2), WhatKindOfAsset.PropertyOrLand).success.value
         .set(PropertyOrLandAddressYesNoPage(2), false).success.value
         .set(PropertyOrLandDescriptionPage(2), "Town House").success.value
-        .set(PropertyOrLandTotalValuePage(2), "10000").success.value
+        .set(PropertyOrLandTotalValuePage(2), 10000L).success.value
         .set(TrustOwnAllThePropertyOrLandPage(2), false).success.value
-        .set(PropertyLandValueTrustPage(2), "10").success.value
+        .set(PropertyLandValueTrustPage(2), 10L).success.value
         .set(AssetStatus(2), Completed).success.value
         .set(AddAssetsPage, NoComplete).success.value
 

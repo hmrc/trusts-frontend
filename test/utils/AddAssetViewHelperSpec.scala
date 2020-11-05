@@ -127,13 +127,13 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(PropertyOrLandAddressYesNoPage(2), true).success.value
           .set(PropertyOrLandAddressUkYesNoPage(2), true).success.value
           .set(PropertyOrLandUKAddressPage(2), UKAddress("line 1", "line 2", None, None, "NE1 1NE")).success.value
-          .set(PropertyOrLandTotalValuePage(2), "100").success.value
+          .set(PropertyOrLandTotalValuePage(2), 100L).success.value
           .set(TrustOwnAllThePropertyOrLandPage(2), true).success.value
           .set(AssetStatus(2), Completed).success.value
           .set(WhatKindOfAssetPage(3), PropertyOrLand).success.value
           .set(PropertyOrLandAddressYesNoPage(3), false).success.value
           .set(PropertyOrLandDescriptionPage(3), "1 hectare of land").success.value
-          .set(PropertyOrLandTotalValuePage(3), "100").success.value
+          .set(PropertyOrLandTotalValuePage(3), 200L).success.value
           .set(TrustOwnAllThePropertyOrLandPage(3), true).success.value
           .set(AssetStatus(3), Completed).success.value
           .set(WhatKindOfAssetPage(4), Other).success.value

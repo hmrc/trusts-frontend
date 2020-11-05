@@ -16,26 +16,20 @@
 
 package forms.property_or_land
 
-import forms.Validation
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
 
-class PropertyLandValueTrustFormProvider @Inject() extends Mappings {
+class PropertyLandValueTrustFormProvider extends Mappings {
 
-  def withMaxValue(maxValue: String): Form[String] = {
+  def withMaxValue(maxValue: Long): Form[Long] = {
 
+    val prefix = "propertyLandValueTrust"
     Form(
-      "value" -> currency("propertyLandValueTrust.error.required")
-        .verifying(
-          firstError(
-            isNotEmpty("value", "propertyLandValueTrust.error.required"),
-            regexp(Validation.decimalCheck, "propertyLandValueTrust.error.whole"),
-            regexp(Validation.onlyNumbersRegex, "propertyLandValueTrust.error.invalid"),
-            isLessThan(maxValue, "propertyLandValueTrust.error.moreThanTotal"),
-            minimumValue("1", "propertyLandValueTrust.error.zero")
-          )
-        )
+      "value" -> longValue(
+        prefix,
+        s"$prefix.error.moreThanMax",
+        maxValue
+      )
     )
   }
 }

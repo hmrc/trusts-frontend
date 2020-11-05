@@ -16,62 +16,32 @@
 
 package forms.property_or_land
 
-import forms.Validation
-import forms.behaviours.{IntFieldBehaviours, StringFieldBehaviours}
-import org.scalacheck.Arbitrary.arbitrary
-import org.scalacheck.Gen
+import forms.behaviours.LongFieldBehaviours
 import play.api.data.FormError
-import wolfendale.scalacheck.regexp.RegexpGen
 
-class PropertyLandValueTrustFormProviderSpec extends StringFieldBehaviours with IntFieldBehaviours {
+class PropertyLandValueTrustFormProviderSpec extends LongFieldBehaviours {
 
   private val fieldName = "value"
   private val requiredKey = "propertyLandValueTrust.error.required"
   private val zeroNumberkey = "propertyLandValueTrust.error.zero"
   private val invalidOnlyNumbersKey = "propertyLandValueTrust.error.invalid"
   private val invalidWholeNumberKey = "propertyLandValueTrust.error.whole"
-  private val maxValueKey = "propertyLandValueTrust.error.moreThanTotal"
+  private val maxValueKey = "propertyLandValueTrust.error.moreThanMax"
 
   ".value" must {
 
-    val maxValue: Int = 100
+    val maxValue: Long = 100L
 
-    val form = new PropertyLandValueTrustFormProvider().withMaxValue(maxValue.toString)
+    val form = new PropertyLandValueTrustFormProvider().withMaxValue(maxValue)
 
-    behave like nonDecimalField(
+    behave like longField(
       form,
       fieldName,
-      wholeNumberError = FormError(fieldName, invalidWholeNumberKey, Seq(Validation.decimalCheck)),
-      maxValue
-    )
-
-    behave like fieldWithRegexpWithGenerator(
-      form,
-      fieldName,
-      Validation.onlyNumbersRegex,
-      arbitrary[String],
-      error = FormError(fieldName, invalidOnlyNumbersKey, Seq(Validation.onlyNumbersRegex))
-    )
-
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      RegexpGen.from(Validation.onlyNumbersRegex)
-    )
-
-    behave like intFieldWithMaximum(
-      form,
-      fieldName,
-      maxValue,
-      FormError(fieldName, maxValueKey, Array("100"))
-    )
-
-    behave like intFieldWithMinimumWithGenerator(
-      form,
-      fieldName,
-      1,
-      Gen.const(0),
-      FormError(fieldName, zeroNumberkey, Array("1"))
+      nonNumericError = FormError(fieldName, invalidOnlyNumbersKey),
+      wholeNumberError = FormError(fieldName, invalidWholeNumberKey),
+      maxNumberError = FormError(fieldName, maxValueKey),
+      zeroError = FormError(fieldName, zeroNumberkey),
+      Some(maxValue)
     )
 
     behave like mandatoryField(

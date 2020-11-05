@@ -88,7 +88,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
               .set(PropertyOrLandAddressYesNoPage(index), true).success.value
               .set(PropertyOrLandAddressUkYesNoPage(index), true).success.value
               .set(PropertyOrLandUKAddressPage(index), UKAddress("Line 1", "Line 2", None, None, "POSTCODE")).success.value
-              .set(PropertyOrLandTotalValuePage(index), "4000").success.value
+              .set(PropertyOrLandTotalValuePage(index), 4000L).success.value
               .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
 
             val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -113,7 +113,7 @@ class RemoveAssetYesNoControllerSpec extends RegistrationSpecBase {
               .set(WhatKindOfAssetPage(index), PropertyOrLand).success.value
               .set(PropertyOrLandAddressYesNoPage(index), false).success.value
               .set(PropertyOrLandDescriptionPage(index), "Property or land description").success.value
-              .set(PropertyOrLandTotalValuePage(index), "4000").success.value
+              .set(PropertyOrLandTotalValuePage(index), 4000L).success.value
               .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
 
             val application = applicationBuilder(userAnswers = Some(userAnswers)).build()

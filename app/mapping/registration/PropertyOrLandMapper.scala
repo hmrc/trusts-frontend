@@ -21,8 +21,6 @@ import mapping.Mapping
 import mapping.reads.PropertyOrLandAsset
 import models.core.UserAnswers
 
-import scala.util.Try
-
 class PropertyOrLandMapper @Inject()(addressMapper: AddressMapper) extends Mapping[List[PropertyLandType]]{
     override def build(userAnswers: UserAnswers): Option[List[PropertyLandType]] = {
 
@@ -35,18 +33,14 @@ class PropertyOrLandMapper @Inject()(addressMapper: AddressMapper) extends Mappi
         case Nil => None
         case list =>
           Some(
-            list.flatMap {
+            list.map {
               x =>
-                for {
-                  value <- Try(x.propertyLandValueTrust.map(_.toLong)).toOption
-                  totalValue <- Try(x.propertyOrLandTotalValue.toLong).toOption
-                } yield {
-                  value match {
-                    case Some(v) =>
-                      PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), totalValue, v)
-                    case None =>
-                      PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), totalValue, totalValue)
-                  }
+                val totalValue: Long = x.propertyOrLandTotalValue
+                x.propertyLandValueTrust match {
+                  case Some(v) =>
+                    PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), totalValue, v)
+                  case None =>
+                    PropertyLandType(x.propertyOrLandDescription, addressMapper.build(x.address), totalValue, totalValue)
                 }
             }
           )

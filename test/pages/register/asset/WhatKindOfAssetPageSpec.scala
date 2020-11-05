@@ -133,7 +133,7 @@ class WhatKindOfAssetPageSpec extends PageBehaviours {
             None,
             "NE1 1NN"
           )).success.value
-          .set(PropertyOrLandTotalValuePage(0), "10,000").success.value
+          .set(PropertyOrLandTotalValuePage(0), 10000L).success.value
           .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
           .set(AssetStatus(0), Status.Completed).success.value
 

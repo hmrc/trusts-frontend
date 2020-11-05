@@ -171,8 +171,8 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |     "line4" : "Newcastle",
             |     "postcode" : "Z99 2YY"
             |},
-            |"propertyOrLandValueTrust" : "75",
-            |"propertyOrLandTotalValue" : "1000"
+            |"propertyOrLandValueTrust" : 75,
+            |"propertyOrLandTotalValue" : 1000
             |}
           """.stripMargin)
 
@@ -188,8 +188,8 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
                 line4 = Some("Newcastle"),
                 postcode = "Z99 2YY"
               )),
-            propertyLandValueTrust = Some("75"),
-            propertyOrLandTotalValue = "1000"
+            propertyLandValueTrust = Some(75L),
+            propertyOrLandTotalValue = 1000L
           ))
       }
 
@@ -203,7 +203,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
             |     "line2" : "Newcastle",
             |     "postcode" : "Z99 2YY"
             |},
-            |"propertyOrLandTotalValue" : "1000"
+            |"propertyOrLandTotalValue" : 1000
             |}
           """.stripMargin)
 
@@ -220,7 +220,7 @@ class AssetReadsSpec extends FreeSpec with MustMatchers {
                 postcode = "Z99 2YY"
               )),
             propertyLandValueTrust = None,
-            propertyOrLandTotalValue = "1000"
+            propertyOrLandTotalValue = 1000L
           ))
       }
 

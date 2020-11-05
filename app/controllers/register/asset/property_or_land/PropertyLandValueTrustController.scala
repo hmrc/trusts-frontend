@@ -97,7 +97,7 @@ class PropertyLandValueTrustController @Inject()(
       }
   }
 
-  private def totalValue(mode: Mode, index: Int, draftId: String)(implicit request: RegistrationDataRequest[AnyContent]): Either[String, Result] = {
+  private def totalValue(mode: Mode, index: Int, draftId: String)(implicit request: RegistrationDataRequest[AnyContent]): Either[Long, Result] = {
     request.userAnswers.get(PropertyOrLandTotalValuePage(index)) match {
       case Some(value) =>
         Left(value)

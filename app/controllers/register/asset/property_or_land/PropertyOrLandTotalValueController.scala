@@ -21,11 +21,12 @@ import controllers.filters.IndexActionFilterProvider
 import forms.property_or_land.PropertyOrLandTotalValueFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.register.asset.property_or_land.PropertyOrLandTotalValuePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.PropertyOrLand
@@ -44,11 +45,11 @@ class PropertyOrLandTotalValueController @Inject()(
                                                     formProvider: PropertyOrLandTotalValueFormProvider,
                                                     val controllerComponents: MessagesControllerComponents,
                                                     view: PropertyOrLandTotalValueView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  private val form: Form[Long] = formProvider()
 
-  private def actions(index: Int, draftId: String) =
+  private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen
       getData(draftId) andThen
       requireData andThen

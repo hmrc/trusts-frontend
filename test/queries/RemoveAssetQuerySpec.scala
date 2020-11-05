@@ -87,7 +87,7 @@ class RemoveAssetQuerySpec extends PageBehaviours {
             val answers: UserAnswers = initial
               .set(WhatKindOfAssetPage(0), WhatKindOfAsset.PropertyOrLand).success.value
               .set(PropertyOrLandDescriptionPage(0), "Land").success.value
-              .set(PropertyOrLandTotalValuePage(0), "80,000").success.value
+              .set(PropertyOrLandTotalValuePage(0), 80000L).success.value
               .set(TrustOwnAllThePropertyOrLandPage(0), true).success.value
 
             val result = answers.remove(RemoveAssetQuery(0)).success.value
