@@ -16,7 +16,7 @@
 
 package controllers
 
-import forms.RemoveForm
+import forms.RemoveIndexFormProvider
 import models.requests.RegistrationDataRequest
 import pages.QuestionPage
 import play.api.data.Form
@@ -34,7 +34,7 @@ trait RemoveIndexController extends FrontendBaseController with I18nSupport {
 
   val messagesPrefix : String
 
-  val formProvider : RemoveForm
+  val formProvider : RemoveIndexFormProvider
 
   val removeView: RemoveIndexView
 

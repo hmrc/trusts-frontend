@@ -16,8 +16,6 @@
 
 package utils
 
-import java.time.LocalDate
-
 import models.core.UserAnswers
 import models.core.pages.{Declaration, FullName, UKAddress}
 import models.registration.Matched.{Failed, Success}
@@ -29,7 +27,6 @@ import pages.register._
 import pages.register.agents._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor.trust_type.{EfrbsStartDatePage, EfrbsYesNoPage, HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -37,7 +34,7 @@ object TestUserAnswers extends TryValues {
   lazy val draftId = "id"
   lazy val userInternalId = "internalId"
 
-  def emptyUserAnswers = models.core.UserAnswers(draftId, Json.obj(), internalAuthId = userInternalId)
+  def emptyUserAnswers: UserAnswers = models.core.UserAnswers(draftId, Json.obj(), internalAuthId = userInternalId)
 
   def withAgent(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
@@ -86,28 +83,4 @@ object TestUserAnswers extends TryValues {
 
     userAnswers
   }
-
-  def withInterVivosTrust(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers
-      .set(KindOfTrustPage, KindOfTrust.Intervivos).success.value
-      .set(HoldoverReliefYesNoPage, true).success.value
-  }
-
-  def withHeritageTrust(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers
-      .set(KindOfTrustPage, KindOfTrust.HeritageMaintenanceFund).success.value
-  }
-
-  def withFlatManagementTrust(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers
-      .set(KindOfTrustPage, KindOfTrust.FlatManagement).success.value
-  }
-
-  def withEmploymentRelatedTrust(userAnswers: UserAnswers, date: LocalDate): UserAnswers = {
-    userAnswers
-      .set(KindOfTrustPage, KindOfTrust.Employees).success.value
-      .set(EfrbsYesNoPage, true).success.value
-      .set(EfrbsStartDatePage, date).success.value
-  }
-
 }

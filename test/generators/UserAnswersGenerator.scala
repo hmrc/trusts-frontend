@@ -28,7 +28,6 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor.trust_type._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
@@ -39,8 +38,6 @@ trait UserAnswersGenerator extends TryValues {
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(PartnershipStartDatePage, JsValue)] ::
     arbitrary[(PartnershipDescriptionPage, JsValue)] ::
-    arbitrary[(KindOfTrustPage.type, JsValue)] ::
-    arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] ::
     arbitrary[(AddAnAssetYesNoPage.type, JsValue)] ::
     arbitrary[(PropertyOrLandAddressYesNoPage, JsValue)] ::
     arbitrary[(PropertyOrLandAddressUkYesNoPage, JsValue)] ::

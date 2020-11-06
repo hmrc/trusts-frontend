@@ -19,8 +19,9 @@ package controllers.register
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
-import mapping.registration.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType, NameType}
+import mapping.registration.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType}
 import models.NormalMode
+import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -38,7 +39,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
   private val leadTrusteeInd = LeadTrusteeType(
     Some(LeadTrusteeIndType(
-      NameType("first name", Some("middle name"), "Last Name"),
+      FullName("first name", Some("middle name"), "Last Name"),
       LocalDate.of(1500, 10, 10),
       "0191 1111111",
       None,

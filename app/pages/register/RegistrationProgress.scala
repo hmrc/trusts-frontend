@@ -23,9 +23,7 @@ import models.registration.pages._
 import navigation.registration.TaskListNavigator
 import pages.register.asset.AddAssetsPage
 import repositories.RegistrationsRepository
-import sections._
-import sections.beneficiaries.Beneficiaries
-import sections.settlors.Settlors
+import sections.{Beneficiaries, Settlors, _}
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 

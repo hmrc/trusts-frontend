@@ -27,7 +27,6 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
@@ -45,22 +44,6 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       for {
         page  <- arbitrary[PartnershipDescriptionPage]
         value <- arbitrary[String].suchThat(_.nonEmpty).map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryHoldoverReliefYesNoUserAnswersEntry: Arbitrary[(HoldoverReliefYesNoPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[HoldoverReliefYesNoPage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
-
-  implicit lazy val arbitraryKindOfTrustUserAnswersEntry: Arbitrary[(KindOfTrustPage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[KindOfTrustPage.type]
-        value <- arbitrary[KindOfTrust].map(Json.toJson(_))
       } yield (page, value)
     }
 

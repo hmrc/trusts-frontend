@@ -25,7 +25,6 @@ import pages.register.asset.partnership._
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
 import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.settlors.living_settlor.trust_type.{HoldoverReliefYesNoPage, KindOfTrustPage}
 
 trait PageGenerators {
 
@@ -34,12 +33,6 @@ trait PageGenerators {
 
   implicit lazy val arbitraryPartnershipDescriptionPage: Arbitrary[PartnershipDescriptionPage] =
     Arbitrary(PartnershipDescriptionPage(0))
-
-  implicit lazy val arbitraryKindOfTrustPage: Arbitrary[KindOfTrustPage.type] =
-    Arbitrary(KindOfTrustPage)
-
-  implicit lazy val arbitraryHoldoverReliefYesNoPage: Arbitrary[HoldoverReliefYesNoPage.type] =
-    Arbitrary(HoldoverReliefYesNoPage)
 
   implicit lazy val arbitraryAddAnAssetYesNoPage: Arbitrary[AddAnAssetYesNoPage.type] =
     Arbitrary(AddAnAssetYesNoPage)
