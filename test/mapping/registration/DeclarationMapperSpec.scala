@@ -85,7 +85,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, Some("Newcastle"), "NE62RT")).success.value
 
           declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
-            name = NameType("First", None, "Last"),
+            name = FullName("First", None, "Last"),
             address = AddressType("Line1", "line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
           )
 
@@ -100,7 +100,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentInternationalAddressPage, InternationalAddress("Line1", "line2", None, "IN")).success.value
 
           declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
-            name = NameType("First", None, "Last"),
+            name = FullName("First", None, "Last"),
             address = AddressType("Line1", "line2", None, None, None, "IN")
           )
 
@@ -117,7 +117,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
               .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
             declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
-              name = NameType("First", None, "Last"),
+              name = FullName("First", None, "Last"),
               address = AddressType("First line", "Second line", None, Some("Newcastle"), Some("NE981ZZ"), "GB")
             )
 
@@ -133,7 +133,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
               .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
             declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
-              name = NameType("First", None, "Last"),
+              name = FullName("First", None, "Last"),
               address = AddressType("First line", "Second line", None, Some("Newcastle"), Some("NE981ZZ"), "GB")
             )
 
@@ -145,7 +145,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
               .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
             declarationMapper.build(userAnswers, leadTrusteeInternationalAddress).value mustBe Declaration(
-              name = NameType("First", None, "Last"),
+              name = FullName("First", None, "Last"),
               address = AddressType("First line", "Second line", None, None, None, "DE")
             )
 

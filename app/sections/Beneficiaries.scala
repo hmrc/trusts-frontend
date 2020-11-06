@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package pages.register.settlors.living_settlor.trust_type
+package sections
 
-import models.registration.pages.DeedOfVariation
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import sections.settlors.Settlors
 
-case object HowDeedOfVariationCreatedPage extends QuestionPage[DeedOfVariation] {
+case object Beneficiaries extends QuestionPage[List[Nothing]] {
 
-  override def path: JsPath = Settlors.path \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "howDeedOfVariationCreated"
+  override def toString: String = "beneficiaries"
 
 }

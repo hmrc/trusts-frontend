@@ -19,10 +19,9 @@ package controllers.register
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import mapping.registration.{LeadTrusteeType, NameType}
+import mapping.registration.LeadTrusteeType
 import models.NormalMode
 import models.core.UserAnswers
-import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
@@ -52,11 +51,10 @@ class ConfirmationController @Inject()(
 
   private val logger: Logger = Logger(getClass)
 
-  private def fullName(name: NameType): FullName = FullName(name.firstName, name.middleName, name.lastName)
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
     val isAgent = request.affinityGroup == Agent
     registrationsRepository.getLeadTrustee(draftId) flatMap {
-      case LeadTrusteeType(Some(ltInd), None) => render(userAnswers, draftId, isAgent, trn, fullName(ltInd.name).toString)
+      case LeadTrusteeType(Some(ltInd), None) => render(userAnswers, draftId, isAgent, trn, ltInd.name.toString)
       case LeadTrusteeType(None, Some(ltOrg)) => render(userAnswers, draftId, isAgent, trn, ltOrg.name)
       case _ => errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
     }

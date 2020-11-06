@@ -18,22 +18,17 @@ package services
 
 import java.util.UUID
 
-import connector.SubmissionDraftConnector
 import javax.inject.Inject
-import models.core.{ReadOnlyUserAnswers, UserAnswers}
-import models.registration.pages.Status.InProgress
+import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
-import pages.register.beneficiaries.individual.RoleInCompanyPage
 import repositories.RegistrationsRepository
-import sections.beneficiaries.IndividualBeneficiaries
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Session
 import viewmodels.RegistrationAnswerSections
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsRepository,
-                                         submissionDraftConnector: SubmissionDraftConnector)
+class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsRepository)
                                         (implicit ec: ExecutionContext) {
 
   private def build[A](request: OptionalRegistrationDataRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
@@ -56,32 +51,6 @@ class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsR
 
   def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[RegistrationAnswerSections] =
     registrationsRepository.getAnswerSections(draftId)
-
-  def setBeneficiaryStatus(draftId: String)(implicit hc: HeaderCarrier): Future[Boolean] =
-    submissionDraftConnector.getDraftBeneficiaries(draftId: String) flatMap { response =>
-      val answers = response.data.asOpt[ReadOnlyUserAnswers]
-
-      val requiredPagesAnswered: Boolean =
-        answers
-          .forall { beneficiaries =>
-            beneficiaries.get(IndividualBeneficiaries)
-              .forall {
-                _.zipWithIndex.exists { x =>
-                  beneficiaries.get(RoleInCompanyPage(x._2)).isDefined
-                }
-              }
-          }
-
-      if (!requiredPagesAnswered) {
-        registrationsRepository.getAllStatus(draftId) flatMap {
-          allStatus =>
-            registrationsRepository.setAllStatus(draftId, allStatus.copy(beneficiaries = Some(InProgress)))
-        }
-      } else {
-        Future.successful(true)
-      }
-
-    }
 
 }
 

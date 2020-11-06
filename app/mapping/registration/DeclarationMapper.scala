@@ -21,8 +21,7 @@ import models.core.UserAnswers
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
 
-class DeclarationMapper @Inject()(nameMapper: NameMapper,
-                                  addressMapper: AddressMapper) {
+class DeclarationMapper @Inject()(addressMapper: AddressMapper) {
 
   def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType): Option[Declaration] = {
 
@@ -39,7 +38,7 @@ class DeclarationMapper @Inject()(nameMapper: NameMapper,
         declaration.map {
           dec =>
             Declaration(
-              name = nameMapper.build(dec.name),
+              name = dec.name,
               address = declarationAddress
             )
         }

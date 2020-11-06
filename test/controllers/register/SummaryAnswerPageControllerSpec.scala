@@ -117,8 +117,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     val userAnswers =
       TestUserAnswers.emptyUserAnswers
 
-        .set(DeceasedSettlorStatus, Status.Completed).success.value
-
         .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
         .set(AssetMoneyValuePage(index), "100").success.value
         .set(AssetStatus(index), Completed).success.value

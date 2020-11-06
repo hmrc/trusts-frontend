@@ -83,7 +83,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         "all sections are completed" in {
 
           val userAnswers = emptyUserAnswers
-            .set(DeceasedSettlorStatus, Status.Completed).success.value
             .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
             .set(AssetMoneyValuePage(0), "2000").success.value
             .set(AssetStatus(0), Completed).success.value

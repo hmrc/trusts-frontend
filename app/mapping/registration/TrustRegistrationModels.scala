@@ -18,8 +18,7 @@ package mapping.registration
 
 import java.time.LocalDate
 
-import mapping.TypeOfTrust
-import models.registration.pages.DeedOfVariation
+import models.core.pages.FullName
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -37,7 +36,6 @@ case class Registration(matchData: Option[MatchData],
 object Registration {
  implicit val registrationReads : Format[Registration] = Json.format[Registration]
 }
-
 
 case class Details(trust: Trust)
 
@@ -64,13 +62,6 @@ case class Correspondence(name: String)
 
 object Correspondence {
   implicit val correspondenceFormat : Format[Correspondence] = Json.format[Correspondence]
-
-}
-
-case class YearsReturns(returns: Option[List[YearReturnType]])
-
-object YearsReturns {
-  implicit val yearsReturnsFormat: Format[YearsReturns] = Json.format[YearsReturns]
 }
 
 case class Assets(monetary: Option[List[AssetMonetaryAmount]],
@@ -90,7 +81,7 @@ object AssetMonetaryAmount {
   implicit val assetMonetaryAmountFormat: Format[AssetMonetaryAmount] = Json.format[AssetMonetaryAmount]
 }
 
-case class Declaration(name: NameType,
+case class Declaration(name: FullName,
                        address: AddressType)
 
 object Declaration {
@@ -103,90 +94,8 @@ object Trust {
   implicit val trustFormat: Format[Trust] = Json.format[Trust]
 }
 
-case class TrustEntitiesType(
-                             deceased: Option[WillType],
-                             settlors: Option[Settlors])
-
-object TrustEntitiesType {
-  implicit val trustEntitiesTypeFormat: Format[TrustEntitiesType] = Json.format[TrustEntitiesType]
-}
-
-case class ProtectorsType(protector: Option[List[Protector]],
-                          protectorCompany: Option[List[ProtectorCompany]])
-
-object ProtectorsType {
-  implicit val protectorsTypeFormat: Format[ProtectorsType] = Json.format[ProtectorsType]
-}
-
-case class Protector(name: NameType,
-                     dateOfBirth: Option[LocalDate],
-                     identification: Option[IdentificationType])
-
-object Protector {
-  implicit val protectorFormat: Format[Protector] = Json.format[Protector]
-}
-
-case class ProtectorCompany(name: String,
-                            identification: IdentificationOrgType)
-
-object ProtectorCompany {
-  implicit val protectorCompanyFormat: Format[ProtectorCompany] = Json.format[ProtectorCompany]
-}
-
-
-case class TrusteeType(trusteeInd : Option[TrusteeIndividualType], trusteeOrg : Option[TrusteeOrgType] )
-
-object TrusteeType {
-  implicit val trusteeTypeFormat : Format[TrusteeType] = Json.format[TrusteeType]
-}
-
-case class TrusteeOrgType(name: String,
-                          phoneNumber: Option[String] = None,
-                          email: Option[String] = None,
-                          identification: IdentificationOrgType)
-
-object TrusteeOrgType {
-  implicit val trusteeOrgTypeFormat: Format[TrusteeOrgType] = Json.format[TrusteeOrgType]
-}
-
-case class TrusteeIndividualType(name: NameType,
-                       dateOfBirth: Option[LocalDate],
-                       phoneNumber: Option[String],
-                       identification: Option[IdentificationType])
-
-object TrusteeIndividualType {
-
-  implicit val trusteeIndividualTypeFormat : Format[TrusteeIndividualType] = Json.format[TrusteeIndividualType]
-}
-
-case class Settlors(settlor: Option[List[Settlor]],
-                    settlorCompany: Option[List[SettlorCompany]])
-
-object Settlors {
-  implicit val settlorsFormat: Format[Settlors] = Json.format[Settlors]
-}
-
-case class Settlor(name: NameType,
-                   dateOfBirth: Option[LocalDate],
-                   identification: Option[IdentificationType])
-
-object Settlor {
-
-  implicit val settlorFormat: Format[Settlor] = Json.format[Settlor]
-}
-
-case class SettlorCompany(name: String,
-                          companyType: Option[String],
-                          companyTime: Option[Boolean],
-                          identification: Option[IdentificationOrgType])
-
-object SettlorCompany {
-  implicit val settlorCompanyFormat: Format[SettlorCompany] = Json.format[SettlorCompany]
-}
-
-
 case class LeadTrusteeIndType (
-                            name: NameType,
+                            name: FullName,
                             dateOfBirth: LocalDate ,
                             phoneNumber: String,
                             email: Option[String] = None,
@@ -194,10 +103,7 @@ case class LeadTrusteeIndType (
                           )
 
 object LeadTrusteeIndType {
-
-
   implicit val leadTrusteeIndTypeFormat: Format[LeadTrusteeIndType] = Json.format[LeadTrusteeIndType]
-
 }
 
 case class LeadTrusteeOrgType(
@@ -220,119 +126,11 @@ object LeadTrusteeType {
   implicit val leadTrusteeTypeReads:Format[LeadTrusteeType] = Json.format[LeadTrusteeType]
 }
 
-
-case class BeneficiaryType(individualDetails: Option[List[IndividualDetailsType]],
-                           company: Option[List[CompanyType]],
-                           trust: Option[List[BeneficiaryTrustType]],
-                           charity: Option[List[CharityType]],
-                           unidentified: Option[List[UnidentifiedType]],
-                           large: Option[List[LargeType]],
-                           other: Option[List[OtherType]])
-
-object BeneficiaryType {
-  implicit val beneficiaryTypeFormat: Format[BeneficiaryType] = Json.format[BeneficiaryType]
-}
-
-case class IndividualDetailsType(name: NameType,
-                                 dateOfBirth: Option[LocalDate],
-                                 vulnerableBeneficiary: Boolean,
-                                 beneficiaryType: Option[String],
-                                 beneficiaryDiscretion: Boolean,
-                                 beneficiaryShareOfIncome: Option[String],
-                                 identification: Option[IdentificationType])
-
-object IndividualDetailsType {
-
-  implicit val individualDetailsTypeFormat: Format[IndividualDetailsType] = Json.format[IndividualDetailsType]
-}
-
-case class BeneficiaryTrustType(organisationName: String,
-                                beneficiaryDiscretion: Option[Boolean],
-                                beneficiaryShareOfIncome: Option[String],
-                                identification: IdentificationOrgType)
-
-object BeneficiaryTrustType {
-  implicit val beneficiaryTrustTypeFormat: Format[BeneficiaryTrustType] = Json.format[BeneficiaryTrustType]
-}
-
 case class IdentificationOrgType(utr: Option[String],
-                                          address: Option[AddressType])
+                                 address: Option[AddressType])
 
 object IdentificationOrgType {
   implicit val trustBeneficiaryIdentificationFormat: Format[IdentificationOrgType] = Json.format[IdentificationOrgType]
-}
-
-case class Identification(nino: Option[String],
-                          address: Option[AddressType])
-
-object Identification {
-  implicit val identificationFormat: Format[Identification] = Json.format[Identification]
-}
-
-case class CharityType(organisationName: String,
-                       beneficiaryDiscretion: Option[Boolean],
-                       beneficiaryShareOfIncome: Option[String],
-                       identification: IdentificationOrgType)
-
-object CharityType {
-  implicit val charityTypeFormat: Format[CharityType] = Json.format[CharityType]
-}
-
-case class TrustBeneficiaryCharityIdentification(utr: Option[String],
-                                                 address: Option[AddressType])
-
-object TrustBeneficiaryCharityIdentification {
-  implicit val trustBeneficiaryCharityIdentificationFormat: Format[TrustBeneficiaryCharityIdentification] = Json.format[TrustBeneficiaryCharityIdentification]
-}
-
-case class UnidentifiedType(description: String,
-                            beneficiaryDiscretion: Option[Boolean],
-                            beneficiaryShareOfIncome: Option[String])
-
-object UnidentifiedType {
-  implicit val unidentifiedTypeFormat: Format[UnidentifiedType] = Json.format[UnidentifiedType]
-}
-
-case class LargeType(organisationName: String,
-                     description: String,
-                     description1: Option[String],
-                     description2: Option[String],
-                     description3: Option[String],
-                     description4: Option[String],
-                     numberOfBeneficiary: String,
-                     identification: Option[IdentificationOrgType],
-                     beneficiaryDiscretion: Option[Boolean],
-                     beneficiaryShareOfIncome: Option[String])
-
-object LargeType {
-  implicit val largeTypeFormat: Format[LargeType] = Json.format[LargeType]
-}
-
-case class OtherType(description: String,
-                     address: Option[AddressType],
-                     beneficiaryDiscretion: Option[Boolean],
-                     beneficiaryShareOfIncome: Option[String])
-
-object OtherType {
-  implicit val otherTypeFormat: Format[OtherType] = Json.format[OtherType]
-}
-
-case class CompanyType(organisationName: String,
-                       beneficiaryDiscretion: Option[Boolean],
-                       beneficiaryShareOfIncome: Option[String],
-                       identification: IdentificationOrgType)
-
-object CompanyType {
-  implicit val companyTypeFormat: Format[CompanyType] = Json.format[CompanyType]
-}
-
-case class NaturalPersonType(name: NameType,
-                             dateOfBirth: Option[LocalDate],
-                             identification: Option[IdentificationType])
-
-object NaturalPersonType {
-
-  implicit val naturalPersonTypeFormat: Format[NaturalPersonType] = Json.format[NaturalPersonType]
 }
 
 case class IdentificationType(nino: Option[String],
@@ -342,41 +140,6 @@ case class IdentificationType(nino: Option[String],
 object IdentificationType {
   implicit val identificationTypeFormat: Format[IdentificationType] = Json.format[IdentificationType]
 }
-
-case class TrustDetailsType(typeOfTrust: TypeOfTrust,
-                            deedOfVariation: Option[DeedOfVariation],
-                            interVivos: Option[Boolean],
-                            efrbsStartDate: Option[LocalDate]
-                           )
-
-object TrustDetailsType {
-
-  implicit val trustDetailsTypeFormat: Format[TrustDetailsType] = Json.format[TrustDetailsType]
-}
-
-case class ResidentialStatusType(uk: Option[UkType],
-                                 nonUK: Option[NonUKType])
-
-object ResidentialStatusType {
-  implicit val residentialStatusTypeFormat: Format[ResidentialStatusType] = Json.format[ResidentialStatusType]
-}
-
-case class UkType(scottishLaw: Boolean,
-                  preOffShore: Option[String])
-
-object UkType {
-  implicit val ukTypeFormat: Format[UkType] = Json.format[UkType]
-}
-
-case class NonUKType(sch5atcgga92: Boolean,
-                     s218ihta84: Option[Boolean],
-                     agentS218IHTA84: Option[Boolean],
-                     trusteeStatus: Option[String])
-
-object NonUKType {
-  implicit val nonUKTypeFormat: Format[NonUKType] = Json.format[NonUKType]
-}
-
 
 case class PropertyLandType(buildingLandName: Option[String],
                             address: Option[AddressType],
@@ -407,7 +170,6 @@ case class PartnershipType(description: String,
                            partnershipStart: LocalDate)
 
 object PartnershipType {
-
   implicit val partnershipTypeFormat: Format[PartnershipType] = Json.format[PartnershipType]
 }
 
@@ -419,30 +181,6 @@ case class SharesType(numberOfShares: String,
 
 object SharesType {
   implicit val sharesTypeFormat: Format[SharesType] = Json.format[SharesType]
-}
-
-case class YearReturnType(taxReturnYear: String, taxConsequence: Boolean)
-
-object YearReturnType {
-  implicit val yearReturnTypeFormat: Format[YearReturnType] = Json.format[YearReturnType]
-}
-
-case class PassportType(number: String,
-                        expirationDate: LocalDate,
-                        countryOfIssue: String)
-
-object PassportType {
-
-  implicit val passportTypeFormat: Format[PassportType] = Json.format[PassportType]
-}
-
-
-case class NameType(firstName: String,
-                    middleName: Option[String],
-                    lastName: String)
-
-object NameType {
-  implicit val nameTypeFormat: Format[NameType] = Json.format[NameType]
 }
 
 case class AddressType(line1: String,
@@ -458,15 +196,12 @@ object AddressType {
   implicit val addressTypeFormat: Format[AddressType] = Json.format[AddressType]
 }
 
+case class PassportType(number: String,
+                        expirationDate: LocalDate,
+                        countryOfIssue: String)
 
-case class WillType(name: NameType,
-                    dateOfBirth: Option[LocalDate],
-                    dateOfDeath: Option[LocalDate],
-                    identification: Option[Identification])
-
-object WillType {
-
-  implicit val willTypeFormat: Format[WillType] = Json.format[WillType]
+object PassportType {
+  implicit val passportTypeFormat: Format[PassportType] = Json.format[PassportType]
 }
 
 case class AgentDetails(arn: String,
@@ -478,4 +213,3 @@ case class AgentDetails(arn: String,
 object AgentDetails {
   implicit val agentDetailsFormat: Format[AgentDetails] = Json.format[AgentDetails]
 }
-

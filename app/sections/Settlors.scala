@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package mapping.reads
+package sections
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object LivingSettlors extends QuestionPage[List[Settlor]] {
+case object Settlors extends QuestionPage[Nothing] {
 
-  override def path: JsPath = Settlors.path \ toString
+  override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "living"
+  override def toString: String = "settlors"
 
 }
