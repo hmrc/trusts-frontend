@@ -19,23 +19,17 @@ package utils
 import java.time.format.DateTimeFormatter
 
 import models.core.UserAnswers
-import models.core.pages.{Address, FullName, InternationalAddress, UKAddress}
-import models.registration.pages.PassportOrIdCardDetails
+import models.core.pages.{InternationalAddress, UKAddress}
 import pages.register.agents.AgentNamePage
 import pages.register.asset.business.BusinessNamePage
 import pages.register.asset.shares.ShareCompanyNamePage
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import uk.gov.hmrc.domain.Nino
 import utils.countryOptions.CountryOptions
 
 object CheckAnswersFormatters {
 
-  val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
-  def utr(answer: String): Html = {
-    HtmlFormat.escape(answer)
-  }
+  val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
   def yesOrNo(answer: Boolean)(implicit messages: Messages): Html = {
     if (answer) {
@@ -45,19 +39,12 @@ object CheckAnswersFormatters {
     }
   }
 
-  def formatNino(nino: String): String = Nino(nino).formatted
-
   def country(code: String, countryOptions: CountryOptions): String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
 
   def currency(value: String): Html = escape(s"£$value")
 
-  def percentage(value: String): Html = escape(s"$value%")
-
-  def answer[T](key: String, answer: T)(implicit messages: Messages): Html =
-    HtmlFormat.escape(messages(s"$key.$answer"))
-
-  def escape(x: String) = HtmlFormat.escape(x)
+  def escape(x: String): Html = HtmlFormat.escape(x)
 
   def shareCompName(index: Int, userAnswers: UserAnswers): String = {
     userAnswers.get(ShareCompanyNamePage(index)).getOrElse("")
@@ -94,29 +81,6 @@ object CheckAnswersFormatters {
       ).flatten
 
     Html(lines.mkString("<br />"))
-  }
-
-  def addressFormatter(address: Address, countryOptions: CountryOptions): Html = {
-    address match {
-      case a:UKAddress => ukAddress(a)
-      case a:InternationalAddress => internationalAddress(a, countryOptions)
-    }
-  }
-
-  def passportOrIDCard(passportOrIdCard: PassportOrIdCardDetails, countryOptions: CountryOptions): Html = {
-    val lines =
-      Seq(
-        Some(country(passportOrIdCard.country, countryOptions)),
-        Some(HtmlFormat.escape(passportOrIdCard.cardNumber)),
-        Some(HtmlFormat.escape(passportOrIdCard.expiryDate.format(dateFormatter)))
-      ).flatten
-
-    Html(lines.mkString("<br />"))
-  }
-
-  def fullName(fullname: FullName) = {
-    val middle = fullname.middleName.map(" " + _ + " ").getOrElse(" ")
-    s"${fullname.firstName}${middle}${fullname.lastName}"
   }
 
 }

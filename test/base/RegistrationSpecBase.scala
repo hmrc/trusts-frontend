@@ -21,7 +21,6 @@ import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
 import mapping.registration.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.core.UserAnswers
-import models.registration.pages.RegistrationStatus
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
@@ -38,13 +37,13 @@ import utils.annotations.{LivingSettlor, Partnership, PropertyOrLand}
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter with FakeTrustsApp {
   this: TestSuite =>
 
-  val fakeDraftId = TestUserAnswers.draftId
+  val fakeDraftId: String = TestUserAnswers.draftId
 
-  def emptyUserAnswers = TestUserAnswers.emptyUserAnswers
+  def emptyUserAnswers: UserAnswers = TestUserAnswers.emptyUserAnswers
 
   lazy val fakeNavigator = new FakeNavigator(fakeFrontendAppConfig)
 
-  val testLeadTrusteeOrg = LeadTrusteeType(
+  val testLeadTrusteeOrg: LeadTrusteeType = LeadTrusteeType(
     None,
     Some(LeadTrusteeOrgType(
       "Lead Org",
@@ -53,12 +52,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
       IdentificationOrgType(Some("utr"), None)))
   )
 
-  private def fakeDraftIdAction(userAnswers: Option[UserAnswers]) = new FakeDraftIdRetrievalActionProvider(
-      "draftId",
-      RegistrationStatus.InProgress,
-      userAnswers,
-      registrationsRepository
-    )
+  private def fakeDraftIdAction(userAnswers: Option[UserAnswers]) = new FakeDraftIdRetrievalActionProvider(userAnswers)
 
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation,
