@@ -18,8 +18,8 @@ package connector
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import mapping.registration.{AddressType, MatchData, RegistrationMapper}
-import models.core.http.{MatchedResponse, RegistrationTRNResponse, SuccessOrFailureResponse, TrustResponse}
+import mapping.registration.RegistrationMapper
+import models.core.http.{AddressType, MatchData, MatchedResponse, RegistrationTRNResponse, SuccessOrFailureResponse, TrustResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status

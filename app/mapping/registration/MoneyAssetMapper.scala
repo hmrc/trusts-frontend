@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.Mapping
 import mapping.reads.MoneyAsset
 import models.core.UserAnswers
+import models.core.http.AssetMonetaryAmount
 
 import scala.util.Try
 

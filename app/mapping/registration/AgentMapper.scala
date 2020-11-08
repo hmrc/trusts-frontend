@@ -19,6 +19,7 @@ package mapping.registration
 import javax.inject.Inject
 import mapping.Mapping
 import models.core.UserAnswers
+import models.core.http.AgentDetails
 import pages.register.agents._
 
 class AgentMapper @Inject()(addressMapper : AddressMapper) extends Mapping[AgentDetails] {

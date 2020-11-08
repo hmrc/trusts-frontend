@@ -17,6 +17,7 @@
 package mapping.registration
 
 import models.core.UserAnswers
+import models.core.http.MatchData
 import pages.register.{PostcodeForTheTrustPage, WhatIsTheUTRPage}
 
 class MatchingMapper {

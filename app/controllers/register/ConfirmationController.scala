@@ -19,9 +19,9 @@ package controllers.register
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
 import javax.inject.Inject
-import mapping.registration.LeadTrusteeType
 import models.NormalMode
 import models.core.UserAnswers
+import models.core.http.LeadTrusteeType
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}

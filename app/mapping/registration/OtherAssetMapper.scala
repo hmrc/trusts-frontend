@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.Mapping
 import mapping.reads.OtherAsset
 import models.core.UserAnswers
+import models.core.http.OtherAssetType
 
 class OtherAssetMapper @Inject() extends Mapping[List[OtherAssetType]] {
 

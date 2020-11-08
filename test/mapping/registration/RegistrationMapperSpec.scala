@@ -18,6 +18,7 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
+import models.core.http.AddressType
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers

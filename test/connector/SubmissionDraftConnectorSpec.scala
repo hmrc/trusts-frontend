@@ -20,8 +20,8 @@ import java.time.{LocalDate, LocalDateTime}
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
-import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
+import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.registration.pages.Status.{Completed, InProgress}
 import models.{RegistrationSubmission, SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

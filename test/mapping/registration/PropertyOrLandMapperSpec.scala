@@ -19,6 +19,7 @@ package mapping.registration
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping.Mapping
+import models.core.http.{AddressType, PropertyLandType}
 import models.core.pages.UKAddress
 import models.registration.pages.WhatKindOfAsset
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}

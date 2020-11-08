@@ -19,8 +19,8 @@ package base
 import config.FrontendAppConfig
 import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
-import mapping.registration.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.core.UserAnswers
+import models.core.http.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec

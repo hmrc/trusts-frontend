@@ -17,7 +17,8 @@
 package mapping.registration
 
 import javax.inject.Inject
-import models.core.UserAnswers
+import models.core.{UserAnswers, http}
+import models.core.http.{AddressType, Declaration}
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
 
@@ -37,7 +38,7 @@ class DeclarationMapper @Inject()(addressMapper: AddressMapper) {
       declarationAddress =>
         declaration.map {
           dec =>
-            Declaration(
+            http.Declaration(
               name = dec.name,
               address = declarationAddress
             )

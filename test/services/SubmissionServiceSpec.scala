@@ -21,11 +21,11 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
-import mapping.registration.{AddressType, LeadTrusteeType, Registration, RegistrationMapper}
+import mapping.registration.RegistrationMapper
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
-import models.core.http.{RegistrationTRNResponse, TrustResponse}
+import models.core.http.{AddressType, LeadTrusteeType, Registration, RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito.{verify, when}

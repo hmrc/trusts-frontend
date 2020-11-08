@@ -20,10 +20,9 @@ import com.google.inject.Inject
 import connector.TrustConnector
 import controllers.Assets.Redirect
 import controllers.register.routes._
-import mapping.registration.MatchData
 import models.core.UserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered
-import models.core.http.SuccessOrFailureResponse
+import models.core.http.{MatchData, SuccessOrFailureResponse}
 import models.registration.Matched
 import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
 import play.api.mvc.{Call, Result}

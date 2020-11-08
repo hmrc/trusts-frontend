@@ -18,7 +18,8 @@ package mapping.registration
 
 import javax.inject.Inject
 import mapping._
-import models.core.UserAnswers
+import models.core.{UserAnswers, http}
+import models.core.http.Assets
 import play.api.Logger
 
 class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper,
@@ -46,7 +47,7 @@ class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper,
         None
       case _ =>
         Some(
-          Assets(
+          http.Assets(
             monetary = money,
             propertyOrLand = propertyOrLand,
             shares = shares,
