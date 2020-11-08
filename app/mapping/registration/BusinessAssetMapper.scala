@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.Mapping
 import mapping.reads.BusinessAsset
 import models.core.UserAnswers
+import models.core.http.BusinessAssetType
 
 class BusinessAssetMapper @Inject()(addressMapper: AddressMapper) extends Mapping[List[BusinessAssetType]] {
 

@@ -19,8 +19,8 @@ package controllers.register
 import java.time.LocalDate
 
 import base.RegistrationSpecBase
-import mapping.registration.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType}
 import models.NormalMode
+import models.core.http.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType}
 import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
 import org.mockito.Matchers.any

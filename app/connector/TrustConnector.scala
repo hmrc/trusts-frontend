@@ -18,8 +18,7 @@ package connector
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import mapping.registration.MatchData
-import models.core.http.{MatchedResponse, TrustResponse}
+import models.core.http.{MatchData, MatchedResponse, TrustResponse}
 import play.api.libs.json.{JsValue, Writes}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient

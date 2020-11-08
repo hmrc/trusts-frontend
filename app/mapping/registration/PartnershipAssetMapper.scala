@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.Mapping
 import mapping.reads.PartnershipAsset
 import models.core.UserAnswers
+import models.core.http.PartnershipType
 
 class PartnershipAssetMapper @Inject() extends Mapping[List[PartnershipType]] {
 

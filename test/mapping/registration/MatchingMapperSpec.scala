@@ -18,6 +18,7 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
+import models.core.http.MatchData
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.{PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier

@@ -18,6 +18,7 @@ package mapping.registration
 
 import javax.inject.Inject
 import models.core.UserAnswers
+import models.core.http.{AddressType, Registration, Trust}
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,

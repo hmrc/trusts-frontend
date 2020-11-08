@@ -20,9 +20,9 @@ import java.time.{LocalDate, LocalDateTime}
 
 import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
-import mapping.registration.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
+import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.registration.pages.Status.{Completed, InProgress}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when}

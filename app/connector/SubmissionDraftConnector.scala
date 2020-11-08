@@ -20,8 +20,8 @@ import java.time.LocalDate
 
 import config.FrontendAppConfig
 import javax.inject.Inject
-import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
+import models.core.http.{AddressType, LeadTrusteeType}
 import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -30,6 +30,7 @@ import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import scala.concurrent.{ExecutionContext, Future}
 
 class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
+
   private val mainSection = "main"
   private val beneficiariesSection = "beneficiaries"
   private val registrationSection = "registration"
@@ -43,7 +44,7 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config : FrontendAppC
   }
 
   def setDraftMain(draftId : String, draftData: JsValue, inProgress: Boolean, reference: Option[String])
-                     (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
+                  (implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
     val submissionDraftData = SubmissionDraftData(draftData, reference, Some(inProgress))
     http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/$mainSection", Json.toJson(submissionDraftData))
   }

@@ -21,6 +21,7 @@ import java.time.LocalDate
 import base.SpecBaseHelpers
 import generators.Generators
 import mapping._
+import models.core.http.{AddressType, AssetMonetaryAmount, Assets, BusinessAssetType, OtherAssetType, PartnershipType, PropertyLandType, SharesType}
 import models.core.pages.UKAddress
 import models.registration.pages.Status.Completed
 import models.registration.pages.WhatKindOfAsset

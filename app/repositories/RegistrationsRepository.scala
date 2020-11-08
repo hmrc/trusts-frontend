@@ -20,9 +20,9 @@ import java.time.LocalDate
 
 import connector.SubmissionDraftConnector
 import javax.inject.Inject
-import mapping.registration.{AddressType, LeadTrusteeType}
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
+import models.core.http.{AddressType, LeadTrusteeType}
 import models.registration.pages.RegistrationStatus.InProgress
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http

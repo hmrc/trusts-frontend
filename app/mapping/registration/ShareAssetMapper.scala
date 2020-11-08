@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.Mapping
 import mapping.reads.{Asset, ShareNonPortfolioAsset, SharePortfolioAsset}
 import models.core.UserAnswers
+import models.core.http.SharesType
 import models.registration.pages.ShareClass
 import models.registration.pages.WhatKindOfAsset.Shares
 

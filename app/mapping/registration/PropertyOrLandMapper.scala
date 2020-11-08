@@ -20,6 +20,7 @@ import javax.inject.Inject
 import mapping.Mapping
 import mapping.reads.PropertyOrLandAsset
 import models.core.UserAnswers
+import models.core.http.PropertyLandType
 
 class PropertyOrLandMapper @Inject()(addressMapper: AddressMapper) extends Mapping[List[PropertyLandType]]{
     override def build(userAnswers: UserAnswers): Option[List[PropertyLandType]] = {

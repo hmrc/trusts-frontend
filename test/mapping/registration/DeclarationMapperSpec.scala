@@ -18,6 +18,7 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
+import models.core.http.{AddressType, Declaration}
 import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.DeclarationPage
