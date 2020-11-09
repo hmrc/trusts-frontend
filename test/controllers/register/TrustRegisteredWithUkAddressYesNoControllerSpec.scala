@@ -19,8 +19,9 @@ package controllers.register
 import base.RegistrationSpecBase
 import controllers.Assets.Redirect
 import controllers.register.routes._
+import controllers.register.agents.routes.AgentInternalReferenceController
 import forms.YesNoFormProvider
-import models.NormalMode
+import models.{Mode, NormalMode}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
@@ -29,6 +30,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.MatchingService
+import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.TrustRegisteredWithUkAddressYesNoView
 
 import scala.concurrent.Future
@@ -37,9 +39,12 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("trustRegisteredWithUkAddress")
 
+  private val mode: Mode = NormalMode
+
   private lazy val trustRegisteredWithUkAddressYesNoRoute: String = routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId).url
   private lazy val postcodeRoute: String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId).url
   private lazy val taskListRoute: String = routes.TaskListController.onPageLoad(fakeDraftId).url
+  private lazy val agentDetailsRoute: String = AgentInternalReferenceController.onPageLoad(mode, fakeDraftId).url
 
   "TrustRegisteredWithUkAddressYesNo Controller" must {
 
@@ -98,10 +103,10 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       application.stop()
     }
 
-    "redirect to Task List when valid data is submitted" in {
+    "redirect to Task List when non-agent and valid data is submitted" in {
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
+      when(mockMatchingService.matching(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -117,6 +122,29 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual taskListRoute
+
+      application.stop()
+    }
+
+    "redirect to Agent Details when agent and valid data is submitted" in {
+
+      val mockMatchingService: MatchingService = mock[MatchingService]
+      when(mockMatchingService.matching(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(agentDetailsRoute)))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+          .overrides(bind[MatchingService].toInstance(mockMatchingService))
+          .build()
+
+      val request =
+        FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
+          .withFormUrlEncodedBody(("value", "false"))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual agentDetailsRoute
 
       application.stop()
     }

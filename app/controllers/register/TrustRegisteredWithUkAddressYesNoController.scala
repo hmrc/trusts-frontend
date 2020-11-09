@@ -20,10 +20,11 @@ import controllers.actions._
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.requests.RegistrationDataRequest
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import services.MatchingService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -43,7 +44,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject()(
 
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("trustRegisteredWithUkAddress")
 
-  private def actions(draftId: String) =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
@@ -72,7 +73,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject()(
               if (value) {
                 Future.successful(Redirect(routes.PostcodeForTheTrustController.onPageLoad(mode, draftId)))
               } else {
-                matchingService.matching(updatedAnswers, draftId)
+                matchingService.matching(updatedAnswers, draftId, request.isAgent, mode)
               }
             }
           } yield redirect
