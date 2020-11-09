@@ -26,8 +26,7 @@ case class OptionalRegistrationDataRequest[A](request: Request[A],
                                               userAnswers: Option[UserAnswers],
                                               affinityGroup: AffinityGroup,
                                               enrolments: Enrolments,
-                                              agentARN: Option[String] = None)
-  extends WrappedRequest[A](request)
+                                              agentARN: Option[String] = None) extends WrappedRequest[A](request)
 
 case class RegistrationDataRequest[A](request: Request[A],
                                       internalId: String,
@@ -35,5 +34,7 @@ case class RegistrationDataRequest[A](request: Request[A],
                                       userAnswers: UserAnswers,
                                       affinityGroup: AffinityGroup,
                                       enrolments: Enrolments,
-                                      agentARN: Option[String] = None)
-  extends WrappedRequest[A](request)
+                                      agentARN: Option[String] = None) extends WrappedRequest[A](request) {
+
+  def isAgent: Boolean = affinityGroup == AffinityGroup.Agent
+}

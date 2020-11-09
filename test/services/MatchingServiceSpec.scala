@@ -22,6 +22,7 @@ import controllers.Assets.Redirect
 import models.core.UserAnswers
 import models.core.http.MatchedResponse._
 import models.core.http.SuccessOrFailureResponse
+import models.{Mode, NormalMode}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
@@ -36,7 +37,9 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
   private val mockConnector: TrustConnector = mock[TrustConnector]
 
-  "Matching Service" must {
+  private val mode: Mode = NormalMode
+
+  "Matching Service" when {
 
     val service = new MatchingService(mockConnector, registrationsRepository)
 
@@ -45,47 +48,70 @@ class MatchingServiceSpec extends RegistrationSpecBase {
       .set(MatchingNamePage, "name").success.value
       .set(PostcodeForTheTrustPage, "postcode").success.value
 
-    "redirect to TaskList when Success response" in {
+    "Success response" when {
+      "agent" must {
+        "redirect to client internal reference page" in {
 
-      when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
+          when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
-      val result = Await.result(service.matching(userAnswers, fakeDraftId), Duration.Inf)
+          val result = Await.result(service.matching(userAnswers, fakeDraftId, isAgent = true, mode), Duration.Inf)
 
-      result mustBe Redirect(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+          result mustBe Redirect(controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(mode, fakeDraftId))
+        }
+      }
+
+      "non-agent" must {
+        "redirect to task list" in {
+          
+          when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
+
+          val result = Await.result(service.matching(userAnswers, fakeDraftId, isAgent = false, mode), Duration.Inf)
+
+          result mustBe Redirect(controllers.register.routes.TaskListController.onPageLoad(fakeDraftId))
+        }
+      }
     }
 
-    "redirect to FailedMatch when Failed response" in {
+    "Failed response" must {
+      "redirect to FailedMatch" in {
 
-      when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(false)))
+        when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(false)))
 
-      val result = Await.result(service.matching(userAnswers, fakeDraftId), Duration.Inf)
+        val result = Await.result(service.matching(userAnswers, fakeDraftId, isAgent = false, mode), Duration.Inf)
 
-      result mustBe Redirect(controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId))
+        result mustBe Redirect(controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId))
+      }
     }
 
-    "redirect to TrustAlreadyRegistered when AlreadyRegistered response" in {
+    "AlreadyRegistered response" must {
+      "redirect to TrustAlreadyRegistered" in {
 
-      when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(AlreadyRegistered))
+        when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(AlreadyRegistered))
 
-      val result = Await.result(service.matching(userAnswers, fakeDraftId), Duration.Inf)
+        val result = Await.result(service.matching(userAnswers, fakeDraftId, isAgent = false, mode), Duration.Inf)
 
-      result mustBe Redirect(controllers.register.routes.TrustAlreadyRegisteredController.onPageLoad(fakeDraftId))
+        result mustBe Redirect(controllers.register.routes.TrustAlreadyRegisteredController.onPageLoad(fakeDraftId))
+      }
     }
 
-    "redirect to MatchingDown when InternalServerError response" in {
+    "InternalServerError response" must {
+      "redirect to MatchingDown" in {
 
-      when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(InternalServerError))
+        when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(InternalServerError))
 
-      val result = Await.result(service.matching(userAnswers, fakeDraftId), Duration.Inf)
+        val result = Await.result(service.matching(userAnswers, fakeDraftId, isAgent = false, mode), Duration.Inf)
 
-      result mustBe Redirect(controllers.register.routes.MatchingDownController.onPageLoad())
+        result mustBe Redirect(controllers.register.routes.MatchingDownController.onPageLoad())
+      }
     }
 
-    "redirect to FailedMatch when WhatIsUtrPage and/or TrustNamePage not answered" in {
+    "WhatIsUtrPage and/or TrustNamePage not answered" must {
+      "redirect to FailedMatch" in {
 
-      val result = Await.result(service.matching(emptyUserAnswers, fakeDraftId), Duration.Inf)
+        val result = Await.result(service.matching(emptyUserAnswers, fakeDraftId, isAgent = false, mode), Duration.Inf)
 
-      result mustBe Redirect(controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId))
+        result mustBe Redirect(controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId))
+      }
     }
   }
 }

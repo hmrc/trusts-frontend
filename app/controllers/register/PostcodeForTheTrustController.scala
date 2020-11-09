@@ -20,10 +20,11 @@ import controllers.actions.StandardActionSets
 import forms.PostcodeForTheTrustFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.requests.RegistrationDataRequest
 import pages.register.PostcodeForTheTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import services.MatchingService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -41,7 +42,7 @@ class PostcodeForTheTrustController @Inject()(
                                                view: PostcodeForTheTrustView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
 
   private val form: Form[String] = formProvider()
@@ -68,7 +69,7 @@ class PostcodeForTheTrustController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PostcodeForTheTrustPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-            redirect <- matchingService.matching(updatedAnswers, draftId)
+            redirect <- matchingService.matching(updatedAnswers, draftId, request.isAgent, mode)
           } yield redirect
         }
       )

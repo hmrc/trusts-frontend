@@ -19,7 +19,9 @@ package services
 import com.google.inject.Inject
 import connector.TrustConnector
 import controllers.Assets.Redirect
+import controllers.register.agents.{routes => agentRoutes}
 import controllers.register.routes._
+import models.Mode
 import models.core.UserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered
 import models.core.http.{MatchData, SuccessOrFailureResponse}
@@ -34,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class MatchingService @Inject()(trustConnector: TrustConnector,
                                 registrationsRepository: RegistrationsRepository) {
 
-  def matching(userAnswers: UserAnswers, draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
+  def matching(userAnswers: UserAnswers, draftId: String, isAgent: Boolean, mode: Mode)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
 
     def saveTrustMatchedStatusAndRedirect(trustMatchedStatus: Matched, redirect: Call): Future[Result] = {
       for {
@@ -49,6 +51,8 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
       postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
     } yield {
       trustConnector.matching(MatchData(utr, name, postcode)) flatMap {
+        case SuccessOrFailureResponse(true) if isAgent =>
+          saveTrustMatchedStatusAndRedirect(Matched.Success, agentRoutes.AgentInternalReferenceController.onPageLoad(mode, draftId))
         case SuccessOrFailureResponse(true) =>
           saveTrustMatchedStatusAndRedirect(Matched.Success, TaskListController.onPageLoad(draftId))
         case SuccessOrFailureResponse(false) =>
