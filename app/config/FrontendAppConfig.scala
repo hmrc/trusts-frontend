@@ -110,7 +110,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val enableWhitelist : Boolean = configuration.get[String]("microservice.services.features.whitelist.enabled").toBoolean
 
-  lazy val campaignWhitelistEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.campaignWhitelist.enabled")
   lazy val auditSubmissions : Boolean =
     configuration.get[Boolean]("microservice.services.features.auditing.submissions.enabled")
 
