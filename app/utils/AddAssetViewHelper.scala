@@ -24,6 +24,7 @@ import sections.Assets
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 import controllers.register.asset._
+import utils.CheckAnswersFormatters.currencyFormat
 
 class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(implicit messages: Messages) {
 
@@ -54,8 +55,13 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
   }
 
   private def parseMoney(mvm: MoneyAssetViewModel, index: Int) : AddRow = {
+    val defaultValue = messages("entities.no.value.added")
+
     AddRow(
-      mvm.value,
+      mvm.value match {
+        case Some(value) => currencyFormat(value)
+        case _ => defaultValue
+      },
       mvm.`type`.toString,
       money.routes.AssetMoneyValueController.onPageLoad(mode, index, draftId).url,
       routes.RemoveAssetYesNoController.onPageLoad(index, draftId).url

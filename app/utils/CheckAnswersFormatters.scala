@@ -38,7 +38,9 @@ object CheckAnswersFormatters {
   def country(code: String, countryOptions: CountryOptions): String =
     countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
 
-  def currency(value: String): Html = escape(s"£$value")
+  def currency(value: String): Html = escape(currencyFormat(value))
+
+  def currencyFormat(value: String): String = s"£$value"
 
   def escape(x: String): Html = HtmlFormat.escape(x)
 
