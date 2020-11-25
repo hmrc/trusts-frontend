@@ -26,17 +26,14 @@ import models.registration.pages.WhatKindOfAsset.Partnership
 import pages.entitystatus.AssetStatus
 import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import viewmodels.AnswerSection
 import views.html.register.asset.partnership.PartnershipAnswersView
 
 class PartnershipAnswerControllerSpec extends RegistrationSpecBase {
-
-  def onwardRoute = Call("GET", "/foo")
 
   val index: Int = 0
   val validDate: LocalDate = LocalDate.now(ZoneOffset.UTC)
@@ -55,7 +52,8 @@ class PartnershipAnswerControllerSpec extends RegistrationSpecBase {
             .set(AssetStatus(index), Completed).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+        val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(

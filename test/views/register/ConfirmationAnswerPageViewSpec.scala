@@ -68,7 +68,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val formatter = injector.instanceOf[DateFormatter]
 
-    val trnDateTime: String = formatter.formatDate(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
+    val trnDateTime: String = formatter.formatDateTime(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 

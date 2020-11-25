@@ -27,8 +27,8 @@ import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.property_or_land._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import viewmodels.AnswerSection
 import views.html.register.asset.property_or_land.PropertyOrLandAnswersView
 
@@ -40,6 +40,9 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
   private val trustValue: Long = 10
 
   private lazy val propertyOrLandAnswerRoute: String = routes.PropertyOrLandAnswerController.onPageLoad(index, fakeDraftId).url
+
+  private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
+  private val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
 
   "PropertyOrLandAnswer Controller" must {
 
@@ -56,8 +59,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
 
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -104,8 +106,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(PropertyLandValueTrustPage(index), trustValue).success.value
             .set(AssetStatus(index), Completed).success.value
 
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -153,8 +154,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
 
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -203,8 +203,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(PropertyLandValueTrustPage(index), trustValue).success.value
             .set(AssetStatus(index), Completed).success.value
 
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -253,8 +252,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(TrustOwnAllThePropertyOrLandPage(index), true).success.value
             .set(AssetStatus(index), Completed).success.value
 
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(
@@ -303,8 +301,7 @@ class PropertyOrLandAnswerControllerSpec extends RegistrationSpecBase {
             .set(PropertyLandValueTrustPage(index), trustValue).success.value
             .set(AssetStatus(index), Completed).success.value
 
-        val countryOptions = injector.instanceOf[CountryOptions]
-        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+        val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(
           AnswerSection(

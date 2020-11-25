@@ -17,7 +17,6 @@
 package controllers.register
 
 import config.FrontendAppConfig
-import connector.TrustClaim.getClass
 import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import javax.inject.Inject
 import models.NormalMode

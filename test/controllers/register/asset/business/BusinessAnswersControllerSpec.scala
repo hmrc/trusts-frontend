@@ -23,7 +23,7 @@ import models.core.pages.UKAddress
 import pages.register.asset.business._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.CheckYourAnswersHelper
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.asset.buisness.BusinessAnswersView
@@ -46,8 +46,8 @@ class BusinessAnswersControllerSpec extends RegistrationSpecBase {
 
 
       val countryOptions = injector.instanceOf[CountryOptions]
-
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
+      val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(

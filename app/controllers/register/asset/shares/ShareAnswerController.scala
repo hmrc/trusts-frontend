@@ -18,19 +18,19 @@ package controllers.register.asset.shares
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.entitystatus.AssetStatus
 import pages.register.asset.shares.{ShareAnswerPage, SharesInAPortfolioPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import viewmodels.AnswerSection
 import views.html.register.asset.shares.ShareAnswersView
 
@@ -44,13 +44,13 @@ class ShareAnswerController @Inject()(
                                        getData: DraftIdRetrievalActionProvider,
                                        requireData: RegistrationDataRequiredAction,
                                        requiredAnswer: RequiredAnswerActionProvider,
-                                       validateIndex: IndexActionFilterProvider,
                                        view: ShareAnswersView,
                                        countryOptions: CountryOptions,
-                                       val controllerComponents: MessagesControllerComponents
+                                       val controllerComponents: MessagesControllerComponents,
+                                       dateFormatter: DateFormatterImpl
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index: Int, draftId: String) =
+  private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen
       getData(draftId) andThen
       requireData andThen
@@ -60,7 +60,7 @@ class ShareAnswerController @Inject()(
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
+      val answers = new CheckYourAnswersHelper(countryOptions, dateFormatter)(request.userAnswers, draftId, canEdit = true)
 
       val sections = Seq(
         AnswerSection(

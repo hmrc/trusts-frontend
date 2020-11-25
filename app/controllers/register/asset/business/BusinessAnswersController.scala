@@ -20,13 +20,14 @@ import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed
+import models.requests.RegistrationDataRequest
 import pages.entitystatus.AssetStatus
 import pages.register.asset.business.BusinessNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.asset.buisness.BusinessAnswersView
@@ -39,16 +40,20 @@ class BusinessAnswersController @Inject()(
                                            view: BusinessAnswersView,
                                            countryOptions: CountryOptions,
                                            actionSet: StandardActionSets,
-                                           val controllerComponents: MessagesControllerComponents
+                                           val controllerComponents: MessagesControllerComponents,
+                                           dateFormatter: DateFormatterImpl
                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index: Int, draftId: String) =
-    actionSet.identifiedUserWithRequiredAnswer(draftId, RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId)))
+  private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
+    actionSet.identifiedUserWithRequiredAnswer(
+      draftId,
+      RequiredAnswer(BusinessNamePage(index), routes.BusinessNameController.onPageLoad(NormalMode, index, draftId))
+    )
 
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
+      val answers = new CheckYourAnswersHelper(countryOptions, dateFormatter)(request.userAnswers, draftId, canEdit = true)
 
       val sections = Seq(
         AnswerSection(

@@ -25,7 +25,7 @@ import navigation.registration.{PartnershipNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultRegistrationsRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
 import utils.annotations.{Partnership, PropertyOrLand}
-import utils.{DateFormatter, TrustsDateFormatter}
+import utils.{DateFormatter, DateFormatterImpl}
 
 class Module extends AbstractModule {
 
@@ -47,6 +47,6 @@ class Module extends AbstractModule {
     bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
     bind(classOf[Navigator]).annotatedWith(classOf[Partnership]).to(classOf[PartnershipNavigator])
 
-    bind(classOf[DateFormatter]).to(classOf[TrustsDateFormatter])
+    bind(classOf[DateFormatter]).to(classOf[DateFormatterImpl])
   }
 }

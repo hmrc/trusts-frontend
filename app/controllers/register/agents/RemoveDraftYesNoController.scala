@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import play.api.Logger
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -83,7 +83,7 @@ class RemoveDraftYesNoController @Inject()(
   }
 
   private def clientReferenceNumber(draftId: String)
-                                   (implicit hc: HeaderCarrier): Future[Either[Result, String]] = {
+                                   (implicit hc: HeaderCarrier, messages: Messages): Future[Either[Result, String]] = {
     registrationsRepository.getDraft(draftId).map {
       case Some(draft) =>
         Right(draft.agentInternalRef)

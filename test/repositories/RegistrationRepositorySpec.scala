@@ -18,7 +18,7 @@ package repositories
 
 import java.time.{LocalDate, LocalDateTime}
 
-import config.FrontendAppConfig
+import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
@@ -28,28 +28,25 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
-import org.scalatestplus.play.PlaySpec
 import play.api.http
 import play.api.libs.json.{JsArray, Json}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import utils.TrustsDateFormatter
+import utils.DateFormatterImpl
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{Await, Future}
 
-class RegistrationRepositorySpec extends PlaySpec with MustMatchers with MockitoSugar {
+class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers with MockitoSugar {
 
   private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
 
-  private implicit val executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
-
   private def createRepository(mockConnector: SubmissionDraftConnector) = {
-    val mockConfig = mock[FrontendAppConfig]
-    when(mockConfig.ttlInSeconds).thenReturn(60*60*24*3)   // 3 days
+    val mockDateFormatter: DateFormatterImpl = mock[DateFormatterImpl]
+    when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
 
-    new DefaultRegistrationsRepository(new TrustsDateFormatter(mockConfig), mockConnector)
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
   }
 
   "RegistrationRepository" when {
@@ -108,7 +105,6 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
 
     "listing drafts" must {
       "return the drafts received from connector" in {
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -122,20 +118,19 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
           ),
           SubmissionDraftId(
             "draft2",
-            LocalDateTime.of(2011, 1, 2, 9, 42, 0),
+            LocalDateTime.of(2012, 2, 1, 12, 30, 0),
             Some("reference2")
           )
         )
 
         when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
 
-        val result = Await.result(repository.listDrafts(), Duration.Inf)
+        val result = Await.result(repository.listDrafts()(any(), any()), Duration.Inf)
 
         result mustBe List(
           DraftRegistration("draft1", "reference1", "4 February 2012"),
-          DraftRegistration("draft2", "reference2", "5 January 2011")
+          DraftRegistration("draft2", "reference2", "4 February 2012")
         )
-        verify(mockConnector).getCurrentDraftIds()(hc, executionContext)
       }
     }
 
@@ -457,39 +452,27 @@ class RegistrationRepositorySpec extends PlaySpec with MustMatchers with Mockito
         ),
         SubmissionDraftId(
           "draft2",
-          LocalDateTime.of(2011, 1, 2, 9, 42, 0),
+          LocalDateTime.of(2012, 2, 1, 12, 30, 0),
           Some("reference2")
         )
       )
 
+      val mockConnector = mock[SubmissionDraftConnector]
+      val repository = createRepository(mockConnector)
+      when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+
       "return draft from list of current drafts if it exists" in {
 
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-        val mockConnector = mock[SubmissionDraftConnector]
-
-        val repository = createRepository(mockConnector)
-
-        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
-
-        val result1 = Await.result(repository.getDraft("draft1"), Duration.Inf)
+        val result1 = Await.result(repository.getDraft("draft1")(any(), any()), Duration.Inf)
         result1 mustBe Some(DraftRegistration("draft1", "reference1", "4 February 2012"))
 
-        val result2 = Await.result(repository.getDraft("draft2"), Duration.Inf)
-        result2 mustBe Some(DraftRegistration("draft2", "reference2", "5 January 2011"))
+        val result2 = Await.result(repository.getDraft("draft2")(any(), any()), Duration.Inf)
+        result2 mustBe Some(DraftRegistration("draft2", "reference2", "4 February 2012"))
       }
 
       "return None if draft is not found" in {
 
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-        val mockConnector = mock[SubmissionDraftConnector]
-
-        val repository = createRepository(mockConnector)
-
-        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
-
-        val result1 = Await.result(repository.getDraft("draft3"), Duration.Inf)
+        val result1 = Await.result(repository.getDraft("draft3")(any(), any()), Duration.Inf)
         result1 mustBe None
       }
     }

@@ -26,6 +26,7 @@ import models.core.http.{AddressType, LeadTrusteeType}
 import models.registration.pages.RegistrationStatus.InProgress
 import pages.register.agents.AgentInternalReferencePage
 import play.api.http
+import play.api.i18n.Messages
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.DateFormatter
@@ -47,7 +48,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.getCurrentDraftIds().map(_.headOption.map(_.draftId))
   }
 
-  override def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]] = {
+  override def listDrafts()(implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] = {
     submissionDraftConnector.getCurrentDraftIds().map {
       draftIds =>
         draftIds.flatMap {
@@ -125,7 +126,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   override def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String] =
     submissionDraftConnector.getTrustName(draftId)
 
-  override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier): Future[Option[DraftRegistration]] =
+  override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]] =
     listDrafts().map {
       drafts =>
         drafts.find(_.draftId == draftId)
@@ -140,7 +141,7 @@ trait RegistrationsRepository {
 
   def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
 
-  def listDrafts()(implicit hc: HeaderCarrier) : Future[List[DraftRegistration]]
+  def listDrafts()(implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]]
 
   def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]]
 
@@ -160,7 +161,7 @@ trait RegistrationsRepository {
 
   def getTrustName(draftId: String)(implicit hc:HeaderCarrier) : Future[String]
 
-  def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[Option[DraftRegistration]]
+  def getDraft(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]]
 
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 }

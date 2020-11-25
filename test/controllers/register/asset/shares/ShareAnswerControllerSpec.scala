@@ -25,16 +25,19 @@ import pages.register.asset.WhatKindOfAssetPage
 import pages.register.asset.shares._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import viewmodels.AnswerSection
 import views.html.register.asset.shares.ShareAnswersView
 
 class ShareAnswerControllerSpec extends RegistrationSpecBase {
 
-  val index: Int = 0
+  private val index: Int = 0
 
-  lazy val shareAnswerRoute = routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
+  private lazy val shareAnswerRoute: String = routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
+
+  private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
+  private val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
 
   "ShareAnswer Controller" must {
 
@@ -50,8 +53,7 @@ class ShareAnswerControllerSpec extends RegistrationSpecBase {
         .set(ShareValueInTrustPage(index), "10").success.value
         .set(AssetStatus(index), Completed).success.value
 
-      val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -94,8 +96,7 @@ class ShareAnswerControllerSpec extends RegistrationSpecBase {
           .set(SharePortfolioQuantityInTrustPage(index), "2000").success.value
           .set(SharePortfolioValueInTrustPage(index), "20").success.value
 
-      val countryOptions = injector.instanceOf[CountryOptions]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, canEdit = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(

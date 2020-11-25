@@ -25,7 +25,7 @@ import pages.register.agents._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import utils.CheckYourAnswersHelper
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.agents.AgentAnswerView
@@ -33,7 +33,10 @@ import views.html.register.agents.AgentAnswerView
 
 class AgentAnswerControllerSpec extends RegistrationSpecBase {
 
-  val agentID: AffinityGroup.Agent.type = AffinityGroup.Agent
+  private val agentID: AffinityGroup.Agent.type = AffinityGroup.Agent
+
+  private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
+  private val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
 
   "AgentAnswer Controller" must {
 
@@ -47,10 +50,7 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
 
-
-      val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -91,10 +91,7 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
 
-
-      val countryOptions = injector.instanceOf[CountryOptions]
-
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(

@@ -19,13 +19,14 @@ package controllers.register.agents
 import controllers.actions._
 import javax.inject.Inject
 import models.NormalMode
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.register.agents.AgentAnswerPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.MessagesControllerComponents
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, DateFormatterImpl}
 import viewmodels.AnswerSection
 import views.html.register.agents.AgentAnswerView
 
@@ -34,16 +35,18 @@ class AgentAnswerController @Inject()(
                                        navigator: Navigator,
                                        actionSet: AgentActionSets,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: AgentAnswerView, countryOptions : CountryOptions
+                                       view: AgentAnswerView,
+                                       countryOptions : CountryOptions,
+                                       dateFormatter: DateFormatterImpl
                                      ) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     actionSet.identifiedUserWithData(draftId)
 
-  def onPageLoad(draftId: String)= actions(draftId) {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatter)(request.userAnswers, draftId, canEdit = true)
 
       val sections = Seq(
         AnswerSection(
@@ -62,7 +65,7 @@ class AgentAnswerController @Inject()(
       Ok(view(draftId ,sections))
   }
 
-  def onSubmit(draftId: String) = actions(draftId) {
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
       Redirect(navigator.nextPage(AgentAnswerPage ,NormalMode, draftId)(request.userAnswers))
   }
