@@ -1,3 +1,7 @@
+date.day = Diwrnod
+date.month = Mis
+date.year = Blwyddyn
+
 agentInternalReference.title = Beth yw’ch cyfeirnod mewnol ar gyfer y cleient hwn?
 agentInternalReference.heading = Beth yw’ch cyfeirnod mewnol ar gyfer y cleient hwn?
 agentInternalReference.checkYourAnswersLabel = Beth yw’ch cyfeirnod mewnol ar gyfer y cleient hwn?
