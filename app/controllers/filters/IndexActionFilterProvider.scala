@@ -17,7 +17,6 @@
 package controllers.filters
 
 import com.google.inject.Inject
-import connector.TrustClaim.getClass
 import handlers.ErrorHandler
 import models.requests.RegistrationDataRequest
 import play.api.Logger

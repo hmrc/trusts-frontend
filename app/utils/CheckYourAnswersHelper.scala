@@ -36,17 +36,15 @@ import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
-                                      (userAnswers: UserAnswers,
-                                       draftId: String,
-                                       canEdit: Boolean)
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions, dateFormatter: DateFormatter)
+                                      (userAnswers: UserAnswers, draftId: String, canEdit: Boolean)
                                       (implicit messages: Messages) {
 
   def partnershipStartDate(index: Int): Option[AnswerRow] = userAnswers.get(PartnershipStartDatePage(index)) map {
     x =>
       AnswerRow(
         "partnershipStartDate.checkYourAnswersLabel",
-        HtmlFormat.escape(x.format(dateFormatter)),
+        HtmlFormat.escape(dateFormatter.formatDate(x)),
         Some(controllers.register.asset.partnership.routes.PartnershipStartDateController.onPageLoad(NormalMode, index, draftId).url),
         canEdit = canEdit
       )

@@ -20,16 +20,17 @@ import controllers.actions.StandardActionSets
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.Mode
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.register.suitability.TaxLiabilityInCurrentTaxYearYesNoPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import services.LocalDateService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import uk.gov.hmrc.time.TaxYear
-import utils.TrustsDateFormatter
+import utils.DateFormatter
 import views.html.register.suitability.TaxLiabilityInCurrentTaxYearYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,13 +43,13 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
                                                              yesNoFormProvider: YesNoFormProvider,
                                                              val controllerComponents: MessagesControllerComponents,
                                                              view: TaxLiabilityInCurrentTaxYearYesNoView,
-                                                             dateFormatter: TrustsDateFormatter,
+                                                             dateFormatter: DateFormatter,
                                                              localDateService: LocalDateService
                                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.taxLiabilityInCurrentTaxYear")
 
-  private def actions(draftId: String) =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
@@ -78,7 +79,7 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
       )
   }
 
-  private val currentTaxYearStartAndEnd: (String, String) = {
+  private def currentTaxYearStartAndEnd(implicit messages: Messages): (String, String) = {
     val currentTaxYear = TaxYear.taxYearFor(localDateService.now())
     (dateFormatter.formatDate(currentTaxYear.starts), dateFormatter.formatDate(currentTaxYear.finishes))
   }

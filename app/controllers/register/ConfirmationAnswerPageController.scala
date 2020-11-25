@@ -54,7 +54,7 @@ class ConfirmationAnswerPageController @Inject()(
 
           val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
 
-          val declarationSent : String = dateFormatter.formatDate(trnDateTime)
+          val declarationSent : String = dateFormatter.formatDateTime(trnDateTime)
 
           Ok(view(sections, trn, declarationSent))
       }

@@ -32,7 +32,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, TestUserAnswers}
+import utils.{CheckYourAnswersHelper, DateFormatter, TestUserAnswers}
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.SummaryAnswerPageView
 
@@ -132,7 +132,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
         .set(AgentInternalReferencePage, "agentClientReference").success.value
 
     val countryOptions = injector.instanceOf[CountryOptions]
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(userAnswers,fakeDraftId, canEdit = false)
+    val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
+    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers,fakeDraftId, canEdit = false)
 
     val expectedSections = Seq(
       trustDetailsSection(0),
