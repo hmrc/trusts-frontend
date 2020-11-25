@@ -29,7 +29,7 @@ import pages.register.asset.partnership.{PartnershipDescriptionPage, Partnership
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatterImpl}
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import viewmodels.AnswerSection
 import views.html.register.asset.partnership.PartnershipAnswersView
 
@@ -52,7 +52,7 @@ class PartnershipAnswerControllerSpec extends RegistrationSpecBase {
             .set(AssetStatus(index), Completed).success.value
 
         val countryOptions = injector.instanceOf[CountryOptions]
-        val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
+        val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
         val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = true)
 
         val expectedSections = Seq(

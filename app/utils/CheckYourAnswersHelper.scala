@@ -36,7 +36,7 @@ import utils.CheckAnswersFormatters._
 import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions, dateFormatter: DateFormatterImpl)
+class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions, dateFormatter: DateFormatter)
                                       (userAnswers: UserAnswers, draftId: String, canEdit: Boolean)
                                       (implicit messages: Messages) {
 

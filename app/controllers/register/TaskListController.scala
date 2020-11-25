@@ -16,18 +16,18 @@
 
 package controllers.register
 
-import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register._
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
+import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
 import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -42,18 +42,17 @@ class TaskListController @Inject()(
                                     requiredAnswer: RequiredAnswerActionProvider,
                                     val controllerComponents: MessagesControllerComponents,
                                     view: TaskListView,
-                                    config: FrontendAppConfig,
                                     registrationProgress: RegistrationProgress,
                                     registrationsRepository: RegistrationsRepository,
                                     taskListNavigator : TaskListNavigator,
                                     requireDraft : RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
                                     standardAction: StandardActionSets
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private val logger: Logger = Logger(getClass)
 
-  private def actions(draftId: String) =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRequiredAnswer(draftId,
       RequiredAnswer(TrustRegisteredOnlinePage,controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))) andThen
       requiredAnswer(
@@ -64,7 +63,7 @@ class TaskListController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      def renderView(affinityGroup : AffinityGroup) = {
+      def renderView(affinityGroup : AffinityGroup): Future[Result] = {
         val savedUntil : String = dateFormatter.savedUntil(request.userAnswers.createdAt)
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)

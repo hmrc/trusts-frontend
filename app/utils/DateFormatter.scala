@@ -24,19 +24,7 @@ import org.joda.time.{LocalDate => JodaDate}
 import play.api.i18n.Messages
 import uk.gov.hmrc.play.language.LanguageUtils
 
-trait DateFormatter {
-
-  def savedUntil(date: LocalDateTime)(implicit messages: Messages): String
-
-  def formatDateTime(dateTime: LocalDateTime)(implicit messages: Messages): String
-
-  def formatDate(date: JavaDate)(implicit messages: Messages): String
-
-  def formatDate(date: JodaDate)(implicit messages: Messages): String
-
-}
-
-class DateFormatterImpl @Inject()(config: FrontendAppConfig, languageUtils: LanguageUtils) extends DateFormatter {
+class DateFormatter @Inject()(config: FrontendAppConfig, languageUtils: LanguageUtils) {
 
   def savedUntil(date: LocalDateTime)(implicit messages: Messages): String = {
     formatDateTime(date.plusSeconds(config.ttlInSeconds))

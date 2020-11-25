@@ -26,7 +26,7 @@ import pages.register.asset.shares._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatterImpl}
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import viewmodels.AnswerSection
 import views.html.register.asset.shares.ShareAnswersView
 
@@ -37,7 +37,7 @@ class ShareAnswerControllerSpec extends RegistrationSpecBase {
   private lazy val shareAnswerRoute: String = routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
 
   private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-  private val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
+  private val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
 
   "ShareAnswer Controller" must {
 

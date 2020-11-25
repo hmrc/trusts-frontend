@@ -25,7 +25,7 @@ import pages.register.agents._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import utils.{CheckYourAnswersHelper, DateFormatterImpl}
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.agents.AgentAnswerView
@@ -36,7 +36,7 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
   private val agentID: AffinityGroup.Agent.type = AffinityGroup.Agent
 
   private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-  private val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
+  private val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
 
   "AgentAnswer Controller" must {
 

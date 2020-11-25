@@ -22,7 +22,7 @@ import play.api.i18n.Messages
 import services.DraftRegistrationService
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatterImpl}
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import viewmodels.AnswerSection
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class PrintUserAnswersHelper @Inject()(
                                         countryOptions: CountryOptions,
                                         draftRegistrationService: DraftRegistrationService,
-                                        dateFormatter: DateFormatterImpl
+                                        dateFormatter: DateFormatter
                                       )(implicit ec: ExecutionContext){
 
   def summary(draftId: String, userAnswers : UserAnswers)

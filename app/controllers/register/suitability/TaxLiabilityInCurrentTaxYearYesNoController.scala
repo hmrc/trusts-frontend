@@ -30,7 +30,7 @@ import repositories.RegistrationsRepository
 import services.LocalDateService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import uk.gov.hmrc.time.TaxYear
-import utils.DateFormatterImpl
+import utils.DateFormatter
 import views.html.register.suitability.TaxLiabilityInCurrentTaxYearYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,7 +43,7 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
                                                              yesNoFormProvider: YesNoFormProvider,
                                                              val controllerComponents: MessagesControllerComponents,
                                                              view: TaxLiabilityInCurrentTaxYearYesNoView,
-                                                             dateFormatter: DateFormatterImpl,
+                                                             dateFormatter: DateFormatter,
                                                              localDateService: LocalDateService
                                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 

@@ -26,7 +26,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatterImpl}
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import viewmodels.AnswerSection
 import views.html.register.agents.AgentAnswerView
 
@@ -37,7 +37,7 @@ class AgentAnswerController @Inject()(
                                        val controllerComponents: MessagesControllerComponents,
                                        view: AgentAnswerView,
                                        countryOptions : CountryOptions,
-                                       dateFormatter: DateFormatterImpl
+                                       dateFormatter: DateFormatter
                                      ) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =

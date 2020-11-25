@@ -32,7 +32,7 @@ import play.api.http
 import play.api.libs.json.{JsArray, Json}
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import utils.DateFormatterImpl
+import utils.DateFormatter
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
 import scala.concurrent.duration.Duration
@@ -43,7 +43,7 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
   private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
 
   private def createRepository(mockConnector: SubmissionDraftConnector) = {
-    val mockDateFormatter: DateFormatterImpl = mock[DateFormatterImpl]
+    val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
 
     new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)

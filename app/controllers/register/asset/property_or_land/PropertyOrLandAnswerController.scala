@@ -31,7 +31,7 @@ import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import utils.annotations.PropertyOrLand
 import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatterImpl}
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import viewmodels.AnswerSection
 import views.html.register.asset.property_or_land.PropertyOrLandAnswersView
 
@@ -48,7 +48,7 @@ class PropertyOrLandAnswerController @Inject()(
                                                 view: PropertyOrLandAnswersView,
                                                 countryOptions: CountryOptions,
                                                 val controllerComponents: MessagesControllerComponents,
-                                                dateFormatter: DateFormatterImpl
+                                                dateFormatter: DateFormatter
                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =

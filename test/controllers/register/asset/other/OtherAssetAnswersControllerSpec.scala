@@ -25,7 +25,7 @@ import play.api.Application
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.{CheckYourAnswersHelper, DateFormatterImpl}
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.asset.other.OtherAssetAnswersView
@@ -50,7 +50,7 @@ class OtherAssetAnswersControllerSpec extends RegistrationSpecBase {
           .set(OtherAssetValuePage(index), "4000").success.value
 
       val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-      val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
+      val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
       val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(

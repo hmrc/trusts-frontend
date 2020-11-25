@@ -29,7 +29,7 @@ import viewmodels.{AnswerRow, AnswerSection}
 class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
 
   private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-  private val dateFormatterImpl: DateFormatterImpl = injector.instanceOf[DateFormatterImpl]
+  private val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
 
   "CheckYourAnswers Helper" must {
 

@@ -32,7 +32,7 @@ class DateFormatterSpec extends RegistrationSpecBase {
 
   private val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
 
-  private val formatter: DateFormatterImpl = new DateFormatterImpl(mockConfig, languageUtils)
+  private val formatter: DateFormatter = new DateFormatter(mockConfig, languageUtils)
 
   private def messages(langCode: String): MessagesImpl = {
     val lang: Lang = Lang(langCode)
