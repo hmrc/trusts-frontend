@@ -83,7 +83,7 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
       "there is a 'Money' asset" in {
 
-        val moneyAsset = MoneyAssetViewModel(Money, "4000", Completed)
+        val moneyAsset = MoneyAssetViewModel(Money, Some("4000"), Completed)
 
         val assets: List[AssetViewModel] = List(moneyAsset)
 
