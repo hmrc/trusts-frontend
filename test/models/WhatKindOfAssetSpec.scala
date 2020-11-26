@@ -33,7 +33,7 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
     "deserialise valid values" in {
 
-      val gen = Gen.oneOf(WhatKindOfAsset.values.toSeq)
+      val gen = Gen.oneOf(WhatKindOfAsset.values)
 
       forAll(gen) {
         whatKindOfAsset =>
@@ -55,7 +55,7 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
     "serialise" in {
 
-      val gen = Gen.oneOf(WhatKindOfAsset.values.toSeq)
+      val gen = Gen.oneOf(WhatKindOfAsset.values)
 
       forAll(gen) {
         whatKindOfAsset =>
@@ -70,7 +70,7 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
         val assets: List[AssetViewModel] = Nil
 
-        WhatKindOfAsset.nonMaxedOutOptions(assets) mustBe List(
+        WhatKindOfAsset.nonMaxedOutOptions(assets, isMoneyAssetAtIndex = false) mustBe List(
           RadioOption("whatKindOfAsset", Money.toString),
           RadioOption("whatKindOfAsset", PropertyOrLand.toString),
           RadioOption("whatKindOfAsset", Shares.toString),
@@ -81,19 +81,33 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
       }
 
-      "there is a 'Money' asset" in {
+      "there is a 'Money' asset" when {
 
         val moneyAsset = MoneyAssetViewModel(Money, Some("4000"), Completed)
-
         val assets: List[AssetViewModel] = List(moneyAsset)
 
-        WhatKindOfAsset.nonMaxedOutOptions(assets) mustBe List(
-          RadioOption("whatKindOfAsset", PropertyOrLand.toString),
-          RadioOption("whatKindOfAsset", Shares.toString),
-          RadioOption("whatKindOfAsset", Business.toString),
-          RadioOption("whatKindOfAsset", Partnership.toString),
-          RadioOption("whatKindOfAsset", Other.toString)
-        )
+        "at this index" in {
+
+          WhatKindOfAsset.nonMaxedOutOptions(assets, isMoneyAssetAtIndex = true) mustBe List(
+            RadioOption("whatKindOfAsset", Money.toString),
+            RadioOption("whatKindOfAsset", PropertyOrLand.toString),
+            RadioOption("whatKindOfAsset", Shares.toString),
+            RadioOption("whatKindOfAsset", Business.toString),
+            RadioOption("whatKindOfAsset", Partnership.toString),
+            RadioOption("whatKindOfAsset", Other.toString)
+          )
+        }
+
+        "at a different index" in {
+
+          WhatKindOfAsset.nonMaxedOutOptions(assets, isMoneyAssetAtIndex = false) mustBe List(
+            RadioOption("whatKindOfAsset", PropertyOrLand.toString),
+            RadioOption("whatKindOfAsset", Shares.toString),
+            RadioOption("whatKindOfAsset", Business.toString),
+            RadioOption("whatKindOfAsset", Partnership.toString),
+            RadioOption("whatKindOfAsset", Other.toString)
+          )
+        }
       }
 
       "there are a combined 10 Completed and InProgress assets of a particular type that isn't 'Money'" in {
@@ -103,7 +117,7 @@ class WhatKindOfAssetSpec extends WordSpec with MustMatchers with ScalaCheckProp
 
         val assets: List[AssetViewModel] = List.fill(5)(otherAssetCompleted) ++ List.fill(5)(otherAssetInProgress)
 
-        WhatKindOfAsset.nonMaxedOutOptions(assets) mustBe List(
+        WhatKindOfAsset.nonMaxedOutOptions(assets, isMoneyAssetAtIndex = false) mustBe List(
           RadioOption("whatKindOfAsset", Money.toString),
           RadioOption("whatKindOfAsset", PropertyOrLand.toString),
           RadioOption("whatKindOfAsset", Shares.toString),
