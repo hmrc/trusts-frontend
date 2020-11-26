@@ -16,8 +16,6 @@
 
 package utils
 
-import java.time.format.DateTimeFormatter
-
 import models.core.UserAnswers
 import models.core.pages.{InternationalAddress, UKAddress}
 import pages.register.agents.AgentNamePage
@@ -28,8 +26,6 @@ import play.twirl.api.{Html, HtmlFormat}
 import utils.countryOptions.CountryOptions
 
 object CheckAnswersFormatters {
-
-  val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
   def yesOrNo(answer: Boolean)(implicit messages: Messages): Html = {
     if (answer) {

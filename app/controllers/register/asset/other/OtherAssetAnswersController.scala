@@ -27,7 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.asset.other.OtherAssetAnswersView
@@ -42,7 +42,8 @@ class OtherAssetAnswersController @Inject()(
                                              requireData: RegistrationDataRequiredAction,
                                              view: OtherAssetAnswersView,
                                              countryOptions: CountryOptions,
-                                             val controllerComponents: MessagesControllerComponents
+                                             val controllerComponents: MessagesControllerComponents,
+                                             dateFormatter: DateFormatter
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(mode: Mode, index: Int, draftId: String): ActionBuilder[OtherAssetDescriptionRequest, AnyContent] =
@@ -51,7 +52,7 @@ class OtherAssetAnswersController @Inject()(
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(NormalMode, index, draftId) {
     implicit request =>
 
-      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
+      val answers = new CheckYourAnswersHelper(countryOptions, dateFormatter)(request.userAnswers, draftId, canEdit = true)
 
       val sections = Seq(
         AnswerSection(

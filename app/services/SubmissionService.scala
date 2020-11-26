@@ -17,7 +17,6 @@
 package services
 
 import com.google.inject.ImplementedBy
-import connector.TrustClaim.getClass
 import connector.TrustConnector
 import javax.inject.Inject
 import mapping.registration.RegistrationMapper

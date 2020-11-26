@@ -29,6 +29,7 @@ import viewmodels.{AnswerRow, AnswerSection}
 class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
 
   private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
+  private val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
 
   "CheckYourAnswers Helper" must {
 
@@ -51,7 +52,7 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
             .set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
             .set(PostcodeForTheTrustPage, postcode).success.value
 
-          val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, false)
+          val helper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, false)
 
           helper.trustDetails.get mustBe Seq(
             AnswerSection(
@@ -85,7 +86,7 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
           val userAnswers: UserAnswers = baseAnswers
             .set(TrustRegisteredWithUkAddressYesNoPage, false).success.value
 
-          val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, false)
+          val helper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, false)
 
           helper.trustDetails.get mustBe Seq(
             AnswerSection(

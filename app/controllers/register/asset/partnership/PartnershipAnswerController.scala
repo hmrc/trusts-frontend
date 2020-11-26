@@ -18,40 +18,40 @@ package controllers.register.asset.partnership
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import controllers.filters.IndexActionFilterProvider
 import javax.inject.Inject
 import models.NormalMode
 import models.registration.pages.Status.Completed
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.entitystatus.AssetStatus
 import pages.register.asset.partnership.{PartnershipAnswerPage, PartnershipDescriptionPage, PartnershipStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
 import utils.annotations.Partnership
 import utils.countryOptions.CountryOptions
+import utils.{CheckYourAnswersHelper, DateFormatter}
 import viewmodels.AnswerSection
 import views.html.register.asset.partnership.PartnershipAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class PartnershipAnswerController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                registrationsRepository: RegistrationsRepository,
-                                                @Partnership navigator: Navigator,
-                                                identify: RegistrationIdentifierAction,
-                                                getData: DraftIdRetrievalActionProvider,
-                                                requireData: RegistrationDataRequiredAction,
-                                                requiredAnswer: RequiredAnswerActionProvider,
-                                                validateIndex: IndexActionFilterProvider,
-                                                view: PartnershipAnswersView,
-                                                countryOptions: CountryOptions,
-                                                val controllerComponents: MessagesControllerComponents
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                             override val messagesApi: MessagesApi,
+                                             registrationsRepository: RegistrationsRepository,
+                                             @Partnership navigator: Navigator,
+                                             identify: RegistrationIdentifierAction,
+                                             getData: DraftIdRetrievalActionProvider,
+                                             requireData: RegistrationDataRequiredAction,
+                                             requiredAnswer: RequiredAnswerActionProvider,
+                                             view: PartnershipAnswersView,
+                                             countryOptions: CountryOptions,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             dateFormatter: DateFormatter
+                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(index: Int, draftId: String) =
+  private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen
       getData(draftId) andThen
       requireData andThen
@@ -62,7 +62,7 @@ class PartnershipAnswerController @Inject()(
   def onPageLoad(index: Int, draftId: String): Action[AnyContent] = actions(index, draftId) {
     implicit request =>
 
-      val answers = new CheckYourAnswersHelper(countryOptions)(request.userAnswers, draftId, canEdit = true)
+      val answers = new CheckYourAnswersHelper(countryOptions, dateFormatter)(request.userAnswers, draftId, canEdit = true)
 
       val sections = Seq(
         AnswerSection(

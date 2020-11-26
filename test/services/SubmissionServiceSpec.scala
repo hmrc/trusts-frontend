@@ -30,6 +30,7 @@ import models.requests.RegistrationDataRequest
 import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import play.api.i18n.Messages
 import play.api.libs.json.{JsValue, Json}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
@@ -60,7 +61,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]] = Future.successful(None)
 
     override def listDrafts()
-                           (implicit hc: HeaderCarrier): Future[List[DraftRegistration]] = Future.successful(List.empty)
+                           (implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] = Future.successful(List.empty)
 
     override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
                                              (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
@@ -86,7 +87,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getTrustSetupDate(draftId: String)
                                   (implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
 
-    override def getDraft(draftId: String)(implicit hc: HeaderCarrier): Future[Option[DraftRegistration]] =
+    override def getDraft(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]] =
       Future.successful(Some(DraftRegistration("draftId", "agentInternalRef", "3 February 2020")))
 
     override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(200))
