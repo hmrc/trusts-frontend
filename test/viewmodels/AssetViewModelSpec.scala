@@ -57,83 +57,95 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
 
       }
 
-      "share non-portfolio" - {
+      "shares" - {
 
-        "to a view model that is not complete" in {
+        "to a view model that is not complete" - {
 
-          val json = Json.parse(
-            """
-              |{
-              |"whatKindOfAsset" : "Shares",
-              |"sharesInAPortfolio" : false,
-              |"status": "progress"
-              |}
+          "first question (are shares in a portfolio?) is unanswered" in {
+            val json = Json.parse(
+              """
+                |{
+                |"whatKindOfAsset" : "Shares",
+                |"status": "progress"
+                |}
             """.stripMargin)
 
-          json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, false, None, InProgress)
-          )
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              ShareAssetViewModel(Shares, None, None, InProgress)
+            )
+          }
 
+          "'are shares in a portfolio?' is true and name question is unanswered" in {
+            val json = Json.parse(
+              """
+                |{
+                |"whatKindOfAsset" : "Shares",
+                |"sharesInAPortfolio" : true,
+                |"status": "progress"
+                |}
+            """.stripMargin)
+
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              ShareAssetViewModel(Shares, Some(true), None, InProgress)
+            )
+          }
+
+          "'are shares in a portfolio?' is false and name question is unanswered" in {
+            val json = Json.parse(
+              """
+                |{
+                |"whatKindOfAsset" : "Shares",
+                |"sharesInAPortfolio" : false,
+                |"status": "progress"
+                |}
+            """.stripMargin)
+
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              ShareAssetViewModel(Shares, Some(false), None, InProgress)
+            )
+          }
         }
 
-        "to a view model that is complete" in {
-          val json = Json.parse(
-            """
-              |{
-              |"listedOnTheStockExchange" : true,
-              |"shareCompanyName" : "adam",
-              |"sharesInAPortfolio" : false,
-              |"quantityInTheTrust" : "200",
-              |"value" : "200",
-              |"whatKindOfAsset" : "Shares",
-              |"class" : "ordinary",
-              |"status": "completed"
-              |}
+        "to a view model that is complete" - {
+
+          "shares are in a portfolio" in {
+            val json = Json.parse(
+              """
+                |{
+                |"portfolioListedOnTheStockExchange" : true,
+                |"name" : "adam",
+                |"sharesInAPortfolio" : true,
+                |"portfolioQuantityInTheTrust" : "200",
+                |"portfolioValue" : "200",
+                |"whatKindOfAsset" : "Shares",
+                |"status": "completed"
+                |}
             """.stripMargin)
 
-          json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, false, Some("adam"), Completed)
-          )
-        }
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              ShareAssetViewModel(Shares, Some(true), Some("adam"), Completed)
+            )
+          }
 
-      }
-
-      "share portfolio" - {
-
-        "to a view model that is not complete" in {
-
-          val json = Json.parse(
-            """
-              |{
-              |"whatKindOfAsset" : "Shares",
-              |"sharesInAPortfolio" : true,
-              |"status": "progress"
-              |}
+          "shares are not in a portfolio" in {
+            val json = Json.parse(
+              """
+                |{
+                |"listedOnTheStockExchange" : true,
+                |"shareCompanyName" : "adam",
+                |"sharesInAPortfolio" : false,
+                |"quantityInTheTrust" : "200",
+                |"value" : "200",
+                |"whatKindOfAsset" : "Shares",
+                |"class" : "ordinary",
+                |"status": "completed"
+                |}
             """.stripMargin)
 
-          json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, true, None, InProgress)
-          )
-
-        }
-
-        "to a view model that is complete" in {
-          val json = Json.parse(
-            """
-              |{
-              |"listedOnTheStockExchange" : true,
-              |"name" : "adam",
-              |"sharesInAPortfolio" : true,
-              |"quantityInTheTrust" : "200",
-              |"value" : "200",
-              |"whatKindOfAsset" : "Shares",
-              |"status": "completed"
-              |}
-            """.stripMargin)
-
-          json.validate[AssetViewModel] mustEqual JsSuccess(
-            ShareAssetViewModel(Shares, true, Some("adam"), Completed)
-          )
+            json.validate[AssetViewModel] mustEqual JsSuccess(
+              ShareAssetViewModel(Shares, Some(false), Some("adam"), Completed)
+            )
+          }
         }
 
       }
@@ -300,12 +312,11 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
 
           val json = Json.obj(
             "whatKindOfAsset" -> Other.toString,
-            "otherAssetDescription" -> "Description",
             "status" -> InProgress.toString
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            OtherAssetViewModel(Other, "Description", InProgress)
+            OtherAssetViewModel(Other, None, InProgress)
           )
         }
 
@@ -318,7 +329,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            OtherAssetViewModel(Other, "Description", Completed)
+            OtherAssetViewModel(Other, Some("Description"), Completed)
           )
         }
 
@@ -330,12 +341,11 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
 
           val json = Json.obj(
             "whatKindOfAsset" -> Partnership.toString,
-            "partnershipDescription" -> "Description",
             "status" -> InProgress.toString
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            PartnershipAssetViewModel(Partnership, "Description", InProgress)
+            PartnershipAssetViewModel(Partnership, None, InProgress)
           )
         }
 
@@ -347,33 +357,23 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            PartnershipAssetViewModel(Partnership, "Description", Completed)
+            PartnershipAssetViewModel(Partnership, Some("Description"), Completed)
           )
         }
 
       }
 
-      "to a default from any other type" in {
-        val json = Json.obj(
-          "whatKindOfAsset" -> Partnership.toString
-        )
-
-        json.validate[AssetViewModel] mustEqual JsSuccess(
-          DefaultAssetsViewModel(Partnership, InProgress)
-        )
-      }
       "business" - {
 
         "to a view model that is not complete" in {
 
           val json = Json.obj(
             "whatKindOfAsset" -> Business.toString,
-            "name" -> "Test",
             "status" -> InProgress.toString
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            BusinessAssetViewModel(Business, "Test", InProgress)
+            BusinessAssetViewModel(Business, None, InProgress)
           )
         }
 
@@ -393,7 +393,7 @@ class AssetViewModelSpec extends FreeSpec with MustMatchers with ScalaCheckPrope
           )
 
           json.validate[AssetViewModel] mustEqual JsSuccess(
-            BusinessAssetViewModel(Business, "Test", Completed)
+            BusinessAssetViewModel(Business, Some("Test"), Completed)
           )
         }
 

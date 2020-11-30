@@ -21,7 +21,7 @@ import models.registration.pages.WhatKindOfAsset.Business
 import models.registration.pages.{Status, WhatKindOfAsset}
 
 final case class BusinessAssetViewModel(`type`: WhatKindOfAsset,
-                                        name: String,
+                                        name: Option[String],
                                         override val status: Status) extends AssetViewModel
 
 object BusinessAssetViewModel {
@@ -32,7 +32,7 @@ object BusinessAssetViewModel {
   implicit lazy val reads: Reads[BusinessAssetViewModel] = {
 
     val businessReads: Reads[BusinessAssetViewModel] =
-      ((__ \ "name").read[String] and
+      ((__ \ "name").readNullable[String] and
         (__ \ "status").readWithDefault[Status](InProgress)
         )((name, status) =>
         BusinessAssetViewModel(Business, name, status))
