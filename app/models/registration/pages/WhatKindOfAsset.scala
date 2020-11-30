@@ -45,7 +45,7 @@ object WhatKindOfAsset extends Enumerable.Implicits {
 
   type AssetTypeCount = (WhatKindOfAsset, Int)
 
-  def nonMaxedOutOptions(assets: List[AssetViewModel], isMoneyAssetAtIndex: Boolean): List[RadioOption] = {
+  def nonMaxedOutOptions(assets: List[AssetViewModel], assetTypeAtIndex: Option[WhatKindOfAsset]): List[RadioOption] = {
     val assetTypeCounts: List[AssetTypeCount] = List(
       (Money, assets.count(_.isInstanceOf[MoneyAssetViewModel])),
       (PropertyOrLand, assets.count(_.isInstanceOf[PropertyOrLandAssetViewModel])),
@@ -55,10 +55,17 @@ object WhatKindOfAsset extends Enumerable.Implicits {
       (Other, assets.count(_.isInstanceOf[OtherAssetViewModel]))
     )
 
-    def limitConditions(assetTypeCount: AssetTypeCount): Boolean =
-      ((assetTypeCount._2 < 1 || isMoneyAssetAtIndex) && assetTypeCount._1 == Money) ||
-        (assetTypeCount._2 < 10 && assetTypeCount._1 != Money)
+    def meetsLimitConditions(assetTypeCount: AssetTypeCount): Boolean = {
 
-    options(assetTypeCounts.filter(limitConditions).map(_._1))
+      val meetsMoneyAssetConditions: Boolean = (assetTypeCount._2 < 1 || assetTypeAtIndex.contains(Money)) && assetTypeCount._1 == Money
+
+      val meetsNonMoneyAssetsConditions: Boolean = values.filterNot(_ == Money).foldLeft(false)((conditionAlreadyMet, assetType) => {
+        ((assetTypeCount._2 < 10 || assetTypeAtIndex.contains(assetType)) && assetTypeCount._1 == assetType) || conditionAlreadyMet
+      })
+
+      meetsMoneyAssetConditions || meetsNonMoneyAssetsConditions
+    }
+
+    options(assetTypeCounts.filter(meetsLimitConditions).map(_._1))
   }
 }
