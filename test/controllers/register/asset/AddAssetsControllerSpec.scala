@@ -21,30 +21,41 @@ import controllers.register.routes._
 import forms.{AddAssetsFormProvider, YesNoFormProvider}
 import models.NormalMode
 import models.core.UserAnswers
+import models.registration.pages.AddAssets.NoComplete
 import models.registration.pages.Status.Completed
-import models.registration.pages.WhatKindOfAsset.{Money, Shares}
+import models.registration.pages.WhatKindOfAsset.{Money, Other, Shares}
 import models.registration.pages.{AddAssets, ShareClass}
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{reset, verify, when}
 import pages.entitystatus.AssetStatus
-import pages.register.asset.WhatKindOfAssetPage
+import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import pages.register.asset.money.AssetMoneyValuePage
+import pages.register.asset.other.OtherAssetDescriptionPage
 import pages.register.asset.shares._
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.AddRow
-import views.html.register.asset.{AddAnAssetYesNoView, AddAssetsView}
+import views.html.register.asset.{AddAnAssetYesNoView, AddAssetsView, MaxedOutView}
+
+import scala.concurrent.Future
 
 class AddAssetsControllerSpec extends RegistrationSpecBase {
 
   lazy val addAssetsRoute: String = routes.AddAssetsController.onPageLoad(fakeDraftId).url
   lazy val addOnePostRoute: String = routes.AddAssetsController.submitOne(fakeDraftId).url
   lazy val addAnotherPostRoute: String = routes.AddAssetsController.submitAnother(fakeDraftId).url
+  lazy val completePostRoute: String = routes.AddAssetsController.submitComplete(fakeDraftId).url
 
   def changeMoneyAssetRoute(index: Int): String =
     money.routes.AssetMoneyValueController.onPageLoad(NormalMode, index, fakeDraftId).url
 
   def changeSharesAssetRoute(index: Int): String =
     shares.routes.ShareAnswerController.onPageLoad(index, fakeDraftId).url
+
+  def changeOtherAssetRoute(index: Int): String =
+    other.routes.OtherAssetAnswersController.onPageLoad(index, fakeDraftId).url
 
   def removeAssetYesNoRoute(index: Int): String =
     routes.RemoveAssetYesNoController.onPageLoad(index, fakeDraftId).url
@@ -226,6 +237,68 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         application.stop()
       }
 
+    }
+
+    "assets maxed out" must {
+
+      val max: Int = 51
+      val description: String = "Description"
+
+      val userAnswers = 0.until(max).foldLeft(emptyUserAnswers)((ua, i) => {
+        ua
+          .set(WhatKindOfAssetPage(i), Other).success.value
+          .set(OtherAssetDescriptionPage(i), description).success.value
+          .set(AssetStatus(i), Completed).success.value
+      })
+
+      lazy val assets = 0.until(max).foldLeft[List[AddRow]](List())((acc, i) => {
+        acc :+ AddRow(description, typeLabel = "Other", changeOtherAssetRoute(i), removeAssetYesNoRoute(i))
+      })
+
+      "return OK and the correct view for a GET" in {
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(GET, addAssetsRoute)
+
+        val view = application.injector.instanceOf[MaxedOutView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+
+        val content = contentAsString(result)
+
+        content mustEqual
+          view(NormalMode, fakeDraftId, Nil, assets, "You have added 51 assets")(request, messages).toString
+
+        content must include("You cannot add another asset as you have entered a maximum of 51.")
+        content must include("You can add another asset by removing an existing one, or write to HMRC with details of any additional assets.")
+
+        application.stop()
+      }
+
+      "redirect to next page and set AddAssetsPage to NoComplete for a POST" in {
+
+        reset(registrationsRepository)
+        when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(POST, completePostRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        uaCaptor.getValue.get(AddAssetsPage).get mustBe NoComplete
+
+        application.stop()
+      }
     }
   }
 }
