@@ -137,7 +137,7 @@ class SessionIdFilterSpec extends WordSpec with MustMatchers with MockitoSugar w
         bind[RegistrationsRepository].toInstance(registrationsRepository)
       )
       .configure(
-        "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCryptoFilter")
+        "play.filters.disabled" -> List("uk.gov.hmrc.play.bootstrap.frontend.filters.crypto.SessionCookieCryptoFilter")
       )
       .router(app.injector.instanceOf[TrustRouter].router)
       .build()

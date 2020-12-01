@@ -16,7 +16,7 @@
 
 package models.core.http
 
-import play.api.Logger
+import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
@@ -29,9 +29,7 @@ object SuccessOrFailureResponse {
   implicit val formats: Format[SuccessOrFailureResponse] = Json.format[SuccessOrFailureResponse]
 }
 
-object MatchedResponse {
-
-  private val logger: Logger = Logger(getClass)
+object MatchedResponse extends Logging {
 
   case object AlreadyRegistered extends MatchedResponse
   case object InternalServerError extends MatchedResponse

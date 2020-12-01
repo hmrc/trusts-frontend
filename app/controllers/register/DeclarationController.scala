@@ -31,7 +31,7 @@ import models.core.pages.Declaration
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
 import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
-import play.api.Logger
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
@@ -39,7 +39,7 @@ import repositories.RegistrationsRepository
 import services.SubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.DeclarationView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -55,9 +55,7 @@ class DeclarationController @Inject()(
                                        registrationComplete : TaskListCompleteActionRefiner,
                                        requireDraft : RequireDraftRegistrationActionRefiner,
                                        standardAction: StandardActionSets
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  private val logger: Logger = Logger(getClass)
+                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private val form: Form[Declaration] = formProvider()
 

@@ -17,7 +17,7 @@
 package models.core.http
 
 import auditing.RegistrationErrorAuditEvent
-import play.api.Logger
+import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
@@ -32,9 +32,7 @@ object RegistrationTRNResponse {
 
 }
 
-object TrustResponse {
-
-  private val logger: Logger = Logger(getClass)
+object TrustResponse extends Logging {
 
   implicit object RegistrationResponseFormats extends Format[TrustResponse] {
 

@@ -25,12 +25,12 @@ import models.core.http.LeadTrusteeType
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
-import play.api.Logger
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.confirmation._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -47,9 +47,7 @@ class ConfirmationController @Inject()(
                                         existingAgentView: existingTrust.AgentView,
                                         errorHandler: ErrorHandler,
                                         registrationsRepository: RegistrationsRepository
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  private val logger: Logger = Logger(getClass)
+                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
     val isAgent = request.affinityGroup == Agent

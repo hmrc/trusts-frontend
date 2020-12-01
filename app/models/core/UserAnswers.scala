@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 import models.MongoDateTimeFormats
 import models.registration.pages.RegistrationStatus
 import models.registration.pages.RegistrationStatus.NotStarted
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 
@@ -50,11 +50,9 @@ final case class UserAnswers(
                               progress : RegistrationStatus = NotStarted,
                               createdAt : LocalDateTime = LocalDateTime.now,
                               internalAuthId :String
-                            ) extends ReadableUserAnswers {
+                            ) extends ReadableUserAnswers with Logging {
 
   import UserAnswerImplicits._
-
-  private val logger: Logger = Logger(getClass)
 
   def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 
