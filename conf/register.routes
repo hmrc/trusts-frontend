@@ -150,6 +150,7 @@ POST       /:draftId/asset/information-you-need                                 
 GET        /:draftId/asset/add                                                                      controllers.register.asset.AddAssetsController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/asset/add                                                                      controllers.register.asset.AddAssetsController.submitOne(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/asset/add-another                                                              controllers.register.asset.AddAssetsController.submitAnother(mode: Mode = NormalMode, draftId: String)
+POST       /:draftId/asset/complete                                                                 controllers.register.asset.AddAssetsController.submitComplete(mode: Mode = NormalMode, draftId: String)
 
 GET        /:draftId/asset/:index/remove                                                            controllers.register.asset.RemoveAssetYesNoController.onPageLoad(index: Int, draftId: String)
 POST       /:draftId/asset/:index/remove                                                            controllers.register.asset.RemoveAssetYesNoController.onSubmit(index: Int, draftId: String)
