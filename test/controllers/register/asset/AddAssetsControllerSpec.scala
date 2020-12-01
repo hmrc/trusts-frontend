@@ -272,6 +272,9 @@ class AddAssetsControllerSpec extends RegistrationSpecBase {
         content mustEqual
           view(NormalMode, fakeDraftId, Nil, assets, "You have added 51 assets")(request, messages).toString
 
+        content must include("You cannot add another asset as you have entered a maximum of 51.")
+        content must include("You can add another asset by removing an existing one, or write to HMRC with details of any additional assets.")
+
         application.stop()
       }
 
