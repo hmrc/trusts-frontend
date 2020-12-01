@@ -32,6 +32,7 @@ import org.mockito.Mockito.{verify, when}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.i18n.Messages
 import play.api.libs.json.{JsValue, Json}
+import play.api.test.Helpers.OK
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -90,7 +91,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getDraft(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]] =
       Future.successful(Some(DraftRegistration("draftId", "agentInternalRef", "3 February 2020")))
 
-    override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(200))
+    override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(OK, ""))
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]

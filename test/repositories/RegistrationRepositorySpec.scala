@@ -28,8 +28,8 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.http
 import play.api.libs.json.{JsArray, Json}
+import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.DateFormatter
@@ -146,7 +146,7 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
 
         val repository = createRepository(mockConnector)
 
-        when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
+        when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
         val result = Await.result(repository.set(userAnswers), Duration.Inf)
 
@@ -260,7 +260,7 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
 
         val repository = createRepository(mockConnector)
 
-        when(mockConnector.setStatus(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(http.Status.OK)))
+        when(mockConnector.setStatus(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
         val result = Await.result(repository.setAllStatus(draftId, status), Duration.Inf)
 
@@ -489,7 +489,7 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
 
         val status: Int = 200
 
-        when(mockConnector.removeDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(status)))
+        when(mockConnector.removeDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(status, "")))
 
         val result = Await.result(repository.removeDraft(draftId), Duration.Inf)
 

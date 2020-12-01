@@ -19,7 +19,7 @@ package connector
 import config.FrontendAppConfig
 import javax.inject.Inject
 import uk.gov.hmrc.auth.otac.PlayOtacAuthConnector
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 
 class OtacAuthConnectorImpl @Inject()(
                                      val http: HttpClient,
