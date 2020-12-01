@@ -24,12 +24,12 @@ import models.Mode
 import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.register.asset.property_or_land.{PropertyLandValueTrustPage, PropertyOrLandTotalValuePage}
-import play.api.Logger
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.annotations.PropertyOrLand
 import views.html.register.asset.property_or_land.PropertyLandValueTrustView
 
@@ -46,9 +46,7 @@ class PropertyLandValueTrustController @Inject()(
                                                   formProvider: PropertyLandValueTrustFormProvider,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: PropertyLandValueTrustView
-                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-
-  private val logger: Logger = Logger(getClass)
+                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(index: Int, draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen

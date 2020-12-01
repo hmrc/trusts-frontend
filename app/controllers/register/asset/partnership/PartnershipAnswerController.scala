@@ -28,7 +28,7 @@ import pages.register.asset.partnership.{PartnershipAnswerPage, PartnershipDescr
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.annotations.Partnership
 import utils.countryOptions.CountryOptions
 import utils.{CheckYourAnswersHelper, DateFormatter}

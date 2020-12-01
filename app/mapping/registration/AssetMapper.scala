@@ -20,7 +20,7 @@ import javax.inject.Inject
 import mapping._
 import models.core.{UserAnswers, http}
 import models.core.http.Assets
-import play.api.Logger
+import play.api.Logging
 
 class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper,
                             shareAssetMapper: ShareAssetMapper,
@@ -28,9 +28,7 @@ class AssetMapper @Inject()(moneyAssetMapper: MoneyAssetMapper,
                             partnershipAssetMapper: PartnershipAssetMapper,
                             otherAssetMapper: OtherAssetMapper,
                             businessAssetMapper: BusinessAssetMapper
-                           ) extends Mapping[Assets] {
-
-  private val logger: Logger = Logger(getClass)
+                           ) extends Mapping[Assets] with Logging {
 
   override def build(userAnswers: UserAnswers): Option[Assets] = {
 

@@ -71,7 +71,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.removeDraft(any())(any())).thenReturn(Future.successful(HttpResponse(OK)))
+      when(registrationsRepository.removeDraft(any())(any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
       val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", "true"))

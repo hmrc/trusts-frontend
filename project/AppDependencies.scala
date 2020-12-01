@@ -5,14 +5,14 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
-    "org.reactivemongo" %% "play2-reactivemongo"            % "0.18.3-play26",
+    "org.reactivemongo" %% "play2-reactivemongo"            % "0.18.3-play27",
     "uk.gov.hmrc"       %% "logback-json-logger"            % "4.8.0",
-    "uk.gov.hmrc"       %% "govuk-template"                 % "5.55.0-play-26",
-    "uk.gov.hmrc"       %% "play-health"                    % "3.15.0-play-26",
-    "uk.gov.hmrc"       %% "play-ui"                        % "8.10.0-play-26",
-    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.2.0-play-26",
-    "uk.gov.hmrc"       %% "bootstrap-play-26"              % "1.8.0",
-    "uk.gov.hmrc"       %% "domain"                         % "5.9.0-play-26",
+    "uk.gov.hmrc"       %% "govuk-template"                 % "5.56.0-play-27",
+    "uk.gov.hmrc"       %% "play-health"                    % "3.15.0-play-27",
+    "uk.gov.hmrc"       %% "play-ui"                        % "8.10.0-play-27",
+    "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.4.0-play-26",
+    "uk.gov.hmrc"       %% "bootstrap-frontend-play-27"     % "2.25.0",
+    "uk.gov.hmrc"       %% "domain"                         % "5.10.0-play-27",
     "com.typesafe.play" %% "play-json-joda"                 % "2.7.4",
     "org.typelevel"     %% "cats-core"                      % "2.0.0",
     "uk.gov.hmrc"       %% "tax-year"                       % "1.1.0",
@@ -21,8 +21,8 @@ object AppDependencies {
 
   val test: Seq[ModuleID] = Seq(
     "org.pegdown"              % "pegdown"                % "1.6.0",
-    "org.scalatest"           %% "scalatest"              % "3.0.4",
-    "org.scalatestplus.play"  %% "scalatestplus-play"     % "3.1.3",
+    "org.scalatest"           %% "scalatest"              % "3.0.8",
+    "org.scalatestplus.play"  %% "scalatestplus-play"     % "4.0.3",
     "uk.gov.hmrc"             %% "hmrctest"               % "3.9.0-play-26",
     "org.jsoup"                % "jsoup"                  % "1.12.1",
     "com.typesafe.play"       %% "play-test"              % PlayVersion.current,
@@ -39,8 +39,8 @@ object AppDependencies {
 
   def apply(): Seq[ModuleID] = compile ++ test ++ it
 
-  val akkaVersion = "2.5.23"
-  val akkaHttpVersion = "10.0.15"
+  val akkaVersion = "2.6.7"
+  val akkaHttpVersion = "10.1.12"
 
   val overrides = Seq(
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,

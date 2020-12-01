@@ -20,13 +20,13 @@ import controllers.actions._
 import forms.YesNoFormProvider
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
-import play.api.Logger
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.Session.id
 import views.html.register.agents.RemoveDraftYesNoView
 
@@ -39,7 +39,7 @@ class RemoveDraftYesNoController @Inject()(
                                             yesNoFormProvider: YesNoFormProvider,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: RemoveDraftYesNoView
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private val prefix: String = "removeDraftYesNo"
 
@@ -72,7 +72,7 @@ class RemoveDraftYesNoController @Inject()(
         value => {
           if (value) {
             registrationsRepository.removeDraft(draftId).map { _ =>
-              Logger.info(s"[RemoveDraftYesNoController][onSubmit][Session ID: ${request.sessionId}] removing draft $draftId")
+              logger.info(s"[RemoveDraftYesNoController][onSubmit][Session ID: ${request.sessionId}] removing draft $draftId")
               redirect
             }
           } else {
@@ -88,7 +88,7 @@ class RemoveDraftYesNoController @Inject()(
       case Some(draft) =>
         Right(draft.agentInternalRef)
       case _ =>
-        Logger.warn(s"[RemoveDraftYesNoController][clientReferenceNumber][Session ID: ${id(hc)}] failed to find draft $draftId")
+        logger.warn(s"[RemoveDraftYesNoController][clientReferenceNumber][Session ID: ${id(hc)}] failed to find draft $draftId")
         Left(redirect)
     }
   }

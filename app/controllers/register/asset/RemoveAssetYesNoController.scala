@@ -27,7 +27,7 @@ import play.api.libs.json.{JsPath, JsValue}
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import sections.Assets
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckAnswersFormatters.currencyFormat
 import viewmodels.addAnother._
 import views.html.register.asset.RemoveAssetYesNoView

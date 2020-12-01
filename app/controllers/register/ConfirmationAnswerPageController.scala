@@ -23,7 +23,7 @@ import javax.inject.Inject
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.DateFormatter
 import utils.print.register.PrintUserAnswersHelper
 import views.html.register.ConfirmationAnswerPageView

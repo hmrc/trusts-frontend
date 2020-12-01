@@ -24,7 +24,7 @@ import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.json.Json
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -37,9 +37,7 @@ class DefaultSubmissionService @Inject()(
                                           trustConnector: TrustConnector,
                                           auditService: AuditService,
                                           registrationsRepository: RegistrationsRepository
-                                        ) extends SubmissionService {
-
-  private val logger: Logger = Logger(getClass)
+                                        ) extends SubmissionService with Logging {
 
   override def submit(userAnswers: UserAnswers)
                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
