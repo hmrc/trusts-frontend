@@ -29,6 +29,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi, MessagesProvider}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
+import services.AuditService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.AddAssetViewHelper
 import views.html.register.asset.{AddAnAssetYesNoView, AddAssetsView, MaxedOutView}
@@ -47,7 +48,8 @@ class AddAssetsController @Inject()(
                                      val controllerComponents: MessagesControllerComponents,
                                      addAssetsView: AddAssetsView,
                                      yesNoView: AddAnAssetYesNoView,
-                                     maxedOutView: MaxedOutView
+                                     maxedOutView: MaxedOutView,
+                                     auditService: AuditService
                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
   val addAnotherForm: Form[AddAssets] = addAnotherFormProvider()
@@ -67,7 +69,7 @@ class AddAssetsController @Inject()(
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val assets = new AddAssetViewHelper(request.userAnswers, mode, draftId).rows
+      val assets = new AddAssetViewHelper(auditService)(request.userAnswers, mode, draftId).rows
 
       assets.count match {
         case 0 => Ok(yesNoView(addAnotherForm, mode, draftId))
@@ -97,7 +99,7 @@ class AddAssetsController @Inject()(
 
       addAnotherForm.bindFromRequest().fold(
         (formWithErrors: Form[_]) => {
-          val assets = new AddAssetViewHelper(request.userAnswers, mode, draftId).rows
+          val assets = new AddAssetViewHelper(auditService)(request.userAnswers, mode, draftId).rows
 
           val count = assets.count
 

@@ -17,7 +17,7 @@
 package services
 
 import auditing.TrustAuditing._
-import auditing.{RegistrationErrorAuditEvent, TrustRegistrationSubmissionAuditEvent}
+import auditing.{AuditEvent, RegistrationErrorAuditEvent, TrustRegistrationSubmissionAuditEvent}
 import config.FrontendAppConfig
 import javax.inject.Inject
 import models.core.UserAnswers
@@ -85,6 +85,19 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
       draftId = userAnswers.draftId,
       internalId = request.internalId,
       RegistrationErrorAuditEvent(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", errorReason)
+    )
+  }
+
+  def auditUserAnswers(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Unit = {
+    val auditPayload = AuditEvent(
+      registration = userAnswers.data,
+      draftId = userAnswers.draftId,
+      internalAuthId = userAnswers.internalAuthId
+    )
+
+    auditConnector.sendExplicitAudit(
+      USER_ANSWERS,
+      auditPayload
     )
   }
 
