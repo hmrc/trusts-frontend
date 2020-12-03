@@ -17,18 +17,26 @@
 package utils
 
 import controllers.register.asset._
+import javax.inject.Inject
 import models.Mode
 import models.core.UserAnswers
 import models.registration.pages.Status.Completed
+import play.api.Logging
 import play.api.i18n.Messages
 import sections.Assets
+import services.AuditService
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.CheckAnswersFormatters.currencyFormat
 import viewmodels.addAnother._
 import viewmodels.{AddRow, AddToRows}
 
-class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(implicit messages: Messages) {
+class AddAssetViewHelper @Inject()(auditService: AuditService)
+                                  (userAnswers: UserAnswers, mode: Mode, draftId: String)
+                                  (implicit messages: Messages, hc: HeaderCarrier) extends Logging {
 
   def rows: AddToRows = {
+
+    auditService.auditUserAnswers(userAnswers)
 
     val assets = userAnswers.get(Assets).toList.flatten.zipWithIndex
 
@@ -44,13 +52,27 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
     val index = asset._2
 
     vm match {
-      case money: MoneyAssetViewModel => Some(parseMoney(money, index))
-      case share: ShareAssetViewModel => Some(parseShare(share, index))
-      case propertyOrLand: PropertyOrLandAssetViewModel => Some(parsePropertyOrLand(propertyOrLand, index))
-      case business: BusinessAssetViewModel => Some(parseBusiness(business, index))
-      case partnership: PartnershipAssetViewModel => Some(parsePartnership(partnership, index))
-      case other: OtherAssetViewModel => Some(parseOther(other, index))
-      case _ => None
+      case money: MoneyAssetViewModel =>
+        logger.info(s"[parseAssets][Session ID: ${Session.id(hc)}]: ${money.status} Money asset at index $index")
+        Some(parseMoney(money, index))
+      case share: ShareAssetViewModel =>
+        logger.info(s"[parseAssets][Session ID: ${Session.id(hc)}]: ${share.status} Shares asset at index $index")
+        Some(parseShare(share, index))
+      case propertyOrLand: PropertyOrLandAssetViewModel =>
+        logger.info(s"[parseAssets][Session ID: ${Session.id(hc)}]: ${propertyOrLand.status} Property or land asset at index $index")
+        Some(parsePropertyOrLand(propertyOrLand, index))
+      case business: BusinessAssetViewModel =>
+        logger.info(s"[parseAssets][Session ID: ${Session.id(hc)}]: ${business.status} Business asset at index $index")
+        Some(parseBusiness(business, index))
+      case partnership: PartnershipAssetViewModel =>
+        logger.info(s"[parseAssets][Session ID: ${Session.id(hc)}]: ${partnership.status} Partnership asset at index $index")
+        Some(parsePartnership(partnership, index))
+      case other: OtherAssetViewModel =>
+        logger.info(s"[parseAssets][Session ID: ${Session.id(hc)}]: ${other.status} Other asset at index $index")
+        Some(parseOther(other, index))
+      case _ =>
+        logger.warn(s"[parseAssets][Session ID: ${Session.id(hc)}]: Unknown asset at index $index")
+        None
     }
   }
 
@@ -91,7 +113,7 @@ class AddAssetViewHelper(userAnswers: UserAnswers, mode: Mode, draftId: String)(
         case PropertyOrLandAssetInternationalAddressViewModel(_, address, _) => address.getOrElse(defaultAddress)
         case PropertyOrLandAssetAddressViewModel(_, address, _) => address.getOrElse(defaultAddress)
         case PropertyOrLandAssetDescriptionViewModel(_, description, _) => description.getOrElse(defaultDescription)
-        case PropertyOrLandDefaultViewModel(_, _) => messages("entities.propertyOrLand.default")
+        case _ => messages("entities.propertyOrLand.default")
       },
       messages("addAssets.propertyOrLand"),
       changeUrl = if (plvm.status == Completed) {

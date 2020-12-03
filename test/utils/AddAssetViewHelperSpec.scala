@@ -33,6 +33,8 @@ import pages.register.asset.other.{OtherAssetDescriptionPage, OtherAssetValuePag
 import pages.register.asset.partnership.{PartnershipDescriptionPage, PartnershipStartDatePage}
 import pages.register.asset.property_or_land._
 import pages.register.asset.shares._
+import services.AuditService
+import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.AddRow
 
 class AddAssetViewHelperSpec extends RegistrationSpecBase {
@@ -43,12 +45,16 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
   def removeAssetYesNoRoute(index: Int): String =
     routes.RemoveAssetYesNoController.onPageLoad(index, fakeDraftId).url
 
+  implicit val hc: HeaderCarrier = HeaderCarrier()
+
+  private val auditService: AuditService = injector.instanceOf[AuditService]
+
   "AddAssetViewHelper" when {
 
-    ".row" must {
+    ".rows" must {
 
       "generate Nil for no user answers" in {
-        val rows = new AddAssetViewHelper(emptyUserAnswers, NormalMode, fakeDraftId).rows
+        val rows = new AddAssetViewHelper(auditService)(emptyUserAnswers, NormalMode, fakeDraftId).rows
         rows.inProgress mustBe Nil
         rows.complete mustBe Nil
       }
@@ -82,7 +88,7 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(WhatKindOfAssetPage(6), Partnership).success.value
           .set(PartnershipDescriptionPage(6), "Partnership Description").success.value
 
-        val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
+        val rows = new AddAssetViewHelper(auditService)(userAnswers, NormalMode, fakeDraftId).rows
         rows.inProgress mustBe List(
           AddRow("No name added", typeLabel = "Shares", changeSharesAssetRoute(0), removeAssetYesNoRoute(0)),
           AddRow("No value added", typeLabel = "Money", changeMoneyAssetRoute(1), removeAssetYesNoRoute(1)),
@@ -153,7 +159,7 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
           .set(BusinessValuePage(6), "12").success.value
           .set(AssetStatus(6), Completed).success.value
 
-        val rows = new AddAssetViewHelper(userAnswers, NormalMode, fakeDraftId).rows
+        val rows = new AddAssetViewHelper(auditService)(userAnswers, NormalMode, fakeDraftId).rows
         rows.complete mustBe List(
           AddRow("Share Company Name", typeLabel = "Shares", changeSharesAssetRoute(0), removeAssetYesNoRoute(0)),
           AddRow("£200", typeLabel = "Money", changeMoneyAssetRoute(1), removeAssetYesNoRoute(1)),
@@ -165,7 +171,6 @@ class AddAssetViewHelperSpec extends RegistrationSpecBase {
         )
         rows.inProgress mustBe Nil
       }
-
     }
   }
 }

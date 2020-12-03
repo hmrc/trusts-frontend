@@ -16,13 +16,12 @@
 
 package auditing
 
-object TrustAuditing {
+import play.api.libs.json.{Format, JsValue, Json}
 
-  val REGISTRATION_SUBMITTED_BY_ORGANISATION = "RegistrationSubmittedByOrganisation"
-  val REGISTRATION_SUBMITTED_BY_AGENT = "RegistrationSubmittedByAgent"
-  val REGISTRATION_SUBMISSION_FAILED = "RegistrationSubmissionFailed"
-  val REGISTRATION_PREPARATION_FAILED = "RegistrationPreparationFailed"
+case class AuditEvent(registration: JsValue,
+                      draftId : String,
+                      internalAuthId : String)
 
-  val USER_ANSWERS = "UserAnswers"
-
+object AuditEvent {
+  implicit val formats: Format[AuditEvent] = Json.format[AuditEvent]
 }
