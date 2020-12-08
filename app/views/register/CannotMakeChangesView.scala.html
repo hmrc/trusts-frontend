@@ -14,25 +14,26 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
 @import controllers.register.routes._
 @import models.Mode
 
 @this(
-main_template: MainTemplate
+    main_template: MainTemplate,
+    config: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = messages("cannotMakeChanges.title")
+    title = messages("cannotMakeChanges.title")
 ) {
 
-@components.heading("cannotMakeChanges.heading")
+    @components.heading("cannotMakeChanges.heading")
 
-<p>@messages("cannotMakeChanges.paragraph1") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" rel="external">@messages("cannotMakeChanges.postLink")</a> @messages("cannotMakeChanges.paragraph2")</p>
+    <p>@messages("cannotMakeChanges.paragraph1") <a href="@config.helplineUrl" target="_blank" rel="external">@messages("cannotMakeChanges.postLink")</a> @messages("cannotMakeChanges.paragraph2")</p>
 
-
-<p>@messages("cannotMakeChanges.paragraph3")</p>
+    <p>@messages("cannotMakeChanges.paragraph3")</p>
 
 }
 

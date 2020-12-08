@@ -14,29 +14,32 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
 @import controllers.register.agents.routes._
 @import models.Mode
 
 @this(
-main_template: MainTemplate
+    main_template: MainTemplate,
+    config: FrontendAppConfig
 )
 
 @(isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = messages("UTRSentByPost.title")
+    title = messages("UTRSentByPost.title")
 ) {
 
-@components.back_link()
+    @components.back_link()
 
-@components.heading("UTRSentByPost.heading")
+    @components.heading("UTRSentByPost.heading")
 
-<p>@messages("UTRSentByPost.paragraph1")</p>
+    <p>@messages("UTRSentByPost.paragraph1")</p>
 
-<p><a id="help-link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank">@messages("UTRSentByPost.link.contactHelpline")</a> @messages("UTRSentByPost.paragraph2")</p>
+    <p><a id="help-link" href="@config.helplineUrl" target="_blank">@messages("UTRSentByPost.link.contactHelpline")</a> @messages("UTRSentByPost.paragraph2")</p>
 
-@if(isAgent: Boolean) {
-<p>@messages("UTRSentByPost.paragraph3")@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>}
+    @if(isAgent: Boolean) {
+        <p>@messages("UTRSentByPost.paragraph3")@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>
+    }
 
 }
 
