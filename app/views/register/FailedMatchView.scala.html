@@ -14,11 +14,13 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
 @import controllers.register.routes._
 @import models.Mode
 
 @this(
-    main_template: MainTemplate
+    main_template: MainTemplate,
+    config: FrontendAppConfig
 )
 
 @(draftId: String)(implicit request: Request[_], messages: Messages)
@@ -57,6 +59,6 @@
 
     <h2>@messages("failedMatch.h2")</h2>
 
-    <p>@messages("failedMatch.paragraph4") <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts" target="_blank" rel="external">@messages("failedMatch.contactLink")</a> @messages("failedMatch.paragraph5")</p>
+    <p>@messages("failedMatch.paragraph4") <a href="@config.helplineUrl" target="_blank" rel="external">@messages("failedMatch.contactLink")</a> @messages("failedMatch.paragraph5")</p>
 
 }
