@@ -20,11 +20,8 @@ import com.google.inject.AbstractModule
 import connector.OtacAuthConnectorImpl
 import controllers.actions._
 import controllers.actions.register._
-import navigation.Navigator
-import navigation.registration.{PartnershipNavigator, PropertyOrLandNavigator}
 import repositories.{DefaultRegistrationsRepository, RegistrationsRepository}
 import uk.gov.hmrc.auth.otac.OtacAuthConnector
-import utils.annotations.{Partnership, PropertyOrLand}
 
 class Module extends AbstractModule {
 
@@ -42,8 +39,5 @@ class Module extends AbstractModule {
     bind(classOf[RegistrationsRepository]).to(classOf[DefaultRegistrationsRepository]).asEagerSingleton()
 
     bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
-
-    bind(classOf[Navigator]).annotatedWith(classOf[PropertyOrLand]).to(classOf[PropertyOrLandNavigator])
-    bind(classOf[Navigator]).annotatedWith(classOf[Partnership]).to(classOf[PartnershipNavigator])
   }
 }

@@ -18,8 +18,6 @@ package navigation.registration
 
 import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
-import models.core.UserAnswers
-import play.api.mvc.Call
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
@@ -38,15 +36,6 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
 
   def beneficiariesJourneyUrl(draftId: String): String = {
     frontendAppConfig.beneficiariesFrontendUrl(draftId)
-  }
-
-  def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    userAnswers.get(sections.Assets).getOrElse(Nil) match {
-      case _ :: _ =>
-        controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
-      case Nil =>
-        controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(draftId)
-    }
   }
 
   def taxLiabilityJourney(draftId: String): String = {

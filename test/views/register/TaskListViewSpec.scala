@@ -20,14 +20,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import controllers.register.agents.routes
-import models.registration.pages.AddAssets.NoComplete
-import models.registration.pages.Status.Completed
-import models.registration.pages._
 import navigation.registration.TaskListNavigator
-import pages.entitystatus._
 import pages.register.RegistrationProgress
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.Task
@@ -84,18 +78,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         "all sections are completed" in {
 
-          val userAnswers = emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
-            .set(AssetMoneyValuePage(0), "2000").success.value
-            .set(AssetStatus(0), Completed).success.value
-            .set(AddAssetsPage, NoComplete).success.value
-
           for {
             sections <- sections
             additionalSections <- additionalSections
             isTaskListComplete <- isTaskListComplete
           } yield {
-            val view = viewFor[TaskListView](Some(userAnswers))
+            val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
               fakeDraftId,
               savedUntil,
@@ -119,14 +107,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         "not all sections are completed" in {
 
-          val userAnswers = emptyUserAnswers.set(AddAssetsPage, NoComplete).success.value
-
           for {
             sections <- sections
             additionalSections <- additionalSections
             isTaskListComplete <- isTaskListComplete
           } yield {
-            val view = viewFor[TaskListView](Some(userAnswers))
+            val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
               fakeDraftId,
               savedUntil,

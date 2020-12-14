@@ -18,17 +18,10 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
-import models.registration.pages.AddAssets.NoComplete
-import models.registration.pages.Status.Completed
-import models.registration.pages._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import pages.entitystatus._
 import pages.register.RegistrationProgress
 import pages.register.agents.AgentInternalReferencePage
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.shares._
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -40,8 +33,6 @@ import views.html.register.SummaryAnswerPageView
 import scala.concurrent.Future
 
 class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
-
-  private val index = 0
 
   val trustDetailsSection: Seq[AnswerSection] = Seq(
     AnswerSection(
@@ -129,22 +120,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
   "SummaryAnswersController" must {
 
-    val userAnswers =
-      TestUserAnswers.emptyUserAnswers
-
-        .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
-        .set(AssetMoneyValuePage(index), "100").success.value
-        .set(AssetStatus(index), Completed).success.value
-        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
-        .set(SharesInAPortfolioPage(1), true).success.value
-        .set(SharePortfolioNamePage(1), "Company").success.value
-        .set(SharePortfolioOnStockExchangePage(1), true).success.value
-        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
-        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
-        .set(AssetStatus(1), Completed).success.value
-        .set(AddAssetsPage, NoComplete).success.value
-
-        .set(AgentInternalReferencePage, "agentClientReference").success.value
+    val userAnswers = TestUserAnswers.emptyUserAnswers
+      .set(AgentInternalReferencePage, "agentClientReference").success.value
 
     val expectedSections: Seq[AnswerSection] = Seq(
       trustDetailsSection.head,

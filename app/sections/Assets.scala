@@ -18,9 +18,8 @@ package sections
 
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import viewmodels.addAnother.AssetViewModel
 
-case object Assets extends QuestionPage[List[AssetViewModel]]{
+case object Assets extends QuestionPage[List[Nothing]]{
 
   override def path: JsPath = JsPath \ toString
 

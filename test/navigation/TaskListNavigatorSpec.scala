@@ -17,9 +17,7 @@
 package navigation
 
 import base.RegistrationSpecBase
-import models.registration.pages.WhatKindOfAsset.Money
 import navigation.registration.TaskListNavigator
-import pages.register.asset.WhatKindOfAssetPage
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
@@ -47,27 +45,10 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       }
     }
 
-    "for assets task" when {
-
-      "there are no assets" must {
-
-        "go to AssetInfoPage" in {
-          navigator.assetsJourney(emptyUserAnswers, fakeDraftId) mustBe controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(fakeDraftId)
-        }
-
+    "for assets task" must {
+      "go to Asset service start" in {
+        navigator.assetsJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)
       }
-
-
-      "there are assets" must {
-
-        "go to AddAssets" in {
-          val answers = emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), Money).success.value
-          navigator.assetsJourney(answers, fakeDraftId) mustBe controllers.register.asset.routes.AddAssetsController.onPageLoad(fakeDraftId)
-        }
-
-      }
-
     }
 
     "for trustee task" must {
