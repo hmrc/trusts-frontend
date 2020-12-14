@@ -35,7 +35,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val serviceName: String = configuration.get[String]("serviceName")
 
-  private def loadConfig(key: String) = configuration.get[String](key)
+  private def loadConfig(key: String): String = configuration.get[String](key)
 
   val analyticsToken: String = configuration.get[String](s"google-analytics.token")
   val analyticsHost: String = configuration.get[String](s"google-analytics.host")
@@ -56,28 +56,29 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
   lazy val logoutUrl: String = loadConfig("urls.logout")
 
-  private def insertDraftId(url: String, draftId: String) = url.replace(":draftId", draftId)
+  def beneficiariesFrontendUrl(draftId: String): String = frontendUrl(draftId, "beneficiaries")
 
-  private lazy val beneficiariesFrontendUrlTemplate: String = loadConfig("urls.beneficiariesFrontend")
-  def beneficiariesFrontendUrl(draftId: String): String = insertDraftId(beneficiariesFrontendUrlTemplate, draftId)
+  def taxLiabilityFrontendUrl(draftId: String): String = frontendUrl(draftId, "taxLiability")
 
-  private lazy val taxLiabilityFrontendUrlTemplate: String = loadConfig("urls.taxLiabilityFrontend")
-  def taxLiabilityFrontendUrl(draftId: String): String = insertDraftId(taxLiabilityFrontendUrlTemplate, draftId)
+  def trusteesFrontendUrl(draftId: String): String = frontendUrl(draftId, "trustees")
 
-  private lazy val trusteesFrontendUrlTemplate: String = loadConfig("urls.trusteesFrontend")
-  def trusteesFrontendUrl(draftId: String): String = insertDraftId(trusteesFrontendUrlTemplate, draftId)
+  def trustDetailsFrontendUrl(draftId: String): String = frontendUrl(draftId, "trustDetails")
 
-  private lazy val trustDetailsFrontendUrlTemplate: String = loadConfig("urls.trustDetailsFrontend")
-  def trustDetailsFrontendUrl(draftId: String): String = insertDraftId(trustDetailsFrontendUrlTemplate, draftId)
+  def settlorsFrontendUrl(draftId: String): String = frontendUrl(draftId, "settlors")
 
-  private lazy val settlorsFrontendUrlTemplate: String = loadConfig("urls.settlorsFrontend")
-  def settlorsFrontendUrl(draftId: String): String = insertDraftId(settlorsFrontendUrlTemplate, draftId)
+  def protectorsFrontendUrl(draftId: String): String = frontendUrl(draftId, "protectors")
 
-  private lazy val protectorsFrontendUrlTemplate: String = loadConfig("urls.protectorsFrontend")
-  def protectorsFrontendUrl(draftId: String): String = insertDraftId(protectorsFrontendUrlTemplate, draftId)
+  def otherIndividualsFrontendUrl(draftId: String): String = frontendUrl(draftId, "otherIndividuals")
 
-  private lazy val otherIndividualsFrontendUrlTemplate: String = loadConfig("urls.otherIndividualsFrontend")
-  def otherIndividualsFrontendUrl(draftId: String): String = insertDraftId(otherIndividualsFrontendUrlTemplate, draftId)
+  def assetsFrontendUrl(draftId: String): String = frontendUrl(draftId, "assets")
+
+  def agentDetailsFrontendUrl(draftId: String): String = frontendUrl(draftId, "agentDetails")
+
+  private def frontendUrl(draftId: String, section: String): String = {
+    lazy val urlTemplate: String = loadConfig(s"urls.${section}Frontend")
+    def insertDraftId(url: String, draftId: String): String = url.replace(":draftId", draftId)
+    insertDraftId(urlTemplate, draftId)
+  }
 
   lazy val otacUrl : String = configuration.get[String]("urls.otacLogin")
 
@@ -90,11 +91,11 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
 
-  lazy val ttlInSeconds = configuration.get[Int]("mongodb.registration.ttlSeconds")
+  lazy val ttlInSeconds: Int = configuration.get[Int]("mongodb.registration.ttlSeconds")
 
-  lazy val trustsUrl = configuration.get[Service]("microservice.services.trusts").baseUrl
+  lazy val trustsUrl: String = configuration.get[Service]("microservice.services.trusts").baseUrl
 
-  lazy val authUrl = configuration.get[Service]("microservice.services.auth").baseUrl
+  lazy val authUrl: String = configuration.get[Service]("microservice.services.auth").baseUrl
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
 
