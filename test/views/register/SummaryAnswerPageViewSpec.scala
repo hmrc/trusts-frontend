@@ -71,7 +71,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val summary = helper.summary(fakeDraftId, userAnswers)
+    val summary = helper.summary(fakeDraftId)
 
     val orgDoc = {
       summary.map {

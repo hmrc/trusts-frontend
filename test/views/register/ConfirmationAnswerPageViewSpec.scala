@@ -76,7 +76,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     val helper = app.injector.instanceOf[PrintUserAnswersHelper]
 
-    val viewFuture = helper.summary(fakeDraftId, userAnswers).map {
+    val viewFuture = helper.summary(fakeDraftId).map {
       sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
 
@@ -92,15 +92,6 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
     "assert header content" in {
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
-    }
-
-    "assert correct number of headers and subheaders" in {
-      val wrapper = doc.getElementById("wrapper")
-      val headers = wrapper.getElementsByTag("h2")
-      val subHeaders = wrapper.getElementsByTag("h3")
-
-      headers.size mustBe 1
-      subHeaders.size mustBe 3
     }
 
   }

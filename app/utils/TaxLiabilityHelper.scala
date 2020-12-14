@@ -16,18 +16,25 @@
 
 package utils
 
-import java.time.LocalDate
+import java.time.{LocalDate => JavaDate}
 
+import org.joda.time.{LocalDate => JodaDate}
 import uk.gov.hmrc.time.TaxYear
 
 object TaxLiabilityHelper {
 
-  def showTaxLiability(trustSetUpDate: Option[LocalDate]): Boolean = {
-    val taxYearStart = TaxYear.current.starts
+  def showTaxLiability(trustSetUpDate: Option[JavaDate]): Boolean = {
     trustSetUpDate match {
-      case None => false
-      case Some(startDate) => startDate isBefore
-    LocalDate.of (taxYearStart.getYear, taxYearStart.getMonthOfYear, taxYearStart.getDayOfMonth)
+      case None =>
+        false
+      case Some(trustStartDate) =>
+        def currentTaxYearStartDate: JavaDate = {
+          implicit class DateConversion(date: JodaDate) {
+            def toJavaDate: JavaDate = JavaDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth)
+          }
+          TaxYear.current.starts.toJavaDate
+        }
+        trustStartDate isBefore currentTaxYearStartDate
     }
   }
 }

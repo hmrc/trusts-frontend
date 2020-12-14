@@ -27,7 +27,8 @@ import models.core.pages.{Declaration, FullName}
 import models.registration.pages.RegistrationStatus.InProgress
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when, _}
-import pages.register.DeclarationPage
+import pages.register.{DeclarationPage, RegistrationProgress}
+import play.api.inject
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -58,7 +59,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
   "Declaration Controller" must {
 
     "redirect when registration is not complete" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
+      val mockRegistrationProgress = mock[RegistrationProgress]
+
+      when(mockRegistrationProgress.isTaskListComplete(any(), any())(any())).thenReturn(Future.successful(false))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        .overrides(inject.bind[RegistrationProgress].toInstance(mockRegistrationProgress))
+        .build()
 
       val request = FakeRequest(GET, declarationRoute)
 

@@ -60,4 +60,12 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
   def otherIndividualsJourneyUrl(draftId: String): String = {
     frontendAppConfig.otherIndividualsFrontendUrl(draftId)
   }
+
+  def assetsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.assetsFrontendUrl(draftId)
+  }
+
+  def agentDetailsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.agentDetailsFrontendUrl(draftId)
+  }
 }

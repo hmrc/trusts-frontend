@@ -30,21 +30,21 @@ import pages.entitystatus._
 import pages.register.asset.money.AssetMoneyValuePage
 import pages.register.asset.shares._
 import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
-import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
+import pages.register.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
+import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatter, TestUserAnswers}
+import utils.TestUserAnswers
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.ConfirmationAnswerPageView
 
 import scala.concurrent.Future
 
-class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
+class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
 
   val index = 0
 
-  "ConfirmationAnswersController" must {
+  "ConfirmationAnswerPageController" must {
 
     val beneficiarySections = List(
       AnswerSection(
@@ -88,11 +88,20 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       )
     )
 
+    val assetsSection = List(
+      AnswerSection(
+        Some("assetsHeadingKey1"),
+        List.empty,
+        Some("assetsSectionKey1")
+      )
+    )
+
     val registrationSections = RegistrationAnswerSections(
       beneficiaries = Some(beneficiarySections),
       trustees = Some(trusteeSections),
       trustDetails = Some(trustDetailsSection),
-      settlors = Some(settlorsSection)
+      settlors = Some(settlorsSection),
+      assets = Some(assetsSection)
     )
 
     when(registrationsRepository.getAllStatus(any())(any()))
@@ -121,11 +130,6 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
           .set(RegistrationTRNPage, "XNTRN000000001").success.value
           .set(RegistrationSubmissionDatePage, LocalDateTime.now).success.value
 
-
-      val countryOptions = injector.instanceOf[CountryOptions]
-      val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers, fakeDraftId, canEdit = false)
-
       val expectedSections = Seq(
         trustDetailsSection.head,
         trusteeSections.head,
@@ -133,25 +137,7 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
         beneficiarySections.head,
         beneficiarySections(1),
         settlorsSection.head,
-        AnswerSection(None, Nil, Some("Assets")),
-        AnswerSection(
-          Some("Money"),
-          Seq(
-            checkYourAnswersHelper.assetMoneyValue(index).value
-          ),
-          None
-        ),
-        AnswerSection(
-          Some("Share 1"),
-          Seq(
-            checkYourAnswersHelper.sharesInAPortfolio(1).value,
-            checkYourAnswersHelper.sharePortfolioName(1).value,
-            checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
-            checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
-            checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
-          ),
-          None
-        )
+        assetsSection.head
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
@@ -179,7 +165,13 @@ class ConfirmationAnswersControllerSpec extends RegistrationSpecBase {
       val userAnswers =
         TestUserAnswers.emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val mockRegistrationProgress = mock[RegistrationProgress]
+
+      when(mockRegistrationProgress.isTaskListComplete(any(), any())(any())).thenReturn(Future.successful(false))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(inject.bind[RegistrationProgress].toInstance(mockRegistrationProgress))
+        .build()
 
       val request = FakeRequest(GET, routes.ConfirmationAnswerPageController.onPageLoad(fakeDraftId).url)
 
