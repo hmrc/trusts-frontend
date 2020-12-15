@@ -5,7 +5,7 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
-    "org.reactivemongo" %% "play2-reactivemongo"            % "0.18.3-play27",
+    "org.reactivemongo" %% "play2-reactivemongo"            % "0.20.13-play27",
     "uk.gov.hmrc"       %% "logback-json-logger"            % "4.8.0",
     "uk.gov.hmrc"       %% "govuk-template"                 % "5.60.0-play-27",
     "uk.gov.hmrc"       %% "play-health"                    % "3.15.0-play-27",
@@ -16,7 +16,7 @@ object AppDependencies {
     "com.typesafe.play" %% "play-json-joda"                 % "2.7.4",
     "org.typelevel"     %% "cats-core"                      % "2.0.0",
     "uk.gov.hmrc"       %% "tax-year"                       % "1.1.0",
-    "uk.gov.hmrc"       %% "play-language"                  % "4.5.0-play-26"
+    "uk.gov.hmrc"       %% "play-language"                  % "4.5.0-play-27"
   )
 
   val test: Seq[ModuleID] = Seq(
