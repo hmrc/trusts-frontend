@@ -17,6 +17,9 @@
 package navigation.registration
 
 import config.FrontendAppConfig
+import controllers.register.agents.routes.AgentInternalReferenceController
+import models.NormalMode
+
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -55,6 +58,7 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
   }
 
   def agentDetailsJourneyUrl(draftId: String): String = {
-    frontendAppConfig.agentDetailsFrontendUrl(draftId)
+//    frontendAppConfig.agentDetailsFrontendUrl(draftId)
+    AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url
   }
 }
