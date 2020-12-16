@@ -33,8 +33,8 @@ object AppDependencies {
   ).map(_ % "test")
 
   val it: Seq[ModuleID] = Seq(
-    "org.scalatestplus.play"  %% "scalatestplus-play"     % "3.1.3",
-    "uk.gov.hmrc"             %% "hmrctest"               % "3.9.0-play-26"
+    "org.scalatestplus.play"  %% "scalatestplus-play"     % "4.0.3",
+    "uk.gov.hmrc"             %% "hmrctest"               % "3.10.0-play-26"
   ).map(_ % "it")
 
   def apply(): Seq[ModuleID] = compile ++ test ++ it
