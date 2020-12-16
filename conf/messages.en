@@ -915,7 +915,7 @@ shares.valueInTrust.checkYourAnswersLabel = What is the current value of {0} sha
 
 business.name.checkYourAnswersLabel = What is the business’s name?
 business.description.checkYourAnswersLabel = What is the description for {0}?
-business.addressUkYesNo.checkYourAnswersLabel = Is {0} address in the UK?
+business.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 business.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 business.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
 business.currentValue.checkYourAnswersLabel = What is the current value of the business?
