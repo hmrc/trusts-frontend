@@ -11,7 +11,7 @@ object AppDependencies {
     "uk.gov.hmrc"       %% "play-health"                    % "3.15.0-play-27",
     "uk.gov.hmrc"       %% "play-ui"                        % "8.10.0-play-27",
     "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.4.0-play-26",
-    "uk.gov.hmrc"       %% "bootstrap-frontend-play-27"     % "2.25.0",
+    "uk.gov.hmrc"       %% "bootstrap-frontend-play-27"     % "3.2.0",
     "uk.gov.hmrc"       %% "domain"                         % "5.10.0-play-27",
     "com.typesafe.play" %% "play-json-joda"                 % "2.7.4",
     "org.typelevel"     %% "cats-core"                      % "2.0.0",
@@ -43,10 +43,10 @@ object AppDependencies {
   val akkaHttpVersion = "10.1.12"
 
   val overrides = Seq(
-    "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-    "com.typesafe.akka" %% "akka-protobuf" % akkaVersion,
-    "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
-    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
-    "com.typesafe.akka" %% "akka-http-core" % akkaHttpVersion
+    "com.typesafe.akka" %% "akka-stream_2.12" % akkaVersion,
+    "com.typesafe.akka" %% "akka-protobuf_2.12" % akkaVersion,
+    "com.typesafe.akka" %% "akka-slf4j_2.12" % akkaVersion,
+    "com.typesafe.akka" %% "akka-actor_2.12" % akkaVersion,
+    "com.typesafe.akka" %% "akka-http-core_2.12" % akkaHttpVersion
   )
 }
