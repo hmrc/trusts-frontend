@@ -17,61 +17,100 @@
 package navigation
 
 import base.RegistrationSpecBase
+import config.FrontendAppConfig
+import controllers.register.agents.routes.AgentInternalReferenceController
+import models.NormalMode
 import navigation.registration.TaskListNavigator
+import play.api.Configuration
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
-  val navigator : TaskListNavigator = new TaskListNavigator(fakeFrontendAppConfig)
+  private val navigator: TaskListNavigator = new TaskListNavigator(fakeFrontendAppConfig)
 
-  "TaskList Navigator" must {
+  "TaskList Navigator" when {
 
-    "for trust details task" when {
+    "trust details task" must {
+      "go to trust details service" in {
+        navigator.trustDetailsJourney(fakeDraftId) mustBe
+          fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)
+      }
+    }
 
-        "go to Check Trust Answers Page" in {
+    "beneficiaries task" must {
+      "go to beneficiaries service" in {
+        navigator.beneficiariesJourneyUrl(fakeDraftId) mustBe
+          fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)
+      }
+    }
 
-          navigator.trustDetailsJourney(fakeDraftId) mustBe fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)
+    "settlors task" must {
+      "go to settlors service" in {
+        navigator.settlorsJourney(fakeDraftId) mustBe
+          fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)
+      }
+    }
+
+    "assets task" must {
+      "go to assets service" in {
+        navigator.assetsJourneyUrl(fakeDraftId) mustBe
+          fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)
+      }
+    }
+
+    "trustees task" must {
+      "go to trustees service" in {
+        navigator.trusteesJourneyUrl(fakeDraftId) mustBe
+          fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)
+      }
+    }
+
+    "task liability task" must {
+      "go to tax liability service" in {
+        navigator.taxLiabilityJourney(fakeDraftId) mustBe
+          fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)
+      }
+    }
+
+    "protectors task" must {
+      "go to protectors service" in {
+        navigator.protectorsJourneyUrl(fakeDraftId) mustBe
+          fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)
+      }
+    }
+
+    "other individuals task" must {
+      "go to other individuals service" in {
+        navigator.otherIndividualsJourneyUrl(fakeDraftId) mustBe
+          fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)
+      }
+    }
+
+    "for agent details task" when {
+
+      val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+
+      def fakeAppConfig(enabled: Boolean): FrontendAppConfig = {
+        new FrontendAppConfig(config) {
+          override lazy val agentDetailsMicroserviceEnabled: Boolean = enabled
         }
       }
 
-    "for beneficiaries task" must {
-      "go to BeneficiaryInfoPage" in {
-        navigator.beneficiariesJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)
+      "agent details microservice enabled" must {
+        "go to agent details service" in {
+          val appConfig = fakeAppConfig(true)
+          val navigator: TaskListNavigator = new TaskListNavigator(appConfig)
+          navigator.agentDetailsJourneyUrl(fakeDraftId) mustBe
+            appConfig.agentDetailsFrontendUrl(fakeDraftId)
+        }
       }
-    }
 
-    "for settlors task" must {
-      "go to SettlorsInfoPage" in {
-        navigator.settlorsJourney(fakeDraftId) mustBe fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)
-      }
-    }
-
-    "for assets task" must {
-      "go to Asset service start" in {
-        navigator.assetsJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)
-      }
-    }
-
-    "for trustee task" must {
-      "go to Trustee service start" in {
-        navigator.trusteesJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)
-      }
-    }
-
-    "for task liability task" must {
-      "go to TaxLiabilityPage" in {
-        navigator.taxLiabilityJourney(fakeDraftId) mustBe fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)
-      }
-    }
-
-    "for protectors task" must {
-      "go to Protector service start" in {
-        navigator.protectorsJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)
-      }
-    }
-
-    "for other individuals task" must {
-      "go to Other Individual service start" in {
-        navigator.otherIndividualsJourneyUrl(fakeDraftId) mustBe fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)
+      "agent details microservice not enabled" must {
+        "go to AgentInternalReferenceController" in {
+          val appConfig = fakeAppConfig(false)
+          val navigator: TaskListNavigator = new TaskListNavigator(appConfig)
+          navigator.agentDetailsJourneyUrl(fakeDraftId) mustBe
+            AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+        }
       }
     }
   }

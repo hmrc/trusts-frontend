@@ -58,7 +58,10 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
   }
 
   def agentDetailsJourneyUrl(draftId: String): String = {
-//    frontendAppConfig.agentDetailsFrontendUrl(draftId)
-    AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url
+    if (frontendAppConfig.agentDetailsMicroserviceEnabled) {
+      frontendAppConfig.agentDetailsFrontendUrl(draftId)
+    } else {
+      AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url
+    }
   }
 }

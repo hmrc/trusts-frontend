@@ -37,7 +37,7 @@
 
     <p>@messages("suitability.noNeedToRegister.p2") <a href="@config.whoShouldRegisterUrl" target="_blank">@messages("suitability.noNeedToRegister.p2.link")</a>.</p>
 
-    <p>@messages("suitability.noNeedToRegister.p3") <a href="@config.trustsHelplineUrl" target="_blank">@messages("suitability.noNeedToRegister.p3.link")</a>.</p>
+    <p>@messages("suitability.noNeedToRegister.p3") <a href="@config.helplineUrl" target="_blank">@messages("suitability.noNeedToRegister.p3.link")</a>.</p>
 
     @if(isAgent) {
         <p>@messages("suitability.noNeedToRegister.p4") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "suitability.noNeedToRegister.p4.link", false).</p>
