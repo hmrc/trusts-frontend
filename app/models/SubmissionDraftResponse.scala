@@ -16,14 +16,13 @@
 
 package models
 
-import java.time.{LocalDate, LocalDateTime}
-
 import models.registration.pages.Status
 import models.registration.pages.Status.Completed
 import play.api.libs.json.{JsValue, Json, OFormat}
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import utils.TaxLiabilityHelper
+
+import java.time.{LocalDate, LocalDateTime}
 
 case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgress: Option[Boolean])
 
@@ -65,9 +64,16 @@ object RegistrationSubmission {
                        otherIndividuals: Option[Status] = None,
                        trustDetails: Option[Status] = None,
                        settlors: Option[Status] = None,
-                       assets: Option[Status] = None,
-                       agentDetails: Option[Status] = None) {
+                       assets: Option[Status] = None) {
 
+    /**
+     *
+     * @param trustSetUpDate - start date of the trust, used to determine if the tax liability task needs
+     *                       to be rendered on the task list
+     * @param affinityGroup - not currently used, but may well be needed to determine completeness when agent details
+     *                      microservice enabled
+     * @return true if all of the relevant sections have a status of Completed
+     */
     def allComplete(trustSetUpDate: Option[LocalDate], affinityGroup: AffinityGroup): Boolean =
       beneficiaries.contains(Completed) &&
         trustees.contains(Completed) &&
@@ -76,9 +82,7 @@ object RegistrationSubmission {
         trustDetails.contains(Completed) &&
         settlors.contains(Completed) &&
         assets.contains(Completed) &&
-        (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate)) &&
-        (agentDetails.contains(Completed) || affinityGroup != Agent)
-
+        (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate))
   }
 
   object AllStatus {
@@ -91,8 +95,7 @@ object RegistrationSubmission {
       otherIndividuals = Some(Completed),
       trustDetails = Some(Completed),
       settlors = Some(Completed),
-      assets = Some(Completed),
-      agentDetails = Some(Completed)
+      assets = Some(Completed)
     )
   }
 

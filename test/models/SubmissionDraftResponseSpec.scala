@@ -26,9 +26,9 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
   "SubmissionDraftResponse" when {
 
     "AllStatus" must {
-      "return allComplete true" when {
 
-        "Organisation user and all sections completed" in {
+      "return allComplete true" when {
+        "all sections completed" in {
 
           val allStatus = AllStatus(
             beneficiaries = Some(Completed),
@@ -38,50 +38,14 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             otherIndividuals = Some(Completed),
             trustDetails = Some(Completed),
             settlors = Some(Completed),
-            assets = Some(Completed),
-            agentDetails = None
+            assets = Some(Completed)
           )
 
           allStatus.allComplete(None, Organisation) mustBe true
         }
-
-        "Agent user and all sections completed" in {
-
-          val allStatus = AllStatus(
-            beneficiaries = Some(Completed),
-            trustees = Some(Completed),
-            taxLiability = Some(Completed),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed),
-            agentDetails = Some(Completed)
-          )
-
-          allStatus.allComplete(None, Agent) mustBe true
-        }
       }
 
       "return allComplete false" when {
-
-        "Agent user and agentDetails incomplete" in {
-
-          val allStatus = AllStatus(
-            beneficiaries = Some(Completed),
-            trustees = Some(Completed),
-            taxLiability = Some(Completed),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed),
-            agentDetails = None
-          )
-
-          allStatus.allComplete(None, Agent) mustBe false
-        }
-
         "any section incomplete" in {
 
           val allStatus = AllStatus(
@@ -92,8 +56,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             otherIndividuals = Some(Completed),
             trustDetails = Some(Completed),
             settlors = Some(Completed),
-            assets = Some(Completed),
-            agentDetails = None
+            assets = Some(Completed)
           )
 
           allStatus.allComplete(None, Organisation) mustBe false
