@@ -27,7 +27,7 @@ import play.api.libs.json._
 case class Registration(matchData: Option[MatchData],
                         correspondence: Correspondence,
                         declaration: Declaration,
-                        trust: Trust,
+                        trust: JsValue = Json.obj(),
                         agentDetails: Option[AgentDetails] = None)
 
 object Registration {
@@ -59,12 +59,6 @@ case class Declaration(name: FullName,
 
 object Declaration {
   implicit val declarationFormat: Format[Declaration] = Json.format[Declaration]
-}
-
-case class Trust(assets: Assets)
-
-object Trust {
-  implicit val trustFormat: Format[Trust] = Json.format[Trust]
 }
 
 case class AgentDetails(arn: String,

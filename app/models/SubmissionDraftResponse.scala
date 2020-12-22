@@ -16,12 +16,13 @@
 
 package models
 
-import java.time.{LocalDate, LocalDateTime}
-
 import models.registration.pages.Status
 import models.registration.pages.Status.Completed
 import play.api.libs.json.{JsValue, Json, OFormat}
+import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TaxLiabilityHelper
+
+import java.time.{LocalDate, LocalDateTime}
 
 case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgress: Option[Boolean])
 
@@ -56,48 +57,55 @@ object RegistrationSubmission {
     implicit lazy val format: OFormat[AnswerSection] = Json.format[AnswerSection]
   }
 
-  case class AllStatus(
-                        beneficiaries: Option[Status] = None,
-                        trustees: Option[Status] = None,
-                        taxLiability: Option[Status] = None,
-                        protectors: Option[Status] = None,
-                        otherIndividuals: Option[Status] = None,
-                        trustDetails: Option[Status] = None,
-                        settlors: Option[Status] = None
-                      ) {
+  case class AllStatus(beneficiaries: Option[Status] = None,
+                       trustees: Option[Status] = None,
+                       taxLiability: Option[Status] = None,
+                       protectors: Option[Status] = None,
+                       otherIndividuals: Option[Status] = None,
+                       trustDetails: Option[Status] = None,
+                       settlors: Option[Status] = None,
+                       assets: Option[Status] = None) {
 
-    def allComplete(trustSetUpDate: Option[LocalDate]): Boolean =
+    /**
+     *
+     * @param trustSetUpDate - start date of the trust, used to determine if the tax liability task needs
+     *                       to be rendered on the task list
+     * @param affinityGroup - not currently used, but may well be needed to determine completeness when agent details
+     *                      microservice enabled
+     * @return true if all of the relevant sections have a status of Completed
+     */
+    def allComplete(trustSetUpDate: Option[LocalDate], affinityGroup: AffinityGroup): Boolean =
       beneficiaries.contains(Completed) &&
         trustees.contains(Completed) &&
         protectors.contains(Completed) &&
         otherIndividuals.contains(Completed) &&
         trustDetails.contains(Completed) &&
         settlors.contains(Completed) &&
+        assets.contains(Completed) &&
         (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate))
-
   }
 
   object AllStatus {
     implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
-    val withAllComplete = AllStatus(
-      Some(Completed),
-      Some(Completed),
-      Some(Completed),
-      Some(Completed),
-      Some(Completed),
-      Some(Completed),
-      Some(Completed)
+    val withAllComplete: AllStatus = AllStatus(
+      beneficiaries = Some(Completed),
+      trustees = Some(Completed),
+      taxLiability = Some(Completed),
+      protectors = Some(Completed),
+      otherIndividuals = Some(Completed),
+      trustDetails = Some(Completed),
+      settlors = Some(Completed),
+      assets = Some(Completed)
     )
   }
 
-  case class AllAnswerSections(
-                                beneficiaries: Option[List[AnswerSection]],
-                                trustees: Option[List[AnswerSection]],
-                                protectors: Option[List[AnswerSection]],
-                                otherIndividuals: Option[List[AnswerSection]],
-                                trustDetails: Option[List[AnswerSection]],
-                                settlors: Option[List[AnswerSection]]
-                              )
+  case class AllAnswerSections(beneficiaries: Option[List[AnswerSection]],
+                               trustees: Option[List[AnswerSection]],
+                               protectors: Option[List[AnswerSection]],
+                               otherIndividuals: Option[List[AnswerSection]],
+                               trustDetails: Option[List[AnswerSection]],
+                               settlors: Option[List[AnswerSection]],
+                               assets: Option[List[AnswerSection]])
 
   object AllAnswerSections {
     implicit lazy val format: OFormat[AllAnswerSections] = Json.format[AllAnswerSections]

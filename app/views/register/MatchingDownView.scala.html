@@ -34,7 +34,7 @@
 
     <p>@messages("matchingDown.p1")</p>
 
-    <p>@messages("matchingDown.p2.beforeLink") <a href="@config.trustsHelplineUrl" target="_blank">@messages("matchingDown.p2.link")</a> @messages("matchingDown.p2.afterLink")</p>
+    <p>@messages("matchingDown.p2.beforeLink") <a href="@config.helplineUrl" target="_blank">@messages("matchingDown.p2.link")</a> @messages("matchingDown.p2.afterLink")</p>
 
     @if(isAgent) {
         <p>@messages("matchingDown.p3") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "matchingDown.p3.link", false).</p>

@@ -24,16 +24,15 @@ import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
-import models.registration.pages.RegistrationStatus.InProgress
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{verify, when, _}
-import pages.register.DeclarationPage
-import play.api.mvc.Call
+import pages.register.{DeclarationPage, RegistrationProgress}
+import play.api.data.Form
+import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.TestUserAnswers
 import views.html.register.DeclarationView
 
 import scala.concurrent.Future
@@ -41,13 +40,11 @@ import scala.concurrent.Future
 
 class DeclarationControllerSpec extends RegistrationSpecBase {
 
-  def confirmationRoute = Call("GET", "/confirmation")
-
   val formProvider = new DeclarationFormProvider()
-  val form = formProvider()
+  val form: Form[Declaration] = formProvider()
   val name = "name"
 
-  lazy val declarationRoute = routes.DeclarationController.onPageLoad(fakeDraftId).url
+  lazy val declarationRoute: String = routes.DeclarationController.onPageLoad(fakeDraftId).url
 
   before {
     reset(mockSubmissionService)
@@ -58,7 +55,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
   "Declaration Controller" must {
 
     "redirect when registration is not complete" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers),AffinityGroup.Agent).build()
+      val mockRegistrationProgress = mock[RegistrationProgress]
+
+      when(mockRegistrationProgress.isTaskListComplete(any(), any())(any())).thenReturn(Future.successful(false))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        .overrides(inject.bind[RegistrationProgress].toInstance(mockRegistrationProgress))
+        .build()
 
       val request = FakeRequest(GET, declarationRoute)
 
@@ -73,14 +76,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET for Organisation user" in {
 
-      val userAnswers =
-        TestUserAnswers.withCompleteSections(
-          TestUserAnswers.withAgent(
-            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
-          )
-        )
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers),AffinityGroup.Organisation).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Organisation).build()
 
       val request = FakeRequest(GET, declarationRoute)
 
@@ -98,14 +94,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET for Agent" in {
 
-      val userAnswers =
-        TestUserAnswers.withCompleteSections(
-          TestUserAnswers.withAgent(
-            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
-          )
-        )
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers),AffinityGroup.Agent).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request = FakeRequest(GET, declarationRoute)
 
@@ -123,12 +112,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers =
-        TestUserAnswers.withCompleteSections(
-          TestUserAnswers.withAgent(
-            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
-          )
-        )
+      val userAnswers = emptyUserAnswers
         .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("email@email.com"))).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -150,18 +134,11 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "redirect to the confirmation page when valid data is submitted and registration submitted successfully " in {
 
-      val userAnswers =
-        TestUserAnswers.withCompleteSections(
-          TestUserAnswers.withAgent(
-            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
-          )
-        )
-
       when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)
@@ -177,18 +154,11 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "redirect to the task list page when valid data is submitted and submission service can not register successfully" in {
 
-      val userAnswers =
-        TestUserAnswers.withCompleteSections(
-          TestUserAnswers.withAgent(
-            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
-          )
-        )
-
       when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.failed(UnableToRegister()))
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)
@@ -204,19 +174,11 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "redirect to the already registered page when valid data is submitted and trust is already registered" in {
 
-      val userAnswers =
-        TestUserAnswers.withCompleteSections(
-          TestUserAnswers.withAgent(
-            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
-          )
-        )
-
       when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(AlreadyRegistered))
 
-
       val application =
-        applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)
@@ -232,14 +194,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers =
-        TestUserAnswers.withCompleteSections(
-          TestUserAnswers.withAgent(
-            TestUserAnswers.newTrustCompleteUserAnswers.copy(progress = InProgress)
-          )
-        )
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       val request =
         FakeRequest(POST, declarationRoute)

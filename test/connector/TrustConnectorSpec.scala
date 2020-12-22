@@ -19,7 +19,7 @@ package connector
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import mapping.registration.RegistrationMapper
-import models.core.http.{AddressType, MatchData, MatchedResponse, RegistrationTRNResponse, SuccessOrFailureResponse, TrustResponse}
+import models.core.http._
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -68,8 +68,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
       val newTrustUserAnswers = {
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-        val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-        val userAnswers = TestUserAnswers.withDeclaration(asset)
+        val userAnswers = TestUserAnswers.withDeclaration(emptyUserAnswers)
 
         userAnswers
       }

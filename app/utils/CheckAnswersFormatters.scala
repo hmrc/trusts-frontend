@@ -19,8 +19,6 @@ package utils
 import models.core.UserAnswers
 import models.core.pages.{InternationalAddress, UKAddress}
 import pages.register.agents.AgentNamePage
-import pages.register.asset.business.BusinessNamePage
-import pages.register.asset.shares.ShareCompanyNamePage
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
 import utils.countryOptions.CountryOptions
@@ -43,14 +41,6 @@ object CheckAnswersFormatters {
   def currencyFormat(value: String): String = s"£$value"
 
   def escape(x: String): Html = HtmlFormat.escape(x)
-
-  def shareCompName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(ShareCompanyNamePage(index)).getOrElse("")
-  }
-
-  def assetName(index: Int, userAnswers: UserAnswers): String = {
-    userAnswers.get(BusinessNamePage(index)).getOrElse("")
-  }
 
   def agencyName(userAnswers: UserAnswers): String = {
     userAnswers.get(AgentNamePage).getOrElse("")

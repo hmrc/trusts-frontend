@@ -20,19 +20,15 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import controllers.register.agents.routes
-import models.core.UserAnswers
-import models.registration.pages.AddAssets.NoComplete
-import models.registration.pages.Status.Completed
-import models.registration.pages._
 import navigation.registration.TaskListNavigator
-import pages.entitystatus._
 import pages.register.RegistrationProgress
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.http.HeaderCarrier
+import viewmodels.Task
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.register.TaskListView
+
+import scala.concurrent.Future
 
 class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
@@ -42,9 +38,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
-  private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers,fakeDraftId)
-  private lazy val additionalSections = newRegistrationProgress.additionalItems(fakeDraftId)
-  private def isTaskListComplete(answers: UserAnswers) = newRegistrationProgress.isTaskListComplete(answers)
+  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId)
+  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId)
+  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, Agent)
 
   "TaskList view" when {
 
@@ -57,9 +53,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         val view = viewFor[TaskListView](Some(answers))
 
         for {
-          sections <- sections(answers)
+          sections <- sections
           additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete(answers)
+          isTaskListComplete <- isTaskListComplete
         } yield {
 
           val applyView = view.apply(
@@ -82,18 +78,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         "all sections are completed" in {
 
-          val userAnswers = emptyUserAnswers
-            .set(WhatKindOfAssetPage(0), WhatKindOfAsset.Money).success.value
-            .set(AssetMoneyValuePage(0), "2000").success.value
-            .set(AssetStatus(0), Completed).success.value
-            .set(AddAssetsPage, NoComplete).success.value
-
           for {
-            sections <- sections(userAnswers)
+            sections <- sections
             additionalSections <- additionalSections
-            isTaskListComplete <- isTaskListComplete(userAnswers)
+            isTaskListComplete <- isTaskListComplete
           } yield {
-            val view = viewFor[TaskListView](Some(userAnswers))
+            val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
               fakeDraftId,
               savedUntil,
@@ -117,14 +107,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         "not all sections are completed" in {
 
-          val userAnswers = emptyUserAnswers.set(AddAssetsPage, NoComplete).success.value
-
           for {
-            sections <- sections(userAnswers)
+            sections <- sections
             additionalSections <- additionalSections
-            isTaskListComplete <- isTaskListComplete(userAnswers)
+            isTaskListComplete <- isTaskListComplete
           } yield {
-            val view = viewFor[TaskListView](Some(userAnswers))
+            val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
               fakeDraftId,
               savedUntil,
@@ -150,9 +138,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render Saved Until" in {
         for {
-          sections <- sections(emptyUserAnswers)
+          sections <- sections
           additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
@@ -173,9 +161,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render return to saved registrations link" in {
         for {
-          sections <- sections(emptyUserAnswers)
+          sections <- sections
           additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
@@ -198,9 +186,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "render agent details link" in {
         for {
-          sections <- sections(emptyUserAnswers)
+          sections <- sections
           additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
@@ -223,9 +211,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
       "not render saved until" in {
         for {
-          sections <- sections(emptyUserAnswers)
+          sections <- sections
           additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete(emptyUserAnswers)
+          isTaskListComplete <- isTaskListComplete
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(

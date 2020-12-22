@@ -315,7 +315,8 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
           protectors = None,
           otherIndividuals = None,
           trustDetails = None,
-          settlors = None
+          settlors = None,
+          assets = None
         )
 
         when(mockConnector.getAnswerSections(any())(any(), any())).thenReturn(Future.successful(answerSections))

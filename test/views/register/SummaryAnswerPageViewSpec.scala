@@ -18,15 +18,7 @@ package views.register
 
 import java.time.LocalDateTime
 
-import models.registration.pages.AddAssets.NoComplete
-import models.registration.pages.Status.Completed
-import models.registration.pages._
-import pages.entitystatus._
 import pages.register._
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.property_or_land._
-import pages.register.asset.shares._
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 import utils.print.register.PrintUserAnswersHelper
@@ -38,30 +30,9 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
   "SummaryAnswerPage view" must {
 
-    val userAnswers =
-      TestUserAnswers.emptyUserAnswers
-
-        .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
-        .set(AssetMoneyValuePage(index), "100").success.value
-        .set(AssetStatus(index), Completed).success.value
-        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
-        .set(SharesInAPortfolioPage(1), true).success.value
-        .set(SharePortfolioNamePage(1), "Company").success.value
-        .set(SharePortfolioOnStockExchangePage(1), true).success.value
-        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
-        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
-        .set(AssetStatus(1), Completed).success.value
-        .set(WhatKindOfAssetPage(2), WhatKindOfAsset.PropertyOrLand).success.value
-        .set(PropertyOrLandAddressYesNoPage(2), false).success.value
-        .set(PropertyOrLandDescriptionPage(2), "Town House").success.value
-        .set(PropertyOrLandTotalValuePage(2), 10000L).success.value
-        .set(TrustOwnAllThePropertyOrLandPage(2), false).success.value
-        .set(PropertyLandValueTrustPage(2), 10L).success.value
-        .set(AssetStatus(2), Completed).success.value
-        .set(AddAssetsPage, NoComplete).success.value
-
-        .set(RegistrationTRNPage, "XNTRN000000001").success.value
-        .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
+    val userAnswers = TestUserAnswers.emptyUserAnswers
+      .set(RegistrationTRNPage, "XNTRN000000001").success.value
+      .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))
 
@@ -71,7 +42,7 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val summary = helper.summary(fakeDraftId, userAnswers)
+    val summary = helper.summary(fakeDraftId)
 
     val orgDoc = {
       summary.map {

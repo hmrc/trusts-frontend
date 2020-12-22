@@ -29,8 +29,6 @@ class NavigatorSpec extends RegistrationSpecBase
   with Generators
   with MatchingRoutes
   with AgentRoutes
-  with AssetRoutes
-  with PropertyOrLandRoutes
   with SuitabilityRoutes
 {
 
@@ -48,10 +46,6 @@ class NavigatorSpec extends RegistrationSpecBase
       behave like matchingRoutes
 
       behave like agentRoutes
-
-      behave like assetRoutes
-
-      behave like propertyOrLandRoutes
 
       behave like suitabilityRoutes
 

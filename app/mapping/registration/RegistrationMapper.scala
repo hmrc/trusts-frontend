@@ -18,19 +18,17 @@ package mapping.registration
 
 import javax.inject.Inject
 import models.core.UserAnswers
-import models.core.http.{AddressType, Registration, Trust}
+import models.core.http.{AddressType, Registration}
 
 class RegistrationMapper @Inject()(
                                     declarationMapper: DeclarationMapper,
                                     correspondenceMapper: CorrespondenceMapper,
-                                    assetMapper: AssetMapper,
                                     agentMapper: AgentMapper,
                                     matchingMapper: MatchingMapper
                                   ) {
 
   def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String): Option[Registration] = {
     for {
-      assets <- assetMapper.build(userAnswers)
       correspondence <- correspondenceMapper.build(trustName)
       declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
     } yield {
@@ -38,7 +36,6 @@ class RegistrationMapper @Inject()(
         matchData = matchingMapper.build(userAnswers, trustName),
         declaration = declaration,
         correspondence = correspondence,
-        trust = Trust(assets = assets),
         agentDetails = agentMapper.build(userAnswers)
       )
     }

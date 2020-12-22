@@ -17,13 +17,10 @@
 package pages.register
 
 import javax.inject.Inject
-import models.core.UserAnswers
-import models.registration.pages.Status._
-import models.registration.pages._
 import navigation.registration.TaskListNavigator
-import pages.register.asset.AddAssetsPage
 import repositories.RegistrationsRepository
 import sections.{Beneficiaries, Settlors, _}
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
@@ -32,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrationsRepository: RegistrationsRepository)
                                     (implicit ec: ExecutionContext) {
 
-  def items(userAnswers: UserAnswers, draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+  def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
@@ -41,12 +38,12 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
         Task(Link(Settlors, navigator.settlorsJourney(draftId)), allStatus.settlors),
         Task(Link(Trustees, navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
         Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
-        Task(Link(Assets, navigator.assetsJourney(userAnswers, draftId).url), assetsStatus(userAnswers)),
+        Task(Link(Assets, navigator.assetsJourneyUrl(draftId)), allStatus.assets),
         Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability)
       )
     }
 
-  def additionalItems(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+  def additionalItems(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] = {
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
@@ -55,41 +52,15 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
         Task(Link(OtherIndividuals, navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
       )
     }
-
-  private def determineStatus(complete: Boolean): Option[Status] = {
-    if (complete) {
-      Some(Completed)
-    } else {
-      Some(InProgress)
-    }
   }
 
-  def assetsStatus(userAnswers: UserAnswers): Option[Status] = {
-    val noMoreToAdd = userAnswers.get(AddAssetsPage).contains(AddAssets.NoComplete)
-    val assets = userAnswers.get(sections.Assets).getOrElse(List.empty)
-
-    assets match {
-      case Nil => None
-      case list =>
-
-        val status = !list.exists(_.status == InProgress) && noMoreToAdd
-        determineStatus(status)
-    }
-  }
-
-  def isTaskListComplete(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
-    if (assetsStatus(userAnswers).contains(Completed)) {
-
-      registrationsRepository.getAllStatus(userAnswers.draftId).flatMap {
-        status =>
-        registrationsRepository.getTrustSetupDate(userAnswers.draftId).map {
+  def isTaskListComplete(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Boolean] = {
+    registrationsRepository.getAllStatus(draftId).flatMap {
+      status =>
+        registrationsRepository.getTrustSetupDate(draftId).map {
           trustSetUpDate =>
-           status.allComplete(trustSetUpDate)
+            status.allComplete(trustSetUpDate, affinityGroup)
         }
-      }
-
-    } else {
-      Future.successful(false)
     }
   }
 }
