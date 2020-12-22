@@ -27,8 +27,9 @@ import play.api.mvc.{Call, Request}
 @Singleton
 class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
-  private final val ENGLISH = "en"
-  private final val WELSH = "cy"
+  final val ENGLISH = "en"
+  final val WELSH = "cy"
+  final val UK_COUNTRY_CODE = "GB"
 
   private val contactHost = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "trusts"
@@ -84,8 +85,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val agentsSubscriptionsUrl : String = configuration.get[String]("urls.agentSubscriptions")
   lazy val agentServiceRegistrationUrl = s"$agentsSubscriptionsUrl?continue=$loginContinueUrl"
 
-  lazy val locationCanonicalList: String = loadConfig("location.canonical.list.all")
-  lazy val locationCanonicalListNonUK: String = loadConfig("location.canonical.list.nonUK")
+  lazy val locationCanonicalList: String = configuration.get[String]("location.canonical.list.all")
+  lazy val locationCanonicalListCY: String = configuration.get[String]("location.canonical.list.allCY")
 
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")

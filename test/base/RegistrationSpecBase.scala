@@ -37,6 +37,9 @@ import utils.annotations.{LivingSettlor, Partnership, PropertyOrLand}
 trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter with FakeTrustsApp {
   this: TestSuite =>
 
+  final val ENGLISH = "en"
+  final val WELSH = "cy"
+
   val fakeDraftId: String = TestUserAnswers.draftId
 
   def emptyUserAnswers: UserAnswers = TestUserAnswers.emptyUserAnswers
