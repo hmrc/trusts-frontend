@@ -16,13 +16,12 @@
 
 package config
 
-import java.net.{URI, URLEncoder}
-import java.time.LocalDate
-
 import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.{Call, Request}
+
+import java.net.{URI, URLEncoder}
 
 @Singleton
 class FrontendAppConfig @Inject() (val configuration: Configuration) {
@@ -34,9 +33,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   private val contactHost = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "trusts"
 
-  lazy val serviceName: String = configuration.get[String]("serviceName")
-
-  private def loadConfig(key: String) = configuration.get[String](key)
+  private def loadConfig(key: String): String = configuration.get[String](key)
 
   val analyticsToken: String = configuration.get[String](s"google-analytics.token")
   val analyticsHost: String = configuration.get[String](s"google-analytics.host")
@@ -49,7 +46,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
   val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
-  val trustsHelplineUrl: String = configuration.get[String]("urls.trustsHelpline")
   val ggSignInUrl: String = configuration.get[String]("urls.ggSignIn")
 
   lazy val loginUrl: String = configuration.get[String]("urls.login")
@@ -57,33 +53,37 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
   lazy val logoutUrl: String = loadConfig("urls.logout")
 
-  private def insertDraftId(url: String, draftId: String) = url.replace(":draftId", draftId)
+  def beneficiariesFrontendUrl(draftId: String): String = frontendUrl(draftId, "beneficiaries")
 
-  private lazy val beneficiariesFrontendUrlTemplate: String = loadConfig("urls.beneficiariesFrontend")
-  def beneficiariesFrontendUrl(draftId: String): String = insertDraftId(beneficiariesFrontendUrlTemplate, draftId)
+  def taxLiabilityFrontendUrl(draftId: String): String = frontendUrl(draftId, "taxLiability")
 
-  private lazy val taxLiabilityFrontendUrlTemplate: String = loadConfig("urls.taxLiabilityFrontend")
-  def taxLiabilityFrontendUrl(draftId: String): String = insertDraftId(taxLiabilityFrontendUrlTemplate, draftId)
+  def trusteesFrontendUrl(draftId: String): String = frontendUrl(draftId, "trustees")
 
-  private lazy val trusteesFrontendUrlTemplate: String = loadConfig("urls.trusteesFrontend")
-  def trusteesFrontendUrl(draftId: String): String = insertDraftId(trusteesFrontendUrlTemplate, draftId)
+  def trustDetailsFrontendUrl(draftId: String): String = frontendUrl(draftId, "trustDetails")
 
-  private lazy val trustDetailsFrontendUrlTemplate: String = loadConfig("urls.trustDetailsFrontend")
-  def trustDetailsFrontendUrl(draftId: String): String = insertDraftId(trustDetailsFrontendUrlTemplate, draftId)
+  def settlorsFrontendUrl(draftId: String): String = frontendUrl(draftId, "settlors")
 
-  private lazy val settlorsFrontendUrlTemplate: String = loadConfig("urls.settlorsFrontend")
-  def settlorsFrontendUrl(draftId: String): String = insertDraftId(settlorsFrontendUrlTemplate, draftId)
+  def protectorsFrontendUrl(draftId: String): String = frontendUrl(draftId, "protectors")
 
-  private lazy val protectorsFrontendUrlTemplate: String = loadConfig("urls.protectorsFrontend")
-  def protectorsFrontendUrl(draftId: String): String = insertDraftId(protectorsFrontendUrlTemplate, draftId)
+  def otherIndividualsFrontendUrl(draftId: String): String = frontendUrl(draftId, "otherIndividuals")
 
-  private lazy val otherIndividualsFrontendUrlTemplate: String = loadConfig("urls.otherIndividualsFrontend")
-  def otherIndividualsFrontendUrl(draftId: String): String = insertDraftId(otherIndividualsFrontendUrlTemplate, draftId)
+  def assetsFrontendUrl(draftId: String): String = frontendUrl(draftId, "assets")
 
-  lazy val otacUrl : String = configuration.get[String]("urls.otacLogin")
+  def agentDetailsFrontendUrl(draftId: String): String = frontendUrl(draftId, "agentDetails")
 
-  lazy val agentsSubscriptionsUrl : String = configuration.get[String]("urls.agentSubscriptions")
-  lazy val agentServiceRegistrationUrl = s"$agentsSubscriptionsUrl?continue=$loginContinueUrl"
+  lazy val agentDetailsMicroserviceEnabled: Boolean =
+    configuration.get[Boolean]("microservice.services.features.journey.agentDetailsMicroservice.enabled")
+
+  private def frontendUrl(draftId: String, section: String): String = {
+    lazy val urlTemplate: String = loadConfig(s"urls.${section}Frontend")
+    def insertDraftId(url: String, draftId: String): String = url.replace(":draftId", draftId)
+    insertDraftId(urlTemplate, draftId)
+  }
+
+  lazy val agentServiceRegistrationUrl: String = {
+    lazy val agentsSubscriptionsUrl : String = configuration.get[String]("urls.agentSubscriptions")
+    s"$agentsSubscriptionsUrl?continue=$loginContinueUrl"
+  }
 
   lazy val locationCanonicalList: String = configuration.get[String]("location.canonical.list.all")
   lazy val locationCanonicalListCY: String = configuration.get[String]("location.canonical.list.allCY")
@@ -91,11 +91,11 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
 
-  lazy val ttlInSeconds = configuration.get[Int]("mongodb.registration.ttlSeconds")
+  lazy val ttlInSeconds: Int = configuration.get[Int]("mongodb.registration.ttlSeconds")
 
-  lazy val trustsUrl = configuration.get[Service]("microservice.services.trusts").baseUrl
+  lazy val trustsUrl: String = configuration.get[Service]("microservice.services.trusts").baseUrl
 
-  lazy val authUrl = configuration.get[Service]("microservice.services.auth").baseUrl
+  lazy val authUrl: String = configuration.get[Service]("microservice.services.auth").baseUrl
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
 
@@ -107,16 +107,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   def routeToSwitchLanguage: String => Call =
     (lang: String) => controllers.register.routes.LanguageSwitchController.switchToLanguage(lang)
 
-  lazy val removeTaxLiabilityOnTaskList : Boolean =
-    configuration.get[Boolean]("microservice.services.features.removeTaxLiabilityOnTaskList")
-
   lazy val auditSubmissions : Boolean =
     configuration.get[Boolean]("microservice.services.features.auditing.submissions.enabled")
-
-  lazy val auditCannotCreateRegistration : Boolean =
-    configuration.get[Boolean]("microservice.services.features.auditing.cannotCreateRegistration.enabled")
-
-  lazy val livingSettlorBusinessEnabled : Boolean = configuration.get[Boolean]("microservice.services.features.journey.livingSettlorBusiness.enabled")
 
   lazy val declarationEmailEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")
 
@@ -126,16 +118,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val countdownLength: String = configuration.get[String]("timeout.countdown")
   lazy val timeoutLength: String = configuration.get[String]("timeout.length")
 
-  private val day: Int = configuration.get[Int]("minimumDate.day")
-  private val month: Int = configuration.get[Int]("minimumDate.month")
-  private val year: Int = configuration.get[Int]("minimumDate.year")
-  lazy val minDate: LocalDate = LocalDate.of(year, month, day)
-
-  lazy val assetValueUpperLimitExclusive: Long = configuration.get[Long]("assetValueUpperLimitExclusive")
-
-  private lazy val accessibilityBaseLinkUrl: String = configuration.get[String]("urls.accessibility")
-
   def accessibilityLinkUrl(implicit request: Request[_]): String = {
+    lazy val accessibilityBaseLinkUrl: String = configuration.get[String]("urls.accessibility")
     val userAction = URLEncoder.encode(new URI(request.uri).getPath, "UTF-8")
     s"$accessibilityBaseLinkUrl?userAction=$userAction"
   }
@@ -145,7 +129,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
       case WELSH => "urls.welshHelpline"
       case _ => "urls.trustsHelpline"
     }
-
     configuration.get[String](path)
   }
+
 }

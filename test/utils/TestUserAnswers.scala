@@ -19,14 +19,9 @@ package utils
 import models.core.UserAnswers
 import models.core.pages.{Declaration, FullName, UKAddress}
 import models.registration.Matched.{Failed, Success}
-import models.registration.pages.Status.Completed
-import models.registration.pages._
 import org.scalatest.TryValues
-import pages.entitystatus._
 import pages.register._
 import pages.register.agents._
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
 import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
@@ -46,14 +41,6 @@ object TestUserAnswers extends TryValues {
       .set(AgentAddressYesNoPage, true).success.value
   }
 
-  def withMoneyAsset(userAnswers: UserAnswers): UserAnswers = {
-    val index = 0
-    userAnswers
-      .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
-      .set(AssetMoneyValuePage(index), "2000").success.value
-      .set(AssetStatus(index), Completed).success.value
-  }
-
   def withDeclaration(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
@@ -70,17 +57,5 @@ object TestUserAnswers extends TryValues {
   def withMatchingFailed(userAnswers: UserAnswers): UserAnswers = {
     userAnswers
       .set(ExistingTrustMatched, Failed).success.value
-  }
-
-  def withCompleteSections(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers
-      .set(AddAssetsPage, AddAssets.NoComplete).success.value
-  }
-
-  def newTrustCompleteUserAnswers: UserAnswers = {
-    val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val userAnswers = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-
-    userAnswers
   }
 }

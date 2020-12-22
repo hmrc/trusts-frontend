@@ -30,11 +30,6 @@ trait ModelGenerators {
       Gen.oneOf(TrusteesBasedInTheUK.values)
     }
 
-  implicit lazy val arbitraryShareClass: Arbitrary[ShareClass] =
-    Arbitrary {
-      Gen.oneOf(ShareClass.allValues)
-    }
-
   implicit lazy val arbitraryFullName : Arbitrary[FullName] = {
     Arbitrary {
       for {
@@ -60,16 +55,6 @@ trait ModelGenerators {
       for {
         str <- arbitrary[String]
       } yield InternationalAddress(str,str,Some(str),str)
-    }
-
-  implicit lazy val arbitraryAddAssets: Arbitrary[AddAssets] =
-    Arbitrary {
-      Gen.oneOf(AddAssets.values)
-    }
-
-  implicit lazy val arbitraryWhatKindOfAsset: Arbitrary[WhatKindOfAsset] =
-    Arbitrary {
-      Gen.oneOf(WhatKindOfAsset.values)
     }
 
   implicit lazy val arbitraryUkAddress: Arbitrary[UKAddress] =

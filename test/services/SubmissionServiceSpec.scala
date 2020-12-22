@@ -108,8 +108,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-    val userAnswers = TestUserAnswers.withDeclaration(asset)
+    val userAnswers = TestUserAnswers.withDeclaration(emptyUserAnswers)
 
     userAnswers
   }

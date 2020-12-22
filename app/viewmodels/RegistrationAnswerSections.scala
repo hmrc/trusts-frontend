@@ -20,16 +20,16 @@ import models.RegistrationSubmission
 import models.RegistrationSubmission.AllAnswerSections
 import play.twirl.api.HtmlFormat
 
-case class RegistrationAnswerSections(
-                                       beneficiaries: Option[List[AnswerSection]] = None,
-                                       trustees: Option[List[AnswerSection]] = None,
-                                       protectors: Option[List[AnswerSection]] = None,
-                                       otherIndividuals: Option[List[AnswerSection]] = None,
-                                       trustDetails: Option[List[AnswerSection]] = None,
-                                       settlors: Option[List[AnswerSection]] = None
-                                     )
+case class RegistrationAnswerSections(beneficiaries: Option[List[AnswerSection]] = None,
+                                      trustees: Option[List[AnswerSection]] = None,
+                                      protectors: Option[List[AnswerSection]] = None,
+                                      otherIndividuals: Option[List[AnswerSection]] = None,
+                                      trustDetails: Option[List[AnswerSection]] = None,
+                                      settlors: Option[List[AnswerSection]] = None,
+                                      assets: Option[List[AnswerSection]] = None)
 
 object RegistrationAnswerSections {
+
   def fromAllAnswerSections(sections: AllAnswerSections): RegistrationAnswerSections = {
     RegistrationAnswerSections(
       beneficiaries = convert(sections.beneficiaries),
@@ -37,7 +37,8 @@ object RegistrationAnswerSections {
       protectors = convert(sections.protectors),
       otherIndividuals = convert(sections.otherIndividuals),
       trustDetails = convert(sections.trustDetails),
-      settlors = convert(sections.settlors)
+      settlors = convert(sections.settlors),
+      assets = convert(sections.assets)
     )
   }
 

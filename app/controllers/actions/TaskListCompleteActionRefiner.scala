@@ -27,15 +27,15 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListCompleteActionRefinerImpl @Inject()(
-                                                     registrationProgress: RegistrationProgress,
-                                                     implicit val executionContext: ExecutionContext
-                                                     ) extends TaskListCompleteActionRefiner {
+                                                   registrationProgress: RegistrationProgress,
+                                                   implicit val executionContext: ExecutionContext
+                                                 ) extends TaskListCompleteActionRefiner {
 
   override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    registrationProgress.isTaskListComplete(request.userAnswers) map {
+    registrationProgress.isTaskListComplete(request.userAnswers.draftId, request.affinityGroup) map {
       case true => Right(request)
       case false => Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))
     }
