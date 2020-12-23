@@ -79,23 +79,23 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
       section => section.data.as[AllAnswerSections]
     }
 
-  def getLeadTrustee(draftId: String)(implicit hc:HeaderCarrier, ec: ExecutionContext): Future[LeadTrusteeType] =
+  def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[LeadTrusteeType] =
     http.GET[LeadTrusteeType](s"$submissionsBaseUrl/$draftId/lead-trustee")
 
-  def getCorrespondenceAddress(draftId: String)(implicit hc:HeaderCarrier, ec: ExecutionContext): Future[AddressType] =
+  def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressType] =
     http.GET[AddressType](s"$submissionsBaseUrl/$draftId/correspondence-address")
 
-  def getAgentAddress(draftId: String)(implicit hc:HeaderCarrier, ec: ExecutionContext): Future[AddressType] =
+  def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressType] =
     http.GET[AddressType](s"$submissionsBaseUrl/$draftId/agent-address")
 
-  def getClientReference(draftId: String)(implicit hc:HeaderCarrier, ec: ExecutionContext): Future[String] =
+  def getClientReference(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[String] =
     http.GET[String](s"$submissionsBaseUrl/$draftId/client-reference")
 
-  def resetTaxLiability(draftId: String)(implicit hc:HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
+  def resetTaxLiability(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/reset/taxLiability")
   }
 
-  def getTrustSetupDate(draftId: String)(implicit hc:HeaderCarrier, ec: ExecutionContext): Future[Option[LocalDate]] = {
+  def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[LocalDate]] = {
     http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/when-trust-setup").map {
       response =>
         (response.json \ "startDate").asOpt[LocalDate]
@@ -104,7 +104,7 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
     }
   }
 
-  def getTrustName(draftId: String)(implicit hc:HeaderCarrier, ec: ExecutionContext): Future[String] =
+  def getTrustName(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[String] =
     http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/trust-name").map {
       response =>
         (response.json \ "trustName").as[String]
