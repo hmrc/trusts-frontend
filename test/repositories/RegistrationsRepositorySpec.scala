@@ -17,16 +17,21 @@
 package repositories
 
 import base.RegistrationSpecBase
+import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
 import mapping.registration.AddressMapper
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
+import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
+import models.core.pages.UKAddress
 import models.registration.pages.Status.{Completed, InProgress}
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{verify, when}
+import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
+import pages.register.agents.{AgentAddressYesNoPage, AgentUKAddressPage}
+import play.api.Configuration
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
@@ -40,14 +45,16 @@ import scala.concurrent.{Await, Future}
 
 class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers with MockitoSugar {
 
+  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+
   private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
 
-  private def createRepository(mockConnector: SubmissionDraftConnector) = {
+  private def createRepository(mockConnector: SubmissionDraftConnector, config: FrontendAppConfig = fakeFrontendAppConfig) = {
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
     val mapper: AddressMapper = injector.instanceOf[AddressMapper]
 
-    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, mapper, fakeFrontendAppConfig)
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, mapper, config)
   }
 
   "RegistrationRepository" when {
@@ -396,6 +403,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         verify(mockConnector).getLeadTrustee(draftId)(hc, executionContext)
       }
     }
+
     "reading correspondence address" must {
 
       "read existing correspondence address from connector" in {
@@ -417,6 +425,61 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         result mustBe correspondenceAddress
 
         verify(mockConnector).getCorrespondenceAddress(draftId)(hc, executionContext)
+      }
+    }
+
+    "reading agent address" when {
+
+      "agent details microservice enabled" must {
+        "read agent address from connector" in {
+
+          val mockConnector = mock[SubmissionDraftConnector]
+
+          val fakeFrontendAppConfig: FrontendAppConfig = {
+            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+            new FrontendAppConfig(config) {
+              override lazy val agentDetailsMicroserviceEnabled: Boolean = true
+            }
+          }
+
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+
+          val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+
+          when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.successful(correspondenceAddress))
+
+          val result = Await.result(repository.getAgentAddress(emptyUserAnswers), Duration.Inf).value
+
+          result mustBe correspondenceAddress
+
+          verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+        }
+      }
+
+      "agent details microservice not enabled" must {
+        "read agent address from UserAnswers" in {
+
+          val mockConnector = mock[SubmissionDraftConnector]
+
+          val fakeFrontendAppConfig: FrontendAppConfig = {
+            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+            new FrontendAppConfig(config) {
+              override lazy val agentDetailsMicroserviceEnabled: Boolean = false
+            }
+          }
+
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+
+          val userAnswers: UserAnswers = emptyUserAnswers
+            .set(AgentAddressYesNoPage, true).success.value
+            .set(AgentUKAddressPage, UKAddress("Line 1", "Line 2", None, None, "AB1 1AB")).success.value
+
+          val result = Await.result(repository.getAgentAddress(userAnswers), Duration.Inf).value
+
+          result mustBe AddressType("Line 1", "Line 2", None, None, Some("AB1 1AB"), "GB")
+
+          verify(mockConnector, times(0)).getAgentAddress(any())(any(), any())
+        }
       }
     }
 
