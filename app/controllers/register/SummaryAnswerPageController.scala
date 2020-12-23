@@ -32,7 +32,6 @@ import views.html.register.SummaryAnswerPageView
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-
 class SummaryAnswerPageController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              identify: RegistrationIdentifierAction,
