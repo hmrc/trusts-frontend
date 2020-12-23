@@ -30,7 +30,7 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
-import pages.register.agents.{AgentAddressYesNoPage, AgentUKAddressPage}
+import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentUKAddressPage}
 import play.api.Configuration
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
@@ -444,13 +444,13 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
           val repository = createRepository(mockConnector, fakeFrontendAppConfig)
 
-          val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+          val agentAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
-          when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.successful(correspondenceAddress))
+          when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.successful(agentAddress))
 
           val result = Await.result(repository.getAgentAddress(emptyUserAnswers), Duration.Inf).value
 
-          result mustBe correspondenceAddress
+          result mustBe agentAddress
 
           verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
         }
@@ -479,6 +479,60 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
           result mustBe AddressType("Line 1", "Line 2", None, None, Some("AB1 1AB"), "GB")
 
           verify(mockConnector, times(0)).getAgentAddress(any())(any(), any())
+        }
+      }
+    }
+
+    "reading client reference" when {
+
+      val clientRef = "client-ref"
+
+      "agent details microservice enabled" must {
+        "read client referebce from connector" in {
+
+          val mockConnector = mock[SubmissionDraftConnector]
+
+          val fakeFrontendAppConfig: FrontendAppConfig = {
+            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+            new FrontendAppConfig(config) {
+              override lazy val agentDetailsMicroserviceEnabled: Boolean = true
+            }
+          }
+
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+
+          when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
+
+          val result = Await.result(repository.getClientReference(emptyUserAnswers), Duration.Inf).value
+
+          result mustBe clientRef
+
+          verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+        }
+      }
+
+      "agent details microservice not enabled" must {
+        "read client reference from UserAnswers" in {
+
+          val mockConnector = mock[SubmissionDraftConnector]
+
+          val fakeFrontendAppConfig: FrontendAppConfig = {
+            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+            new FrontendAppConfig(config) {
+              override lazy val agentDetailsMicroserviceEnabled: Boolean = false
+            }
+          }
+
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+
+          val userAnswers: UserAnswers = emptyUserAnswers
+            .set(AgentInternalReferencePage, clientRef).success.value
+
+          val result = Await.result(repository.getClientReference(userAnswers), Duration.Inf).value
+
+          result mustBe clientRef
+
+          verify(mockConnector, times(0)).getClientReference(any())(any(), any())
         }
       }
     }
