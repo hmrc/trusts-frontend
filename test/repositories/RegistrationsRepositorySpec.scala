@@ -149,24 +149,84 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
       }
     }
 
-    "setting user answers" must {
-      "write answers to main section" in {
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+    "setting user answers" when {
 
-        val draftId = "DraftId"
+      val baseAnswers = UserAnswers(draftId = fakeDraftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
+      val clientRef = "client-ref"
 
-        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
+      "agent details microservice enabled" when {
 
-        val mockConnector = mock[SubmissionDraftConnector]
+        "there is a client reference" must {
+          "write answers to main section" in {
 
-        val repository = createRepository(mockConnector)
+            val mockConnector = mock[SubmissionDraftConnector]
 
-        when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
 
-        val result = Await.result(repository.set(userAnswers), Duration.Inf)
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-        result mustBe true
-        verify(mockConnector).setDraftMain(draftId, Json.toJson(userAnswers), inProgress = false, None)(hc, executionContext)
+            val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, Some(clientRef))(hc, executionContext)
+          }
+        }
+
+        "there is not a client reference" must {
+          "write answers to main section" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("no client ref found")))
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+
+            val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, None)(hc, executionContext)
+          }
+        }
+      }
+
+      "agent details service not enabled" when {
+
+        "there is a client reference" must {
+          "write answers to main section" in {
+
+            val userAnswers: UserAnswers = baseAnswers
+              .set(AgentInternalReferencePage, clientRef).success.value
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
+
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+
+            val result = Await.result(repository.set(userAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(userAnswers), inProgress = false, Some(clientRef))(hc, executionContext)
+          }
+        }
+
+        "there is not a client reference" must {
+          "write answers to main section" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
+
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+
+            val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, None)(hc, executionContext)
+          }
+        }
       }
     }
 
