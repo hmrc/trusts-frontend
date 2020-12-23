@@ -16,18 +16,22 @@
 
 package repositories
 
-import java.time.{LocalDate, LocalDateTime}
-
 import base.RegistrationSpecBase
+import config.FrontendAppConfig
 import connector.SubmissionDraftConnector
+import mapping.registration.AddressMapper
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
+import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
+import models.core.pages.UKAddress
 import models.registration.pages.Status.{Completed, InProgress}
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{verify, when}
+import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
+import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentUKAddressPage}
+import play.api.Configuration
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
@@ -35,18 +39,29 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.DateFormatter
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
+import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers with MockitoSugar {
+class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers with MockitoSugar {
+
+  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
 
-  private def createRepository(mockConnector: SubmissionDraftConnector) = {
+  private def createRepository(mockConnector: SubmissionDraftConnector, config: FrontendAppConfig = fakeFrontendAppConfig) = {
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
+    val mapper: AddressMapper = injector.instanceOf[AddressMapper]
 
-    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, mapper, config)
+  }
+
+  private def fakeFrontendAppConfig(enabled: Boolean): FrontendAppConfig = {
+    lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+    new FrontendAppConfig(config) {
+      override lazy val agentDetailsMicroserviceEnabled: Boolean = enabled
+    }
   }
 
   "RegistrationRepository" when {
@@ -134,24 +149,84 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
       }
     }
 
-    "setting user answers" must {
-      "write answers to main section" in {
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+    "setting user answers" when {
 
-        val draftId = "DraftId"
+      val baseAnswers = UserAnswers(draftId = fakeDraftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
+      val clientRef = "client-ref"
 
-        val userAnswers = models.core.UserAnswers(draftId = draftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
+      "agent details microservice enabled" when {
 
-        val mockConnector = mock[SubmissionDraftConnector]
+        "there is a client reference" must {
+          "write answers to main section" in {
 
-        val repository = createRepository(mockConnector)
+            val mockConnector = mock[SubmissionDraftConnector]
 
-        when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
 
-        val result = Await.result(repository.set(userAnswers), Duration.Inf)
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-        result mustBe true
-        verify(mockConnector).setDraftMain(draftId, Json.toJson(userAnswers), inProgress = false, None)(hc, executionContext)
+            val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, Some(clientRef))(hc, executionContext)
+          }
+        }
+
+        "there is not a client reference" must {
+          "write answers to main section" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("no client ref found")))
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+
+            val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, None)(hc, executionContext)
+          }
+        }
+      }
+
+      "agent details service not enabled" when {
+
+        "there is a client reference" must {
+          "write answers to main section" in {
+
+            val userAnswers: UserAnswers = baseAnswers
+              .set(AgentInternalReferencePage, clientRef).success.value
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
+
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+
+            val result = Await.result(repository.set(userAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(userAnswers), inProgress = false, Some(clientRef))(hc, executionContext)
+          }
+        }
+
+        "there is not a client reference" must {
+          "write answers to main section" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
+
+            when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+
+            val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+
+            result mustBe true
+            verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, None)(hc, executionContext)
+          }
+        }
       }
     }
 
@@ -395,6 +470,7 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
         verify(mockConnector).getLeadTrustee(draftId)(hc, executionContext)
       }
     }
+
     "reading correspondence address" must {
 
       "read existing correspondence address from connector" in {
@@ -416,6 +492,127 @@ class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers 
         result mustBe correspondenceAddress
 
         verify(mockConnector).getCorrespondenceAddress(draftId)(hc, executionContext)
+      }
+    }
+
+    "reading agent address" when {
+
+      "agent details microservice enabled" when {
+
+        "successful call" must {
+          "return Some(agent address)" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            val agentAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+
+            when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.successful(agentAddress))
+
+            val result = Await.result(repository.getAgentAddress(emptyUserAnswers), Duration.Inf)
+
+            result mustBe Some(agentAddress)
+
+            verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+          }
+        }
+
+        "unsuccessful call" must {
+          "return None" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.failed(new Throwable("agent address not found")))
+
+            val result = Await.result(repository.getAgentAddress(emptyUserAnswers), Duration.Inf)
+
+            result mustBe None
+
+            verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+          }
+        }
+      }
+
+      "agent details microservice not enabled" must {
+        "read agent address from UserAnswers" in {
+
+          val mockConnector = mock[SubmissionDraftConnector]
+
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
+
+          val userAnswers: UserAnswers = emptyUserAnswers
+            .set(AgentAddressYesNoPage, true).success.value
+            .set(AgentUKAddressPage, UKAddress("Line 1", "Line 2", None, None, "AB1 1AB")).success.value
+
+          val result = Await.result(repository.getAgentAddress(userAnswers), Duration.Inf).value
+
+          result mustBe AddressType("Line 1", "Line 2", None, None, Some("AB1 1AB"), "GB")
+
+          verify(mockConnector, times(0)).getAgentAddress(any())(any(), any())
+        }
+      }
+    }
+
+    "reading client reference" when {
+
+      val clientRef = "client-ref"
+
+      "agent details microservice enabled" when {
+
+        "successful call" must {
+          "return Some(client reference)" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
+
+            val result = Await.result(repository.getClientReference(emptyUserAnswers), Duration.Inf)
+
+            result mustBe Some(clientRef)
+
+            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+          }
+        }
+
+        "unsuccessful call" must {
+          "return None" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("client ref not found")))
+
+            val result = Await.result(repository.getClientReference(emptyUserAnswers), Duration.Inf)
+
+            result mustBe None
+
+            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+          }
+        }
+      }
+
+      "agent details microservice not enabled" must {
+        "read client reference from UserAnswers" in {
+
+          val mockConnector = mock[SubmissionDraftConnector]
+
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
+
+          val userAnswers: UserAnswers = emptyUserAnswers
+            .set(AgentInternalReferencePage, clientRef).success.value
+
+          val result = Await.result(repository.getClientReference(userAnswers), Duration.Inf).value
+
+          result mustBe clientRef
+
+          verify(mockConnector, times(0)).getClientReference(any())(any(), any())
+        }
       }
     }
 

@@ -16,42 +16,31 @@
 
 package mapping.registration
 
-import javax.inject.Inject
-import models.core.{UserAnswers, http}
+import _root_.pages.register.DeclarationPage
 import models.core.http.{AddressType, Declaration}
-import pages.register.DeclarationPage
-import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
+import models.core.{UserAnswers, pages}
+import repositories.RegistrationsRepository
+import uk.gov.hmrc.http.HeaderCarrier
 
-class DeclarationMapper @Inject()(addressMapper: AddressMapper) {
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType): Option[Declaration] = {
+class DeclarationMapper @Inject()(registrationsRepository: RegistrationsRepository) {
 
-    val declaration = userAnswers.get(DeclarationPage)
-    val agentInternalReference = userAnswers.get(AgentInternalReferencePage)
+  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType)
+           (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Declaration]] = {
 
-    val address = agentInternalReference match {
-      case Some(_) => getAgentAddress(userAnswers)
-      case _ => Some(leadTrusteeAddress)
+    val declaration: Option[pages.Declaration] = userAnswers.get(DeclarationPage)
+
+    for {
+      agentAddress <- registrationsRepository.getAgentAddress(userAnswers)
+    } yield {
+      declaration map { dec =>
+        Declaration(
+          name = dec.name,
+          address = agentAddress.getOrElse(leadTrusteeAddress)
+        )
+      }
     }
-
-    address flatMap {
-      declarationAddress =>
-        declaration.map {
-          dec =>
-            http.Declaration(
-              name = dec.name,
-              address = declarationAddress
-            )
-        }
-    }
-  }
-
-  private def getAgentAddress(userAnswers: UserAnswers): Option[AddressType] = {
-    addressMapper.build(
-      userAnswers,
-      AgentAddressYesNoPage,
-      AgentUKAddressPage,
-      AgentInternationalAddressPage
-    )
   }
 }

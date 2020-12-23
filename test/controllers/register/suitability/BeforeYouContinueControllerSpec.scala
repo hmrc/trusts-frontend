@@ -17,7 +17,10 @@
 package controllers.register.suitability
 
 import base.RegistrationSpecBase
-import models.NormalMode
+import navigation.registration.TaskListNavigator
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup._
@@ -26,6 +29,8 @@ import views.html.register.suitability.BeforeYouContinueView
 class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
 
   private lazy val beforeYouContinueRoute: String = routes.BeforeYouContinueController.onPageLoad(fakeDraftId).url
+
+  private val navigator: TaskListNavigator = mock[TaskListNavigator]
 
   "BeforeYouContinue Controller" must {
 
@@ -51,7 +56,11 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
 
       "agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent).build()
+        when(navigator.agentDetailsJourneyUrl(any())).thenReturn("redirect-url")
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
+          .overrides(bind[TaskListNavigator].toInstance(navigator))
+          .build()
 
         val request = FakeRequest(POST, beforeYouContinueRoute)
 
@@ -59,8 +68,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual
-          controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+        redirectLocation(result).value mustEqual "redirect-url"
 
         application.stop()
       }

@@ -21,7 +21,6 @@ import models.RegistrationSubmission.AllStatus
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.RegistrationProgress
-import pages.register.agents.AgentInternalReferencePage
 import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -121,7 +120,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
   "SummaryAnswersController" must {
 
     val userAnswers = TestUserAnswers.emptyUserAnswers
-      .set(AgentInternalReferencePage, "agentClientReference").success.value
 
     val expectedSections: Seq[AnswerSection] = Seq(
       trustDetailsSection.head,
@@ -141,6 +139,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 
+      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(None))
+
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
 
       val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
@@ -158,6 +158,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     }
 
     "return OK and the correct view for a GET when tasklist completed for Agent user" in {
+
+      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(Some("agentClientReference")))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -201,5 +203,4 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     }
 
   }
-
 }

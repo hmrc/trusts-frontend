@@ -16,29 +16,29 @@
 
 package mapping.registration
 
-import javax.inject.Inject
 import models.core.UserAnswers
 import models.core.http.{AddressType, Registration}
+import uk.gov.hmrc.http.HeaderCarrier
 
-class RegistrationMapper @Inject()(
-                                    declarationMapper: DeclarationMapper,
-                                    correspondenceMapper: CorrespondenceMapper,
-                                    agentMapper: AgentMapper,
-                                    matchingMapper: MatchingMapper
-                                  ) {
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String): Option[Registration] = {
-    for {
-      correspondence <- correspondenceMapper.build(trustName)
-      declaration <- declarationMapper.build(userAnswers, correspondenceAddress)
-    } yield {
-      Registration(
-        matchData = matchingMapper.build(userAnswers, trustName),
-        declaration = declaration,
-        correspondence = correspondence,
-        agentDetails = agentMapper.build(userAnswers)
-      )
-    }
+class RegistrationMapper @Inject()(declarationMapper: DeclarationMapper,
+                                   correspondenceMapper: CorrespondenceMapper,
+                                   agentMapper: AgentMapper,
+                                   matchingMapper: MatchingMapper) {
 
+  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String)
+           (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Registration]] = {
+
+    declarationMapper.build(userAnswers, correspondenceAddress).map(_.map(
+      declaration =>
+        Registration(
+          matchData = matchingMapper.build(userAnswers, trustName),
+          declaration = declaration,
+          correspondence = correspondenceMapper.build(trustName),
+          agentDetails = agentMapper.build(userAnswers)
+        )
+    ))
   }
 }

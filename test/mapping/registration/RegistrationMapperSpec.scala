@@ -23,6 +23,9 @@ import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
 class RegistrationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
@@ -41,7 +44,7 @@ class RegistrationMapperSpec extends FreeSpec with MustMatchers
 
         val userAnswers = TestUserAnswers.emptyUserAnswers
 
-        registrationMapper.build(userAnswers, correspondenceAddress, trustName) mustNot be(defined)
+        Await.result(registrationMapper.build(userAnswers, correspondenceAddress, trustName), Duration.Inf) mustNot be(defined)
       }
     }
 
