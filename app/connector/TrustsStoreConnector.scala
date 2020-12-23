@@ -27,10 +27,8 @@ class TrustsStoreConnector @Inject()(http: HttpClient, config : FrontendAppConfi
 
   val url: String = config.trustsStoreUrl + "/claim"
 
-  def get(internalId: String, utr : String)(implicit hc : HeaderCarrier, ec : ExecutionContext): Future[Option[TrustClaim]] = {
+  def get(internalId: String, utr: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[TrustClaim]] = {
     http.GET[Option[TrustClaim]](url)(TrustClaim.httpReads(utr), hc, ec)
   }
-
-
 
 }

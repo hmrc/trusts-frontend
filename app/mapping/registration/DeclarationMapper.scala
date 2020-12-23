@@ -16,42 +16,80 @@
 
 package mapping.registration
 
-import javax.inject.Inject
-import models.core.{UserAnswers, http}
+import _root_.pages.register.DeclarationPage
+import _root_.pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
+import config.FrontendAppConfig
 import models.core.http.{AddressType, Declaration}
-import pages.register.DeclarationPage
-import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
+import models.core.pages.{Declaration => DeclarationFormModel}
+import models.core.{UserAnswers, pages}
+import repositories.RegistrationsRepository
+import uk.gov.hmrc.http.HeaderCarrier
 
-class DeclarationMapper @Inject()(addressMapper: AddressMapper) {
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType): Option[Declaration] = {
+class DeclarationMapper @Inject()(addressMapper: AddressMapper,
+                                  registrationsRepository: RegistrationsRepository,
+                                  config: FrontendAppConfig) {
 
-    val declaration = userAnswers.get(DeclarationPage)
-    val agentInternalReference = userAnswers.get(AgentInternalReferencePage)
+  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType)
+           (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Declaration]] = {
 
-    val address = agentInternalReference match {
-      case Some(_) => getAgentAddress(userAnswers)
+    val declaration: Option[pages.Declaration] = userAnswers.get(DeclarationPage)
+
+    if (config.agentDetailsMicroserviceEnabled) {
+      buildDeclarationFromExternalValues(userAnswers, leadTrusteeAddress, declaration)
+    } else {
+      buildDeclarationFromLocalValues(userAnswers, leadTrusteeAddress, declaration)
+    }
+  }
+
+  private def buildDeclarationFromLocalValues(userAnswers: UserAnswers,
+                                              leadTrusteeAddress: AddressType,
+                                              declaration: Option[DeclarationFormModel]): Future[Option[Declaration]] = {
+
+    val agentInternalReference: Option[String] = userAnswers.get(AgentInternalReferencePage)
+
+    val agentAddress: Option[AddressType] = {
+      addressMapper.build(
+        userAnswers,
+        AgentAddressYesNoPage,
+        AgentUKAddressPage,
+        AgentInternationalAddressPage
+      )
+    }
+
+    val address: Option[AddressType] = agentInternalReference match {
+      case Some(_) => agentAddress
       case _ => Some(leadTrusteeAddress)
     }
 
-    address flatMap {
+    Future.successful(address flatMap {
       declarationAddress =>
         declaration.map {
           dec =>
-            http.Declaration(
+            Declaration(
               name = dec.name,
               address = declarationAddress
             )
         }
-    }
+    })
   }
 
-  private def getAgentAddress(userAnswers: UserAnswers): Option[AddressType] = {
-    addressMapper.build(
-      userAnswers,
-      AgentAddressYesNoPage,
-      AgentUKAddressPage,
-      AgentInternationalAddressPage
-    )
+  private def buildDeclarationFromExternalValues(userAnswers: UserAnswers,
+                                                 leadTrusteeAddress: AddressType,
+                                                 declaration: Option[DeclarationFormModel])
+                                                (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Declaration]] = {
+
+    for {
+      agentAddress <- registrationsRepository.getAgentAddress(userAnswers)
+    } yield {
+      declaration map { dec =>
+        Declaration(
+          name = dec.name,
+          address = agentAddress.getOrElse(leadTrusteeAddress)
+        )
+      }
+    }
   }
 }

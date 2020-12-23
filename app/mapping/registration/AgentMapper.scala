@@ -16,31 +16,36 @@
 
 package mapping.registration
 
-import javax.inject.Inject
+import config.FrontendAppConfig
 import mapping.Mapping
 import models.core.UserAnswers
 import models.core.http.AgentDetails
 import pages.register.agents._
 
-class AgentMapper @Inject()(addressMapper : AddressMapper) extends Mapping[AgentDetails] {
+import javax.inject.Inject
+
+class AgentMapper @Inject()(addressMapper: AddressMapper,
+                            config: FrontendAppConfig) extends Mapping[AgentDetails] {
 
   override def build(userAnswers: UserAnswers): Option[AgentDetails] = {
 
-    for {
-      arn <- userAnswers.get(AgentARNPage)
-      agentName <- userAnswers.get(AgentNamePage)
-      address <- addressMapper.build(
-        userAnswers,
-        AgentAddressYesNoPage,
-        AgentUKAddressPage,
-        AgentInternationalAddressPage
-      )
-      telephone <- userAnswers.get(AgentTelephoneNumberPage)
-      internalReference <- userAnswers.get(AgentInternalReferencePage)
-    } yield {
-      AgentDetails(arn, agentName, address, telephone, internalReference)
+    if (config.agentDetailsMicroserviceEnabled) {
+      None
+    } else {
+      for {
+        arn <- userAnswers.get(AgentARNPage)
+        agentName <- userAnswers.get(AgentNamePage)
+        address <- addressMapper.build(
+          userAnswers,
+          AgentAddressYesNoPage,
+          AgentUKAddressPage,
+          AgentInternationalAddressPage
+        )
+        telephone <- userAnswers.get(AgentTelephoneNumberPage)
+        internalReference <- userAnswers.get(AgentInternalReferencePage)
+      } yield {
+        AgentDetails(arn, agentName, address, telephone, internalReference)
+      }
     }
-
   }
-
 }
