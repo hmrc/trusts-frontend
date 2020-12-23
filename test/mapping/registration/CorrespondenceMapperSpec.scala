@@ -29,7 +29,7 @@ class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
 
     "must be able to create a correspondence with required answer" - {
 
-      correspondenceMapper.build( "Trust of a Will").value.name mustBe "Trust of a Will"
+      correspondenceMapper.build( "Trust of a Will").name mustBe "Trust of a Will"
     }
   }
 }

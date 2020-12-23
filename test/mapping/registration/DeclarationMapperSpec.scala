@@ -23,9 +23,15 @@ import models.core.pages.{FullName, InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.DeclarationPage
 import pages.register.agents.{AgentAddressYesNoPage, AgentInternalReferencePage, AgentInternationalAddressPage, AgentUKAddressPage}
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 class DeclarationMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
+
+  private implicit val hc: HeaderCarrier = HeaderCarrier()
 
   private val declarationMapper: DeclarationMapper = injector.instanceOf[DeclarationMapper]
 
@@ -40,7 +46,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
       "must not be able to create Declaration" in {
         val userAnswers = emptyUserAnswers
 
-        declarationMapper.build(userAnswers, leadTrusteeUkAddress) mustNot be(defined)
+        Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf) mustNot be(defined)
       }
 
     }
@@ -55,7 +61,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentInternalReferencePage, "123456789").success.value
             .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
-          declarationMapper.build(userAnswers, leadTrusteeUkAddress) mustNot be(defined)
+          Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf) mustNot be(defined)
         }
 
         "must not be able to create declaration when declaration name is not answered" in {
@@ -65,7 +71,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentAddressYesNoPage, true).success.value
             .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, None, "NE62RT")).success.value
 
-          declarationMapper.build(userAnswers, leadTrusteeUkAddress) mustNot be(defined)
+          Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf) mustNot be(defined)
         }
 
         "must not be able to create declaration when agent UK address and declaration name not answered" in {
@@ -74,7 +80,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentInternalReferencePage, "123456789").success.value
             .set(AgentAddressYesNoPage, false).success.value
 
-          declarationMapper.build(userAnswers, leadTrusteeUkAddress) mustNot be(defined)
+          Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf) mustNot be(defined)
         }
 
         "must be able to create declaration when agent has UK address and declaration name answered" in {
@@ -85,7 +91,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentAddressYesNoPage, true).success.value
             .set(AgentUKAddressPage, UKAddress("Line1", "line2", None, Some("Newcastle"), "NE62RT")).success.value
 
-          declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
+          Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf).value mustBe Declaration(
             name = FullName("First", None, "Last"),
             address = AddressType("Line1", "line2", None, Some("Newcastle"), Some("NE62RT"), "GB")
           )
@@ -100,7 +106,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             .set(AgentAddressYesNoPage, false).success.value
             .set(AgentInternationalAddressPage, InternationalAddress("Line1", "line2", None, "IN")).success.value
 
-          declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
+          Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf).value mustBe Declaration(
             name = FullName("First", None, "Last"),
             address = AddressType("Line1", "line2", None, None, None, "IN")
           )
@@ -117,7 +123,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             val userAnswers = emptyUserAnswers
               .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
-            declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
+            Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf).value mustBe Declaration(
               name = FullName("First", None, "Last"),
               address = AddressType("First line", "Second line", None, Some("Newcastle"), Some("NE981ZZ"), "GB")
             )
@@ -133,7 +139,7 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             val userAnswers = emptyUserAnswers
               .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
-            declarationMapper.build(userAnswers, leadTrusteeUkAddress).value mustBe Declaration(
+            Await.result(declarationMapper.build(userAnswers, leadTrusteeUkAddress), Duration.Inf).value mustBe Declaration(
               name = FullName("First", None, "Last"),
               address = AddressType("First line", "Second line", None, Some("Newcastle"), Some("NE981ZZ"), "GB")
             )
@@ -145,19 +151,14 @@ class DeclarationMapperSpec extends FreeSpec with MustMatchers
             val userAnswers = emptyUserAnswers
               .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
 
-            declarationMapper.build(userAnswers, leadTrusteeInternationalAddress).value mustBe Declaration(
+            Await.result(declarationMapper.build(userAnswers, leadTrusteeInternationalAddress), Duration.Inf).value mustBe Declaration(
               name = FullName("First", None, "Last"),
               address = AddressType("First line", "Second line", None, None, None, "DE")
             )
 
           }
-
         }
-
       }
-
     }
-
   }
-
 }

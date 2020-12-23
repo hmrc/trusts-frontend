@@ -16,10 +16,9 @@
 
 package repositories
 
-import java.time.{LocalDate, LocalDateTime}
-
 import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
+import mapping.registration.AddressMapper
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
@@ -35,18 +34,20 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.DateFormatter
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
+import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class RegistrationRepositorySpec extends RegistrationSpecBase with MustMatchers with MockitoSugar {
+class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers with MockitoSugar {
 
   private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
 
   private def createRepository(mockConnector: SubmissionDraftConnector) = {
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
+    val mapper: AddressMapper = injector.instanceOf[AddressMapper]
 
-    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, mapper, fakeFrontendAppConfig)
   }
 
   "RegistrationRepository" when {

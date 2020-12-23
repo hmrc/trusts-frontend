@@ -16,9 +16,11 @@
 
 package controllers.register
 
+import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import models.requests.RegistrationDataRequest
+import pages.register.agents.AgentInternalReferencePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
@@ -40,7 +42,8 @@ class SummaryAnswerPageController @Inject()(
                                              view: SummaryAnswerPageView,
                                              registrationComplete : TaskListCompleteActionRefiner,
                                              printUserAnswersHelper: PrintUserAnswersHelper,
-                                             registrationsRepository: RegistrationsRepository
+                                             registrationsRepository: RegistrationsRepository,
+                                             config: FrontendAppConfig
                                             )(implicit ec: ExecutionContext)
   extends FrontendBaseController with I18nSupport {
 
@@ -50,18 +53,31 @@ class SummaryAnswerPageController @Inject()(
   def onPageLoad(draftId : String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      registrationsRepository.getClientReference(request.userAnswers) flatMap {
-        reference =>
-          printUserAnswersHelper.summary(draftId).map {
-            sections =>
-              Ok(
-                view(
-                  answerSections = sections,
-                  isAgent = request.affinityGroup == Agent,
-                  agentClientRef = reference.getOrElse("")
+      if (config.agentDetailsMicroserviceEnabled) {
+        registrationsRepository.getClientReference(request.userAnswers) flatMap {
+          reference =>
+            printUserAnswersHelper.summary(draftId).map {
+              sections =>
+                Ok(
+                  view(
+                    answerSections = sections,
+                    isAgent = request.affinityGroup == Agent,
+                    agentClientRef = reference.getOrElse("")
+                  )
                 )
+            }
+        }
+      } else {
+        printUserAnswersHelper.summary(draftId).map {
+          sections =>
+            Ok(
+              view(
+                answerSections = sections,
+                isAgent = request.affinityGroup == Agent,
+                agentClientRef = request.userAnswers.get(AgentInternalReferencePage).getOrElse("")
               )
-          }
+            )
+        }
       }
   }
 
