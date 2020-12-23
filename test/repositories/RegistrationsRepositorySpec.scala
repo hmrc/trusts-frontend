@@ -57,6 +57,13 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
     new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, mapper, config)
   }
 
+  private def fakeFrontendAppConfig(enabled: Boolean): FrontendAppConfig = {
+    lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+    new FrontendAppConfig(config) {
+      override lazy val agentDetailsMicroserviceEnabled: Boolean = enabled
+    }
+  }
+
   "RegistrationRepository" when {
     "getting user answers" must {
       "read answers from main section" in {
@@ -435,14 +442,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
           val mockConnector = mock[SubmissionDraftConnector]
 
-          val fakeFrontendAppConfig: FrontendAppConfig = {
-            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
-            new FrontendAppConfig(config) {
-              override lazy val agentDetailsMicroserviceEnabled: Boolean = true
-            }
-          }
-
-          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
 
           val agentAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
@@ -461,14 +461,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
           val mockConnector = mock[SubmissionDraftConnector]
 
-          val fakeFrontendAppConfig: FrontendAppConfig = {
-            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
-            new FrontendAppConfig(config) {
-              override lazy val agentDetailsMicroserviceEnabled: Boolean = false
-            }
-          }
-
-          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
 
           val userAnswers: UserAnswers = emptyUserAnswers
             .set(AgentAddressYesNoPage, true).success.value
@@ -492,14 +485,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
           val mockConnector = mock[SubmissionDraftConnector]
 
-          val fakeFrontendAppConfig: FrontendAppConfig = {
-            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
-            new FrontendAppConfig(config) {
-              override lazy val agentDetailsMicroserviceEnabled: Boolean = true
-            }
-          }
-
-          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
 
           when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
 
@@ -516,14 +502,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
           val mockConnector = mock[SubmissionDraftConnector]
 
-          val fakeFrontendAppConfig: FrontendAppConfig = {
-            lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
-            new FrontendAppConfig(config) {
-              override lazy val agentDetailsMicroserviceEnabled: Boolean = false
-            }
-          }
-
-          val repository = createRepository(mockConnector, fakeFrontendAppConfig)
+          val repository = createRepository(mockConnector, fakeFrontendAppConfig(false))
 
           val userAnswers: UserAnswers = emptyUserAnswers
             .set(AgentInternalReferencePage, clientRef).success.value
