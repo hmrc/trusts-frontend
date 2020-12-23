@@ -497,22 +497,42 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
     "reading agent address" when {
 
-      "agent details microservice enabled" must {
-        "read agent address from connector" in {
+      "agent details microservice enabled" when {
 
-          val mockConnector = mock[SubmissionDraftConnector]
+        "successful call" must {
+          "return Some(agent address)" in {
 
-          val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+            val mockConnector = mock[SubmissionDraftConnector]
 
-          val agentAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
 
-          when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.successful(agentAddress))
+            val agentAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
-          val result = Await.result(repository.getAgentAddress(emptyUserAnswers), Duration.Inf).value
+            when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.successful(agentAddress))
 
-          result mustBe agentAddress
+            val result = Await.result(repository.getAgentAddress(emptyUserAnswers), Duration.Inf)
 
-          verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+            result mustBe Some(agentAddress)
+
+            verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+          }
+        }
+
+        "unsuccessful call" must {
+          "return None" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.failed(new Throwable("agent address not found")))
+
+            val result = Await.result(repository.getAgentAddress(emptyUserAnswers), Duration.Inf)
+
+            result mustBe None
+
+            verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+          }
         }
       }
 
@@ -540,20 +560,40 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
       val clientRef = "client-ref"
 
-      "agent details microservice enabled" must {
-        "read client referebce from connector" in {
+      "agent details microservice enabled" when {
 
-          val mockConnector = mock[SubmissionDraftConnector]
+        "successful call" must {
+          "return Some(client reference)" in {
 
-          val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+            val mockConnector = mock[SubmissionDraftConnector]
 
-          when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
 
-          val result = Await.result(repository.getClientReference(emptyUserAnswers), Duration.Inf).value
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
 
-          result mustBe clientRef
+            val result = Await.result(repository.getClientReference(emptyUserAnswers), Duration.Inf)
 
-          verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+            result mustBe Some(clientRef)
+
+            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+          }
+        }
+
+        "unsuccessful call" must {
+          "return None" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector, fakeFrontendAppConfig(true))
+
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("client ref not found")))
+
+            val result = Await.result(repository.getClientReference(emptyUserAnswers), Duration.Inf)
+
+            result mustBe None
+
+            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+          }
         }
       }
 
