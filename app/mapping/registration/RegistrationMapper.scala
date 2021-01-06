@@ -25,7 +25,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationMapper @Inject()(declarationMapper: DeclarationMapper,
                                    correspondenceMapper: CorrespondenceMapper,
-                                   agentMapper: AgentMapper,
                                    matchingMapper: MatchingMapper) {
 
   def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String)
@@ -36,8 +35,7 @@ class RegistrationMapper @Inject()(declarationMapper: DeclarationMapper,
         Registration(
           matchData = matchingMapper.build(userAnswers, trustName),
           declaration = declaration,
-          correspondence = correspondenceMapper.build(trustName),
-          agentDetails = agentMapper.build(userAnswers)
+          correspondence = correspondenceMapper.build(trustName)
         )
     ))
   }
