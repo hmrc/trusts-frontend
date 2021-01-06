@@ -86,9 +86,9 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(OK, ""))
 
-    override def getAgentAddress(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[AddressType]] = Future.successful(None)
+    override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] = Future.successful(None)
 
-    override def getClientReference(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[String]] = Future.successful(None)
+    override def getClientReference(draftId: String)(implicit hc: HeaderCarrier): Future[Option[String]] = Future.successful(None)
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]

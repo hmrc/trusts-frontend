@@ -18,7 +18,6 @@ package services
 
 import base.RegistrationSpecBase
 import connector.TrustConnector
-import controllers.Assets.Redirect
 import models.core.UserAnswers
 import models.core.http.MatchedResponse._
 import models.core.http.SuccessOrFailureResponse
@@ -27,11 +26,10 @@ import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
-import uk.gov.hmrc.http.HeaderCarrier
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 class MatchingServiceSpec extends RegistrationSpecBase {
 
