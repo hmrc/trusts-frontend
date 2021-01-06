@@ -138,7 +138,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
       "must be able to submit data when all data available for registration by agent" in {
 
-        val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
+        val userAnswers = newTrustUserAnswers
 
         when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))

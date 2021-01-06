@@ -21,7 +21,6 @@ import models.core.UserAnswers
 import models.registration.Matched.Success
 import pages.register._
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import utils.CheckAnswersFormatters._
 import viewmodels.{AnswerRow, AnswerSection}
 
@@ -52,7 +51,7 @@ class CheckYourAnswersHelper @Inject()(userAnswers: UserAnswers, draftId: String
     x =>
       AnswerRow(
         "postcodeForTheTrust.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        escape(x),
         Some(controllers.register.routes.PostcodeForTheTrustController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )
@@ -62,7 +61,7 @@ class CheckYourAnswersHelper @Inject()(userAnswers: UserAnswers, draftId: String
     x =>
       AnswerRow(
         "whatIsTheUTR.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
+        escape(x),
         Some(controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url),
         canEdit = canEdit
       )

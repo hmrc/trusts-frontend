@@ -16,12 +16,8 @@
 
 package utils
 
-import models.core.UserAnswers
-import models.core.pages.{InternationalAddress, UKAddress}
-import pages.register.agents.AgentNamePage
 import play.api.i18n.Messages
 import play.twirl.api.{Html, HtmlFormat}
-import utils.countryOptions.CountryOptions
 
 object CheckAnswersFormatters {
 
@@ -33,42 +29,6 @@ object CheckAnswersFormatters {
     }
   }
 
-  def country(code: String, countryOptions: CountryOptions)(implicit messages: Messages): String =
-    countryOptions.options.find(_.value.equals(code)).map(_.label).getOrElse("")
-
-  def currency(value: String): Html = escape(currencyFormat(value))
-
-  def currencyFormat(value: String): String = s"£$value"
-
   def escape(x: String): Html = HtmlFormat.escape(x)
-
-  def agencyName(userAnswers: UserAnswers): String = {
-    userAnswers.get(AgentNamePage).getOrElse("")
-  }
-
-  def ukAddress(address: UKAddress): Html = {
-    val lines =
-      Seq(
-        Some(HtmlFormat.escape(address.line1)),
-        Some(HtmlFormat.escape(address.line2)),
-        address.line3.map(HtmlFormat.escape),
-        address.line4.map(HtmlFormat.escape),
-        Some(HtmlFormat.escape(address.postcode))
-      ).flatten
-
-    Html(lines.mkString("<br />"))
-  }
-
-  def internationalAddress(address: InternationalAddress, countryOptions: CountryOptions)(implicit messages: Messages): Html = {
-    val lines =
-      Seq(
-        Some(HtmlFormat.escape(address.line1)),
-        Some(HtmlFormat.escape(address.line2)),
-        address.line3.map(HtmlFormat.escape),
-        Some(country(address.country, countryOptions))
-      ).flatten
-
-    Html(lines.mkString("<br />"))
-  }
 
 }
