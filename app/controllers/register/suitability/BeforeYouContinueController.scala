@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
+import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -24,8 +25,6 @@ import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerCompon
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.BeforeYouContinueView
-
-import javax.inject.Inject
 
 class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,

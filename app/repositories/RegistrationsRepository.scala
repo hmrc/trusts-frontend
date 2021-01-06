@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,12 +110,6 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.getStatus(draftId)
   }
 
-  override def setAllStatus(draftId: String, status: AllStatus)(implicit hc: HeaderCarrier): Future[Boolean] = {
-    submissionDraftConnector.setStatus(draftId, status).map {
-      response => response.status == http.Status.OK
-    }
-  }
-
   override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[RegistrationAnswerSections] = {
     submissionDraftConnector.getAnswerSections(draftId).map(RegistrationAnswerSections.fromAllAnswerSections)
   }
@@ -159,11 +153,6 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   override def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String] =
     submissionDraftConnector.getTrustName(draftId)
 
-  override def getDraft(draftId: String)(implicit headerCarrier: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]] =
-    listDrafts().map {
-      drafts =>
-        drafts.find(_.draftId == draftId)
-    }
 
   override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     submissionDraftConnector.removeDraft(draftId)
@@ -183,8 +172,6 @@ trait RegistrationsRepository {
 
   def getAllStatus(draftId: String)(implicit hc: HeaderCarrier): Future[AllStatus]
 
-  def setAllStatus(draftId: String, status: AllStatus)(implicit hc: HeaderCarrier): Future[Boolean]
-
   def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[RegistrationAnswerSections]
 
   def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType]
@@ -198,8 +185,6 @@ trait RegistrationsRepository {
   def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier): Future[Option[LocalDate]]
 
   def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String]
-
-  def getDraft(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]]
 
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 }

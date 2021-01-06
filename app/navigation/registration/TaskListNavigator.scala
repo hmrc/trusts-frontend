@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@ package navigation.registration
 
 import config.FrontendAppConfig
 import controllers.register.agents.routes.AgentInternalReferenceController
-import models.NormalMode
-
 import javax.inject.{Inject, Singleton}
+import models.NormalMode
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
@@ -64,4 +63,6 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
       AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url
     }
   }
+
+
 }

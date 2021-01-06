@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,9 +69,6 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getAllStatus(draftId: String)
                              (implicit hc: HeaderCarrier) : Future[AllStatus] = Future.successful(AllStatus())
 
-    override def setAllStatus(draftId: String, status: AllStatus)
-                             (implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
-
     override def getAnswerSections(draftId: String)
                                   (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
 
@@ -86,9 +83,6 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def getTrustSetupDate(draftId: String)
                                   (implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
-
-    override def getDraft(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]] =
-      Future.successful(Some(DraftRegistration("draftId", "agentInternalRef", "3 February 2020")))
 
     override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(OK, ""))
 

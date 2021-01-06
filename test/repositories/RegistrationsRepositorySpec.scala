@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -297,6 +297,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         verify(mockConnector).getRegistrationPieces(draftId)(hc, executionContext)
       }
     }
+
     "reading status" must {
 
       "read existing status from connector" in {
@@ -318,29 +319,6 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         result mustBe allStatus
 
         verify(mockConnector).getStatus(draftId)(hc, executionContext)
-      }
-    }
-
-    "setting status" must {
-
-      "write status to draft" in {
-
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-        val draftId = "DraftId"
-
-        val status = AllStatus(beneficiaries = Some(InProgress))
-
-        val mockConnector = mock[SubmissionDraftConnector]
-
-        val repository = createRepository(mockConnector)
-
-        when(mockConnector.setStatus(any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
-
-        val result = Await.result(repository.setAllStatus(draftId, status), Duration.Inf)
-
-        result mustBe true
-        verify(mockConnector).setStatus(draftId, status)(hc, executionContext)
       }
     }
 
@@ -637,41 +615,6 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         result.get mustBe expected
 
         verify(mockConnector).getTrustSetupDate(draftId)(hc, executionContext)
-      }
-    }
-
-    "getting draft" must {
-
-      val drafts = List(
-        SubmissionDraftId(
-          "draft1",
-          LocalDateTime.of(2012, 2, 1, 12, 30, 0),
-          Some("reference1")
-        ),
-        SubmissionDraftId(
-          "draft2",
-          LocalDateTime.of(2012, 2, 1, 12, 30, 0),
-          Some("reference2")
-        )
-      )
-
-      val mockConnector = mock[SubmissionDraftConnector]
-      val repository = createRepository(mockConnector)
-      when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
-
-      "return draft from list of current drafts if it exists" in {
-
-        val result1 = Await.result(repository.getDraft("draft1")(any(), any()), Duration.Inf)
-        result1 mustBe Some(DraftRegistration("draft1", "reference1", "4 February 2012"))
-
-        val result2 = Await.result(repository.getDraft("draft2")(any(), any()), Duration.Inf)
-        result2 mustBe Some(DraftRegistration("draft2", "reference2", "4 February 2012"))
-      }
-
-      "return None if draft is not found" in {
-
-        val result1 = Await.result(repository.getDraft("draft3")(any(), any()), Duration.Inf)
-        result1 mustBe None
       }
     }
 
