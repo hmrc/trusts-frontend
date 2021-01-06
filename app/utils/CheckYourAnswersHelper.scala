@@ -16,20 +16,18 @@
 
 package utils
 
-import javax.inject.Inject
 import models.NormalMode
 import models.core.UserAnswers
 import models.registration.Matched.Success
 import pages.register._
-import pages.register.agents._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import utils.CheckAnswersFormatters._
-import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
-                                      (userAnswers: UserAnswers, draftId: String, canEdit: Boolean)
+import javax.inject.Inject
+
+class CheckYourAnswersHelper @Inject()(userAnswers: UserAnswers, draftId: String, canEdit: Boolean)
                                       (implicit messages: Messages) {
 
   def trustDetails: Option[Seq[AnswerSection]] = {
@@ -48,70 +46,6 @@ class CheckYourAnswersHelper @Inject()(countryOptions: CountryOptions)
     val questions = (trustName(canEdit) +: existingTrustRows).flatten
 
     if (questions.nonEmpty) Some(Seq(AnswerSection(None, questions, Some(messages("answerPage.section.trustsDetails.heading"))))) else None
-  }
-
-  def agentInternationalAddress: Option[AnswerRow] = userAnswers.get(AgentInternationalAddressPage) map {
-    x =>
-      AnswerRow(
-        "site.address.international.checkYourAnswersLabel",
-        internationalAddress(x, countryOptions),
-        Some(controllers.register.agents.routes.AgentInternationalAddressController.onPageLoad(NormalMode, draftId).url),
-        agencyName(userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def agentUKAddress: Option[AnswerRow] = userAnswers.get(AgentUKAddressPage) map {
-    x =>
-      AnswerRow(
-        "site.address.uk.checkYourAnswersLabel",
-        ukAddress(x),
-        Some(controllers.register.agents.routes.AgentUKAddressController.onPageLoad(NormalMode, draftId).url),
-        agencyName(userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def agentAddressYesNo: Option[AnswerRow] = userAnswers.get(AgentAddressYesNoPage) map {
-    x =>
-      AnswerRow(
-        "agentAddressYesNo.checkYourAnswersLabel",
-        yesOrNo(x),
-        Some(controllers.register.agents.routes.AgentAddressYesNoController.onPageLoad(NormalMode, draftId).url),
-        agencyName(userAnswers),
-        canEdit = canEdit
-      )
-  }
-
-  def agentName: Option[AnswerRow] = userAnswers.get(AgentNamePage) map {
-    x =>
-      AnswerRow(
-        "agentName.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        Some(controllers.register.agents.routes.AgentNameController.onPageLoad(NormalMode, draftId).url),
-        canEdit = canEdit
-      )
-  }
-
-  def agentInternalReference: Option[AnswerRow] = userAnswers.get(AgentInternalReferencePage) map {
-    x =>
-      AnswerRow(
-        "agentInternalReference.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        Some(controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url),
-        canEdit = canEdit
-      )
-  }
-
-  def agenciesTelephoneNumber: Option[AnswerRow] = userAnswers.get(AgentTelephoneNumberPage) map {
-    x =>
-      AnswerRow(
-        "agentTelephoneNumber.checkYourAnswersLabel",
-        HtmlFormat.escape(x),
-        Some(controllers.register.agents.routes.AgentTelephoneNumberController.onPageLoad(NormalMode, draftId).url),
-        agencyName(userAnswers),
-        canEdit = canEdit
-      )
   }
 
   def postcodeForTheTrust: Option[AnswerRow] = userAnswers.get(PostcodeForTheTrustPage) map {

@@ -18,9 +18,8 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import controllers.Assets.Redirect
-import controllers.register.agents.routes.AgentInternalReferenceController
 import forms.PostcodeForTheTrustFormProvider
-import models.{Mode, NormalMode}
+import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.PostcodeForTheTrustPage
@@ -39,11 +38,9 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
   val formProvider = new PostcodeForTheTrustFormProvider()
   val form : Form[String] = formProvider()
 
-  private val mode: Mode = NormalMode
-
   lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId).url
   lazy val taskListRoute: String = routes.TaskListController.onPageLoad(fakeDraftId).url
-  private lazy val agentDetailsRoute: String = AgentInternalReferenceController.onPageLoad(mode, fakeDraftId).url
+  private lazy val agentDetailsRoute: String = fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
 
   val validAnswer: String = "AA9A 9AA"
 

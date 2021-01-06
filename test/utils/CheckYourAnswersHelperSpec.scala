@@ -23,12 +23,9 @@ import models.core.UserAnswers
 import models.registration.Matched.Success
 import pages.register.{ExistingTrustMatched, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.twirl.api.HtmlFormat
-import utils.countryOptions.CountryOptions
 import viewmodels.{AnswerRow, AnswerSection}
 
 class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
-
-  private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
 
   "CheckYourAnswers Helper" must {
 
@@ -51,7 +48,7 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
             .set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
             .set(PostcodeForTheTrustPage, postcode).success.value
 
-          val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, false)
+          val helper = new CheckYourAnswersHelper(userAnswers, fakeDraftId, false)
 
           helper.trustDetails.get mustBe Seq(
             AnswerSection(
@@ -85,7 +82,7 @@ class CheckYourAnswersHelperSpec extends RegistrationSpecBase {
           val userAnswers: UserAnswers = baseAnswers
             .set(TrustRegisteredWithUkAddressYesNoPage, false).success.value
 
-          val helper = new CheckYourAnswersHelper(countryOptions)(userAnswers, fakeDraftId, false)
+          val helper = new CheckYourAnswersHelper(userAnswers, fakeDraftId, false)
 
           helper.trustDetails.get mustBe Seq(
             AnswerSection(

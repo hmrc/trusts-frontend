@@ -16,9 +16,6 @@
 
 package views.register
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import controllers.register.agents.routes
 import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress
@@ -28,6 +25,8 @@ import viewmodels.Task
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.register.TaskListView
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
 class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
@@ -204,7 +203,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           assertAttributeValueForElement(
             doc.getElementById("agent-details"),
             "href",
-            routes.AgentAnswerController.onPageLoad(fakeDraftId).url
+            fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
           )
         }
       }

@@ -19,9 +19,8 @@ package controllers.register
 import base.RegistrationSpecBase
 import controllers.Assets.Redirect
 import controllers.register.routes._
-import controllers.register.agents.routes.AgentInternalReferenceController
 import forms.YesNoFormProvider
-import models.{Mode, NormalMode}
+import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
@@ -39,12 +38,10 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("trustRegisteredWithUkAddress")
 
-  private val mode: Mode = NormalMode
-
   private lazy val trustRegisteredWithUkAddressYesNoRoute: String = routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId).url
   private lazy val postcodeRoute: String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId).url
   private lazy val taskListRoute: String = routes.TaskListController.onPageLoad(fakeDraftId).url
-  private lazy val agentDetailsRoute: String = AgentInternalReferenceController.onPageLoad(mode, fakeDraftId).url
+  private lazy val agentDetailsRoute: String = fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
 
   "TrustRegisteredWithUkAddressYesNo Controller" must {
 
