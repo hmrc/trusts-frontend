@@ -457,6 +457,11 @@ agentAddressUKYesNo.heading = Is {0}’s address in the UK?
 agentAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 agentAddressUKYesNo.error.required = Select yes if the agency’s address is in the UK
 
+agentAddressYesNo.title = Is the agency’s address in the UK?
+agentAddressYesNo.heading = Is {0}’s address in the UK?
+agentAddressYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+agentAddressYesNo.error.required = Select yes if the agency’s address is in the UK
+
 confirmation.title = Registration received
 confirmation.heading1 = Registration received
 confirmation.heading2 = Your reference is:
