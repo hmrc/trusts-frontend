@@ -21,7 +21,6 @@ import connector.TrustConnector
 import models.core.UserAnswers
 import models.core.http.MatchedResponse._
 import models.core.http.SuccessOrFailureResponse
-import models.{Mode, NormalMode}
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -39,8 +38,6 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
   private val navigator = injector.instanceOf[TaskListNavigator]
 
-  private val mode: Mode = NormalMode
-
   "Matching Service" when {
 
     val service = new MatchingService(mockConnector, registrationsRepository, navigator)
@@ -56,7 +53,7 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
           when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
-          val result = service.matching(userAnswers, fakeDraftId, isAgent = true, mode)
+          val result = service.matching(userAnswers, fakeDraftId, isAgent = true)
 
           redirectLocation(result).value mustBe "http://localhost:8847/trusts-registration/agent-details/id/start"
         }
@@ -67,7 +64,7 @@ class MatchingServiceSpec extends RegistrationSpecBase {
           
           when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
-          val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+          val result = service.matching(userAnswers, fakeDraftId, isAgent = false)
 
           redirectLocation(result).value mustBe controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
         }
@@ -79,7 +76,7 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(false)))
 
-        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+        val result = service.matching(userAnswers, fakeDraftId, isAgent = false)
 
         redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
       }
@@ -90,7 +87,7 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(AlreadyRegistered))
 
-        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+        val result = service.matching(userAnswers, fakeDraftId, isAgent = false)
 
         redirectLocation(result).value mustBe controllers.register.routes.TrustAlreadyRegisteredController.onPageLoad(fakeDraftId).url
       }
@@ -101,7 +98,7 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(InternalServerError))
 
-        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+        val result = service.matching(userAnswers, fakeDraftId, isAgent = false)
 
         redirectLocation(result).value mustBe controllers.register.routes.MatchingDownController.onPageLoad().url
       }
@@ -110,7 +107,7 @@ class MatchingServiceSpec extends RegistrationSpecBase {
     "WhatIsUtrPage and/or TrustNamePage not answered" must {
       "redirect to FailedMatch" in {
 
-        val result = service.matching(emptyUserAnswers, fakeDraftId, isAgent = false, mode)
+        val result = service.matching(emptyUserAnswers, fakeDraftId, isAgent = false)
 
         redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
       }
