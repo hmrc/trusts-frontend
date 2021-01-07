@@ -16,22 +16,36 @@
 
 package controllers.register.agents
 
+import java.time.LocalDateTime
+
 import base.RegistrationSpecBase
 import controllers.register.routes._
+import models.NormalMode
+import models.core.UserAnswers
+import models.core.http.AddressType
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import pages.register.agents.AgentTelephoneNumberPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import viewmodels.DraftRegistration
 import views.html.register.agents.AgentOverviewView
 
-import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
   lazy val agentOverviewRoute: String = routes.AgentOverviewController.onSubmit().url
+
+  private val address = AddressType(
+    line1 = "Line 1",
+    line2 = "Line 2",
+    line3 = None,
+    line4 = None,
+    postCode = None,
+    country = "FR"
+  )
 
   "AgentOverview Controller" when {
 
@@ -103,9 +117,15 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
         application.stop()
       }
 
-      "redirect to registration progress page for a draft with completed agent details" ignore {
+      "redirect to registration progress page for a draft with completed agent details" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+        val telephoneNumber: String = "+441234567890"
+
+        def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
+
+        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
         val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
@@ -125,11 +145,13 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
         val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
+        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
+
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
+        redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
 
         application.stop()
 
