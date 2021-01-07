@@ -19,16 +19,14 @@ package controllers.register.agents
 import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register.RegistrationIdentifierAction
-import javax.inject.Inject
-import models.NormalMode
 import models.requests.IdentifierRequest
-import pages.register.agents.AgentTelephoneNumberPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.agents.AgentOverviewView
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
@@ -38,7 +36,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: AgentOverviewView,
-                                        appConfig: FrontendAppConfig)
+                                        config: FrontendAppConfig)
                                        (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions: ActionBuilder[IdentifierRequest, AnyContent] = identify andThen hasAgentAffinityGroup()
@@ -59,10 +57,10 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
     implicit request =>
 
       for {
-        addressIsPresent <- registrationsRepository.getAgentAddress(request.userAnswers)
+        addressIsPresent <- registrationsRepository.getAgentAddress(draftId)
       } yield {
         if (addressIsPresent.isEmpty) {
-          Redirect(routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId))
+          Redirect(config.agentDetailsFrontendUrl(draftId))
         } else {
           Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId))
         }
