@@ -33,6 +33,11 @@ agentAddressUKYesNo.heading = A yw cyfeiriad {0} yn y DU?
 agentAddressUKYesNo.checkYourAnswersLabel = A yw cyfeiriad {0} yn y DU?
 agentAddressUKYesNo.error.required = Dewiswch ‘Iawn’ os yw cyfeiriad yr asiantaeth yn y DU
 
+agentAddressYesNo.title = A yw cyfeiriad yr asiantaeth yn y DU?
+agentAddressYesNo.heading = A yw cyfeiriad {0} yn y DU?
+agentAddressYesNo.checkYourAnswersLabel = A yw cyfeiriad {0} yn y DU?
+agentAddressYesNo.error.required = Dewiswch ‘Iawn’ os yw cyfeiriad yr asiantaeth yn y DU
+
 site.address.uk.title = Beth yw’r cyfeiriad?
 site.address.uk.heading = Beth yw cyfeiriad {0}?
 site.address.uk.line1 = Llinell cyfeiriad 1
