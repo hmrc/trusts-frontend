@@ -803,6 +803,10 @@ trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 trustBeneficiary.checkDetails.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
 
+trust.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+trust.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel =  Does {0} have UK residency?
+trust.nonTaxable.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 companyBeneficiary.name.checkYourAnswersLabel = What is the company’s name?
 companyBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 companyBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
