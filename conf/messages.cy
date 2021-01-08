@@ -85,5 +85,9 @@ agentAnswer.title = Gwirio manylion yr asiantaeth
 agentAnswer.heading = Gwirio manylion yr asiantaeth
 
 trust.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
-trust.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel =  A yw {0} yn breswyl yn y DU?
+trust.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 trust.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
+charity.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+charity.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+charity.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
