@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package pages.register
-
-import pages.behaviours.PageBehaviours
-
-
-class WhatIsTheUTRPageSpec extends PageBehaviours {
-
-  "WhatIsTheUTRPage" must {
-
-    beRetrievable[String](WhatIsTheUTRPage)
-
-    beSettable[String](WhatIsTheUTRPage)
-
-    beRemovable[String](WhatIsTheUTRPage)
-  }
-}
+@Deprecated
+// Agents journey is deprecated in trusts-frontend, remains in use in production until February 2021
+// To be removed once switch to new microservice register-trust-agent-details-frontend is completed
+// AgentOverviewController and RemoveDraftYesNoController is to remain
+package controllers.register.agents;

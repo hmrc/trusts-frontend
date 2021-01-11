@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import models.NormalMode
 import models.core.UserAnswers
+import models.core.http.AddressType
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.agents.AgentTelephoneNumberPage
@@ -36,6 +37,15 @@ import scala.concurrent.Future
 class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
   lazy val agentOverviewRoute: String = routes.AgentOverviewController.onSubmit().url
+
+  private val address = AddressType(
+    line1 = "Line 1",
+    line2 = "Line 2",
+    line3 = None,
+    line4 = None,
+    postCode = None,
+    country = "FR"
+  )
 
   "AgentOverview Controller" when {
 
@@ -113,6 +123,8 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
         def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
 
+        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
+
         val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
         val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
@@ -132,6 +144,8 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
         val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+
+        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
 
         val result = route(application, request).value
 

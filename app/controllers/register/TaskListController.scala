@@ -16,6 +16,7 @@
 
 package controllers.register
 
+import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register._
 import javax.inject.Inject
@@ -47,7 +48,8 @@ class TaskListController @Inject()(
                                     taskListNavigator : TaskListNavigator,
                                     requireDraft : RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
-                                    standardAction: StandardActionSets
+                                    standardAction: StandardActionSets,
+                                    appConfig: FrontendAppConfig
                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
@@ -81,9 +83,15 @@ class TaskListController @Inject()(
             sections.filterNot(removeTaxLiabilityFromTaskList)
           }
 
+          val agentCheckAnswers = if (appConfig.agentDetailsMicroserviceEnabled) {
+            appConfig.agentDetailsCheckAnswersUrl(draftId)
+          } else {
+            controllers.register.agents.routes.AgentAnswerController.onPageLoad(draftId).url
+          }
+
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
 
-          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))        }
+          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup, agentCheckAnswers))        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get

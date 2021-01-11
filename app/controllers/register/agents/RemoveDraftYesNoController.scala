@@ -19,6 +19,7 @@ package controllers.register.agents
 import controllers.actions._
 import forms.YesNoFormProvider
 import javax.inject.Inject
+import models.core.UserAnswers
 import models.requests.RegistrationDataRequest
 import play.api.Logging
 import play.api.data.Form
@@ -53,7 +54,7 @@ class RemoveDraftYesNoController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      clientReferenceNumber(draftId).map {
+      clientReferenceNumber(draftId, request.userAnswers).map {
         case Left(redirect) => redirect
         case Right(crn) => Ok(view(form, draftId, crn))
       }
@@ -64,7 +65,7 @@ class RemoveDraftYesNoController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          clientReferenceNumber(draftId).map {
+          clientReferenceNumber(draftId, request.userAnswers).map {
             case Left(redirect) => redirect
             case Right(crn) => BadRequest(view(formWithErrors, draftId, crn))
           },
@@ -82,11 +83,11 @@ class RemoveDraftYesNoController @Inject()(
       )
   }
 
-  private def clientReferenceNumber(draftId: String)
+  private def clientReferenceNumber(draftId: String, userAnswers: UserAnswers)
                                    (implicit hc: HeaderCarrier, messages: Messages): Future[Either[Result, String]] = {
-    registrationsRepository.getDraft(draftId).map {
-      case Some(draft) =>
-        Right(draft.agentInternalRef)
+    registrationsRepository.getClientReference(userAnswers).map {
+      case Some(clientRef) =>
+        Right(clientRef)
       case _ =>
         logger.warn(s"[RemoveDraftYesNoController][clientReferenceNumber][Session ID: ${id(hc)}] failed to find draft $draftId")
         Left(redirect)

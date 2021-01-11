@@ -16,12 +16,12 @@
 
 package config
 
+import java.net.{URI, URLEncoder}
+
 import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.{Call, Request}
-
-import java.net.{URI, URLEncoder}
 
 @Singleton
 class FrontendAppConfig @Inject() (val configuration: Configuration) {
@@ -71,12 +71,17 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   def agentDetailsFrontendUrl(draftId: String): String = frontendUrl(draftId, "agentDetails")
 
+  def agentDetailsCheckAnswersUrl(draftId: String): String =
+    insertDraftId(configuration.get[String]("urls.agentDetailsCheckAnswers"), draftId)
+
   lazy val agentDetailsMicroserviceEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.journey.agentDetailsMicroservice.enabled")
 
+  private def insertDraftId(url: String, draftId: String): String = url.replace(":draftId", draftId)
+
   private def frontendUrl(draftId: String, section: String): String = {
     lazy val urlTemplate: String = loadConfig(s"urls.${section}Frontend")
-    def insertDraftId(url: String, draftId: String): String = url.replace(":draftId", draftId)
+
     insertDraftId(urlTemplate, draftId)
   }
 
