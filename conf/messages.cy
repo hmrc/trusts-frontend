@@ -84,6 +84,9 @@ agentTelephoneNumber.error.invalid.characters = Nodwch rif ffôn fel 01632 960 0
 agentAnswer.title = Gwirio manylion yr asiantaeth
 agentAnswer.heading = Gwirio manylion yr asiantaeth
 
+leadTrustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+leadTrustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
 trust.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 trust.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 trust.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
