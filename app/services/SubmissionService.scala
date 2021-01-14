@@ -48,7 +48,7 @@ class DefaultSubmissionService @Inject()(
       correspondenceAddress =>
         registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
           trustName =>
-            registrationMapper.build(userAnswers, correspondenceAddress, trustName) match {
+            registrationMapper.build(userAnswers, correspondenceAddress, trustName).flatMap {
               case Some(registration) =>
                 registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)).flatMap {
                   fullRegistrationJson =>

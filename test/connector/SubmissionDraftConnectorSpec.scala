@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
   private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
   private val correspondenceAddressUrl = s"$submissionsUrl/$testDraftId/correspondence-address"
+  private val agentAddressUrl = s"$submissionsUrl/$testDraftId/agent-address"
+  private val clientReferenceUrl = s"$submissionsUrl/$testDraftId/client-reference"
   private val trustSetupDateUrl = s"$submissionsUrl/$testDraftId/when-trust-setup"
   private val trustNameUrl = s"$submissionsUrl/$testDraftId/trust-name"
 
@@ -292,7 +294,8 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           protectors = None,
           otherIndividuals = None,
           trustDetails = None,
-          settlors = None
+          settlors = None,
+          assets = None
         )
 
         val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allAnswerSections), None)
@@ -377,6 +380,55 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
         val result = Await.result(connector.getCorrespondenceAddress(testDraftId), Duration.Inf)
         result mustEqual expectedAddress
+      }
+
+      "can retrieve agent address for a draft" in {
+
+        val response = Json.parse(
+          """
+            |{
+            | "line1": "Address line1",
+            | "line2": "Address line2",
+            | "postCode": "NE1 1EN",
+            | "country": "GB"
+            |}
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(agentAddressUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val expectedAddress = AddressType("Address line1", "Address line2", None, None, Some("NE1 1EN"), "GB")
+
+        val result = Await.result(connector.getAgentAddress(testDraftId), Duration.Inf)
+        result mustEqual expectedAddress
+      }
+
+      "can retrieve client reference for a draft" in {
+
+        val response = Json.parse(
+          """
+            |"client-ref"
+            |""".stripMargin)
+
+        server.stubFor(
+          get(urlEqualTo(clientReferenceUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(response).toString)
+            )
+        )
+
+        val expected = "client-ref"
+
+        val result = Await.result(connector.getClientReference(testDraftId), Duration.Inf)
+        result mustEqual expected
       }
 
       "can retrieve trust setup date for a draft" in {

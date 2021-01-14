@@ -17,35 +17,26 @@
 package utils.print.register
 
 import javax.inject.Inject
-import models.core.UserAnswers
-import play.api.i18n.Messages
 import services.DraftRegistrationService
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatter}
 import viewmodels.AnswerSection
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class PrintUserAnswersHelper @Inject()(
-                                        countryOptions: CountryOptions,
-                                        draftRegistrationService: DraftRegistrationService,
-                                        dateFormatter: DateFormatter
-                                      )(implicit ec: ExecutionContext){
+class PrintUserAnswersHelper @Inject()(draftRegistrationService: DraftRegistrationService)
+                                      (implicit ec: ExecutionContext) {
 
-  def summary(draftId: String, userAnswers : UserAnswers)
-             (implicit messages: Messages, hc: HeaderCarrier) : Future[List[AnswerSection]] = {
+  def summary(draftId: String)(implicit hc: HeaderCarrier): Future[List[AnswerSection]] = {
 
     draftRegistrationService.getAnswerSections(draftId).map {
       registrationAnswerSections =>
-
-      val helper = new CheckYourAnswersHelper(countryOptions, dateFormatter)(userAnswers, draftId, canEdit = false)
 
       val entitySectionsHead = List(
         registrationAnswerSections.trustDetails,
         registrationAnswerSections.trustees,
         registrationAnswerSections.beneficiaries,
-        registrationAnswerSections.settlors
+        registrationAnswerSections.settlors,
+        registrationAnswerSections.assets
       ).flatten.flatten
 
       val entitySectionsTail = List(
@@ -53,19 +44,8 @@ class PrintUserAnswersHelper @Inject()(
         registrationAnswerSections.otherIndividuals
       ).flatten.flatten
 
-      val assetSections = List(
-        Seq(AnswerSection(None, Nil, Some(messages("answerPage.section.assets.heading")))),
-        helper.money,
-        helper.propertyOrLand,
-        helper.shares,
-        helper.businessAsset,
-        helper.partnership,
-        helper.other
-      ).flatten
-
         List(
         entitySectionsHead,
-        assetSections,
         entitySectionsTail
       ).flatten
 

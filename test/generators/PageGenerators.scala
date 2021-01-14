@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,76 +20,8 @@ import org.scalacheck.Arbitrary
 import pages.register
 import pages.register._
 import pages.register.agents._
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.partnership._
-import pages.register.asset.property_or_land._
-import pages.register.asset.shares._
-import pages.register.asset.{AddAnAssetYesNoPage, AddAssetsPage, WhatKindOfAssetPage}
 
 trait PageGenerators {
-
-  implicit lazy val arbitraryPartnershipStartDatePage: Arbitrary[PartnershipStartDatePage] =
-    Arbitrary(PartnershipStartDatePage(0))
-
-  implicit lazy val arbitraryPartnershipDescriptionPage: Arbitrary[PartnershipDescriptionPage] =
-    Arbitrary(PartnershipDescriptionPage(0))
-
-  implicit lazy val arbitraryAddAnAssetYesNoPage: Arbitrary[AddAnAssetYesNoPage.type] =
-    Arbitrary(AddAnAssetYesNoPage)
-
-  implicit lazy val arbitraryPropertyOrLandAddressYesNoPage: Arbitrary[PropertyOrLandAddressYesNoPage] =
-    Arbitrary(PropertyOrLandAddressYesNoPage(0))
-
-  implicit lazy val arbitraryPropertyLandValueTrustPage: Arbitrary[PropertyLandValueTrustPage] =
-    Arbitrary(PropertyLandValueTrustPage(0))
-
-  implicit lazy val arbitraryPropertyOrLandAddressPage: Arbitrary[PropertyOrLandAddressUkYesNoPage] =
-    Arbitrary(PropertyOrLandAddressUkYesNoPage(0))
-
-  implicit lazy val arbitraryPropertyOrLandTotalValuePage: Arbitrary[PropertyOrLandTotalValuePage] =
-    Arbitrary(PropertyOrLandTotalValuePage(0))
-
-  implicit lazy val arbitraryPropertyOrLandDescriptionPage: Arbitrary[PropertyOrLandDescriptionPage] =
-    Arbitrary(PropertyOrLandDescriptionPage(0))
-
-  implicit lazy val arbitraryTrustOwnAllThePropertyOrLandPage: Arbitrary[TrustOwnAllThePropertyOrLandPage] =
-    Arbitrary(TrustOwnAllThePropertyOrLandPage(0))
-
-  implicit lazy val arbitraryPropertyOrLandInternationalAddressPage: Arbitrary[PropertyOrLandInternationalAddressPage] =
-    Arbitrary(PropertyOrLandInternationalAddressPage(0))
-
-  implicit lazy val arbitraryPropertyOrLandAddressUkYesNoPage: Arbitrary[PropertyOrLandUKAddressPage] =
-    Arbitrary(PropertyOrLandUKAddressPage(0))
-
-  implicit lazy val arbitraryShareCompanyNamePage: Arbitrary[ShareCompanyNamePage] =
-    Arbitrary(ShareCompanyNamePage(0))
-
-  implicit lazy val arbitrarySharesOnStockExchangePage: Arbitrary[SharesOnStockExchangePage] =
-    Arbitrary(SharesOnStockExchangePage(0))
-
-  implicit lazy val arbitrarySharesInAPortfolioPage: Arbitrary[SharesInAPortfolioPage] =
-    Arbitrary(SharesInAPortfolioPage(0))
-
-  implicit lazy val arbitraryShareValueInTrustPage: Arbitrary[ShareValueInTrustPage] =
-    Arbitrary(ShareValueInTrustPage(0))
-
-  implicit lazy val arbitraryShareQuantityInTrustPage: Arbitrary[ShareQuantityInTrustPage] =
-    Arbitrary(ShareQuantityInTrustPage(0))
-
-  implicit lazy val arbitrarySharePortfolioValueInTrustPage: Arbitrary[SharePortfolioValueInTrustPage] =
-    Arbitrary(SharePortfolioValueInTrustPage(0))
-
-  implicit lazy val arbitrarySharePortfolioQuantityInTrustPage: Arbitrary[SharePortfolioQuantityInTrustPage] =
-    Arbitrary(SharePortfolioQuantityInTrustPage(0))
-
-  implicit lazy val arbitrarySharePortfolioOnStockExchangePage: Arbitrary[SharePortfolioOnStockExchangePage] =
-    Arbitrary(SharePortfolioOnStockExchangePage(0))
-
-  implicit lazy val arbitrarySharePortfolioNamePage: Arbitrary[SharePortfolioNamePage] =
-    Arbitrary(SharePortfolioNamePage(0))
-
-  implicit lazy val arbitraryShareClassPage: Arbitrary[ShareClassPage] =
-    Arbitrary(ShareClassPage(0))
 
   implicit lazy val arbitraryDeclarationPage: Arbitrary[DeclarationPage.type] =
     Arbitrary(register.DeclarationPage)
@@ -106,17 +38,8 @@ trait PageGenerators {
   implicit lazy val arbitraryAgentNamePage: Arbitrary[AgentNamePage.type] =
     Arbitrary(AgentNamePage)
 
-  implicit lazy val arbitraryAddAssetsPage: Arbitrary[AddAssetsPage.type] =
-    Arbitrary(AddAssetsPage)
-
-  implicit lazy val arbitraryAssetMoneyValuePage: Arbitrary[AssetMoneyValuePage] =
-    Arbitrary(AssetMoneyValuePage(0))
-
   implicit lazy val arbitraryAgentInternalReferencePage: Arbitrary[AgentInternalReferencePage.type] =
     Arbitrary(AgentInternalReferencePage)
-
-  implicit lazy val arbitraryWhatKindOfAssetPage: Arbitrary[WhatKindOfAssetPage] =
-    Arbitrary(WhatKindOfAssetPage(0))
 
   implicit lazy val arbitraryAgentTelephoneNumberPage: Arbitrary[AgentTelephoneNumberPage.type] =
     Arbitrary(AgentTelephoneNumberPage)

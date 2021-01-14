@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package services
 
-import java.time.LocalDate
-
 import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
@@ -25,7 +23,7 @@ import mapping.registration.RegistrationMapper
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
-import models.core.http.{AddressType, LeadTrusteeType, Registration, RegistrationTRNResponse, TrustResponse}
+import models.core.http._
 import models.requests.RegistrationDataRequest
 import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito.{verify, when}
@@ -39,6 +37,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TestUserAnswers
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
+import java.time.LocalDate
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
@@ -70,9 +69,6 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getAllStatus(draftId: String)
                              (implicit hc: HeaderCarrier) : Future[AllStatus] = Future.successful(AllStatus())
 
-    override def setAllStatus(draftId: String, status: AllStatus)
-                             (implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
-
     override def getAnswerSections(draftId: String)
                                   (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
 
@@ -88,10 +84,11 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getTrustSetupDate(draftId: String)
                                   (implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
 
-    override def getDraft(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[Option[DraftRegistration]] =
-      Future.successful(Some(DraftRegistration("draftId", "agentInternalRef", "3 February 2020")))
-
     override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(OK, ""))
+
+    override def getAgentAddress(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[AddressType]] = Future.successful(None)
+
+    override def getClientReference(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[String]] = Future.successful(None)
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]
@@ -108,8 +105,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val asset = TestUserAnswers.withMoneyAsset(emptyUserAnswers)
-    val userAnswers = TestUserAnswers.withDeclaration(asset)
+    val userAnswers = TestUserAnswers.withDeclaration(emptyUserAnswers)
 
     userAnswers
   }
@@ -176,7 +172,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
       val userAnswers: UserAnswers = newTrustUserAnswers
       val correspondenceAddress: AddressType = AddressType("Line 1", "Line 2", None, None, None, "GB")
       val trustName: String = "Name"
-      val registration: Option[Registration] = registrationMapper.build(userAnswers, correspondenceAddress, trustName)
+      val registration: Future[Option[Registration]] = registrationMapper.build(userAnswers, correspondenceAddress, trustName)
 
       "when error retrieving correspondence address transformation" in {
 
@@ -205,7 +201,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(None)
+        when(mockRegistrationMapper.build(any(), any(), any())(any(), any())).thenReturn(Future.successful(None))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
@@ -217,7 +213,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationMapper.build(any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.failed(new Throwable("")))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
@@ -228,7 +224,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationMapper.build(any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
         when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.InternalServerError))
 
@@ -240,7 +236,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationMapper.build(any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
         when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
 
@@ -254,7 +250,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any())).thenReturn(registration)
+        when(mockRegistrationMapper.build(any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
         when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(response))
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import pages.register.agents._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import utils.{CheckYourAnswersHelper, DateFormatter}
+import utils.CheckYourAnswersHelper
 import utils.countryOptions.CountryOptions
 import viewmodels.AnswerSection
 import views.html.register.agents.AgentAnswerView
@@ -36,7 +36,6 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
   private val agentID: AffinityGroup.Agent.type = AffinityGroup.Agent
 
   private val countryOptions: CountryOptions = injector.instanceOf[CountryOptions]
-  private val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
 
   "AgentAnswer Controller" must {
 
@@ -50,7 +49,7 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(answers, fakeDraftId, canEdit = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(
@@ -91,7 +90,7 @@ class AgentAnswerControllerSpec extends RegistrationSpecBase {
           .set(AgentNamePage, "Sam Curran Trust").success.value
           .set(AgentInternalReferencePage, "123456789").success.value
 
-      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(answers, fakeDraftId, canEdit = true)
+      val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions)(answers, fakeDraftId, canEdit = true)
 
       val expectedSections = Seq(
         AnswerSection(

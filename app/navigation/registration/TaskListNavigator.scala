@@ -17,9 +17,9 @@
 package navigation.registration
 
 import config.FrontendAppConfig
+import controllers.register.agents.routes.AgentInternalReferenceController
 import javax.inject.{Inject, Singleton}
-import models.core.UserAnswers
-import play.api.mvc.Call
+import models.NormalMode
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
@@ -40,15 +40,6 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     frontendAppConfig.beneficiariesFrontendUrl(draftId)
   }
 
-  def assetsJourney(userAnswers: UserAnswers, draftId: String): Call = {
-    userAnswers.get(sections.Assets).getOrElse(Nil) match {
-      case _ :: _ =>
-        controllers.register.asset.routes.AddAssetsController.onPageLoad(draftId)
-      case Nil =>
-        controllers.register.asset.routes.AssetInterruptPageController.onPageLoad(draftId)
-    }
-  }
-
   def taxLiabilityJourney(draftId: String): String = {
     frontendAppConfig.taxLiabilityFrontendUrl(draftId)
   }
@@ -60,4 +51,18 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
   def otherIndividualsJourneyUrl(draftId: String): String = {
     frontendAppConfig.otherIndividualsFrontendUrl(draftId)
   }
+
+  def assetsJourneyUrl(draftId: String): String = {
+    frontendAppConfig.assetsFrontendUrl(draftId)
+  }
+
+  def agentDetailsJourneyUrl(draftId: String): String = {
+    if (frontendAppConfig.agentDetailsMicroserviceEnabled) {
+      frontendAppConfig.agentDetailsFrontendUrl(draftId)
+    } else {
+      AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url
+    }
+  }
+
+
 }

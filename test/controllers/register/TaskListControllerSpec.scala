@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,13 @@ import pages.register._
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import uk.gov.hmrc.http.HeaderCarrier
+import viewmodels.Task
 import views.html.register.TaskListView
+
+import scala.concurrent.Future
 
 class TaskListControllerSpec extends RegistrationSpecBase {
 
@@ -42,18 +45,18 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
-  private def sections(answers: UserAnswers) = newRegistrationProgress.items(answers, fakeDraftId)
-  private lazy val additionalSections = newRegistrationProgress.additionalItems(fakeDraftId)
+  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId)
+  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId)
 
-  private def isTaskListComplete(answers: UserAnswers) = newRegistrationProgress.isTaskListComplete(answers)
+  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, Agent)
 
-  override protected def applicationBuilder(
-                                             userAnswers: Option[UserAnswers],
-                                             affinityGroup: AffinityGroup,
-                                             enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
-                                             navigator: Navigator = fakeNavigator
-                                           ): GuiceApplicationBuilder =
+  override protected def applicationBuilder(userAnswers: Option[UserAnswers],
+                                            affinityGroup: AffinityGroup,
+                                            enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
+                                            navigator: Navigator = fakeNavigator): GuiceApplicationBuilder = {
+
     super.applicationBuilder(userAnswers, affinityGroup).configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
+  }
 
   "TaskList Controller" must {
 
@@ -112,9 +115,9 @@ class TaskListControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           for {
-            mainSections <- sections(answers)
+            mainSections <- sections
             additionalSections <- additionalSections
-            isTaskListComplete <- isTaskListComplete(answers)
+            isTaskListComplete <- isTaskListComplete
           } yield {
             val view = application.injector.instanceOf[TaskListView]
             contentAsString(result) mustEqual
@@ -123,7 +126,10 @@ class TaskListControllerSpec extends RegistrationSpecBase {
                 savedUntil,
                 mainSections,
                 additionalSections,
-                isTaskListComplete, Organisation)(request, messages).toString
+                isTaskListComplete,
+                Organisation,
+                s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              )(request, messages).toString
           }
 
           application.stop()
@@ -214,9 +220,9 @@ class TaskListControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         for {
-          sections <- sections(answers)
+          sections <- sections
           additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete(answers)
+          isTaskListComplete <- isTaskListComplete
         } yield {
           val view = application.injector.instanceOf[TaskListView]
           contentAsString(result) mustEqual
@@ -226,7 +232,9 @@ class TaskListControllerSpec extends RegistrationSpecBase {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation)(request, messages).toString
+              Organisation,
+              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            )(request, messages).toString
         }
 
         application.stop()

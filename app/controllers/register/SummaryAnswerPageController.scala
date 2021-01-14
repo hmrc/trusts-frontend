@@ -18,17 +18,17 @@ package controllers.register
 
 import controllers.actions._
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
-import javax.inject.Inject
-import pages.register.agents.AgentInternalReferencePage
+import models.requests.RegistrationDataRequest
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.print.register.PrintUserAnswersHelper
 import views.html.register.SummaryAnswerPageView
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
-
 
 class SummaryAnswerPageController @Inject()(
                                              override val messagesApi: MessagesApi,
@@ -38,25 +38,29 @@ class SummaryAnswerPageController @Inject()(
                                              val controllerComponents: MessagesControllerComponents,
                                              view: SummaryAnswerPageView,
                                              registrationComplete : TaskListCompleteActionRefiner,
-                                             printUserAnswersHelper: PrintUserAnswersHelper
+                                             printUserAnswersHelper: PrintUserAnswersHelper,
+                                             registrationsRepository: RegistrationsRepository
                                             )(implicit ec: ExecutionContext)
   extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId : String) =
+  private def actions(draftId : String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
   def onPageLoad(draftId : String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      printUserAnswersHelper.summary(draftId, request.userAnswers).map {
-        sections =>
-          Ok(
-            view(
-              sections,
-              request.affinityGroup == Agent,
-              request.userAnswers.get(AgentInternalReferencePage).getOrElse("")
-            )
-          )
+      registrationsRepository.getClientReference(request.userAnswers) flatMap {
+        reference =>
+          printUserAnswersHelper.summary(draftId).map {
+            sections =>
+              Ok(
+                view(
+                  answerSections = sections,
+                  isAgent = request.affinityGroup == Agent,
+                  agentClientRef = reference.getOrElse("")
+                )
+              )
+          }
       }
   }
 

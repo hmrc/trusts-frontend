@@ -18,9 +18,10 @@ package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
 import javax.inject.Inject
-import models.NormalMode
+import models.requests.RegistrationDataRequest
+import navigation.registration.TaskListNavigator
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.BeforeYouContinueView
@@ -29,10 +30,11 @@ class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              standardActionSets: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
-                                             view: BeforeYouContinueView
+                                             view: BeforeYouContinueView,
+                                             navigator: TaskListNavigator
                                            ) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
@@ -46,9 +48,9 @@ class BeforeYouContinueController @Inject()(
 
       Redirect(request.affinityGroup match {
         case AffinityGroup.Agent =>
-          controllers.register.agents.routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId)
+          navigator.agentDetailsJourneyUrl(draftId)
         case _ =>
-          controllers.register.routes.TaskListController.onPageLoad(draftId)
+          controllers.register.routes.TaskListController.onPageLoad(draftId).url
       })
   }
 }

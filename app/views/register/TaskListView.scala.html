@@ -29,7 +29,8 @@
     sections : List[Task],
     additionalSections : List[Task],
     isTaskListComplete: Boolean,
-    affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
+    affinityGroup : AffinityGroup,
+    checkAgentDetailsUrl: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
@@ -44,7 +45,7 @@
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
-        <p>@components.link(controllers.register.agents.routes.AgentAnswerController.onPageLoad(draftId).url, "agent-details", "taskList.agent.agentDetails")</p>
+        <p>@components.link(checkAgentDetailsUrl, "agent-details", "taskList.agent.agentDetails")</p>
     } else {
         <h2>@messages("taskList.savedUntil.heading")</h2>
         <p id="saved-until">@savedUntil</p>

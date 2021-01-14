@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
 
     "must be able to create a correspondence with required answer" - {
 
-      correspondenceMapper.build( "Trust of a Will").value.name mustBe "Trust of a Will"
+      correspondenceMapper.build( "Trust of a Will").name mustBe "Trust of a Will"
     }
   }
 }

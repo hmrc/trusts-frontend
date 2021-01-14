@@ -116,6 +116,11 @@ agentName.error.required = Nodwch enw’r asiantaeth
 agentName.error.length = Mae’n rhaid i enw’r asiantaeth fod yn 56 o gymeriadau neu lai
 agentName.error.invalidFormat = Mae’n rhaid i enw’r asiantaeth gynnwys llythrennau a i z, y rhifau 0 i 9, ampersandau (&), collnodau, comas, blaenslaesau, atalnodau llawn, cysylltnodau, cromfachau crwn a bylchau yn unig
 
+agentAddressUKYesNo.title = A yw cyfeiriad yr asiantaeth yn y DU?
+agentAddressUKYesNo.heading = A yw cyfeiriad {0} yn y DU?
+agentAddressUKYesNo.checkYourAnswersLabel = A yw cyfeiriad {0} yn y DU?
+agentAddressUKYesNo.error.required = Dewiswch ‘Iawn’ os yw cyfeiriad yr asiantaeth yn y DU
+
 agentAddressYesNo.title = A yw cyfeiriad yr asiantaeth yn y DU?
 agentAddressYesNo.heading = A yw cyfeiriad {0} yn y DU?
 agentAddressYesNo.checkYourAnswersLabel = A yw cyfeiriad {0} yn y DU?
@@ -171,3 +176,14 @@ agentTelephoneNumber.error.invalid.characters = Nodwch rif ffôn fel 01632 960 0
 
 agentAnswer.title = Gwirio manylion yr asiantaeth
 agentAnswer.heading = Gwirio manylion yr asiantaeth
+
+leadTrustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+leadTrustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
+trust.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+trust.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+trust.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
+charity.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+charity.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+charity.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?

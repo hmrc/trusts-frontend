@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,133 +17,153 @@
 package mapping.registration
 
 import base.SpecBaseHelpers
+import config.FrontendAppConfig
 import generators.Generators
-import mapping.Mapping
 import models.core.http.{AddressType, AgentDetails}
 import models.core.pages.{InternationalAddress, UKAddress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import pages.register.agents._
+import play.api.Configuration
 
 class AgentMapperSpec extends FreeSpec with MustMatchers
   with OptionValues with Generators with SpecBaseHelpers {
 
-  val agentMapper: Mapping[AgentDetails] = injector.instanceOf[AgentMapper]
+  private val addressMapper: AddressMapper = injector.instanceOf[AddressMapper]
+
+  private def fakeFrontendAppConfig(enabled: Boolean): FrontendAppConfig = {
+    lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
+    new FrontendAppConfig(config) {
+      override lazy val agentDetailsMicroserviceEnabled: Boolean = enabled
+    }
+  }
 
   "AgentMapper" - {
 
-    "when user answers is empty" - {
+    "when agent details microservice enabled" - {
+      "must return None" in {
 
-      "must not be able to create AgentDetails" in {
+        val agentMapper: AgentMapper = new AgentMapper(addressMapper, fakeFrontendAppConfig(enabled = true))
 
-        val userAnswers = emptyUserAnswers
-
-        agentMapper.build(userAnswers) mustNot be(defined)
-      }
-    }
-    "when user answers is not empty " - {
-
-      "must able to create AgentDetails for a UK address" in {
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(AgentARNPage, "SARN123456").success.value
-            .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentUKAddressPage, UKAddress("Line1", "Line2", None, Some("Newcastle"), "ab1 1ab")).success.value
-            .set(AgentTelephoneNumberPage, "+1234567890").success.value
-            .set(AgentInternalReferencePage, "1234-5678").success.value
-            .set(AgentAddressYesNoPage, true).success.value
-
-        agentMapper.build(userAnswers).value mustBe AgentDetails(
-          arn = "SARN123456",
-          agentName = "Agency Name",
-          agentAddress = AddressType("Line1", "Line2", None, Some("Newcastle"), Some("ab1 1ab"), "GB"),
-          agentTelephoneNumber = "+1234567890",
-          clientReference = "1234-5678"
-        )
-      }
-
-      "must able to create AgentDetails for a UK address with only required fields" in {
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(AgentARNPage, "SARN123456").success.value
-            .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentUKAddressPage, UKAddress("Line1", "Newcastle", None, None, "NE62RT")).success.value
-            .set(AgentTelephoneNumberPage, "+1234567890").success.value
-            .set(AgentInternalReferencePage, "1234-5678").success.value
-            .set(AgentAddressYesNoPage, true).success.value
-
-        agentMapper.build(userAnswers).value mustBe AgentDetails(
-          arn = "SARN123456",
-          agentName = "Agency Name",
-          agentAddress = AddressType("Line1", "Newcastle", None, None, Some("NE62RT"), "GB"),
-          agentTelephoneNumber = "+1234567890",
-          clientReference = "1234-5678"
-        )
-      }
-
-      "must able to create AgentDetails for a international address" in {
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(AgentARNPage, "SARN123456").success.value
-            .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",Some("line3"), "IN")).success.value
-            .set(AgentTelephoneNumberPage, "+1234567890").success.value
-            .set(AgentInternalReferencePage, "1234-5678").success.value
-            .set(AgentAddressYesNoPage, false).success.value
-
-        agentMapper.build(userAnswers).value mustBe AgentDetails(
-          arn = "SARN123456",
-          agentName = "Agency Name",
-          agentAddress = AddressType("line1", "line2", Some("line3"), None, None, "IN"),
-          agentTelephoneNumber = "+1234567890",
-          clientReference = "1234-5678"
-        )
-      }
-
-      "must able to create AgentDetails for a international address with minimum data" in {
-
-        val userAnswers =
-          emptyUserAnswers
-            .set(AgentARNPage, "SARN123456").success.value
-            .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",None, "IN")).success.value
-            .set(AgentTelephoneNumberPage, "+1234567890").success.value
-            .set(AgentInternalReferencePage, "1234-5678").success.value
-            .set(AgentAddressYesNoPage, false).success.value
-
-        agentMapper.build(userAnswers).value mustBe AgentDetails(
-          arn = "SARN123456",
-          agentName = "Agency Name",
-          agentAddress = AddressType("line1", "line2", None, None, None, "IN"),
-          agentTelephoneNumber = "+1234567890",
-          clientReference = "1234-5678"
-        )
-      }
-
-      "must not be able to create AgentDetails when no address available." in {
-        val userAnswers =
-          emptyUserAnswers
-            .set(AgentARNPage, "SARN123456").success.value
-            .set(AgentNamePage, "Agency Name").success.value
-            .set(AgentInternalReferencePage, "1234-5678").success.value
-            .set(AgentAddressYesNoPage, true).success.value
-        agentMapper.build(userAnswers) mustNot be(defined)
-
-      }
-
-      "must not be able to create AgentDetails when no only agent name available." in {
-        val userAnswers =
-          emptyUserAnswers
-            .set(AgentARNPage, "SARN123456").success.value
-            .set(AgentNamePage, "Agency Name").success.value
-        agentMapper.build(userAnswers) mustNot be(defined)
-
+        val result = agentMapper.build(emptyUserAnswers)
+        result mustBe None
       }
     }
 
+    "when agent details microservice not enabled" - {
 
+      val agentMapper: AgentMapper = new AgentMapper(addressMapper, fakeFrontendAppConfig(enabled = false))
+
+      "when user answers is empty" - {
+        "must not be able to create AgentDetails" in {
+
+          val userAnswers = emptyUserAnswers
+
+          agentMapper.build(userAnswers) mustNot be(defined)
+        }
+      }
+
+      "when user answers is not empty " - {
+
+        "must able to create AgentDetails for a UK address" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(AgentARNPage, "SARN123456").success.value
+              .set(AgentNamePage, "Agency Name").success.value
+              .set(AgentUKAddressPage, UKAddress("Line1", "Line2", None, Some("Newcastle"), "ab1 1ab")).success.value
+              .set(AgentTelephoneNumberPage, "+1234567890").success.value
+              .set(AgentInternalReferencePage, "1234-5678").success.value
+              .set(AgentAddressYesNoPage, true).success.value
+
+          agentMapper.build(userAnswers).value mustBe AgentDetails(
+            arn = "SARN123456",
+            agentName = "Agency Name",
+            agentAddress = AddressType("Line1", "Line2", None, Some("Newcastle"), Some("ab1 1ab"), "GB"),
+            agentTelephoneNumber = "+1234567890",
+            clientReference = "1234-5678"
+          )
+        }
+
+        "must able to create AgentDetails for a UK address with only required fields" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(AgentARNPage, "SARN123456").success.value
+              .set(AgentNamePage, "Agency Name").success.value
+              .set(AgentUKAddressPage, UKAddress("Line1", "Newcastle", None, None, "NE62RT")).success.value
+              .set(AgentTelephoneNumberPage, "+1234567890").success.value
+              .set(AgentInternalReferencePage, "1234-5678").success.value
+              .set(AgentAddressYesNoPage, true).success.value
+
+          agentMapper.build(userAnswers).value mustBe AgentDetails(
+            arn = "SARN123456",
+            agentName = "Agency Name",
+            agentAddress = AddressType("Line1", "Newcastle", None, None, Some("NE62RT"), "GB"),
+            agentTelephoneNumber = "+1234567890",
+            clientReference = "1234-5678"
+          )
+        }
+
+        "must able to create AgentDetails for a international address" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(AgentARNPage, "SARN123456").success.value
+              .set(AgentNamePage, "Agency Name").success.value
+              .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",Some("line3"), "IN")).success.value
+              .set(AgentTelephoneNumberPage, "+1234567890").success.value
+              .set(AgentInternalReferencePage, "1234-5678").success.value
+              .set(AgentAddressYesNoPage, false).success.value
+
+          agentMapper.build(userAnswers).value mustBe AgentDetails(
+            arn = "SARN123456",
+            agentName = "Agency Name",
+            agentAddress = AddressType("line1", "line2", Some("line3"), None, None, "IN"),
+            agentTelephoneNumber = "+1234567890",
+            clientReference = "1234-5678"
+          )
+        }
+
+        "must able to create AgentDetails for a international address with minimum data" in {
+
+          val userAnswers =
+            emptyUserAnswers
+              .set(AgentARNPage, "SARN123456").success.value
+              .set(AgentNamePage, "Agency Name").success.value
+              .set(AgentInternationalAddressPage,InternationalAddress("line1","line2",None, "IN")).success.value
+              .set(AgentTelephoneNumberPage, "+1234567890").success.value
+              .set(AgentInternalReferencePage, "1234-5678").success.value
+              .set(AgentAddressYesNoPage, false).success.value
+
+          agentMapper.build(userAnswers).value mustBe AgentDetails(
+            arn = "SARN123456",
+            agentName = "Agency Name",
+            agentAddress = AddressType("line1", "line2", None, None, None, "IN"),
+            agentTelephoneNumber = "+1234567890",
+            clientReference = "1234-5678"
+          )
+        }
+
+        "must not be able to create AgentDetails when no address available." in {
+          val userAnswers =
+            emptyUserAnswers
+              .set(AgentARNPage, "SARN123456").success.value
+              .set(AgentNamePage, "Agency Name").success.value
+              .set(AgentInternalReferencePage, "1234-5678").success.value
+              .set(AgentAddressYesNoPage, true).success.value
+          agentMapper.build(userAnswers) mustNot be(defined)
+
+        }
+
+        "must not be able to create AgentDetails when no only agent name available." in {
+          val userAnswers =
+            emptyUserAnswers
+              .set(AgentARNPage, "SARN123456").success.value
+              .set(AgentNamePage, "Agency Name").success.value
+          agentMapper.build(userAnswers) mustNot be(defined)
+
+        }
+      }
+    }
   }
-
 }

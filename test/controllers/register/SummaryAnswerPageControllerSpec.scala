@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,14 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
-import models.registration.pages.AddAssets.NoComplete
-import models.registration.pages.Status.Completed
-import models.registration.pages._
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import pages.entitystatus._
-import pages.register.agents.AgentInternalReferencePage
-import pages.register.asset.money.AssetMoneyValuePage
-import pages.register.asset.shares._
-import pages.register.asset.{AddAssetsPage, WhatKindOfAssetPage}
+import pages.register.RegistrationProgress
+import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import utils.countryOptions.CountryOptions
-import utils.{CheckYourAnswersHelper, DateFormatter, TestUserAnswers}
+import utils.TestUserAnswers
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.SummaryAnswerPageView
 
@@ -40,9 +33,7 @@ import scala.concurrent.Future
 
 class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
-  private val index = 0
-
-  val trustDetailsSection = List(
+  val trustDetailsSection: Seq[AnswerSection] = Seq(
     AnswerSection(
       Some("trustDetailsHeadingKey1"),
       List.empty,
@@ -50,7 +41,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     )
   )
 
-  val beneficiarySections = List(
+  val beneficiarySections: Seq[AnswerSection] = Seq(
     AnswerSection(
       Some("beneficiaryHeadingKey1"),
       List.empty,
@@ -63,7 +54,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     )
   )
 
-  val trusteeSections = List(
+  val trusteeSections: Seq[AnswerSection] = Seq(
     AnswerSection(
       Some("trusteeHeadingKey1"),
       List.empty,
@@ -76,7 +67,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     )
   )
 
-  val protectorSections = List(
+  val protectorSections: Seq[AnswerSection] = Seq(
     AnswerSection(
       Some("protectorHeadingKey1"),
       List.empty,
@@ -89,7 +80,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     )
   )
 
-  val otherIndividualSections = List(
+  val otherIndividualSections: Seq[AnswerSection] = Seq(
     AnswerSection(
       Some("otherIndividualHeadingKey1"),
       List.empty,
@@ -102,73 +93,53 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     )
   )
 
-  val registrationSections = RegistrationAnswerSections(
-    beneficiaries = Some(beneficiarySections),
-    trustees = Some(trusteeSections),
-    protectors = Some(protectorSections),
-    otherIndividuals = Some(otherIndividualSections),
-    trustDetails = Some(trustDetailsSection)
+  val assetSections: Seq[AnswerSection] = Seq(
+    AnswerSection(
+      Some("assetHeadingKey1"),
+      List.empty,
+      Some("assetSectionKey1")
+    ),
+    AnswerSection(
+      Some("assetHeadingKey2"),
+      List.empty,
+      Some("assetSectionKey2")
+    )
+  )
+
+  val registrationSections: RegistrationAnswerSections = RegistrationAnswerSections(
+    beneficiaries = Some(beneficiarySections.toList),
+    trustees = Some(trusteeSections.toList),
+    protectors = Some(protectorSections.toList),
+    otherIndividuals = Some(otherIndividualSections.toList),
+    trustDetails = Some(trustDetailsSection.toList),
+    assets = Some(assetSections.toList)
   )
 
   when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
 
   "SummaryAnswersController" must {
 
-    val userAnswers =
-      TestUserAnswers.emptyUserAnswers
+    val userAnswers = TestUserAnswers.emptyUserAnswers
 
-        .set(WhatKindOfAssetPage(index), WhatKindOfAsset.Money).success.value
-        .set(AssetMoneyValuePage(index), "100").success.value
-        .set(AssetStatus(index), Completed).success.value
-        .set(WhatKindOfAssetPage(1), WhatKindOfAsset.Shares).success.value
-        .set(SharesInAPortfolioPage(1), true).success.value
-        .set(SharePortfolioNamePage(1), "Company").success.value
-        .set(SharePortfolioOnStockExchangePage(1), true).success.value
-        .set(SharePortfolioQuantityInTrustPage(1), "1234").success.value
-        .set(SharePortfolioValueInTrustPage(1), "4000").success.value
-        .set(AssetStatus(1), Completed).success.value
-        .set(AddAssetsPage, NoComplete).success.value
-
-        .set(AgentInternalReferencePage, "agentClientReference").success.value
-
-    val countryOptions = injector.instanceOf[CountryOptions]
-    val dateFormatterImpl: DateFormatter = injector.instanceOf[DateFormatter]
-    val checkYourAnswersHelper = new CheckYourAnswersHelper(countryOptions, dateFormatterImpl)(userAnswers,fakeDraftId, canEdit = false)
-
-    val expectedSections = Seq(
-      trustDetailsSection(0),
-      trusteeSections(0),
+    val expectedSections: Seq[AnswerSection] = Seq(
+      trustDetailsSection.head,
+      trusteeSections.head,
       trusteeSections(1),
-      beneficiarySections(0),
+      beneficiarySections.head,
       beneficiarySections(1),
-      AnswerSection(None, Nil, Some("Assets")),
-      AnswerSection(
-        Some("Money"),
-        Seq(
-          checkYourAnswersHelper.assetMoneyValue(index).value
-        ),
-        None
-      ),
-      AnswerSection(
-        Some("Share 1"),
-        Seq(
-          checkYourAnswersHelper.sharesInAPortfolio(1).value,
-          checkYourAnswersHelper.sharePortfolioName(1).value,
-          checkYourAnswersHelper.sharePortfolioOnStockExchange(1).value,
-          checkYourAnswersHelper.sharePortfolioQuantityInTrust(1).value,
-          checkYourAnswersHelper.sharePortfolioValueInTrust(1).value
-        ),
-        None
-      ),
-      protectorSections(0),
+      assetSections.head,
+      assetSections(1),
+      protectorSections.head,
       protectorSections(1),
-      otherIndividualSections(0),
+      otherIndividualSections.head,
       otherIndividualSections(1)
     )
 
     when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
+
+      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(None))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
 
@@ -187,6 +158,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     }
 
     "return OK and the correct view for a GET when tasklist completed for Agent user" in {
+
+      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(Some("agentClientReference")))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -209,7 +182,13 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       val userAnswers =
         TestUserAnswers.emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val mockRegistrationProgress = mock[RegistrationProgress]
+
+      when(mockRegistrationProgress.isTaskListComplete(any(), any())(any())).thenReturn(Future.successful(false))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(inject.bind[RegistrationProgress].toInstance(mockRegistrationProgress))
+        .build()
 
       val request = FakeRequest(GET, routes.SummaryAnswerPageController.onPageLoad(fakeDraftId).url)
 
@@ -224,5 +203,4 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     }
 
   }
-
 }

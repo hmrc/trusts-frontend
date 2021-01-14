@@ -20,9 +20,10 @@ import java.time.LocalDateTime
 
 import controllers.actions._
 import javax.inject.Inject
+import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.DateFormatter
 import utils.print.register.PrintUserAnswersHelper
@@ -39,16 +40,16 @@ class ConfirmationAnswerPageController @Inject()(
                                                   printUserAnswersHelper: PrintUserAnswersHelper,
                                                   dateFormatter: DateFormatter,
                                                   actionSet: StandardActionSets
-                                            )(implicit ec: ExecutionContext)
+                                                )(implicit ec: ExecutionContext)
   extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId : String) =
+  private def actions(draftId : String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     actionSet.identifiedUserWithData(draftId) andThen registrationComplete
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      printUserAnswersHelper.summary(draftId, request.userAnswers).map {
+      printUserAnswersHelper.summary(draftId).map {
         sections =>
           val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
 
@@ -58,8 +59,5 @@ class ConfirmationAnswerPageController @Inject()(
 
           Ok(view(sections, trn, declarationSent))
       }
-
-
   }
-
 }

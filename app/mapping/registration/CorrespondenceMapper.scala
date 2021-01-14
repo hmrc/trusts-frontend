@@ -19,7 +19,7 @@ package mapping.registration
 import models.core.http.Correspondence
 
 class CorrespondenceMapper {
-  def build(trustName: String): Option[Correspondence] = {
-    Some(Correspondence(name = trustName))
+  def build(trustName: String): Correspondence = {
+    Correspondence(name = trustName)
   }
 }
