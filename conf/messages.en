@@ -607,6 +607,10 @@ settlorIndividualUkCountryOfResidencyYesNo.checkYourAnswersLabel = Is {0} a UK r
 settlorIndividualCountryOfResidency.checkYourAnswersLabel = What is {0}’s country of residence?
 settlorIndividualMentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
 
+settlorBusiness.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+settlorBusiness.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+settlorBusiness.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 settlorBusinessName.checkYourAnswersLabel = What is the business’s name?
 settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 settlorBusinessUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?

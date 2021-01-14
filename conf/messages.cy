@@ -99,3 +99,7 @@ trust.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswy
 charity.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 charity.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 charity.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
+settlorBusiness.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+settlorBusiness.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+settlorBusiness.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
