@@ -599,6 +599,13 @@ settlorIndividualIDCard.checkYourAnswersLabel = What are {0}’s ID card details
 settlorIndividualIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 settlorIndividualPassport.checkYourAnswersLabel = What are {0}’s passport details?
 settlorIndividualPassportYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+settlorIndividualCountryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+settlorIndividualUkCountryOfNationalityYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+settlorIndividualCountryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+settlorIndividualCountryOfResidencyYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+settlorIndividualUkCountryOfResidencyYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+settlorIndividualCountryOfResidency.checkYourAnswersLabel = What is {0}’s country of residence?
+settlorIndividualMentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
 
 settlorBusiness.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
 settlorBusiness.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
