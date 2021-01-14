@@ -134,7 +134,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "redirect to the confirmation page when valid data is submitted and registration submitted successfully " in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
+      when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
       val application =
@@ -148,13 +148,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())
       application.stop()
     }
 
     "redirect to the task list page when valid data is submitted and submission service can not register successfully" in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
+      when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.failed(UnableToRegister()))
 
       val application =
@@ -168,13 +168,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())
       application.stop()
     }
 
     "redirect to the already registered page when valid data is submitted and trust is already registered" in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
+      when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(AlreadyRegistered))
 
       val application =
@@ -188,7 +188,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.UTRSentByPostController.onPageLoad().url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())
       application.stop()
     }
 

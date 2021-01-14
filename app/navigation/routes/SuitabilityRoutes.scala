@@ -26,7 +26,9 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 object SuitabilityRoutes extends Routes {
 
-  def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    case ExpressTrustYesNoPage => _ => _ =>
+      routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
     case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
       yesNoNav(
         ua,

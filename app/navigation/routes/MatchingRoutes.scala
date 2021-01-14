@@ -27,22 +27,30 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 object MatchingRoutes extends Routes {
 
-  def route(draftId: String, config: FrontendAppConfig): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  def route(draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
-    case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config)
+    case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config, is5mldEnabled)
     case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad(draftId)
     case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, draftId)
   }
 
-  private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig): Call = {
+  private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
-      case (Some(false), Some(false)) => controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
+      case (Some(false), Some(false)) => fiveMldYesNo(draftId, is5mldEnabled)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routeToMaintain(config)
       case _ => routes.SessionExpiredController.onPageLoad()
+    }
+  }
+
+  private def fiveMldYesNo(draftId: String, fiveMld: Boolean): Call = {
+    if (fiveMld) {
+      controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, draftId)
+    } else {
+      controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
     }
   }
 

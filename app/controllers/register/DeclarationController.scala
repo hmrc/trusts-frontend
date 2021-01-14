@@ -18,10 +18,10 @@ package controllers.register
 
 import java.time.temporal.ChronoUnit.DAYS
 import java.time.{LocalDateTime, ZoneOffset}
-
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import models.core.UserAnswers
@@ -36,7 +36,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
-import services.SubmissionService
+import services.{FeatureFlagService, SubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -49,6 +49,7 @@ class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        formProvider: DeclarationFormProvider,
+                                       featureFlagService: FeatureFlagService,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,
@@ -86,7 +87,8 @@ class DeclarationController @Inject()(
           val r = for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-            response <- submissionService.submit(updatedAnswers)
+            is5mldEnabled <- featureFlagService.is5mldEnabled()
+            response <- submissionService.submit(updatedAnswers, is5mldEnabled)
             result <- handleResponse(updatedAnswers, response, draftId)
           } yield result
 
