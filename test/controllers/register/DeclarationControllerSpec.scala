@@ -29,8 +29,10 @@ import org.mockito.Mockito.{verify, when, _}
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
 import play.api.inject
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.register.DeclarationView
@@ -137,8 +139,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
+      val featureFlagService = mock[FeatureFlagService]
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+          .overrides(
+            bind[FeatureFlagService].toInstance(featureFlagService)
+          ).build()
+
+      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request =
         FakeRequest(POST, declarationRoute)
@@ -157,8 +166,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.failed(UnableToRegister()))
 
+      val featureFlagService = mock[FeatureFlagService]
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+          .overrides(
+            bind[FeatureFlagService].toInstance(featureFlagService)
+          ).build()
+
+      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request =
         FakeRequest(POST, declarationRoute)
@@ -177,9 +193,16 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(AlreadyRegistered))
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val featureFlagService = mock[FeatureFlagService]
 
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+          .overrides(
+            bind[FeatureFlagService].toInstance(featureFlagService)
+          ).build()
+
+      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+      
       val request =
         FakeRequest(POST, declarationRoute)
           .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
