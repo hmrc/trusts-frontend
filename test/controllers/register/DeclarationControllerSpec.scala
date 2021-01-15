@@ -202,7 +202,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
           ).build()
 
       when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
-      
+
       val request =
         FakeRequest(POST, declarationRoute)
           .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))

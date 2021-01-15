@@ -18,20 +18,19 @@ package services
 
 import com.google.inject.ImplementedBy
 import connector.TrustConnector
-
-import javax.inject.Inject
 import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
-import pages.register.suitability.ExpressTrustYesNoPage
+import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.Logging
-import play.api.libs.json.{JsBoolean, JsObject, JsPath, JsValue, Json, Reads, __}
+import play.api.libs.json._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Session
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultSubmissionService @Inject()(
@@ -100,7 +99,8 @@ class DefaultSubmissionService @Inject()(
   private def add5mldData(registrationJson: JsValue, userAnswers: UserAnswers, fiveMldEnabled: Boolean): JsValue = {
     if (fiveMldEnabled) {
       registrationJson.transform(
-        putNewValue((__ \ 'trust \ 'details \ 'expressTrust), JsBoolean(userAnswers.get(ExpressTrustYesNoPage).get))
+        putNewValue((__ \ 'trust \ 'details \ 'expressTrust), JsBoolean(userAnswers.get(ExpressTrustYesNoPage).get)) andThen
+        putNewValue((__ \ 'trust \ 'details \ 'trustTaxable), JsBoolean(userAnswers.get(TrustTaxableYesNoPage).get))
       ).fold(
         _ => {
           logger.error("[submit] Could not add expressTrust data")

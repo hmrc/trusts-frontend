@@ -16,13 +16,9 @@
 
 package controllers.register
 
-import java.time.temporal.ChronoUnit.DAYS
-import java.time.{LocalDateTime, ZoneOffset}
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
-
-import javax.inject.Inject
 import models.Mode
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
@@ -34,7 +30,7 @@ import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, Registra
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc._
 import repositories.RegistrationsRepository
 import services.{FeatureFlagService, SubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -42,6 +38,9 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.DeclarationView
 
+import java.time.temporal.ChronoUnit.DAYS
+import java.time.{LocalDateTime, ZoneOffset}
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
