@@ -21,7 +21,6 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
 case class IdentifierRequest[A] (request: Request[A],
                                  identifier: String,
-                                 sessionId: String,
                                  affinityGroup: AffinityGroup,
                                  enrolments: Enrolments,
                                  agentARN: Option[String] = None

@@ -22,16 +22,29 @@ import controllers.actions.register.RegistrationIdentifierAction
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.Session
+
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class LogoutController @Inject()(
                                   appConfig: FrontendAppConfig,
+                                  auditConnector: AuditConnector,
                                   identify: RegistrationIdentifierAction,
-                                  val controllerComponents: MessagesControllerComponents) extends FrontendBaseController {
+                                  val controllerComponents: MessagesControllerComponents)
+                                (implicit val ec: ExecutionContext) extends FrontendBaseController {
 
   def logout: Action[AnyContent] = identify {
     request =>
-      Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", request.sessionId))
+
+      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+      val auditData = Map("feedbackId" -> Session.id(hc), "customMetric" -> "value")
+
+      auditConnector.sendExplicitAudit("service-name", auditData)
+
+      Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
   }
 }
