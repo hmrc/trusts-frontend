@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package navigation
+package models
 
-import config.FrontendAppConfig
-import models.core.UserAnswers
-import models.{Mode, NormalMode}
-import pages._
-import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
+import play.api.libs.json.{Format, Json}
 
-class FakeNavigator(config: FrontendAppConfig,
-                    val desiredRoute: Call = Call("GET", "/foo"),
-                    mode: Mode = NormalMode
-                   ) extends Navigator(config) {
-  override def nextPage(page: Page, mode: Mode, fakeDraftId: String, affinityGroup: AffinityGroup, is5mldEnabled: Boolean = false): UserAnswers => Call = _ => desiredRoute
+case class FeatureResponse(name: String, isEnabled: Boolean)
+
+object FeatureResponse {
+  implicit val format: Format[FeatureResponse] = Json.format[FeatureResponse]
 }

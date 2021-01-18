@@ -118,7 +118,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = emptyUserAnswers
 
-        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        val result  = Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false),Duration.Inf)
         result mustBe UnableToRegister()
       }
     }
@@ -132,7 +132,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
-        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        val result  = Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false),Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
 
@@ -143,7 +143,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
-        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        val result  = Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false),Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
 
@@ -151,7 +151,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
 
-        val result  = Await.result(submissionService.submit(emptyUserAnswers),Duration.Inf)
+        val result  = Await.result(submissionService.submit(emptyUserAnswers, fiveMldEnabled = false),Duration.Inf)
         result mustBe UnableToRegister()
       }
     }
@@ -180,7 +180,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.failed(new Throwable("")))
 
-        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false), Duration.Inf)
         verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
       }
 
@@ -191,7 +191,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.failed(new Throwable("")))
 
-        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false), Duration.Inf)
         verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
       }
 
@@ -203,7 +203,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any())(any(), any())).thenReturn(Future.successful(None))
 
-        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false), Duration.Inf)
         verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
       }
 
@@ -216,7 +216,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationMapper.build(any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.failed(new Throwable("")))
 
-        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false), Duration.Inf)
         verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
       }
 
@@ -228,7 +228,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
         when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.InternalServerError))
 
-        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false), Duration.Inf)
         verify(mockAuditService).auditRegistrationSubmissionFailed(any(), any())(any(), any())
       }
 
@@ -240,7 +240,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
         when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
 
-        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false), Duration.Inf)
         verify(mockAuditService).auditRegistrationAlreadySubmitted(any(), any())(any(), any())
       }
 
@@ -254,7 +254,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
         when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(response))
 
-        Await.result(submissionService.submit(userAnswers), Duration.Inf)
+        Await.result(submissionService.submit(userAnswers, fiveMldEnabled = false), Duration.Inf)
         verify(mockAuditService).auditRegistrationSubmitted(any(), any(), eqTo(response))(any(), any())
       }
     }

@@ -14,45 +14,42 @@
  * limitations under the License.
  */
 
-package controllers.register
+package controllers.register.suitability
 
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
-
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.register.TrustHaveAUTRPage
+import pages.register.suitability.ExpressTrustYesNoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
-import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.register.TrustHaveAUTRView
+import views.html.register.suitability.ExpressTrustYesNoView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
-                                        registrationsRepository: RegistrationsRepository,
-                                        navigator: Navigator,
-                                        identify: RegistrationIdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: RegistrationDataRequiredAction,
-                                        formProvider: YesNoFormProvider,
-                                        featureFlagService: FeatureFlagService,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: TrustHaveAUTRView)
-                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ExpressTrustYesNoController @Inject()(override val messagesApi: MessagesApi,
+                                            registrationsRepository: RegistrationsRepository,
+                                            navigator: Navigator,
+                                            identify: RegistrationIdentifierAction,
+                                            getData: DraftIdRetrievalActionProvider,
+                                            requireData: RegistrationDataRequiredAction,
+                                            formProvider: YesNoFormProvider,
+                                            val controllerComponents: MessagesControllerComponents,
+                                            view: ExpressTrustYesNoView)
+                                           (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
+  val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val preparedForm = request.userAnswers.get(TrustHaveAUTRPage) match {
+      val preparedForm = request.userAnswers.get(ExpressTrustYesNoPage) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -69,11 +66,10 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
-            is5mldEnabled <- featureFlagService.is5mldEnabled()
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpressTrustYesNoPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
           } yield {
-            Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup, is5mldEnabled)(updatedAnswers))
+            Redirect(navigator.nextPage(ExpressTrustYesNoPage, mode, draftId, request.affinityGroup)(updatedAnswers))
           }
         }
       )

@@ -392,6 +392,11 @@ removeDraftYesNo.title = Are you sure you want to remove the saved registration?
 removeDraftYesNo.heading = Are you sure you want to remove {0}?
 removeDraftYesNo.error.required = Select yes if you want to remove the saved registration
 
+suitability.expressTrust.title = Are you registering an express trust?
+suitability.expressTrust.heading = Are you registering an express trust?
+suitability.expressTrust.hint = An express trust is a trust created deliberately by a settlor, usually in the form of a document such as a written deed of trust. Express trusts can be created by will or during lifetime, also known as inter-vivos.
+suitability.expressTrust.error.required = Select yes if you are registering an express trust
+
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?
 suitability.taxLiabilityInCurrentTaxYear.error.required = Select yes if the trust has any tax liability in the current tax year

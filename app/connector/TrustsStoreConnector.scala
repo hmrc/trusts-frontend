@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package navigation
+package connector
 
 import config.FrontendAppConfig
-import models.core.UserAnswers
-import models.{Mode, NormalMode}
-import pages._
-import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
+import models.FeatureResponse
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
-class FakeNavigator(config: FrontendAppConfig,
-                    val desiredRoute: Call = Call("GET", "/foo"),
-                    mode: Mode = NormalMode
-                   ) extends Navigator(config) {
-  override def nextPage(page: Page, mode: Mode, fakeDraftId: String, affinityGroup: AffinityGroup, is5mldEnabled: Boolean = false): UserAnswers => Call = _ => desiredRoute
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
+
+class TrustsStoreConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
+
+  private def featureUrl(feature: String): String = s"${config.trustsStoreUrl}/trusts-store/features/$feature"
+
+  def getFeature(feature: String)(implicit hc : HeaderCarrier, ec : ExecutionContext): Future[FeatureResponse] = {
+    http.GET[FeatureResponse](featureUrl(feature))
+  }
+
 }
+
