@@ -18,13 +18,20 @@ package controllers.register
 
 import com.google.inject.{Inject, Singleton}
 import config.FrontendAppConfig
+import controllers.actions.register.RegistrationIdentifierAction
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 @Singleton
-class LogoutController @Inject()(appConfig: FrontendAppConfig, val controllerComponents: MessagesControllerComponents) extends FrontendBaseController {
+class LogoutController @Inject()(
+                                  appConfig: FrontendAppConfig,
+                                  identify: RegistrationIdentifierAction,
+                                  val controllerComponents: MessagesControllerComponents) extends FrontendBaseController {
 
-  def logout: Action[AnyContent] = Action {
-      Redirect(appConfig.logoutUrl).withNewSession
+  def logout: Action[AnyContent] = identify {
+    request =>
+      Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", request.sessionId))
   }
 }

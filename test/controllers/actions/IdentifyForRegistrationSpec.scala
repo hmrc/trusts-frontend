@@ -72,7 +72,7 @@ class IdentifyForRegistrationSpec extends RegistrationSpecBase {
 
         val application = applicationBuilder(userAnswers = None).build()
 
-        val idRequest = IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
+        val idRequest = IdentifierRequest(fakeRequest, "sessionId", "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, agentEnrolment))

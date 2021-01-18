@@ -66,7 +66,7 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
             if (arn.isEmpty) {
               redirectToCreateAgentServicesAccount("agent reference number is empty")
             } else {
-              action(IdentifierRequest(request, internalId, AffinityGroup.Agent, enrolments, Some(arn)))
+              action(IdentifierRequest(request, internalId, Session.id(hc), AffinityGroup.Agent, enrolments, Some(arn)))
             }
         }
     }
@@ -83,8 +83,10 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
 
     val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
+    Session.id(hc)
+
     val continueWithoutEnrolment =
-      action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
+      action(IdentifierRequest(request, Session.id(hc), internalId, AffinityGroup.Organisation, enrolments))
 
     enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment) {
       enrolment =>

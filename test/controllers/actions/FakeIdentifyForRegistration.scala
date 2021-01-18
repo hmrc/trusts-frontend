@@ -33,7 +33,7 @@ class FakeIdentifyForRegistration @Inject()(affinityGroup: AffinityGroup, config
   extends RegistrationIdentifierAction(parser, trustsAuth, config) {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
-    block(IdentifierRequest(request, "id", affinityGroup, enrolments))
+    block(IdentifierRequest(request, "sessionId", "id", affinityGroup, enrolments))
 
   override def composeAction[A](action: Action[A]): Action[A] = new FakeAffinityGroupIdentifierAction(action, trustsAuth, config)
 
