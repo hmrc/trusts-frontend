@@ -80,16 +80,31 @@ trait MatchingRoutes {
         }
       }
 
-      "the user does not have a UTR for the trust" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+      "the user does not have a UTR for the trust" when {
+        "4mld mode go to TaxLiabilityInCurrentTaxYearYesNo Controller" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
 
-            val answers = userAnswers
-              .set(TrustRegisteredOnlinePage, false).success.value
-              .set(TrustHaveAUTRPage, false).success.value
+              val answers = userAnswers
+                .set(TrustRegisteredOnlinePage, false).success.value
+                .set(TrustHaveAUTRPage, false).success.value
 
-            navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+              navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
+                .mustBe(controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+          }
+        }
+
+        "5mld mode go to ExpressTrustYesNo Controller" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+
+              val answers = userAnswers
+                .set(TrustRegisteredOnlinePage, false).success.value
+                .set(TrustHaveAUTRPage, false).success.value
+
+              navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                .mustBe(controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId))
+          }
         }
       }
     }

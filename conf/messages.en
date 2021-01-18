@@ -13,9 +13,9 @@ unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
 #timeout dialog
-timeout.title=Your application will time out soon
-timeout.message=We will reset your application if you do not respond in
-timeout.keep-alive-button=Continue application
+timeout.title= Your application will time out soon
+timeout.message= We will sign you out if you do not respond in
+timeout.keep-alive-button= Continue application
 
 error.browser.title.prefix = Error:
 error.boolean = Please give an answer
@@ -36,9 +36,10 @@ index.title = Trusts Registration Service
 index.heading = Trusts Registration Service
 index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
 
-session_expired.title = For your security, this service has been reset
-session_expired.heading = For your security, this service has been reset
-session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.
+session_expired.title = For your security, we signed you out
+session_expired.heading = For your security, we signed you out
+session_expired.guidance = This is because you have been inactive on the service for 15 minutes.
+session_expired.guidance.2 = You will need to sign in to continue registering the trust.
 
 site.back = Back
 site.delete = Remove
@@ -390,6 +391,11 @@ agentOverview.savedUntil = Saved until
 removeDraftYesNo.title = Are you sure you want to remove the saved registration?
 removeDraftYesNo.heading = Are you sure you want to remove {0}?
 removeDraftYesNo.error.required = Select yes if you want to remove the saved registration
+
+suitability.expressTrust.title = Are you registering an express trust?
+suitability.expressTrust.heading = Are you registering an express trust?
+suitability.expressTrust.hint = An express trust is a trust created deliberately by a settlor, usually in the form of a document such as a written deed of trust. Express trusts can be created by will or during lifetime, also known as inter-vivos.
+suitability.expressTrust.error.required = Select yes if you are registering an express trust
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?

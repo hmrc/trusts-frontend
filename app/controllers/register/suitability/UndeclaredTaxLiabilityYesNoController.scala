@@ -18,10 +18,11 @@ package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
 import forms.YesNoFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.register.suitability.UndeclaredTaxLiabilityYesNoPage
+import pages.register.suitability.{TrustTaxableYesNoPage, UndeclaredTaxLiabilityYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -66,7 +67,8 @@ class UndeclaredTaxLiabilityYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UndeclaredTaxLiabilityYesNoPage, value))
+            answers <- Future.fromTry(request.userAnswers.set(UndeclaredTaxLiabilityYesNoPage, value))
+            updatedAnswers <- Future.fromTry(answers.set(TrustTaxableYesNoPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, mode, draftId)(updatedAnswers))
         }
