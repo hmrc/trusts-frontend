@@ -20,11 +20,17 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.register.suitability.UndeclaredTaxLiabilityYesNoPage
 import play.api.data.Form
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import views.html.register.suitability.UndeclaredTaxLiabilityYesNoView
+
+import scala.concurrent.Future
 
 class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
@@ -75,7 +81,14 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockFeatureFlagService = mock[FeatureFlagService]
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(
+          bind[FeatureFlagService].toInstance(mockFeatureFlagService)
+        ).build()
+
+      when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request = FakeRequest(POST, undeclaredTaxLiabilityYesNoRoute)
         .withFormUrlEncodedBody(("value", "true"))

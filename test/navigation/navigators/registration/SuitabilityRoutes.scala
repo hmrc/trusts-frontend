@@ -24,56 +24,154 @@ import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.suitability.{TaxLiabilityInCurrentTaxYearYesNoPage, UndeclaredTaxLiabilityYesNoPage}
+import pages.register.suitability.{ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage, UndeclaredTaxLiabilityYesNoPage}
 
 trait SuitabilityRoutes {
 
   self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
-  def suitabilityRoutes()(implicit navigator : Navigator): Unit = {
+  def suitabilityRoutes()(implicit navigator: Navigator): Unit = {
 
-    "Any tax liability in current tax year?" when {
-      "-> YES -> Before you continue" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
+    "when in 4mld mode" must {
+      "Any tax liability in current tax year?" when {
+        "-> YES -> Before you continue" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
 
-            navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+          }
+        }
+        "-> NO -> Any undeclared tax liability?" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, false).success.value
+
+              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, fakeDraftId))
+          }
         }
       }
-      "-> NO -> Any undeclared tax liability?" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, false).success.value
 
-            navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, fakeDraftId))
+      "Any undeclared tax liability?" when {
+        "-> YES -> Before you continue" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, true).success.value
+
+              navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+          }
+        }
+        "-> NO -> You do not need to register" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, false).success.value
+
+              navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
+                .mustBe(routes.NoNeedToRegisterController.onPageLoad(fakeDraftId))
+          }
         }
       }
     }
+    "when in 5mld mode" must {
 
-    "Any undeclared tax liability?" when {
-      "-> YES -> Before you continue" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, true).success.value
+      "ExpressTrust Page" when {
+        "-> YES -> Any tax liability in current tax year?" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(ExpressTrustYesNoPage, true).success.value
 
-            navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+              navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                .mustBe(routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+          }
+        }
+
+        "-> No -> Any tax liability in current tax year?" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(ExpressTrustYesNoPage, false).success.value
+
+              navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                .mustBe(routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+          }
         }
       }
-      "-> NO -> You do not need to register" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, false).success.value
 
-            navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
-              .mustBe(routes.NoNeedToRegisterController.onPageLoad(fakeDraftId))
+      "Any tax liability in current tax year?" when {
+        "-> YES -> Before you continue" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
+
+              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+          }
+        }
+        "-> NO -> Any undeclared tax liability?" in {
+          forAll(arbitrary[UserAnswers]) {
+            userAnswers =>
+              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, false).success.value
+
+              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, fakeDraftId))
+          }
         }
       }
 
+      "Any undeclared tax liability?" when {
+        "not an Express Trust" must {
+          "-> YES -> Before you continue" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+                val answers = userAnswers
+                  .set(ExpressTrustYesNoPage, false).success.value
+                  .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
+
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                  .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+            }
+          }
+          "-> NO -> You do not need to register" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+                val answers = userAnswers
+                  .set(ExpressTrustYesNoPage, false).success.value
+                  .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
+
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                  .mustBe(routes.NoNeedToRegisterController.onPageLoad(fakeDraftId))
+            }
+          }
+        }
+
+        "an Express Trust" must {
+          "-> YES -> Before you continue" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+                val answers = userAnswers
+                  .set(ExpressTrustYesNoPage, true).success.value
+                  .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
+
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                  .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+            }
+          }
+          "-> No -> Before you continue" in {
+            forAll(arbitrary[UserAnswers]) {
+              userAnswers =>
+                val answers = userAnswers
+                  .set(ExpressTrustYesNoPage, true).success.value
+                  .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
+
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+                  .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+            }
+          }
+        }
+
+      }
     }
   }
-
 }
