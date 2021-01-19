@@ -48,8 +48,8 @@ class LogoutController @Inject()(
         "userGroup" -> request.affinityGroup.toString
       )
 
-      val auditWithAgent = request.agentARN.fold(auditData){ arn =>
-        auditData ++ Map("agentReferenceNumber" -> arn)
+      val auditWithAgent = request.agentARN.fold(auditData){ agentARN =>
+        auditData ++ Map("agentReferenceNumber" -> agentARN)
       }
 
       auditConnector.sendExplicitAudit(
