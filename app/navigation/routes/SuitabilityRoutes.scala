@@ -41,13 +41,18 @@ object SuitabilityRoutes extends Routes {
         ua,
         UndeclaredTaxLiabilityYesNoPage,
         routes.BeforeYouContinueController.onPageLoad(draftId),
-        nonTaxableRoute(draftId, is5mldEnabled)
+        nonTaxableRoute(draftId, is5mldEnabled, ua)
       )
   }
 
-  private def nonTaxableRoute(draftId: String, fiveMld: Boolean): Call = {
+  private def nonTaxableRoute(draftId: String, fiveMld: Boolean, answers: UserAnswers): Call = {
     if (fiveMld) {
-      routes.NoNeedToRegisterController.onPageLoad(draftId) //TODO: Change to start of NonTaxable journey when developed
+      yesNoNav(
+        answers,
+        ExpressTrustYesNoPage,
+        routes.BeforeYouContinueController.onPageLoad(draftId), //TODO: Change to start of NonTaxable journey when developed
+        routes.NoNeedToRegisterController.onPageLoad(draftId)
+      )
     } else {
       routes.NoNeedToRegisterController.onPageLoad(draftId)
     }
