@@ -26,7 +26,9 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 object SuitabilityRoutes extends Routes {
 
-  def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+    case ExpressTrustYesNoPage => _ => _ =>
+      routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
     case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
       yesNoNav(
         ua,
@@ -39,8 +41,21 @@ object SuitabilityRoutes extends Routes {
         ua,
         UndeclaredTaxLiabilityYesNoPage,
         routes.BeforeYouContinueController.onPageLoad(draftId),
+        nonTaxableRoute(draftId, is5mldEnabled, ua)
+      )
+  }
+
+  private def nonTaxableRoute(draftId: String, fiveMld: Boolean, answers: UserAnswers): Call = {
+    if (fiveMld) {
+      yesNoNav(
+        answers,
+        ExpressTrustYesNoPage,
+        routes.BeforeYouContinueController.onPageLoad(draftId), //TODO: Change to start of NonTaxable journey when developed
         routes.NoNeedToRegisterController.onPageLoad(draftId)
       )
+    } else {
+      routes.NoNeedToRegisterController.onPageLoad(draftId)
+    }
   }
 }
 

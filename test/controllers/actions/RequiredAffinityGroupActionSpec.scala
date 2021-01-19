@@ -32,10 +32,8 @@ import scala.concurrent.Future
 
     class Harness[T]()
       extends RequiredAgentAffinityGroupAction() {
-
       def callFilter[A](request: IdentifierRequest[A]): Future[Option[Result]] = filter(request)
     }
-
 
     "Required Affinity Group Action" when {
 
@@ -44,7 +42,7 @@ import scala.concurrent.Future
         "continue with returning None" in {
 
           val action = new Harness()
-          val futureResult = action.callFilter(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callFilter(IdentifierRequest(fakeRequest,  "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result mustBe None
@@ -58,7 +56,7 @@ import scala.concurrent.Future
         "redirect to Unauthorised page" in {
 
           val action = new Harness()
-          val futureResult = action.callFilter(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callFilter(IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
           whenReady(futureResult) { result =>
             result.value.header.headers(HeaderNames.LOCATION) mustBe UnauthorisedController.onPageLoad().url

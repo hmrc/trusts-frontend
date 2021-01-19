@@ -17,38 +17,35 @@
 package controllers.register.suitability
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
 import forms.YesNoFormProvider
 import models.NormalMode
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import pages.register.suitability.UndeclaredTaxLiabilityYesNoPage
+import org.scalatestplus.mockito.MockitoSugar
+import pages.register.suitability.ExpressTrustYesNoPage
 import play.api.data.Form
-import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.FeatureFlagService
-import views.html.register.suitability.UndeclaredTaxLiabilityYesNoView
+import views.html.register.suitability.ExpressTrustYesNoView
 
-import scala.concurrent.Future
+class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
-class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
+  val formProvider = new YesNoFormProvider()
+  val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
+  val index: Int = 0
+  val businessName = "Test"
 
-  private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("suitability.undeclaredTaxLiability")
+  lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId).url
 
-  private lazy val undeclaredTaxLiabilityYesNoRoute: String = routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, fakeDraftId).url
-
-  "UndeclaredTaxLiabilityYesNo Controller" must {
+  "CountryOfResidenceYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, undeclaredTaxLiabilityYesNoRoute)
+      val request = FakeRequest(GET, expressTrustYesNo)
 
       val result = route(application, request).value
 
-      val view = application.injector.instanceOf[UndeclaredTaxLiabilityYesNoView]
+      val view = application.injector.instanceOf[ExpressTrustYesNoView]
 
       status(result) mustEqual OK
 
@@ -60,14 +57,14 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers
-        .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
+      val userAnswers = emptyUserAnswers.set(ExpressTrustYesNoPage, true).success.value
+
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val request = FakeRequest(GET, undeclaredTaxLiabilityYesNoRoute)
+      val request = FakeRequest(GET, expressTrustYesNo)
 
-      val view = application.injector.instanceOf[UndeclaredTaxLiabilityYesNoView]
+      val view = application.injector.instanceOf[ExpressTrustYesNoView]
 
       val result = route(application, request).value
 
@@ -81,17 +78,11 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockFeatureFlagService = mock[FeatureFlagService]
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(
-          bind[FeatureFlagService].toInstance(mockFeatureFlagService)
-        ).build()
-
-      when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
-
-      val request = FakeRequest(POST, undeclaredTaxLiabilityYesNoRoute)
-        .withFormUrlEncodedBody(("value", "true"))
+      val request =
+        FakeRequest(POST, expressTrustYesNo)
+          .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
@@ -106,12 +97,13 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(POST, undeclaredTaxLiabilityYesNoRoute)
-        .withFormUrlEncodedBody(("value", ""))
+      val request =
+        FakeRequest(POST, expressTrustYesNo)
+          .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
-      val view = application.injector.instanceOf[UndeclaredTaxLiabilityYesNoView]
+      val view = application.injector.instanceOf[ExpressTrustYesNoView]
 
       val result = route(application, request).value
 
@@ -127,13 +119,13 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, undeclaredTaxLiabilityYesNoRoute)
+      val request = FakeRequest(GET, expressTrustYesNo)
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
@@ -143,16 +135,17 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       val request =
-        FakeRequest(POST, undeclaredTaxLiabilityYesNoRoute)
+        FakeRequest(POST, expressTrustYesNo)
           .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
 
       application.stop()
     }
   }
 }
+

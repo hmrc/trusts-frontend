@@ -18,18 +18,19 @@ package services
 
 import com.google.inject.ImplementedBy
 import connector.TrustConnector
-import javax.inject.Inject
 import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
+import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.Logging
-import play.api.libs.json.Json
+import play.api.libs.json._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Session
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultSubmissionService @Inject()(
@@ -39,7 +40,10 @@ class DefaultSubmissionService @Inject()(
                                           registrationsRepository: RegistrationsRepository
                                         ) extends SubmissionService with Logging {
 
-  override def submit(userAnswers: UserAnswers)
+  private def putNewValue(path: JsPath, value: JsValue): Reads[JsObject] =
+    __.json.update(path.json.put(value))
+
+  override def submit(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
 
     logger.info(s"[submit][Session ID: ${request.sessionId}] submitting registration")
@@ -51,7 +55,8 @@ class DefaultSubmissionService @Inject()(
             registrationMapper.build(userAnswers, correspondenceAddress, trustName).flatMap {
               case Some(registration) =>
                 registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)).flatMap {
-                  fullRegistrationJson =>
+                  registrationJson =>
+                    val fullRegistrationJson = add5mldData(registrationJson, userAnswers, fiveMldEnabled)
                     trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
                       case response@RegistrationTRNResponse(_) =>
                         logger.info(s"[submit][Session ID: ${Session.id(hc)}] Registration successfully submitted.")
@@ -90,12 +95,28 @@ class DefaultSubmissionService @Inject()(
         UnableToRegister()
     }
   }
+
+  private def add5mldData(registrationJson: JsValue, userAnswers: UserAnswers, fiveMldEnabled: Boolean): JsValue = {
+    if (fiveMldEnabled) {
+      registrationJson.transform(
+        putNewValue((__ \ 'trust \ 'details \ 'expressTrust), JsBoolean(userAnswers.get(ExpressTrustYesNoPage).get)) andThen
+        putNewValue((__ \ 'trust \ 'details \ 'trustTaxable), JsBoolean(userAnswers.get(TrustTaxableYesNoPage).get))
+      ).fold(
+        _ => {
+          logger.error("[submit] Could not add expressTrust data")
+          registrationJson
+        },
+        value => value)
+    } else {
+      registrationJson
+    }
+  }
 }
 
   @ImplementedBy(classOf[DefaultSubmissionService])
   trait SubmissionService {
 
-    def submit(userAnswers: UserAnswers)
+    def submit(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
               (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
 
   }
