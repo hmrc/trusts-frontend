@@ -17,20 +17,24 @@
 package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
+
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
+import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.register.suitability.BeforeYouContinueView
+import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
 
 class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              standardActionSets: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: BeforeYouContinueView,
+                                             nonTaxableView: BeforeYouContinueNonTaxableView,
+                                             nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
                                              navigator: TaskListNavigator
                                            ) extends FrontendBaseController with I18nSupport {
 
@@ -40,7 +44,17 @@ class BeforeYouContinueController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      Ok(view(draftId))
+      request.userAnswers.get(TrustTaxableYesNoPage).map { trustIsTaxable =>
+        val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
+
+        (trustIsTaxable, isAgent) match {
+          case (true, _)      => Ok(view(draftId))
+          case (false, false) => Ok(nonTaxableView(draftId))
+          case (false, true)  => Ok(nonTaxableAgentView(draftId))
+        }
+      }.getOrElse{
+        Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
+      }
   }
 
   def onSubmit(draftId : String): Action[AnyContent] = actions(draftId) {
