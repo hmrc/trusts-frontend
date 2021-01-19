@@ -41,9 +41,21 @@ class LogoutController @Inject()(
 
       implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-      val auditData = Map("feedbackId" -> Session.id(hc), "customMetric" -> "value")
+      val auditData = Map(
+        "sessionId" -> Session.id(hc),
+        "event" -> "signout",
+        "service" -> "trusts-frontend",
+        "userGroup" -> request.affinityGroup.toString
+      )
 
-      auditConnector.sendExplicitAudit("service-name", auditData)
+      val auditWithAgent = request.agentARN.fold(auditData){ arn =>
+        auditData ++ Map("agentReferenceNumber" -> arn)
+      }
+
+      auditConnector.sendExplicitAudit(
+        "trusts",
+        auditWithAgent
+      )
 
       Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
   }
