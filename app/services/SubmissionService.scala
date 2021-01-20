@@ -21,7 +21,7 @@ import connector.TrustConnector
 import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
-import models.core.http.{RegistrationTRNResponse, TrustResponse}
+import models.core.http.{AddressType, Registration, RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.Logging
@@ -40,85 +40,117 @@ class DefaultSubmissionService @Inject()(
                                           registrationsRepository: RegistrationsRepository
                                         ) extends SubmissionService with Logging {
 
-  private def putNewValue(path: JsPath, value: JsValue): Reads[JsObject] =
-    __.json.update(path.json.put(value))
-
   override def submit(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
-
     logger.info(s"[submit][Session ID: ${request.sessionId}] submitting registration")
+    getCorrespondenceAddress(userAnswers, fiveMldEnabled)
+  }
 
+  private def getCorrespondenceAddress(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
+                                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
     registrationsRepository.getCorrespondenceAddress(userAnswers.draftId).flatMap {
       correspondenceAddress =>
-        registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
-          trustName =>
-            registrationMapper.build(userAnswers, correspondenceAddress, trustName).flatMap {
-              case Some(registration) =>
-                registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)).flatMap {
-                  registrationJson =>
-                    val fullRegistrationJson = add5mldData(registrationJson, userAnswers, fiveMldEnabled)
-                    trustConnector.register(fullRegistrationJson, userAnswers.draftId) map {
-                      case response@RegistrationTRNResponse(_) =>
-                        logger.info(s"[submit][Session ID: ${Session.id(hc)}] Registration successfully submitted.")
-                        auditService.auditRegistrationSubmitted(fullRegistrationJson, userAnswers.draftId, response)
-                        response
-                      case AlreadyRegistered =>
-                        logger.warn(s"[submit][Session ID: ${Session.id(hc)}] Registration already submitted.")
-                        auditService.auditRegistrationAlreadySubmitted(fullRegistrationJson, userAnswers.draftId)
-                        AlreadyRegistered
-                      case other =>
-                        logger.warn(s"[submit][Session ID: ${Session.id(hc)}] Registration submission failed.")
-                        auditService.auditRegistrationSubmissionFailed(fullRegistrationJson, userAnswers.draftId)
-                        other
-                    }
-                }.recover {
-                  case e =>
-                    logger.error(s"[submit][Session ID: ${Session.id(hc)}] unable to register trust for this session due to exception: ${e.getMessage}")
-                    auditService.auditRegistrationPreparationFailed(userAnswers, "Error adding draft registration sections.")
-                    UnableToRegister()
-                }
-              case _ =>
-                logger.warn(s"[submit][Session ID: ${Session.id(hc)}] Unable to generate registration to submit.")
-                auditService.auditRegistrationPreparationFailed(userAnswers, "Error mapping UserAnswers to Registration.")
-                Future.failed(UnableToRegister())
-            }
-        }.recover {
-          case e =>
-            logger.error(s"[submit][Session ID: ${Session.id(hc)}] unable to register trust for this session due to exception: ${e.getMessage}")
-            auditService.auditRegistrationPreparationFailed(userAnswers, "Error retrieving trust name transformation.")
-            UnableToRegister()
-        }
+        getTrustName(userAnswers, fiveMldEnabled, correspondenceAddress)
     }.recover {
       case e =>
-        logger.error(s"[submit][Session ID: ${Session.id(hc)}] unable to register trust for this session due to exception: ${e.getMessage}")
+        logger.error(s"[getCorrespondenceAddress][Session ID: ${Session.id(hc)}] Unable to get correspondence address: ${e.getMessage}")
         auditService.auditRegistrationPreparationFailed(userAnswers, "Error retrieving correspondence address transformation.")
         UnableToRegister()
     }
   }
 
+  private def getTrustName(userAnswers: UserAnswers, fiveMldEnabled: Boolean, correspondenceAddress: AddressType)
+                          (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+    registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
+      trustName =>
+        buildRegistration(userAnswers, fiveMldEnabled, correspondenceAddress, trustName)
+    }.recover {
+      case e =>
+        logger.error(s"[getTrustName][Session ID: ${Session.id(hc)}] Unable to get trust name: ${e.getMessage}")
+        auditService.auditRegistrationPreparationFailed(userAnswers, "Error retrieving trust name transformation.")
+        UnableToRegister()
+    }
+  }
+
+  private def buildRegistration(userAnswers: UserAnswers, fiveMldEnabled: Boolean, correspondenceAddress: AddressType, trustName: String)
+                               (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+    registrationMapper.build(userAnswers, correspondenceAddress, trustName).flatMap {
+      case Some(registration) =>
+        addDraftRegistrationSections(userAnswers, fiveMldEnabled, registration)
+      case _ =>
+        logger.error(s"[buildRegistration][Session ID: ${Session.id(hc)}] Unable to generate registration to submit.")
+        auditService.auditRegistrationPreparationFailed(userAnswers, "Error mapping UserAnswers to Registration.")
+        Future.failed(UnableToRegister())
+    }
+  }
+
+  private def addDraftRegistrationSections(userAnswers: UserAnswers, fiveMldEnabled: Boolean, registration: Registration)
+                                          (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+    registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)).flatMap {
+      registrationJson =>
+        val fullRegistrationJson = add5mldData(registrationJson, userAnswers, fiveMldEnabled)
+        register(userAnswers.draftId, fullRegistrationJson)
+    }.recover {
+      case e =>
+        logger.error(s"[addDraftRegistrationSections][Session ID: ${Session.id(hc)}] Unable to add draft registration sections: ${e.getMessage}")
+        auditService.auditRegistrationPreparationFailed(userAnswers, "Error adding draft registration sections.")
+        UnableToRegister()
+    }
+  }
+
+  private def register(draftId: String, fullRegistrationJson: JsValue)
+                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+    trustConnector.register(fullRegistrationJson, draftId) map {
+      case response@RegistrationTRNResponse(_) =>
+        logger.info(s"[register][Session ID: ${Session.id(hc)}] Registration successfully submitted.")
+        auditService.auditRegistrationSubmitted(fullRegistrationJson, draftId, response)
+        response
+      case AlreadyRegistered =>
+        logger.warn(s"[register][Session ID: ${Session.id(hc)}] Registration already submitted.")
+        auditService.auditRegistrationAlreadySubmitted(fullRegistrationJson, draftId)
+        AlreadyRegistered
+      case other =>
+        logger.warn(s"[register][Session ID: ${Session.id(hc)}] Registration submission failed.")
+        auditService.auditRegistrationSubmissionFailed(fullRegistrationJson, draftId)
+        other
+    }
+  }
+
   private def add5mldData(registrationJson: JsValue, userAnswers: UserAnswers, fiveMldEnabled: Boolean): JsValue = {
     if (fiveMldEnabled) {
+
+      def putNewValue[T](path: JsPath, value: Option[T])(implicit wts: Writes[T]): Reads[JsObject] = {
+        value match {
+          case Some(v) =>
+            __.json.update(path.json.put(Json.toJson(v)))
+          case _ =>
+            logger.warn(s"[add5mdData][putNewValue] value not found at $path")
+            __.json.pick[JsObject]
+        }
+      }
+
       registrationJson.transform(
-        putNewValue((__ \ 'trust \ 'details \ 'expressTrust), JsBoolean(userAnswers.get(ExpressTrustYesNoPage).get)) andThen
-        putNewValue((__ \ 'trust \ 'details \ 'trustTaxable), JsBoolean(userAnswers.get(TrustTaxableYesNoPage).get))
+        putNewValue(__ \ 'trust \ 'details \ 'expressTrust, userAnswers.get(ExpressTrustYesNoPage)) andThen
+          putNewValue(__ \ 'trust \ 'details \ 'trustTaxable, userAnswers.get(TrustTaxableYesNoPage))
       ).fold(
         _ => {
-          logger.error("[submit] Could not add expressTrust data")
+          logger.error("[add5mldData] Could not add expressTrust and trustTaxable data to registration JSON")
           registrationJson
         },
-        value => value)
+        value => value
+      )
     } else {
       registrationJson
     }
   }
 }
 
-  @ImplementedBy(classOf[DefaultSubmissionService])
-  trait SubmissionService {
+@ImplementedBy(classOf[DefaultSubmissionService])
+trait SubmissionService {
 
-    def submit(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
-              (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
+  def submit(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
+            (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
 
-  }
+}
 
 
