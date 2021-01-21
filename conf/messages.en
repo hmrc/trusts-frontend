@@ -66,6 +66,7 @@ site.confirm-send = Confirm and send
 site.address = Address
 site.utr = Unique Taxpayer Reference
 site.sign_out = Sign out
+site.sign_in = Sign in
 site.print-or-save = Print or save this page
 
 featureNotAvailable.title = This part of the online service is not available yet
