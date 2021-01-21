@@ -191,3 +191,10 @@ charity.nonTaxable.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad bres
 settlorBusiness.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 settlorBusiness.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 settlorBusiness.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
+#5mld.countryOfResidenceYesNo.checkYourAnswersLabel =
+#5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel =
+#5mld.countryOfResidence.checkYourAnswersLabel =
+5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad cenedligrwydd {0}?
+5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oedd gan {0} genedligrwydd y DU?
+5mld.countryOfNationality.checkYourAnswersLabel = Beth oedd gwlad cenedligrwydd {0}?
