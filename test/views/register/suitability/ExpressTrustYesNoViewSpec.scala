@@ -40,7 +40,7 @@ class ExpressTrustYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, None, prefix, Some(prefix))
+    behave like yesNoPage(form, applyView, None, prefix)
 
     behave like pageWithASubmitButton(applyView(form))
   }

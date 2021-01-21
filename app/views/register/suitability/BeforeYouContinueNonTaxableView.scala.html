@@ -1,0 +1,50 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+@import controllers.register.suitability.routes._
+@import models.Mode
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF,
+    config: FrontendAppConfig
+)
+
+@(draftId: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("suitability.beforeYouContinue.nonTaxable.title")
+) {
+
+    @formHelper(action = BeforeYouContinueController.onSubmit(draftId), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.heading("suitability.beforeYouContinue.nonTaxable.heading")
+
+        <p>@messages("suitability.beforeYouContinue.nonTaxable.p1")</p>
+
+        <p>@messages("suitability.beforeYouContinue.nonTaxable.p2")</p>
+
+        <ul>
+            <li><a href="@config.whoShouldRegisterUrl" target="_blank">@messages("suitability.beforeYouContinue.nonTaxable.link1")</a></li>
+            <li><a href="@config.trustsAndTaxesUrl" target="_blank">@messages("suitability.beforeYouContinue.nonTaxable.link2")</a></li>
+        </ul>
+
+        @components.submit_button(Some("suitability.beforeYouContinue.nonTaxable.continue"))
+    }
+}

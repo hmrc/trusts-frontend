@@ -394,8 +394,11 @@ removeDraftYesNo.error.required = Select yes if you want to remove the saved reg
 
 suitability.expressTrust.title = Are you registering an express trust?
 suitability.expressTrust.heading = Are you registering an express trust?
-suitability.expressTrust.hint = An express trust is a trust created deliberately by a settlor, usually in the form of a document such as a written deed of trust. Express trusts can be created by will or during lifetime, also known as inter-vivos.
-suitability.expressTrust.error.required = Select yes if you are registering an express trust
+suitability.expressTrust.p1 = An express trust is a trust created by a settlor, usually in the form of a document like a written deed of trust.
+suitability.expressTrust.p2 = Express trusts can be created:
+suitability.expressTrust.bullet1 = by someone’s will after they have died
+suitability.expressTrust.bullet2 = during someone’s lifetime, which is known as inter-vivos
+suitability.expressTrust.error.required = Select yes or no to tell us if you are registering an express trust.
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?
@@ -410,6 +413,22 @@ suitability.beforeYouContinue.p2 = You can find out more:
 suitability.beforeYouContinue.link1 = Who should register (opens in a new window or tab)
 suitability.beforeYouContinue.link2 = Trusts and taxes (opens in a new window or tab)
 suitability.beforeYouContinue.continue = Continue to register the trust
+
+suitability.beforeYouContinue.nonTaxable.title = Before you continue
+suitability.beforeYouContinue.nonTaxable.heading = Before you continue
+suitability.beforeYouContinue.nonTaxable.p1 = After you have registered the trust, you will get a Unique Reference Number (URN) for the trust the next time you log in to the service.
+suitability.beforeYouContinue.nonTaxable.p2 = You can find out more about:
+suitability.beforeYouContinue.nonTaxable.link1 = Who should register the trust (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.link2 = Trusts and taxes (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.continue = Continue to register the trust
+
+suitability.beforeYouContinue.nonTaxable.agent.title = Before you continue
+suitability.beforeYouContinue.nonTaxable.agent.heading = Before you continue
+suitability.beforeYouContinue.nonTaxable.agent.p1 = After you have registered the trust, a letter containing the Unique Reference Number (URN) for the trust will be sent to the appointed lead trustee.
+suitability.beforeYouContinue.nonTaxable.agent.p2 = You can find out more about:
+suitability.beforeYouContinue.nonTaxable.agent.link1 = Who should register the trust (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.agent.link2 = Trusts and taxes (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.agent.continue = Continue to register the trust
 
 suitability.undeclaredTaxLiability.title = Does the trust have any undeclared tax liability since 10 July 2017?
 suitability.undeclaredTaxLiability.heading = Does the trust have any undeclared tax liability since 10 July 2017?
@@ -450,6 +469,13 @@ settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
 setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
 setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
+
+5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Did {0} have UK nationality?
+5mld.countryOfNationality.checkYourAnswersLabel = What was {0}’s country of nationality?
+5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s last known country of residence?
+5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Was {0} a UK resident?
+5mld.countryOfResidence.checkYourAnswersLabel = What was {0}’s country of residence?
 
 agentName.title = What is the name of the agency registering this trust?
 agentName.heading = What is the name of the agency registering this trust?

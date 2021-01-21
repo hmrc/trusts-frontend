@@ -24,6 +24,15 @@
 
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
+    @extraHtmlContent = {
+        <p>@messages("suitability.expressTrust.p1")</p>
+        <p>@messages("suitability.expressTrust.p2")</p>
+        <ul class="trust-list--bullet">
+            <li class="inside">@messages("suitability.expressTrust.bullet1")</li>
+            <li class="inside">@messages("suitability.expressTrust.bullet2")</li>
+        </ul>
+    }
+
 @main_template(
     title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}"
 ) {
@@ -39,7 +48,7 @@
             label = messages("suitability.expressTrust.heading"),
             legendClass = Some("heading-large"),
             legendAsHeading = true,
-            hint = Some(messages("suitability.expressTrust.hint"))
+            extraHtmlContent = Some(extraHtmlContent)
         )
 
         @components.submit_button()

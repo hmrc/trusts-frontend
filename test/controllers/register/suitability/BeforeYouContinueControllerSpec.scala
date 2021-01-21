@@ -20,11 +20,13 @@ import base.RegistrationSpecBase
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
+import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.auth.core.AffinityGroup._
-import views.html.register.suitability.BeforeYouContinueView
+import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
 
 class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
 
@@ -34,15 +36,57 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
 
   "BeforeYouContinue Controller" must {
 
-    "return OK and the correct view for a GET" in {
+    "return OK and the correct view for a taxable journey GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       val request = FakeRequest(GET, beforeYouContinueRoute)
 
       val result = route(application, request).value
 
       val view = application.injector.instanceOf[BeforeYouContinueView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(fakeDraftId)(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a non taxable journey GET" in {
+
+      val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(GET, beforeYouContinueRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BeforeYouContinueNonTaxableView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view(fakeDraftId)(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a non taxable agent journey GET" in {
+
+      val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
+
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent).build()
+
+      val request = FakeRequest(GET, beforeYouContinueRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
 
       status(result) mustEqual OK
 
