@@ -470,6 +470,13 @@ setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the set
 setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 
+5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Did {0} have UK nationality?
+5mld.countryOfNationality.checkYourAnswersLabel = What was {0}’s country of nationality?
+5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s last known country of residence?
+5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Was {0} a UK resident?
+5mld.countryOfResidence.checkYourAnswersLabel = What was {0}’s country of residence?
+
 agentName.title = What is the name of the agency registering this trust?
 agentName.heading = What is the name of the agency registering this trust?
 agentName.checkYourAnswersLabel = What is the name of the agency registering this trust?
