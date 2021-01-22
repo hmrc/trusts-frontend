@@ -24,15 +24,6 @@
 
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
-    @extraHtmlContent = {
-        <p>@messages("suitability.expressTrust.p1")</p>
-        <p>@messages("suitability.expressTrust.p2")</p>
-        <ul class="trust-list--bullet">
-            <li class="inside">@messages("suitability.expressTrust.bullet1")</li>
-            <li class="inside">@messages("suitability.expressTrust.bullet2")</li>
-        </ul>
-    }
-
 @main_template(
     title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}"
 ) {
@@ -43,12 +34,23 @@
 
         @components.error_summary(form.errors)
 
+        <h1 class="heading-large">@messages("suitability.expressTrust.heading")</h1>
+
+        <p>@messages("suitability.expressTrust.p1")</p>
+
+        <p>@messages("suitability.expressTrust.p2")</p>
+
+        <ul class="trust-list--bullet">
+            <li class="inside">@messages("suitability.expressTrust.bullet1")</li>
+            <li class="inside">@messages("suitability.expressTrust.bullet2")</li>
+        </ul>
+
         @components.input_yes_no(
             field = form("value"),
             label = messages("suitability.expressTrust.heading"),
-            legendClass = Some("heading-large"),
-            legendAsHeading = true,
-            extraHtmlContent = Some(extraHtmlContent)
+            legendClass = Some("visually-hidden"),
+            legendAsHeading = false,
+            hint = None
         )
 
         @components.submit_button()
