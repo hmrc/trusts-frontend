@@ -22,7 +22,6 @@
         secondaryLabel: Option[String] = None,
         inputClass: Option[String] = None,
         hint: Option[String] = None,
-        extraHtmlContent: Option[Html] = None,
         yesAssoc: Option[String] = None,
         noAssoc: Option[String] = None,
         legendClass: Option[String] = None,
@@ -39,12 +38,15 @@
         }
     >
 
-        <legend id="@{field.id}-legend">
-            @if(legendAsHeading){<h1 id="@{field.id}-id" class="legend-as-heading heading-large">}
+        @if(legendAsHeading){
+            <legend id="@{field.id}-legend">
+                <h1 class="legend-as-heading @if(legendClass.nonEmpty){@legendClass}else{heading-large}">@label</h1>
+            </legend>
+        } else {
+            <legend id="@{field.id}-legend" @if(legendClass.nonEmpty){class="@legendClass" }>
             @label
-            @if(legendAsHeading){</h1>}
-        </legend>
-        @extraHtmlContent
+            </legend>
+        }
         @form_hint(hint = hint, link = link)
         @field.errors.map { error =>
         <span class="error-message" id="error-message-@{field.id}-input">
