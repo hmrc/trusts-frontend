@@ -843,9 +843,9 @@ charity.addressInTheUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK
 charity.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 charity.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
 
-charity.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
-charity.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
-charity.nonTaxable.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+charity.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+charity.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+charity.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
 trustBeneficiaryName.checkYourAnswersLabel = What is the name of the trust?
 trustBeneficiaryDiscretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
@@ -856,9 +856,9 @@ trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 trustBeneficiary.checkDetails.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
 
-trust.nonTaxable.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
-trust.nonTaxable.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
-trust.nonTaxable.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+trust.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+trust.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+trust.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
 companyBeneficiary.name.checkYourAnswersLabel = What is the company’s name?
 companyBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
