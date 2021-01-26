@@ -18,13 +18,45 @@ package controllers.register
 
 import com.google.inject.{Inject, Singleton}
 import config.FrontendAppConfig
+import controllers.actions.register.RegistrationIdentifierAction
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.Session
+
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class LogoutController @Inject()(appConfig: FrontendAppConfig, val controllerComponents: MessagesControllerComponents) extends FrontendBaseController {
+class LogoutController @Inject()(
+                                  appConfig: FrontendAppConfig,
+                                  auditConnector: AuditConnector,
+                                  identify: RegistrationIdentifierAction,
+                                  val controllerComponents: MessagesControllerComponents)
+                                (implicit val ec: ExecutionContext) extends FrontendBaseController {
 
-  def logout: Action[AnyContent] = Action {
-      Redirect(appConfig.logoutUrl).withNewSession
+  def logout: Action[AnyContent] = identify {
+    request =>
+
+        implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+        val auditData = Map(
+          "sessionId" -> Session.id(hc),
+          "event" -> "signout",
+          "service" -> "trusts-frontend",
+          "userGroup" -> request.affinityGroup.toString
+        )
+
+        val auditWithAgent = request.agentARN.fold(auditData){ arn =>
+          auditData ++ Map("agentReferenceNumber" -> arn)
+        }
+
+        auditConnector.sendExplicitAudit(
+          "trusts",
+          auditWithAgent
+        )
+
+        Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
   }
 }

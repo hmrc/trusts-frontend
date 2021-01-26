@@ -26,7 +26,6 @@ import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import viewmodels.DraftRegistration
 import views.html.register.agents.RemoveDraftYesNoView
 
 import scala.concurrent.Future
@@ -39,7 +38,6 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
   private lazy val agentOverviewRoute: String = routes.AgentOverviewController.onPageLoad().url
 
   private val clientReferenceNumber: String = "crn"
-  private val savedUntil: String = "3 February 1996"
 
   "RemoveDraftYesNo Controller" must {
 
