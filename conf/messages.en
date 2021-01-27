@@ -877,6 +877,10 @@ employmentRelatedBeneficiary.description.checkYourAnswersLabel = What is the des
 employmentRelatedBeneficiary.numberOfBeneficiaries.checkYourAnswersLabel = What is the approximate number of beneficiaries held in the trust?
 employmentRelatedBeneficiary.checkDetails.heading = Check employment related beneficiary details
 
+employmentRelatedBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+employmentRelatedBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+employmentRelatedBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 otherBeneficiary.description.checkYourAnswersLabel = What is the description of the other beneficiary?
 otherBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 otherBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
