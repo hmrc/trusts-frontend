@@ -188,6 +188,10 @@ charity.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod b
 charity.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 charity.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
 
+employmentRelatedBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+employmentRelatedBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+employmentRelatedBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
 settlorBusiness.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 settlorBusiness.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 settlorBusiness.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
