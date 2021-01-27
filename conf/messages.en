@@ -153,101 +153,22 @@ createAgentServicesAccount.paragraph2 = to find out what you will need to create
 createAgentServicesAccount.paragraph3 = Once you have created your agent services account, you can carry on with your trust registration.
 createAgentServicesAccount.cta = Create an agent services account
 
-trustName.title = What is the trust’s name?
-trustName.heading = What is the trust’s name?
-trustName.hint.hasUtr = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
-trustName.hint.noUtr = This must be 53 characters or fewer.
 trustName.checkYourAnswersLabel = What is the trust’s name?
-trustName.error.length = The trust’s name must be 53 characters or less
-trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
-trustName.error.required = Enter the trust’s name
-
-governedInsideTheUK.title = Is the trust governed by UK law?
-governedInsideTheUK.heading = Is the trust governed by UK law?
 governedInsideTheUK.checkYourAnswersLabel = Is the trust governed by UK law?
-governedInsideTheUK.error.required = Select yes if the trust is governed by UK law
-
-countryGoverningTrust.title = What country governs the trust?
-countryGoverningTrust.heading = What country governs the trust?
 countryGoverningTrust.checkYourAnswersLabel = What country governs the trust?
-countryGoverningTrust.error.required = Enter the country that governs the trust
-countryGoverningTrust.error.length = The country that governs the trust must be 100 characters or less
-countryGoverningTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
-
-administrationInsideUK.title = Is the trust’s general administration done in the UK?
-administrationInsideUK.heading = Is the trust’s general administration done in the UK?
-administrationInsideUK.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
-administrationInsideUK.error.required = Select yes if the trust’s general administration is done in the UK
-
-countryAdministeringTrust.title = In what country is the trust administered?
-countryAdministeringTrust.heading = In what country is the trust administered?
 countryAdministeringTrust.checkYourAnswersLabel = In what country is the trust administered?
-countryAdministeringTrust.error.required = Enter the country the trust is administered in
-countryAdministeringTrust.error.length = The country that is administered in must be 100 characters or less
-countryAdministeringTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
-
-trustResidentInUK.title = Is the trust resident in the UK?
-trustResidentInUK.heading = Is the trust resident in the UK?
 trustResidentInUK.checkYourAnswersLabel = Is the trust resident in the UK?
-trustResidentInUK.error.required = Select yes if the trust is resident in the UK
-trustResidentInTheUK.yes = Based on your answers, the trust is resident in the UK
-trustResidentInTheUK.no = Based on your answers, the trust is not resident in the UK
-
-establishedUnderScotsLaw.title = Is the trust established under Scots Law?
-establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
 establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
-establishedUnderScotsLaw.error.required = Select yes if the trust was established under Scots Law
-
-registeringTrustFor5A.title = Are you registering the trust because the settlor benefits from the trust’s assets?
-registeringTrustFor5A.heading = Are you registering the trust because the settlor benefits from the trust’s assets?
 registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust because the settlor benefits from the trust’s assets?
-registeringTrustFor5A.hint = This relates to Schedule 5A of the Taxation of Chargeable Gains Act 1992.
-registeringTrustFor5A.error.required = Select yes if the settlor benefits from the trust’s assets
-
-trustResidentOffshore.title = Has the trust ever been resident offshore?
-trustResidentOffshore.heading = Has the trust ever been resident offshore?
 trustResidentOffshore.checkYourAnswersLabel = Has the trust ever been resident offshore?
-trustResidentOffshore.error.required = Select yes if the trust has ever been resident offshore
-
-trustPreviouslyResident.title = In what country was the trust previously resident?
-trustPreviouslyResident.heading = In what country was the trust previously resident?
 trustPreviouslyResident.checkYourAnswersLabel = In what country was the trust previously resident?
-trustPreviouslyResident.error.required = Enter the country the trust was previously resident in
-trustPreviouslyResident.error.length = The country the trust was previously resident in must be 100 characters or less
-trustPreviouslyResident.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
-
-nonresidentType.title = What is the non-resident type?
-nonresidentType.heading = What is the non-resident type?
-nonresidentType.non-resident-domiciled = Settlor domiciled trustees are non-resident
-nonresidentType.non-resident-non-domiciled = Settlor non-domiciled becomes domiciled then resident
-nonresidentType.non-resident-cease-resident = Trustees cease to be resident
 nonresidentType.checkYourAnswersLabel = What is the non-resident type?
-nonresidentType.error.required = Select the non-resident type
-
-inheritanceTaxAct.title = Are you registering the trust for Inheritance Tax reasons?
-inheritanceTaxAct.heading = Are you registering the trust for Inheritance Tax reasons?
 inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
-inheritanceTaxAct.hint = This relates to Section 218 of the Inheritance Tax Act 1984.
-inheritanceTaxAct.error.required = Select yes if you are registering the trust for Inheritance Tax reasons
-
-agentOtherThanBarrister.title = Has an agent who is not a barrister created this trust?
-agentOtherThanBarrister.heading = Has an agent who is not a barrister created this trust?
 agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
-agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created this trust
-
-whenTrustSetup.title = When was the trust created?
-whenTrustSetup.heading = When was the trust created?
 whenTrustSetup.checkYourAnswersLabel = When was the trust created?
-whenTrustSetup.error.required.all = Enter the date the trust was created
-whenTrustSetup.error.required.two = The date the trust was created must include a {0} and a {1}
-whenTrustSetup.error.required = The date the trust was created must include a {0}
-
-whenTrustSetup.error.invalid = Enter a real date the trust was created
-whenTrustSetup.error.future = The date the trust was created must be today or in the past
-whenTrustSetup.error.past = The date the trust was created must be after 31 December 1499
-whenTrustSetup.error.beforeDateOfDeath = The date the trust was created must be on or after the settlor’s date of death
-whenTrustSetup.text = This is the date the trust deed was signed. For will trusts use the settlor’s date of death.
-whenTrustSetup.hint = For example, 31 3 2015.
+trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
+trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust listed on a European Economic Area (EEA) register?
+trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?
