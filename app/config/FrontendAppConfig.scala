@@ -35,7 +35,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   private def loadConfig(key: String): String = configuration.get[String](key)
 
-  val analyticsToken: String = configuration.get[String](s"google-analytics.token")
   val analyticsHost: String = configuration.get[String](s"google-analytics.host")
 
   val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
