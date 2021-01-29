@@ -32,7 +32,6 @@ import scala.concurrent.ExecutionContext
 class LogoutController @Inject()(
                                   appConfig: FrontendAppConfig,
                                   auditConnector: AuditConnector,
-                                  config: FrontendAppConfig,
                                   identify: RegistrationIdentifierAction,
                                   val controllerComponents: MessagesControllerComponents)
                                 (implicit val ec: ExecutionContext) extends FrontendBaseController {
@@ -42,7 +41,7 @@ class LogoutController @Inject()(
 
       implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-      if(config.logoutAudit) {
+      if(appConfig.logoutAudit) {
 
         val auditData = Map(
           "sessionId" -> Session.id(hc),
