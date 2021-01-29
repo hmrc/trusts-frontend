@@ -867,6 +867,11 @@ leadTrustee.individual.name.checkYourAnswersLabel = What is the lead trustee’s
 leadTrustee.individual.email.checkYourAnswersLabel = What is {0}’s email address?
 leadTrustee.individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 
+leadTrustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+leadTrustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+leadTrustee.individual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+leadTrustee.individual.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 whatKindOfAsset.Money = Money
 whatKindOfAsset.PropertyOrLand = Property or land
 whatKindOfAsset.Shares = Shares
