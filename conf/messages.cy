@@ -177,6 +177,12 @@ agentTelephoneNumber.error.invalid.characters = Nodwch rif ffôn fel 01632 960 0
 agentAnswer.title = Gwirio manylion yr asiantaeth
 agentAnswer.heading = Gwirio manylion yr asiantaeth
 
+trustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oes gan {0} genedligrwydd y DU?
+trustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = Beth yw gwlad cenedligrwydd {0}?
+trustee.individual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswylydd yn y DU?
+trustee.individual.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+#trustee.individual.5mld.legallyIncapableYesNo.checkYourAnswersLabel =
+
 leadTrustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oes gan {0} genedligrwydd y DU?
 leadTrustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = Beth yw gwlad cenedligrwydd {0}?
 leadTrustee.individual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswylydd yn y DU?
