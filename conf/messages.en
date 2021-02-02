@@ -819,6 +819,10 @@ otherBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in th
 otherBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 otherBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
+otherBeneficiary.ukResidentYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+otherBeneficiary.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+otherBeneficiary.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
 leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
 trustee.individual.name.checkYourAnswersLabel = What is the trustee’s name?
