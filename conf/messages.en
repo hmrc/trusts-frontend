@@ -530,11 +530,12 @@ answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
-answerPage.section.shareAsset.subheading = Share
-answerPage.section.propertyOrLandAsset.subheading = Property or land
-answerPage.section.partnershipAsset.subheading = Partnership
-answerPage.section.businessAsset.subheading = Business
-answerPage.section.otherAsset.subheading = Other
+answerPage.section.shareAsset.subheading = Share {0}
+answerPage.section.propertyOrLandAsset.subheading = Property or land {0}
+answerPage.section.partnershipAsset.subheading = Partnership {0}
+answerPage.section.businessAsset.subheading = Business {0}
+answerPage.section.otherAsset.subheading = Other {0}
+answerPage.section.nonEeaBusinessAsset.subheading = Non-EEA Company {0}
 answerPage.agentClientRef = Client reference number: {0}
 answerPage.section.trustType.heading = Trust type
 
@@ -922,3 +923,10 @@ partnership.startDate.checkYourAnswersLabel = When did the partnership start?
 
 other.description.checkYourAnswersLabel = What is the description of the asset?
 other.value.checkYourAnswersLabel = What is the current value of {0}?
+
+nonEeaBusiness.name.checkYourAnswersLabel = What is the company’s name?
+nonEeaBusiness.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+nonEeaBusiness.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+nonEeaBusiness.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+nonEeaBusiness.governingCountry.checkYourAnswersLabel = Which country’s laws govern {0}?
+nonEeaBusiness.startDate.checkYourAnswersLabel = When did the trust start their ownership or controlling interest in {0}?
