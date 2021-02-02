@@ -18,8 +18,7 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import config.FrontendAppConfig
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import play.api.Configuration
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.Headers
@@ -34,22 +33,23 @@ class LanguageSwitchControllerSpec extends RegistrationSpecBase {
   private val welsh = "cymraeg"
   private val fakeUrl: String = "fakeUrl"
 
-  def frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+  private lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
 
-  private val mockConfig = mock[FrontendAppConfig]
-  when(mockConfig.languageMap).thenReturn(frontendAppConfig.languageMap)
+  def frontendAppConfig(languageToggleEnabled: Boolean = true): FrontendAppConfig = {
+    new FrontendAppConfig(config) {
+      override lazy val languageTranslationEnabled: Boolean = languageToggleEnabled
+    }
+  }
 
   "LanguageSwitch Controller" when {
 
     "language toggle enabled" when {
 
-      when(mockConfig.languageTranslationEnabled).thenReturn(true)
-
       "English selected" must {
         "switch to English" in {
 
           val application = new GuiceApplicationBuilder()
-            .overrides(bind[FrontendAppConfig].toInstance(mockConfig))
+            .overrides(bind[FrontendAppConfig].toInstance(frontendAppConfig()))
             .build()
 
           val requestHeaders: Headers = new Headers(Seq(("Referer", fakeUrl)))
@@ -72,7 +72,7 @@ class LanguageSwitchControllerSpec extends RegistrationSpecBase {
         "switch to Welsh" in {
 
           val application = new GuiceApplicationBuilder()
-            .overrides(bind[FrontendAppConfig].toInstance(mockConfig))
+            .overrides(bind[FrontendAppConfig].toInstance(frontendAppConfig()))
             .build()
 
           val requestHeaders: Headers = new Headers(Seq(("Referer", fakeUrl)))
@@ -94,12 +94,10 @@ class LanguageSwitchControllerSpec extends RegistrationSpecBase {
 
     "language toggle disabled" must {
 
-      when(mockConfig.languageTranslationEnabled).thenReturn(false)
-
       "default to English" in {
 
         val application = new GuiceApplicationBuilder()
-          .overrides(bind[FrontendAppConfig].toInstance(mockConfig))
+          .overrides(bind[FrontendAppConfig].toInstance(frontendAppConfig(false)))
           .build()
 
         val requestHeaders: Headers = new Headers(Seq(("Referer", fakeUrl)))
@@ -120,22 +118,10 @@ class LanguageSwitchControllerSpec extends RegistrationSpecBase {
 
     "no referer in header" must {
 
-      when(mockConfig.languageTranslationEnabled).thenReturn(true)
-
-      // the following are required for the Gov UK Wrapper
-      when(mockConfig.analyticsHost).thenReturn(frontendAppConfig.analyticsHost)
-      when(mockConfig.accessibilityLinkUrl(any())).thenReturn("accessibility link")
-      when(mockConfig.betaFeedbackUrl).thenReturn(frontendAppConfig.betaFeedbackUrl)
-      when(mockConfig.betaFeedbackUnauthenticatedUrl).thenReturn(frontendAppConfig.betaFeedbackUnauthenticatedUrl)
-      when(mockConfig.routeToSwitchLanguage).thenReturn(frontendAppConfig.routeToSwitchLanguage)
-      when(mockConfig.reportAProblemPartialUrl).thenReturn(frontendAppConfig.reportAProblemPartialUrl)
-      when(mockConfig.reportAProblemNonJSUrl).thenReturn(frontendAppConfig.reportAProblemNonJSUrl)
-      when(mockConfig.loginContinueUrl).thenReturn(frontendAppConfig.loginContinueUrl)
-
       "redirect to internal server error template" in {
 
         val application = new GuiceApplicationBuilder()
-          .overrides(bind[FrontendAppConfig].toInstance(mockConfig))
+          .overrides(bind[FrontendAppConfig].toInstance(frontendAppConfig()))
           .build()
 
         val request = FakeRequest(GET, switchLanguageRoute(welsh))
@@ -144,7 +130,7 @@ class LanguageSwitchControllerSpec extends RegistrationSpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual frontendAppConfig.loginContinueUrl
+        redirectLocation(result).value mustEqual frontendAppConfig().loginContinueUrl
 
         application.stop()
       }
