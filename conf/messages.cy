@@ -213,3 +213,10 @@ settlorBusiness.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad br
 5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad cenedligrwydd {0}?
 5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oedd gan {0} genedligrwydd y DU?
 5mld.countryOfNationality.checkYourAnswersLabel = Beth oedd gwlad cenedligrwydd {0}?
+
+individualBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+individualBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswylydd yn y DU?
+individualBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+individualBeneficiary.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad cenedligrwydd {0}?
+individualBeneficiary.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oes gan {0} genedligrwydd y DU?
+individualBeneficiary.5mld.countryOfNationality.checkYourAnswersLabel = Beth yw gwlad cenedligrwydd {0}?
