@@ -615,6 +615,9 @@ businessProtector.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Re
 businessProtector.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 businessProtector.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 businessProtector.address.checkYourAnswersLabel = What is {0}’s address?
+businessProtector.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+businessProtector.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+businessProtector.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
 individualProtector.name.checkYourAnswersLabel = What is the individual’s name?
 individualProtector.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
