@@ -164,6 +164,7 @@ trustName.error.required = Enter the trust’s name
 
 governedInsideTheUK.checkYourAnswersLabel = Is the trust governed by UK law?
 countryGoverningTrust.checkYourAnswersLabel = What country governs the trust?
+administrationInsideUK.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
 countryAdministeringTrust.checkYourAnswersLabel = In what country is the trust administered?
 trustResidentInUK.checkYourAnswersLabel = Is the trust resident in the UK?
 establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
