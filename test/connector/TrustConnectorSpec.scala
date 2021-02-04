@@ -18,13 +18,14 @@ package connector
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import mapping.registration.RegistrationMapper
 import models.core.http._
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
+import play.api.libs.json.{JsBoolean, Json}
 import play.api.test.Helpers.CONTENT_TYPE
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{TestUserAnswers, WireMockHelper}
@@ -268,6 +269,49 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
 
           val result = Await.result(connector.matching(matchData), Duration.Inf)
           result mustBe MatchedResponse.InternalServerError
+        }
+      }
+    }
+
+    ".adjustData" - {
+
+      val url : String = s"/trusts/register/submission-drafts/$fakeDraftId"
+
+      def wiremock(expectedStatus: Int, expectedResponse: String): StubMapping =
+        server.stubFor(
+          post(urlEqualTo(url))
+            .willReturn(
+              aResponse()
+                .withStatus(expectedStatus)
+                .withBody(expectedResponse)
+            )
+        )
+
+      "must return Ok with body true" - {
+        "when data needed adjusting" in {
+
+          wiremock(
+            expectedStatus = Status.OK,
+            expectedResponse = Json.stringify(JsBoolean(true))
+          )
+
+          val result = Await.result(connector.adjustData(fakeDraftId), Duration.Inf)
+
+          result mustBe JsBoolean(true)
+        }
+      }
+
+      "must return Ok with body false" - {
+        "when data did not need adjusting" in {
+
+          wiremock(
+            expectedStatus = Status.OK,
+            expectedResponse = Json.stringify(JsBoolean(false))
+          )
+
+          val result = Await.result(connector.adjustData(fakeDraftId), Duration.Inf)
+
+          result mustBe JsBoolean(false)
         }
       }
     }

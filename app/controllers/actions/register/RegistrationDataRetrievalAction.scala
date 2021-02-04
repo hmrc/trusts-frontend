@@ -41,6 +41,7 @@ class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository:
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
+          // TODO - could possibly call new 'lift-and-shift draft data' endpoint here for orgs
           registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
     }
   }
