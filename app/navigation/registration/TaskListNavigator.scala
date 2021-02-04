@@ -64,5 +64,4 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
     }
   }
 
-
 }

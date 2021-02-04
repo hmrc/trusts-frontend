@@ -19,9 +19,9 @@ package controllers.register.agents
 import base.RegistrationSpecBase
 import connector.TrustConnector
 import controllers.register.routes._
-import models.NormalMode
 import models.core.UserAnswers
 import models.core.http.AddressType
+import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.agents.AgentTelephoneNumberPage
@@ -77,8 +77,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
       "redirect for a POST" in {
 
-        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent)
-          .build()
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
         val request =
           FakeRequest(POST, agentOverviewRoute)
@@ -120,51 +119,56 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
         application.stop()
       }
 
-      "redirect to registration progress page for a draft with completed agent details" in {
+      "redirect to registration progress page" when {
+        "draft has completed agent details and data did not need to be adjusted to conform with the new microservices" in {
 
-        val telephoneNumber: String = "+441234567890"
+          val telephoneNumber: String = "+441234567890"
 
-        def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
+          def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
 
-        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
+          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
-          .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
-          .build()
-
-        when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
-
-        val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustEqual TaskListController.onPageLoad(fakeDraftId).url
-
-        application.stop()
-
-      }
-
-      "redirect to agent internal client reference page" when {
-
-        "draft has incomplete agent details" in {
-
-          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+          val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
             .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
             .build()
 
-          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
-
-          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
-
           when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+
+          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+          redirectLocation(result).value mustEqual TaskListController.onPageLoad(fakeDraftId).url
+
+          application.stop()
+        }
+      }
+
+      "redirect to agent details" when {
+
+        val mockTaskListNavigator = mock[TaskListNavigator]
+        val onwardRoute: String = fakeNavigator.desiredRoute.url
+
+        "draft has incomplete agent details" in {
+
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+            .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
+            .overrides(bind[TaskListNavigator].toInstance(mockTaskListNavigator))
+            .build()
+
+          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+
+          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
+          when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+          when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual onwardRoute
 
           application.stop()
         }
@@ -173,19 +177,20 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
             .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
+            .overrides(bind[TaskListNavigator].toInstance(mockTaskListNavigator))
             .build()
 
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
-
           when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(true)))
+          when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+          redirectLocation(result).value mustEqual onwardRoute
 
           application.stop()
         }

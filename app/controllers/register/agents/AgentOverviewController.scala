@@ -19,8 +19,8 @@ package controllers.register.agents
 import connector.TrustConnector
 import controllers.actions._
 import controllers.actions.register.RegistrationIdentifierAction
-import models.NormalMode
 import models.requests.IdentifierRequest
+import navigation.registration.TaskListNavigator
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
@@ -37,7 +37,8 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: AgentOverviewView,
-                                        trustConnector: TrustConnector
+                                        trustConnector: TrustConnector,
+                                        taskListNavigator: TaskListNavigator
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions: ActionBuilder[IdentifierRequest, AnyContent] = identify andThen hasAgentAffinityGroup()
@@ -62,7 +63,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
         address <- registrationsRepository.getAgentAddress(request.userAnswers)
       } yield {
         if (address.isEmpty || draftNeededAdjusting.value) {
-          Redirect(routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId))
+          Redirect(taskListNavigator.agentDetailsJourneyUrl(draftId))
         } else {
           Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId))
         }

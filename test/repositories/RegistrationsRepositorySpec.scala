@@ -25,7 +25,7 @@ import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.core.pages.UKAddress
-import models.registration.pages.Status.{Completed, InProgress}
+import models.registration.pages.Status.Completed
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.MustMatchers
