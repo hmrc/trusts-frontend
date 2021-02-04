@@ -17,12 +17,14 @@
 package controllers.actions
 
 import base.RegistrationSpecBase
+import connector.TrustConnector
 import controllers.actions.register.RegistrationDataRetrievalActionImpl
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
-import org.mockito.Matchers._
+import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.libs.json.JsBoolean
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
@@ -30,7 +32,8 @@ import scala.concurrent.Future
 
 class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures {
 
-  class Harness(registrationsRepository: RegistrationsRepository) extends RegistrationDataRetrievalActionImpl(registrationsRepository) {
+  class Harness(registrationsRepository: RegistrationsRepository,
+                trustConnector: TrustConnector) extends RegistrationDataRetrievalActionImpl(registrationsRepository, trustConnector) {
     def callTransform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = transform(request)
   }
 
@@ -41,8 +44,11 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
       "set userAnswers to 'None' in the request" in {
 
         val registrationsRepository = mock[RegistrationsRepository]
+        val trustConnector = mock[TrustConnector]
+
         when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(None)
-        val action = new Harness(registrationsRepository)
+
+        val action = new Harness(registrationsRepository, trustConnector)
 
         val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
 
@@ -57,30 +63,41 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
       "build a userAnswers object and add it to the request" in {
 
         val registrationsRepository = mock[RegistrationsRepository]
-        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some("draftId"))
+        val trustConnector = mock[TrustConnector]
+
+        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(Some(emptyUserAnswers))
-        val action = new Harness(registrationsRepository)
+        when(trustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+
+        val action = new Harness(registrationsRepository, trustConnector)
 
         val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
 
         whenReady(futureResult) { result =>
           result.userAnswers.isDefined mustBe true
         }
+        
+        verify(trustConnector).adjustData(eqTo(fakeDraftId))(any(), any())
       }
 
       "set userAnswers to 'None' because 'get' query returns 'None'" in {
+
         val registrationsRepository = mock[RegistrationsRepository]
+        val trustConnector = mock[TrustConnector]
 
-        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some("draftId"))
+        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(None)
+        when(trustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
-        val action = new Harness(registrationsRepository)
+        val action = new Harness(registrationsRepository, trustConnector)
 
         val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
 
         whenReady(futureResult) { result =>
           result.userAnswers.isEmpty mustBe true
         }
+
+        verify(trustConnector).adjustData(eqTo(fakeDraftId))(any(), any())
       }
     }
   }

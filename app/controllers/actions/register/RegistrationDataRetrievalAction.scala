@@ -16,6 +16,8 @@
 
 package controllers.actions.register
 
+import connector.TrustConnector
+
 import javax.inject.Inject
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
@@ -27,22 +29,35 @@ import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository: RegistrationsRepository)
-                                                   (implicit val executionContext: ExecutionContext) extends RegistrationDataRetrievalAction {
+class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: RegistrationsRepository,
+                                                    trustConnector: TrustConnector
+                                                   )(implicit val executionContext: ExecutionContext)
+  extends RegistrationDataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
-      OptionalRegistrationDataRequest(request.request, request.identifier, Session.id(hc), userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
+    def createdOptionalDataRequest(request: IdentifierRequest[A],
+                                   userAnswers: Option[UserAnswers]): OptionalRegistrationDataRequest[A] = {
+      OptionalRegistrationDataRequest(
+        request = request.request,
+        internalId = request.internalId,
+        sessionId = Session.id(hc),
+        userAnswers = userAnswers,
+        affinityGroup = request.affinityGroup,
+        enrolments = request.enrolments,
+        agentARN = request.agentARN
+      )
+    }
 
     registrationsRepository.getMostRecentDraftId().flatMap {
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
-          // TODO - could possibly call new 'lift-and-shift draft data' endpoint here for orgs
-          registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
+          trustConnector.adjustData(draftId) flatMap { _ =>
+            registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
+          }
     }
   }
 }

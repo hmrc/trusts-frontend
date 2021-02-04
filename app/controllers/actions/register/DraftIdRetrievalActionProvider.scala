@@ -52,7 +52,7 @@ class DraftIdDataRetrievalAction(
 
     registrationsRepository.get(draftId).map {
       userAnswers =>
-        OptionalRegistrationDataRequest(request.request, request.identifier, Session.id(hc), userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
+        OptionalRegistrationDataRequest(request.request, request.internalId, Session.id(hc), userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
     }
   }
 
