@@ -16,9 +16,8 @@
 
 package controllers.register.agents
 
-import java.time.LocalDateTime
-
 import base.RegistrationSpecBase
+import connector.TrustConnector
 import controllers.register.routes._
 import models.NormalMode
 import models.core.UserAnswers
@@ -26,12 +25,15 @@ import models.core.http.AddressType
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.agents.AgentTelephoneNumberPage
+import play.api.inject.bind
+import play.api.libs.json.JsBoolean
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import viewmodels.DraftRegistration
 import views.html.register.agents.AgentOverviewView
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class AgentOverviewControllerSpec extends RegistrationSpecBase {
@@ -46,6 +48,8 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
     postCode = None,
     country = "FR"
   )
+
+  private val mockTrustConnector: TrustConnector = mock[TrustConnector]
 
   "AgentOverview Controller" when {
 
@@ -73,9 +77,8 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
       "redirect for a POST" in {
 
-        val application =
-          applicationBuilder(userAnswers = None, AffinityGroup.Agent)
-            .build()
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent)
+          .build()
 
         val request =
           FakeRequest(POST, agentOverviewRoute)
@@ -125,7 +128,11 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
         when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
+          .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
+          .build()
+
+        when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
         val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
@@ -139,22 +146,49 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
       }
 
-      "redirect to agent internal client reference page for a draft with incomplete agent details" in {
+      "redirect to agent internal client reference page" when {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+        "draft has incomplete agent details" in {
 
-        val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+            .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
+            .build()
 
-        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
+          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
-        val result = route(application, request).value
+          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
 
-        status(result) mustEqual SEE_OTHER
+          when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
-        redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+          val result = route(application, request).value
 
-        application.stop()
+          status(result) mustEqual SEE_OTHER
 
+          redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+
+          application.stop()
+        }
+
+        "data was adjusted to conform with the new microservices" in {
+
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+            .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
+            .build()
+
+          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+
+          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
+
+          when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(true)))
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+
+          application.stop()
+        }
       }
 
       "redirect to remove draft yes no page when remove selected" in {
