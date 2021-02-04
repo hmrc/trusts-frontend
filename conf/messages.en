@@ -769,6 +769,14 @@ individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}�
 individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 
+individualBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+individualBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+individualBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+individualBeneficiary.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+individualBeneficiary.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+individualBeneficiary.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+individualBeneficiary.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
+
 charity.name.checkYourAnswersLabel = What is the charity’s name?
 charity.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
