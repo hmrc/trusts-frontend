@@ -17,7 +17,7 @@
 package controllers.register.agents
 
 import base.RegistrationSpecBase
-import connector.TrustConnector
+import connector.SubmissionDraftConnector
 import controllers.register.routes._
 import models.core.UserAnswers
 import models.core.http.AddressType
@@ -26,10 +26,10 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.agents.AgentTelephoneNumberPage
 import play.api.inject.bind
-import play.api.libs.json.JsBoolean
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.http.HttpResponse
 import viewmodels.DraftRegistration
 import views.html.register.agents.AgentOverviewView
 
@@ -49,7 +49,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
     country = "FR"
   )
 
-  private val mockTrustConnector: TrustConnector = mock[TrustConnector]
+  private val mockSubmissionDraftConnector: SubmissionDraftConnector = mock[SubmissionDraftConnector]
 
   "AgentOverview Controller" when {
 
@@ -129,10 +129,10 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
 
           val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
-            .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
+            .overrides(bind[SubmissionDraftConnector].toInstance(mockSubmissionDraftConnector))
             .build()
 
-          when(mockTrustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+          when(mockSubmissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
@@ -154,36 +154,14 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
         "draft has incomplete agent details" in {
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-            .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
+            .overrides(bind[SubmissionDraftConnector].toInstance(mockSubmissionDraftConnector))
             .overrides(bind[TaskListNavigator].toInstance(mockTaskListNavigator))
             .build()
 
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
-          when(mockTrustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
-          when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-
-          redirectLocation(result).value mustEqual onwardRoute
-
-          application.stop()
-        }
-
-        "data was adjusted to conform with the new microservices" in {
-
-          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-            .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
-            .overrides(bind[TaskListNavigator].toInstance(mockTaskListNavigator))
-            .build()
-
-          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
-
-          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
-          when(mockTrustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(true)))
+          when(mockSubmissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
           when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
 
           val result = route(application, request).value

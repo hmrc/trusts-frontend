@@ -18,9 +18,8 @@ package connector
 
 import config.FrontendAppConfig
 import models.core.http.{MatchData, MatchedResponse, TrustResponse}
-import play.api.libs.json.{JsBoolean, JsValue, Writes}
+import play.api.libs.json.{JsValue, Writes}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import uk.gov.hmrc.http.HttpReads.Implicits._
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,9 +41,5 @@ class TrustConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
     val matchingUrl = s"${config.trustsUrl}/trusts/check"
     http.POST[MatchData, MatchedResponse](matchingUrl, matchData: MatchData)(MatchData.writes, MatchedResponse.httpReads, hc, ec)
   }
-  
-  def adjustDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[JsBoolean] = {
-    val url: String = s"${config.trustsUrl}/trusts/register/submission-drafts/$draftId"
-    http.POSTEmpty[JsBoolean](url)
-  }
+
 }

@@ -16,14 +16,15 @@
 
 package controllers.actions.register
 
-import connector.TrustConnector
+import connector.SubmissionDraftConnector
+import controllers.Assets.OK
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
-import play.api.libs.json.JsBoolean
+import play.api.Logging
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import utils.Session
 
@@ -31,9 +32,9 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: RegistrationsRepository,
-                                                    trustConnector: TrustConnector
+                                                    submissionDraftConnector: SubmissionDraftConnector
                                                    )(implicit val executionContext: ExecutionContext)
-  extends RegistrationDataRetrievalAction {
+  extends RegistrationDataRetrievalAction with Logging {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
@@ -56,10 +57,11 @@ class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: Reg
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
-          val adjustDraftIfNotAnAgentUser: Future[JsBoolean] = if (request.affinityGroup != Agent) {
-            trustConnector.adjustDraft(draftId)
+          val adjustDraftIfNotAnAgentUser: Future[HttpResponse] = if (request.affinityGroup != Agent) {
+            logger.info(s"[Draft ID: $draftId] Adjusting draft data.")
+            submissionDraftConnector.adjustDraft(draftId)
           } else {
-            Future.successful(JsBoolean(true))
+            Future.successful(HttpResponse(OK, ""))
           }
 
           adjustDraftIfNotAnAgentUser flatMap { _ =>

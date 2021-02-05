@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import connector.TrustConnector
+import connector.SubmissionDraftConnector
 import controllers.actions._
 import controllers.actions.register.RegistrationIdentifierAction
 import models.requests.IdentifierRequest
@@ -37,7 +37,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: AgentOverviewView,
-                                        trustConnector: TrustConnector,
+                                        submissionDraftConnector: SubmissionDraftConnector,
                                         taskListNavigator: TaskListNavigator
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
@@ -59,10 +59,10 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
     implicit request =>
 
       for {
-        draftNeededAdjusting <- trustConnector.adjustDraft(draftId)
+        _ <- submissionDraftConnector.adjustDraft(draftId)
         address <- registrationsRepository.getAgentAddress(request.userAnswers)
       } yield {
-        if (address.isEmpty || draftNeededAdjusting.value) {
+        if (address.isEmpty) {
           Redirect(taskListNavigator.agentDetailsJourneyUrl(draftId))
         } else {
           Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId))
