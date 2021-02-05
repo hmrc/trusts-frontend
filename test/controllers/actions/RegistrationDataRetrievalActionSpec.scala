@@ -67,7 +67,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
         when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(Some(emptyUserAnswers))
-        when(trustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+        when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
         val action = new Harness(registrationsRepository, trustConnector)
 
@@ -77,7 +77,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
           result.userAnswers.isDefined mustBe true
         }
         
-        verify(trustConnector).adjustData(eqTo(fakeDraftId))(any(), any())
+        verify(trustConnector).adjustDraft(eqTo(fakeDraftId))(any(), any())
       }
 
       "set userAnswers to 'None' because 'get' query returns 'None'" in {
@@ -87,7 +87,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
         when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
         when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(None)
-        when(trustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+        when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
         val action = new Harness(registrationsRepository, trustConnector)
 
@@ -97,7 +97,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
           result.userAnswers.isEmpty mustBe true
         }
 
-        verify(trustConnector).adjustData(eqTo(fakeDraftId))(any(), any())
+        verify(trustConnector).adjustDraft(eqTo(fakeDraftId))(any(), any())
       }
     }
   }

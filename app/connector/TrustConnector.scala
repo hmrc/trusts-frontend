@@ -43,7 +43,7 @@ class TrustConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
     http.POST[MatchData, MatchedResponse](matchingUrl, matchData: MatchData)(MatchData.writes, MatchedResponse.httpReads, hc, ec)
   }
   
-  def adjustData(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[JsBoolean] = {
+  def adjustDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[JsBoolean] = {
     val url: String = s"${config.trustsUrl}/trusts/register/submission-drafts/$draftId"
     http.POSTEmpty[JsBoolean](url)
   }

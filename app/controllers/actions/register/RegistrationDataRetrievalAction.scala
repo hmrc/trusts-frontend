@@ -55,7 +55,7 @@ class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: Reg
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
-          trustConnector.adjustData(draftId) flatMap { _ =>
+          trustConnector.adjustDraft(draftId) flatMap { _ =>
             registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
           }
     }

@@ -59,7 +59,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
     implicit request =>
 
       for {
-        draftNeededAdjusting <- trustConnector.adjustData(draftId)
+        draftNeededAdjusting <- trustConnector.adjustDraft(draftId)
         address <- registrationsRepository.getAgentAddress(request.userAnswers)
       } yield {
         if (address.isEmpty || draftNeededAdjusting.value) {

@@ -132,7 +132,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
             .overrides(bind[TrustConnector].toInstance(mockTrustConnector))
             .build()
 
-          when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+          when(mockTrustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
@@ -161,7 +161,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
-          when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+          when(mockTrustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
           when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
 
           val result = route(application, request).value
@@ -183,7 +183,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
-          when(mockTrustConnector.adjustData(any())(any(), any())).thenReturn(Future.successful(JsBoolean(true)))
+          when(mockTrustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(true)))
           when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
 
           val result = route(application, request).value

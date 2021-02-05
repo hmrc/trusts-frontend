@@ -273,7 +273,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
       }
     }
 
-    ".adjustData" - {
+    ".adjustDraft" - {
 
       val url : String = s"/trusts/register/submission-drafts/$fakeDraftId"
 
@@ -295,7 +295,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
             expectedResponse = Json.stringify(JsBoolean(true))
           )
 
-          val result = Await.result(connector.adjustData(fakeDraftId), Duration.Inf)
+          val result = Await.result(connector.adjustDraft(fakeDraftId), Duration.Inf)
 
           result mustBe JsBoolean(true)
         }
@@ -309,7 +309,7 @@ class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues wi
             expectedResponse = Json.stringify(JsBoolean(false))
           )
 
-          val result = Await.result(connector.adjustData(fakeDraftId), Duration.Inf)
+          val result = Await.result(connector.adjustDraft(fakeDraftId), Duration.Inf)
 
           result mustBe JsBoolean(false)
         }
