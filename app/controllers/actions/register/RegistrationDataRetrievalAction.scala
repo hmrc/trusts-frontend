@@ -66,6 +66,10 @@ class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: Reg
 
           adjustDraftIfNotAnAgentUser flatMap { _ =>
             registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
+          } recover {
+            case e =>
+              logger.error(s"[Draft ID: $draftId][Session ID: ${Session.id(hc)}] call to adjust draft data failed: ${e.getMessage}")
+              createdOptionalDataRequest(request, None)
           }
     }
   }

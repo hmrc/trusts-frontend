@@ -21,6 +21,7 @@ import controllers.actions._
 import controllers.actions.register.RegistrationIdentifierAction
 import models.requests.IdentifierRequest
 import navigation.registration.TaskListNavigator
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
@@ -39,7 +40,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
                                         view: AgentOverviewView,
                                         submissionDraftConnector: SubmissionDraftConnector,
                                         taskListNavigator: TaskListNavigator
-                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions: ActionBuilder[IdentifierRequest, AnyContent] = identify andThen hasAgentAffinityGroup()
 
@@ -58,7 +59,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
   def continue(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithData(draftId).async {
     implicit request =>
 
-      for {
+      (for {
         _ <- submissionDraftConnector.adjustDraft(draftId)
         address <- registrationsRepository.getAgentAddress(request.userAnswers)
       } yield {
@@ -67,6 +68,10 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
         } else {
           Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId))
         }
+      }) recover {
+        case e =>
+          logger.error(s"[Draft ID: $draftId][Session ID: ${request.sessionId}] failed to continue with draft: ${e.getMessage}")
+          Redirect(routes.AgentOverviewController.onPageLoad())
       }
   }
 
