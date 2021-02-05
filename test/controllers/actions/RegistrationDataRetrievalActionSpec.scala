@@ -60,44 +60,90 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
     "there is data in the cache" must {
 
-      "build a userAnswers object and add it to the request" in {
+      "build a userAnswers object and add it to the request" when {
 
-        val registrationsRepository = mock[RegistrationsRepository]
-        val trustConnector = mock[TrustConnector]
+        "agent user" in {
 
-        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
-        when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(Some(emptyUserAnswers))
-        when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+          val registrationsRepository = mock[RegistrationsRepository]
+          val trustConnector = mock[TrustConnector]
 
-        val action = new Harness(registrationsRepository, trustConnector)
+          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
+          when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(Some(emptyUserAnswers))
+          when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
-        val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
+          val action = new Harness(registrationsRepository, trustConnector)
 
-        whenReady(futureResult) { result =>
-          result.userAnswers.isDefined mustBe true
+          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
+
+          whenReady(futureResult) { result =>
+            result.userAnswers.isDefined mustBe true
+          }
+
+          verify(trustConnector, times(0)).adjustDraft(eqTo(fakeDraftId))(any(), any())
         }
-        
-        verify(trustConnector).adjustDraft(eqTo(fakeDraftId))(any(), any())
+
+        "org user" in {
+
+          val registrationsRepository = mock[RegistrationsRepository]
+          val trustConnector = mock[TrustConnector]
+
+          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
+          when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(Some(emptyUserAnswers))
+          when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+
+          val action = new Harness(registrationsRepository, trustConnector)
+
+          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+
+          whenReady(futureResult) { result =>
+            result.userAnswers.isDefined mustBe true
+          }
+
+          verify(trustConnector, times(1)).adjustDraft(eqTo(fakeDraftId))(any(), any())
+        }
       }
 
-      "set userAnswers to 'None' because 'get' query returns 'None'" in {
+      "set userAnswers to 'None' because 'get' query returns 'None'" when {
 
-        val registrationsRepository = mock[RegistrationsRepository]
-        val trustConnector = mock[TrustConnector]
+        "agent user" in {
 
-        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
-        when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(None)
-        when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+          val registrationsRepository = mock[RegistrationsRepository]
+          val trustConnector = mock[TrustConnector]
 
-        val action = new Harness(registrationsRepository, trustConnector)
+          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
+          when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(None)
+          when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
 
-        val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
+          val action = new Harness(registrationsRepository, trustConnector)
 
-        whenReady(futureResult) { result =>
-          result.userAnswers.isEmpty mustBe true
+          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
+
+          whenReady(futureResult) { result =>
+            result.userAnswers.isEmpty mustBe true
+          }
+
+          verify(trustConnector, times(0)).adjustDraft(eqTo(fakeDraftId))(any(), any())
         }
 
-        verify(trustConnector).adjustDraft(eqTo(fakeDraftId))(any(), any())
+        "org user" in {
+
+          val registrationsRepository = mock[RegistrationsRepository]
+          val trustConnector = mock[TrustConnector]
+
+          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
+          when(registrationsRepository.get(draftId = any())(any())) thenReturn Future(None)
+          when(trustConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(JsBoolean(false)))
+
+          val action = new Harness(registrationsRepository, trustConnector)
+
+          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+
+          whenReady(futureResult) { result =>
+            result.userAnswers.isEmpty mustBe true
+          }
+
+          verify(trustConnector, times(1)).adjustDraft(eqTo(fakeDraftId))(any(), any())
+        }
       }
     }
   }

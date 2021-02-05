@@ -17,16 +17,17 @@
 package controllers.actions.register
 
 import connector.TrustConnector
-
-import javax.inject.Inject
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
+import play.api.libs.json.JsBoolean
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import utils.Session
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: RegistrationsRepository,
@@ -55,7 +56,13 @@ class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: Reg
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
-          trustConnector.adjustDraft(draftId) flatMap { _ =>
+          val adjustDraftIfNotAnAgentUser: Future[JsBoolean] = if (request.affinityGroup != Agent) {
+            trustConnector.adjustDraft(draftId)
+          } else {
+            Future.successful(JsBoolean(true))
+          }
+
+          adjustDraftIfNotAnAgentUser flatMap { _ =>
             registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
           }
     }
