@@ -16,19 +16,19 @@
 
 package controllers.register.agents
 
-import config.FrontendAppConfig
+import connector.SubmissionDraftConnector
 import controllers.actions._
 import controllers.actions.register.RegistrationIdentifierAction
-import javax.inject.Inject
-import models.NormalMode
 import models.requests.IdentifierRequest
-import pages.register.agents.AgentTelephoneNumberPage
+import navigation.registration.TaskListNavigator
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.agents.AgentOverviewView
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
@@ -38,8 +38,9 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
                                         registrationsRepository: RegistrationsRepository,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: AgentOverviewView,
-                                        appConfig: FrontendAppConfig)
-                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                        submissionDraftConnector: SubmissionDraftConnector,
+                                        taskListNavigator: TaskListNavigator
+                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions: ActionBuilder[IdentifierRequest, AnyContent] = identify andThen hasAgentAffinityGroup()
 
@@ -58,14 +59,19 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
   def continue(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithData(draftId).async {
     implicit request =>
 
-      for {
-        addressIsPresent <- registrationsRepository.getAgentAddress(request.userAnswers)
+      (for {
+        _ <- submissionDraftConnector.adjustDraft(draftId)
+        address <- registrationsRepository.getAgentAddress(request.userAnswers)
       } yield {
-        if (addressIsPresent.isEmpty) {
-          Redirect(routes.AgentInternalReferenceController.onPageLoad(NormalMode, draftId))
+        if (address.isEmpty) {
+          Redirect(taskListNavigator.agentDetailsJourneyUrl(draftId))
         } else {
           Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId))
         }
+      }) recover {
+        case e =>
+          logger.error(s"[Draft ID: $draftId][Session ID: ${request.sessionId}] failed to continue with draft: ${e.getMessage}")
+          Redirect(routes.AgentOverviewController.onPageLoad())
       }
   }
 

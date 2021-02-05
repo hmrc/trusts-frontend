@@ -17,9 +17,9 @@
 package connector
 
 import java.time.{LocalDate, LocalDateTime}
-
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.registration.pages.Status.{Completed, InProgress}
@@ -61,6 +61,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val clientReferenceUrl = s"$submissionsUrl/$testDraftId/client-reference"
   private val trustSetupDateUrl = s"$submissionsUrl/$testDraftId/when-trust-setup"
   private val trustNameUrl = s"$submissionsUrl/$testDraftId/trust-name"
+  private val adjustDraftUrl = s"$submissionsUrl/adjust-draft/$testDraftId"
 
   "SubmissionDraftConnector" - {
 
@@ -515,6 +516,40 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
         val result = Await.result(connector.removeDraft(draftId), Duration.Inf)
         result.status mustBe Status.OK
+      }
+
+      ".adjustDraft" - {
+
+        def wiremock(expectedStatus: Int): StubMapping =
+          server.stubFor(
+            post(urlEqualTo(adjustDraftUrl))
+              .willReturn(
+                aResponse()
+                  .withStatus(expectedStatus)
+              )
+          )
+
+        "must return Ok" - {
+          "when successful" in {
+
+            wiremock(expectedStatus = Status.OK)
+
+            val result = Await.result(connector.adjustDraft(testDraftId), Duration.Inf)
+
+            result.status mustBe Status.OK
+          }
+        }
+
+        "must return NotFound" - {
+          "when draft not found" in {
+
+            wiremock(expectedStatus = Status.NOT_FOUND)
+
+            val result = Await.result(connector.adjustDraft(testDraftId), Duration.Inf)
+
+            result.status mustBe Status.NOT_FOUND
+          }
+        }
       }
     }
   }

@@ -16,22 +16,24 @@
 
 package controllers.register.agents
 
-import java.time.LocalDateTime
-
 import base.RegistrationSpecBase
+import connector.SubmissionDraftConnector
 import controllers.register.routes._
-import models.NormalMode
 import models.core.UserAnswers
 import models.core.http.AddressType
+import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.agents.AgentTelephoneNumberPage
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.http.HttpResponse
 import viewmodels.DraftRegistration
 import views.html.register.agents.AgentOverviewView
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class AgentOverviewControllerSpec extends RegistrationSpecBase {
@@ -46,6 +48,8 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
     postCode = None,
     country = "FR"
   )
+
+  private val mockSubmissionDraftConnector: SubmissionDraftConnector = mock[SubmissionDraftConnector]
 
   "AgentOverview Controller" when {
 
@@ -73,9 +77,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
       "redirect for a POST" in {
 
-        val application =
-          applicationBuilder(userAnswers = None, AffinityGroup.Agent)
-            .build()
+        val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
         val request =
           FakeRequest(POST, agentOverviewRoute)
@@ -117,44 +119,59 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
         application.stop()
       }
 
-      "redirect to registration progress page for a draft with completed agent details" in {
+      "redirect to registration progress page" when {
+        "draft has completed agent details and data did not need to be adjusted to conform with the new microservices" in {
 
-        val telephoneNumber: String = "+441234567890"
+          val telephoneNumber: String = "+441234567890"
 
-        def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
+          def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
 
-        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
+          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+          val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
+            .overrides(bind[SubmissionDraftConnector].toInstance(mockSubmissionDraftConnector))
+            .build()
 
-        val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+          when(mockSubmissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-        val result = route(application, request).value
+          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
-        status(result) mustEqual SEE_OTHER
+          val result = route(application, request).value
 
-        redirectLocation(result).value mustEqual TaskListController.onPageLoad(fakeDraftId).url
+          status(result) mustEqual SEE_OTHER
 
-        application.stop()
+          redirectLocation(result).value mustEqual TaskListController.onPageLoad(fakeDraftId).url
 
+          application.stop()
+        }
       }
 
-      "redirect to agent internal client reference page for a draft with incomplete agent details" in {
+      "redirect to agent details" when {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+        val mockTaskListNavigator = mock[TaskListNavigator]
+        val onwardRoute: String = fakeNavigator.desiredRoute.url
 
-        val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
+        "draft has incomplete agent details" in {
 
-        when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+            .overrides(bind[SubmissionDraftConnector].toInstance(mockSubmissionDraftConnector))
+            .overrides(bind[TaskListNavigator].toInstance(mockTaskListNavigator))
+            .build()
 
-        val result = route(application, request).value
+          val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
-        status(result) mustEqual SEE_OTHER
+          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
+          when(mockSubmissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
+          when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
 
-        redirectLocation(result).value mustEqual routes.AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
+          val result = route(application, request).value
 
-        application.stop()
+          status(result) mustEqual SEE_OTHER
 
+          redirectLocation(result).value mustEqual onwardRoute
+
+          application.stop()
+        }
       }
 
       "redirect to remove draft yes no page when remove selected" in {
