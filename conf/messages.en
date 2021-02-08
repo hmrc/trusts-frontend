@@ -835,8 +835,10 @@ otherBeneficiary.ukResidentYesNo.checkYourAnswersLabel = Is {0} a UK resident?
 otherBeneficiary.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
 otherBeneficiary.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
-trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
-leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+
+trustee.individualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
+leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+
 trustee.individual.name.checkYourAnswersLabel = What is the trustee’s name?
 trustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
 trustee.individual.ninoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
@@ -851,11 +853,14 @@ trustee.individual.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}�
 trustee.individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
 trustee.individual.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 trustee.individual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+trustee.individual.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
 trustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
 trustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+trustee.individual.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
 trustee.individual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
 trustee.individual.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 trustee.individual.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
+
 trustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
 trustee.organisation.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 trustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
@@ -863,7 +868,9 @@ trustee.organisation.addressYesNo.checkYourAnswersLabel = Do you know {0}’s ad
 trustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 trustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 trustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+
 leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+
 leadTrustee.organisation.ukRegisteredYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 leadTrustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
 leadTrustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
@@ -875,6 +882,7 @@ leadTrustee.organisation.email.checkYourAnswersLabel = What is {0}’s email add
 leadTrustee.organisation.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
 leadTrustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
 leadTrustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 leadTrustee.individual.ninoYesNo.checkYourAnswersLabel = Does {0} have a National Insurance number?
 leadTrustee.individual.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 leadTrustee.individual.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
@@ -888,11 +896,11 @@ leadTrustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s t
 leadTrustee.individual.name.checkYourAnswersLabel = What is the lead trustee’s name?
 leadTrustee.individual.email.checkYourAnswersLabel = What is {0}’s email address?
 leadTrustee.individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
-
 leadTrustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
 leadTrustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
 leadTrustee.individual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
 leadTrustee.individual.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 
 whatKindOfAsset.Money = Money
 whatKindOfAsset.PropertyOrLand = Property or land
