@@ -838,6 +838,10 @@ otherBeneficiary.countryOfResidence.checkYourAnswersLabel = What is {0}’s coun
 
 trustee.individualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
 leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+# Following 2 are no longer used in register-trust-trustee-frontend in production as of (08/02/2021).
+# Can remove them once we are sure no saved registrations still reference them (~09/03/2021)
+trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
+leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
 
 trustee.individual.name.checkYourAnswersLabel = What is the trustee’s name?
 trustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
