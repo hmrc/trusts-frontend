@@ -222,3 +222,11 @@ individualBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gw
 individualBeneficiary.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad cenedligrwydd {0}?
 individualBeneficiary.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oes gan {0} genedligrwydd y DU?
 individualBeneficiary.5mld.countryOfNationality.checkYourAnswersLabel = Beth yw gwlad cenedligrwydd {0}?
+
+otherIndividual.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+otherIndividual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswylydd yn y DU?
+otherIndividual.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+otherIndividual.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad cenedligrwydd {0}?
+otherIndividual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oes gan {0} genedligrwydd y DU?
+otherIndividual.5mld.countryOfNationality.checkYourAnswersLabel = Beth yw gwlad cenedligrwydd {0}?
+otherIndividual.5mld.mentalCapacityYesNo.checkYourAnswersLabel = A oes gan {0} alluedd meddyliol ar adeg y cofrestriad?

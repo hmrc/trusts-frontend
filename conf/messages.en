@@ -646,6 +646,14 @@ otherIndividual.passportDetails.checkYourAnswersLabel = What are {0}’s passpor
 otherIndividual.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 otherIndividual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 
+otherIndividual.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+otherIndividual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+otherIndividual.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+otherIndividual.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+otherIndividual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+otherIndividual.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+otherIndividual.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
+
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
 employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
 
