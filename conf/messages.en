@@ -881,7 +881,7 @@ trustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address i
 trustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 trustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
 trustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residency?
-trustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel =  Does {0} have UK residency?
+trustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
 trustee.organisation.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
 
 
