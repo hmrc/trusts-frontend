@@ -63,8 +63,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation,
-            "agentOverviewUrl"
+            Organisation
           )(fakeRequest, messages)
 
           behave like normalPage(applyView, None, "taskList")
@@ -91,8 +90,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
@@ -122,8 +120,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
@@ -154,8 +151,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Organisation
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -179,8 +175,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -206,8 +201,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -233,8 +227,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)

@@ -61,7 +61,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
 
       (for {
         _ <- submissionDraftConnector.adjustDraft(draftId)
-        address <- registrationsRepository.getAgentAddress(request.userAnswers)
+        address <- registrationsRepository.getAgentAddress(draftId)
       } yield {
         if (address.isEmpty) {
           Redirect(taskListNavigator.agentDetailsJourneyUrl(draftId))

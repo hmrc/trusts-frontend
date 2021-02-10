@@ -45,8 +45,8 @@ class TaskListController @Inject()(
                                     view: TaskListView,
                                     registrationProgress: RegistrationProgress,
                                     registrationsRepository: RegistrationsRepository,
-                                    taskListNavigator : TaskListNavigator,
-                                    requireDraft : RequireDraftRegistrationActionRefiner,
+                                    taskListNavigator: TaskListNavigator,
+                                    requireDraft: RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
                                     standardAction: StandardActionSets,
                                     appConfig: FrontendAppConfig
@@ -63,8 +63,8 @@ class TaskListController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      def renderView(affinityGroup : AffinityGroup): Future[Result] = {
-        val savedUntil : String = dateFormatter.savedUntil(request.userAnswers.createdAt)
+      def renderView(affinityGroup: AffinityGroup): Future[Result] = {
+        val savedUntil: String = dateFormatter.savedUntil(request.userAnswers.createdAt)
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
@@ -79,19 +79,14 @@ class TaskListController @Inject()(
           val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate)) {
             sections
           } else {
-            val removeTaxLiabilityFromTaskList = (t : Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)
+            val removeTaxLiabilityFromTaskList = (t: Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)
             sections.filterNot(removeTaxLiabilityFromTaskList)
-          }
-
-          val agentCheckAnswers = if (appConfig.agentDetailsMicroserviceEnabled) {
-            appConfig.agentDetailsCheckAnswersUrl(draftId)
-          } else {
-            controllers.register.agents.routes.AgentAnswerController.onPageLoad(draftId).url
           }
 
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
 
-          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup, agentCheckAnswers))        }
+          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
+        }
       }
 
       val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get

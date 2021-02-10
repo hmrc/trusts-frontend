@@ -20,8 +20,6 @@ import models.core.pages.FullName
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-import java.time.LocalDate
-
 /**
   * Trust Registration API Schema - definitions models below
   */
