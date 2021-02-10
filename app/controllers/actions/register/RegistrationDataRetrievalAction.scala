@@ -16,32 +16,61 @@
 
 package controllers.actions.register
 
-import javax.inject.Inject
+import connector.SubmissionDraftConnector
+import controllers.Assets.OK
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
+import play.api.Logging
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.HeaderCarrierConverter
 import utils.Session
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationDataRetrievalActionImpl @Inject()(val registrationsRepository: RegistrationsRepository)
-                                                   (implicit val executionContext: ExecutionContext) extends RegistrationDataRetrievalAction {
+class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: RegistrationsRepository,
+                                                    submissionDraftConnector: SubmissionDraftConnector
+                                                   )(implicit val executionContext: ExecutionContext)
+  extends RegistrationDataRetrievalAction with Logging {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    def createdOptionalDataRequest(request: IdentifierRequest[A], userAnswers: Option[UserAnswers]) =
-      OptionalRegistrationDataRequest(request.request, request.identifier, Session.id(hc), userAnswers, request.affinityGroup, request.enrolments, request.agentARN)
+    def createdOptionalDataRequest(request: IdentifierRequest[A],
+                                   userAnswers: Option[UserAnswers]): OptionalRegistrationDataRequest[A] = {
+      OptionalRegistrationDataRequest(
+        request = request.request,
+        internalId = request.internalId,
+        sessionId = Session.id(hc),
+        userAnswers = userAnswers,
+        affinityGroup = request.affinityGroup,
+        enrolments = request.enrolments,
+        agentARN = request.agentARN
+      )
+    }
 
     registrationsRepository.getMostRecentDraftId().flatMap {
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
-          registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
+          val adjustDraftIfNotAnAgentUser: Future[HttpResponse] = if (request.affinityGroup != Agent) {
+            logger.info(s"[Draft ID: $draftId] Adjusting draft data.")
+            submissionDraftConnector.adjustDraft(draftId)
+          } else {
+            Future.successful(HttpResponse(OK, ""))
+          }
+
+          adjustDraftIfNotAnAgentUser flatMap { _ =>
+            registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
+          } recover {
+            case e =>
+              logger.error(s"[Draft ID: $draftId][Session ID: ${Session.id(hc)}] call to adjust draft data failed: ${e.getMessage}")
+              createdOptionalDataRequest(request, None)
+          }
     }
   }
 }

@@ -126,7 +126,10 @@ class TaskListControllerSpec extends RegistrationSpecBase {
                 savedUntil,
                 mainSections,
                 additionalSections,
-                isTaskListComplete, Organisation)(request, messages).toString
+                isTaskListComplete,
+                Organisation,
+                s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              )(request, messages).toString
           }
 
           application.stop()
@@ -229,7 +232,9 @@ class TaskListControllerSpec extends RegistrationSpecBase {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation)(request, messages).toString
+              Organisation,
+              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            )(request, messages).toString
         }
 
         application.stop()

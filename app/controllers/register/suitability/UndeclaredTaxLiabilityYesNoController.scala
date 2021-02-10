@@ -18,14 +18,16 @@ package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
 import forms.YesNoFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
-import pages.register.suitability.UndeclaredTaxLiabilityYesNoPage
+import pages.register.suitability.{TrustTaxableYesNoPage, UndeclaredTaxLiabilityYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
+import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.UndeclaredTaxLiabilityYesNoView
 
@@ -37,6 +39,7 @@ class UndeclaredTaxLiabilityYesNoController @Inject()(
                                                        standardActionSets: StandardActionSets,
                                                        navigator: Navigator,
                                                        yesNoFormProvider: YesNoFormProvider,
+                                                       featureFlagService: FeatureFlagService,
                                                        val controllerComponents: MessagesControllerComponents,
                                                        view: UndeclaredTaxLiabilityYesNoView
                                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -66,9 +69,11 @@ class UndeclaredTaxLiabilityYesNoController @Inject()(
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UndeclaredTaxLiabilityYesNoPage, value))
+            answers <- Future.fromTry(request.userAnswers.set(UndeclaredTaxLiabilityYesNoPage, value))
+            updatedAnswers <- Future.fromTry(answers.set(TrustTaxableYesNoPage, value))
+            is5mld <- featureFlagService.is5mldEnabled()
             _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, mode, draftId, is5mldEnabled = is5mld)(updatedAnswers))
         }
       )
   }

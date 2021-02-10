@@ -63,7 +63,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation)(fakeRequest, messages)
+            Organisation,
+            "agentOverviewUrl"
+          )(fakeRequest, messages)
 
           behave like normalPage(applyView, None, "taskList")
 
@@ -89,7 +91,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation)(fakeRequest, messages)
+              Organisation,
+              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
             assertRenderedById(doc, "summaryHeading")
@@ -118,7 +122,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation)(fakeRequest, messages)
+              Organisation,
+              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
             assertNotRenderedById(doc, "summaryHeading")
@@ -148,7 +154,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation)(fakeRequest, messages)
+            Organisation,
+            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+          )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
           assertRenderedById(doc, "saved-until")
@@ -171,7 +179,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent)(fakeRequest, messages)
+            Agent,
+            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+          )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
 
@@ -196,7 +206,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent)(fakeRequest, messages)
+            Agent,
+            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+          )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
 
@@ -221,7 +233,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent)(fakeRequest, messages)
+            Agent,
+            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+          )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
           assertNotRenderedById(doc, "saved-until")

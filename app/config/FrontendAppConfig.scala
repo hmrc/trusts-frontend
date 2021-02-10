@@ -35,7 +35,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   private def loadConfig(key: String): String = configuration.get[String](key)
 
-  val analyticsToken: String = configuration.get[String](s"google-analytics.token")
   val analyticsHost: String = configuration.get[String](s"google-analytics.host")
 
   val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
@@ -71,9 +70,17 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   def agentDetailsFrontendUrl(draftId: String): String = frontendUrl(draftId, "agentDetails")
 
+  def agentDetailsCheckAnswersUrl(draftId: String): String =
+    insertDraftId(configuration.get[String]("urls.agentDetailsCheckAnswers"), draftId)
+
+  lazy val agentDetailsMicroserviceEnabled: Boolean =
+    configuration.get[Boolean]("microservice.services.features.journey.agentDetailsMicroservice.enabled")
+
+  private def insertDraftId(url: String, draftId: String): String = url.replace(":draftId", draftId)
+
   private def frontendUrl(draftId: String, section: String): String = {
     lazy val urlTemplate: String = loadConfig(s"urls.${section}Frontend")
-    def insertDraftId(url: String, draftId: String): String = url.replace(":draftId", draftId)
+
     insertDraftId(urlTemplate, draftId)
   }
 
@@ -88,13 +95,16 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
 
+  lazy val logoutAudit: Boolean =
+    configuration.get[Boolean]("microservice.services.features.auditing.logout")
+
   lazy val ttlInSeconds: Int = configuration.get[Int]("mongodb.registration.ttlSeconds")
 
   lazy val trustsUrl: String = configuration.get[Service]("microservice.services.trusts").baseUrl
 
   lazy val authUrl: String = configuration.get[Service]("microservice.services.auth").baseUrl
 
-  lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl + "/trusts-store"
+  lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl
 
   def languageMap: Map[String, Lang] = Map(
     "english" -> Lang(ENGLISH),

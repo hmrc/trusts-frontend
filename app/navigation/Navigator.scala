@@ -26,24 +26,26 @@ import play.api.mvc.Call
 import uk.gov.hmrc.auth.core.AffinityGroup
 
 @Singleton
-class Navigator @Inject()(
-                         config: FrontendAppConfig
-                         ) {
+class Navigator @Inject()(config: FrontendAppConfig) {
 
   private def defaultRoute: PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case _ => _ => _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
-  protected def route(draftId: String): PartialFunction[Page, AffinityGroup => UserAnswers => Call] =
-    MatchingRoutes.route(draftId, config) orElse
-      SuitabilityRoutes.route(draftId) orElse
+  protected def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] =
+    MatchingRoutes.route(draftId, config, is5mldEnabled) orElse
+      SuitabilityRoutes.route(draftId, is5mldEnabled) orElse
       defaultRoute
 
-  def nextPage(page: Page, mode: Mode = NormalMode, draftId: String, af :AffinityGroup = AffinityGroup.Organisation): UserAnswers => Call = mode match {
+  def nextPage(page: Page,
+               mode: Mode = NormalMode,
+               draftId: String,
+               af: AffinityGroup = AffinityGroup.Organisation,
+               is5mldEnabled: Boolean = false): UserAnswers => Call = mode match {
     case NormalMode =>
-      route(draftId)(page)(af)
+      route(draftId, is5mldEnabled)(page)(af)
     case CheckMode =>
-      route(draftId)(page)(af)
+      route(draftId, is5mldEnabled)(page)(af)
   }
 
 }

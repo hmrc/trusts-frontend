@@ -9,9 +9,9 @@ unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
 #timeout dialog
-timeout.title=Your application will time out soon
-timeout.message=We will reset your application if you do not respond in
-timeout.keep-alive-button=Continue application
+timeout.title= Your application will time out soon
+timeout.message= We will sign you out if you do not respond in
+timeout.keep-alive-button= Continue application
 
 error.browser.title.prefix = Error:
 error.boolean = Please give an answer
@@ -28,9 +28,10 @@ error.required = Please enter a value
 error.summary.title = There is a problem
 error.postcodeInvalid = Enter a real postcode
 
-session_expired.title = For your security, this service has been reset
-session_expired.heading = For your security, this service has been reset
-session_expired.guidance = The details you have given have been deleted because you did not continue the service for 1 hour.
+session_expired.title = For your security, we signed you out
+session_expired.heading = For your security, we signed you out
+session_expired.guidance = This is because you have been inactive on the service for 15 minutes.
+session_expired.guidance.2 = You will need to sign in to continue registering the trust.
 
 site.back = Back
 site.delete = Remove
@@ -57,6 +58,7 @@ site.confirm-send = Confirm and send
 site.address = Address
 site.utr = Unique Taxpayer Reference
 site.sign_out = Sign out
+site.sign_in = Sign in
 site.print-or-save = Print or save this page
 
 featureNotAvailable.title = This part of the online service is not available yet
@@ -109,92 +111,22 @@ trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
-governedInsideTheUK.title = Is the trust governed by UK law?
-governedInsideTheUK.heading = Is the trust governed by UK law?
 governedInsideTheUK.checkYourAnswersLabel = Is the trust governed by UK law?
-governedInsideTheUK.error.required = Select yes if the trust is governed by UK law
-
-countryGoverningTrust.title = What country governs the trust?
-countryGoverningTrust.heading = What country governs the trust?
 countryGoverningTrust.checkYourAnswersLabel = What country governs the trust?
-countryGoverningTrust.error.required = Enter the country that governs the trust
-countryGoverningTrust.error.length = The country that governs the trust must be 100 characters or less
-countryGoverningTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
-
-administrationInsideUK.title = Is the trust’s general administration done in the UK?
-administrationInsideUK.heading = Is the trust’s general administration done in the UK?
 administrationInsideUK.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
-administrationInsideUK.error.required = Select yes if the trust’s general administration is done in the UK
-
-countryAdministeringTrust.title = In what country is the trust administered?
-countryAdministeringTrust.heading = In what country is the trust administered?
 countryAdministeringTrust.checkYourAnswersLabel = In what country is the trust administered?
-countryAdministeringTrust.error.required = Enter the country the trust is administered in
-countryAdministeringTrust.error.length = The country that is administered in must be 100 characters or less
-countryAdministeringTrust.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
-
-trustResidentInUK.title = Is the trust resident in the UK?
-trustResidentInUK.heading = Is the trust resident in the UK?
 trustResidentInUK.checkYourAnswersLabel = Is the trust resident in the UK?
-trustResidentInUK.error.required = Select yes if the trust is resident in the UK
-trustResidentInTheUK.yes = Based on your answers, the trust is resident in the UK
-trustResidentInTheUK.no = Based on your answers, the trust is not resident in the UK
-
-establishedUnderScotsLaw.title = Is the trust established under Scots Law?
-establishedUnderScotsLaw.heading = Is the trust established under Scots Law?
 establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
-establishedUnderScotsLaw.error.required = Select yes if the trust was established under Scots Law
-
-registeringTrustFor5A.title = Are you registering the trust because the settlor benefits from the trust’s assets?
-registeringTrustFor5A.heading = Are you registering the trust because the settlor benefits from the trust’s assets?
 registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust because the settlor benefits from the trust’s assets?
-registeringTrustFor5A.hint = This relates to Schedule 5A of the Taxation of Chargeable Gains Act 1992.
-registeringTrustFor5A.error.required = Select yes if the settlor benefits from the trust’s assets
-
-trustResidentOffshore.title = Has the trust ever been resident offshore?
-trustResidentOffshore.heading = Has the trust ever been resident offshore?
 trustResidentOffshore.checkYourAnswersLabel = Has the trust ever been resident offshore?
-trustResidentOffshore.error.required = Select yes if the trust has ever been resident offshore
-
-trustPreviouslyResident.title = In what country was the trust previously resident?
-trustPreviouslyResident.heading = In what country was the trust previously resident?
 trustPreviouslyResident.checkYourAnswersLabel = In what country was the trust previously resident?
-trustPreviouslyResident.error.required = Enter the country the trust was previously resident in
-trustPreviouslyResident.error.length = The country the trust was previously resident in must be 100 characters or less
-trustPreviouslyResident.error.invalidCharacters = The country that governs the trust must only include letters a to z, apostrophes, commas, full stops, hyphens, round brackets and spaces
-
-nonresidentType.title = What is the non-resident type?
-nonresidentType.heading = What is the non-resident type?
-nonresidentType.non-resident-domiciled = Settlor domiciled trustees are non-resident
-nonresidentType.non-resident-non-domiciled = Settlor non-domiciled becomes domiciled then resident
-nonresidentType.non-resident-cease-resident = Trustees cease to be resident
 nonresidentType.checkYourAnswersLabel = What is the non-resident type?
-nonresidentType.error.required = Select the non-resident type
-
-inheritanceTaxAct.title = Are you registering the trust for Inheritance Tax reasons?
-inheritanceTaxAct.heading = Are you registering the trust for Inheritance Tax reasons?
 inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
-inheritanceTaxAct.hint = This relates to Section 218 of the Inheritance Tax Act 1984.
-inheritanceTaxAct.error.required = Select yes if you are registering the trust for Inheritance Tax reasons
-
-agentOtherThanBarrister.title = Has an agent who is not a barrister created this trust?
-agentOtherThanBarrister.heading = Has an agent who is not a barrister created this trust?
 agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
-agentOtherThanBarrister.error.required = Select yes if an agent who is not a barrister created this trust
-
-whenTrustSetup.title = When was the trust created?
-whenTrustSetup.heading = When was the trust created?
 whenTrustSetup.checkYourAnswersLabel = When was the trust created?
-whenTrustSetup.error.required.all = Enter the date the trust was created
-whenTrustSetup.error.required.two = The date the trust was created must include a {0} and a {1}
-whenTrustSetup.error.required = The date the trust was created must include a {0}
-
-whenTrustSetup.error.invalid = Enter a real date the trust was created
-whenTrustSetup.error.future = The date the trust was created must be today or in the past
-whenTrustSetup.error.past = The date the trust was created must be after 31 December 1499
-whenTrustSetup.error.beforeDateOfDeath = The date the trust was created must be on or after the settlor’s date of death
-whenTrustSetup.text = This is the date the trust deed was signed. For will trusts use the settlor’s date of death.
-whenTrustSetup.hint = For example, 31 3 2015.
+trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
+trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust listed on a European Economic Area (EEA) register?
+trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?
@@ -331,6 +263,14 @@ removeDraftYesNo.title = Are you sure you want to remove the saved registration?
 removeDraftYesNo.heading = Are you sure you want to remove {0}?
 removeDraftYesNo.error.required = Select yes if you want to remove the saved registration
 
+suitability.expressTrust.title = Are you registering an express trust?
+suitability.expressTrust.heading = Are you registering an express trust?
+suitability.expressTrust.p1 = An express trust is a trust created by a settlor, usually in the form of a document like a written deed of trust.
+suitability.expressTrust.p2 = Express trusts can be created:
+suitability.expressTrust.bullet1 = by someone’s will after they have died
+suitability.expressTrust.bullet2 = during someone’s lifetime, which is known as inter-vivos
+suitability.expressTrust.error.required = Select yes or no to tell us if you are registering an express trust.
+
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?
 suitability.taxLiabilityInCurrentTaxYear.error.required = Select yes if the trust has any tax liability in the current tax year
@@ -344,6 +284,22 @@ suitability.beforeYouContinue.p2 = You can find out more:
 suitability.beforeYouContinue.link1 = Who should register (opens in a new window or tab)
 suitability.beforeYouContinue.link2 = Trusts and taxes (opens in a new window or tab)
 suitability.beforeYouContinue.continue = Continue to register the trust
+
+suitability.beforeYouContinue.nonTaxable.title = Before you continue
+suitability.beforeYouContinue.nonTaxable.heading = Before you continue
+suitability.beforeYouContinue.nonTaxable.p1 = After you have registered the trust, you will get a Unique Reference Number (URN) for the trust the next time you log in to the service.
+suitability.beforeYouContinue.nonTaxable.p2 = You can find out more about:
+suitability.beforeYouContinue.nonTaxable.link1 = Who should register the trust (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.link2 = Trusts and taxes (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.continue = Continue to register the trust
+
+suitability.beforeYouContinue.nonTaxable.agent.title = Before you continue
+suitability.beforeYouContinue.nonTaxable.agent.heading = Before you continue
+suitability.beforeYouContinue.nonTaxable.agent.p1 = After you have registered the trust, a letter containing the Unique Reference Number (URN) for the trust will be sent to the appointed lead trustee.
+suitability.beforeYouContinue.nonTaxable.agent.p2 = You can find out more about:
+suitability.beforeYouContinue.nonTaxable.agent.link1 = Who should register the trust (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.agent.link2 = Trusts and taxes (opens in a new window or tab)
+suitability.beforeYouContinue.nonTaxable.agent.continue = Continue to register the trust
 
 suitability.undeclaredTaxLiability.title = Does the trust have any undeclared tax liability since 10 July 2017?
 suitability.undeclaredTaxLiability.heading = Does the trust have any undeclared tax liability since 10 July 2017?
@@ -381,6 +337,13 @@ settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
 setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
 setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
+
+5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Did {0} have UK nationality?
+5mld.countryOfNationality.checkYourAnswersLabel = What was {0}’s country of nationality?
+5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s last known country of residence?
+5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Was {0} a UK resident?
+5mld.countryOfResidence.checkYourAnswersLabel = What was {0}’s country of residence?
 
 confirmation.title = Registration received
 confirmation.heading1 = Registration received
@@ -488,11 +451,12 @@ answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
 answerPage.section.assets.heading = Assets
 answerPage.section.moneyAsset.subheading = Money
-answerPage.section.shareAsset.subheading = Share
-answerPage.section.propertyOrLandAsset.subheading = Property or land
-answerPage.section.partnershipAsset.subheading = Partnership
-answerPage.section.businessAsset.subheading = Business
-answerPage.section.otherAsset.subheading = Other
+answerPage.section.shareAsset.subheading = Share {0}
+answerPage.section.propertyOrLandAsset.subheading = Property or land {0}
+answerPage.section.partnershipAsset.subheading = Partnership {0}
+answerPage.section.businessAsset.subheading = Business {0}
+answerPage.section.otherAsset.subheading = Other {0}
+answerPage.section.nonEeaBusinessAsset.subheading = Non-EEA Company {0}
 answerPage.agentClientRef = Client reference number: {0}
 answerPage.section.trustType.heading = Trust type
 
@@ -519,6 +483,17 @@ settlorIndividualIDCard.checkYourAnswersLabel = What are {0}’s ID card details
 settlorIndividualIDCardYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 settlorIndividualPassport.checkYourAnswersLabel = What are {0}’s passport details?
 settlorIndividualPassportYesNo.checkYourAnswersLabel = Do you know {0}’s passport details?
+settlorIndividualCountryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+settlorIndividualUkCountryOfNationalityYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+settlorIndividualCountryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+settlorIndividualCountryOfResidencyYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+settlorIndividualUkCountryOfResidencyYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+settlorIndividualCountryOfResidency.checkYourAnswersLabel = What is {0}’s country of residence?
+settlorIndividualMentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
+
+settlorBusiness.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+settlorBusiness.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+settlorBusiness.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
 settlorBusinessName.checkYourAnswersLabel = What is the business’s name?
 settlorBusinessUtrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
@@ -561,6 +536,9 @@ businessProtector.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Re
 businessProtector.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 businessProtector.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 businessProtector.address.checkYourAnswersLabel = What is {0}’s address?
+businessProtector.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+businessProtector.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+businessProtector.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
 individualProtector.name.checkYourAnswersLabel = What is the individual’s name?
 individualProtector.dateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
@@ -587,6 +565,14 @@ otherIndividual.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s
 otherIndividual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
 otherIndividual.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 otherIndividual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+
+otherIndividual.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+otherIndividual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+otherIndividual.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+otherIndividual.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+otherIndividual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+otherIndividual.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+otherIndividual.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
 
 employerFinancedRetirementBenefitsSchemeYesNo.checkYourAnswersLabel = Is this an employer-financed retirement benefits scheme?
 employerFinancedRetirementBenefitsSchemeStartDate.checkYourAnswersLabel = When did the employer-financed retirement benefits scheme start?
@@ -711,6 +697,14 @@ individualBeneficiaryIDCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}�
 individualBeneficiaryIDCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
 individualBeneficiaryVulnerableYesNo.checkYourAnswersLabel = Has a vulnerable person election form (VPE1) been submitted to HMRC for {0}?
 
+individualBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+individualBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+individualBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+individualBeneficiary.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+individualBeneficiary.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+individualBeneficiary.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+individualBeneficiary.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
+
 charity.name.checkYourAnswersLabel = What is the charity’s name?
 charity.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
@@ -718,6 +712,10 @@ charity.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 charity.addressInTheUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 charity.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 charity.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+
+charity.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+charity.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+charity.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
 trustBeneficiaryName.checkYourAnswersLabel = What is the name of the trust?
 trustBeneficiaryDiscretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
@@ -727,6 +725,10 @@ trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the
 trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
 trustBeneficiaryUtr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
 trustBeneficiary.checkDetails.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR)?
+
+trust.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+trust.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+trust.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 
 companyBeneficiary.name.checkYourAnswersLabel = What is the company’s name?
 companyBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
@@ -745,6 +747,10 @@ employmentRelatedBeneficiary.description.checkYourAnswersLabel = What is the des
 employmentRelatedBeneficiary.numberOfBeneficiaries.checkYourAnswersLabel = What is the approximate number of beneficiaries held in the trust?
 employmentRelatedBeneficiary.checkDetails.heading = Check employment related beneficiary details
 
+employmentRelatedBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+employmentRelatedBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+employmentRelatedBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 otherBeneficiary.description.checkYourAnswersLabel = What is the description of the other beneficiary?
 otherBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 otherBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
@@ -753,8 +759,18 @@ otherBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in th
 otherBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 otherBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
 
+otherBeneficiary.ukResidentYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+otherBeneficiary.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+otherBeneficiary.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
+
+trustee.individualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
+leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+# Following 2 are no longer used in register-trust-trustee-frontend in production as of (08/02/2021).
+# Can remove them once we are sure no saved registrations still reference them (~09/03/2021)
 trusteeIndividualOrBusiness.checkYourAnswersLabel = Is the trustee an individual or a business?
 leadTrusteeIndividualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+
 trustee.individual.name.checkYourAnswersLabel = What is the trustee’s name?
 trustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
 trustee.individual.ninoYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
@@ -769,6 +785,14 @@ trustee.individual.passportDetailsYesNo.checkYourAnswersLabel = Do you know {0}�
 trustee.individual.passportDetails.checkYourAnswersLabel = What are {0}’s passport details?
 trustee.individual.idCardDetailsYesNo.checkYourAnswersLabel = Do you know {0}’s ID card details?
 trustee.individual.idCardDetails.checkYourAnswersLabel = What are {0}’s ID card details?
+trustee.individual.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+trustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+trustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+trustee.individual.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+trustee.individual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+trustee.individual.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+trustee.individual.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
+
 trustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
 trustee.organisation.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?
 trustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
@@ -776,7 +800,9 @@ trustee.organisation.addressYesNo.checkYourAnswersLabel = Do you know {0}’s ad
 trustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 trustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 trustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+
 leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
+
 leadTrustee.organisation.ukRegisteredYesNo.checkYourAnswersLabel = Is this trustee a UK registered company?
 leadTrustee.organisation.name.checkYourAnswersLabel = What is the business’s name?
 leadTrustee.organisation.utr.checkYourAnswersLabel = What is {0}’s Unique Taxpayer Reference (UTR) number?
@@ -786,6 +812,9 @@ leadTrustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0
 leadTrustee.organisation.emailYesNo.checkYourAnswersLabel = Do you know {0}’s email address?
 leadTrustee.organisation.email.checkYourAnswersLabel = What is {0}’s email address?
 leadTrustee.organisation.telephoneNumber.checkYourAnswersLabel = What is {0}’s telephone number?
+leadTrustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+leadTrustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 leadTrustee.individual.ninoYesNo.checkYourAnswersLabel = Does {0} have a National Insurance number?
 leadTrustee.individual.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 leadTrustee.individual.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
@@ -799,6 +828,11 @@ leadTrustee.individual.telephoneNumber.checkYourAnswersLabel = What is {0}’s t
 leadTrustee.individual.name.checkYourAnswersLabel = What is the lead trustee’s name?
 leadTrustee.individual.email.checkYourAnswersLabel = What is {0}’s email address?
 leadTrustee.individual.dateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
+leadTrustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+leadTrustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+leadTrustee.individual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Is {0} a UK resident?
+leadTrustee.individual.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+
 
 whatKindOfAsset.Money = Money
 whatKindOfAsset.PropertyOrLand = Property or land
@@ -850,3 +884,18 @@ partnership.startDate.checkYourAnswersLabel = When did the partnership start?
 
 other.description.checkYourAnswersLabel = What is the description of the asset?
 other.value.checkYourAnswersLabel = What is the current value of {0}?
+
+nonEeaBusiness.name.checkYourAnswersLabel = What is the company’s name?
+nonEeaBusiness.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
+nonEeaBusiness.ukAddress.checkYourAnswersLabel = What is {0}’s address?
+nonEeaBusiness.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+nonEeaBusiness.governingCountry.checkYourAnswersLabel = Which country’s laws govern {0}?
+nonEeaBusiness.startDate.checkYourAnswersLabel = When did the trust start their ownership or controlling interest in {0}?
+
+individualProtector.5mld.legallyCapableYesNo.checkYourAnswersLabel = Does {0} have mental capacity at time of registration?
+individualProtector.5mld.nationality.checkYourAnswersLabel = What is {0}’s country of nationality?
+individualProtector.5mld.nationalityUkYesNo.checkYourAnswersLabel = Does {0} have UK nationality?
+individualProtector.5mld.nationalityYesNo.checkYourAnswersLabel = Do you know {0}’s country of nationality?
+individualProtector.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
+individualProtector.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+individualProtector.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
