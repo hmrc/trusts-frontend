@@ -16,10 +16,8 @@
 
 package controllers.register
 
-import config.FrontendAppConfig
 import controllers.actions._
 import controllers.actions.register._
-import javax.inject.Inject
 import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
@@ -28,7 +26,7 @@ import navigation.registration.TaskListNavigator
 import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -36,6 +34,7 @@ import utils.{DateFormatter, TaxLiabilityHelper}
 import viewmodels.Task
 import views.html.register.TaskListView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListController @Inject()(
@@ -48,8 +47,7 @@ class TaskListController @Inject()(
                                     taskListNavigator: TaskListNavigator,
                                     requireDraft: RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
-                                    standardAction: StandardActionSets,
-                                    appConfig: FrontendAppConfig
+                                    standardAction: StandardActionSets
                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
