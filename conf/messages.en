@@ -880,6 +880,10 @@ trustee.organisation.addressYesNo.checkYourAnswersLabel = Do you know {0}’s ad
 trustee.organisation.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 trustee.organisation.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 trustee.organisation.internationalAddress.checkYourAnswersLabel = What is {0}’s address?
+trustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residency?
+trustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
+trustee.organisation.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+
 
 leadTrustee.individualOrBusiness.checkYourAnswersLabel = Is the lead trustee an individual or a business?
 
