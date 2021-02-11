@@ -28,7 +28,7 @@ case class Registration(matchData: Option[MatchData],
                         correspondence: Correspondence,
                         declaration: Declaration,
                         trust: JsValue = Json.obj(),
-                        agentDetails: JsValue = Json.obj())
+                        agentDetails: Option[JsValue])
 
 object Registration {
  implicit val registrationReads : Format[Registration] = Json.format[Registration]
