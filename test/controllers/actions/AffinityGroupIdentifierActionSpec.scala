@@ -48,7 +48,6 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
   private val trustsTaxableEnrolment = Enrolments(Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", utr)), "Activated", None)))
   private val trustsNonTaxableEnrolment = Enrolments(Set(Enrolment("HMRC-TERSNT-ORG", List(EnrolmentIdentifier("URN", utr)), "Activated", None)))
 
-
   "invoking an AuthenticatedIdentifier" when {
     "an Agent user" when {
       "hasn't enrolled an Agent Services Account" must {

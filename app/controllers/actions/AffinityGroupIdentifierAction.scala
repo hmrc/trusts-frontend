@@ -53,22 +53,18 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     val hmrcAgentEnrolmentKey = "HMRC-AS-AGENT"
     val arnIdentifier = "AgentReferenceNumber"
 
-    enrolments.getEnrolment(hmrcAgentEnrolmentKey).fold(
-      redirectToCreateAgentServicesAccount("missing HMRC-AS-AGENT enrolment group")
-    ) {
-      agentEnrolment =>
-        agentEnrolment.getIdentifier(arnIdentifier).fold(
-          redirectToCreateAgentServicesAccount("missing agent reference number")
-        ) {
-          enrolmentIdentifier =>
-            val arn = enrolmentIdentifier.value
+    case class AgentIdentifier(enrolment: Enrolment, arn: String)
 
-            if (arn.isEmpty) {
-              redirectToCreateAgentServicesAccount("agent reference number is empty")
-            } else {
-              action(IdentifierRequest(request, internalId, AffinityGroup.Agent, enrolments, Some(arn)))
-            }
-        }
+    val e = for {
+      enrolment   <- enrolments.getEnrolment(hmrcAgentEnrolmentKey)
+      identifier  <- enrolment.getIdentifier(arnIdentifier)
+      _           <- if(identifier.value.nonEmpty) Some(identifier) else None
+    } yield AgentIdentifier(enrolment, identifier.value)
+
+    e.fold {
+      redirectToCreateAgentServicesAccount("Agent not enrolled for HMRC-AS-AGENT")
+    }{ x =>
+      action(IdentifierRequest(request, internalId, AffinityGroup.Agent, enrolments, Some(x.arn)))
     }
   }
 
@@ -83,46 +79,26 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     val continueWithoutEnrolment =
       action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
 
-    val taxableOrgEnrolmentKey = "HMRC-TERS-ORG"
-    val taxableOrgIdentifier = "SAUTR"
-    val nonTaxableOrgEnrolmentKey = "HMRC-TERSNT-ORG"
-    val nonTaxableOrgIdentifier = "URN"
+    val taxEnrolment = "HMRC-TERS-ORG"
+    val taxIdentifier = "SAUTR"
+    val nonTaxEnrolment = "HMRC-TERSNT-ORG"
+    val nonTaxIdentifier = "URN"
 
-    val taxableEnrolment = enrolments.getEnrolment(taxableOrgEnrolmentKey).isDefined
-    val nonTaxableEnrolment = enrolments.getEnrolment(nonTaxableOrgEnrolmentKey).isDefined
+    val enrolment: Option[Enrolment] = for {
+      enrolment <- enrolments.getEnrolment(taxEnrolment).orElse(enrolments.getEnrolment(nonTaxEnrolment))
+      id        <- enrolment.getIdentifier(taxIdentifier).orElse(enrolment.getIdentifier(nonTaxIdentifier))
+      _         <- if(id.value.nonEmpty) Some(id) else None
+    } yield enrolment
 
-    (taxableEnrolment, nonTaxableEnrolment) match {
-      case (true, _) => {
-        logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] enrolment $taxableOrgEnrolmentKey")
-        enrolmentCheck(taxableOrgEnrolmentKey, taxableOrgIdentifier, hc, continueWithoutEnrolment, enrolments)
-      }
-      case (false, true) => {
-        logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] enrolment $nonTaxableOrgEnrolmentKey")
-        enrolmentCheck(nonTaxableOrgEnrolmentKey, nonTaxableOrgIdentifier, hc, continueWithoutEnrolment, enrolments)
-      }
-      case (_, _) => continueWithoutEnrolment
+    enrolment.fold {
+      logger.info(s"[Session ID: ${Session.id(hc)}] user is not enrolled for Trusts, continuing to register online")
+      continueWithoutEnrolment
+    } {
+      x =>
+        logger.info(s"[Session ID: ${Session.id(hc)}] user is already enrolled with ${x.key}, redirecting to maintain")
+        Future.successful(Redirect(config.maintainATrustFrontendUrl))
     }
 
-  }
-
-  private def enrolmentCheck(enrolmentKey: String, identifier: String, hc: HeaderCarrier, continueWithoutEnrolment: Future[Result], enrolments: Enrolments) = {
-    enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment) {
-      enrolment =>
-        enrolment.getIdentifier(identifier).fold {
-          logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] user is not enrolled with $enrolmentKey, continuing to registered online")
-          continueWithoutEnrolment
-        } {
-          enrolmentIdentifier =>
-            val identifierValue = enrolmentIdentifier.value
-            if (identifierValue.isEmpty) {
-              logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] no $enrolmentIdentifier for enrolment value")
-              continueWithoutEnrolment
-            } else {
-              logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] user is already enrolled with $enrolmentKey, redirecting to maintain")
-              Future.successful(Redirect(config.maintainATrustFrontendUrl))
-            }
-        }
-    }
   }
 
   def apply(request: Request[A]): Future[Result] = {
