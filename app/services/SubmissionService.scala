@@ -72,11 +72,11 @@ class DefaultSubmissionService @Inject()(
     }
   }
 
-  private def buildRegistration(userAnswers: UserAnswers, fiveMldEnabled: Boolean, correspondenceAddress: AddressType, trustName: String)
+  private def buildRegistration(userAnswers: UserAnswers, is5mldEnabled: Boolean, correspondenceAddress: AddressType, trustName: String)
                                (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
-    registrationMapper.build(userAnswers, correspondenceAddress, trustName).flatMap {
+    registrationMapper.build(userAnswers, correspondenceAddress, trustName, request.affinityGroup).flatMap {
       case Some(registration) =>
-        addDraftRegistrationSections(userAnswers, fiveMldEnabled, registration)
+        addDraftRegistrationSections(userAnswers, is5mldEnabled, registration)
       case _ =>
         logger.error(s"[buildRegistration][Session ID: ${Session.id(hc)}] Unable to generate registration to submit.")
         auditService.auditRegistrationPreparationFailed(userAnswers, "Error mapping UserAnswers to Registration.")
