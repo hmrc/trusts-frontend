@@ -16,9 +16,6 @@
 
 package controllers.register
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
@@ -35,6 +32,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.Task
 import views.html.register.TaskListView
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
 class TaskListControllerSpec extends RegistrationSpecBase {
@@ -127,8 +126,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
                 mainSections,
                 additionalSections,
                 isTaskListComplete,
-                Organisation,
-                s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+                Organisation
               )(request, messages).toString
           }
 
@@ -232,8 +230,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(request, messages).toString
         }
 

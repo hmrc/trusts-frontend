@@ -22,7 +22,6 @@ import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
 import pages._
 import pages.register._
-import pages.register.agents._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
@@ -32,12 +31,6 @@ trait UserAnswersGenerator extends TryValues {
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(DeclarationPage.type, JsValue)] ::
-    arbitrary[(AgentInternationalAddressPage.type, JsValue)] ::
-    arbitrary[(AgentUKAddressPage.type, JsValue)] ::
-    arbitrary[(AgentAddressYesNoPage.type, JsValue)] ::
-    arbitrary[(AgentNamePage.type, JsValue)] ::
-    arbitrary[(AgentInternalReferencePage.type, JsValue)] ::
-    arbitrary[(AgentTelephoneNumberPage.type, JsValue)] ::
     arbitrary[(PostcodeForTheTrustPage.type, JsValue)] ::
     arbitrary[(WhatIsTheUTRPage.type, JsValue)] ::
     arbitrary[(TrustHaveAUTRPage.type, JsValue)] ::

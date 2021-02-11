@@ -31,15 +31,16 @@ import views.html.register.agents.AgentOverviewView
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
-                                        standardActionSets: StandardActionSets,
-                                        identify: RegistrationIdentifierAction,
-                                        hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                        registrationsRepository: RegistrationsRepository,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: AgentOverviewView,
-                                        submissionDraftConnector: SubmissionDraftConnector,
-                                        taskListNavigator: TaskListNavigator
+class AgentOverviewController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         standardActionSets: StandardActionSets,
+                                         identify: RegistrationIdentifierAction,
+                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
+                                         registrationsRepository: RegistrationsRepository,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: AgentOverviewView,
+                                         submissionDraftConnector: SubmissionDraftConnector,
+                                         taskListNavigator: TaskListNavigator
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions: ActionBuilder[IdentifierRequest, AnyContent] = identify andThen hasAgentAffinityGroup()
@@ -53,7 +54,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
   }
 
   def onSubmit(): Action[AnyContent] = actions {
-      Redirect(controllers.register.routes.CreateDraftRegistrationController.create())
+    Redirect(controllers.register.routes.CreateDraftRegistrationController.create())
   }
 
   def continue(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithData(draftId).async {
@@ -61,7 +62,7 @@ class AgentOverviewController @Inject()(override val messagesApi: MessagesApi,
 
       (for {
         _ <- submissionDraftConnector.adjustDraft(draftId)
-        address <- registrationsRepository.getAgentAddress(request.userAnswers)
+        address <- registrationsRepository.getAgentAddress(draftId)
       } yield {
         if (address.isEmpty) {
           Redirect(taskListNavigator.agentDetailsJourneyUrl(draftId))

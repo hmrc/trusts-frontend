@@ -69,7 +69,7 @@ class PostcodeForTheTrustController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PostcodeForTheTrustPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-            redirect <- matchingService.matching(updatedAnswers, draftId, request.isAgent, mode)
+            redirect <- matchingService.matching(updatedAnswers, draftId, request.isAgent)
           } yield redirect
         }
       )

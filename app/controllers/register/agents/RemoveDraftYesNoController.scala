@@ -18,12 +18,10 @@ package controllers.register.agents
 
 import controllers.actions._
 import forms.YesNoFormProvider
-import javax.inject.Inject
-import models.core.UserAnswers
 import models.requests.RegistrationDataRequest
 import play.api.Logging
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -31,6 +29,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.Session.id
 import views.html.register.agents.RemoveDraftYesNoView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RemoveDraftYesNoController @Inject()(
@@ -54,7 +53,7 @@ class RemoveDraftYesNoController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      clientReferenceNumber(draftId, request.userAnswers).map {
+      clientReferenceNumber(draftId).map {
         case Left(redirect) => redirect
         case Right(crn) => Ok(view(form, draftId, crn))
       }
@@ -65,7 +64,7 @@ class RemoveDraftYesNoController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          clientReferenceNumber(draftId, request.userAnswers).map {
+          clientReferenceNumber(draftId).map {
             case Left(redirect) => redirect
             case Right(crn) => BadRequest(view(formWithErrors, draftId, crn))
           },
@@ -83,9 +82,9 @@ class RemoveDraftYesNoController @Inject()(
       )
   }
 
-  private def clientReferenceNumber(draftId: String, userAnswers: UserAnswers)
-                                   (implicit hc: HeaderCarrier, messages: Messages): Future[Either[Result, String]] = {
-    registrationsRepository.getClientReference(userAnswers).map {
+  private def clientReferenceNumber(draftId: String)
+                                   (implicit hc: HeaderCarrier): Future[Either[Result, String]] = {
+    registrationsRepository.getClientReference(draftId).map {
       case Some(clientRef) =>
         Right(clientRef)
       case _ =>

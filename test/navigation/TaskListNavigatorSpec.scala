@@ -17,11 +17,7 @@
 package navigation
 
 import base.RegistrationSpecBase
-import config.FrontendAppConfig
-import controllers.register.agents.routes.AgentInternalReferenceController
-import models.NormalMode
 import navigation.registration.TaskListNavigator
-import play.api.Configuration
 
 class TaskListNavigatorSpec extends RegistrationSpecBase {
 
@@ -86,31 +82,9 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
     }
 
     "for agent details task" when {
-
-      val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
-
-      def fakeAppConfig(enabled: Boolean): FrontendAppConfig = {
-        new FrontendAppConfig(config) {
-          override lazy val agentDetailsMicroserviceEnabled: Boolean = enabled
-        }
-      }
-
-      "agent details microservice enabled" must {
-        "go to agent details service" in {
-          val appConfig = fakeAppConfig(true)
-          val navigator: TaskListNavigator = new TaskListNavigator(appConfig)
-          navigator.agentDetailsJourneyUrl(fakeDraftId) mustBe
-            appConfig.agentDetailsFrontendUrl(fakeDraftId)
-        }
-      }
-
-      "agent details microservice not enabled" must {
-        "go to AgentInternalReferenceController" in {
-          val appConfig = fakeAppConfig(false)
-          val navigator: TaskListNavigator = new TaskListNavigator(appConfig)
-          navigator.agentDetailsJourneyUrl(fakeDraftId) mustBe
-            AgentInternalReferenceController.onPageLoad(NormalMode, fakeDraftId).url
-        }
+      "go to agent details service" in {
+        navigator.agentDetailsJourneyUrl(fakeDraftId) mustBe
+          fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
       }
     }
   }

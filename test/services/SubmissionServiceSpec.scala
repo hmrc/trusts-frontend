@@ -86,9 +86,9 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(OK, ""))
 
-    override def getAgentAddress(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[AddressType]] = Future.successful(None)
+    override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] = Future.successful(None)
 
-    override def getClientReference(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[String]] = Future.successful(None)
+    override def getClientReference(draftId: String)(implicit hc: HeaderCarrier): Future[Option[String]] = Future.successful(None)
   }
 
   private val auditService : AuditService = injector.instanceOf[FakeAuditService]
@@ -138,7 +138,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
       "must be able to submit data when all data available for registration by agent" in {
 
-        val userAnswers = TestUserAnswers.withAgent(newTrustUserAnswers)
+        val userAnswers = newTrustUserAnswers
 
         when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))

@@ -20,8 +20,6 @@ import models.core.pages.FullName
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-import java.time.LocalDate
-
 /**
   * Trust Registration API Schema - definitions models below
   */
@@ -30,7 +28,7 @@ case class Registration(matchData: Option[MatchData],
                         correspondence: Correspondence,
                         declaration: Declaration,
                         trust: JsValue = Json.obj(),
-                        agentDetails: Option[AgentDetails] = None)
+                        agentDetails: JsValue = Json.obj())
 
 object Registration {
  implicit val registrationReads : Format[Registration] = Json.format[Registration]
@@ -61,14 +59,4 @@ case class Declaration(name: FullName,
 
 object Declaration {
   implicit val declarationFormat: Format[Declaration] = Json.format[Declaration]
-}
-
-case class AgentDetails(arn: String,
-                        agentName: String,
-                        agentAddress: AddressType,
-                        agentTelephoneNumber: String,
-                        clientReference: String)
-
-object AgentDetails {
-  implicit val agentDetailsFormat: Format[AgentDetails] = Json.format[AgentDetails]
 }

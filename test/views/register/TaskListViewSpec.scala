@@ -16,9 +16,6 @@
 
 package views.register
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import controllers.register.agents.routes
 import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress
@@ -28,6 +25,8 @@ import viewmodels.Task
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.register.TaskListView
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
 class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
@@ -64,8 +63,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation,
-            "agentOverviewUrl"
+            Organisation
           )(fakeRequest, messages)
 
           behave like normalPage(applyView, None, "taskList")
@@ -92,8 +90,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
@@ -123,8 +120,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
@@ -155,8 +151,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Organisation
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -180,8 +175,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -207,8 +201,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -216,7 +209,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           assertAttributeValueForElement(
             doc.getElementById("agent-details"),
             "href",
-            routes.AgentAnswerController.onPageLoad(fakeDraftId).url
+            fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
           )
         }
       }
@@ -234,8 +227,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)

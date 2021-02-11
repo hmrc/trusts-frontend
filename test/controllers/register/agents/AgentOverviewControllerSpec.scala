@@ -19,12 +19,10 @@ package controllers.register.agents
 import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
 import controllers.register.routes._
-import models.core.UserAnswers
 import models.core.http.AddressType
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import pages.register.agents.AgentTelephoneNumberPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -122,13 +120,9 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
       "redirect to registration progress page" when {
         "draft has completed agent details and data did not need to be adjusted to conform with the new microservices" in {
 
-          val telephoneNumber: String = "+441234567890"
-
-          def userAnswers: UserAnswers = emptyUserAnswers.set(AgentTelephoneNumberPage, telephoneNumber).success.value
-
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
 
-          val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent)
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
             .overrides(bind[SubmissionDraftConnector].toInstance(mockSubmissionDraftConnector))
             .build()
 
