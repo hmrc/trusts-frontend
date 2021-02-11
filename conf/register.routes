@@ -12,8 +12,6 @@ GET        /language/:lang                                                      
 
 GET        /this-service-has-been-reset                                                             controllers.register.SessionExpiredController.onPageLoad()
 
-GET        /:draftId/check-your-answers                                                             controllers.register.CheckYourAnswersController.onPageLoad(draftId: String)
-
 GET        /unauthorised                                                                            controllers.register.UnauthorisedController.onPageLoad()
 
 GET        /create-agent-services-account                                                           controllers.register.CreateAgentServicesAccountController.onPageLoad()
