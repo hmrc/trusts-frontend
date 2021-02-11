@@ -111,10 +111,8 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
 
     trustsAuthFunctions.authorised().retrieve(retrievals) {
       case Some(internalId) ~ Some(Agent) ~ enrolments =>
-        logger.info(s"[Session ID: ${Session.id(hc)}] successfully identified as an Agent")
         authoriseAgent(request, enrolments, internalId, action)
       case Some(internalId) ~ Some(Organisation) ~ enrolments =>
-        logger.info(s"[Session ID: ${Session.id(hc)}] successfully identified as Organisation")
         authoriseOrg(request, enrolments, internalId, action)
       case Some(_) ~ _ ~ _ =>
         logger.info(s"[Session ID: ${Session.id(hc)}] Unauthorised due to affinityGroup being Individual")
