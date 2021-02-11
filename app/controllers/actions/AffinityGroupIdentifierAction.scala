@@ -78,34 +78,52 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
                            action: Action[A]
                           ): Future[Result] = {
 
-    val enrolmentKey = "HMRC-TERS-ORG"
-    val identifier = "SAUTR"
-
     val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
     val continueWithoutEnrolment =
       action(IdentifierRequest(request, internalId, AffinityGroup.Organisation, enrolments))
 
+    val taxableOrgEnrolmentKey = "HMRC-TERS-ORG"
+    val taxableOrgIdentifier = "SAUTR"
+    val nonTaxableOrgEnrolmentKey = "HMRC-TERSNT-ORG"
+    val nonTaxableOrgIdentifier = "URN"
+
+    val taxableEnrolment = enrolments.getEnrolment(taxableOrgEnrolmentKey).isDefined
+    val nonTaxableEnrolment = enrolments.getEnrolment(nonTaxableOrgEnrolmentKey).isDefined
+
+    (taxableEnrolment, nonTaxableEnrolment) match {
+      case (true, _) => {
+        logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] enrolment $taxableOrgEnrolmentKey")
+        enrolmentCheck(taxableOrgEnrolmentKey, taxableOrgIdentifier, hc, continueWithoutEnrolment, enrolments)
+      }
+      case (false, true) => {
+        logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] enrolment $nonTaxableOrgEnrolmentKey")
+        enrolmentCheck(nonTaxableOrgEnrolmentKey, nonTaxableOrgIdentifier, hc, continueWithoutEnrolment, enrolments)
+      }
+      case (_, _) => continueWithoutEnrolment
+    }
+
+  }
+
+  private def enrolmentCheck(enrolmentKey: String, identifier: String, hc: HeaderCarrier, continueWithoutEnrolment: Future[Result], enrolments: Enrolments) = {
     enrolments.getEnrolment(enrolmentKey).fold(continueWithoutEnrolment) {
       enrolment =>
         enrolment.getIdentifier(identifier).fold {
-          logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] user is not enrolled, continuing to registered online")
+          logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] user is not enrolled with $enrolmentKey, continuing to registered online")
           continueWithoutEnrolment
         } {
           enrolmentIdentifier =>
-            val utr = enrolmentIdentifier.value
-
-            if (utr.isEmpty) {
-              logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] no utr for enrolment value")
+            val identifierValue = enrolmentIdentifier.value
+            if (identifierValue.isEmpty) {
+              logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] no $enrolmentIdentifier for enrolment value")
               continueWithoutEnrolment
             } else {
-              logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] user is already enrolled, redirecting to maintain")
+              logger.info(s"[authoriseOrg][Session ID: ${Session.id(hc)}] user is already enrolled with $enrolmentKey, redirecting to maintain")
               Future.successful(Redirect(config.maintainATrustFrontendUrl))
             }
         }
     }
   }
-
 
   def apply(request: Request[A]): Future[Result] = {
 
