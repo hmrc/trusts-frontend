@@ -122,6 +122,10 @@ leadTrustee.individual.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw g
 leadTrustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 leadTrustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
 
+trustee.organisation.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+trustee.organisation.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+trustee.organisation.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
 trust.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 trust.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 trust.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
@@ -130,9 +134,17 @@ charity.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod b
 charity.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 charity.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
 
+companyBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+companyBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+companyBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
 employmentRelatedBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 employmentRelatedBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
 employmentRelatedBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
+
+otherBeneficiary.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+otherBeneficiary.ukResidentYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+otherBeneficiary.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
 
 settlorBusiness.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 settlorBusiness.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
@@ -151,6 +163,10 @@ individualBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gw
 individualBeneficiary.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad cenedligrwydd {0}?
 individualBeneficiary.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oes gan {0} genedligrwydd y DU?
 individualBeneficiary.5mld.countryOfNationality.checkYourAnswersLabel = Beth yw gwlad cenedligrwydd {0}?
+
+businessProtector.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
+businessProtector.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswyl yn y DU?
+businessProtector.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gwlad breswyl {0}?
 
 otherIndividual.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod beth yw gwlad breswyl {0}?
 otherIndividual.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswylydd yn y DU?
