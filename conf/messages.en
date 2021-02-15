@@ -684,7 +684,7 @@ individualBeneficiaryRoleInCompany.checkYourAnswersLabel = What is {0}’s role 
 individualBeneficiaryDateOfBirthYesNo.checkYourAnswersLabel = Do you know {0}’s date of birth?
 individualBeneficiaryDateOfBirth.checkYourAnswersLabel = What is {0}’s date of birth?
 individualBeneficiaryIncomeYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+individualBeneficiaryIncome.checkYourAnswersLabel = What percentage of the trust’s income is {0} entitled to?
 individualBeneficiaryNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 individualBeneficiaryNationalInsuranceNumber.checkYourAnswersLabel = What is {0}’s National Insurance number?
 individualBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
@@ -707,7 +707,7 @@ individualBeneficiary.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} 
 
 charity.name.checkYourAnswersLabel = What is the charity’s name?
 charity.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s income is {0} entitled to?
 charity.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 charity.addressInTheUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 charity.ukAddress.checkYourAnswersLabel = What is {0}’s address?
@@ -719,7 +719,7 @@ charity.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country 
 
 trustBeneficiaryName.checkYourAnswersLabel = What is the name of the trust?
 trustBeneficiaryDiscretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-trustBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+trustBeneficiaryShareOfIncome.checkYourAnswersLabel = What percentage of the trust’s income is {0} entitled to?
 trustBeneficiaryAddressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 trustBeneficiaryAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 trustBeneficiaryAddress.checkYourAnswersLabel = What is {0}’s address?
@@ -732,7 +732,7 @@ trust.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of
 
 companyBeneficiary.name.checkYourAnswersLabel = What is the company’s name?
 companyBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-companyBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+companyBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s income is {0} entitled to?
 companyBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 companyBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 companyBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
@@ -753,7 +753,7 @@ employmentRelatedBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Wha
 
 otherBeneficiary.description.checkYourAnswersLabel = What is the description of the other beneficiary?
 otherBeneficiary.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
-otherBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s assets is {0} entitled to?
+otherBeneficiary.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s income is {0} entitled to?
 otherBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0}’s address?
 otherBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 otherBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
