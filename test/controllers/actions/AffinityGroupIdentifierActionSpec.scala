@@ -64,7 +64,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
           val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(appConfig.createAgentServicesAccountUrl)
+          redirectLocation(result) mustBe Some(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad().url)
           application.stop()
         }
         "has an empty agent enrolment" in {
@@ -77,7 +77,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
           val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(appConfig.createAgentServicesAccountUrl)
+          redirectLocation(result) mustBe Some(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad().url)
           application.stop()
         }
       }
