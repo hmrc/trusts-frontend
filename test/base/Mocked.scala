@@ -16,8 +16,9 @@
 
 package base
 
-import java.time.LocalDate
+import controllers.Assets.OK
 
+import java.time.LocalDate
 import models.RegistrationSubmission.AllStatus
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.any
@@ -26,6 +27,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.AnyContent
 import repositories.RegistrationsRepository
 import services.{DraftRegistrationService, SubmissionService}
+import uk.gov.hmrc.http.HttpResponse
 import utils.TestUserAnswers
 import viewmodels.RegistrationAnswerSections
 
@@ -49,6 +51,7 @@ trait Mocked extends MockitoSugar {
 
   when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
   when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+  when(registrationsRepository.updateTaxLiability(any())(any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
   val mockedTrustStartDate: LocalDate = LocalDate.parse("2019-02-03")
   when(registrationsRepository.getTrustSetupDate(any())(any())).thenReturn(Future.successful(Some(mockedTrustStartDate)))

@@ -68,6 +68,7 @@ class TaskListController @Inject()(
 
         for {
           _  <- registrationsRepository.set(updatedAnswers)
+          _ <- registrationsRepository.updateTaxLiability(draftId)
           sections <- registrationProgress.items(draftId)
           additionalSections <- registrationProgress.additionalItems(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, request.affinityGroup)
@@ -83,11 +84,11 @@ class TaskListController @Inject()(
 
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
 
-          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
+          Ok(view(draftId, savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
         }
       }
 
-      val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
+      val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
 
       if (isExistingTrust) {
         request.userAnswers.get(ExistingTrustMatched) match {
