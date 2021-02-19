@@ -136,7 +136,8 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     submissionDraftConnector.removeDraft(draftId)
 
-  override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = ???
+  override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+    submissionDraftConnector.updateTaxLiability(draftId)
 }
 
 trait RegistrationsRepository {
