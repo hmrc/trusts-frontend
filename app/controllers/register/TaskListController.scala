@@ -68,9 +68,9 @@ class TaskListController @Inject()(
 
         for {
           _  <- registrationsRepository.set(updatedAnswers)
+          _ <- registrationsRepository.updateTaxLiability(draftId)
           sections <- registrationProgress.items(draftId)
           additionalSections <- registrationProgress.additionalItems(draftId)
-          _ <- registrationsRepository.updateTaxLiability(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, request.affinityGroup)
           trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
         } yield {
