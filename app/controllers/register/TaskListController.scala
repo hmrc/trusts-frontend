@@ -70,6 +70,7 @@ class TaskListController @Inject()(
           _  <- registrationsRepository.set(updatedAnswers)
           sections <- registrationProgress.items(draftId)
           additionalSections <- registrationProgress.additionalItems(draftId)
+          _ <- registrationsRepository.updateTaxLiability(draftId)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, request.affinityGroup)
           trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
         } yield {
