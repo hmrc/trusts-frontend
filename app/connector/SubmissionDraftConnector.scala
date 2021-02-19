@@ -114,6 +114,10 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
     http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/adjust-draft/$draftId")
   }
 
+  def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
+    http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/update/tax-liability")
+  }
+
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     http.DELETE[HttpResponse](s"$submissionsBaseUrl/$draftId")
   }

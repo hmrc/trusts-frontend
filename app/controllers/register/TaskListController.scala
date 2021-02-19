@@ -83,11 +83,11 @@ class TaskListController @Inject()(
 
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
 
-          Ok(view(draftId ,savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
+          Ok(view(draftId, savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
         }
       }
 
-      val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).get
+      val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
 
       if (isExistingTrust) {
         request.userAnswers.get(ExistingTrustMatched) match {

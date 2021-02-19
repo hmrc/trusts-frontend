@@ -62,6 +62,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val trustSetupDateUrl = s"$submissionsUrl/$testDraftId/when-trust-setup"
   private val trustNameUrl = s"$submissionsUrl/$testDraftId/trust-name"
   private val adjustDraftUrl = s"$submissionsUrl/adjust-draft/$testDraftId"
+  private val updateTaxLiabilityUrl = s"$submissionsUrl/$testDraftId/update/tax-liability"
 
   "SubmissionDraftConnector" - {
 
@@ -548,6 +549,51 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             val result = Await.result(connector.adjustDraft(testDraftId), Duration.Inf)
 
             result.status mustBe Status.NOT_FOUND
+          }
+        }
+      }
+
+      ".updateTaxLiability" - {
+
+        def wiremock(expectedStatus: Int): StubMapping =
+          server.stubFor(
+            post(urlEqualTo(updateTaxLiabilityUrl))
+              .willReturn(
+                aResponse()
+                  .withStatus(expectedStatus)
+              )
+          )
+
+        "must return Ok" - {
+          "when successful" in {
+
+            wiremock(expectedStatus = Status.OK)
+
+            val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
+
+            result.status mustBe Status.OK
+          }
+        }
+
+        "must return NotFound" - {
+          "when draft not found" in {
+
+            wiremock(expectedStatus = Status.NOT_FOUND)
+
+            val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
+
+            result.status mustBe Status.NOT_FOUND
+          }
+        }
+
+        "must return InternalServerError" - {
+          "when otherwise unsuccessful" in {
+
+            wiremock(expectedStatus = Status.INTERNAL_SERVER_ERROR)
+
+            val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
+
+            result.status mustBe Status.INTERNAL_SERVER_ERROR
           }
         }
       }
