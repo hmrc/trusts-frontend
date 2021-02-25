@@ -49,7 +49,8 @@ final case class UserAnswers(
                               data: JsObject = Json.obj(),
                               progress : RegistrationStatus = NotStarted,
                               createdAt : LocalDateTime = LocalDateTime.now,
-                              internalAuthId :String
+                              internalAuthId :String,
+                              isTaxable: Boolean = true
                             ) extends ReadableUserAnswers with Logging {
 
   import UserAnswerImplicits._
@@ -107,7 +108,8 @@ object UserAnswers {
       (__ \ "data").read[JsObject] and
       (__ \ "progress").read[RegistrationStatus] and
       (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
-      (__ \ "internalId").read[String]
+      (__ \ "internalId").read[String] and
+      (__ \ "isTaxable").readWithDefault[Boolean](true)
     ) (UserAnswers.apply _)
   }
 
@@ -120,7 +122,8 @@ object UserAnswers {
       (__ \ "data").write[JsObject] and
       (__ \ "progress").write[RegistrationStatus] and
       (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
-      (__ \ "internalId").write[String]
+      (__ \ "internalId").write[String] and
+      (__ \ "isTaxable").write[Boolean]
     ) (unlift(UserAnswers.unapply))
   }
 }
