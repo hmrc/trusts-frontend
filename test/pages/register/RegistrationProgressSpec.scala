@@ -136,7 +136,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = false), Duration.Inf)
 
           result mustBe List(
-            Task(Link("nonEeaAsset", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
+            Task(Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
             Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), None),
             Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), None)
           )

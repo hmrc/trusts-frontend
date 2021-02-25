@@ -58,7 +58,7 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
       val nonTaxableTask = if (isTaxable) {
         Nil
       } else {
-        List(Task(Link(NonEeaAsset, navigator.assetsJourneyUrl(draftId)), allStatus.assets))
+        List(Task(Link(CompanyOwnershipOrControllingInterest, navigator.assetsJourneyUrl(draftId)), allStatus.assets))
       }
       val entityTasks = List(
         Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
