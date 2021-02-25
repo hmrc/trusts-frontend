@@ -38,7 +38,7 @@ class TaskListCompleteActionRefinerImpl @Inject()(
 
     registrationProgress.isTaskListComplete(
       draftId = request.userAnswers.draftId,
-      isTaxable = request.userAnswers.get(TrustTaxableYesNoPage).contains(true)
+      isTaxable = !request.userAnswers.get(TrustTaxableYesNoPage).contains(false)
     ) map {
       case true => Right(request)
       case false => Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))

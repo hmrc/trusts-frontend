@@ -70,7 +70,7 @@ class TaskListController @Inject()(
         for {
           _  <- registrationsRepository.set(updatedAnswers)
           _ <- registrationsRepository.updateTaxLiability(draftId)
-          isTaxable = updatedAnswers.get(TrustTaxableYesNoPage).contains(true)
+          isTaxable = !updatedAnswers.get(TrustTaxableYesNoPage).contains(false)
           sections <- registrationProgress.items(draftId, isTaxable)
           additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, isTaxable)
