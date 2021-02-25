@@ -46,7 +46,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
           allStatus.allComplete(None, isTaxable = true) mustBe true
         }
 
-        "non-taxable and tax-liability empty" in {
+        "non-taxable and tax liability empty" in {
 
           val allStatus = AllStatus(
             beneficiaries = Some(Completed),
