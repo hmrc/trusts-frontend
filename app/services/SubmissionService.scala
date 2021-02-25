@@ -116,8 +116,8 @@ class DefaultSubmissionService @Inject()(
     }
   }
 
-  private def add5mldData(registrationJson: JsValue, userAnswers: UserAnswers, fiveMldEnabled: Boolean): JsValue = {
-    if (fiveMldEnabled) {
+  private def add5mldData(registrationJson: JsValue, userAnswers: UserAnswers, is5mldEnabled: Boolean): JsValue = {
+    if (is5mldEnabled) {
 
       def putNewValue[T](path: JsPath, value: Option[T])(implicit wts: Writes[T]): Reads[JsObject] = {
         value match {

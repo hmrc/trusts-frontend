@@ -23,6 +23,7 @@ import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
+import pages.register.suitability.TrustTaxableYesNoPage
 import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -71,11 +72,12 @@ class TaskListController @Inject()(
           _ <- registrationsRepository.updateTaxLiability(draftId)
           sections <- registrationProgress.items(draftId)
           additionalSections <- registrationProgress.additionalItems(draftId)
-          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, request.affinityGroup)
+          isTaxable = updatedAnswers.get(TrustTaxableYesNoPage).contains(true)
+          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, isTaxable)
           trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
         } yield {
 
-          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate)) {
+          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate, isTaxable)) {
             sections
           } else {
             val removeTaxLiabilityFromTaskList = (t: Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)

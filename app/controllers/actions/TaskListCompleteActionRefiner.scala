@@ -19,6 +19,7 @@ package controllers.actions
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import pages.register.RegistrationProgress
+import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -35,7 +36,10 @@ class TaskListCompleteActionRefinerImpl @Inject()(
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    registrationProgress.isTaskListComplete(request.userAnswers.draftId, request.affinityGroup) map {
+    registrationProgress.isTaskListComplete(
+      draftId = request.userAnswers.draftId,
+      isTaxable = request.userAnswers.get(TrustTaxableYesNoPage).contains(true)
+    ) map {
       case true => Right(request)
       case false => Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))
     }

@@ -20,7 +20,6 @@ import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.duration.Duration
@@ -40,7 +39,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val application = applicationBuilder().build()
         val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-        Await.result(registrationProgress.isTaskListComplete(fakeDraftId, Agent), Duration.Inf) mustBe true
+        Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf) mustBe true
       }
     }
 
@@ -52,7 +51,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
         val application = applicationBuilder().build()
         val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-        Await.result(registrationProgress.isTaskListComplete(fakeDraftId, Agent), Duration.Inf) mustBe false
+        Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf) mustBe false
       }
     }
   }

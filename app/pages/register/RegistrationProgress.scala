@@ -16,14 +16,13 @@
 
 package pages.register
 
-import javax.inject.Inject
 import navigation.registration.TaskListNavigator
 import repositories.RegistrationsRepository
 import sections.{Beneficiaries, Settlors, _}
-import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrationsRepository: RegistrationsRepository)
@@ -54,12 +53,12 @@ class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrations
     }
   }
 
-  def isTaskListComplete(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Boolean] = {
+  def isTaskListComplete(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[Boolean] = {
     registrationsRepository.getAllStatus(draftId).flatMap {
       status =>
         registrationsRepository.getTrustSetupDate(draftId).map {
           trustSetUpDate =>
-            status.allComplete(trustSetUpDate, affinityGroup)
+            status.allComplete(trustSetUpDate, isTaxable)
         }
     }
   }
