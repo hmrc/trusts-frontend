@@ -50,7 +50,7 @@ final case class UserAnswers(
                               progress : RegistrationStatus = NotStarted,
                               createdAt : LocalDateTime = LocalDateTime.now,
                               internalAuthId :String,
-                              isTaxable: Boolean = true
+                              isTaxable: Boolean = false
                             ) extends ReadableUserAnswers with Logging {
 
   import UserAnswerImplicits._
@@ -109,7 +109,7 @@ object UserAnswers {
       (__ \ "progress").read[RegistrationStatus] and
       (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
       (__ \ "internalId").read[String] and
-      (__ \ "isTaxable").readWithDefault[Boolean](true)
+      (__ \ "isTaxable").readWithDefault[Boolean](false)
     ) (UserAnswers.apply _)
   }
 
