@@ -40,17 +40,17 @@ class DefaultSubmissionService @Inject()(
                                           registrationsRepository: RegistrationsRepository
                                         ) extends SubmissionService with Logging {
 
-  override def submit(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
+  override def submit(userAnswers: UserAnswers, is5mldEnabled: Boolean)
                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
     logger.info(s"[submit][Session ID: ${request.sessionId}] submitting registration")
-    getCorrespondenceAddress(userAnswers, fiveMldEnabled)
+    getCorrespondenceAddress(userAnswers, is5mldEnabled)
   }
 
-  private def getCorrespondenceAddress(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
+  private def getCorrespondenceAddress(userAnswers: UserAnswers, is5mldEnabled: Boolean)
                                       (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
     registrationsRepository.getCorrespondenceAddress(userAnswers.draftId).flatMap {
       correspondenceAddress =>
-        getTrustName(userAnswers, fiveMldEnabled, correspondenceAddress)
+        getTrustName(userAnswers, is5mldEnabled, correspondenceAddress)
     }.recover {
       case e =>
         logger.error(s"[getCorrespondenceAddress][Session ID: ${Session.id(hc)}] Unable to get correspondence address: ${e.getMessage}")
@@ -59,11 +59,11 @@ class DefaultSubmissionService @Inject()(
     }
   }
 
-  private def getTrustName(userAnswers: UserAnswers, fiveMldEnabled: Boolean, correspondenceAddress: AddressType)
+  private def getTrustName(userAnswers: UserAnswers, is5mldEnabled: Boolean, correspondenceAddress: AddressType)
                           (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
     registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
       trustName =>
-        buildRegistration(userAnswers, fiveMldEnabled, correspondenceAddress, trustName)
+        buildRegistration(userAnswers, is5mldEnabled, correspondenceAddress, trustName)
     }.recover {
       case e =>
         logger.error(s"[getTrustName][Session ID: ${Session.id(hc)}] Unable to get trust name: ${e.getMessage}")
@@ -84,11 +84,11 @@ class DefaultSubmissionService @Inject()(
     }
   }
 
-  private def addDraftRegistrationSections(userAnswers: UserAnswers, fiveMldEnabled: Boolean, registration: Registration)
+  private def addDraftRegistrationSections(userAnswers: UserAnswers, is5mldEnabled: Boolean, registration: Registration)
                                           (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
     registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)).flatMap {
       registrationJson =>
-        val fullRegistrationJson = add5mldData(registrationJson, userAnswers, fiveMldEnabled)
+        val fullRegistrationJson = add5mldData(registrationJson, userAnswers, is5mldEnabled)
         register(userAnswers.draftId, fullRegistrationJson)
     }.recover {
       case e =>
@@ -148,7 +148,7 @@ class DefaultSubmissionService @Inject()(
 @ImplementedBy(classOf[DefaultSubmissionService])
 trait SubmissionService {
 
-  def submit(userAnswers: UserAnswers, fiveMldEnabled: Boolean)
+  def submit(userAnswers: UserAnswers, is5mldEnabled: Boolean)
             (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
 
 }

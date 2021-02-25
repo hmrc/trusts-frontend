@@ -37,9 +37,11 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId)
-  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId)
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true)
+  private val isTaxable: Boolean = true
+
+  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, isTaxable)
+  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
+  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable)
 
   "TaskList view" when {
 

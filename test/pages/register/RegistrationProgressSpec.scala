@@ -21,6 +21,7 @@ import models.RegistrationSubmission.AllStatus
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import uk.gov.hmrc.http.HeaderCarrier
+import viewmodels.{Link, Task}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -31,27 +32,115 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
   "RegistrationProgress" when {
 
-    "all entities marked as complete" must {
-      "return true for isTaskListComplete" in {
+    ".isTaskListComplete" when {
 
-        when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
+      "all entities marked as complete" must {
+        "return true for isTaskListComplete" in {
 
-        val application = applicationBuilder().build()
-        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
-        Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf) mustBe true
+          val application = applicationBuilder().build()
+          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+          val result = Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf)
+
+          result mustBe true
+        }
+      }
+
+      "any entity marked as incomplete" must {
+        "return false for isTaskListComplete" in {
+
+          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+
+          val application = applicationBuilder().build()
+          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+          val result = Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf)
+
+          result mustBe false
+        }
       }
     }
 
-    "any entity marked as incomplete" must {
-      "return false for isTaskListComplete" in {
+    ".items" when {
 
-        when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+      "taxable" must {
+        "render all items" in {
 
-        val application = applicationBuilder().build()
-        val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
 
-        Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf) mustBe false
+          val application = applicationBuilder().build()
+          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+          val result = Await.result(registrationProgress.items(fakeDraftId, isTaxable = true), Duration.Inf)
+
+          result mustBe List(
+            Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
+            Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
+            Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
+            Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None),
+            Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
+            Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), None)
+          )
+        }
+      }
+
+      "non-taxable" must {
+        "not render assets or tax liability" in {
+
+          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+
+          val application = applicationBuilder().build()
+          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+          val result = Await.result(registrationProgress.items(fakeDraftId, isTaxable = false), Duration.Inf)
+
+          result mustBe List(
+            Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
+            Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
+            Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
+            Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None)
+          )
+        }
+      }
+    }
+
+    ".additionalItems" when {
+
+      "taxable" must {
+        "only render protectors and other individuals" in {
+
+          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+
+          val application = applicationBuilder().build()
+          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+          val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = true), Duration.Inf)
+
+          result mustBe List(
+            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), None),
+            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), None)
+          )
+        }
+      }
+
+      "non-taxable" must {
+        "also render non-EEA business asset" in {
+
+          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+
+          val application = applicationBuilder().build()
+          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+          val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = false), Duration.Inf)
+
+          result mustBe List(
+            Task(Link("nonEeaAsset", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
+            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), None),
+            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), None)
+          )
+        }
       }
     }
   }

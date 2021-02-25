@@ -39,15 +39,15 @@ object MatchingRoutes extends Routes {
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
-      case (Some(false), Some(false)) => fiveMldYesNo(draftId, is5mldEnabled)
+      case (Some(false), Some(false)) => askExpressIf5mld(draftId, is5mldEnabled)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routeToMaintain(config)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def fiveMldYesNo(draftId: String, fiveMld: Boolean): Call = {
-    if (fiveMld) {
+  private def askExpressIf5mld(draftId: String, is5mldEnabled: Boolean): Call = {
+    if (is5mldEnabled) {
       controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, draftId)
     } else {
       controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)

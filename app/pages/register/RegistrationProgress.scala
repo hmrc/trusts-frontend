@@ -28,28 +28,44 @@ import scala.concurrent.{ExecutionContext, Future}
 class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrationsRepository: RegistrationsRepository)
                                     (implicit ec: ExecutionContext) {
 
-  def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+  def items(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[List[Task]] =
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
-      List(
+      val entityTasks = List(
         Task(Link(TrustDetails, navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
         Task(Link(Settlors, navigator.settlorsJourney(draftId)), allStatus.settlors),
         Task(Link(Trustees, navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
-        Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
-        Task(Link(Assets, navigator.assetsJourneyUrl(draftId)), allStatus.assets),
-        Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability)
+        Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries)
       )
+
+      val taxableTasks = if (isTaxable) {
+        List(
+          Task(Link(Assets, navigator.assetsJourneyUrl(draftId)), allStatus.assets),
+          Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability)
+        )
+      } else {
+        Nil
+      }
+
+      entityTasks ::: taxableTasks
     }
 
-  def additionalItems(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] = {
+  def additionalItems(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[List[Task]] = {
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
-      List(
+      val nonTaxableTask = if (isTaxable) {
+        Nil
+      } else {
+        List(Task(Link(NonEeaAsset, navigator.assetsJourneyUrl(draftId)), allStatus.assets))
+      }
+      val entityTasks = List(
         Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
         Task(Link(OtherIndividuals, navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
       )
+
+      nonTaxableTask ::: entityTasks
     }
   }
 
