@@ -16,8 +16,7 @@
 
 package models.core
 
-import java.time.LocalDateTime
-
+import _root_.pages.register.suitability.TrustTaxableYesNoPage
 import models.MongoDateTimeFormats
 import models.registration.pages.RegistrationStatus
 import models.registration.pages.RegistrationStatus.NotStarted
@@ -25,6 +24,7 @@ import play.api.Logging
 import play.api.libs.json._
 import queries.{Gettable, Settable}
 
+import java.time.LocalDateTime
 import scala.util.{Failure, Success, Try}
 
 trait ReadableUserAnswers {
@@ -53,6 +53,8 @@ final case class UserAnswers(
                             ) extends ReadableUserAnswers with Logging {
 
   import UserAnswerImplicits._
+
+  def isTaxable: Boolean = !this.get(TrustTaxableYesNoPage).contains(false)
 
   def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 

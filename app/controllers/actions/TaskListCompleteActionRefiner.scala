@@ -16,15 +16,14 @@
 
 package controllers.actions
 
-import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import pages.register.RegistrationProgress
-import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListCompleteActionRefinerImpl @Inject()(
@@ -38,7 +37,7 @@ class TaskListCompleteActionRefinerImpl @Inject()(
 
     registrationProgress.isTaskListComplete(
       draftId = request.userAnswers.draftId,
-      isTaxable = !request.userAnswers.get(TrustTaxableYesNoPage).contains(false)
+      isTaxable = request.userAnswers.isTaxable
     ) map {
       case true => Right(request)
       case false => Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))

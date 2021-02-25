@@ -23,7 +23,6 @@ import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
-import pages.register.suitability.TrustTaxableYesNoPage
 import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -70,7 +69,7 @@ class TaskListController @Inject()(
         for {
           _  <- registrationsRepository.set(updatedAnswers)
           _ <- registrationsRepository.updateTaxLiability(draftId)
-          isTaxable = !updatedAnswers.get(TrustTaxableYesNoPage).contains(false)
+          isTaxable = updatedAnswers.isTaxable
           sections <- registrationProgress.items(draftId, isTaxable)
           additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, isTaxable)
