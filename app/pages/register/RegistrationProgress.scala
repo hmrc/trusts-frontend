@@ -16,50 +16,66 @@
 
 package pages.register
 
-import javax.inject.Inject
 import navigation.registration.TaskListNavigator
 import repositories.RegistrationsRepository
-import sections.{Beneficiaries, Settlors, _}
-import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationProgress @Inject()(navigator: TaskListNavigator, registrationsRepository: RegistrationsRepository)
-                                    (implicit ec: ExecutionContext) {
+class RegistrationProgress @Inject()(
+                                      navigator: TaskListNavigator,
+                                      registrationsRepository: RegistrationsRepository
+                                    )(implicit ec: ExecutionContext) {
 
-  def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+  def items(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[List[Task]] =
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
-      List(
-        Task(Link(TrustDetails, navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
-        Task(Link(Settlors, navigator.settlorsJourney(draftId)), allStatus.settlors),
-        Task(Link(Trustees, navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
-        Task(Link(Beneficiaries, navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries),
-        Task(Link(Assets, navigator.assetsJourneyUrl(draftId)), allStatus.assets),
-        Task(Link(TaxLiability, navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability)
+      val entityTasks = List(
+        Task(Link("trustDetails", navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
+        Task(Link("settlors", navigator.settlorsJourney(draftId)), allStatus.settlors),
+        Task(Link("trustees", navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
+        Task(Link("beneficiaries", navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries)
       )
+
+      val taxableTasks = if (isTaxable) {
+        List(
+          Task(Link("assets", navigator.assetsJourneyUrl(draftId)), allStatus.assets),
+          Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability)
+        )
+      } else {
+        Nil
+      }
+
+      entityTasks ::: taxableTasks
     }
 
-  def additionalItems(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] = {
+  def additionalItems(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[List[Task]] = {
     for {
       allStatus <- registrationsRepository.getAllStatus(draftId)
     } yield {
-      List(
-        Task(Link(Protectors, navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
-        Task(Link(OtherIndividuals, navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
+      val nonTaxableTask = if (isTaxable) {
+        Nil
+      } else {
+        List(Task(Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)), allStatus.assets))
+      }
+      val entityTasks = List(
+        Task(Link("protectors", navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
+        Task(Link("otherIndividuals", navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
       )
+
+      nonTaxableTask ::: entityTasks
     }
   }
 
-  def isTaskListComplete(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Boolean] = {
+  def isTaskListComplete(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[Boolean] = {
     registrationsRepository.getAllStatus(draftId).flatMap {
       status =>
         registrationsRepository.getTrustSetupDate(draftId).map {
           trustSetUpDate =>
-            status.allComplete(trustSetUpDate, affinityGroup)
+            status.allComplete(trustSetUpDate, isTaxable)
         }
     }
   }

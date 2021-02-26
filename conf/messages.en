@@ -230,6 +230,7 @@ taskList.trustees.label = Trustees
 taskList.beneficiaries.label = Beneficiaries
 taskList.assets.label = Assets
 taskList.taxLiability.label = Years of tax liability
+taskList.companyOwnershipOrControllingInterest.label = Company ownership or controlling interest
 taskList.protectors.label = Protectors
 taskList.otherIndividuals.label = Other individuals
 taskList.agent.savedRegistrations = Return to saved registrations

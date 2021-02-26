@@ -16,7 +16,6 @@
 
 package controllers.actions
 
-import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import pages.register.RegistrationProgress
 import play.api.mvc.Results.Redirect
@@ -24,6 +23,7 @@ import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListCompleteActionRefinerImpl @Inject()(
@@ -35,7 +35,10 @@ class TaskListCompleteActionRefinerImpl @Inject()(
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
 
-    registrationProgress.isTaskListComplete(request.userAnswers.draftId, request.affinityGroup) map {
+    registrationProgress.isTaskListComplete(
+      draftId = request.userAnswers.draftId,
+      isTaxable = request.userAnswers.isTaxable
+    ) map {
       case true => Right(request)
       case false => Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))
     }
