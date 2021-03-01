@@ -33,7 +33,7 @@ class IndividualViewSpec extends ViewBehaviours {
   private val formattedFakeRef: String = formatReferenceNumber(fakeRef)
   private val fakeName: String = "name"
 
-  "non taxable New Trust Individual View" must {
+  "non taxable new Trust Individual View" must {
 
     val applyView = view.apply(fakeDraftId, fakeRef, fakeName)(fakeRequest, messages)
 
