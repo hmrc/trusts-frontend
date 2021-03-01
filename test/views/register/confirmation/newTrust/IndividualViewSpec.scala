@@ -27,15 +27,15 @@ class IndividualViewSpec extends ViewBehaviours {
 
   private val view: IndividualView = application.injector.instanceOf[IndividualView]
 
-  private val prefix: String = "confirmation.new.individual"
+  private val prefix: String = "confirmation.nonTaxable.individual"
 
   private val fakeRef: String = "XC TRN 00 00 00 49 11"
   private val formattedFakeRef: String = formatReferenceNumber(fakeRef)
   private val fakeName: String = "name"
 
-  "New Trust Individual View" must {
+  "non taxable New Trust Individual View" must {
 
-    val applyView = view.apply(fakeDraftId, fakeRef, fakeName, isTaxable = true)(fakeRequest, messages)
+    val applyView = view.apply(fakeDraftId, fakeRef, fakeName)(fakeRequest, messages)
 
     behave like confirmationPage(
       applyView,
@@ -43,9 +43,9 @@ class IndividualViewSpec extends ViewBehaviours {
       formattedFakeRef,
       fakeName,
       None,
-      "subheading1",
+      "subheading1", "p1",
       "subheading2", "p2", "p3",
-      "subheading3", "p4", "p5", "p6", "p6.a"
+      "link1"
     )
   }
 }

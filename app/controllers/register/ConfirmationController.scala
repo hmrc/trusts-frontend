@@ -32,6 +32,7 @@ import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.confirmation._
+import views.html.register.confirmation.newTrust.{AgentView, IndividualView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -41,8 +42,10 @@ class ConfirmationController @Inject()(
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: RegistrationDataRequiredAction,
                                         val controllerComponents: MessagesControllerComponents,
-                                        newIndividualView: newTrust.IndividualView,
-                                        newAgentView: newTrust.AgentView,
+                                        newTaxableIndividualView: newTrust.taxable.IndividualView,
+                                        newTaxableAgentView: newTrust.taxable.AgentView,
+                                        newIndividualView: IndividualView,
+                                        newAgentView: AgentView,
                                         existingIndividualView: existingTrust.IndividualView,
                                         existingAgentView: existingTrust.AgentView,
                                         errorHandler: ErrorHandler,
@@ -64,16 +67,23 @@ class ConfirmationController @Inject()(
                       trn: String,
                       name: String)(implicit request : RegistrationDataRequest[AnyContent]) = {
 
-    userAnswers.get(TrustHaveAUTRPage) match {
-      case Some(true) if isAgent =>
+    val utr = userAnswers.get(TrustHaveAUTRPage)
+    val taxable = userAnswers.isTaxable
+
+    (utr , taxable) match {
+      case (Some(true), true) if isAgent =>
         Future.successful(Ok(existingAgentView(draftId, trn, name)))
-      case Some(true) =>
+      case (Some(true), true) =>
         Future.successful(Ok(existingIndividualView(draftId, trn, name)))
-      case Some(false) if isAgent =>
-        Future.successful(Ok(newAgentView(draftId, trn, name, userAnswers.isTaxable)))
-      case Some(false) =>
-        Future.successful(Ok(newIndividualView(draftId, trn, name, userAnswers.isTaxable)))
-      case None =>
+      case (Some(false), true) if isAgent =>
+        Future.successful(Ok(newTaxableAgentView(draftId, trn, name)))
+      case (Some(false), true) =>
+        Future.successful(Ok(newTaxableIndividualView(draftId, trn, name)))
+      case (Some(false), false) if isAgent =>
+        Future.successful(Ok(newAgentView(draftId, trn, name)))
+      case (Some(false), false) =>
+        Future.successful(Ok(newIndividualView(draftId, trn, name)))
+      case (None, _) =>
         errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }
 

@@ -33,11 +33,19 @@
 
     <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
 
-    <h2>@messages("confirmation.nonTaxable.individual.subheading1")</h2>
-        <p>@messages("confirmation.nonTaxable.individual.p1")</p>
+    <h2>@messages("confirmation.new.individual.subheading1")</h2>
 
-    <h2>@messages("confirmation.nonTaxable.individual.subheading1")</h2>
-        <p>@messages("confirmation.nonTaxable.individual.p2")</p>
-        <p>@messages("confirmation.nonTaxable.individual.p3") <a href="@config.helplineUrl" target="_blank">@messages("confirmation.nonTaxable.individual.link1")</a>.</p>
+    <p>@messages("confirmation.new.individual.p1", leadTrusteeName)</p>
+
+    <h2>@messages("confirmation.new.individual.subheading2")</h2>
+
+    <p>@messages("confirmation.new.individual.p2")</p>
+    <p>@messages("confirmation.new.individual.p3")</p>
+
+    <h2>@messages("confirmation.new.individual.subheading3")</h2>
+
+    <p>@messages("confirmation.new.individual.p4")</p>
+    <p>@messages("confirmation.new.individual.p5")</p>
+    <p>@messages("confirmation.new.individual.p6") <a href="@config.helplineUrl" target="_blank">@messages("confirmation.new.individual.p6.a")</a>.</p>
 
 }

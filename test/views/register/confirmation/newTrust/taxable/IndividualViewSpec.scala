@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package views.register.confirmation.newTrust
+package views.register.confirmation.newTrust.taxable
 
 import play.api.Application
 import utils.AccessibilityHelper.formatReferenceNumber
 import views.behaviours.ViewBehaviours
-import views.html.register.confirmation.newTrust.AgentView
+import views.html.register.confirmation.newTrust.taxable.IndividualView
 
-
-class AgentViewSpec extends ViewBehaviours {
+class IndividualViewSpec extends ViewBehaviours {
 
   private val application: Application = applicationBuilder().build()
 
-  private val view: AgentView = application.injector.instanceOf[AgentView]
+  private val view: IndividualView = application.injector.instanceOf[IndividualView]
 
-  private val prefix: String = "confirmation.nonTaxable.agent"
+  private val prefix: String = "confirmation.new.individual"
 
   private val fakeRef: String = "XC TRN 00 00 00 49 11"
   private val formattedFakeRef: String = formatReferenceNumber(fakeRef)
   private val fakeName: String = "name"
 
-  "non taxable New Trust Agent View" must {
+  "taxable New Trust Individual View" must {
 
     val applyView = view.apply(fakeDraftId, fakeRef, fakeName)(fakeRequest, messages)
 
@@ -44,11 +43,9 @@ class AgentViewSpec extends ViewBehaviours {
       formattedFakeRef,
       fakeName,
       None,
-      "subheading1", "p1", "p2", "p3", "link1",
-      "subheading2", "p4", "p5", "b1", "b2", "p6", "p7",
-      "subheading3", "p8", "p9", "p10", "link2", "p11",
-      "subheading4", "p12", "p13",
-      "subheading5", "p14", "p15", "link3", "p16", "p17"
+      "subheading1",
+      "subheading2", "p2", "p3",
+      "subheading3", "p4", "p5", "p6", "p6.a"
     )
   }
 }

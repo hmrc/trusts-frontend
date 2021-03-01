@@ -23,7 +23,7 @@
     config: FrontendAppConfig
 )
 
-@(draftId: String, refNumber: String, leadTrusteeName: String, isTaxable: Boolean)(implicit request: Request[_], messages: Messages)
+@(draftId: String, refNumber: String, leadTrusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("confirmation.title")
@@ -32,33 +32,6 @@
     @components.registration_received(refNumber)
 
     <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
-
-@if(isTaxable){
-
-<h2>@messages("confirmation.new.agent.subheading1")</h2>
-
-    <p>@messages("confirmation.new.agent.p1", leadTrusteeName)</p>
-
-    <h2>@messages("confirmation.new.agent.subheading2")</h2>
-
-    <p>@messages("confirmation.new.agent.p2")</p>
-    <p>@messages("confirmation.new.agent.p3")</p>
-
-    <ol class="govuk-list--number">
-        <li class="bold">@messages("confirmation.new.agent.bullet1")
-            <p>@messages("confirmation.new.agent.bullet1.p1")</p>
-            <p>@messages("confirmation.new.agent.bullet1.p2") <a href="@config.ggSignInUrl" target="_blank">@messages("confirmation.new.agent.bullet1.p2.a")</a>.</p>
-            <p>@messages("confirmation.new.agent.bullet1.p3")</p>
-            <p>@messages("confirmation.new.agent.bullet1.p4")</p>
-        </li>
-        <li class="bold">@messages("confirmation.new.agent.bullet2")
-            <p>@messages("confirmation.new.agent.bullet2.p1")</p>
-            <p>@messages("confirmation.new.agent.bullet2.p2")</p>
-            <p>@messages("confirmation.new.agent.bullet2.p3") <a href="@config.helplineUrl" target="_blank">@messages("confirmation.new.agent.bullet2.p3.a")</a>.</p>
-            <p>@messages("confirmation.new.agent.bullet2.p4") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "confirmation.new.agent.bullet2.p4.a", false).</p>
-        </li>
-    </ol>
-  }
 
     <h2>@messages("confirmation.nonTaxable.agent.subheading1")</h2>
         <p>@messages("confirmation.nonTaxable.agent.p1", leadTrusteeName)</p>
