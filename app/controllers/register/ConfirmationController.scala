@@ -70,7 +70,7 @@ class ConfirmationController @Inject()(
     val utr = userAnswers.get(TrustHaveAUTRPage)
     val taxable = userAnswers.isTaxable
 
-    (utr , taxable) match {
+    (utr, taxable) match {
       case (Some(true), true) if isAgent =>
         Future.successful(Ok(existingAgentView(draftId, trn, name)))
       case (Some(true), true) =>
