@@ -33,6 +33,8 @@
 
     <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
 
+    <p class="panel-indent">{messages("confirmation.declare.warning")}</p>
+
     <h2>@messages("confirmation.nonTaxable.agent.subheading1")</h2>
         <p>@messages("confirmation.nonTaxable.agent.p1", leadTrusteeName)</p>
         <p>@messages("confirmation.nonTaxable.agent.p2")</p>
@@ -62,6 +64,6 @@
         <p>@messages("confirmation.nonTaxable.agent.p14")</p>
         <p>@messages("confirmation.nonTaxable.agent.p15") <a href="config.ggSignInUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link3")</a></p>
         <p>@messages("confirmation.nonTaxable.agent.p16")</p>
-        <p>@messages("confirmation.nonTaxable.agent.p16") <a href="@config.helplineUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link1")</a>.</p>
+        <p>@messages("confirmation.nonTaxable.agent.p17") <a href="@config.helplineUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link1")</a>.</p>
 
 }

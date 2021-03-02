@@ -22,6 +22,7 @@ import views.behaviours.ViewBehaviours
 import views.html.register.confirmation.newTrust.AgentView
 
 
+
 class AgentViewSpec extends ViewBehaviours {
 
   private val application: Application = applicationBuilder().build()
