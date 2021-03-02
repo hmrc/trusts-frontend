@@ -28,10 +28,22 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 object MatchingRoutes extends Routes {
 
   def route(draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
-    case TrustRegisteredOnlinePage => _ => _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
+    case TrustRegisteredOnlinePage => _ => ua => redirectToIdentifierQuestion(ua, draftId, is5mldEnabled)
     case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config, is5mldEnabled)
     case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad(draftId)
     case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, draftId)
+  }
+
+  private def redirectToIdentifierQuestion(answers: UserAnswers, draftId: String, is5mldEnabled: Boolean): Call = {
+    answers.get(TrustRegisteredOnlinePage) match {
+      case Some(true) =>
+        if (is5mldEnabled) {
+          routes.WhichIdentifierController.onPageLoad(draftId)
+        } else {
+          routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
+        }
+      case _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
+    }
   }
 
   private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): Call = {

@@ -33,13 +33,41 @@ trait MatchingRoutes {
 
   def matchingRoutes()(implicit navigator : Navigator) = {
 
-    "go to TrustHaveAUTR from TrustRegisteredOnline page" in {
+    "in 4mld mode" must {
 
-      forAll(arbitrary[UserAnswers]) {
-        userAnswers =>
+      "go to TrustHaveAUTR from TrustRegisteredOnline page" in {
 
-          navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId)(userAnswers)
-            .mustBe(routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId))
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId)(userAnswers)
+              .mustBe(routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId))
+        }
+      }
+    }
+
+    "in 5mld mode" must {
+
+      "TrustRegisteredOnline page -> Yes -> TrustHaveAUTR page" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
+
+            navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+              .mustBe(routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId))
+        }
+      }
+
+      "TrustRegisteredOnline page -> no -> TrustHaveAUTR page" in {
+        forAll(arbitrary[UserAnswers]) {
+          userAnswers =>
+
+            val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
+
+            navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
+              .mustBe(routes.WhichIdentifierController.onPageLoad(fakeDraftId))
+        }
       }
     }
 
