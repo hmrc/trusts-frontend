@@ -45,8 +45,8 @@ object SuitabilityRoutes extends Routes {
       )
   }
 
-  private def nonTaxableRoute(draftId: String, fiveMld: Boolean, answers: UserAnswers): Call = {
-    if (fiveMld) {
+  private def nonTaxableRoute(draftId: String, is5mldEnabled: Boolean, answers: UserAnswers): Call = {
+    if (is5mldEnabled) {
       yesNoNav(
         answers,
         ExpressTrustYesNoPage,
@@ -58,4 +58,3 @@ object SuitabilityRoutes extends Routes {
     }
   }
 }
-

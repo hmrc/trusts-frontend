@@ -26,7 +26,7 @@ import pages.register._
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.Task
@@ -44,10 +44,12 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId)
-  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId)
+  private val isTaxable: Boolean = true
 
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, Agent)
+  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, isTaxable)
+  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
+
+  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable)
 
   override protected def applicationBuilder(userAnswers: Option[UserAnswers],
                                             affinityGroup: AffinityGroup,
