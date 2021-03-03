@@ -31,11 +31,12 @@
 
     @components.registration_received(refNumber)
 
-    <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+    <div class="panel-indent">
+        <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+        <p class="panel-indent">@messages("confirmation.declare.warning")</p>
+    </div>
 
-    <p class="panel-indent">@messages("confirmation.declare.warning")</p>
-
-<h2>@messages("confirmation.new.agent.subheading1")</h2>
+    <h2>@messages("confirmation.new.agent.subheading1")</h2>
 
     <p>@messages("confirmation.new.agent.p1", leadTrusteeName)</p>
 

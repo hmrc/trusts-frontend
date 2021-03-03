@@ -31,9 +31,10 @@
 
     @components.registration_received(refNumber)
 
-    <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
-
-    <p class="panel-indent">@messages("confirmation.declare.warning")</p>
+    <div class="panel-indent">
+        <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+        <p class="panel-indent">@messages("confirmation.declare.warning")</p>
+    </div>
 
     <h2>@messages("confirmation.nonTaxable.individual.subheading1")</h2>
         <p>@messages("confirmation.nonTaxable.individual.p1")</p>
