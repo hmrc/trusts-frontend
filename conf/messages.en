@@ -488,6 +488,7 @@ answerPage.section.deceasedSettlor.heading = Settlor
 answerPage.section.settlors.heading = Settlors
 answerPage.section.settlor.subheading = Settlor {0}
 answerPage.section.assets.heading = Assets
+answerPage.section.companyOwnershipOrControllingInterest.heading = Company ownership or controlling interest
 answerPage.section.moneyAsset.subheading = Money
 answerPage.section.shareAsset.subheading = Share {0}
 answerPage.section.propertyOrLandAsset.subheading = Property or land {0}
