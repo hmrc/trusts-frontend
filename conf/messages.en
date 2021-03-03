@@ -149,7 +149,7 @@ whichIdentifier.none = None of the above
 
 refSentByPost.title = A unique identifier has been made for the trust
 refSentByPost.heading = A unique identifier has been made for the trust
-refSentByPost.paragraph1 = The type of unique identifier for your trust depends on if the trust needs to pay tax or not.
+refSentByPost.paragraph1 = The type of unique identifier used for the trust depends on if the trust needs to pay tax or not.
 refSentByPost.subheading1 = Trusts that need to pay tax
 refSentByPost.paragraph2 = If the trust needs to pay tax, your unique identifier will be a Unique Taxpayer Reference (UTR).
 refSentByPost.bullet1 = A UTR is ten numbers long, for example 1234567890.
@@ -158,7 +158,7 @@ refSentByPost.subheading2 = Trusts that do not need to pay tax
 refSentByPost.paragraph4 = If the trust does not need to pay tax, your unique identifier will be a Unique Reference Number (URN).
 refSentByPost.bullet2 = A URN has 15 numbers and characters, for example ABTRUST12345678
 refSentByPost.subheading3 = Next steps
-refSentByPost.paragraph5 = Once you have the unique identifier, you can come back to this service to
+refSentByPost.paragraph5 = Once you have the unique identifier for the trust, you can come back to this service to
 refSentByPost.paragraph5.link = register and maintain a trust.
 refSentByPost.paragraph6 = If you do not have the URN or the UTR has not arrived by post,
 refSentByPost.paragraph6.link = contact the trusts helpline (opens in a new window or tab).
