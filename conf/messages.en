@@ -457,7 +457,7 @@ confirmation.nonTaxable.individual.p3 = If you need any help with the service
 confirmation.nonTaxable.individual.link1 = contact the trusts helpline (opens in a new window or tab)
 
 confirmation.nonTaxable.agent.subheading1 = What happens next
-confirmation.nonTaxable.agent.p1 = We will send the trust's Unique Reference Number (URN) to {0} by post.
+confirmation.nonTaxable.agent.p1 = We will send the trust’s Unique Reference Number (URN) to {0} by post.
 confirmation.nonTaxable.agent.p2 = It can take 15 working days for the URN to arrive. For addresses outside the UK it can take 21 working days.
 confirmation.nonTaxable.agent.p3 = If the URN has not arrived after this time
 confirmation.nonTaxable.agent.link1 = contact the trusts helpline (opens in a new window or tab)

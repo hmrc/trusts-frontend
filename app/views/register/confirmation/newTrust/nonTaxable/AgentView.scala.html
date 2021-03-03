@@ -31,9 +31,10 @@
 
     @components.registration_received(refNumber)
 
-    <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
-
-    <p class="panel-indent">@messages("confirmation.declare.warning")</p>
+    <div class="panel-indent">
+        <p>@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+        <p>@messages("confirmation.declare.warning")</p>
+    </div>
 
     <h2>@messages("confirmation.nonTaxable.agent.subheading1")</h2>
         <p>@messages("confirmation.nonTaxable.agent.p1", leadTrusteeName)</p>
@@ -43,26 +44,28 @@
     <h2>@messages("confirmation.nonTaxable.agent.subheading2")</h2>
         <p>@messages("confirmation.nonTaxable.agent.p4")</p>
         <p>@messages("confirmation.nonTaxable.agent.p5", leadTrusteeName)</p>
+        <ol class="trust-list--bullet">
             <li class="bold">
                 <p>@messages("confirmation.nonTaxable.agent.b1")</p>
                 <p>@messages("confirmation.nonTaxable.agent.b2")</p>
             </li>
+        </ol>
         <p>@messages("confirmation.nonTaxable.agent.p6")</p>
         <p>@messages("confirmation.nonTaxable.agent.p7")</p>
 
-    <h2>@messages("confirmation.nonTaxable.agent.subheading3")</h2>
+    <h3>@messages("confirmation.nonTaxable.agent.subheading3")</h3>
         <p>@messages("confirmation.nonTaxable.agent.p8", leadTrusteeName)</p>
         <p>@messages("confirmation.nonTaxable.agent.p9")</p>
-        <p>@messages("confirmation.nonTaxable.agent.p10") <a href="config.ggSignInUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link2")</a></p>
+        <p>@messages("confirmation.nonTaxable.agent.p10") <a href="@config.ggSignInUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link2")</a></p>
         <p>@messages("confirmation.nonTaxable.agent.p11")</p>
 
-    <h2>@messages("confirmation.nonTaxable.agent.subheading4")</h2>
+    <h3>@messages("confirmation.nonTaxable.agent.subheading4")</h3>
         <p>@messages("confirmation.nonTaxable.agent.p12", leadTrusteeName)</p>
         <p>@messages("confirmation.nonTaxable.agent.p13", leadTrusteeName)</p>
 
     <h2>@messages("confirmation.nonTaxable.agent.subheading5")</h2>
         <p>@messages("confirmation.nonTaxable.agent.p14")</p>
-        <p>@messages("confirmation.nonTaxable.agent.p15") <a href="config.ggSignInUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link3")</a></p>
+        <p>@messages("confirmation.nonTaxable.agent.p15") <a href="@config.ggSignInUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link3")</a></p>
         <p>@messages("confirmation.nonTaxable.agent.p16")</p>
         <p>@messages("confirmation.nonTaxable.agent.p17") <a href="@config.helplineUrl" target="_blank">@messages("confirmation.nonTaxable.agent.link1")</a>.</p>
 

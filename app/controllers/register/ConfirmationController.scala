@@ -32,7 +32,6 @@ import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.confirmation._
-import views.html.register.confirmation.newTrust.{AgentView, IndividualView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,8 +43,8 @@ class ConfirmationController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
                                         newTaxableIndividualView: newTrust.taxable.IndividualView,
                                         newTaxableAgentView: newTrust.taxable.AgentView,
-                                        newIndividualView: IndividualView,
-                                        newAgentView: AgentView,
+                                        newNoneTaxableIndividualView: newTrust.nonTaxable.IndividualView,
+                                        newNoneTaxableAgentView: newTrust.nonTaxable.AgentView,
                                         existingIndividualView: existingTrust.IndividualView,
                                         existingAgentView: existingTrust.AgentView,
                                         errorHandler: ErrorHandler,
@@ -80,10 +79,10 @@ class ConfirmationController @Inject()(
       case (Some(false), true) =>
         Future.successful(Ok(newTaxableIndividualView(draftId, trn, name)))
       case (Some(false), false) if isAgent =>
-        Future.successful(Ok(newAgentView(draftId, trn, name)))
+        Future.successful(Ok(newNoneTaxableAgentView(draftId, trn, name)))
       case (Some(false), false) =>
-        Future.successful(Ok(newIndividualView(draftId, trn, name)))
-      case (None, _) =>
+        Future.successful(Ok(newNoneTaxableIndividualView(draftId, trn, name)))
+      case _ =>
         errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }
 

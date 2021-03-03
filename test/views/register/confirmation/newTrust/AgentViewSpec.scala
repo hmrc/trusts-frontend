@@ -19,7 +19,7 @@ package views.register.confirmation.newTrust
 import play.api.Application
 import utils.AccessibilityHelper.formatReferenceNumber
 import views.behaviours.ViewBehaviours
-import views.html.register.confirmation.newTrust.AgentView
+import views.html.register.confirmation.newTrust.nonTaxable.AgentView
 
 class AgentViewSpec extends ViewBehaviours {
 

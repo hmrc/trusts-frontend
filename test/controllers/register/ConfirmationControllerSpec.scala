@@ -61,7 +61,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           "agent" when {
 
             "lead trustee individual" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
 
@@ -88,7 +88,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             }
 
             "lead trustee organisation" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
 
@@ -119,7 +119,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           "org" when {
 
             "lead trustee individual" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
 
@@ -146,7 +146,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             }
 
             "lead trustee organisation" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, false).success.value
 
@@ -180,7 +180,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           "agent" when {
 
             "lead trustee individual" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, true).success.value
 
@@ -203,7 +203,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             }
 
             "lead trustee organisation" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, true).success.value
 
@@ -229,7 +229,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
           "org" when {
 
             "lead trustee individual" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, true).success.value
 
@@ -252,7 +252,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             }
 
             "lead trustee organisation" in {
-              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete, isTaxable = true)
+              val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
                 .set(RegistrationTRNPage, "xTRN1234678").success.value
                 .set(TrustHaveAUTRPage, true).success.value
 

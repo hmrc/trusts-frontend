@@ -19,7 +19,7 @@ package views.register.confirmation.newTrust
 import play.api.Application
 import utils.AccessibilityHelper.formatReferenceNumber
 import views.behaviours.ViewBehaviours
-import views.html.register.confirmation.newTrust.IndividualView
+import views.html.register.confirmation.newTrust.nonTaxable.IndividualView
 
 class IndividualViewSpec extends ViewBehaviours {
 
