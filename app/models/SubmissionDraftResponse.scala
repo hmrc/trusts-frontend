@@ -19,7 +19,6 @@ package models
 import models.registration.pages.Status
 import models.registration.pages.Status.Completed
 import play.api.libs.json.{JsValue, Json, OFormat}
-import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TaxLiabilityHelper
 
 import java.time.{LocalDate, LocalDateTime}
@@ -70,11 +69,10 @@ object RegistrationSubmission {
      *
      * @param trustSetUpDate - start date of the trust, used to determine if the tax liability task needs
      *                       to be rendered on the task list
-     * @param affinityGroup - not currently used, but may well be needed to determine completeness when agent details
-     *                      microservice enabled
+     * @param isTaxable - used to determine if the tax liability task needs to be rendered on the task list
      * @return true if all of the relevant sections have a status of Completed
      */
-    def allComplete(trustSetUpDate: Option[LocalDate], affinityGroup: AffinityGroup): Boolean =
+    def allComplete(trustSetUpDate: Option[LocalDate], isTaxable: Boolean): Boolean =
       beneficiaries.contains(Completed) &&
         trustees.contains(Completed) &&
         protectors.contains(Completed) &&
@@ -82,7 +80,7 @@ object RegistrationSubmission {
         trustDetails.contains(Completed) &&
         settlors.contains(Completed) &&
         assets.contains(Completed) &&
-        (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate))
+        (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate, isTaxable))
   }
 
   object AllStatus {

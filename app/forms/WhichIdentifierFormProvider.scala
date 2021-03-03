@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package sections
+package forms
 
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import models.WhichIdentifier
+import play.api.data.Form
 
-case object TaxLiability extends QuestionPage[List[Nothing]]{
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ toString
+class WhichIdentifierFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "taxLiability"
-
+  def apply(): Form[WhichIdentifier] =
+    Form(
+      "value" -> enumerable[WhichIdentifier]("whichIdentifier.error.required")
+    )
 }

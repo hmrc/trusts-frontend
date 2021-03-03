@@ -69,13 +69,14 @@ class TaskListController @Inject()(
         for {
           _  <- registrationsRepository.set(updatedAnswers)
           _ <- registrationsRepository.updateTaxLiability(draftId)
-          sections <- registrationProgress.items(draftId)
-          additionalSections <- registrationProgress.additionalItems(draftId)
-          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, request.affinityGroup)
+          isTaxable = updatedAnswers.isTaxable
+          sections <- registrationProgress.items(draftId, isTaxable)
+          additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
+          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, isTaxable)
           trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
         } yield {
 
-          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate)) {
+          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate, isTaxable)) {
             sections
           } else {
             val removeTaxLiabilityFromTaskList = (t: Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)
