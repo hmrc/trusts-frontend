@@ -53,7 +53,7 @@
         }
         @for(input <- inputs) {
             <div class="multiple-choice">
-                <input id="@{input._1.id}" type="radio" name="@{field.id}" value="@{input._1.value}" aria-describedby="@{input._1.id}.hint" @if(field.value == Some(input._1.value)){checked="checked"} @if(trackGa){data-journey-click="maintain-a-trust-frontend:click:@{input._1.id}"} />
+                <input id="@{input._1.id}" type="radio" name="@{field.id}" value="@{input._1.value}" aria-describedby="@{input._1.id}.hint" @if(field.value == Some(input._1.value)){checked="checked"} @if(trackGa){data-journey-click="trusts-frontend:click:@{input._1.id}"} />
 
                 <label class="radios-label block-label selection-button-radio bold" for="@{input._1.id}">
                     @messages(input._1.messageKey)

@@ -26,7 +26,6 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FeatureFlagService
-import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.TrustRegisteredOnlineView
 
 import scala.concurrent.Future
