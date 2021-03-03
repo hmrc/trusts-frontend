@@ -121,6 +121,12 @@ trait ViewSpecBase extends RegistrationSpecBase {
     }
   }
 
+  def assertRadioButtonContainsHint(doc: Document, id: String, text: String): Assertion = {
+    assertRenderedById(doc, id)
+    val hint = doc.getElementById(id)
+    assert(hint.text() == text, s"\n\nElement $id does not have text $text")
+  }
+
   def assertContainsTextForId(doc: Document, id: String, expectedText: String): Assertion = {
     assert(doc.getElementById(id).text() == expectedText, s"\n\nElement $id does not have text $expectedText")
   }

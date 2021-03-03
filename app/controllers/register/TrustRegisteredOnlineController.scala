@@ -18,6 +18,7 @@ package controllers.register
 
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -26,6 +27,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
+import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustRegisteredOnlineView
 
@@ -38,6 +40,7 @@ class TrustRegisteredOnlineController @Inject()(
                                                  identify: RegistrationIdentifierAction,
                                                  getData: DraftIdRetrievalActionProvider,
                                                  requireData: RegistrationDataRequiredAction,
+                                                 featureFlagService: FeatureFlagService,
                                                  formProvider: YesNoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: TrustRegisteredOnlineView
@@ -68,8 +71,9 @@ class TrustRegisteredOnlineController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredOnlinePage, value))
+            is5mldEnabled <- featureFlagService.is5mldEnabled()
             _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, mode, draftId)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, mode, draftId, is5mldEnabled = is5mldEnabled)(updatedAnswers))
         }
       )
   }

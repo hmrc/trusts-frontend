@@ -50,7 +50,7 @@ object SuitabilityRoutes extends Routes {
       yesNoNav(
         answers,
         ExpressTrustYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(draftId), //TODO: Change to start of NonTaxable journey when developed
+        routes.BeforeYouContinueController.onPageLoad(draftId),
         routes.NoNeedToRegisterController.onPageLoad(draftId)
       )
     } else {

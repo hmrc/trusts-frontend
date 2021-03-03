@@ -28,6 +28,11 @@ POST       /:draftId/trust-registered-online                                    
 GET        /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode, draftId: String)
 
+GET        /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onPageLoad(draftId: String)
+POST       /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onSubmit(draftId: String)
+
+GET        /:draftId/reference-sent-by-post                                                         controllers.register.RefSentByPostController.onPageLoad(draftId: String)
+
 GET        /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-have-utr                                                          controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = CheckMode, draftId: String)
