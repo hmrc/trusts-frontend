@@ -34,7 +34,7 @@ object WhichIdentifier extends Enumerable.Implicits {
     value =>
       (
         RadioOption("whichIdentifier", value.toString),
-        if (value != NoIdentifier) s"whichIdentifier.${value.toString}.hint" else ""
+        if (value != NoIdentifier) s"whichIdentifier.$value.hint" else ""
       )
   }
 
