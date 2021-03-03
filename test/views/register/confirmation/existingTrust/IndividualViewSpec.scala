@@ -43,7 +43,7 @@ class IndividualViewSpec extends ViewBehaviours {
       formattedFakeRef,
       fakeName,
       None,
-      "subheading1",
+      "subheading1", "p1",
       "subheading2", "p2", "p3",
       "subheading3", "p4", "p5", "p6", "p6.a"
     )
