@@ -31,7 +31,10 @@
 
     @components.registration_received(refNumber)
 
-    <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+    <div class="panel-indent">
+        <p>@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+        <p>@messages("confirmation.declare.warning")</p>
+    </div>
 
     <h2>@messages("confirmation.new.agent.subheading1")</h2>
 
@@ -56,4 +59,5 @@
             <p>@messages("confirmation.new.agent.bullet2.p4") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "confirmation.new.agent.bullet2.p4.a", false).</p>
         </li>
     </ol>
+
 }

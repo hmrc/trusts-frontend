@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package views.register.confirmation.newTrust
+package views.register.confirmation.newTrust.taxable
 
 import play.api.Application
 import utils.AccessibilityHelper.formatReferenceNumber
 import views.behaviours.ViewBehaviours
-import views.html.register.confirmation.newTrust.nonTaxable.IndividualView
+import views.html.register.confirmation.newTrust.taxable.AgentView
 
-class IndividualViewSpec extends ViewBehaviours {
+class AgentViewSpec extends ViewBehaviours {
 
   private val application: Application = applicationBuilder().build()
 
-  private val view: IndividualView = application.injector.instanceOf[IndividualView]
+  private val view: AgentView = application.injector.instanceOf[AgentView]
 
-  private val prefix: String = "confirmation.nonTaxable.individual"
+  private val prefix: String = "confirmation.new.agent"
 
   private val fakeRef: String = "XC TRN 00 00 00 49 11"
   private val formattedFakeRef: String = formatReferenceNumber(fakeRef)
   private val fakeName: String = "name"
 
-  "non taxable new Trust Individual View" must {
+  "taxable New Trust Agent View" must {
 
     val applyView = view.apply(fakeDraftId, fakeRef, fakeName)(fakeRequest, messages)
 
@@ -45,7 +45,8 @@ class IndividualViewSpec extends ViewBehaviours {
       None,
       "subheading1", "p1",
       "subheading2", "p2", "p3",
-      "link1"
+      "bullet1", "bullet1.p1", "bullet1.p2", "bullet1.p2.a", "bullet1.p3", "bullet1.p4",
+      "bullet2", "bullet2.p1", "bullet2.p2", "bullet2.p3", "bullet2.p3.a", "bullet2.p4", "bullet2.p4.a"
     )
   }
 }
