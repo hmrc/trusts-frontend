@@ -44,10 +44,7 @@
     <h2>@messages("confirmation.nonTaxable.agent.subheading2")</h2>
         <p>@messages("confirmation.nonTaxable.agent.p4")</p>
         <p>@messages("confirmation.nonTaxable.agent.p5", leadTrusteeName)</p>
-        <ol class="trust-list--bullet">
-            <li class="bold">@messages("confirmation.nonTaxable.agent.b1")</li>
-            <li class="bold">@messages("confirmation.nonTaxable.agent.b2")</li>
-        </ol>
+            @components.bullet_list("confirmation.nonTaxable.agent", Seq("b1", "b2"))
         <p>@messages("confirmation.nonTaxable.agent.p6")</p>
         <p>@messages("confirmation.nonTaxable.agent.p7")</p>
 
