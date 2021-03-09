@@ -17,13 +17,14 @@
 @import controllers.register.routes._
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 @import utils.AccessibilityHelper._
+@import models.core.UserAnswers
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(answerSections: Seq[Section], trn: String, declarationSent: String)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[Section], trn: String, declarationSent: String, isTaxable: Boolean)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("confirmationAnswerPage.title")
@@ -40,7 +41,9 @@
 
     <p>@messages("confirmationAnswerPage.paragraph2", declarationSent)</p>
 
-    @components.warning("confirmationAnswerPage")
+    @if(isTaxable){
+        @components.warning("confirmationAnswerPage")
+    }
 
     <div class="section">
     <p>@components.button_print()</p>

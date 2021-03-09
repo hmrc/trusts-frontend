@@ -20,13 +20,15 @@
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 @import models.Mode
+@import models.core.UserAnswers
 
 @this(
     main_template: MainTemplate,
     config: FrontendAppConfig
 )
 
-@(draftId: String,
+@(isTaxable: Boolean,
+    draftId: String,
     savedUntil : String,
     sections : List[Task],
     additionalSections : List[Task],
@@ -60,10 +62,14 @@
             <p>@messages("taskList.summary.paragraph1.start")
                 @components.link(SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link1", openInNewWindow = false)@messages("taskList.summary.paragraph1.end")</p>
         </div>
-        <h2 id="summaryHeading2">@messages("taskList.summary.heading2")</h2>
-        <div id="summary-paragraph-2" class="paragraph">
-            <p>@messages("taskList.summary.paragraph2") <a href="https://www.gov.uk/government/publications/self-assessment-trust-and-estate-tax-return-sa900" target="_blank">@messages("taskList.summary.link2")</a>.</p>
-        </div>
+
+        @if(isTaxable) {
+            <h2 id="summaryHeading2">@messages("taskList.summary.heading2")</h2>
+            <div id="summary-paragraph-2" class="paragraph">
+                <p>@messages("taskList.summary.paragraph2") <a href="https://www.gov.uk/government/publications/self-assessment-trust-and-estate-tax-return-sa900" target="_blank">@messages("taskList.summary.link2")</a>.</p>
+            </div>
+        }
+
         @components.button_link(messages("taskList.summary.continue"), DeclarationController.onPageLoad(draftId).url)
     }
 }
