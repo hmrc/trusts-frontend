@@ -85,7 +85,7 @@ class TaskListController @Inject()(
 
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
 
-          Ok(view(draftId, savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
+          Ok(view(isTaxable, draftId, savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
         }
       }
 

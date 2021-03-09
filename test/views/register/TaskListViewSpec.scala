@@ -60,6 +60,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
 
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
@@ -87,6 +88,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           } yield {
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
+              isTaxable,
               fakeDraftId,
               savedUntil,
               sections,
@@ -117,6 +119,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           } yield {
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
+              isTaxable,
               fakeDraftId,
               savedUntil,
               sections,
@@ -148,6 +151,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
@@ -172,6 +176,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
@@ -198,6 +203,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
@@ -224,6 +230,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,

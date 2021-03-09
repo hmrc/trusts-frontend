@@ -123,6 +123,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
             val view = application.injector.instanceOf[TaskListView]
             contentAsString(result) mustEqual
               view(
+                isTaxable,
                 fakeDraftId,
                 savedUntil,
                 mainSections,
@@ -226,7 +227,7 @@ class TaskListControllerSpec extends RegistrationSpecBase {
         } yield {
           val view = application.injector.instanceOf[TaskListView]
           contentAsString(result) mustEqual
-            view(
+            view(isTaxable,
               fakeDraftId,
               savedUntil,
               sections,

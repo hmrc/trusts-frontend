@@ -45,12 +45,14 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
   val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
-  val ggSignInUrl: String = configuration.get[String]("urls.ggSignIn")
 
   lazy val loginUrl: String = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
-  lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
+  lazy val login: String = s"$loginUrl?continue=$loginContinueUrl"
+
   lazy val logoutUrl: String = loadConfig("urls.logout")
+
+  lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
 
   def beneficiariesFrontendUrl(draftId: String): String = frontendUrl(draftId, "beneficiaries")
 
