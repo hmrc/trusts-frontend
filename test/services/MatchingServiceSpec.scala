@@ -18,20 +18,19 @@ package services
 
 import base.RegistrationSpecBase
 import connector.TrustConnector
-import controllers.Assets.Redirect
 import models.core.UserAnswers
 import models.core.http.MatchedResponse._
 import models.core.http.SuccessOrFailureResponse
 import models.{Mode, NormalMode}
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{atLeastOnce, verify, when}
+import org.scalatest.concurrent.ScalaFutures.whenReady
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import play.api.test.Helpers._
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 class MatchingServiceSpec extends RegistrationSpecBase {
 
@@ -42,6 +41,8 @@ class MatchingServiceSpec extends RegistrationSpecBase {
   private val navigator = injector.instanceOf[TaskListNavigator]
 
   private val mode: Mode = NormalMode
+
+  private val featureFlagService: FeatureFlagService = mock[FeatureFlagService]
 
   "Matching Service" when {
 
@@ -54,13 +55,25 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
     "Success response" when {
       "agent" must {
-        "redirect to client internal reference page" in {
-
+//        "redirect to ExpressTrust page if is5mldEnabled is true" in {
+//
+//        }
+        "redirect to client internal reference page if \"is5mldEnabled\" is false" in {
+          // 1. Assign
+          // 2. Act
+          when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
           when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
           val result = service.matching(userAnswers, fakeDraftId, isAgent = true, mode)
-
+          // 3. Assert
           redirectLocation(result).value mustBe "http://localhost:8847/trusts-registration/agent-details/id/start"
+
+          val is5mldEnabled = featureFlagService.is5mldEnabled()
+          whenReady(is5mldEnabled) { res: Boolean =>
+            res mustBe false
+          }
+
+          verify(mockConnector, atLeastOnce()).matching(any())(any(), any())
         }
       }
 

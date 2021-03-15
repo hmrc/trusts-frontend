@@ -31,10 +31,12 @@ import play.api.mvc.{Call, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.Predef.boolean2Boolean
 import scala.concurrent.{ExecutionContext, Future}
 
 class MatchingService @Inject()(trustConnector: TrustConnector,
                                 registrationsRepository: RegistrationsRepository,
+                                featureFlagService: FeatureFlagService,
                                 navigator: TaskListNavigator) {
 
   def matching(userAnswers: UserAnswers, draftId: String, isAgent: Boolean, mode: Mode)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
@@ -46,14 +48,30 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
       } yield Redirect(redirect)
     }
 
+//    val is5MldFlag = featureFlagService.is5mldEnabled();
+
     (for {
       utr: String <- userAnswers.get(WhatIsTheUTRPage)
       name: String <- userAnswers.get(MatchingNamePage)
+      is5mldEnabled: Boolean = featureFlagService.is5mldEnabled().value.getOrElse(false)
       postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
     } yield {
+      /*
+      * 1. Get is5MLD flag from featureFlagService
+      * 2. IF is Agent THEN
+      *   IF is5MLD goto Express trust page
+      *   ELSE goto agentDetailsJourneyUrl
+      * 3. IF not and Agent THEN
+      *   IF is5MLD goto Express trust page
+      *   ELSE got TaskListController
+      * */
       trustConnector.matching(MatchData(utr, name, postcode)) flatMap {
         case SuccessOrFailureResponse(true) if isAgent =>
-          saveTrustMatchedStatusAndRedirect(Matched.Success, Call("GET", navigator.agentDetailsJourneyUrl(draftId)))
+          if (is5mldEnabled){
+            // call express method
+          } else {
+            saveTrustMatchedStatusAndRedirect(Matched.Success, Call("GET", navigator.agentDetailsJourneyUrl(draftId)))
+          }
         case SuccessOrFailureResponse(true) =>
           saveTrustMatchedStatusAndRedirect(Matched.Success, TaskListController.onPageLoad(draftId))
         case SuccessOrFailureResponse(false) =>
