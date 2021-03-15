@@ -21,18 +21,21 @@ import connector.TrustConnector
 import models.core.UserAnswers
 import models.core.http.MatchedResponse._
 import models.core.http.SuccessOrFailureResponse
+import models.registration.Matched
 import models.{Mode, NormalMode}
 import navigation.registration.TaskListNavigator
+import org.mockito.Matchers
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{atLeastOnce, verify, when}
+import org.mockito.Mockito.{atLeastOnce, reset, times, verify, when}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.ScalaFutures.whenReady
-import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
+import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class MatchingServiceSpec extends RegistrationSpecBase {
+class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -42,11 +45,17 @@ class MatchingServiceSpec extends RegistrationSpecBase {
 
   private val mode: Mode = NormalMode
 
-  private val featureFlagService: FeatureFlagService = mock[FeatureFlagService]
+  private val mockFeatureFlagService: FeatureFlagService = mock[FeatureFlagService]
+
+  override protected def beforeEach(): Unit = {
+    reset(mockConnector)
+    reset(mockFeatureFlagService)
+    super.beforeEach()
+  }
 
   "Matching Service" when {
 
-    val service = new MatchingService(mockConnector, registrationsRepository, navigator)
+    val service = new MatchingService(mockConnector, registrationsRepository, mockFeatureFlagService, navigator)
 
     val userAnswers: UserAnswers = emptyUserAnswers
       .set(WhatIsTheUTRPage, "utr").success.value
@@ -54,37 +63,74 @@ class MatchingServiceSpec extends RegistrationSpecBase {
       .set(PostcodeForTheTrustPage, "postcode").success.value
 
     "Success response" when {
+
       "agent" must {
-//        "redirect to ExpressTrust page if is5mldEnabled is true" in {
-//
-//        }
-        "redirect to client internal reference page if \"is5mldEnabled\" is false" in {
+
+        "redirect to ExpressTrust page if in 5MLD mode" in {
+          when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+          when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
+
+          val result = service.matching(userAnswers, fakeDraftId, isAgent = true, mode)
+          // 3. Assert
+          redirectLocation(result).value mustBe controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+
+          verify(mockConnector, atLeastOnce()).matching(any())(any(), any())
+
+          val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
+
+          verify(registrationsRepository, atLeastOnce()).set(Matchers.eq(expectedAnswers))(any())
+        }
+
+        "redirect to client internal reference page if in 4MLD mode" in {
           // 1. Assign
           // 2. Act
-          when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+          when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
           when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
           val result = service.matching(userAnswers, fakeDraftId, isAgent = true, mode)
           // 3. Assert
           redirectLocation(result).value mustBe "http://localhost:8847/trusts-registration/agent-details/id/start"
 
-          val is5mldEnabled = featureFlagService.is5mldEnabled()
-          whenReady(is5mldEnabled) { res: Boolean =>
-            res mustBe false
-          }
-
           verify(mockConnector, atLeastOnce()).matching(any())(any(), any())
+
+          val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
+
+          verify(registrationsRepository, atLeastOnce()).set(Matchers.eq(expectedAnswers))(any())
         }
       }
 
       "non-agent" must {
-        "redirect to task list" in {
-          
+
+        "redirect to Express trust in 5MLD" in {
+
+          when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+          when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
+
+          val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+
+          redirectLocation(result).value mustBe controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+
+          verify(mockConnector, atLeastOnce()).matching(any())(any(), any())
+
+          val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
+
+          verify(registrationsRepository, atLeastOnce()).set(Matchers.eq(expectedAnswers))(any())
+        }
+
+        "redirect to task list in 4MLD" in {
+
+          when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
           when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
           val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
 
           redirectLocation(result).value mustBe controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+
+          verify(mockConnector, atLeastOnce()).matching(any())(any(), any())
+
+          val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
+
+          verify(registrationsRepository, atLeastOnce()).set(Matchers.eq(expectedAnswers))(any())
         }
       }
     }
