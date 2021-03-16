@@ -138,6 +138,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     "Failed response" must {
       "redirect to FailedMatch" in {
 
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(false)))
 
         val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
@@ -149,6 +150,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     "AlreadyRegistered response" must {
       "redirect to TrustAlreadyRegistered" in {
 
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(AlreadyRegistered))
 
         val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
@@ -160,6 +162,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     "InternalServerError response" must {
       "redirect to MatchingDown" in {
 
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(InternalServerError))
 
         val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
@@ -171,6 +174,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     "WhatIsUtrPage and/or TrustNamePage not answered" must {
       "redirect to FailedMatch" in {
 
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
         val result = service.matching(emptyUserAnswers, fakeDraftId, isAgent = false, mode)
 
         redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url

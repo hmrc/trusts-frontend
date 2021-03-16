@@ -72,7 +72,7 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
               }
             case SuccessOrFailureResponse(true) =>
               if (is5mld) {
-                Future.successful(Results.Ok)
+                saveTrustMatchedStatusAndRedirect(Matched.Success, controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(mode, draftId))
               } else {
                 saveTrustMatchedStatusAndRedirect(Matched.Success, TaskListController.onPageLoad(draftId))
               }
@@ -85,8 +85,5 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
           }
         }).getOrElse(Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId))))
     }
-
-
   }
-
 }
