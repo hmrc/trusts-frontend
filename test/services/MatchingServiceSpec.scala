@@ -26,9 +26,8 @@ import models.{Mode, NormalMode}
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{atLeastOnce, reset, times, verify, when}
+import org.mockito.Mockito.{atLeastOnce, reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.concurrent.ScalaFutures.whenReady
 import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import play.api.test.Helpers._
@@ -182,15 +181,14 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       }
     }
 
-    "Featureflag is5MLDEnabled failure " must {
-      "redirect to FailedMatch" in {
-        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.failed(new Exception("also here")))
-
-        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
-
-        redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
-
-      }
-    }
+//    "Featureflag is5MLDEnabled failure " must {
+//      "redirect to FailedMatch" in {
+//        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.failed(new Exception("Exception")))
+//
+//        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+//
+//        redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
+//      }
+//    }
   }
 }

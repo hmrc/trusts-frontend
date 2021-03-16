@@ -20,19 +20,29 @@ import com.google.inject.Inject
 import connector.TrustConnector
 import controllers.Assets.Redirect
 import controllers.register.routes._
-import models.{Mode, NormalMode}
+import models.Mode
 import models.core.UserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered
 import models.core.http.{MatchData, SuccessOrFailureResponse}
 import models.registration.Matched
 import navigation.registration.TaskListNavigator
 import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
-import play.api.mvc.{Call, Result, Results}
+import play.api.mvc.{Call, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
+
+/*
+* 1. Get is5MLD flag from featureFlagService
+* 2. IF is Agent THEN
+*   IF is5MLD goto Express trust page
+*   ELSE goto agentDetailsJourneyUrl
+* 3. IF not and Agent THEN
+*   IF is5MLD goto Express trust page
+*   ELSE got TaskListController
+* */
 class MatchingService @Inject()(trustConnector: TrustConnector,
                                 registrationsRepository: RegistrationsRepository,
                                 featureFlagService: FeatureFlagService,
@@ -54,25 +64,22 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
           name: String <- userAnswers.get(MatchingNamePage)
           postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
         } yield {
-          /*
-          * 1. Get is5MLD flag from featureFlagService
-          * 2. IF is Agent THEN
-          *   IF is5MLD goto Express trust page
-          *   ELSE goto agentDetailsJourneyUrl
-          * 3. IF not and Agent THEN
-          *   IF is5MLD goto Express trust page
-          *   ELSE got TaskListController
-          * */
           trustConnector.matching(MatchData(utr, name, postcode)) flatMap {
             case SuccessOrFailureResponse(true) if isAgent =>
-              if (is5mld){
-                saveTrustMatchedStatusAndRedirect(Matched.Success, controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(mode, draftId))
+              if (is5mld) {
+                saveTrustMatchedStatusAndRedirect(
+                  Matched.Success,
+                  controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(mode, draftId)
+                )
               } else {
                 saveTrustMatchedStatusAndRedirect(Matched.Success, Call("GET", navigator.agentDetailsJourneyUrl(draftId)))
               }
             case SuccessOrFailureResponse(true) =>
               if (is5mld) {
-                saveTrustMatchedStatusAndRedirect(Matched.Success, controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(mode, draftId))
+                saveTrustMatchedStatusAndRedirect(
+                  Matched.Success,
+                  controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(mode, draftId)
+                )
               } else {
                 saveTrustMatchedStatusAndRedirect(Matched.Success, TaskListController.onPageLoad(draftId))
               }
