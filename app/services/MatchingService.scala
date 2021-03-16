@@ -23,7 +23,7 @@ import controllers.register.routes._
 import models.Mode
 import models.core.UserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered
-import models.core.http.{MatchData, SuccessOrFailureResponse}
+import models.core.http.{MatchData, MatchedResponse, SuccessOrFailureResponse}
 import models.registration.Matched
 import navigation.registration.TaskListNavigator
 import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
@@ -32,67 +32,110 @@ import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
 
-
-/*
-* 1. Get is5MLD flag from featureFlagService
-* 2. IF is Agent THEN
-*   IF is5MLD goto Express trust page
-*   ELSE goto agentDetailsJourneyUrl
-* 3. IF not and Agent THEN
-*   IF is5MLD goto Express trust page
-*   ELSE got TaskListController
-* */
 class MatchingService @Inject()(trustConnector: TrustConnector,
                                 registrationsRepository: RegistrationsRepository,
                                 featureFlagService: FeatureFlagService,
                                 navigator: TaskListNavigator) {
 
-  def matching(userAnswers: UserAnswers, draftId: String, isAgent: Boolean, mode: Mode)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
+  private case class MatchingContext(is5mld: Boolean, isAgent: Boolean, userAnswers: UserAnswers, draftId: String, mode: Mode)
 
-    def saveTrustMatchedStatusAndRedirect(trustMatchedStatus: Matched, redirect: Call): Future[Result] = {
-      for {
-        updatedAnswers <- Future.fromTry(userAnswers.set(ExistingTrustMatched, trustMatchedStatus))
-        _ <- registrationsRepository.set(updatedAnswers)
-      } yield Redirect(redirect)
+  def matching(userAnswers: UserAnswers,
+               draftId: String,
+               isAgent: Boolean,
+               mode: Mode,
+              )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
+    val matchResult = for {
+      is5mld <- featureFlagService.is5mldEnabled()
+      result <- {
+        val context = MatchingContext(is5mld, isAgent, userAnswers, draftId, mode)
+        val data = payload(userAnswers)
+        attemptMatch(context, data)
+      }
+    } yield result
+
+    matchResult recoverWith {
+      case NonFatal(_) =>
+        Future.successful(Redirect(MatchingDownController.onPageLoad()))
     }
+  }
 
-    featureFlagService.is5mldEnabled().flatMap {
-      is5mld =>
-        (for {
-          utr: String <- userAnswers.get(WhatIsTheUTRPage)
-          name: String <- userAnswers.get(MatchingNamePage)
-          postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
-        } yield {
-          trustConnector.matching(MatchData(utr, name, postcode)) flatMap {
-            case SuccessOrFailureResponse(true) if isAgent =>
-              if (is5mld) {
-                saveTrustMatchedStatusAndRedirect(
-                  Matched.Success,
-                  controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(mode, draftId)
-                )
-              } else {
-                saveTrustMatchedStatusAndRedirect(Matched.Success, Call("GET", navigator.agentDetailsJourneyUrl(draftId)))
-              }
-            case SuccessOrFailureResponse(true) =>
-              if (is5mld) {
-                saveTrustMatchedStatusAndRedirect(
-                  Matched.Success,
-                  controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(mode, draftId)
-                )
-              } else {
-                saveTrustMatchedStatusAndRedirect(Matched.Success, TaskListController.onPageLoad(draftId))
-              }
-            case SuccessOrFailureResponse(false) =>
-              saveTrustMatchedStatusAndRedirect(Matched.Failed, FailedMatchController.onPageLoad(draftId))
+  private def payload(userAnswers: UserAnswers): Option[MatchData] = for {
+    utr: String <- userAnswers.get(WhatIsTheUTRPage)
+    name: String <- userAnswers.get(MatchingNamePage)
+    postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
+  } yield {
+    MatchData(utr, name, postcode)
+  }
 
-            case AlreadyRegistered =>
-              saveTrustMatchedStatusAndRedirect(Matched.AlreadyRegistered, TrustAlreadyRegisteredController.onPageLoad(draftId))
+  private def attemptMatch(context: MatchingContext, matchData: Option[MatchData])
+                          (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = matchData match {
+    case Some(data) =>
+      trustConnector.matching(data) flatMap {
+        r =>
+          (successAsAgent(context) orElse
+            successAsOrganisation(context) orElse
+            unsuccessful(context) orElse
+            alreadyRegistered(context) orElse
+            recover()
+            ).apply(r)
+      }
+    case None =>
+      Future.successful(Redirect(MatchingDownController.onPageLoad()))
+  }
 
-            case _ =>
-              Future.successful(Redirect(MatchingDownController.onPageLoad()))
-          }
-        }).getOrElse(Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId))))
-    }
+  private def successAsAgent(context: MatchingContext)
+                            (implicit hc: HeaderCarrier, ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
+    case SuccessOrFailureResponse(true) if context.isAgent =>
+      if (context.is5mld) {
+        saveTrustMatchedStatusAndRedirect(
+          context.userAnswers,
+          Matched.Success,
+          controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(context.mode, context.draftId)
+        )
+      } else {
+        saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Success, Call("GET", navigator.agentDetailsJourneyUrl(context.draftId)))
+      }
+  }
+
+  private def successAsOrganisation(context: MatchingContext)
+                                   (implicit hc: HeaderCarrier, ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
+    case SuccessOrFailureResponse(true) =>
+      if (context.is5mld) {
+        saveTrustMatchedStatusAndRedirect(
+          context.userAnswers,
+          Matched.Success,
+          controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(context.mode, context.draftId)
+        )
+      } else {
+        saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Success, TaskListController.onPageLoad(context.draftId))
+      }
+  }
+
+  private def unsuccessful(context: MatchingContext)
+                          (implicit hc: HeaderCarrier, ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
+    case SuccessOrFailureResponse(false) =>
+      saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Failed, FailedMatchController.onPageLoad(context.draftId))
+  }
+
+  private def alreadyRegistered(context: MatchingContext)
+                               (implicit hc: HeaderCarrier, ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
+    case AlreadyRegistered =>
+      saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.AlreadyRegistered, TrustAlreadyRegisteredController.onPageLoad(context.draftId))
+  }
+
+  private def recover()(implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
+    case _ =>
+      Future.successful(Redirect(controllers.register.routes.MatchingDownController.onPageLoad()))
+  }
+
+  private def saveTrustMatchedStatusAndRedirect(userAnswers: UserAnswers,
+                                                trustMatchedStatus: Matched,
+                                                redirect: Call)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
+    for {
+      updatedAnswers <- Future.fromTry(userAnswers.set(ExistingTrustMatched, trustMatchedStatus))
+      _ <- registrationsRepository.set(updatedAnswers)
+    } yield Redirect(redirect)
   }
 }

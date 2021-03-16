@@ -134,8 +134,8 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       }
     }
 
-    "Failed response" must {
-      "redirect to FailedMatch in 4MLD" in {
+    "unsuccessful match" must {
+      "redirect to FailedMatch" in {
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(false)))
@@ -171,24 +171,27 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       }
     }
 
-    "WhatIsUtrPage and/or TrustNamePage not answered" must {
-      "redirect to FailedMatch" in {
+    "no user answers" must {
+
+      "redirect to matching down" in {
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+
         val result = service.matching(emptyUserAnswers, fakeDraftId, isAgent = false, mode)
 
-        redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
+        redirectLocation(result).value mustBe controllers.register.routes.MatchingDownController.onPageLoad().url
       }
     }
 
-//    "Featureflag is5MLDEnabled failure " must {
-//      "redirect to FailedMatch" in {
-//        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.failed(new Exception("Exception")))
-//
-//        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
-//
-//        redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
-//      }
-//    }
+    "unable to determine if in 4 or 5mld mode" must {
+
+      "redirect to matching down" in {
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.failed(new Exception("Exception")))
+
+        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+
+        redirectLocation(result).value mustBe controllers.register.routes.MatchingDownController.onPageLoad().url
+      }
+    }
   }
 }
