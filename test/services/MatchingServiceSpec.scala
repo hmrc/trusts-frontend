@@ -136,7 +136,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     }
 
     "Failed response" must {
-      "redirect to FailedMatch" in {
+      "redirect to FailedMatch in 4MLD" in {
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(false)))
@@ -179,6 +179,17 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
         val result = service.matching(emptyUserAnswers, fakeDraftId, isAgent = false, mode)
 
         redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
+      }
+    }
+
+    "Featureflag is5MLDEnabled failure " must {
+      "redirect to FailedMatch" in {
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.failed(new Exception("also here")))
+
+        val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
+
+        redirectLocation(result).value mustBe controllers.register.routes.FailedMatchController.onPageLoad(fakeDraftId).url
+
       }
     }
   }

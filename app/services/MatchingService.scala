@@ -78,8 +78,10 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
               }
             case SuccessOrFailureResponse(false) =>
               saveTrustMatchedStatusAndRedirect(Matched.Failed, FailedMatchController.onPageLoad(draftId))
+
             case AlreadyRegistered =>
               saveTrustMatchedStatusAndRedirect(Matched.AlreadyRegistered, TrustAlreadyRegisteredController.onPageLoad(draftId))
+
             case _ =>
               Future.successful(Redirect(MatchingDownController.onPageLoad()))
           }
