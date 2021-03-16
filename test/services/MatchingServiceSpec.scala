@@ -163,6 +163,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       "redirect to MatchingDown" in {
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+
         when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(InternalServerError))
 
         val result = service.matching(userAnswers, fakeDraftId, isAgent = false, mode)
