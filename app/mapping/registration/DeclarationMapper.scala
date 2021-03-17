@@ -33,7 +33,7 @@ class DeclarationMapper @Inject()(registrationsRepository: RegistrationsReposito
     val declaration: Option[pages.Declaration] = userAnswers.get(DeclarationPage)
 
     for {
-      agentAddress <- registrationsRepository.getAgentAddress(userAnswers)
+      agentAddress <- registrationsRepository.getAgentAddress(userAnswers.draftId)
     } yield {
       declaration map { dec =>
         Declaration(

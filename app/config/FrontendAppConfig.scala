@@ -16,12 +16,12 @@
 
 package config
 
-import java.net.{URI, URLEncoder}
-
 import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.{Call, Request}
+
+import java.net.{URI, URLEncoder}
 
 @Singleton
 class FrontendAppConfig @Inject() (val configuration: Configuration) {
@@ -35,7 +35,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   private def loadConfig(key: String): String = configuration.get[String](key)
 
-  val analyticsHost: String = configuration.get[String](s"google-analytics.host")
+  val analyticsToken: String = configuration.get[String](s"google-analytics.token")
 
   val reportAProblemPartialUrl = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   val reportAProblemNonJSUrl = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
@@ -45,12 +45,14 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
   val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
-  val ggSignInUrl: String = configuration.get[String]("urls.ggSignIn")
 
   lazy val loginUrl: String = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
-  lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
+  lazy val login: String = s"$loginUrl?continue=$loginContinueUrl"
+
   lazy val logoutUrl: String = loadConfig("urls.logout")
+
+  lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
 
   def beneficiariesFrontendUrl(draftId: String): String = frontendUrl(draftId, "beneficiaries")
 
@@ -70,18 +72,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   def agentDetailsFrontendUrl(draftId: String): String = frontendUrl(draftId, "agentDetails")
 
-  def agentDetailsCheckAnswersUrl(draftId: String): String =
-    insertDraftId(configuration.get[String]("urls.agentDetailsCheckAnswers"), draftId)
-
-  lazy val agentDetailsMicroserviceEnabled: Boolean =
-    configuration.get[Boolean]("microservice.services.features.journey.agentDetailsMicroservice.enabled")
-
-  private def insertDraftId(url: String, draftId: String): String = url.replace(":draftId", draftId)
-
   private def frontendUrl(draftId: String, section: String): String = {
-    lazy val urlTemplate: String = loadConfig(s"urls.${section}Frontend")
-
-    insertDraftId(urlTemplate, draftId)
+    lazy val url: String = loadConfig(s"urls.${section}Frontend")
+    url.replace(":draftId", draftId)
   }
 
   lazy val agentServiceRegistrationUrl: String = {
@@ -94,6 +87,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val languageTranslationEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.welsh-translation")
+
+  lazy val logoutAudit: Boolean =
+    configuration.get[Boolean]("microservice.services.features.auditing.logout")
 
   lazy val ttlInSeconds: Int = configuration.get[Int]("mongodb.registration.ttlSeconds")
 
@@ -118,6 +114,12 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val maintainATrustFrontendUrl : String =
     configuration.get[String]("urls.maintainATrust")
+
+  lazy val maintainATrustWithUTR : String =
+    configuration.get[String]("urls.maintainATrustWithUTR")
+
+  lazy val maintainATrustWithURN : String =
+    configuration.get[String]("urls.maintainATrustWithURN")
 
   lazy val countdownLength: String = configuration.get[String]("timeout.countdown")
   lazy val timeoutLength: String = configuration.get[String]("timeout.length")

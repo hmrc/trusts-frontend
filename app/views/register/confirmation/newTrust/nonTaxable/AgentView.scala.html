@@ -1,0 +1,67 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+@import controllers.register.routes._
+@import models.core.pages.FullName
+
+@this(
+    main_template: MainTemplate,
+    config: FrontendAppConfig
+)
+
+@(draftId: String, refNumber: String, leadTrusteeName: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("confirmation.title")
+) {
+
+    @components.registration_received(refNumber)
+
+    <div class="panel-indent">
+        <p>@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+        <p>@messages("confirmation.declare.warning")</p>
+    </div>
+
+    <h2>@messages("confirmation.nonTaxable.agent.subheading1")</h2>
+        <p>@messages("confirmation.nonTaxable.agent.p1", leadTrusteeName)</p>
+        <p>@messages("confirmation.nonTaxable.agent.p2")</p>
+        <p>@messages("confirmation.nonTaxable.agent.p3") <a href="@{config.helplineUrl}" target="_blank">@messages("confirmation.nonTaxable.agent.link1")</a>.</p>
+
+    <h2>@messages("confirmation.nonTaxable.agent.subheading2")</h2>
+        <p>@messages("confirmation.nonTaxable.agent.p4")</p>
+        <p>@messages("confirmation.nonTaxable.agent.p5", leadTrusteeName)</p>
+            @components.bullet_list("confirmation.nonTaxable.agent", Seq("b1", "b2"))
+        <p>@messages("confirmation.nonTaxable.agent.p6")</p>
+        <p>@messages("confirmation.nonTaxable.agent.p7")</p>
+
+    <h3>@messages("confirmation.nonTaxable.agent.subheading3")</h3>
+        <p>@messages("confirmation.nonTaxable.agent.p8", leadTrusteeName)</p>
+        <p>@messages("confirmation.nonTaxable.agent.p9")</p>
+        <p>@messages("confirmation.nonTaxable.agent.p10") <a href="@{config.login}" target="_blank">@messages("confirmation.nonTaxable.agent.link2")</a></p>
+        <p>@messages("confirmation.nonTaxable.agent.p11")</p>
+
+    <h3>@messages("confirmation.nonTaxable.agent.subheading4")</h3>
+        <p>@messages("confirmation.nonTaxable.agent.p12", leadTrusteeName)</p>
+        <p>@messages("confirmation.nonTaxable.agent.p13", leadTrusteeName)</p>
+
+    <h2>@messages("confirmation.nonTaxable.agent.subheading5")</h2>
+        <p>@messages("confirmation.nonTaxable.agent.p14")</p>
+        <p>@messages("confirmation.nonTaxable.agent.p15") <a href="@{config.login}" target="_blank">@messages("confirmation.nonTaxable.agent.link3")</a></p>
+        <p>@messages("confirmation.nonTaxable.agent.p16")</p>
+        <p>@messages("confirmation.nonTaxable.agent.p17") <a href="@{config.helplineUrl}" target="_blank">@messages("confirmation.nonTaxable.agent.link1")</a>.</p>
+
+}

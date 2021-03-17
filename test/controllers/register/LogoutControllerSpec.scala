@@ -42,7 +42,8 @@ class LogoutControllerSpec extends RegistrationSpecBase {
 
     redirectLocation(result).value mustBe fakeFrontendAppConfig.logoutUrl
 
-    verify(mockAuditConnector).sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(any(), any())
+    verify(mockAuditConnector, never)
+      .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(any(), any())
 
     application.stop()
 

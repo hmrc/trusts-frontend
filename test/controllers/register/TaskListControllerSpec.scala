@@ -16,9 +16,6 @@
 
 package controllers.register
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import base.RegistrationSpecBase
 import models.NormalMode
 import models.core.UserAnswers
@@ -29,12 +26,14 @@ import pages.register._
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.Task
 import views.html.register.TaskListView
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
 class TaskListControllerSpec extends RegistrationSpecBase {
@@ -45,10 +44,12 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId)
-  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId)
+  private val isTaxable: Boolean = true
 
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, Agent)
+  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, isTaxable)
+  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
+
+  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable)
 
   override protected def applicationBuilder(userAnswers: Option[UserAnswers],
                                             affinityGroup: AffinityGroup,
@@ -122,13 +123,13 @@ class TaskListControllerSpec extends RegistrationSpecBase {
             val view = application.injector.instanceOf[TaskListView]
             contentAsString(result) mustEqual
               view(
+                isTaxable,
                 fakeDraftId,
                 savedUntil,
                 mainSections,
                 additionalSections,
                 isTaskListComplete,
-                Organisation,
-                s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+                Organisation
               )(request, messages).toString
           }
 
@@ -226,14 +227,13 @@ class TaskListControllerSpec extends RegistrationSpecBase {
         } yield {
           val view = application.injector.instanceOf[TaskListView]
           contentAsString(result) mustEqual
-            view(
+            view(isTaxable,
               fakeDraftId,
               savedUntil,
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(request, messages).toString
         }
 

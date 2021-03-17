@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
 @import controllers.register.routes._
 @import viewmodels.Task
 @import uk.gov.hmrc.auth.core.AffinityGroup
@@ -21,20 +22,21 @@
 @import models.Mode
 
 @this(
-    main_template: MainTemplate
+    main_template: MainTemplate,
+    config: FrontendAppConfig
 )
 
-@(draftId: String,
+@(isTaxable: Boolean,
+    draftId: String,
     savedUntil : String,
     sections : List[Task],
     additionalSections : List[Task],
     isTaskListComplete: Boolean,
-    affinityGroup : AffinityGroup,
-    checkAgentDetailsUrl: String)(implicit request: Request[_], messages: Messages)
+    affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("taskList.title")
-    ) {
+) {
 
     @components.back_link()
 
@@ -45,7 +47,7 @@
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
-        <p>@components.link(checkAgentDetailsUrl, "agent-details", "taskList.agent.agentDetails")</p>
+        <p>@components.link(config.agentDetailsFrontendUrl(draftId), "agent-details", "taskList.agent.agentDetails")</p>
     } else {
         <h2>@messages("taskList.savedUntil.heading")</h2>
         <p id="saved-until">@savedUntil</p>
@@ -59,10 +61,14 @@
             <p>@messages("taskList.summary.paragraph1.start")
                 @components.link(SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link1", openInNewWindow = false)@messages("taskList.summary.paragraph1.end")</p>
         </div>
-        <h2 id="summaryHeading2">@messages("taskList.summary.heading2")</h2>
-        <div id="summary-paragraph-2" class="paragraph">
-            <p>@messages("taskList.summary.paragraph2") <a href="https://www.gov.uk/government/publications/self-assessment-trust-and-estate-tax-return-sa900" target="_blank">@messages("taskList.summary.link2")</a>.</p>
-        </div>
+
+        @if(isTaxable) {
+            <h2 id="summaryHeading2">@messages("taskList.summary.heading2")</h2>
+            <div id="summary-paragraph-2" class="paragraph">
+                <p>@messages("taskList.summary.paragraph2") <a href="https://www.gov.uk/government/publications/self-assessment-trust-and-estate-tax-return-sa900" target="_blank">@messages("taskList.summary.link2")</a>.</p>
+            </div>
+        }
+
         @components.button_link(messages("taskList.summary.continue"), DeclarationController.onPageLoad(draftId).url)
     }
 }

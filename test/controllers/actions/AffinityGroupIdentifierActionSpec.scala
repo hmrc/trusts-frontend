@@ -45,13 +45,16 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
     Future.successful(new ~(new ~(Some("id"), Some(affinityGroup)), enrolment))
 
   private val agentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("AgentReferenceNumber", "SomeVal")), "Activated", None)))
-  private val trustsEnrolment = Enrolments(Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", utr)), "Activated", None)))
-
+  private val emptyAgentEnrolment = Enrolments(Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("AgentReferenceNumber", "")), "Activated", None)))
+  private val trustsTaxableEnrolment = Enrolments(Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", utr)), "Activated", None)))
+  private val emptyTaxableEnrolment = Enrolments(Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", "")), "Activated", None)))
+  private val trustsNonTaxableEnrolment = Enrolments(Set(Enrolment("HMRC-TERSNT-ORG", List(EnrolmentIdentifier("URN", utr)), "Activated", None)))
+  private val emptyNonTaxableEnrolment = Enrolments(Set(Enrolment("HMRC-TERSNT-ORG", List(EnrolmentIdentifier("URN", "")), "Activated", None)))
 
   "invoking an AuthenticatedIdentifier" when {
-    "an Agent user" when {
-      "hasn't enrolled an Agent Services Account" must {
-        "redirect the user to the create agent services page" in {
+    "an Agent user" must {
+      "redirect the user to the create agent services page" when {
+        "hasn't enrolled an Agent Services Account" in {
 
           val application = applicationBuilder(userAnswers = None).build()
 
@@ -64,9 +67,22 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
           redirectLocation(result) mustBe Some(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad().url)
           application.stop()
         }
+        "has an empty agent enrolment" in {
+
+          val application = applicationBuilder(userAnswers = None).build()
+
+          when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+            .thenReturn(authRetrievals(AffinityGroup.Agent, emptyAgentEnrolment))
+
+          val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result) mustBe Some(controllers.register.routes.CreateAgentServicesAccountController.onPageLoad().url)
+          application.stop()
+        }
       }
 
-      "has correct enrolled in Agent Services Account" must {
+      "has correctly enrolled an Agent Services Account" must {
         "allow user to continue" in {
 
           val application = applicationBuilder(userAnswers = None).build()
@@ -83,6 +99,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
     }
 
     "an Org user" when {
+
       "with no enrolments" must {
         "allow user to continue" in {
 
@@ -97,24 +114,73 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
           application.stop()
         }
       }
-      "with trusts enrolments" must {
-        "redirect to maintain-a-trust" in {
 
-          val application = applicationBuilder(userAnswers = None).build()
+      "with taxable trusts enrolments" when {
+        "enrolment has an identifier" must {
+          "redirect to maintain-a-trust" in {
 
-          when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
-            .thenReturn(authRetrievals(AffinityGroup.Organisation, trustsEnrolment))
+            val application = applicationBuilder(userAnswers = None).build()
 
-          val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, trustsTaxableEnrolment))
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe s"${appConfig.maintainATrustFrontendUrl}"
-          application.stop()
+            val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
+
+            status(result) mustBe SEE_OTHER
+            redirectLocation(result).value mustBe s"${appConfig.maintainATrustFrontendUrl}"
+            application.stop()
+          }
+        }
+        "enrolment has no identifier" must {
+          "continue without enrolment" in {
+
+            val application = applicationBuilder(userAnswers = None).build()
+
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, emptyTaxableEnrolment))
+
+            val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
+
+            status(result) mustBe OK
+            application.stop()
+          }
+        }
+      }
+
+      "with non-taxable trusts enrolments" when {
+        "enrolment has an identifier" must {
+          "redirect to maintain-a-trust" in {
+
+            val application = applicationBuilder(userAnswers = None).build()
+
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, trustsNonTaxableEnrolment))
+
+            val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
+
+            status(result) mustBe SEE_OTHER
+            redirectLocation(result).value mustBe s"${appConfig.maintainATrustFrontendUrl}"
+            application.stop()
+          }
+        }
+        "enrolment has no identifier" must {
+          "continue without enrolment" in {
+
+            val application = applicationBuilder(userAnswers = None).build()
+
+            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+              .thenReturn(authRetrievals(AffinityGroup.Organisation, emptyNonTaxableEnrolment))
+
+            val result = new AffinityGroupIdentifierAction(fakeAction, trustsAuth, appConfig).apply(fakeRequest)
+
+            status(result) mustBe OK
+            application.stop()
+          }
         }
       }
     }
 
-    "and Individual user" must {
+    "an Individual user" must {
       "redirect the user to the unauthorised page" in {
 
         val application = applicationBuilder(userAnswers = None).build()

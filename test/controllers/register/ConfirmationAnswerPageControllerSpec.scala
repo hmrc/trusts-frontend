@@ -134,7 +134,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
       val trnDateTime = LocalDateTime.now.format(dateFormatter)
 
       contentAsString(result) mustEqual
-        view(expectedSections, "XNTRN000000001", trnDateTime)(request, messages).toString
+        view(expectedSections, "XNTRN000000001", trnDateTime, isTaxable = true)(request, messages).toString
 
       application.stop()
     }

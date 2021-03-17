@@ -17,9 +17,8 @@
 package navigation.registration
 
 import config.FrontendAppConfig
-import controllers.register.agents.routes.AgentInternalReferenceController
+
 import javax.inject.{Inject, Singleton}
-import models.NormalMode
 
 @Singleton
 class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
@@ -57,12 +56,7 @@ class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
   }
 
   def agentDetailsJourneyUrl(draftId: String): String = {
-    if (frontendAppConfig.agentDetailsMicroserviceEnabled) {
-      frontendAppConfig.agentDetailsFrontendUrl(draftId)
-    } else {
-      AgentInternalReferenceController.onPageLoad(NormalMode, draftId).url
-    }
+    frontendAppConfig.agentDetailsFrontendUrl(draftId)
   }
-
 
 }

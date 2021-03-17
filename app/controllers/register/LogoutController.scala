@@ -39,7 +39,9 @@ class LogoutController @Inject()(
   def logout: Action[AnyContent] = identify {
     request =>
 
-        implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+      if(appConfig.logoutAudit) {
 
         val auditData = Map(
           "sessionId" -> Session.id(hc),
@@ -48,7 +50,7 @@ class LogoutController @Inject()(
           "userGroup" -> request.affinityGroup.toString
         )
 
-        val auditWithAgent = request.agentARN.fold(auditData){ arn =>
+        val auditWithAgent = request.agentARN.fold(auditData) { arn =>
           auditData ++ Map("agentReferenceNumber" -> arn)
         }
 
@@ -57,6 +59,8 @@ class LogoutController @Inject()(
           auditWithAgent
         )
 
-        Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
+      }
+
+      Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
   }
 }

@@ -18,6 +18,9 @@ package mapping.registration
 
 import models.core.UserAnswers
 import models.core.http.{AddressType, Registration}
+import play.api.libs.json.Json
+import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
@@ -25,10 +28,9 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationMapper @Inject()(declarationMapper: DeclarationMapper,
                                    correspondenceMapper: CorrespondenceMapper,
-                                   agentMapper: AgentMapper,
                                    matchingMapper: MatchingMapper) {
 
-  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String)
+  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String, affinityGroup: AffinityGroup)
            (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Registration]] = {
 
     declarationMapper.build(userAnswers, correspondenceAddress).map(_.map(
@@ -37,7 +39,7 @@ class RegistrationMapper @Inject()(declarationMapper: DeclarationMapper,
           matchData = matchingMapper.build(userAnswers, trustName),
           declaration = declaration,
           correspondence = correspondenceMapper.build(trustName),
-          agentDetails = agentMapper.build(userAnswers)
+          agentDetails = if (affinityGroup == Agent) Some(Json.obj()) else None
         )
     ))
   }

@@ -23,20 +23,23 @@ import uk.gov.hmrc.time.TaxYear
 
 object TaxLiabilityHelper {
 
-  def showTaxLiability(trustSetUpDate: Option[JavaDate]): Boolean = {
-    trustSetUpDate match {
-      case None =>
-        false
-      case Some(trustStartDate) =>
-        def currentTaxYearStartDate: JavaDate = {
-          implicit class DateConversion(date: JodaDate) {
-            def toJavaDate: JavaDate = JavaDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth)
+  def showTaxLiability(trustSetUpDate: Option[JavaDate], isTaxable: Boolean): Boolean = {
+    if (isTaxable) {
+      trustSetUpDate match {
+        case None =>
+          false
+        case Some(trustStartDate) =>
+          def currentTaxYearStartDate: JavaDate = {
+            implicit class DateConversion(date: JodaDate) {
+              def toJavaDate: JavaDate = JavaDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth)
+            }
+            TaxYear.current.starts.toJavaDate
           }
-          TaxYear.current.starts.toJavaDate
-        }
-        trustStartDate isBefore currentTaxYearStartDate
+
+          trustStartDate isBefore currentTaxYearStartDate
+      }
+    } else {
+      false
     }
   }
 }
-
-

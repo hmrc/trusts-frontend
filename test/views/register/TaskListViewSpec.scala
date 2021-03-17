@@ -16,9 +16,6 @@
 
 package views.register
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import controllers.register.agents.routes
 import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress
@@ -28,6 +25,8 @@ import viewmodels.Task
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.register.TaskListView
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
 class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
@@ -38,9 +37,11 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId)
-  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId)
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, Agent)
+  private val isTaxable: Boolean = true
+
+  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, isTaxable)
+  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
+  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable)
 
   "TaskList view" when {
 
@@ -59,13 +60,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
 
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation,
-            "agentOverviewUrl"
+            Organisation
           )(fakeRequest, messages)
 
           behave like normalPage(applyView, None, "taskList")
@@ -87,13 +88,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           } yield {
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
+              isTaxable,
               fakeDraftId,
               savedUntil,
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
@@ -118,13 +119,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           } yield {
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
             val applyView = view.apply(
+              isTaxable,
               fakeDraftId,
               savedUntil,
               sections,
               additionalSections,
               isTaskListComplete,
-              Organisation,
-              s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+              Organisation
             )(fakeRequest, messages)
             val doc = asDocument(applyView)
 
@@ -150,13 +151,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
             additionalSections,
             isTaskListComplete,
-            Organisation,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Organisation
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -175,13 +176,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -202,13 +203,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)
@@ -216,7 +217,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           assertAttributeValueForElement(
             doc.getElementById("agent-details"),
             "href",
-            routes.AgentAnswerController.onPageLoad(fakeDraftId).url
+            fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
           )
         }
       }
@@ -229,13 +230,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
         } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
           val applyView = view.apply(
+            isTaxable,
             fakeDraftId,
             savedUntil,
             sections,
             additionalSections,
             isTaskListComplete,
-            Agent,
-            s"http://localhost:8847/trusts-registration/agent-details/$fakeDraftId/check-agent-details"
+            Agent
           )(fakeRequest, messages)
 
           val doc = asDocument(applyView)

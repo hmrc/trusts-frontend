@@ -28,7 +28,6 @@ class NavigatorSpec extends RegistrationSpecBase
   with ScalaCheckPropertyChecks
   with Generators
   with MatchingRoutes
-  with AgentRoutes
   with SuitabilityRoutes
 {
 
@@ -44,8 +43,6 @@ class NavigatorSpec extends RegistrationSpecBase
       }
 
       behave like matchingRoutes
-
-      behave like agentRoutes
 
       behave like suitabilityRoutes
 

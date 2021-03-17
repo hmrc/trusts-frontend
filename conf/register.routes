@@ -12,8 +12,6 @@ GET        /language/:lang                                                      
 
 GET        /this-service-has-been-reset                                                             controllers.register.SessionExpiredController.onPageLoad()
 
-GET        /:draftId/check-your-answers                                                             controllers.register.CheckYourAnswersController.onPageLoad(draftId: String)
-
 GET        /unauthorised                                                                            controllers.register.UnauthorisedController.onPageLoad()
 
 GET        /create-agent-services-account                                                           controllers.register.CreateAgentServicesAccountController.onPageLoad()
@@ -29,6 +27,11 @@ GET        /:draftId/trust-registered-online                                    
 POST       /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode, draftId: String)
 GET        /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode, draftId: String)
 POST       /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode, draftId: String)
+
+GET        /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onPageLoad(draftId: String)
+POST       /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onSubmit(draftId: String)
+
+GET        /:draftId/reference-sent-by-post                                                         controllers.register.RefSentByPostController.onPageLoad(draftId: String)
 
 GET        /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)
@@ -99,47 +102,13 @@ GET        /:draftId/no-need-to-register                                        
 
 ## Agents
 
-GET        /:draftId/client-reference                                                               controllers.register.agents.AgentInternalReferenceController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/client-reference                                                               controllers.register.agents.AgentInternalReferenceController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-client-reference                                                        controllers.register.agents.AgentInternalReferenceController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-client-reference                                                        controllers.register.agents.AgentInternalReferenceController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/agent-name                                                                     controllers.register.agents.AgentNameController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/agent-name                                                                     controllers.register.agents.AgentNameController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-agent-name                                                              controllers.register.agents.AgentNameController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-agent-name                                                              controllers.register.agents.AgentNameController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/agent-telephone-number                                                         controllers.register.agents.AgentTelephoneNumberController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/agent-telephone-number                                                         controllers.register.agents.AgentTelephoneNumberController.onSubmit(mode: Mode = NormalMode, draftId: String)
-
-GET        /:draftId/change-agent-telephone-number                                                  controllers.register.agents.AgentTelephoneNumberController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-agent-telephone-number                                                  controllers.register.agents.AgentTelephoneNumberController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
 GET        /agent-overview                                                                          controllers.register.agents.AgentOverviewController.onPageLoad()
 POST       /agent-overview                                                                          controllers.register.agents.AgentOverviewController.onSubmit()
 
-GET        /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onPageLoad(draftId: String)
-POST       /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onSubmit(draftId: String)
-
-GET        /:draftId/check-agent-details                                                            controllers.register.agents.AgentAnswerController.onPageLoad(draftId: String)
-POST       /:draftId/check-agent-details                                                            controllers.register.agents.AgentAnswerController.onSubmit(draftId: String)
-
-GET        /:draftId/agent-address                                                                  controllers.register.agents.AgentAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/agent-address                                                                  controllers.register.agents.AgentAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-agent-address                                                           controllers.register.agents.AgentAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-agent-address                                                           controllers.register.agents.AgentAddressYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/agent-international-address                                                    controllers.register.agents.AgentInternationalAddressController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/agent-international-address                                                    controllers.register.agents.AgentInternationalAddressController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-agent-international-address                                             controllers.register.agents.AgentInternationalAddressController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-agent-international-address                                             controllers.register.agents.AgentInternationalAddressController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
-GET        /:draftId/agent-uk-address                                                               controllers.register.agents.AgentUKAddressController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/agent-uk-address                                                               controllers.register.agents.AgentUKAddressController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-agent-uk-address                                                        controllers.register.agents.AgentUKAddressController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-agent-uk-address                                                        controllers.register.agents.AgentUKAddressController.onSubmit(mode: Mode = CheckMode, draftId: String)
-
 GET        /:draftId/maintain-saved-registration                                                    controllers.register.agents.AgentOverviewController.continue(draftId: String)
 GET        /:draftId/remove-saved-registration                                                      controllers.register.agents.AgentOverviewController.remove(draftId: String)
+
+GET        /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onSubmit(draftId: String)
 
 GET        /feature-not-available                                                                   controllers.FeatureNotAvailableController.onPageLoad()

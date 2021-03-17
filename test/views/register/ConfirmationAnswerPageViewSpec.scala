@@ -52,7 +52,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
 
-        view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime)(fakeRequest, messages)
+        view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime, isTaxable = true)(fakeRequest, messages)
     }
 
     val view = Await.result(viewFuture, Duration.Inf)

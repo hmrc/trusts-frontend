@@ -27,9 +27,9 @@ class FakeRegistrationDataRetrievalAction(dataToReturn: Option[UserAnswers]) ext
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] =
     dataToReturn match {
       case None =>
-        Future(OptionalRegistrationDataRequest(request.request, request.identifier, "Fake Session ID", None, request.affinityGroup, request.enrolments))
+        Future(OptionalRegistrationDataRequest(request.request, request.internalId, "Fake Session ID", None, request.affinityGroup, request.enrolments))
       case Some(userAnswers) =>
-        Future(OptionalRegistrationDataRequest(request.request, request.identifier, "Fake Session ID", Some(userAnswers), request.affinityGroup, request.enrolments))
+        Future(OptionalRegistrationDataRequest(request.request, request.internalId, "Fake Session ID", Some(userAnswers), request.affinityGroup, request.enrolments))
     }
 
   override protected implicit val executionContext: ExecutionContext =

@@ -18,8 +18,9 @@ package models
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
-import models.registration.pages.Status.Completed
-import uk.gov.hmrc.auth.core.AffinityGroup._
+import models.registration.pages.Status._
+
+import java.time.LocalDate
 
 class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
@@ -28,6 +29,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
     "AllStatus" must {
 
       "return allComplete true" when {
+
         "all sections completed" in {
 
           val allStatus = AllStatus(
@@ -41,11 +43,28 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(None, Organisation) mustBe true
+          allStatus.allComplete(None, isTaxable = true) mustBe true
+        }
+
+        "non-taxable and tax liability empty" in {
+
+          val allStatus = AllStatus(
+            beneficiaries = Some(Completed),
+            trustees = Some(Completed),
+            taxLiability = None,
+            protectors = Some(Completed),
+            otherIndividuals = Some(Completed),
+            trustDetails = Some(Completed),
+            settlors = Some(Completed),
+            assets = Some(Completed)
+          )
+
+          allStatus.allComplete(None, isTaxable = false) mustBe true
         }
       }
 
       "return allComplete false" when {
+
         "any section incomplete" in {
 
           val allStatus = AllStatus(
@@ -59,7 +78,23 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(None, Organisation) mustBe false
+          allStatus.allComplete(None, isTaxable = true) mustBe false
+        }
+
+        "trust start date before current tax year start date and tax liability incomplete" in {
+
+          val allStatus = AllStatus(
+            beneficiaries = None,
+            trustees = Some(Completed),
+            taxLiability = Some(InProgress),
+            protectors = Some(Completed),
+            otherIndividuals = Some(Completed),
+            trustDetails = Some(Completed),
+            settlors = Some(Completed),
+            assets = Some(Completed)
+          )
+
+          allStatus.allComplete(Some(LocalDate.parse("1500-01-01")), isTaxable = true) mustBe false
         }
       }
     }

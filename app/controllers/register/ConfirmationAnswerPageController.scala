@@ -57,7 +57,7 @@ class ConfirmationAnswerPageController @Inject()(
 
           val declarationSent : String = dateFormatter.formatDateTime(trnDateTime)
 
-          Ok(view(sections, trn, declarationSent))
+          Ok(view(sections, trn, declarationSent, request.userAnswers.isTaxable))
       }
   }
 }

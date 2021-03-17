@@ -49,7 +49,7 @@ class SummaryAnswerPageController @Inject()(
   def onPageLoad(draftId : String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      registrationsRepository.getClientReference(request.userAnswers) flatMap {
+      registrationsRepository.getClientReference(draftId) flatMap {
         reference =>
           printUserAnswersHelper.summary(draftId).map {
             sections =>

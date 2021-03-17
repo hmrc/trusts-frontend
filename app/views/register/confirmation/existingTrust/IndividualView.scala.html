@@ -31,7 +31,10 @@
 
     @components.registration_received(refNumber)
 
-    <p class="panel-indent">@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+    <div class="panel-indent">
+        <p>@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+        <p>("confirmation.declare.warning")</p>
+    </div>
 
     <h2>@messages("confirmation.existing.individual.subheading1")</h2>
 
@@ -46,5 +49,5 @@
 
     <p>@messages("confirmation.existing.individual.p4")</p>
     <p>@messages("confirmation.existing.individual.p5")</p>
-    <p>@messages("confirmation.existing.individual.p6") <a href="@config.helplineUrl" target="_blank">@messages("confirmation.existing.individual.p6.a")</a>.</p>
+    <p>@messages("confirmation.existing.individual.p6") <a href="@{config.helplineUrl}" target="_blank">@messages("confirmation.existing.individual.p6.a")</a>.</p>
 }

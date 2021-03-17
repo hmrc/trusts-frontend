@@ -19,15 +19,23 @@ package controllers.register
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import pages.register.TrustRegisteredOnlinePage
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import views.html.register.TrustRegisteredOnlineView
+
+import scala.concurrent.Future
 
 class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
   val form = formProvider.withPrefix("trustRegisteredOnline")
+
+  val featureFlagService = mock[FeatureFlagService]
 
   lazy val trustRegisteredOnlineRoute = routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
 
@@ -74,7 +82,12 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
     "redirect to the next page when valid data is submitted" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(
+            bind[FeatureFlagService].toInstance(featureFlagService)
+          ).build()
+
+      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request =
         FakeRequest(POST, trustRegisteredOnlineRoute)
@@ -91,7 +104,13 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(
+            bind[FeatureFlagService].toInstance(featureFlagService)
+          ).build()
+
+      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request =
         FakeRequest(POST, trustRegisteredOnlineRoute)

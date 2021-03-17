@@ -17,29 +17,29 @@
 package connector
 
 import config.FrontendAppConfig
-import javax.inject.Inject
 import models.core.http.{MatchData, MatchedResponse, TrustResponse}
 import play.api.libs.json.{JsValue, Writes}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
+class TrustConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
 
   val registrationUrl = s"${config.trustsUrl}/trusts/register"
 
-  def register(registrationJson: JsValue, draftId : String)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[TrustResponse] = {
+  def register(registrationJson: JsValue, draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
 
-    val newHc : HeaderCarrier = hc.withExtraHeaders(
+    val newHc: HeaderCarrier = hc.withExtraHeaders(
       Headers.DraftRegistrationId -> draftId
     )
 
     http.POST[JsValue, TrustResponse](registrationUrl, registrationJson)(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
   }
 
-  def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[MatchedResponse] = {
+  def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] = {
     val matchingUrl = s"${config.trustsUrl}/trusts/check"
     http.POST[MatchData, MatchedResponse](matchingUrl, matchData: MatchData)(MatchData.writes, MatchedResponse.httpReads, hc, ec)
   }
+
 }
