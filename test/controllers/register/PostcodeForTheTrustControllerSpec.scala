@@ -87,7 +87,7 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
     "redirect to Task List when non-agent and valid data is submitted" in {
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
+      when(mockMatchingService.matching(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -110,7 +110,7 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
     "redirect to Agent Details when agent and valid data is submitted" in {
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(agentDetailsRoute)))
+      when(mockMatchingService.matching(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(agentDetailsRoute)))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
