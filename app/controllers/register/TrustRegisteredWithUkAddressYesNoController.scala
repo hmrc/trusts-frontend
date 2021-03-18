@@ -73,7 +73,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject()(
               if (value) {
                 Future.successful(Redirect(routes.PostcodeForTheTrustController.onPageLoad(mode, draftId)))
               } else {
-                matchingService.matching(updatedAnswers, draftId, request.isAgent)
+                matchingService.matching(updatedAnswers, draftId, request.isAgent, mode)
               }
             }
           } yield redirect
