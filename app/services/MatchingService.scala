@@ -44,7 +44,7 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
   def matching(userAnswers: UserAnswers,
                draftId: String,
                isAgent: Boolean,
-               mode: Mode,
+               mode: Mode
               )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
     val matchResult = for {
       is5mld <- featureFlagService.is5mldEnabled()
