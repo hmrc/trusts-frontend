@@ -34,7 +34,7 @@ import play.api.mvc._
 import repositories.RegistrationsRepository
 import services.{FeatureFlagService, SubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.DeclarationView
 
@@ -75,7 +75,7 @@ class DeclarationController @Inject()(
 
   def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
-      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
