@@ -307,7 +307,7 @@ suitability.expressTrust.p1 = An express trust is a trust created by a settlor, 
 suitability.expressTrust.p2 = Express trusts can be created:
 suitability.expressTrust.bullet1 = by someone’s will after they have died
 suitability.expressTrust.bullet2 = during someone’s lifetime, which is known as inter-vivos
-suitability.expressTrust.error.required = Select yes or no to tell us if you are registering an express trust.
+suitability.expressTrust.error.required = Select yes if you are registering an express trust
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?
