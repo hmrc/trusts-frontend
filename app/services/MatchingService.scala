@@ -125,7 +125,7 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
       saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.AlreadyRegistered, TrustAlreadyRegisteredController.onPageLoad(context.draftId))
   }
 
-  private def recover()(implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
+  private def recover()(): PartialFunction[MatchedResponse, Future[Result]] = {
     case _ =>
       Future.successful(Redirect(controllers.register.routes.MatchingDownController.onPageLoad()))
   }
