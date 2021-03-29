@@ -25,7 +25,7 @@ import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.Session
 
 import javax.inject.Inject
@@ -38,7 +38,7 @@ class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: Reg
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     def createdOptionalDataRequest(request: IdentifierRequest[A],
                                    userAnswers: Option[UserAnswers]): OptionalRegistrationDataRequest[A] = {
