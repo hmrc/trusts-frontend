@@ -38,7 +38,8 @@ class FeatureFlagServiceSpec extends RegistrationSpecBase {
 
     "return true when 5mld is enabled" in {
 
-      when(mockConnector.getFeature(any())(any(), any())).thenReturn(Future.successful(FeatureResponse("5mld", isEnabled = true)))
+      when(mockConnector.getFeature(any())(any(), any()))
+        .thenReturn(Future.successful(FeatureResponse("5mld", isEnabled = true)))
 
       val result = featureFlagService.is5mldEnabled()
 
@@ -49,9 +50,43 @@ class FeatureFlagServiceSpec extends RegistrationSpecBase {
 
     "return false when 5mld is disabled" in {
 
-      when(mockConnector.getFeature(any())(any(), any())).thenReturn(Future.successful(FeatureResponse("5mld", isEnabled = false)))
+      when(mockConnector.getFeature(any())(any(), any()))
+        .thenReturn(Future.successful(FeatureResponse("5mld", isEnabled = false)))
 
       val result = featureFlagService.is5mldEnabled()
+
+      whenReady(result) { res =>
+        res mustEqual false
+      }
+    }
+  }
+
+  "isNonTaxableAccessCodeEnabled" must {
+
+    val mockConnector = mock[TrustsStoreConnector]
+
+    val featureFlagService = new FeatureFlagService(mockConnector)
+
+    implicit val hc: HeaderCarrier = HeaderCarrier()
+
+    "return true when non-taxable access codes are enabled" in {
+
+      when(mockConnector.getFeature(any())(any(), any()))
+        .thenReturn(Future.successful(FeatureResponse("non-taxable.access-code", isEnabled = true)))
+
+      val result = featureFlagService.isNonTaxableAccessCodeEnabled()
+
+      whenReady(result) { res =>
+        res mustEqual true
+      }
+    }
+
+    "return false when 5mld is disabled" in {
+
+      when(mockConnector.getFeature(any())(any(), any()))
+        .thenReturn(Future.successful(FeatureResponse("non-taxable.access-code", isEnabled = false)))
+
+      val result = featureFlagService.isNonTaxableAccessCodeEnabled()
 
       whenReady(result) { res =>
         res mustEqual false

@@ -20,19 +20,25 @@ import base.RegistrationSpecBase
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import pages.register.suitability.TrustTaxableYesNoPage
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.AffinityGroup._
 import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
 
-class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
+import scala.concurrent.Future
+
+class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
   private lazy val beforeYouContinueRoute: String = routes.BeforeYouContinueController.onPageLoad(fakeDraftId).url
 
   private val navigator: TaskListNavigator = mock[TaskListNavigator]
+
+  private val mockFeatureFlagService = mock[FeatureFlagService]
 
   "BeforeYouContinue Controller" must {
 
@@ -98,12 +104,17 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
 
     "redirect to the next page when valid data is submitted" when {
 
-      "agent user" in {
+      "express, non-taxable trust with non-taxable access code feature enabled" in {
 
-        when(navigator.agentDetailsJourneyUrl(any())).thenReturn("redirect-url")
+        when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+          .thenReturn(Future.successful(true))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
-          .overrides(bind[TaskListNavigator].toInstance(navigator))
+        val answers = emptyUserAnswers
+          .set(ExpressTrustYesNoPage, true).success.value
+          .set(TrustTaxableYesNoPage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
           .build()
 
         val request = FakeRequest(POST, beforeYouContinueRoute)
@@ -112,25 +123,72 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual "redirect-url"
+        redirectLocation(result).value mustEqual controllers.routes.FeatureNotAvailableController.onPageLoad().url
 
         application.stop()
       }
 
-      "non-agent user" in {
+      "not an express, non-taxable trust with non-taxable access code feature enabled" when {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Organisation).build()
+        "agent user" in {
 
-        val request = FakeRequest(POST, beforeYouContinueRoute)
+          when(navigator.agentDetailsJourneyUrl(any())).thenReturn("redirect-url")
 
-        val result = route(application, request).value
+          forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
+            case (isExpress, isTaxable, isFeatureEnabled) =>
 
-        status(result) mustEqual SEE_OTHER
+              when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+                .thenReturn(Future.successful(isFeatureEnabled))
 
-        redirectLocation(result).value mustEqual
-          controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+              val answers = emptyUserAnswers
+                .set(ExpressTrustYesNoPage, isExpress).success.value
+                .set(TrustTaxableYesNoPage, isTaxable).success.value
 
-        application.stop()
+              val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+                .overrides(
+                  bind[FeatureFlagService].toInstance(mockFeatureFlagService),
+                  bind[TaskListNavigator].toInstance(navigator)
+                ).build()
+
+              val request = FakeRequest(POST, beforeYouContinueRoute)
+
+              val result = route(application, request).value
+
+              status(result) mustEqual SEE_OTHER
+
+              redirectLocation(result).value mustEqual "redirect-url"
+
+              application.stop()
+          }
+        }
+
+        "non-agent user" in {
+
+          forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
+            case (isExpress, isTaxable, isFeatureEnabled) =>
+
+              when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+                .thenReturn(Future.successful(isFeatureEnabled))
+
+              val answers = emptyUserAnswers
+                .set(ExpressTrustYesNoPage, isExpress).success.value
+                .set(TrustTaxableYesNoPage, isTaxable).success.value
+
+              val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
+                .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+                .build()
+
+              val request = FakeRequest(POST, beforeYouContinueRoute)
+
+              val result = route(application, request).value
+
+              status(result) mustEqual SEE_OTHER
+
+              redirectLocation(result).value mustEqual controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+
+              application.stop()
+          }
+        }
       }
     }
   }
