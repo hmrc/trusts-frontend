@@ -81,7 +81,7 @@ class FeatureFlagServiceSpec extends RegistrationSpecBase {
       }
     }
 
-    "return false when 5mld is disabled" in {
+    "return false when non-taxable access codes are disabled" in {
 
       when(mockConnector.getFeature(any())(any(), any()))
         .thenReturn(Future.successful(FeatureResponse("non-taxable.access-code", isEnabled = false)))
