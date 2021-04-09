@@ -99,6 +99,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl
 
+  lazy val trustsAuthUrl: String = configuration.get[Service]("microservice.services.trusts-auth").baseUrl
+
   def languageMap: Map[String, Lang] = Map(
     "english" -> Lang(ENGLISH),
     "cymraeg" -> Lang(WELSH)

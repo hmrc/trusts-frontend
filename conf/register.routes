@@ -98,6 +98,8 @@ POST       /:draftId/change-has-undeclared-tax-liability                        
 GET        /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onPageLoad(draftId: String)
 POST       /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onSubmit(draftId: String)
 
+#GET        /:draftId/enter-access-code                                                              controllers.register.suitability.EnterAccessCodeController.onPageLoad(draftId: String)
+
 GET        /:draftId/no-need-to-register                                                            controllers.register.suitability.NoNeedToRegisterController.onPageLoad(draftId: String)
 
 ## Agents
