@@ -353,6 +353,11 @@ suitability.noNeedToRegister.p3.link = contact the trusts helpline (opens in a n
 suitability.noNeedToRegister.p4 = You can
 suitability.noNeedToRegister.p4.link = return to register and maintain a trust for a client
 
+nonTaxableTrustRegistrationAccessCode.title = PLACEHOLDER TEXT: What is your access code?
+nonTaxableTrustRegistrationAccessCode.heading = PLACEHOLDER TEXT: What is your access code?
+nonTaxableTrustRegistrationAccessCode.error.required = PLACEHOLDER TEXT: Enter your access code
+nonTaxableTrustRegistrationAccessCode.error.invalid = PLACEHOLDER TEXT: Your access code must be 8 characters long and alphanumeric
+
 agentInternalReference.checkYourAnswersLabel = What is your internal reference for this client?
 agentName.checkYourAnswersLabel = What is the name of the agency registering this trust?
 agentAddressUKYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?

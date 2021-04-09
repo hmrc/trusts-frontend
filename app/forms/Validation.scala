@@ -35,5 +35,6 @@ object Validation {
   val descriptionRegex = "^[0-9a-zA-Z{\\u00C0-\\u02FF\\u2019} \\u005C&`'^\\-]*$"
   val passportOrIdCardNumberRegEx = """^([A-Za-z0-9]{1,30})$"""
   val emailRegex = """^(?!\.)("([^"\r\\]|\\["\r\\])*"|([-a-zA-Z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"""
+  val accessCodeRegex = "^[A-Z0-9]{8}$"
 
 }
