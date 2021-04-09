@@ -123,7 +123,8 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual controllers.routes.FeatureNotAvailableController.onPageLoad().url
+        redirectLocation(result).value mustEqual
+          routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(fakeDraftId).url
 
         application.stop()
       }

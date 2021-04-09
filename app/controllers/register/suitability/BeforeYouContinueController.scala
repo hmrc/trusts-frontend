@@ -68,8 +68,7 @@ class BeforeYouContinueController @Inject()(
         Redirect {
           (request.userAnswers.get(ExpressTrustYesNoPage), request.userAnswers.get(TrustTaxableYesNoPage), isNonTaxableAccessEnabled) match {
             case (Some(true), Some(false), true) =>
-              // TODO - develop non-taxable access code page
-              controllers.routes.FeatureNotAvailableController.onPageLoad().url
+              routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(draftId).url
             case _ =>
               request.affinityGroup match {
                 case AffinityGroup.Agent =>

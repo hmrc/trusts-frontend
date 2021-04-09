@@ -38,7 +38,7 @@ class TrustsAuthConnectorImpl @Inject()(http: HttpClient, config: FrontendAppCon
 
   override def authoriseAccessCode(draftId: String, accessCode: String)
                                   (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustsAuthResponse] = {
-    http.POSTString[TrustsAuthResponse](s"$baseUrl/$draftId/access-code-for-non-taxable", accessCode) recoverWith {
+    http.POST[String, TrustsAuthResponse](s"$baseUrl/$draftId/access-code-for-non-taxable", accessCode) recoverWith {
       case _ => Future.successful(TrustsAuthInternalServerError)
     }
   }
