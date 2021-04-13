@@ -29,9 +29,9 @@
 
     <p>@messages("suitability.expressTrust.p2")</p>
 
-    <ul class="trust-list--bullet">
-        <li class="inside">@messages("suitability.expressTrust.bullet1")</li>
-        <li class="inside">@messages("suitability.expressTrust.bullet2")</li>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("suitability.expressTrust.bullet1")</li>
+        <li>@messages("suitability.expressTrust.bullet2")</li>
     </ul>
 }
 
@@ -39,7 +39,7 @@
     title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}"
 ) {
 
-        @formHelper(action = ExpressTrustYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = ExpressTrustYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
