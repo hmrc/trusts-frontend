@@ -115,6 +115,24 @@ $error-colour: #d4351c;
     font-weight: bold;
 }
 
+.govuk-lock-text {
+  position: relative;
+  border-radius: 0;
+  margin-bottom: 1rem;
+}
+
+.govuk-lock-text .govuk-lock-text__icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  position: absolute;
+}
+
+.govuk-lock-text .govuk-lock-text__body {
+  display: block;
+  padding: 0.1rem 0 0 1.5rem;
+  font-weight: bold;
+}
+
 .govuk-caption-xl {
     font-family: "nta", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

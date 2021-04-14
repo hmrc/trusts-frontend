@@ -140,4 +140,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
     configuration.get[String](path)
   }
 
+  def trustsEmail: String = configuration.get[String]("email")
+
 }

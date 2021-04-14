@@ -43,7 +43,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
   private val mockTrustsAuthConnector = mock[TrustsAuthConnector]
 
-  private val validAnswer: String = "AB54YH75"
+  private val validAnswer: String = "123456"
 
   "NonTaxableTrustRegistrationAccessCodeController" must {
 

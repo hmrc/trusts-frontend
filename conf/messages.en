@@ -353,10 +353,17 @@ suitability.noNeedToRegister.p3.link = contact the trusts helpline (opens in a n
 suitability.noNeedToRegister.p4 = You can
 suitability.noNeedToRegister.p4.link = return to register and maintain a trust for a client
 
-nonTaxableTrustRegistrationAccessCode.title = PLACEHOLDER TEXT: What is your access code?
-nonTaxableTrustRegistrationAccessCode.heading = PLACEHOLDER TEXT: What is your access code?
-nonTaxableTrustRegistrationAccessCode.error.required = PLACEHOLDER TEXT: Enter your access code
-nonTaxableTrustRegistrationAccessCode.error.invalid = PLACEHOLDER TEXT: Your access code must be 8 characters long and alphanumeric
+nonTaxableTrustRegistrationAccessCode.title = Private Beta
+nonTaxableTrustRegistrationAccessCode.heading = Private Beta
+nonTaxableTrustRegistrationAccessCode.p1 = In order to control the number of Non-Taxable Trust registrations, we have added limited access for the private beta. You will need to enter your provided access code and select ''Continue'' to enter the registration journey.
+nonTaxableTrustRegistrationAccessCode.locked = Enter your 6-character access code
+nonTaxableTrustRegistrationAccessCode.hint = Keep this code safe. You will need to enter it every time you access the Beta. This code will last for TBC weeks.
+nonTaxableTrustRegistrationAccessCode.subHeading = If you are having difficulty using the code
+nonTaxableTrustRegistrationAccessCode.p2 = You can request a new access code by emailing
+nonTaxableTrustRegistrationAccessCode.error.required = Enter your access code
+nonTaxableTrustRegistrationAccessCode.error.invalid = Your access code must be 6 characters long and alphanumeric
+nonTaxableTrustRegistrationAccessCode.email.subject = TBC: EMAIL SUBJECT
+nonTaxableTrustRegistrationAccessCode.email.body = TBC: EMAIL BODY
 
 agentInternalReference.checkYourAnswersLabel = What is your internal reference for this client?
 agentName.checkYourAnswersLabel = What is the name of the agency registering this trust?

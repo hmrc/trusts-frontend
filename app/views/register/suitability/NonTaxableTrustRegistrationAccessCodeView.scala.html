@@ -14,17 +14,19 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: FormWithCSRF,
+    config: FrontendAppConfig
 )
 
 @(form: Form[_], draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-   title = s"${errorPrefix(form)}${messages("nonTaxableTrustRegistrationAccessCode.title")}"
+    title = s"${errorPrefix(form)}${messages("nonTaxableTrustRegistrationAccessCode.title")}"
 ) {
 
     @formHelper(action = NonTaxableTrustRegistrationAccessCodeController.onSubmit(draftId), 'autoComplete -> "on") {
@@ -33,14 +35,33 @@
 
         @components.error_summary(form.errors)
 
-        @components.input_text(
-            field = form("value"),
-            label = messages("nonTaxableTrustRegistrationAccessCode.heading"),
-            labelAsHeading = true,
-            labelClass = Some("heading-large")
-        )
+        @components.heading("nonTaxableTrustRegistrationAccessCode.heading")
 
-        @components.submit_button()
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p1")</p>
+
+        <div class="panel-indent">
+
+            @components.locked("nonTaxableTrustRegistrationAccessCode")
+
+            @components.input_text(
+                field = form("value"),
+                label = messages("nonTaxableTrustRegistrationAccessCode.heading"),
+                labelClass = Some("visually-hidden"),
+                hint = Some(messages("nonTaxableTrustRegistrationAccessCode.hint")),
+                inputClass = Some("form-control-1-2")
+            )
+
+        </div>
+
+        <h2>@messages("nonTaxableTrustRegistrationAccessCode.subHeading")</h2>
+
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p2")
+            <a
+                href="mailto:@{config.trustsEmail}?subject=@messages("nonTaxableTrustRegistrationAccessCode.email.subject")&body=@messages("nonTaxableTrustRegistrationAccessCode.email.body")">@{config.trustsEmail}
+            </a>
+        </p>
+
+        @components.submit_button(Some("site.continue"))
 
     }
 }
