@@ -23,7 +23,7 @@ import handlers.ErrorHandler
 import models.requests.RegistrationDataRequest
 import models.{TrustsAuthAllowed, TrustsAuthDenied, TrustsAuthInternalServerError}
 import navigation.registration.TaskListNavigator
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -45,6 +45,8 @@ class NonTaxableTrustRegistrationAccessCodeController @Inject()(
                                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private val form: Form[String] = formProvider()
+
+  private val messageKeyPrefix: String = "nonTaxableTrustRegistrationAccessCode"
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
@@ -70,8 +72,8 @@ class NonTaxableTrustRegistrationAccessCodeController @Inject()(
               case _ =>
                 Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId).url)
             }
-            case TrustsAuthDenied(redirectUrl) =>
-              Redirect(redirectUrl)
+            case TrustsAuthDenied(_) =>
+              BadRequest(view(form.withError(FormError("value", s"$messageKeyPrefix.error.unrecognised")), draftId))
             case TrustsAuthInternalServerError =>
               InternalServerError(errorHandler.internalServerErrorTemplate)
           }

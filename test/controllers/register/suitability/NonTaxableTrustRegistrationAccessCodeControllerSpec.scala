@@ -122,10 +122,8 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
       "access code is not authorised" in {
 
-        val redirectUrl = nonTaxableTrustRegistrationAccessCodeRoute
-
         when(mockTrustsAuthConnector.authoriseAccessCode(any(), any())(any(), any()))
-          .thenReturn(Future.successful(TrustsAuthDenied(redirectUrl)))
+          .thenReturn(Future.successful(TrustsAuthDenied("redirectUrl")))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector))
@@ -136,9 +134,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustEqual redirectUrl
+        status(result) mustEqual BAD_REQUEST
 
         application.stop()
       }

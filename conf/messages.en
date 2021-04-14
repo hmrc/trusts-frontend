@@ -362,6 +362,7 @@ nonTaxableTrustRegistrationAccessCode.subHeading = If you are having difficulty 
 nonTaxableTrustRegistrationAccessCode.p2 = You can request a new access code by emailing
 nonTaxableTrustRegistrationAccessCode.error.required = Enter your access code
 nonTaxableTrustRegistrationAccessCode.error.invalid = Your access code must be 6 characters long and alphanumeric
+nonTaxableTrustRegistrationAccessCode.error.unrecognised = Access code not recognised. Please try again.
 nonTaxableTrustRegistrationAccessCode.email.subject = TBC: EMAIL SUBJECT
 nonTaxableTrustRegistrationAccessCode.email.body = TBC: EMAIL BODY
 
