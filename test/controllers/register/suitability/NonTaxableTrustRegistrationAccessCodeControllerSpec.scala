@@ -19,7 +19,7 @@ package controllers.register.suitability
 import base.RegistrationSpecBase
 import connector.TrustsAuthConnector
 import forms.AccessCodeFormProvider
-import models.{TrustsAuthAllowed, TrustsAuthDenied, TrustsAuthInternalServerError}
+import models.{TrustsAuthAllowed, TrustsAuthInternalServerError}
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -100,7 +100,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
         "non-agent user" in {
 
           when(mockTrustsAuthConnector.authoriseAccessCode(any(), any())(any(), any()))
-            .thenReturn(Future.successful(TrustsAuthAllowed()))
+            .thenReturn(Future.successful(TrustsAuthAllowed(authorised = true)))
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = AffinityGroup.Organisation)
             .overrides(bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector))
@@ -123,7 +123,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
       "access code is not authorised" in {
 
         when(mockTrustsAuthConnector.authoriseAccessCode(any(), any())(any(), any()))
-          .thenReturn(Future.successful(TrustsAuthDenied("redirectUrl")))
+          .thenReturn(Future.successful(TrustsAuthAllowed(authorised = false)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector))

@@ -20,8 +20,8 @@ import connector.TrustsAuthConnector
 import controllers.actions.StandardActionSets
 import forms.AccessCodeFormProvider
 import handlers.ErrorHandler
+import models.TrustsAuthAllowed
 import models.requests.RegistrationDataRequest
-import models.{TrustsAuthAllowed, TrustsAuthDenied, TrustsAuthInternalServerError}
 import navigation.registration.TaskListNavigator
 import play.api.data.{Form, FormError}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -66,15 +66,15 @@ class NonTaxableTrustRegistrationAccessCodeController @Inject()(
 
         accessCode => {
           trustsAuthConnector.authoriseAccessCode(draftId, accessCode) map {
-            case TrustsAuthAllowed(_) => request.affinityGroup match {
+            case TrustsAuthAllowed(true) => request.affinityGroup match {
               case AffinityGroup.Agent =>
                 Redirect(navigator.agentDetailsJourneyUrl(draftId))
               case _ =>
                 Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId).url)
             }
-            case TrustsAuthDenied(_) =>
+            case TrustsAuthAllowed(false) =>
               BadRequest(view(form.withError(FormError("value", s"$messageKeyPrefix.error.unrecognised")), draftId))
-            case TrustsAuthInternalServerError =>
+            case _ =>
               InternalServerError(errorHandler.internalServerErrorTemplate)
           }
         }
