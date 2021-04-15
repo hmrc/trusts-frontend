@@ -16,7 +16,6 @@
 
 package views.behaviours
 
-import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.ViewSpecBase
 
@@ -282,16 +281,24 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
-  def pageWithHint[A](form: Form[A],
-                      createView: Form[A] => HtmlFormat.Appendable,
+  def pageWithHint[A](view: HtmlFormat.Appendable,
                       expectedHintKey: String): Unit = {
 
     "behave like a page with hint text" in {
 
-      val doc = asDocument(createView(form))
+      val doc = asDocument(view)
       assertContainsHint(doc, "value", Some(messages(expectedHintKey)))
     }
   }
+
+  def pageWithText[A](view: HtmlFormat.Appendable,
+                      text: String): Unit = {
+
+    "behave like a page with content" in {
+
+      val doc = asDocument(view)
+      assertContainsText(doc, text)
+    }
+  }
+
 }
-
-

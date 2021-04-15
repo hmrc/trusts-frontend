@@ -1,0 +1,67 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+@import controllers.register.suitability.routes._
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF,
+    config: FrontendAppConfig
+)
+
+@(form: Form[_], draftId: String)(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = s"${errorPrefix(form)}${messages("nonTaxableTrustRegistrationAccessCode.title")}"
+) {
+
+    @formHelper(action = NonTaxableTrustRegistrationAccessCodeController.onSubmit(draftId), 'autoComplete -> "on") {
+
+        @components.back_link()
+
+        @components.error_summary(form.errors)
+
+        @components.heading("nonTaxableTrustRegistrationAccessCode.heading")
+
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p1")</p>
+
+        <div class="panel-indent">
+
+            @components.locked("nonTaxableTrustRegistrationAccessCode")
+
+            @components.input_text(
+                field = form("value"),
+                label = messages("nonTaxableTrustRegistrationAccessCode.heading"),
+                labelClass = Some("visually-hidden"),
+                hint = Some(messages("nonTaxableTrustRegistrationAccessCode.hint")),
+                inputClass = Some("form-control-1-2")
+            )
+
+        </div>
+
+        <h2>@messages("nonTaxableTrustRegistrationAccessCode.subHeading")</h2>
+
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p2")
+            <a
+                href="mailto:@{config.trustsEmail}?subject=@messages("nonTaxableTrustRegistrationAccessCode.email.subject")&body=@messages("nonTaxableTrustRegistrationAccessCode.email.body")">@{config.trustsEmail}
+            </a>
+        </p>
+
+        @components.submit_button(Some("site.continue"))
+
+    }
+}

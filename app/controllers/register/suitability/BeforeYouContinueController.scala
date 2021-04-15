@@ -21,12 +21,15 @@ import controllers.actions.StandardActionSets
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
-import pages.register.suitability.TrustTaxableYesNoPage
+import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
+import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
+
+import scala.concurrent.ExecutionContext
 
 class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,
@@ -35,8 +38,9 @@ class BeforeYouContinueController @Inject()(
                                              view: BeforeYouContinueView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
-                                             navigator: TaskListNavigator
-                                           ) extends FrontendBaseController with I18nSupport {
+                                             navigator: TaskListNavigator,
+                                             featureFlagService: FeatureFlagService
+                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
@@ -57,14 +61,23 @@ class BeforeYouContinueController @Inject()(
       }
   }
 
-  def onSubmit(draftId : String): Action[AnyContent] = actions(draftId) {
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      Redirect(request.affinityGroup match {
-        case AffinityGroup.Agent =>
-          navigator.agentDetailsJourneyUrl(draftId)
-        case _ =>
-          controllers.register.routes.TaskListController.onPageLoad(draftId).url
-      })
+      featureFlagService.isNonTaxableAccessCodeEnabled() map { isNonTaxableAccessEnabled =>
+        Redirect {
+          (request.userAnswers.get(ExpressTrustYesNoPage), request.userAnswers.get(TrustTaxableYesNoPage), isNonTaxableAccessEnabled) match {
+            case (Some(true), Some(false), true) =>
+              routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(draftId).url
+            case _ =>
+              request.affinityGroup match {
+                case AffinityGroup.Agent =>
+                  navigator.agentDetailsJourneyUrl(draftId)
+                case _ =>
+                  controllers.register.routes.TaskListController.onPageLoad(draftId).url
+              }
+          }
+        }
+      }
   }
 }
