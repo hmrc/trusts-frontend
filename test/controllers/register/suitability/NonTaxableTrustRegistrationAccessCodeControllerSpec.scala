@@ -73,8 +73,8 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
           val redirectUrl = "redirect-url"
 
-          when(mockTrustsAuthConnector.authoriseAccessCode(any(), any())(any(), any()))
-            .thenReturn(Future.successful(TrustsAuthAllowed()))
+          when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
+            .thenReturn(Future.successful(TrustsAuthAllowed(authorised = true)))
 
           when(navigator.agentDetailsJourneyUrl(any())).thenReturn(redirectUrl)
 
@@ -99,7 +99,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
         "non-agent user" in {
 
-          when(mockTrustsAuthConnector.authoriseAccessCode(any(), any())(any(), any()))
+          when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
             .thenReturn(Future.successful(TrustsAuthAllowed(authorised = true)))
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = AffinityGroup.Organisation)
@@ -122,7 +122,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
       "access code is not authorised" in {
 
-        when(mockTrustsAuthConnector.authoriseAccessCode(any(), any())(any(), any()))
+        when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
           .thenReturn(Future.successful(TrustsAuthAllowed(authorised = false)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -141,7 +141,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
       "error authorising access code" in {
 
-        when(mockTrustsAuthConnector.authoriseAccessCode(any(), any())(any(), any()))
+        when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
           .thenReturn(Future.successful(TrustsAuthInternalServerError))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))

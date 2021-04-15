@@ -19,7 +19,7 @@ package connector
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import models.{TrustsAuthAllowed, TrustsAuthDenied, TrustsAuthInternalServerError}
+import models.{TrustsAuthAllowed, TrustsAuthInternalServerError}
 import org.scalatest.{AsyncFreeSpec, MustMatchers}
 import play.api.Application
 import play.api.http.Status
@@ -56,34 +56,32 @@ class TrustsAuthConnectorSpec extends AsyncFreeSpec with MustMatchers with WireM
   "TrustAuthConnector" - {
 
     "authoriseAccessCode" - {
-
-      val draftId = "draftId"
-      val url = s"/trusts-auth/$draftId/access-code-for-non-taxable"
+      
+      val url = s"/trusts-auth/access-code-for-non-taxable"
       val accessCode = "accessCode"
 
-      "must return TrustsAuthAllowed" - {
+      "must return TrustsAuthAllowed(true)" - {
         "when service returns OK with authorised body" in {
 
           val response = responseFromJson(Json.obj("authorised" -> true))
 
           wiremock(url, response)
 
-          connector.authoriseAccessCode(draftId, accessCode) map { result =>
-            result mustEqual TrustsAuthAllowed()
+          connector.authoriseAccessCode(accessCode) map { result =>
+            result mustEqual TrustsAuthAllowed(true)
           }
         }
       }
 
-      "must return TrustsAuthDenied" - {
-        "when service returns OK with redirectUrl body" in {
+      "must return TrustsAuthAllowed(false)" - {
+        "when service returns OK with unauthorised body" in {
 
-          val redirectUrl = "redirect-url"
-          val response = responseFromJson(Json.obj("redirectUrl" -> redirectUrl))
+          val response = responseFromJson(Json.obj("authorised" -> false))
 
           wiremock(url, response)
 
-          connector.authoriseAccessCode(draftId, accessCode) map { result =>
-            result mustEqual TrustsAuthDenied(redirectUrl)
+          connector.authoriseAccessCode(accessCode) map { result =>
+            result mustEqual TrustsAuthAllowed(false)
           }
         }
       }
@@ -95,7 +93,7 @@ class TrustsAuthConnectorSpec extends AsyncFreeSpec with MustMatchers with WireM
 
           wiremock(url, response)
 
-          connector.authoriseAccessCode(draftId, accessCode) map { result =>
+          connector.authoriseAccessCode(accessCode) map { result =>
             result mustEqual TrustsAuthInternalServerError
           }
         }

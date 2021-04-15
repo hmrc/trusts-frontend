@@ -65,7 +65,7 @@ class NonTaxableTrustRegistrationAccessCodeController @Inject()(
           Future.successful(BadRequest(view(formWithErrors, draftId))),
 
         accessCode => {
-          trustsAuthConnector.authoriseAccessCode(draftId, accessCode) map {
+          trustsAuthConnector.authoriseAccessCode(accessCode) map {
             case TrustsAuthAllowed(true) => request.affinityGroup match {
               case AffinityGroup.Agent =>
                 Redirect(navigator.agentDetailsJourneyUrl(draftId))

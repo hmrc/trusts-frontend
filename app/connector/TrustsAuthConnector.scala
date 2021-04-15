@@ -28,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @ImplementedBy(classOf[TrustsAuthConnectorImpl])
 trait TrustsAuthConnector {
 
-  def authoriseAccessCode(draftId: String, accessCode: String)
+  def authoriseAccessCode(accessCode: String)
                          (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustsAuthResponse]
 }
 
@@ -36,9 +36,9 @@ class TrustsAuthConnectorImpl @Inject()(http: HttpClient, config: FrontendAppCon
 
   private val baseUrl: String = config.trustsAuthUrl + "/trusts-auth"
 
-  override def authoriseAccessCode(draftId: String, accessCode: String)
+  override def authoriseAccessCode(accessCode: String)
                                   (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustsAuthResponse] = {
-    http.POST[String, TrustsAuthResponse](s"$baseUrl/$draftId/access-code-for-non-taxable", accessCode) recoverWith {
+    http.POST[String, TrustsAuthResponse](s"$baseUrl/access-code-for-non-taxable", accessCode) recoverWith {
       case _ => Future.successful(TrustsAuthInternalServerError)
     }
   }

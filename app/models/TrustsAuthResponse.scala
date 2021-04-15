@@ -25,7 +25,7 @@ object TrustsAuthResponse {
       __.read[TrustsAuthDenied].widen[TrustsAuthResponse]
 }
 
-case class TrustsAuthAllowed(authorised: Boolean = true) extends TrustsAuthResponse
+case class TrustsAuthAllowed(authorised: Boolean) extends TrustsAuthResponse
 case object TrustsAuthAllowed {
   implicit val format: Format[TrustsAuthAllowed] = Json.format[TrustsAuthAllowed]
 }
