@@ -42,7 +42,12 @@
 
     @components.heading("taskList.heading", headingSize = "heading-xlarge")
 
-    <p>@messages("taskList.paragraph1")</p>
+    @if(config.deploymentNotification) {
+        @components.notification()
+        @components.warning("notification")
+    } else {
+        <p>@messages("taskList.paragraph1")</p>
+    }
 
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>

@@ -45,6 +45,26 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   "TaskList view" when {
 
+    "deployment notification is enabled" must {
+      "render warning and notification" in {
+        val application = applicationBuilder(Some(emptyUserAnswers))
+          .configure(
+            "microservice.services.features.deployment.notification.enabled" -> true
+          ).build()
+
+        val view = application.injector.instanceOf[TaskListView]
+
+        val appliedView = view.apply(isTaxable, fakeDraftId, savedUntil, Nil, Nil, false, Organisation)(fakeRequest, messages)
+
+        val doc = asDocument(appliedView)
+
+        assertContainsText(doc, "The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.")
+        assertContainsText(doc, "You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.")
+
+        application.stop()
+      }
+    }
+
     "rendered for an Organisation or an Agent" must {
 
       "render sections" in {
