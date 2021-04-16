@@ -112,6 +112,9 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
   lazy val auditSubmissions : Boolean =
     configuration.get[Boolean]("microservice.services.features.auditing.submissions.enabled")
 
+  lazy val deploymentNotification : Boolean =
+    configuration.get[Boolean]("microservice.services.features.deployment.notification.enabled")
+
   lazy val declarationEmailEnabled: Boolean = configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")
 
   lazy val maintainATrustFrontendUrl : String =

@@ -31,11 +31,9 @@ class AgentOverviewViewSpec extends ViewBehaviours {
     val applyView = view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now.toString)))(fakeRequest, messages)
 
     behave like normalPage(applyView, None, "agentOverview",
-      "paragraph1",
       "paragraph2",
       "paragraph3",
       "paragraph4"
-
     )
 
     behave like pageWithBackLink(applyView)
@@ -68,5 +66,24 @@ class AgentOverviewViewSpec extends ViewBehaviours {
     assertContainsText(doc, "FakeDraftId1")
     assertContainsText(doc, "FakeDraftId2")
     assertContainsText(doc, "FakeDraftId3")
+  }
+
+  "render 5MLD service deployment warning" in {
+    val application = applicationBuilder(Some(emptyUserAnswers))
+      .configure(
+        "microservice.services.features.deployment.notification.enabled" -> true
+      ).build()
+
+    val view = application.injector.instanceOf[AgentOverviewView]
+
+    val appliedView = view.apply(Nil)(fakeRequest, messages)
+
+    val doc = asDocument(appliedView)
+
+    assertContainsText(doc, "The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.")
+    assertContainsText(doc, "You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.")
+
+    application.stop()
+
   }
 }

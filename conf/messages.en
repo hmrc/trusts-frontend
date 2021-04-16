@@ -992,3 +992,7 @@ individualProtector.5mld.nationalityYesNo.checkYourAnswersLabel = Do you know {0
 individualProtector.5mld.countryOfResidence.checkYourAnswersLabel = What is {0}’s country of residence?
 individualProtector.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = Does {0} have UK residency?
 individualProtector.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you know {0}’s country of residence?
+
+notification.warning = You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.
+notification.important = Important
+notification.instruction = The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.

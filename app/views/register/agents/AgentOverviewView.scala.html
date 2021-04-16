@@ -16,10 +16,14 @@
 
 @import viewmodels.DraftRegistration
 @import controllers.register.agents.routes._
+@import config.FrontendAppConfig
+@import components.warning
+@import components.notification
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: FormWithCSRF,
+    appConfig: FrontendAppConfig
 )
 
 @(drafts: List[DraftRegistration])(implicit request: Request[_], messages: Messages)
@@ -32,7 +36,12 @@
 
     @components.heading("agentOverview.heading")
 
-    <p>@messages("agentOverview.paragraph1")</p>
+    @if(appConfig.deploymentNotification) {
+        @notification()
+        @warning("notification")
+    } else {
+        <p>@messages("agentOverview.paragraph1")</p>
+    }
 
     <p>@messages("agentOverview.paragraph2")</p>
 
