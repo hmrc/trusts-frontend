@@ -17,35 +17,26 @@
 package views.register
 
 import controllers.register.agents.routes
-import navigation.registration.TaskListNavigator
-import pages.register.RegistrationProgress
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
-import uk.gov.hmrc.http.HeaderCarrier
-import viewmodels.Task
+import viewmodels.{Link, Task}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.register.TaskListView
 
-import java.time.{LocalDate, LocalDateTime}
-import java.time.format.DateTimeFormatter
-import scala.concurrent.Future
-
 class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
-  private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-  private val savedUntil : String = LocalDateTime.now.format(dateFormatter)
-  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  private val savedUntil = "21 April 2021"
 
-  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
+  private val fakeSections = List(
+    Task(Link("link 1", "url 1"), None),
+    Task(Link("link 2", "url 2"), None)
+  )
 
-  private val trustSetupDate: LocalDate = LocalDate.parse("2000-01-01")
-  private val isTaxable: Boolean = true
-  private val isExistingTrust: Boolean = false
+  private val fakeAdditionalSections = List(
+    Task(Link("additional link 1", "additional url 1"), None),
+    Task(Link("additional link 2", "additional url 2"), None)
+  )
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, Some(trustSetupDate), isTaxable, isExistingTrust)
-  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, Some(trustSetupDate), isTaxable, isExistingTrust)
-
-  "TaskList view" when {
+  "TaskListView" when {
 
     "deployment notification is enabled" must {
       "render warning and notification" in {
@@ -56,7 +47,15 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         val view = application.injector.instanceOf[TaskListView]
 
-        val appliedView = view.apply(isTaxable, fakeDraftId, savedUntil, Nil, Nil, isTaskListComplete = false, Organisation)(fakeRequest, messages)
+        val appliedView = view.apply(
+          isTaxable = true,
+          draftId = fakeDraftId,
+          savedUntil = savedUntil,
+          sections = Nil,
+          additionalSections = Nil,
+          isTaskListComplete = false,
+          affinityGroup = Organisation
+        )(fakeRequest, messages)
 
         val doc = asDocument(appliedView)
 
@@ -67,161 +66,332 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       }
     }
 
-    "rendered for an Organisation or an Agent" must {
+    "organisation" when {
 
-      "render sections" in {
+      "task list complete" when {
 
-        val answers = emptyUserAnswers
+        "taxable" must {
 
-        val view = viewFor[TaskListView](Some(answers))
-
-        for {
-          sections <- sections
-          additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete
-        } yield {
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
           val applyView = view.apply(
-            isTaxable,
-            fakeDraftId,
-            savedUntil,
-            sections,
-            additionalSections,
-            isTaskListComplete,
-            Organisation
+            isTaxable = true,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = true,
+            affinityGroup = Organisation
           )(fakeRequest, messages)
 
           behave like normalPage(applyView, None, "taskList")
 
           behave like pageWithBackLink(applyView)
 
-          behave like taskList(applyView, sections ++ additionalSections)
-        }
-      }
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
 
-      "render summary" when {
-
-        "all sections are completed" in {
-
-          for {
-            sections <- sections
-            additionalSections <- additionalSections
-            isTaskListComplete <- isTaskListComplete
-          } yield {
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-            val applyView = view.apply(
-              isTaxable,
-              fakeDraftId,
-              savedUntil,
-              sections,
-              additionalSections,
-              isTaskListComplete,
-              Organisation
-            )(fakeRequest, messages)
+          "display correct content" in {
             val doc = asDocument(applyView)
+
+            assertRenderedById(doc, "saved-until")
 
             assertRenderedById(doc, "summaryHeading")
             assertRenderedById(doc, "summary-paragraph")
             assertRenderedById(doc, "summaryHeading2")
             assertRenderedById(doc, "summary-paragraph-2")
             assertRenderedById(doc, "print-and-save")
+          }
+        }
 
+        "non-taxable" must {
+
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+          val applyView = view.apply(
+            isTaxable = false,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = true,
+            affinityGroup = Organisation
+          )(fakeRequest, messages)
+
+          behave like normalPage(applyView, None, "taskList")
+
+          behave like pageWithBackLink(applyView)
+
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+          "display correct content" in {
+            val doc = asDocument(applyView)
+
+            assertRenderedById(doc, "saved-until")
+
+            assertRenderedById(doc, "summaryHeading")
+            assertRenderedById(doc, "summary-paragraph")
+            assertNotRenderedById(doc, "summaryHeading2")
+            assertNotRenderedById(doc, "summary-paragraph-2")
+            assertRenderedById(doc, "print-and-save")
           }
         }
       }
 
-      "not render summary" when {
+      "task list incomplete" when {
 
-        "not all sections are completed" in {
+        "taxable" must {
 
-          for {
-            sections <- sections
-            additionalSections <- additionalSections
-            isTaskListComplete <- isTaskListComplete
-          } yield {
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-            val applyView = view.apply(
-              isTaxable,
-              fakeDraftId,
-              savedUntil,
-              sections,
-              additionalSections,
-              isTaskListComplete,
-              Organisation
-            )(fakeRequest, messages)
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+          val applyView = view.apply(
+            isTaxable = true,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = false,
+            affinityGroup = Organisation
+          )(fakeRequest, messages)
+
+          behave like normalPage(applyView, None, "taskList")
+
+          behave like pageWithBackLink(applyView)
+
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+          "display correct content" in {
             val doc = asDocument(applyView)
+
+            assertRenderedById(doc, "saved-until")
 
             assertNotRenderedById(doc, "summaryHeading")
             assertNotRenderedById(doc, "summary-paragraph")
             assertNotRenderedById(doc, "summaryHeading2")
             assertNotRenderedById(doc, "summary-paragraph-2")
             assertNotRenderedById(doc, "print-and-save")
+          }
+        }
 
+        "non-taxable" must {
+
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+          val applyView = view.apply(
+            isTaxable = false,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = false,
+            affinityGroup = Organisation
+          )(fakeRequest, messages)
+
+          behave like normalPage(applyView, None, "taskList")
+
+          behave like pageWithBackLink(applyView)
+
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+          "display correct content" in {
+            val doc = asDocument(applyView)
+
+            assertRenderedById(doc, "saved-until")
+
+            assertNotRenderedById(doc, "summaryHeading")
+            assertNotRenderedById(doc, "summary-paragraph")
+            assertNotRenderedById(doc, "summaryHeading2")
+            assertNotRenderedById(doc, "summary-paragraph-2")
+            assertNotRenderedById(doc, "print-and-save")
+          }
+        }
+      }
+    }
+
+    "agent" when {
+
+      "task list complete" when {
+
+        "taxable" must {
+
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+          val applyView = view.apply(
+            isTaxable = true,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = true,
+            affinityGroup = Agent
+          )(fakeRequest, messages)
+
+          behave like normalPage(applyView, None, "taskList")
+
+          behave like pageWithBackLink(applyView)
+
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+          "display correct content" in {
+            val doc = asDocument(applyView)
+
+            assertAttributeValueForElement(
+              doc.getElementById("saved-registrations"),
+              "href",
+              routes.AgentOverviewController.onPageLoad().url
+            )
+
+            assertAttributeValueForElement(
+              doc.getElementById("agent-details"),
+              "href",
+              fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
+            )
+
+            assertNotRenderedById(doc, "saved-until")
+
+            assertRenderedById(doc, "summaryHeading")
+            assertRenderedById(doc, "summary-paragraph")
+            assertRenderedById(doc, "summaryHeading2")
+            assertRenderedById(doc, "summary-paragraph-2")
+            assertRenderedById(doc, "print-and-save")
+          }
+        }
+
+        "non-taxable" must {
+
+          val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+          val applyView = view.apply(
+            isTaxable = false,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = true,
+            affinityGroup = Agent
+          )(fakeRequest, messages)
+
+          behave like normalPage(applyView, None, "taskList")
+
+          behave like pageWithBackLink(applyView)
+
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+          "display correct content" in {
+            val doc = asDocument(applyView)
+
+            assertAttributeValueForElement(
+              doc.getElementById("saved-registrations"),
+              "href",
+              routes.AgentOverviewController.onPageLoad().url
+            )
+
+            assertAttributeValueForElement(
+              doc.getElementById("agent-details"),
+              "href",
+              fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
+            )
+
+            assertNotRenderedById(doc, "saved-until")
+
+            assertRenderedById(doc, "summaryHeading")
+            assertRenderedById(doc, "summary-paragraph")
+            assertNotRenderedById(doc, "summaryHeading2")
+            assertNotRenderedById(doc, "summary-paragraph-2")
+            assertRenderedById(doc, "print-and-save")
           }
         }
       }
 
-    }
+      "task list incomplete" when {
 
-    "rendered for an Organisation" must {
+        "taxable" must {
 
-      "render Saved Until" in {
-        for {
-          sections <- sections
-          additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete
-        } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
           val applyView = view.apply(
-            isTaxable,
-            fakeDraftId,
-            savedUntil,
-            sections,
-            additionalSections,
-            isTaskListComplete,
-            Organisation
+            isTaxable = true,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = false,
+            affinityGroup = Agent
           )(fakeRequest, messages)
 
-          val doc = asDocument(applyView)
-          assertRenderedById(doc, "saved-until")
+          behave like normalPage(applyView, None, "taskList")
+
+          behave like pageWithBackLink(applyView)
+
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+          "display correct content" in {
+            val doc = asDocument(applyView)
+
+            assertAttributeValueForElement(
+              doc.getElementById("saved-registrations"),
+              "href",
+              routes.AgentOverviewController.onPageLoad().url
+            )
+
+            assertAttributeValueForElement(
+              doc.getElementById("agent-details"),
+              "href",
+              fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
+            )
+
+            assertNotRenderedById(doc, "saved-until")
+
+            assertNotRenderedById(doc, "summaryHeading")
+            assertNotRenderedById(doc, "summary-paragraph")
+            assertNotRenderedById(doc, "summaryHeading2")
+            assertNotRenderedById(doc, "summary-paragraph-2")
+            assertNotRenderedById(doc, "print-and-save")
+          }
         }
-      }
-    }
 
-    "rendered for an Agent" must {
+        "non-taxable" must {
 
-      "render return to saved registrations link, agent details link, but not render saved until " in {
-        for {
-          sections <- sections
-          additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete
-        } yield {
           val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
           val applyView = view.apply(
-            isTaxable,
-            fakeDraftId,
-            savedUntil,
-            sections,
-            additionalSections,
-            isTaskListComplete,
-            Agent
+            isTaxable = false,
+            draftId = fakeDraftId,
+            savedUntil = savedUntil,
+            sections = fakeSections,
+            additionalSections = fakeAdditionalSections,
+            isTaskListComplete = false,
+            affinityGroup = Agent
           )(fakeRequest, messages)
 
-          val doc = asDocument(applyView)
+          behave like normalPage(applyView, None, "taskList")
 
-          assertAttributeValueForElement(
-            doc.getElementById("saved-registrations"),
-            "href",
-            routes.AgentOverviewController.onPageLoad().url
-          )
+          behave like pageWithBackLink(applyView)
 
-          assertAttributeValueForElement(
-            doc.getElementById("agent-details"),
-            "href",
-            fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
-          )
+          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
 
-          assertNotRenderedById(doc, "saved-until")
+          "display correct content" in {
+            val doc = asDocument(applyView)
+
+            assertAttributeValueForElement(
+              doc.getElementById("saved-registrations"),
+              "href",
+              routes.AgentOverviewController.onPageLoad().url
+            )
+
+            assertAttributeValueForElement(
+              doc.getElementById("agent-details"),
+              "href",
+              fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
+            )
+
+            assertNotRenderedById(doc, "saved-until")
+
+            assertNotRenderedById(doc, "summaryHeading")
+            assertNotRenderedById(doc, "summary-paragraph")
+            assertNotRenderedById(doc, "summaryHeading2")
+            assertNotRenderedById(doc, "summary-paragraph-2")
+            assertNotRenderedById(doc, "print-and-save")
+          }
         }
       }
     }

@@ -22,7 +22,6 @@ import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
 import models.requests.RegistrationDataRequest
-import navigation.registration.TaskListNavigator
 import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,7 +42,6 @@ class TaskListController @Inject()(
                                     view: TaskListView,
                                     registrationProgress: RegistrationProgress,
                                     registrationsRepository: RegistrationsRepository,
-                                    taskListNavigator: TaskListNavigator,
                                     requireDraft: RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
                                     standardAction: StandardActionSets
