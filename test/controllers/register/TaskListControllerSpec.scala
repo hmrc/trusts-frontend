@@ -121,7 +121,6 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
     "an existing trust" when {
 
       "successfully matched" must {
-
         "return OK and the correct view for a GET" in {
 
           val answers = emptyUserAnswers
@@ -220,7 +219,6 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
     }
 
     "a new trust" must {
-
       "return OK and the correct view for a GET" in {
 
         val answers = emptyUserAnswers
