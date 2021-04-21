@@ -46,10 +46,13 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
   private val isTaxable: Boolean = true
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, isTaxable)
+  private def sections(isExistingTrust: Boolean): Future[List[Task]] =
+    newRegistrationProgress.items(fakeDraftId, Some(mockedTrustStartDate), isTaxable, isExistingTrust)
+
   private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
 
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable)
+  private def isTaskListComplete(isExistingTrust: Boolean): Future[Boolean] =
+    newRegistrationProgress.isTaskListComplete(fakeDraftId, Some(mockedTrustStartDate), isTaxable, isExistingTrust)
 
   override protected def applicationBuilder(userAnswers: Option[UserAnswers],
                                             affinityGroup: AffinityGroup,
@@ -97,6 +100,8 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
     "for an existing trust" when {
 
+      val isExistingTrust = true
+
       "has matched" must {
 
         "return OK and the correct view for a GET" in {
@@ -116,9 +121,9 @@ class TaskListControllerSpec extends RegistrationSpecBase {
           status(result) mustEqual OK
 
           for {
-            mainSections <- sections
+            mainSections <- sections(isExistingTrust)
             additionalSections <- additionalSections
-            isTaskListComplete <- isTaskListComplete
+            isTaskListComplete <- isTaskListComplete(isExistingTrust)
           } yield {
             val view = application.injector.instanceOf[TaskListView]
             contentAsString(result) mustEqual
@@ -206,6 +211,8 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
     "for a new trust" must {
 
+      val isExistingTrust = false
+
       "return OK and the correct view for a GET" in {
 
         val answers = emptyUserAnswers
@@ -221,9 +228,9 @@ class TaskListControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         for {
-          sections <- sections
+          sections <- sections(isExistingTrust)
           additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete
+          isTaskListComplete <- isTaskListComplete(isExistingTrust)
         } yield {
           val view = application.injector.instanceOf[TaskListView]
           contentAsString(result) mustEqual

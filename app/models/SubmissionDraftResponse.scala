@@ -19,9 +19,8 @@ package models
 import models.registration.pages.Status
 import models.registration.pages.Status.Completed
 import play.api.libs.json.{JsValue, Json, OFormat}
-import utils.TaxLiabilityHelper
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 
 case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgress: Option[Boolean])
 
@@ -67,12 +66,10 @@ object RegistrationSubmission {
 
     /**
      *
-     * @param trustSetUpDate - start date of the trust, used to determine if the tax liability task needs
-     *                       to be rendered on the task list
-     * @param isTaxable - used to determine if the tax liability task needs to be rendered on the task list
+     * @param showTaxLiability - used to determine if the tax liability task needs to be rendered on the task list
      * @return true if all of the relevant sections have a status of Completed
      */
-    def allComplete(trustSetUpDate: Option[LocalDate], isTaxable: Boolean): Boolean =
+    def allComplete(showTaxLiability: Boolean): Boolean =
       beneficiaries.contains(Completed) &&
         trustees.contains(Completed) &&
         protectors.contains(Completed) &&
@@ -80,7 +77,7 @@ object RegistrationSubmission {
         trustDetails.contains(Completed) &&
         settlors.contains(Completed) &&
         assets.contains(Completed) &&
-        (taxLiability.contains(Completed) || !TaxLiabilityHelper.showTaxLiability(trustSetUpDate, isTaxable))
+        (taxLiability.contains(Completed) || !showTaxLiability)
   }
 
   object AllStatus {

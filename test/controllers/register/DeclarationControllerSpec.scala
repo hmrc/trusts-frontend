@@ -59,7 +59,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
     "redirect when registration is not complete" in {
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any())(any())).thenReturn(Future.successful(false))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+        .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
         .overrides(inject.bind[RegistrationProgress].toInstance(mockRegistrationProgress))

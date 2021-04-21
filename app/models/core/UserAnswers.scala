@@ -17,6 +17,7 @@
 package models.core
 
 import _root_.pages.register.suitability.TrustTaxableYesNoPage
+import _root_.pages.register.TrustHaveAUTRPage
 import models.MongoDateTimeFormats
 import models.registration.pages.RegistrationStatus
 import models.registration.pages.RegistrationStatus.NotStarted
@@ -55,6 +56,8 @@ final case class UserAnswers(
   import UserAnswerImplicits._
 
   def isTaxable: Boolean = !this.get(TrustTaxableYesNoPage).contains(false)
+
+  def isExistingTrust: Boolean = this.get(TrustHaveAUTRPage).contains(true)
 
   def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
 

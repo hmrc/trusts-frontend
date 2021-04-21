@@ -23,8 +23,8 @@ import uk.gov.hmrc.time.TaxYear
 
 object TaxLiabilityHelper {
 
-  def showTaxLiability(trustSetUpDate: Option[JavaDate], isTaxable: Boolean): Boolean = {
-    if (isTaxable) {
+  def showTaxLiability(trustSetUpDate: Option[JavaDate], isTaxable: Boolean, isExistingTrust: Boolean): Boolean = {
+    if (isTaxable && !isExistingTrust) {
       trustSetUpDate match {
         case None =>
           false

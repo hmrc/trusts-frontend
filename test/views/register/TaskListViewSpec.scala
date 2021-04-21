@@ -25,7 +25,7 @@ import viewmodels.Task
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
 import views.html.register.TaskListView
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
@@ -37,11 +37,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
 
+  private val trustSetupDate: LocalDate = LocalDate.parse("2000-01-01")
   private val isTaxable: Boolean = true
+  private val isExistingTrust: Boolean = false
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, isTaxable)
+  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, Some(trustSetupDate), isTaxable, isExistingTrust)
   private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable)
+  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, Some(trustSetupDate), isTaxable, isExistingTrust)
 
   "TaskList view" when {
 
@@ -54,7 +56,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         val view = application.injector.instanceOf[TaskListView]
 
-        val appliedView = view.apply(isTaxable, fakeDraftId, savedUntil, Nil, Nil, false, Organisation)(fakeRequest, messages)
+        val appliedView = view.apply(isTaxable, fakeDraftId, savedUntil, Nil, Nil, isTaskListComplete = false, Organisation)(fakeRequest, messages)
 
         val doc = asDocument(appliedView)
 
@@ -188,7 +190,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
     "rendered for an Agent" must {
 
-      "render return to saved registrations link" in {
+      "render return to saved registrations link, agent details link, but not render saved until " in {
         for {
           sections <- sections
           additionalSections <- additionalSections
@@ -212,54 +214,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             "href",
             routes.AgentOverviewController.onPageLoad().url
           )
-        }
-      }
-
-      "render agent details link" in {
-        for {
-          sections <- sections
-          additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete
-        } yield {
-          val view = viewFor[TaskListView](Some(emptyUserAnswers))
-          val applyView = view.apply(
-            isTaxable,
-            fakeDraftId,
-            savedUntil,
-            sections,
-            additionalSections,
-            isTaskListComplete,
-            Agent
-          )(fakeRequest, messages)
-
-          val doc = asDocument(applyView)
 
           assertAttributeValueForElement(
             doc.getElementById("agent-details"),
             "href",
             fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
           )
-        }
-      }
 
-      "not render saved until" in {
-        for {
-          sections <- sections
-          additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete
-        } yield {
-          val view = viewFor[TaskListView](Some(emptyUserAnswers))
-          val applyView = view.apply(
-            isTaxable,
-            fakeDraftId,
-            savedUntil,
-            sections,
-            additionalSections,
-            isTaskListComplete,
-            Agent
-          )(fakeRequest, messages)
-
-          val doc = asDocument(applyView)
           assertNotRenderedById(doc, "saved-until")
         }
       }
