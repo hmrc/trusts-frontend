@@ -105,6 +105,10 @@ trait ViewSpecBase extends RegistrationSpecBase {
     }
   }
 
+  def assertContainsClass(doc: Document, className: String): Any = {
+    assert(doc.getElementsByClass(className).size() > 0, s"\n\nPage did not contain element with class $className")
+  }
+
   def assertElementHasClass(doc: Document, id: String, expectedClass: String): Assertion = {
     assert(doc.getElementById(id).hasClass(expectedClass), s"\n\nElement $id does not have class $expectedClass")
   }
