@@ -20,8 +20,6 @@ import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
 import models.registration.pages.Status._
 
-import java.time.LocalDate
-
 class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
   "SubmissionDraftResponse" when {
@@ -43,7 +41,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(None, isTaxable = true) mustBe true
+          allStatus.allComplete(showTaxLiability = true) mustBe true
         }
 
         "non-taxable and tax liability empty" in {
@@ -59,7 +57,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(None, isTaxable = false) mustBe true
+          allStatus.allComplete(showTaxLiability = false) mustBe true
         }
       }
 
@@ -78,7 +76,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(None, isTaxable = true) mustBe false
+          allStatus.allComplete(showTaxLiability = true) mustBe false
         }
 
         "trust start date before current tax year start date and tax liability incomplete" in {
@@ -94,7 +92,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(Some(LocalDate.parse("1500-01-01")), isTaxable = true) mustBe false
+          allStatus.allComplete(showTaxLiability = true) mustBe false
         }
       }
     }

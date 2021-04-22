@@ -184,7 +184,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any())(any())).thenReturn(Future.successful(false))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+        .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(inject.bind[RegistrationProgress].toInstance(mockRegistrationProgress))
