@@ -125,7 +125,7 @@ inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inhe
 agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
 whenTrustSetup.checkYourAnswersLabel = When was the trust created?
 trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
-trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust listed on a European Economic Area (EEA) register?
+trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 
 trustRegisteredOnline.title = Has the trust already been registered online?
