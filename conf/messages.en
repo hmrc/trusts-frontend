@@ -303,10 +303,7 @@ removeDraftYesNo.error.required = Select yes if you want to remove the saved reg
 
 suitability.expressTrust.title = Are you registering an express trust?
 suitability.expressTrust.heading = Are you registering an express trust?
-suitability.expressTrust.p1 = An express trust is a trust created by a settlor, usually in the form of a document like a written deed of trust.
-suitability.expressTrust.p2 = Express trusts can be created:
-suitability.expressTrust.bullet1 = by someone’s will after they have died
-suitability.expressTrust.bullet2 = during someone’s lifetime, which is known as inter-vivos
+suitability.expressTrust.p1 = An express trust is a trust created deliberately by a settlor, usually in the form of a document such as a written deed of trust. Express trusts can be created by will or during lifetime, also known as inter-vivos.
 suitability.expressTrust.error.required = Select yes if you are registering an express trust
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
@@ -322,6 +319,14 @@ suitability.beforeYouContinue.p2 = You can find out more:
 suitability.beforeYouContinue.link1 = Who should register (opens in a new window or tab)
 suitability.beforeYouContinue.link2 = Trusts and taxes (opens in a new window or tab)
 suitability.beforeYouContinue.continue = Continue to register the trust
+
+suitability.beforeYouContinue.taxable.title = Before you continue
+suitability.beforeYouContinue.taxable.heading = Before you continue
+suitability.beforeYouContinue.taxable.p1 = You need to confirm with HMRC that the trust was registered for self assessment tax returns.
+suitability.beforeYouContinue.taxable.p2 = This is so you can register the trust under the rules of the Fifth Money Laundering Directive.
+suitability.beforeYouContinue.taxable.h2 = Confirm the trust was registered with HMRC for self assessment tax returns
+suitability.beforeYouContinue.taxable.p3 = By continuing, you are confirming that the trust was registered with HMRC for self assessment tax returns.
+suitability.beforeYouContinue.taxable.continue = Continue
 
 suitability.beforeYouContinue.nonTaxable.title = Before you continue
 suitability.beforeYouContinue.nonTaxable.heading = Before you continue

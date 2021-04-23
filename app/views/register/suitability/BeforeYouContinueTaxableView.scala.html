@@ -22,30 +22,26 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
-
-@content = {
-    <p>@messages("suitability.expressTrust.p1")</p>
-}
+@(draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}"
+    title = messages("suitability.beforeYouContinue.taxable.title")
 ) {
 
-    @formHelper(action = ExpressTrustYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = BeforeYouContinueController.onSubmit(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
-        @components.error_summary(form.errors)
+        @components.heading("suitability.beforeYouContinue.taxable.heading")
 
-        @components.input_yes_no(
-            field = form("value"),
-            label = messages("suitability.expressTrust.heading"),
-            legendClass = Some("heading-large"),
-            legendAsHeading = true,
-            additionalContent = Some(content)
-        )
+        <p>@messages("suitability.beforeYouContinue.taxable.p1")</p>
 
-        @components.submit_button()
+        <p>@messages("suitability.beforeYouContinue.taxable.p2")</p>
+
+        <h2>@messages("suitability.beforeYouContinue.taxable.h2")</h2>
+
+        <p>@messages("suitability.beforeYouContinue.taxable.p3")</p>
+
+        @components.submit_button(Some("suitability.beforeYouContinue.taxable.continue"))
     }
 }

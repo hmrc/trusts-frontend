@@ -20,15 +20,17 @@ import controllers.actions.register.{DraftIdRetrievalActionProvider, Registratio
 import forms.YesNoFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.register.suitability.ExpressTrustYesNoPage
+import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.ExpressTrustYesNoView
-
 import javax.inject.Inject
+import pages.register.TrustHaveAUTRPage
+import services.FeatureFlagService
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class ExpressTrustYesNoController @Inject()(override val messagesApi: MessagesApi,
@@ -38,6 +40,7 @@ class ExpressTrustYesNoController @Inject()(override val messagesApi: MessagesAp
                                             getData: DraftIdRetrievalActionProvider,
                                             requireData: RegistrationDataRequiredAction,
                                             formProvider: YesNoFormProvider,
+                                            featureFlagService: FeatureFlagService,
                                             val controllerComponents: MessagesControllerComponents,
                                             view: ExpressTrustYesNoView)
                                            (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -66,10 +69,18 @@ class ExpressTrustYesNoController @Inject()(override val messagesApi: MessagesAp
 
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpressTrustYesNoPage, value))
+            is5mldEnabled <- featureFlagService.is5mldEnabled
+            answers <- Future.fromTry(request.userAnswers.set(ExpressTrustYesNoPage, value))
+            updatedAnswers <- {
+              val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
+              (is5mldEnabled, trustHasUtr) match {
+                case (true, Some(true)) => Future.fromTry(answers.set(TrustTaxableYesNoPage, true))
+                case (_, _) => Future(answers)
+              }
+            }
             _ <- registrationsRepository.set(updatedAnswers)
           } yield {
-            Redirect(navigator.nextPage(ExpressTrustYesNoPage, mode, draftId, request.affinityGroup)(updatedAnswers))
+            Redirect(navigator.nextPage(ExpressTrustYesNoPage, mode, draftId, request.affinityGroup, is5mldEnabled)(updatedAnswers))
           }
         }
       )

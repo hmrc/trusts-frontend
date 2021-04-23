@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
+import views.html.register.suitability.{BeforeYouContinueTaxableView, BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
 
 import scala.concurrent.Future
 
@@ -42,24 +42,60 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
   "BeforeYouContinue Controller" must {
 
-    "return OK and the correct view for a taxable journey GET" in {
+    "in 4mld mode" when {
 
-      val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+      "return OK and the correct view for a taxable journey GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-      val request = FakeRequest(GET, beforeYouContinueRoute)
+        val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
 
-      val result = route(application, request).value
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
 
-      val view = application.injector.instanceOf[BeforeYouContinueView]
+        val request = FakeRequest(GET, beforeYouContinueRoute)
 
-      status(result) mustEqual OK
+        val result = route(application, request).value
 
-      contentAsString(result) mustEqual
-        view(fakeDraftId)(request, messages).toString
+        val view = application.injector.instanceOf[BeforeYouContinueView]
 
-      application.stop()
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+    "in 5mld mode" when {
+
+      "return OK and the correct view for a taxable journey GET" in {
+
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+
+        val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[BeforeYouContinueTaxableView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
     }
 
     "return OK and the correct view for a non taxable journey GET" in {
