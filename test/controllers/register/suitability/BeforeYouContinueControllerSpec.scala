@@ -100,9 +100,13 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
     "return OK and the correct view for a non taxable journey GET" in {
 
+      when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+
       val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
 
-      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation).build()
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
+        .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+        .build()
 
       val request = FakeRequest(GET, beforeYouContinueRoute)
 
@@ -120,9 +124,13 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
     "return OK and the correct view for a non taxable agent journey GET" in {
 
+      when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+
       val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
 
-      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent).build()
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+        .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+        .build()
 
       val request = FakeRequest(GET, beforeYouContinueRoute)
 
