@@ -19,19 +19,30 @@ package controllers.register.suitability
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
+import models.core.UserAnswers
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import pages.register.suitability.ExpressTrustYesNoPage
+import pages.register.TrustHaveAUTRPage
+import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import views.html.register.suitability.ExpressTrustYesNoView
 
-class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with MockitoSugar {
+import scala.concurrent.Future
+
+class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
   val index: Int = 0
   val businessName = "Test"
+
+  private val mockFeatureFlagService = mock[FeatureFlagService]
 
   lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId).url
 
@@ -76,21 +87,62 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with MockitoS
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "in 4mld mode" when {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "redirect to the next page when valid data is submitted" in {
 
-      val request =
-        FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", "true"))
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-      val result = route(application, request).value
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
 
-      status(result) mustEqual SEE_OTHER
+        val request =
+          FakeRequest(POST, expressTrustYesNo)
+            .withFormUrlEncodedBody(("value", "true"))
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+        val result = route(application, request).value
 
-      application.stop()
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        uaCaptor.getValue.get(TrustHaveAUTRPage) mustNot be(defined)
+        uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
+
+        application.stop()
+      }
+
+    }
+
+    "in 5mld mode" when {
+
+      "redirect to the next page when valid data is submitted" in {
+
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+
+        val answers = emptyUserAnswers.set(TrustHaveAUTRPage, true).success.value
+          .set(TrustTaxableYesNoPage, true).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
+
+        val request =
+          FakeRequest(POST, expressTrustYesNo)
+            .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+        
+        application.stop()
+      }
+
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
