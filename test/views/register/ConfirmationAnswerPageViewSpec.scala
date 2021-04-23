@@ -16,13 +16,9 @@
 
 package views.register
 
-import java.time.LocalDateTime
-
-import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.AccessibilityHelper._
 import utils.print.register.PrintUserAnswersHelper
-import utils.{DateFormatter, TestUserAnswers}
 import views.behaviours.ViewBehaviours
 import views.html.register.ConfirmationAnswerPageView
 
@@ -30,41 +26,63 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
-  val index = 0
 
-  "ConfirmationAnswerPage view" must {
+  private val prefix = "confirmationAnswerPage"
+  private val formattedSubmissionTime: String = "22 April 2021"
+  private val trn = "XNTRN000000001"
 
-    val userAnswers = TestUserAnswers.emptyUserAnswers
-      .set(RegistrationTRNPage, "XNTRN000000001").success.value
-      .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
+  "ConfirmationAnswerPageView" when {
 
-    val formatter = injector.instanceOf[DateFormatter]
+    "taxable" must {
 
-    val trnDateTime: String = formatter.formatDateTime(LocalDateTime.of(2010, 10, 10, 13, 10, 10))
+      implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+      val app = applicationBuilder().build()
 
-    val app = applicationBuilder().build()
+      val helper = app.injector.instanceOf[PrintUserAnswersHelper]
 
-    val helper = app.injector.instanceOf[PrintUserAnswersHelper]
+      val viewFuture = helper.summary(fakeDraftId).map { sections =>
+        val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = true)(fakeRequest, messages)
+      }
 
-    val viewFuture = helper.summary(fakeDraftId).map {
-      sections =>
-        val view = viewFor[ConfirmationAnswerPageView](Some(userAnswers))
+      val view = Await.result(viewFuture, Duration.Inf)
 
-        view.apply(sections, formatReferenceNumber("XNTRN000000001"), trnDateTime, isTaxable = true)(fakeRequest, messages)
+      val doc = asDocument(view)
+
+      behave like normalPage(view, None, prefix)
+
+      behave like pageWithWarning(view)
+
+      "assert header content" in {
+        assertContainsText(doc, messages(s"$prefix.paragraph1", formatReferenceNumber(trn)))
+        assertContainsText(doc, messages(s"$prefix.paragraph2", formattedSubmissionTime))
+      }
     }
 
-    val view = Await.result(viewFuture, Duration.Inf)
+    "non-taxable" must {
 
-    val doc = asDocument(view)
+      implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    behave like normalPage(view, None, "confirmationAnswerPage")
+      val app = applicationBuilder().build()
 
-    "assert header content" in {
-      assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
-      assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
+      val helper = app.injector.instanceOf[PrintUserAnswersHelper]
+
+      val viewFuture = helper.summary(fakeDraftId).map { sections =>
+        val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = false)(fakeRequest, messages)
+      }
+
+      val view = Await.result(viewFuture, Duration.Inf)
+
+      val doc = asDocument(view)
+
+      behave like normalPage(view, None, prefix)
+
+      "assert header content" in {
+        assertContainsText(doc, messages(s"$prefix.paragraph1", formatReferenceNumber(trn)))
+        assertContainsText(doc, messages(s"$prefix.paragraph2", formattedSubmissionTime))
+      }
     }
-
   }
 }

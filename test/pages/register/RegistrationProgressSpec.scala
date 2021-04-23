@@ -42,7 +42,12 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          val result = Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf)
+          val result = Await.result(registrationProgress.isTaskListComplete(
+            draftId = fakeDraftId,
+            trustSetupDate = Some(mockedTrustStartDate),
+            isTaxable = true,
+            isExistingTrust = false
+          ), Duration.Inf)
 
           result mustBe true
         }
@@ -56,7 +61,12 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          val result = Await.result(registrationProgress.isTaskListComplete(fakeDraftId, isTaxable = true), Duration.Inf)
+          val result = Await.result(registrationProgress.isTaskListComplete(
+            draftId = fakeDraftId,
+            trustSetupDate = Some(mockedTrustStartDate),
+            isTaxable = true,
+            isExistingTrust = false
+          ), Duration.Inf)
 
           result mustBe false
         }
@@ -65,24 +75,57 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
 
     ".items" when {
 
-      "taxable" must {
-        "render all items" in {
+      "taxable" when {
 
-          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+        "new trust" must {
+          "render all items" in {
 
-          val application = applicationBuilder().build()
-          val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+            when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
 
-          val result = Await.result(registrationProgress.items(fakeDraftId, isTaxable = true), Duration.Inf)
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          result mustBe List(
-            Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
-            Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
-            Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
-            Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None),
-            Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
-            Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), None)
-          )
+            val result = Await.result(registrationProgress.items(
+              draftId = fakeDraftId,
+              trustSetupDate = Some(mockedTrustStartDate),
+              isTaxable = true,
+              isExistingTrust = false
+            ), Duration.Inf)
+
+            result mustBe List(
+              Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
+              Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
+              Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
+              Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None),
+              Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
+              Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), None)
+            )
+          }
+        }
+
+        "existing trust" must {
+          "not render tax liability" in {
+
+            when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+            val result = Await.result(registrationProgress.items(
+              draftId = fakeDraftId,
+              trustSetupDate = Some(mockedTrustStartDate),
+              isTaxable = true,
+              isExistingTrust = true
+            ), Duration.Inf)
+
+            result mustBe List(
+              Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
+              Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
+              Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
+              Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None),
+              Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None)
+            )
+          }
         }
       }
 
@@ -94,7 +137,12 @@ class RegistrationProgressSpec extends RegistrationSpecBase {
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          val result = Await.result(registrationProgress.items(fakeDraftId, isTaxable = false), Duration.Inf)
+          val result = Await.result(registrationProgress.items(
+            draftId = fakeDraftId,
+            trustSetupDate = Some(mockedTrustStartDate),
+            isTaxable = false,
+            isExistingTrust = false
+          ), Duration.Inf)
 
           result mustBe List(
             Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
