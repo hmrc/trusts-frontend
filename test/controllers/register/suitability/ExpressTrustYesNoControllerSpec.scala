@@ -139,7 +139,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual SEE_OTHER
 
         redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
-        
+
         application.stop()
       }
 
