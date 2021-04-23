@@ -33,17 +33,18 @@ import services.FeatureFlagService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ExpressTrustYesNoController @Inject()(override val messagesApi: MessagesApi,
-                                            registrationsRepository: RegistrationsRepository,
-                                            navigator: Navigator,
-                                            identify: RegistrationIdentifierAction,
-                                            getData: DraftIdRetrievalActionProvider,
-                                            requireData: RegistrationDataRequiredAction,
-                                            formProvider: YesNoFormProvider,
-                                            featureFlagService: FeatureFlagService,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: ExpressTrustYesNoView)
-                                           (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ExpressTrustYesNoController @Inject()(
+                                             override val messagesApi: MessagesApi,
+                                             registrationsRepository: RegistrationsRepository,
+                                             navigator: Navigator,
+                                             identify: RegistrationIdentifierAction,
+                                             getData: DraftIdRetrievalActionProvider,
+                                             requireData: RegistrationDataRequiredAction,
+                                             formProvider: YesNoFormProvider,
+                                             featureFlagService: FeatureFlagService,
+                                             val controllerComponents: MessagesControllerComponents,
+                                             view: ExpressTrustYesNoView
+                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
 
@@ -60,7 +61,7 @@ class ExpressTrustYesNoController @Inject()(override val messagesApi: MessagesAp
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(

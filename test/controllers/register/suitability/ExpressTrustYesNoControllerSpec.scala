@@ -22,8 +22,8 @@ import models.NormalMode
 import models.core.UserAnswers
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{verify, when}
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{reset, verify, when}
+import org.scalatest.BeforeAndAfterEach
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
@@ -35,7 +35,7 @@ import views.html.register.suitability.ExpressTrustYesNoView
 
 import scala.concurrent.Future
 
-class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
+class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
   val formProvider = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
@@ -45,6 +45,11 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
   private val mockFeatureFlagService = mock[FeatureFlagService]
 
   lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+
+  override def beforeEach(): Unit = {
+    reset(registrationsRepository)
+    when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
+  }
 
   "CountryOfResidenceYesNo Controller" must {
 
@@ -69,7 +74,6 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers.set(ExpressTrustYesNoPage, true).success.value
-
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -97,9 +101,8 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
           .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
           .build()
 
-        val request =
-          FakeRequest(POST, expressTrustYesNo)
-            .withFormUrlEncodedBody(("value", "true"))
+        val request = FakeRequest(POST, expressTrustYesNo)
+          .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
@@ -119,27 +122,55 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
 
     "in 5mld mode" when {
 
-      "redirect to the next page when valid data is submitted" in {
+      "redirect to the next page when valid data is submitted and the trust has a UTR" in {
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
 
         val answers = emptyUserAnswers.set(TrustHaveAUTRPage, true).success.value
-          .set(TrustTaxableYesNoPage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
           .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
           .build()
 
-        val request =
-          FakeRequest(POST, expressTrustYesNo)
-            .withFormUrlEncodedBody(("value", "true"))
+        val request = FakeRequest(POST, expressTrustYesNo)
+          .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
 
         redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        uaCaptor.getValue.get(TrustTaxableYesNoPage).get mustBe true
         
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted and the trust doesn't have a UTR" in {
+
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+
+        val answers = emptyUserAnswers.set(TrustHaveAUTRPage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
+
+        val request = FakeRequest(POST, expressTrustYesNo)
+          .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
+
         application.stop()
       }
 
@@ -149,9 +180,8 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, expressTrustYesNo)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -186,9 +216,8 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, expressTrustYesNo)
+        .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
