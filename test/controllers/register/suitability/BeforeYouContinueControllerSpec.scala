@@ -22,13 +22,14 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.suitability.{BeforeYouContinueTaxableView, BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
+import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView, BeforeYouContinueView}
 
 import scala.concurrent.Future
 
@@ -49,6 +50,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
         val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+          .set(TrustHaveAUTRPage, false).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
           .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
@@ -77,6 +79,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
 
         val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+          .set(TrustHaveAUTRPage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
           .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))

@@ -27,11 +27,15 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 object SuitabilityRoutes extends Routes {
 
   def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
-    case ExpressTrustYesNoPage => _ => _ =>
-      if (is5mldEnabled) {
-        routes.BeforeYouContinueController.onPageLoad(draftId)
-      } else {
-        routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
+    case ExpressTrustYesNoPage => _ => ua =>
+      ua.get(TrustTaxableYesNoPage) match {
+        case Some(true) =>
+          if (is5mldEnabled) {
+            routes.BeforeYouContinueController.onPageLoad (draftId)
+          } else {
+            routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad (NormalMode, draftId)
+          }
+        case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
       }
     case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
       yesNoNav(

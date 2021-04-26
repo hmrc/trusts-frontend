@@ -20,6 +20,7 @@ import controllers.actions.StandardActionSets
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
+import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
@@ -50,12 +51,14 @@ class BeforeYouContinueController @Inject()(
 
       featureFlagService.is5mldEnabled() map { is5mldEnabled =>
         val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
-        (request.userAnswers.get(TrustTaxableYesNoPage), isAgent, is5mldEnabled) match {
-            case (Some(true), _, false) => Ok(view(draftId))
-            case (Some(true), _, true) => Ok(taxableView(draftId))
-            case (Some(false), false, _) => Ok(nonTaxableView(draftId))
-            case (Some(false), true, _)  => Ok(nonTaxableAgentView(draftId))
-            case (_, _, _) => Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
+        val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
+        val trustTaxable = request.userAnswers.get(TrustTaxableYesNoPage)
+        (trustHasUtr, trustTaxable, isAgent, is5mldEnabled) match {
+            case (Some(false), Some(true), _, _) => Ok(view(draftId))
+            case (Some(true), Some(true), _, _) => Ok(taxableView(draftId))
+            case (_, Some(false), false, _) => Ok(nonTaxableView(draftId))
+            case (_, Some(false), true, _)  => Ok(nonTaxableAgentView(draftId))
+            case (_, _, _, _) => Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
         }
       }
 
