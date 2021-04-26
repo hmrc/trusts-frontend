@@ -36,7 +36,12 @@ class ExpressTrustYesNoViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), None, prefix)
+    behave like normalPage(
+      applyView(form),
+      None,
+      "suitability.expressTrust",
+      "p1"
+    )
 
     behave like pageWithBackLink(applyView(form))
 

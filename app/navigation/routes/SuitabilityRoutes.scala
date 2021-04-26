@@ -28,7 +28,11 @@ object SuitabilityRoutes extends Routes {
 
   def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
     case ExpressTrustYesNoPage => _ => _ =>
-      routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
+      if (is5mldEnabled) {
+        routes.BeforeYouContinueController.onPageLoad(draftId)
+      } else {
+        routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
+      }
     case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
       yesNoNav(
         ua,
