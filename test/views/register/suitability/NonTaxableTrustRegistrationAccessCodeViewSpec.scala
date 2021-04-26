@@ -39,7 +39,9 @@ class NonTaxableTrustRegistrationAccessCodeViewSpec extends StringViewBehaviours
       applyView(form),
       None,
       messageKeyPrefix,
-      "p1", "locked", "subHeading", "p2"
+      "p1", "locked", "subHeading", "p2", "p3", "p4",
+      "no-access", "no-access.p1", "no-access.p2",
+      "no-access.bulletpoint1", "no-access.bulletpoint2", "no-access.bulletpoint3"
     )
 
     behave like pageWithBackLink(applyView(form))

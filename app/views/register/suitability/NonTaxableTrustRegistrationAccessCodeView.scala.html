@@ -35,7 +35,7 @@
 
         @components.error_summary(form.errors)
 
-        @components.heading("nonTaxableTrustRegistrationAccessCode.heading")
+        <p>@components.heading_with_caption("nonTaxableTrustRegistrationAccessCode")</p>
 
         <p>@messages("nonTaxableTrustRegistrationAccessCode.p1")</p>
 
@@ -53,15 +53,37 @@
 
         </div>
 
+        @components.submit_button(Some("site.continue"))
+
         <h2>@messages("nonTaxableTrustRegistrationAccessCode.subHeading")</h2>
 
-        <p>@messages("nonTaxableTrustRegistrationAccessCode.p2")
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p2")</p>
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p3")
             <a
                 href="mailto:@{config.trustsEmail}?subject=@messages("nonTaxableTrustRegistrationAccessCode.email.subject")&body=@messages("nonTaxableTrustRegistrationAccessCode.email.body")">@{config.trustsEmail}
             </a>
         </p>
 
-        @components.submit_button(Some("site.continue"))
-
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  @messages("nonTaxableTrustRegistrationAccessCode.no-access")
+                </span>
+            </summary>
+            <p>@messages("nonTaxableTrustRegistrationAccessCode.no-access.p1")
+                <a
+                    href="mailto:@{config.trustsEmail}?subject=@messages("nonTaxableTrustRegistrationAccessCode.email.subject")&body=@messages("nonTaxableTrustRegistrationAccessCode.email.body")">@{config.trustsEmail}
+                </a>
+                @messages("nonTaxableTrustRegistrationAccessCode.no-access.p2")
+            </p>
+            @components.bullet_list("nonTaxableTrustRegistrationAccessCode.no-access",
+                List(
+                    "bulletpoint1",
+                    "bulletpoint2",
+                    "bulletpoint3"
+                )
+            )
+        </details>
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p4")
     }
 }
