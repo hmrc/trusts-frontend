@@ -361,7 +361,7 @@ suitability.noNeedToRegister.p3.link = contact the trusts helpline (opens in a n
 suitability.noNeedToRegister.p4 = You can
 suitability.noNeedToRegister.p4.link = return to register and maintain a trust for a client
 
-nonTaxableTrustRegistrationAccessCode.title = Register a non-taxable trust
+nonTaxableTrustRegistrationAccessCode.title = Private Beta
 nonTaxableTrustRegistrationAccessCode.caption = Private Beta
 nonTaxableTrustRegistrationAccessCode.heading = Register a non-taxable trust
 nonTaxableTrustRegistrationAccessCode.p1 = You can now use the Trust Registration Service to register non-taxable trusts. To register a non-taxable trust, enter the access code and select 'continue'
