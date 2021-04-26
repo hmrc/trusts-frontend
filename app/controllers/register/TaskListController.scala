@@ -27,6 +27,7 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
+import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.DateFormatter
@@ -44,7 +45,8 @@ class TaskListController @Inject()(
                                     registrationsRepository: RegistrationsRepository,
                                     requireDraft: RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
-                                    standardAction: StandardActionSets
+                                    standardAction: StandardActionSets,
+                                    featureFlagService: FeatureFlagService
                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
@@ -73,9 +75,10 @@ class TaskListController @Inject()(
           sections <- registrationProgress.items(draftId, trustSetUpDate, isTaxable, isExistingTrust)
           additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, trustSetUpDate, isTaxable, isExistingTrust)
+          is5mldEnabled <- featureFlagService.is5mldEnabled()
         } yield {
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
-          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup))
+          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup, is5mldEnabled))
         }
       }
 

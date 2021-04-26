@@ -278,8 +278,11 @@ taskList.summary.paragraph1.start = You can
 taskList.summary.link1 = print or save a draft copy of your saved answers
 taskList.summary.paragraph1.end = . You can also print a declared copy after you have made a declaration.
 taskList.summary.heading2 = Update asset details
-taskList.summary.paragraph2 = To update any asset details after making the declaration for this trust, use Self Assessment online or the
-taskList.summary.link2 = Trust and Estate Tax Return form (SA900) (opens in a new window or tab)
+taskList.summary.paragraph2 = To update any asset details after making the declaration for the trust, you can either use:
+taskList.summary.bullet1 = Self Assessment online
+taskList.summary.bullet2 = Trust and Estate Tax Return form (SA900) (opens in a new window or tab)
+taskList.summary.heading3 = Ownership or controlling interest in a non-EEA company
+taskList.summary.paragraph3 = You can return to this service at any time to add, remove, or change the details of an ownership or controlling interest in a non-EEA company.
 taskList.summary.continue = Continue to declaration
 
 taskList.completed = Completed

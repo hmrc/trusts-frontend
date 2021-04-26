@@ -56,6 +56,9 @@ trait ViewSpecBase extends RegistrationSpecBase {
 
   def assertContainsText(doc: Document, text: String): Assertion = assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
 
+  def assertDoesNotContainText(doc: Document, text: String): Assertion =
+    assert(!doc.toString.contains(text), "\n\ntext " + text + " was rendered on the page.\n")
+
   def assertContainsMessages(doc: Document, expectedMessageKeys: String*): Unit = {
     for (key <- expectedMessageKeys) assertContainsText(doc, messages(key))
   }

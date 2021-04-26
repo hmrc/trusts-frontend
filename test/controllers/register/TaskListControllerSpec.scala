@@ -23,12 +23,16 @@ import models.registration.Matched
 import navigation.Navigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, when}
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register._
+import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.DateFormatter
@@ -37,15 +41,19 @@ import views.html.register.TaskListView
 
 import scala.concurrent.Future
 
-class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
+class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks with BeforeAndAfterEach {
 
   private val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
   private val mockDateFormatter: DateFormatter = mock[DateFormatter]
+  private val mockFeatureFlagService: FeatureFlagService = mock[FeatureFlagService]
 
   private val fakeItems: List[Task] = Nil
   private val fakeAdditionalItems: List[Task] = Nil
 
   private val savedUntil = "21 April 2021"
+  private val utr = "1234567890"
+
+  private val is5mldEnabled: Boolean = true
 
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress)
@@ -63,6 +71,11 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
 
     when(mockDateFormatter.savedUntil(any())(any()))
       .thenReturn(savedUntil)
+
+    reset(mockFeatureFlagService)
+
+    when(mockFeatureFlagService.is5mldEnabled()(any(), any()))
+      .thenReturn(Future.successful(is5mldEnabled))
   }
 
   override protected def applicationBuilder(userAnswers: Option[UserAnswers],
@@ -74,7 +87,8 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
       .configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
       .overrides(
         bind[RegistrationProgress].toInstance(mockRegistrationProgress),
-        bind[DateFormatter].toInstance(mockDateFormatter)
+        bind[DateFormatter].toInstance(mockDateFormatter),
+        bind[FeatureFlagService].toInstance(mockFeatureFlagService)
       )
   }
 
@@ -126,7 +140,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
           val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "SA123456789").success.value
+            .set(WhatIsTheUTRPage, utr).success.value
             .set(ExistingTrustMatched, Matched.Success).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
@@ -140,7 +154,16 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
           val view = application.injector.instanceOf[TaskListView]
 
           contentAsString(result) mustEqual
-            view(isTaxable = true, fakeDraftId, savedUntil, fakeItems, fakeAdditionalItems, isTaskListComplete = true, Organisation)(request, messages).toString
+            view(
+              isTaxable = true,
+              draftId = fakeDraftId,
+              savedUntil = savedUntil,
+              sections = fakeItems,
+              additionalSections = fakeAdditionalItems,
+              isTaskListComplete = true,
+              affinityGroup = Organisation,
+              is5mldEnabled = is5mldEnabled
+            )(request, messages).toString
 
           application.stop()
         }
@@ -154,7 +177,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
             val answers = emptyUserAnswers
               .set(TrustRegisteredOnlinePage, false).success.value
               .set(TrustHaveAUTRPage, true).success.value
-              .set(WhatIsTheUTRPage, "SA123456789").success.value
+              .set(WhatIsTheUTRPage, utr).success.value
               .set(ExistingTrustMatched, Matched.AlreadyRegistered).success.value
 
             val application = applicationBuilder(userAnswers = Some(answers)).build()
@@ -177,7 +200,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
             val answers = emptyUserAnswers
               .set(TrustRegisteredOnlinePage, false).success.value
               .set(TrustHaveAUTRPage, true).success.value
-              .set(WhatIsTheUTRPage, "SA123456789").success.value
+              .set(WhatIsTheUTRPage, utr).success.value
               .set(ExistingTrustMatched, Matched.Failed).success.value
 
             val application = applicationBuilder(userAnswers = Some(answers)).build()
@@ -201,7 +224,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
           val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "SA123456789").success.value
+            .set(WhatIsTheUTRPage, utr).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -221,24 +244,41 @@ class TaskListControllerSpec extends RegistrationSpecBase with BeforeAndAfterEac
     "a new trust" must {
       "return OK and the correct view for a GET" in {
 
-        val answers = emptyUserAnswers
-          .set(TrustRegisteredOnlinePage, false).success.value
-          .set(TrustHaveAUTRPage, false).success.value
+        forAll(arbitrary[Boolean], arbitrary[Boolean]) {
+          (isTaxable, is5mldEnabled) =>
 
-        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
+            val answers = emptyUserAnswers
+              .set(TrustRegisteredOnlinePage, false).success.value
+              .set(TrustHaveAUTRPage, false).success.value
+              .set(TrustTaxableYesNoPage, isTaxable).success.value
 
-        val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
+            when(mockFeatureFlagService.is5mldEnabled()(any(), any()))
+              .thenReturn(Future.successful(is5mldEnabled))
 
-        val result = route(application, request).value
+            val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
-        status(result) mustEqual OK
+            val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
-        val view = application.injector.instanceOf[TaskListView]
+            val result = route(application, request).value
 
-        contentAsString(result) mustEqual
-          view(isTaxable = true, fakeDraftId, savedUntil, fakeItems, fakeAdditionalItems, isTaskListComplete = true, Organisation)(request, messages).toString
+            status(result) mustEqual OK
 
-        application.stop()
+            val view = application.injector.instanceOf[TaskListView]
+
+            contentAsString(result) mustEqual
+              view(
+                isTaxable = isTaxable,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeItems,
+                additionalSections = fakeAdditionalItems,
+                isTaskListComplete = true,
+                affinityGroup = Organisation,
+                is5mldEnabled = is5mldEnabled
+              )(request, messages).toString
+
+            application.stop()
+        }
       }
     }
   }
