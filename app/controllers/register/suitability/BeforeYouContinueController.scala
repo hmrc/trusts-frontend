@@ -46,21 +46,19 @@ class BeforeYouContinueController @Inject()(
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      featureFlagService.is5mldEnabled() map { is5mldEnabled =>
         val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
         val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
         val trustTaxable = request.userAnswers.get(TrustTaxableYesNoPage)
-        (trustHasUtr, trustTaxable, isAgent, is5mldEnabled) match {
-            case (Some(false), Some(true), _, _) => Ok(view(draftId))
-            case (Some(true), Some(true), _, _) => Ok(taxableView(draftId))
-            case (_, Some(false), false, _) => Ok(nonTaxableView(draftId))
-            case (_, Some(false), true, _)  => Ok(nonTaxableAgentView(draftId))
-            case (_, _, _, _) => Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
+        (trustHasUtr, trustTaxable, isAgent) match {
+            case (Some(false), Some(true), _) => Ok(view(draftId))
+            case (Some(true), Some(true), _) => Ok(taxableView(draftId))
+            case (_, Some(false), false) => Ok(nonTaxableView(draftId))
+            case (_, Some(false), true)  => Ok(nonTaxableAgentView(draftId))
+            case (_) => Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
         }
-      }
 
   }
 
