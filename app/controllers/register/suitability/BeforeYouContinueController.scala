@@ -17,7 +17,6 @@
 package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
-
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
@@ -27,7 +26,7 @@ import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerCompon
 import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
+import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView, BeforeYouContinueView}
 
 import scala.concurrent.ExecutionContext
 
@@ -36,6 +35,7 @@ class BeforeYouContinueController @Inject()(
                                              standardActionSets: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: BeforeYouContinueView,
+                                             taxableView: BeforeYouContinueTaxableView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
                                              navigator: TaskListNavigator,
@@ -45,20 +45,20 @@ class BeforeYouContinueController @Inject()(
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithData(draftId)
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      request.userAnswers.get(TrustTaxableYesNoPage).map { trustIsTaxable =>
+      featureFlagService.is5mldEnabled() map { is5mldEnabled =>
         val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
-
-        (trustIsTaxable, isAgent) match {
-          case (true, _)      => Ok(view(draftId))
-          case (false, false) => Ok(nonTaxableView(draftId))
-          case (false, true)  => Ok(nonTaxableAgentView(draftId))
+        (request.userAnswers.get(TrustTaxableYesNoPage), isAgent, is5mldEnabled) match {
+            case (Some(true), _, false) => Ok(view(draftId))
+            case (Some(true), _, true) => Ok(taxableView(draftId))
+            case (Some(false), false, _) => Ok(nonTaxableView(draftId))
+            case (Some(false), true, _)  => Ok(nonTaxableAgentView(draftId))
+            case (_, _, _) => Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
         }
-      }.getOrElse{
-        Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
       }
+
   }
 
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {

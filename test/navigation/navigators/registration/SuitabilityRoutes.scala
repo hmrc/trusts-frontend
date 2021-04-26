@@ -84,7 +84,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(ExpressTrustYesNoPage, true).success.value
 
               navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
           }
         }
 
@@ -94,7 +94,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(ExpressTrustYesNoPage, false).success.value
 
               navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
           }
         }
       }
