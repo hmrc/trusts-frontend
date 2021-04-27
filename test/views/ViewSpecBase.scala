@@ -54,6 +54,17 @@ trait ViewSpecBase extends RegistrationSpecBase {
     headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")
   }
 
+  def assertPageTitleWithCaptionEqualsMessages(doc: Document, expectedCaptionMessageKey: String, captionParam: String, expectedMessageKey: String) = {
+    val headers = doc.getElementsByTag("h1")
+    headers.size mustBe 1
+    val expectedSubheading =  messages(expectedCaptionMessageKey, captionParam).replaceAll("&nbsp;", " ")
+    val expectedHeading =  messages(expectedMessageKey).replaceAll("&nbsp;", " ")
+
+    val expected = s"$expectedSubheading $expectedHeading"
+
+    headers.first.text.replaceAll("\u00a0", " ") mustBe expected
+  }
+
   def assertContainsText(doc: Document, text: String): Assertion = assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
 
   def assertDoesNotContainText(doc: Document, text: String): Assertion =

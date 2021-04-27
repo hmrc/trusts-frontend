@@ -14,9 +14,6 @@
  * limitations under the License.
  *@
 
-@(messagePrefix: String, optionalParam: Option[String] = None)(implicit messages: Messages)
+@(headingKey: String, headingSize: String = "govuk-heading-xl", caption: String, captionParam: String = "")(implicit messages: Messages)
 
-<header class="hmrc-page-heading">
-    <h1 class="govuk-heading-xl">@messages(s"$messagePrefix.heading", if(optionalParam.isDefined) {optionalParam.get} else "")</h1>
-    <p class="govuk-caption-xl hmrc-caption-xl"><span class="govuk-visually-hidden">@messages(s"$messagePrefix.caption.hidden") </span>@messages(s"$messagePrefix.caption")</p>
-</header>
+<h1 class="@headingSize">@components.sub_heading(caption, captionParam) @messages(headingKey)</h1>
