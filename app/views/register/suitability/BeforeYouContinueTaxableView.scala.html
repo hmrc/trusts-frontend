@@ -14,12 +14,14 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
 @import models.Mode
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    formHelper: FormWithCSRF,
+    config: FrontendAppConfig
 )
 
 @(draftId: String)(implicit request: Request[_], messages: Messages)
@@ -36,11 +38,17 @@
 
         <p>@messages("suitability.beforeYouContinue.taxable.p1")</p>
 
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("suitability.beforeYouContinue.taxable.bullet1")</li>
+            <li>@messages("suitability.beforeYouContinue.taxable.bullet2")</li>
+        </ul>
+
         <p>@messages("suitability.beforeYouContinue.taxable.p2")</p>
 
-        <h2>@messages("suitability.beforeYouContinue.taxable.h2")</h2>
-
-        <p>@messages("suitability.beforeYouContinue.taxable.p3")</p>
+        <ul>
+            <li><a href="@config.whoShouldRegisterUrl" target="_blank">@messages("suitability.beforeYouContinue.taxable.link1")</a></li>
+            <li><a href="@config.trustsAndTaxesUrl" target="_blank">@messages("suitability.beforeYouContinue.taxable.link2")</a></li>
+        </ul>
 
         @components.submit_button(Some("suitability.beforeYouContinue.taxable.continue"))
     }

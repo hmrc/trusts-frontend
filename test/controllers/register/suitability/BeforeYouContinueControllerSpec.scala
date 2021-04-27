@@ -29,7 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView, BeforeYouContinueView}
+import views.html.register.suitability.{BeforeYouContinueExistingTaxableView, BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView}
 
 import scala.concurrent.Future
 
@@ -47,34 +47,9 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
       "return OK and the correct view for a taxable journey GET" in {
 
-        val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+        val answers = emptyUserAnswers
+          .set(TrustTaxableYesNoPage, true).success.value
           .set(TrustHaveAUTRPage, false).success.value
-
-        val application = applicationBuilder(userAnswers = Some(answers))
-          .build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[BeforeYouContinueView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view(fakeDraftId)(request, messages).toString
-
-        application.stop()
-      }
-
-    }
-
-    "in 5mld mode" when {
-
-      "return OK and the correct view for a taxable journey GET" in {
-
-        val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
-          .set(TrustHaveAUTRPage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
           .build()
@@ -95,134 +70,185 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
     }
 
-    "return OK and the correct view for a non taxable journey GET" in {
+    "in 5mld mode" when {
 
-      val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
-
-      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
-        .build()
-
-      val request = FakeRequest(GET, beforeYouContinueRoute)
-
-      val result = route(application, request).value
-
-      val view = application.injector.instanceOf[BeforeYouContinueNonTaxableView]
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(fakeDraftId)(request, messages).toString
-
-      application.stop()
-    }
-
-    "return OK and the correct view for a non taxable agent journey GET" in {
-
-      val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
-
-      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-        .build()
-
-      val request = FakeRequest(GET, beforeYouContinueRoute)
-
-      val result = route(application, request).value
-
-      val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
-
-      status(result) mustEqual OK
-
-      contentAsString(result) mustEqual
-        view(fakeDraftId)(request, messages).toString
-
-      application.stop()
-    }
-
-    "redirect to the next page when valid data is submitted" when {
-
-      "express, non-taxable trust with non-taxable access code feature enabled" in {
-
-        when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
-          .thenReturn(Future.successful(true))
+      "return OK and the correct view for a taxable journey GET" in {
 
         val answers = emptyUserAnswers
-          .set(ExpressTrustYesNoPage, true).success.value
-          .set(TrustTaxableYesNoPage, false).success.value
+          .set(TrustTaxableYesNoPage, true).success.value
+          .set(TrustHaveAUTRPage, false).success.value
 
-        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+        val application = applicationBuilder(userAnswers = Some(answers))
           .build()
 
-        val request = FakeRequest(POST, beforeYouContinueRoute)
+        val request = FakeRequest(GET, beforeYouContinueRoute)
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
+        val view = application.injector.instanceOf[BeforeYouContinueTaxableView]
 
-        redirectLocation(result).value mustEqual
-          routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(fakeDraftId).url
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
 
         application.stop()
       }
 
-      "not an express, non-taxable trust with non-taxable access code feature enabled" when {
+      "return OK and the correct view for an existing taxable journey GET" in {
 
-        "agent user" in {
+        val answers = emptyUserAnswers
+          .set(TrustTaxableYesNoPage, true).success.value
+          .set(TrustHaveAUTRPage, true).success.value
 
-          when(navigator.agentDetailsJourneyUrl(any())).thenReturn("redirect-url")
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .build()
 
-          forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
-            case (isExpress, isTaxable, isFeatureEnabled) =>
+        val request = FakeRequest(GET, beforeYouContinueRoute)
 
-              when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
-                .thenReturn(Future.successful(isFeatureEnabled))
+        val result = route(application, request).value
 
-              val answers = emptyUserAnswers
-                .set(ExpressTrustYesNoPage, isExpress).success.value
-                .set(TrustTaxableYesNoPage, isTaxable).success.value
+        val view = application.injector.instanceOf[BeforeYouContinueExistingTaxableView]
 
-              val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-                .overrides(
-                  bind[FeatureFlagService].toInstance(mockFeatureFlagService),
-                  bind[TaskListNavigator].toInstance(navigator)
-                ).build()
+        status(result) mustEqual OK
 
-              val request = FakeRequest(POST, beforeYouContinueRoute)
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
 
-              val result = route(application, request).value
+        application.stop()
+      }
 
-              status(result) mustEqual SEE_OTHER
+      "return OK and the correct view for a non taxable journey GET" in {
 
-              redirectLocation(result).value mustEqual "redirect-url"
+        val answers = emptyUserAnswers
+          .set(TrustTaxableYesNoPage, false).success.value
 
-              application.stop()
-          }
+        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[BeforeYouContinueNonTaxableView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
+      "return OK and the correct view for a non taxable agent journey GET" in {
+
+        val answers = emptyUserAnswers
+          .set(TrustTaxableYesNoPage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted" when {
+
+        "express, non-taxable trust with non-taxable access code feature enabled" in {
+
+          when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+            .thenReturn(Future.successful(true))
+
+          val answers = emptyUserAnswers
+            .set(ExpressTrustYesNoPage, true).success.value
+            .set(TrustTaxableYesNoPage, false).success.value
+
+          val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+            .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+            .build()
+
+          val request = FakeRequest(POST, beforeYouContinueRoute)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual
+            routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(fakeDraftId).url
+
+          application.stop()
         }
 
-        "non-agent user" in {
+        "not an express, non-taxable trust with non-taxable access code feature enabled" when {
 
-          forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
-            case (isExpress, isTaxable, isFeatureEnabled) =>
+          "agent user" in {
 
-              when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
-                .thenReturn(Future.successful(isFeatureEnabled))
+            when(navigator.agentDetailsJourneyUrl(any())).thenReturn("redirect-url")
 
-              val answers = emptyUserAnswers
-                .set(ExpressTrustYesNoPage, isExpress).success.value
-                .set(TrustTaxableYesNoPage, isTaxable).success.value
+            forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
+              case (isExpress, isTaxable, isFeatureEnabled) =>
 
-              val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
-                .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
-                .build()
+                when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+                  .thenReturn(Future.successful(isFeatureEnabled))
 
-              val request = FakeRequest(POST, beforeYouContinueRoute)
+                val answers = emptyUserAnswers
+                  .set(ExpressTrustYesNoPage, isExpress).success.value
+                  .set(TrustTaxableYesNoPage, isTaxable).success.value
 
-              val result = route(application, request).value
+                val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+                  .overrides(
+                    bind[FeatureFlagService].toInstance(mockFeatureFlagService),
+                    bind[TaskListNavigator].toInstance(navigator)
+                  ).build()
 
-              status(result) mustEqual SEE_OTHER
+                val request = FakeRequest(POST, beforeYouContinueRoute)
 
-              redirectLocation(result).value mustEqual controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+                val result = route(application, request).value
 
-              application.stop()
+                status(result) mustEqual SEE_OTHER
+
+                redirectLocation(result).value mustEqual "redirect-url"
+
+                application.stop()
+            }
+          }
+
+          "non-agent user" in {
+
+            forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
+              case (isExpress, isTaxable, isFeatureEnabled) =>
+
+                when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+                  .thenReturn(Future.successful(isFeatureEnabled))
+
+                val answers = emptyUserAnswers
+                  .set(ExpressTrustYesNoPage, isExpress).success.value
+                  .set(TrustTaxableYesNoPage, isTaxable).success.value
+
+                val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
+                  .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+                  .build()
+
+                val request = FakeRequest(POST, beforeYouContinueRoute)
+
+                val result = route(application, request).value
+
+                status(result) mustEqual SEE_OTHER
+
+                redirectLocation(result).value mustEqual controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+
+                application.stop()
+            }
           }
         }
       }

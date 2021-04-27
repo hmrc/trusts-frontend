@@ -313,23 +313,23 @@ suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax lia
 suitability.taxLiabilityInCurrentTaxYear.heading = Does the trust have any tax liability from {0} to {1}?
 suitability.taxLiabilityInCurrentTaxYear.error.required = Select yes if the trust has any tax liability in the current tax year
 
-suitability.beforeYouContinue.title = Before you continue
-suitability.beforeYouContinue.heading = Before you continue
-suitability.beforeYouContinue.p1 = After you have registered the trust, the appointed lead trustee will be sent a Unique Taxpayer Reference (UTR) for the trust and any official letters, like:
-suitability.beforeYouContinue.bullet1 = Trust and Estate (SA900) tax return
-suitability.beforeYouContinue.bullet2 = notice to file (SA316)
-suitability.beforeYouContinue.p2 = You can find out more:
-suitability.beforeYouContinue.link1 = Who should register (opens in a new window or tab)
-suitability.beforeYouContinue.link2 = Trusts and taxes (opens in a new window or tab)
-suitability.beforeYouContinue.continue = Continue to register the trust
-
 suitability.beforeYouContinue.taxable.title = Before you continue
 suitability.beforeYouContinue.taxable.heading = Before you continue
-suitability.beforeYouContinue.taxable.p1 = You need to confirm with HMRC that the trust was registered for self assessment tax returns.
-suitability.beforeYouContinue.taxable.p2 = This is so you can register the trust under the rules of the Fifth Money Laundering Directive.
-suitability.beforeYouContinue.taxable.h2 = Confirm the trust was registered with HMRC for self assessment tax returns
-suitability.beforeYouContinue.taxable.p3 = By continuing, you are confirming that the trust was registered with HMRC for self assessment tax returns.
-suitability.beforeYouContinue.taxable.continue = Continue
+suitability.beforeYouContinue.taxable.p1 = After you have registered the trust, the appointed lead trustee will be sent a Unique Taxpayer Reference (UTR) for the trust and any official letters, like:
+suitability.beforeYouContinue.taxable.bullet1 = Trust and Estate (SA900) tax return
+suitability.beforeYouContinue.taxable.bullet2 = notice to file (SA316)
+suitability.beforeYouContinue.taxable.p2 = You can find out more:
+suitability.beforeYouContinue.taxable.link1 = Who should register (opens in a new window or tab)
+suitability.beforeYouContinue.taxable.link2 = Trusts and taxes (opens in a new window or tab)
+suitability.beforeYouContinue.taxable.continue = Continue to register the trust
+
+suitability.beforeYouContinue.existing.taxable.title = Before you continue
+suitability.beforeYouContinue.existing.taxable.heading = Before you continue
+suitability.beforeYouContinue.existing.taxable.p1 = You need to confirm with HMRC that the trust was registered for self assessment tax returns.
+suitability.beforeYouContinue.existing.taxable.p2 = This is so you can register the trust under the rules of the Fifth Money Laundering Directive.
+suitability.beforeYouContinue.existing.taxable.h2 = Confirm the trust was registered with HMRC for self assessment tax returns
+suitability.beforeYouContinue.existing.taxable.p3 = By continuing, you are confirming that the trust was registered with HMRC for self assessment tax returns.
+suitability.beforeYouContinue.existing.taxable.continue = Continue
 
 suitability.beforeYouContinue.nonTaxable.title = Before you continue
 suitability.beforeYouContinue.nonTaxable.heading = Before you continue

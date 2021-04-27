@@ -16,8 +16,8 @@
 
 package controllers.register.suitability
 
+import config.FrontendAppConfig
 import controllers.actions.StandardActionSets
-import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
 import pages.register.TrustHaveAUTRPage
@@ -27,20 +27,23 @@ import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerCompon
 import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView, BeforeYouContinueView}
+import views.html.register.suitability._
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,
                                              standardActionSets: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
-                                             view: BeforeYouContinueView,
                                              taxableView: BeforeYouContinueTaxableView,
+                                             existingTaxableView: BeforeYouContinueExistingTaxableView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
                                              navigator: TaskListNavigator,
-                                             featureFlagService: FeatureFlagService
+                                             featureFlagService: FeatureFlagService,
+                                             appConfig: FrontendAppConfig,
+                                             noNeedToRegisterView: NoNeedToRegisterView
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
@@ -49,17 +52,28 @@ class BeforeYouContinueController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-        val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
-        val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
-        val trustTaxable = request.userAnswers.get(TrustTaxableYesNoPage)
-        (trustHasUtr, trustTaxable, isAgent) match {
-            case (Some(false), Some(true), _) => Ok(view(draftId))
-            case (Some(true), Some(true), _) => Ok(taxableView(draftId))
-            case (_, Some(false), false) => Ok(nonTaxableView(draftId))
-            case (_, Some(false), true)  => Ok(nonTaxableAgentView(draftId))
-            case (_) => Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
-        }
+      val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
+      val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
+      val trustTaxable = request.userAnswers.get(TrustTaxableYesNoPage)
 
+      (trustHasUtr, trustTaxable, isAgent) match {
+        case (Some(false), Some(true), _) => Ok(taxableView(draftId))
+        case (Some(true), Some(true), _) => Ok(existingTaxableView(draftId))
+        case (_, Some(false), false) =>
+          if(appConfig.disableNonTaxableRegistrations) {
+            Ok(noNeedToRegisterView(isAgent = false))
+          } else {
+            Ok(nonTaxableView(draftId))
+          }
+        case (_, Some(false), true)  =>
+          if(appConfig.disableNonTaxableRegistrations) {
+            Ok(noNeedToRegisterView(isAgent = true))
+          } else {
+            Ok(nonTaxableAgentView(draftId))
+          }
+        case _ =>
+          Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
+      }
   }
 
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
