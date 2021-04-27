@@ -42,8 +42,7 @@ class BeforeYouContinueController @Inject()(
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
                                              navigator: TaskListNavigator,
                                              featureFlagService: FeatureFlagService,
-                                             appConfig: FrontendAppConfig,
-                                             noNeedToRegisterView: NoNeedToRegisterView
+                                             appConfig: FrontendAppConfig
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
@@ -61,13 +60,13 @@ class BeforeYouContinueController @Inject()(
         case (Some(true), Some(true), _) => Ok(existingTaxableView(draftId))
         case (_, Some(false), false) =>
           if(appConfig.disableNonTaxableRegistrations) {
-            Ok(noNeedToRegisterView(isAgent = false))
+            Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(draftId))
           } else {
             Ok(nonTaxableView(draftId))
           }
         case (_, Some(false), true)  =>
           if(appConfig.disableNonTaxableRegistrations) {
-            Ok(noNeedToRegisterView(isAgent = true))
+            Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(draftId))
           } else {
             Ok(nonTaxableAgentView(draftId))
           }

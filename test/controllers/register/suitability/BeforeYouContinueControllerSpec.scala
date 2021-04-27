@@ -17,6 +17,8 @@
 package controllers.register.suitability
 
 import base.RegistrationSpecBase
+import controllers.actions.{FakeIdentifyForRegistration, FakeRegistrationDataRetrievalAction}
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationDataRequiredActionImpl, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -25,11 +27,13 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FeatureFlagService
-import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.suitability.{BeforeYouContinueExistingTaxableView, BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView}
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
+import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+import views.html.register.suitability._
 
 import scala.concurrent.Future
 
@@ -136,6 +140,66 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
         contentAsString(result) mustEqual
           view(fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
+      "return 'No need to register' when disable non-taxable registration feature enabled for a non taxable organisation journey GET" in {
+
+        val answers = emptyUserAnswers
+          .set(TrustTaxableYesNoPage, false).success.value
+
+        val application = new GuiceApplicationBuilder()
+          .overrides(
+            bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
+            bind[RegistrationIdentifierAction].toInstance(
+              new FakeIdentifyForRegistration(Organisation, fakeFrontendAppConfig)(injectedParsers, trustsAuth, Enrolments(Set()))
+            ),
+            bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers))),
+            bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(Some(answers)))
+          )
+          .configure(
+            "microservice.services.features.non-taxable.registrations.block.enabled" -> true
+          )
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+      }
+
+      "return 'No need to register' when disable non-taxable registration feature enabled for a non taxable agent journey GET" in {
+
+        val answers = emptyUserAnswers
+          .set(TrustTaxableYesNoPage, false).success.value
+
+        val application = new GuiceApplicationBuilder()
+          .overrides(
+            bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
+            bind[RegistrationIdentifierAction].toInstance(
+              new FakeIdentifyForRegistration(Agent, fakeFrontendAppConfig)(injectedParsers, trustsAuth, Enrolments(Set()))
+            ),
+            bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers))),
+            bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(Some(answers)))
+          )
+          .configure(
+            "microservice.services.features.non-taxable.registrations.block.enabled" -> true
+          )
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(fakeDraftId).url
 
         application.stop()
       }
