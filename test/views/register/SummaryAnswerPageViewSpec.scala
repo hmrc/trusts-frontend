@@ -47,22 +47,18 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       assertContainsText(agentDoc, messages("answerPage.agentClientRef", "agentClientReference"))
     }
 
-    "assert correct number of headers and subheaders for Agent user" in {
+    "assert agent header present for Agent user" in {
       val wrapper = agentDoc.getElementById("wrapper")
       val headers = wrapper.getElementsByTag("h2")
-      val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 5
-      subHeaders.size mustBe 3
+      headers.size mustBe 1
     }
 
-    "assert correct number of headers and subheaders for Organisation user" in {
+    "assert agent header not present for Organisation user" in {
       val wrapper = orgDoc.getElementById("wrapper")
       val headers = wrapper.getElementsByTag("h2")
-      val subHeaders = wrapper.getElementsByTag("h3")
 
-      headers.size mustBe 4
-      subHeaders.size mustBe 3
+      headers.size mustBe 0
     }
 
     "assert back to top link present for Agent user" in {
