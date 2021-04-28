@@ -18,9 +18,7 @@ package views.register
 
 import java.time.LocalDateTime
 import pages.register._
-import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
-import utils.print.register.PrintUserAnswersHelper
 import views.behaviours.ViewBehaviours
 import views.html.register.SummaryAnswerPageView
 
@@ -35,84 +33,46 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))
 
-    val app = applicationBuilder().build()
+    val applyAgentView = view.apply(Nil, isAgent = true, "agentClientReference")(fakeRequest, messages)
 
-    val helper = app.injector.instanceOf[PrintUserAnswersHelper]
+    val applyOrganisationView = view.apply(Nil, isAgent = false, "")(fakeRequest, messages)
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    val agentDoc = asDocument(applyAgentView)
 
-    val summary = helper.summary(fakeDraftId)
+    val orgDoc = asDocument(applyOrganisationView)
 
-    val orgDoc = {
-      summary.map {
-        sections =>
-          val applyOrganisationView = view.apply(sections, isAgent = false, "")(fakeRequest, messages)
-
-          behave like normalPage(applyOrganisationView, None, "summaryAnswerPage", "paragraph1", "paragraph2")
-
-          //behave like pageWithReturnToTopLink(applyOrganisationView)
-
-          asDocument(applyOrganisationView)
-      }
-    }
-
-    val agentDoc = {
-      summary.map {
-        sections =>
-          val applyAgentView = view.apply(sections, isAgent = true, "agentClientReference")(fakeRequest, messages)
-
-          //behave like pageWithReturnToTopLink(applyAgentView)
-
-          asDocument(applyAgentView)
-      }
-    }
+    behave like normalPage(applyOrganisationView, None, "summaryAnswerPage", "paragraph1", "paragraph2")
 
     "assert header content for Agent user" in {
-      agentDoc.map(assertContainsText(_, messages("answerPage.agentClientRef", "agentClientReference")))
+      assertContainsText(agentDoc, messages("answerPage.agentClientRef", "agentClientReference"))
     }
 
     "assert correct number of headers and subheaders for Agent user" in {
-      agentDoc.map {
-        doc =>
-          val wrapper = doc.getElementById("wrapper")
-          val headers = wrapper.getElementsByTag("h2")
-          val subHeaders = wrapper.getElementsByTag("h3")
+      val wrapper = agentDoc.getElementById("wrapper")
+      val headers = wrapper.getElementsByTag("h2")
+      val subHeaders = wrapper.getElementsByTag("h3")
 
-          headers.size mustBe 5
-          subHeaders.size mustBe 3
-      }
+      headers.size mustBe 5
+      subHeaders.size mustBe 3
     }
 
     "assert correct number of headers and subheaders for Organisation user" in {
-      orgDoc.map {
-        doc =>
-          val wrapper = doc.getElementById("wrapper")
-          val headers = wrapper.getElementsByTag("h2")
-          val subHeaders = wrapper.getElementsByTag("h3")
+      val wrapper = orgDoc.getElementById("wrapper")
+      val headers = wrapper.getElementsByTag("h2")
+      val subHeaders = wrapper.getElementsByTag("h3")
 
-          headers.size mustBe 4
-          subHeaders.size mustBe 3
-      }
+      headers.size mustBe 4
+      subHeaders.size mustBe 3
     }
 
     "assert back to top link present for Agent user" in {
-      orgDoc.map {
-        doc =>
-          //val returnToTopLink = doc.getElementById("return-to-top")
-
-          assertRenderedById(doc, "return-to-top")
-      }
+      assertRenderedById(agentDoc, "return-to-top")
     }
-//
-//    "assert back to top link present for Organisation user" in {
-//      summary.map {
-//        sections =>
-//          val applyOrganisationView = view.apply(sections, isAgent = false, "")(fakeRequest, messages)
-//
-//          val doc = asDocument(applyOrganisationView)
-//          assertRenderedById(doc, "return-to-top")
-//      }
-//    }
+
+    "assert back to top link present for Organisation user" in {
+      assertRenderedById(orgDoc, "return-to-top")
+    }
+
 
   }
 }
