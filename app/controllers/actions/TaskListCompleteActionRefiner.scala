@@ -20,6 +20,7 @@ import models.requests.RegistrationDataRequest
 import pages.register.RegistrationProgress
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
+import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
@@ -28,6 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListCompleteActionRefinerImpl @Inject()(
                                                    registrationProgress: RegistrationProgress,
+                                                   registrationsRepository: RegistrationsRepository,
                                                    implicit val executionContext: ExecutionContext
                                                  ) extends TaskListCompleteActionRefiner {
 
@@ -35,12 +37,19 @@ class TaskListCompleteActionRefinerImpl @Inject()(
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    registrationProgress.isTaskListComplete(
-      draftId = request.userAnswers.draftId,
+    val draftId = request.userAnswers.draftId
+
+    for {
+      trustSetupDate <- registrationsRepository.getTrustSetupDate(draftId)
       isTaxable = request.userAnswers.isTaxable
-    ) map {
-      case true => Right(request)
-      case false => Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))
+      isExistingTrust = request.userAnswers.isExistingTrust
+      result <- registrationProgress.isTaskListComplete(draftId, trustSetupDate, isTaxable, isExistingTrust)
+    } yield {
+      if (result) {
+        Right(request)
+      } else {
+        Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))
+      }
     }
   }
 }

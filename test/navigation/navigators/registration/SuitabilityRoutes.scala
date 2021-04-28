@@ -24,7 +24,7 @@ import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.suitability.{ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage, UndeclaredTaxLiabilityYesNoPage}
+import pages.register.suitability.{ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage, TrustTaxableYesNoPage, UndeclaredTaxLiabilityYesNoPage}
 
 trait SuitabilityRoutes {
 
@@ -82,9 +82,10 @@ trait SuitabilityRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               val answers = userAnswers.set(ExpressTrustYesNoPage, true).success.value
+                .set(TrustTaxableYesNoPage, true).success.value
 
               navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
           }
         }
 
@@ -92,9 +93,10 @@ trait SuitabilityRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               val answers = userAnswers.set(ExpressTrustYesNoPage, false).success.value
+                .set(TrustTaxableYesNoPage, true).success.value
 
               navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
           }
         }
       }
@@ -104,6 +106,7 @@ trait SuitabilityRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
+                .set(TrustTaxableYesNoPage, true).success.value
 
               navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
                 .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
@@ -113,6 +116,7 @@ trait SuitabilityRoutes {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
               val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, false).success.value
+                .set(TrustTaxableYesNoPage, true).success.value
 
               navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
                 .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, fakeDraftId))

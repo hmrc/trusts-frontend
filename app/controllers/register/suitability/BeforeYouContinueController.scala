@@ -17,17 +17,17 @@
 package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
-
 import javax.inject.Inject
 import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
+import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
+import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView, BeforeYouContinueView}
 
 import scala.concurrent.ExecutionContext
 
@@ -36,6 +36,7 @@ class BeforeYouContinueController @Inject()(
                                              standardActionSets: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: BeforeYouContinueView,
+                                             taxableView: BeforeYouContinueTaxableView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
                                              navigator: TaskListNavigator,
@@ -48,17 +49,17 @@ class BeforeYouContinueController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      request.userAnswers.get(TrustTaxableYesNoPage).map { trustIsTaxable =>
         val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
-
-        (trustIsTaxable, isAgent) match {
-          case (true, _)      => Ok(view(draftId))
-          case (false, false) => Ok(nonTaxableView(draftId))
-          case (false, true)  => Ok(nonTaxableAgentView(draftId))
+        val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
+        val trustTaxable = request.userAnswers.get(TrustTaxableYesNoPage)
+        (trustHasUtr, trustTaxable, isAgent) match {
+            case (Some(false), Some(true), _) => Ok(view(draftId))
+            case (Some(true), Some(true), _) => Ok(taxableView(draftId))
+            case (_, Some(false), false) => Ok(nonTaxableView(draftId))
+            case (_, Some(false), true)  => Ok(nonTaxableAgentView(draftId))
+            case (_) => Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
         }
-      }.getOrElse{
-        Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
-      }
+
   }
 
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {

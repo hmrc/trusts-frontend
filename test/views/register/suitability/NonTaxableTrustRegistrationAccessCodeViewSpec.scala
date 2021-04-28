@@ -35,11 +35,13 @@ class NonTaxableTrustRegistrationAccessCodeViewSpec extends StringViewBehaviours
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form, fakeDraftId)(fakeRequest, messages)
 
-    behave like normalPage(
+    behave like normalPageTitleWithCaption(
       applyView(form),
-      None,
       messageKeyPrefix,
-      "p1", "locked", "subHeading", "p2"
+      messageKeyPrefix,
+      "p1", "locked", "subHeading", "p2", "p3", "p4",
+      "no-access", "no-access.p1", "no-access.p2",
+      "no-access.bulletpoint1", "no-access.bulletpoint2", "no-access.bulletpoint3"
     )
 
     behave like pageWithBackLink(applyView(form))

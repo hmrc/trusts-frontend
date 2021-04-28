@@ -126,7 +126,7 @@ inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inhe
 agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
 whenTrustSetup.checkYourAnswersLabel = When was the trust created?
 trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
-trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust listed on a European Economic Area (EEA) register?
+trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 
 trustRegisteredOnline.title = Has the trust already been registered online?
@@ -279,8 +279,11 @@ taskList.summary.paragraph1.start = You can
 taskList.summary.link1 = print or save a draft copy of your saved answers
 taskList.summary.paragraph1.end = . You can also print a declared copy after you have made a declaration.
 taskList.summary.heading2 = Update asset details
-taskList.summary.paragraph2 = To update any asset details after making the declaration for this trust, use Self Assessment online or the
-taskList.summary.link2 = Trust and Estate Tax Return form (SA900) (opens in a new window or tab)
+taskList.summary.paragraph2 = To update any asset details after making the declaration for the trust, you can either use:
+taskList.summary.bullet1 = Self Assessment online
+taskList.summary.bullet2 = Trust and Estate Tax Return form (SA900) (opens in a new window or tab)
+taskList.summary.heading3 = Ownership or controlling interest in a non-EEA company
+taskList.summary.paragraph3 = You can return to this service at any time to add, remove, or change the details of an ownership or controlling interest in a non-EEA company.
 taskList.summary.continue = Continue to declaration
 
 taskList.completed = Completed
@@ -304,10 +307,7 @@ removeDraftYesNo.error.required = Select yes if you want to remove the saved reg
 
 suitability.expressTrust.title = Are you registering an express trust?
 suitability.expressTrust.heading = Are you registering an express trust?
-suitability.expressTrust.p1 = An express trust is a trust created by a settlor, usually in the form of a document like a written deed of trust.
-suitability.expressTrust.p2 = Express trusts can be created:
-suitability.expressTrust.bullet1 = by someone’s will after they have died
-suitability.expressTrust.bullet2 = during someone’s lifetime, which is known as inter-vivos
+suitability.expressTrust.p1 = An express trust is a trust created deliberately by a settlor, usually in the form of a document such as a written deed of trust. Express trusts can be created by will or during lifetime, also known as inter-vivos.
 suitability.expressTrust.error.required = Select yes if you are registering an express trust
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?
@@ -323,6 +323,14 @@ suitability.beforeYouContinue.p2 = You can find out more:
 suitability.beforeYouContinue.link1 = Who should register (opens in a new window or tab)
 suitability.beforeYouContinue.link2 = Trusts and taxes (opens in a new window or tab)
 suitability.beforeYouContinue.continue = Continue to register the trust
+
+suitability.beforeYouContinue.taxable.title = Before you continue
+suitability.beforeYouContinue.taxable.heading = Before you continue
+suitability.beforeYouContinue.taxable.p1 = You need to confirm with HMRC that the trust was registered for self assessment tax returns.
+suitability.beforeYouContinue.taxable.p2 = This is so you can register the trust under the rules of the Fifth Money Laundering Directive.
+suitability.beforeYouContinue.taxable.h2 = Confirm the trust was registered with HMRC for self assessment tax returns
+suitability.beforeYouContinue.taxable.p3 = By continuing, you are confirming that the trust was registered with HMRC for self assessment tax returns.
+suitability.beforeYouContinue.taxable.continue = Continue
 
 suitability.beforeYouContinue.nonTaxable.title = Before you continue
 suitability.beforeYouContinue.nonTaxable.heading = Before you continue
@@ -355,17 +363,26 @@ suitability.noNeedToRegister.p4 = You can
 suitability.noNeedToRegister.p4.link = return to register and maintain a trust for a client
 
 nonTaxableTrustRegistrationAccessCode.title = Private Beta
-nonTaxableTrustRegistrationAccessCode.heading = Private Beta
-nonTaxableTrustRegistrationAccessCode.p1 = In order to control the number of Non-Taxable Trust registrations, we have added limited access for the private beta. You will need to enter your provided access code and select ''Continue'' to enter the registration journey.
+nonTaxableTrustRegistrationAccessCode.caption = Private Beta
+nonTaxableTrustRegistrationAccessCode.heading = Register a non-taxable trust
+nonTaxableTrustRegistrationAccessCode.p1 = You can now use the Trust Registration Service to register non-taxable trusts. To register a non-taxable trust, enter the access code and select ''continue''
 nonTaxableTrustRegistrationAccessCode.locked = Enter your 6-character access code
-nonTaxableTrustRegistrationAccessCode.hint = Keep this code safe. You will need to enter it every time you access the Beta. This code will last for TBC weeks.
-nonTaxableTrustRegistrationAccessCode.subHeading = If you are having difficulty using the code
-nonTaxableTrustRegistrationAccessCode.p2 = You can request a new access code by emailing
+nonTaxableTrustRegistrationAccessCode.hint = Keep this code safe. You will need to enter it every time you access the beta. This code will last for 4 weeks.
+nonTaxableTrustRegistrationAccessCode.subHeading = Request to register a non-taxable trust
+nonTaxableTrustRegistrationAccessCode.p2 = Access codes to register non-taxable trusts are currently available by invitation only.
+nonTaxableTrustRegistrationAccessCode.p3 = You can register your interest in using the service by contacting HMRC:
+nonTaxableTrustRegistrationAccessCode.p4 = Do not contact the trust helpline for issues registering a non-taxable trust, as they are currently unable to support these issues.
 nonTaxableTrustRegistrationAccessCode.error.required = Enter your access code
 nonTaxableTrustRegistrationAccessCode.error.invalid = Your access code must be 6 characters long and alphanumeric
-nonTaxableTrustRegistrationAccessCode.error.unrecognised = Access code not recognised. Please try again.
+nonTaxableTrustRegistrationAccessCode.error.unrecognised = Access code not recognised
 nonTaxableTrustRegistrationAccessCode.email.subject = TBC: EMAIL SUBJECT
 nonTaxableTrustRegistrationAccessCode.email.body = TBC: EMAIL BODY
+nonTaxableTrustRegistrationAccessCode.no-access = If you cannot access the service
+nonTaxableTrustRegistrationAccessCode.no-access.p1 = If you cannot access the service, contact HMRC:
+nonTaxableTrustRegistrationAccessCode.no-access.p2 = . In the email, you need to provide:
+nonTaxableTrustRegistrationAccessCode.no-access.bulletpoint1 = your name
+nonTaxableTrustRegistrationAccessCode.no-access.bulletpoint2 = the date and time you tried to use the service
+nonTaxableTrustRegistrationAccessCode.no-access.bulletpoint3 = your 6 character access code
 
 agentInternalReference.checkYourAnswersLabel = What is your internal reference for this client?
 agentName.checkYourAnswersLabel = What is the name of the agency registering this trust?

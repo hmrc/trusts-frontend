@@ -27,7 +27,7 @@
 
 @main_template(
     title = messages("confirmationAnswerPage.title")
-    ) {
+) {
 
     @components.back_link()
 
@@ -45,18 +45,18 @@
     }
 
     <div class="section">
-    <p>@components.button_print()</p>
+        <p>@components.button_print()</p>
     </div>
 
     <div class="two-column-answers">
-    @for(section <- answerSections){
-        @{
-            section match {
-                case a: AnswerSection => components.answer_section(a)
-                case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+        @for(section <- answerSections){
+            @{
+                section match {
+                    case a: AnswerSection => components.answer_section(a)
+                    case r: RepeaterAnswerSection => components.repeater_answer_section(r)
+                }
             }
         }
-    }
     </div>
 
     @components.return_to_top()

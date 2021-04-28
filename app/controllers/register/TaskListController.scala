@@ -22,16 +22,15 @@ import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
 import models.requests.RegistrationDataRequest
-import navigation.registration.TaskListNavigator
 import pages.register.{ExistingTrustMatched, RegistrationProgress, TrustHaveAUTRPage, TrustRegisteredOnlinePage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
+import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.{DateFormatter, TaxLiabilityHelper}
-import viewmodels.Task
+import utils.DateFormatter
 import views.html.register.TaskListView
 
 import javax.inject.Inject
@@ -44,10 +43,10 @@ class TaskListController @Inject()(
                                     view: TaskListView,
                                     registrationProgress: RegistrationProgress,
                                     registrationsRepository: RegistrationsRepository,
-                                    taskListNavigator: TaskListNavigator,
                                     requireDraft: RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
-                                    standardAction: StandardActionSets
+                                    standardAction: StandardActionSets,
+                                    featureFlagService: FeatureFlagService
                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
@@ -61,49 +60,35 @@ class TaskListController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
+      val isExistingTrust = request.userAnswers.isExistingTrust
+
       def renderView(affinityGroup: AffinityGroup): Future[Result] = {
         val savedUntil: String = dateFormatter.savedUntil(request.userAnswers.createdAt)
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
         for {
-          _  <- registrationsRepository.set(updatedAnswers)
+          _ <- registrationsRepository.set(updatedAnswers)
           _ <- registrationsRepository.updateTaxLiability(draftId)
-          isTaxable = updatedAnswers.isTaxable
-          sections <- registrationProgress.items(draftId, isTaxable)
-          additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
-          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, isTaxable)
           trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
+          isTaxable = updatedAnswers.isTaxable
+          sections <- registrationProgress.items(draftId, trustSetUpDate, isTaxable, isExistingTrust)
+          additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
+          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, trustSetUpDate, isTaxable, isExistingTrust)
+          is5mldEnabled <- featureFlagService.is5mldEnabled()
         } yield {
-
-          val filteredSections = if (TaxLiabilityHelper.showTaxLiability(trustSetUpDate, isTaxable)) {
-            sections
-          } else {
-            val removeTaxLiabilityFromTaskList = (t: Task) => t.link.url == taskListNavigator.taxLiabilityJourney(draftId)
-            sections.filterNot(removeTaxLiabilityFromTaskList)
-          }
-
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
-
-          Ok(view(isTaxable, draftId, savedUntil, filteredSections, additionalSections, isTaskListComplete, affinityGroup))
+          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup, is5mldEnabled))
         }
       }
 
-      val isExistingTrust = request.userAnswers.get(TrustHaveAUTRPage).contains(true)
-
-      if (isExistingTrust) {
-        request.userAnswers.get(ExistingTrustMatched) match {
-          case Some(Success) =>
-            renderView(request.affinityGroup)
-
-          case Some(AlreadyRegistered) | Some(Failed) =>
-            Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId).url))
-
-          case None =>
-            Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))
-        }
-      } else {
-        renderView(request.affinityGroup)
+      (isExistingTrust, request.userAnswers.get(ExistingTrustMatched)) match {
+        case (true, Some(Success)) | (false, _) =>
+          renderView(request.affinityGroup)
+        case (_, Some(AlreadyRegistered)) | (_, Some(Failed)) =>
+          Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId).url))
+        case _ =>
+          Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))
       }
   }
 }

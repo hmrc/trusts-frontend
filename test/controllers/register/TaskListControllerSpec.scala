@@ -21,90 +21,126 @@ import models.NormalMode
 import models.core.UserAnswers
 import models.registration.Matched
 import navigation.Navigator
-import navigation.registration.TaskListNavigator
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{reset, when}
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register._
+import pages.register.suitability.TrustTaxableYesNoPage
+import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
-import uk.gov.hmrc.http.HeaderCarrier
+import utils.DateFormatter
 import viewmodels.Task
 import views.html.register.TaskListView
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
-class TaskListControllerSpec extends RegistrationSpecBase {
+class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks with BeforeAndAfterEach {
 
-  private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-  private val savedUntil : String = LocalDateTime.now.plusSeconds(fakeFrontendAppConfig.ttlInSeconds).format(dateFormatter)
-  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  private val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
+  private val mockDateFormatter: DateFormatter = mock[DateFormatter]
+  private val mockFeatureFlagService: FeatureFlagService = mock[FeatureFlagService]
 
-  private def newRegistrationProgress = new RegistrationProgress(new TaskListNavigator(fakeFrontendAppConfig), registrationsRepository)
+  private val fakeItems: List[Task] = Nil
+  private val fakeAdditionalItems: List[Task] = Nil
 
-  private val isTaxable: Boolean = true
+  private val savedUntil = "21 April 2021"
+  private val utr = "1234567890"
 
-  private lazy val sections: Future[List[Task]] = newRegistrationProgress.items(fakeDraftId, isTaxable)
-  private lazy val additionalSections: Future[List[Task]] = newRegistrationProgress.additionalItems(fakeDraftId, isTaxable)
+  private val is5mldEnabled: Boolean = true
 
-  private def isTaskListComplete: Future[Boolean] = newRegistrationProgress.isTaskListComplete(fakeDraftId, isTaxable)
+  override def beforeEach(): Unit = {
+    reset(mockRegistrationProgress)
+
+    when(mockRegistrationProgress.items(any(), any(), any(), any())(any()))
+      .thenReturn(Future.successful(fakeItems))
+
+    when(mockRegistrationProgress.additionalItems(any(), any())(any()))
+      .thenReturn(Future.successful(fakeAdditionalItems))
+
+    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+      .thenReturn(Future.successful(true))
+
+    reset(mockDateFormatter)
+
+    when(mockDateFormatter.savedUntil(any())(any()))
+      .thenReturn(savedUntil)
+
+    reset(mockFeatureFlagService)
+
+    when(mockFeatureFlagService.is5mldEnabled()(any(), any()))
+      .thenReturn(Future.successful(is5mldEnabled))
+  }
 
   override protected def applicationBuilder(userAnswers: Option[UserAnswers],
                                             affinityGroup: AffinityGroup,
                                             enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
                                             navigator: Navigator = fakeNavigator): GuiceApplicationBuilder = {
 
-    super.applicationBuilder(userAnswers, affinityGroup).configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
+    super.applicationBuilder(userAnswers, affinityGroup)
+      .configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
+      .overrides(
+        bind[RegistrationProgress].toInstance(mockRegistrationProgress),
+        bind[DateFormatter].toInstance(mockDateFormatter),
+        bind[FeatureFlagService].toInstance(mockFeatureFlagService)
+      )
   }
 
-  "TaskList Controller" must {
+  "TaskListController" when {
 
-    "redirect to RegisteredOnline when no required answer" in {
+    "no required answer for TrustRegisteredOnlinePage" must {
+      "redirect to RegisteredOnline" in {
 
-      val answers = emptyUserAnswers
+        val answers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
+        val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
+        status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
+        redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, fakeDraftId).url
 
-      application.stop()
+        application.stop()
+      }
     }
 
-    "redirect to TrustHaveAUTR when no required answer" in {
+    "no required answer for TrustHaveAUTRPage" must {
+      "redirect to TrustHaveAUTR" in {
 
-      val answers = emptyUserAnswers.set(TrustRegisteredOnlinePage, true).success.value
+        val answers = emptyUserAnswers.set(TrustRegisteredOnlinePage, true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+        val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-      val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
+        val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
+        status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode,fakeDraftId).url
+        redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId).url
 
-      application.stop()
+        application.stop()
+      }
     }
 
-    "for an existing trust" when {
+    "an existing trust" when {
 
-      "has matched" must {
-
+      "successfully matched" must {
         "return OK and the correct view for a GET" in {
 
           val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "SA123456789").success.value
+            .set(WhatIsTheUTRPage, utr).success.value
             .set(ExistingTrustMatched, Matched.Success).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
@@ -115,79 +151,80 @@ class TaskListControllerSpec extends RegistrationSpecBase {
 
           status(result) mustEqual OK
 
-          for {
-            mainSections <- sections
-            additionalSections <- additionalSections
-            isTaskListComplete <- isTaskListComplete
-          } yield {
-            val view = application.injector.instanceOf[TaskListView]
-            contentAsString(result) mustEqual
-              view(
-                isTaxable,
-                fakeDraftId,
-                savedUntil,
-                mainSections,
-                additionalSections,
-                isTaskListComplete,
-                Organisation
-              )(request, messages).toString
-          }
+          val view = application.injector.instanceOf[TaskListView]
+
+          contentAsString(result) mustEqual
+            view(
+              isTaxable = true,
+              draftId = fakeDraftId,
+              savedUntil = savedUntil,
+              sections = fakeItems,
+              additionalSections = fakeAdditionalItems,
+              isTaskListComplete = true,
+              affinityGroup = Organisation,
+              is5mldEnabled = is5mldEnabled
+            )(request, messages).toString
 
           application.stop()
         }
       }
 
-      "has not matched" must {
+      "has not matched" when {
 
-        "already registered redirect to AlreadyRegistered" in {
-          val answers = emptyUserAnswers
-            .set(TrustRegisteredOnlinePage, false).success.value
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "SA123456789").success.value
-            .set(ExistingTrustMatched, Matched.AlreadyRegistered).success.value
+        "already registered" must {
+          "redirect to AlreadyRegistered" in {
 
-          val application = applicationBuilder(userAnswers = Some(answers)).build()
+            val answers = emptyUserAnswers
+              .set(TrustRegisteredOnlinePage, false).success.value
+              .set(TrustHaveAUTRPage, true).success.value
+              .set(WhatIsTheUTRPage, utr).success.value
+              .set(ExistingTrustMatched, Matched.AlreadyRegistered).success.value
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val result = route(application, request).value
+            val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
-          status(result) mustEqual SEE_OTHER
+            val result = route(application, request).value
 
-          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
+            status(result) mustEqual SEE_OTHER
 
-          application.stop()
+            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
+
+            application.stop()
+          }
         }
 
-        "failed matching redirect to FailedMatching" in {
+        "failed matching" must {
+          "redirect to FailedMatching" in {
 
-          val answers = emptyUserAnswers
-            .set(TrustRegisteredOnlinePage, false).success.value
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "SA123456789").success.value
-            .set(ExistingTrustMatched, Matched.Failed).success.value
+            val answers = emptyUserAnswers
+              .set(TrustRegisteredOnlinePage, false).success.value
+              .set(TrustHaveAUTRPage, true).success.value
+              .set(WhatIsTheUTRPage, utr).success.value
+              .set(ExistingTrustMatched, Matched.Failed).success.value
 
-          val application = applicationBuilder(userAnswers = Some(answers)).build()
+            val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
-          val result = route(application, request).value
+            val result = route(application, request).value
 
-          status(result) mustEqual SEE_OTHER
+            status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
+            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
 
-          application.stop()
+            application.stop()
+          }
         }
       }
 
       "has not attempted matching" must {
-
         "redirect to WhatIsTrustUTR" in {
+
           val answers = emptyUserAnswers
             .set(TrustRegisteredOnlinePage, false).success.value
             .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, "SA123456789").success.value
+            .set(WhatIsTheUTRPage, utr).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -204,40 +241,44 @@ class TaskListControllerSpec extends RegistrationSpecBase {
       }
     }
 
-    "for a new trust" must {
-
+    "a new trust" must {
       "return OK and the correct view for a GET" in {
 
-        val answers = emptyUserAnswers
-          .set(TrustRegisteredOnlinePage, false).success.value
-          .set(TrustHaveAUTRPage, false).success.value
+        forAll(arbitrary[Boolean], arbitrary[Boolean]) {
+          (isTaxable, is5mldEnabled) =>
 
-        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
+            val answers = emptyUserAnswers
+              .set(TrustRegisteredOnlinePage, false).success.value
+              .set(TrustHaveAUTRPage, false).success.value
+              .set(TrustTaxableYesNoPage, isTaxable).success.value
 
-        val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
+            when(mockFeatureFlagService.is5mldEnabled()(any(), any()))
+              .thenReturn(Future.successful(is5mldEnabled))
 
-        val result = route(application, request).value
+            val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
-        status(result) mustEqual OK
+            val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
-        for {
-          sections <- sections
-          additionalSections <- additionalSections
-          isTaskListComplete <- isTaskListComplete
-        } yield {
-          val view = application.injector.instanceOf[TaskListView]
-          contentAsString(result) mustEqual
-            view(isTaxable,
-              fakeDraftId,
-              savedUntil,
-              sections,
-              additionalSections,
-              isTaskListComplete,
-              Organisation
-            )(request, messages).toString
+            val result = route(application, request).value
+
+            status(result) mustEqual OK
+
+            val view = application.injector.instanceOf[TaskListView]
+
+            contentAsString(result) mustEqual
+              view(
+                isTaxable = isTaxable,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeItems,
+                additionalSections = fakeAdditionalItems,
+                isTaskListComplete = true,
+                affinityGroup = Organisation,
+                is5mldEnabled = is5mldEnabled
+              )(request, messages).toString
+
+            application.stop()
         }
-
-        application.stop()
       }
     }
   }

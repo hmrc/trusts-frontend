@@ -54,7 +54,21 @@ trait ViewSpecBase extends RegistrationSpecBase {
     headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")
   }
 
+  def assertPageTitleWithCaptionEqualsMessages(doc: Document, expectedCaptionMessageKey: String, captionParam: String, expectedMessageKey: String) = {
+    val headers = doc.getElementsByTag("h1")
+    headers.size mustBe 1
+    val expectedSubheading =  messages(expectedCaptionMessageKey, captionParam).replaceAll("&nbsp;", " ")
+    val expectedHeading =  messages(expectedMessageKey).replaceAll("&nbsp;", " ")
+
+    val expected = s"$expectedSubheading $expectedHeading"
+
+    headers.first.text.replaceAll("\u00a0", " ") mustBe expected
+  }
+
   def assertContainsText(doc: Document, text: String): Assertion = assert(doc.toString.contains(text), "\n\ntext " + text + " was not rendered on the page.\n")
+
+  def assertDoesNotContainText(doc: Document, text: String): Assertion =
+    assert(!doc.toString.contains(text), "\n\ntext " + text + " was rendered on the page.\n")
 
   def assertContainsMessages(doc: Document, expectedMessageKeys: String*): Unit = {
     for (key <- expectedMessageKeys) assertContainsText(doc, messages(key))
@@ -103,6 +117,10 @@ trait ViewSpecBase extends RegistrationSpecBase {
       assert(doc.getElementsByClass("form-hint").first.text == expectedHintText.get,
         s"\n\nLabel for $forElement did not contain hint text $expectedHintText")
     }
+  }
+
+  def assertContainsClass(doc: Document, className: String): Any = {
+    assert(doc.getElementsByClass(className).size() > 0, s"\n\nPage did not contain element with class $className")
   }
 
   def assertElementHasClass(doc: Document, id: String, expectedClass: String): Assertion = {

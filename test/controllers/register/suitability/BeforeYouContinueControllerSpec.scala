@@ -22,13 +22,14 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueView}
+import views.html.register.suitability.{BeforeYouContinueNonTaxAgentView, BeforeYouContinueNonTaxableView, BeforeYouContinueTaxableView, BeforeYouContinueView}
 
 import scala.concurrent.Future
 
@@ -42,31 +43,64 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
   "BeforeYouContinue Controller" must {
 
-    "return OK and the correct view for a taxable journey GET" in {
+    "in 4mld mode" when {
 
-      val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+      "return OK and the correct view for a taxable journey GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(answers)).build()
+        val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+          .set(TrustHaveAUTRPage, false).success.value
 
-      val request = FakeRequest(GET, beforeYouContinueRoute)
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .build()
 
-      val result = route(application, request).value
+        val request = FakeRequest(GET, beforeYouContinueRoute)
 
-      val view = application.injector.instanceOf[BeforeYouContinueView]
+        val result = route(application, request).value
 
-      status(result) mustEqual OK
+        val view = application.injector.instanceOf[BeforeYouContinueView]
 
-      contentAsString(result) mustEqual
-        view(fakeDraftId)(request, messages).toString
+        status(result) mustEqual OK
 
-      application.stop()
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
+    }
+
+    "in 5mld mode" when {
+
+      "return OK and the correct view for a taxable journey GET" in {
+
+        val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, true).success.value
+          .set(TrustHaveAUTRPage, true).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[BeforeYouContinueTaxableView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view(fakeDraftId)(request, messages).toString
+
+        application.stop()
+      }
+
     }
 
     "return OK and the correct view for a non taxable journey GET" in {
 
       val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
 
-      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation).build()
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
+        .build()
 
       val request = FakeRequest(GET, beforeYouContinueRoute)
 
@@ -86,7 +120,8 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
       val answers = emptyUserAnswers.set(TrustTaxableYesNoPage, false).success.value
 
-      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent).build()
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+        .build()
 
       val request = FakeRequest(GET, beforeYouContinueRoute)
 

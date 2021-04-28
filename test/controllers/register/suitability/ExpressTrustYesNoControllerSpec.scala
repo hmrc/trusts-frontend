@@ -19,21 +19,37 @@ package controllers.register.suitability
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.NormalMode
-import org.scalatestplus.mockito.MockitoSugar
-import pages.register.suitability.ExpressTrustYesNoPage
+import models.core.UserAnswers
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.any
+import org.mockito.Mockito.{reset, verify, when}
+import org.scalatest.BeforeAndAfterEach
+import pages.register.TrustHaveAUTRPage
+import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.FeatureFlagService
 import views.html.register.suitability.ExpressTrustYesNoView
 
-class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with MockitoSugar {
+import scala.concurrent.Future
+
+class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
   val formProvider = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
   val index: Int = 0
   val businessName = "Test"
 
+  private val mockFeatureFlagService = mock[FeatureFlagService]
+
   lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+
+  override def beforeEach(): Unit = {
+    reset(registrationsRepository)
+    when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
+  }
 
   "CountryOfResidenceYesNo Controller" must {
 
@@ -59,7 +75,6 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with MockitoS
 
       val userAnswers = emptyUserAnswers.set(ExpressTrustYesNoPage, true).success.value
 
-
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request = FakeRequest(GET, expressTrustYesNo)
@@ -76,30 +91,97 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with MockitoS
       application.stop()
     }
 
-    "redirect to the next page when valid data is submitted" in {
+    "in 4mld mode" when {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "redirect to the next page when valid data is submitted" in {
 
-      val request =
-        FakeRequest(POST, expressTrustYesNo)
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
+
+        val request = FakeRequest(POST, expressTrustYesNo)
           .withFormUrlEncodedBody(("value", "true"))
 
-      val result = route(application, request).value
+        val result = route(application, request).value
 
-      status(result) mustEqual SEE_OTHER
+        status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-      application.stop()
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        uaCaptor.getValue.get(TrustHaveAUTRPage) mustNot be(defined)
+        uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
+
+        application.stop()
+      }
+
+    }
+
+    "in 5mld mode" when {
+
+      "redirect to the next page when valid data is submitted and the trust has a UTR" in {
+
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+
+        val answers = emptyUserAnswers.set(TrustHaveAUTRPage, true).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
+
+        val request = FakeRequest(POST, expressTrustYesNo)
+          .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        uaCaptor.getValue.get(TrustTaxableYesNoPage).get mustBe true
+        
+        application.stop()
+      }
+
+      "redirect to the next page when valid data is submitted and the trust doesn't have a UTR" in {
+
+        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+
+        val answers = emptyUserAnswers.set(TrustHaveAUTRPage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers))
+          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
+          .build()
+
+        val request = FakeRequest(POST, expressTrustYesNo)
+          .withFormUrlEncodedBody(("value", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
+
+        application.stop()
+      }
+
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, expressTrustYesNo)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -134,9 +216,8 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with MockitoS
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, expressTrustYesNo)
+        .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
