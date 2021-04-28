@@ -301,4 +301,13 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
+  def pageWithReturnToTopLink(view: HtmlFormat.Appendable): Unit = {
+    "behave like a page with a return to top link" must {
+      "have a return to top link" in {
+        val doc = asDocument(view)
+        assertRenderedById(doc, "return-to-top")
+      }
+    }
+  }
+
 }

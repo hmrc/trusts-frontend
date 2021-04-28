@@ -17,7 +17,6 @@
 package views.register
 
 import java.time.LocalDateTime
-
 import pages.register._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
@@ -51,6 +50,8 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
           behave like normalPage(applyOrganisationView, None, "summaryAnswerPage", "paragraph1", "paragraph2")
 
+          //behave like pageWithReturnToTopLink(applyOrganisationView)
+
           asDocument(applyOrganisationView)
       }
     }
@@ -59,6 +60,8 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       summary.map {
         sections =>
           val applyAgentView = view.apply(sections, isAgent = true, "agentClientReference")(fakeRequest, messages)
+
+          //behave like pageWithReturnToTopLink(applyAgentView)
 
           asDocument(applyAgentView)
       }
@@ -91,6 +94,25 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
           subHeaders.size mustBe 3
       }
     }
+
+    "assert back to top link present for Agent user" in {
+      orgDoc.map {
+        doc =>
+          //val returnToTopLink = doc.getElementById("return-to-top")
+
+          assertRenderedById(doc, "return-to-top")
+      }
+    }
+//
+//    "assert back to top link present for Organisation user" in {
+//      summary.map {
+//        sections =>
+//          val applyOrganisationView = view.apply(sections, isAgent = false, "")(fakeRequest, messages)
+//
+//          val doc = asDocument(applyOrganisationView)
+//          assertRenderedById(doc, "return-to-top")
+//      }
+//    }
 
   }
 }

@@ -61,6 +61,8 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     behave like normalPage(view, None, "confirmationAnswerPage")
 
+    behave like pageWithReturnToTopLink(view)
+
     "assert header content" in {
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph1", formatReferenceNumber("XNTRN000000001")))
       assertContainsText(doc, messages("confirmationAnswerPage.paragraph2", trnDateTime))
