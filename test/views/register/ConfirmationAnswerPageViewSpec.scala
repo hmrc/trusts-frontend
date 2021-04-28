@@ -54,6 +54,8 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       behave like pageWithWarning(view)
 
+      behave like pageWithReturnToTopLink(view)
+
       "assert header content" in {
         assertContainsText(doc, messages(s"$prefix.paragraph1", formatReferenceNumber(trn)))
         assertContainsText(doc, messages(s"$prefix.paragraph2", formattedSubmissionTime))
@@ -78,6 +80,8 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       val doc = asDocument(view)
 
       behave like normalPage(view, None, prefix)
+
+      behave like pageWithReturnToTopLink(view)
 
       "assert header content" in {
         assertContainsText(doc, messages(s"$prefix.paragraph1", formatReferenceNumber(trn)))
