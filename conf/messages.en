@@ -60,6 +60,7 @@ site.utr = Unique Taxpayer Reference
 site.sign_out = Sign out
 site.sign_in = Sign in
 site.print-or-save = Print or save this page
+site.return-to-top = Back to top
 
 featureNotAvailable.title = This part of the online service is not available yet
 featureNotAvailable.heading = This part of the online service is not available yet
