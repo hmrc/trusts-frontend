@@ -33,7 +33,7 @@ class BeforeYouContinueTaxableViewSpec extends ViewBehaviours {
       applyView,
       None,
       "suitability.beforeYouContinue.taxable",
-      "p1", "p2", "h2", "p3"
+      "p1", "bullet1", "bullet2", "p2", "link1", "link2"
     )
 
     behave like pageWithASubmitButton(applyView)

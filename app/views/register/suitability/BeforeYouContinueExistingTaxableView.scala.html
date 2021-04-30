@@ -14,42 +14,34 @@
  * limitations under the License.
  *@
 
-@import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
 @import models.Mode
 
 @this(
     main_template: MainTemplate,
-    formHelper: FormWithCSRF,
-    config: FrontendAppConfig
+    formHelper: FormWithCSRF
 )
 
 @(draftId: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("suitability.beforeYouContinue.title")
+    title = messages("suitability.beforeYouContinue.existing.taxable.title")
 ) {
 
     @formHelper(action = BeforeYouContinueController.onSubmit(draftId), 'autoComplete -> "off") {
 
         @components.back_link()
 
-        @components.heading("suitability.beforeYouContinue.heading")
+        @components.heading("suitability.beforeYouContinue.existing.taxable.heading")
 
-        <p>@messages("suitability.beforeYouContinue.p1")</p>
+        <p>@messages("suitability.beforeYouContinue.existing.taxable.p1")</p>
 
-        <ul class="govuk-list govuk-list--bullet">
-            <li>@messages("suitability.beforeYouContinue.bullet1")</li>
-            <li>@messages("suitability.beforeYouContinue.bullet2")</li>
-        </ul>
+        <p>@messages("suitability.beforeYouContinue.existing.taxable.p2")</p>
 
-        <p>@messages("suitability.beforeYouContinue.p2")</p>
+        <h2>@messages("suitability.beforeYouContinue.existing.taxable.h2")</h2>
 
-        <ul>
-            <li><a href="@config.whoShouldRegisterUrl" target="_blank">@messages("suitability.beforeYouContinue.link1")</a></li>
-            <li><a href="@config.trustsAndTaxesUrl" target="_blank">@messages("suitability.beforeYouContinue.link2")</a></li>
-        </ul>
+        <p>@messages("suitability.beforeYouContinue.existing.taxable.p3")</p>
 
-        @components.submit_button(Some("suitability.beforeYouContinue.continue"))
+        @components.submit_button(Some("suitability.beforeYouContinue.existing.taxable.continue"))
     }
 }
