@@ -16,8 +16,9 @@
 
 package views.register.agents
 
-import java.time.LocalDateTime
+import play.api.inject.guice.GuiceApplicationBuilder
 
+import java.time.LocalDateTime
 import viewmodels.DraftRegistration
 import views.behaviours.ViewBehaviours
 import views.html.register.agents.AgentOverviewView
@@ -69,7 +70,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
   }
 
   "render 5MLD service deployment warning" in {
-    val application = applicationBuilder(Some(emptyUserAnswers))
+    val application = new GuiceApplicationBuilder()
       .configure(
         "microservice.services.features.deployment.notification.enabled" -> true
       ).build()
