@@ -142,159 +142,20 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
         val doc = asDocument(applyView)
 
-        assertContainsText(doc, "The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.")
-        assertContainsText(doc, "You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.")
+        assertContainsText(doc, messages("notification.instruction"))
+        assertContainsText(doc, messages("notification.warning"))
 
         application.stop()
       }
     }
 
-    "4mld" when {
+    "deployment notification is disabled" when {
 
-      "organisation" when {
+      "4mld" when {
 
-        "task list complete" must {
+        "organisation" when {
 
-          val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-          val applyView = view.apply(
-            isTaxable = true,
-            draftId = fakeDraftId,
-            savedUntil = savedUntil,
-            sections = fakeSections,
-            additionalSections = fakeAdditionalSections,
-            isTaskListComplete = true,
-            affinityGroup = Organisation,
-            is5mldEnabled = false
-          )(fakeRequest, messages)
-
-          behave like normalPage(applyView, None, "taskList")
-
-          behave like pageWithBackLink(applyView)
-
-          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-          "display correct content" in {
-            val doc = asDocument(applyView)
-
-            assertionForSavedUntil(doc, rendered = true)
-            assertionForPrintACopySection(doc, rendered = true)
-            assertionForUpdateAssetDetailsSection(doc, rendered = true)
-            assertionForNonEeaCompanySection(doc, rendered = false)
-            assertionForPrintAndSave(doc, rendered = true)
-          }
-        }
-
-        "task list incomplete" must {
-
-          val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-          val applyView = view.apply(
-            isTaxable = true,
-            draftId = fakeDraftId,
-            savedUntil = savedUntil,
-            sections = fakeSections,
-            additionalSections = fakeAdditionalSections,
-            isTaskListComplete = false,
-            affinityGroup = Organisation,
-            is5mldEnabled = false
-          )(fakeRequest, messages)
-
-          behave like normalPage(applyView, None, "taskList")
-
-          behave like pageWithBackLink(applyView)
-
-          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-          "display correct content" in {
-            val doc = asDocument(applyView)
-
-            assertionForSavedUntil(doc, rendered = true)
-            assertionForPrintACopySection(doc, rendered = false)
-            assertionForUpdateAssetDetailsSection(doc, rendered = false)
-            assertionForNonEeaCompanySection(doc, rendered = false)
-            assertionForPrintAndSave(doc, rendered = false)
-          }
-        }
-      }
-
-      "agent" when {
-
-        "task list complete" must {
-
-          val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-          val applyView = view.apply(
-            isTaxable = true,
-            draftId = fakeDraftId,
-            savedUntil = savedUntil,
-            sections = fakeSections,
-            additionalSections = fakeAdditionalSections,
-            isTaskListComplete = true,
-            affinityGroup = Agent,
-            is5mldEnabled = false
-          )(fakeRequest, messages)
-
-          behave like normalPage(applyView, None, "taskList")
-
-          behave like pageWithBackLink(applyView)
-
-          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-          "display correct content" in {
-            val doc = asDocument(applyView)
-
-            assertSavedRegistrationsAndAgentDetailsRendered(doc)
-            assertionForSavedUntil(doc, rendered = false)
-            assertionForPrintACopySection(doc, rendered = true)
-            assertionForUpdateAssetDetailsSection(doc, rendered = true)
-            assertionForNonEeaCompanySection(doc, rendered = false)
-            assertionForPrintAndSave(doc, rendered = true)
-          }
-        }
-
-        "task list incomplete" must {
-
-          val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-          val applyView = view.apply(
-            isTaxable = true,
-            draftId = fakeDraftId,
-            savedUntil = savedUntil,
-            sections = fakeSections,
-            additionalSections = fakeAdditionalSections,
-            isTaskListComplete = false,
-            affinityGroup = Agent,
-            is5mldEnabled = false
-          )(fakeRequest, messages)
-
-          behave like normalPage(applyView, None, "taskList")
-
-          behave like pageWithBackLink(applyView)
-
-          behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-          "display correct content" in {
-            val doc = asDocument(applyView)
-
-            assertSavedRegistrationsAndAgentDetailsRendered(doc)
-            assertionForSavedUntil(doc, rendered = false)
-            assertionForPrintACopySection(doc, rendered = false)
-            assertionForUpdateAssetDetailsSection(doc, rendered = false)
-            assertionForNonEeaCompanySection(doc, rendered = false)
-            assertionForPrintAndSave(doc, rendered = false)
-          }
-        }
-      }
-    }
-
-    "5mld" when {
-
-      "organisation" when {
-
-        "task list complete" when {
-
-          "taxable" must {
+          "task list complete" must {
 
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
@@ -306,10 +167,10 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               additionalSections = fakeAdditionalSections,
               isTaskListComplete = true,
               affinityGroup = Organisation,
-              is5mldEnabled = true
+              is5mldEnabled = false
             )(fakeRequest, messages)
 
-            behave like normalPage(applyView, None, "taskList")
+            behave like normalPage(applyView, None, "taskList", "paragraph1")
 
             behave like pageWithBackLink(applyView)
 
@@ -321,47 +182,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               assertionForSavedUntil(doc, rendered = true)
               assertionForPrintACopySection(doc, rendered = true)
               assertionForUpdateAssetDetailsSection(doc, rendered = true)
-              assertionForNonEeaCompanySection(doc, rendered = true)
+              assertionForNonEeaCompanySection(doc, rendered = false)
               assertionForPrintAndSave(doc, rendered = true)
             }
           }
 
-          "non-taxable" must {
-
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-            val applyView = view.apply(
-              isTaxable = false,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = true,
-              affinityGroup = Organisation,
-              is5mldEnabled = true
-            )(fakeRequest, messages)
-
-            behave like normalPage(applyView, None, "taskList")
-
-            behave like pageWithBackLink(applyView)
-
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-            "display correct content" in {
-              val doc = asDocument(applyView)
-
-              assertionForSavedUntil(doc, rendered = true)
-              assertionForPrintACopySection(doc, rendered = true)
-              assertionForUpdateAssetDetailsSection(doc, rendered = false)
-              assertionForNonEeaCompanySection(doc, rendered = true)
-              assertionForPrintAndSave(doc, rendered = true)
-            }
-          }
-        }
-
-        "task list incomplete" when {
-
-          "taxable" must {
+          "task list incomplete" must {
 
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
@@ -373,42 +199,10 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               additionalSections = fakeAdditionalSections,
               isTaskListComplete = false,
               affinityGroup = Organisation,
-              is5mldEnabled = true
+              is5mldEnabled = false
             )(fakeRequest, messages)
 
-            behave like normalPage(applyView, None, "taskList")
-
-            behave like pageWithBackLink(applyView)
-
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-            "display correct content" in {
-              val doc = asDocument(applyView)
-
-              assertionForSavedUntil(doc, rendered = true)
-              assertionForPrintACopySection(doc, rendered = false)
-              assertionForUpdateAssetDetailsSection(doc, rendered = false)
-              assertionForNonEeaCompanySection(doc, rendered = false)
-              assertionForPrintAndSave(doc, rendered = false)
-            }
-          }
-
-          "non-taxable" must {
-
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-            val applyView = view.apply(
-              isTaxable = false,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = false,
-              affinityGroup = Organisation,
-              is5mldEnabled = true
-            )(fakeRequest, messages)
-
-            behave like normalPage(applyView, None, "taskList")
+            behave like normalPage(applyView, None, "taskList", "paragraph1")
 
             behave like pageWithBackLink(applyView)
 
@@ -425,13 +219,10 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             }
           }
         }
-      }
 
-      "agent" when {
+        "agent" when {
 
-        "task list complete" when {
-
-          "taxable" must {
+          "task list complete" must {
 
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
@@ -443,10 +234,10 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               additionalSections = fakeAdditionalSections,
               isTaskListComplete = true,
               affinityGroup = Agent,
-              is5mldEnabled = true
+              is5mldEnabled = false
             )(fakeRequest, messages)
 
-            behave like normalPage(applyView, None, "taskList")
+            behave like normalPage(applyView, None, "taskList", "paragraph1")
 
             behave like pageWithBackLink(applyView)
 
@@ -459,48 +250,12 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               assertionForSavedUntil(doc, rendered = false)
               assertionForPrintACopySection(doc, rendered = true)
               assertionForUpdateAssetDetailsSection(doc, rendered = true)
-              assertionForNonEeaCompanySection(doc, rendered = true)
+              assertionForNonEeaCompanySection(doc, rendered = false)
               assertionForPrintAndSave(doc, rendered = true)
             }
           }
 
-          "non-taxable" must {
-
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-            val applyView = view.apply(
-              isTaxable = false,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = true,
-              affinityGroup = Agent,
-              is5mldEnabled = true
-            )(fakeRequest, messages)
-
-            behave like normalPage(applyView, None, "taskList")
-
-            behave like pageWithBackLink(applyView)
-
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-            "display correct content" in {
-              val doc = asDocument(applyView)
-
-              assertSavedRegistrationsAndAgentDetailsRendered(doc)
-              assertionForSavedUntil(doc, rendered = false)
-              assertionForPrintACopySection(doc, rendered = true)
-              assertionForUpdateAssetDetailsSection(doc, rendered = false)
-              assertionForNonEeaCompanySection(doc, rendered = true)
-              assertionForPrintAndSave(doc, rendered = true)
-            }
-          }
-        }
-
-        "task list incomplete" when {
-
-          "taxable" must {
+          "task list incomplete" must {
 
             val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
@@ -512,10 +267,10 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               additionalSections = fakeAdditionalSections,
               isTaskListComplete = false,
               affinityGroup = Agent,
-              is5mldEnabled = true
+              is5mldEnabled = false
             )(fakeRequest, messages)
 
-            behave like normalPage(applyView, None, "taskList")
+            behave like normalPage(applyView, None, "taskList", "paragraph1")
 
             behave like pageWithBackLink(applyView)
 
@@ -532,37 +287,285 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               assertionForPrintAndSave(doc, rendered = false)
             }
           }
+        }
+      }
 
-          "non-taxable" must {
+      "5mld" when {
 
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
+        "organisation" when {
 
-            val applyView = view.apply(
-              isTaxable = false,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = false,
-              affinityGroup = Agent,
-              is5mldEnabled = true
-            )(fakeRequest, messages)
+          "task list complete" when {
 
-            behave like normalPage(applyView, None, "taskList")
+            "taxable" must {
 
-            behave like pageWithBackLink(applyView)
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
 
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+              val applyView = view.apply(
+                isTaxable = true,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = true,
+                affinityGroup = Organisation,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
 
-            "display correct content" in {
-              val doc = asDocument(applyView)
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
 
-              assertSavedRegistrationsAndAgentDetailsRendered(doc)
-              assertionForSavedUntil(doc, rendered = false)
-              assertionForPrintACopySection(doc, rendered = false)
-              assertionForUpdateAssetDetailsSection(doc, rendered = false)
-              assertionForNonEeaCompanySection(doc, rendered = false)
-              assertionForPrintAndSave(doc, rendered = false)
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertionForSavedUntil(doc, rendered = true)
+                assertionForPrintACopySection(doc, rendered = true)
+                assertionForUpdateAssetDetailsSection(doc, rendered = true)
+                assertionForNonEeaCompanySection(doc, rendered = true)
+                assertionForPrintAndSave(doc, rendered = true)
+              }
+            }
+
+            "non-taxable" must {
+
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+              val applyView = view.apply(
+                isTaxable = false,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = true,
+                affinityGroup = Organisation,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
+
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
+
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertionForSavedUntil(doc, rendered = true)
+                assertionForPrintACopySection(doc, rendered = true)
+                assertionForUpdateAssetDetailsSection(doc, rendered = false)
+                assertionForNonEeaCompanySection(doc, rendered = true)
+                assertionForPrintAndSave(doc, rendered = true)
+              }
+            }
+          }
+
+          "task list incomplete" when {
+
+            "taxable" must {
+
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+              val applyView = view.apply(
+                isTaxable = true,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = false,
+                affinityGroup = Organisation,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
+
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
+
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertionForSavedUntil(doc, rendered = true)
+                assertionForPrintACopySection(doc, rendered = false)
+                assertionForUpdateAssetDetailsSection(doc, rendered = false)
+                assertionForNonEeaCompanySection(doc, rendered = false)
+                assertionForPrintAndSave(doc, rendered = false)
+              }
+            }
+
+            "non-taxable" must {
+
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+              val applyView = view.apply(
+                isTaxable = false,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = false,
+                affinityGroup = Organisation,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
+
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
+
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertionForSavedUntil(doc, rendered = true)
+                assertionForPrintACopySection(doc, rendered = false)
+                assertionForUpdateAssetDetailsSection(doc, rendered = false)
+                assertionForNonEeaCompanySection(doc, rendered = false)
+                assertionForPrintAndSave(doc, rendered = false)
+              }
+            }
+          }
+        }
+
+        "agent" when {
+
+          "task list complete" when {
+
+            "taxable" must {
+
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+              val applyView = view.apply(
+                isTaxable = true,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = true,
+                affinityGroup = Agent,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
+
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
+
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertSavedRegistrationsAndAgentDetailsRendered(doc)
+                assertionForSavedUntil(doc, rendered = false)
+                assertionForPrintACopySection(doc, rendered = true)
+                assertionForUpdateAssetDetailsSection(doc, rendered = true)
+                assertionForNonEeaCompanySection(doc, rendered = true)
+                assertionForPrintAndSave(doc, rendered = true)
+              }
+            }
+
+            "non-taxable" must {
+
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+              val applyView = view.apply(
+                isTaxable = false,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = true,
+                affinityGroup = Agent,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
+
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
+
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertSavedRegistrationsAndAgentDetailsRendered(doc)
+                assertionForSavedUntil(doc, rendered = false)
+                assertionForPrintACopySection(doc, rendered = true)
+                assertionForUpdateAssetDetailsSection(doc, rendered = false)
+                assertionForNonEeaCompanySection(doc, rendered = true)
+                assertionForPrintAndSave(doc, rendered = true)
+              }
+            }
+          }
+
+          "task list incomplete" when {
+
+            "taxable" must {
+
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+              val applyView = view.apply(
+                isTaxable = true,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = false,
+                affinityGroup = Agent,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
+
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
+
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertSavedRegistrationsAndAgentDetailsRendered(doc)
+                assertionForSavedUntil(doc, rendered = false)
+                assertionForPrintACopySection(doc, rendered = false)
+                assertionForUpdateAssetDetailsSection(doc, rendered = false)
+                assertionForNonEeaCompanySection(doc, rendered = false)
+                assertionForPrintAndSave(doc, rendered = false)
+              }
+            }
+
+            "non-taxable" must {
+
+              val view = viewFor[TaskListView](Some(emptyUserAnswers))
+
+              val applyView = view.apply(
+                isTaxable = false,
+                draftId = fakeDraftId,
+                savedUntil = savedUntil,
+                sections = fakeSections,
+                additionalSections = fakeAdditionalSections,
+                isTaskListComplete = false,
+                affinityGroup = Agent,
+                is5mldEnabled = true
+              )(fakeRequest, messages)
+
+              behave like normalPage(applyView, None, "taskList", "paragraph1")
+
+              behave like pageWithBackLink(applyView)
+
+              behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
+
+              "display correct content" in {
+                val doc = asDocument(applyView)
+
+                assertSavedRegistrationsAndAgentDetailsRendered(doc)
+                assertionForSavedUntil(doc, rendered = false)
+                assertionForPrintACopySection(doc, rendered = false)
+                assertionForUpdateAssetDetailsSection(doc, rendered = false)
+                assertionForNonEeaCompanySection(doc, rendered = false)
+                assertionForPrintAndSave(doc, rendered = false)
+              }
             }
           }
         }

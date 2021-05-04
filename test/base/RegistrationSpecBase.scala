@@ -74,6 +74,9 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[Navigator].toInstance(navigator),
         bind[FrontendAppConfig].to(fakeFrontendAppConfig)
       )
+      .configure(
+        "microservice.services.features.deployment.notification.enabled" -> false
+      )
 
 }
 
