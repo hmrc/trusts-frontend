@@ -19,6 +19,7 @@ package views.register
 import controllers.register.agents.routes
 import org.jsoup.nodes.Document
 import org.scalatest.Assertion
+import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import viewmodels.{Link, Task}
 import views.behaviours.{TaskListViewBehaviours, ViewBehaviours}
@@ -49,7 +50,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private def assertionForPrintACopySection(doc: Document, rendered: Boolean): Assertion = {
     def makeAssertion(assertion: (Document, String) => Assertion): Assertion = {
       assertion(doc, messages("taskList.summary.heading1"))
-      assertion(doc, messages("taskList.summary.paragraph1.start"))
       assertion(doc, messages("taskList.summary.link1"))
       assertion(doc, messages("taskList.summary.paragraph1.end"))
     }
@@ -122,14 +122,14 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
     "deployment notification is enabled" must {
       "render warning and notification" in {
 
-        val application = applicationBuilder(Some(emptyUserAnswers))
+        val application = new GuiceApplicationBuilder()
           .configure(
             "microservice.services.features.deployment.notification.enabled" -> true
           ).build()
 
         val view = application.injector.instanceOf[TaskListView]
 
-        val appliedView = view.apply(
+        val applyView = view.apply(
           isTaxable = true,
           draftId = fakeDraftId,
           savedUntil = savedUntil,
@@ -140,7 +140,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           is5mldEnabled = false
         )(fakeRequest, messages)
 
-        val doc = asDocument(appliedView)
+        val doc = asDocument(applyView)
 
         assertContainsText(doc, "The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.")
         assertContainsText(doc, "You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.")
