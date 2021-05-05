@@ -34,6 +34,6 @@ class MatchingDownController @Inject()(
   def onPageLoad(): Action[AnyContent] = identify {
     implicit request =>
 
-      Ok(view(request.affinityGroup == Agent))
+      Ok(view(request.isAgent))
   }
 }

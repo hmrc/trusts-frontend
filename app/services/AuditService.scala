@@ -37,7 +37,7 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
                                  draftId: String,
                                  response: RegistrationTRNResponse)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
 
-    val event = if (request.affinityGroup == Agent) {
+    val event = if (request.isAgent) {
       REGISTRATION_SUBMITTED_BY_AGENT
     } else {
       REGISTRATION_SUBMITTED_BY_ORGANISATION

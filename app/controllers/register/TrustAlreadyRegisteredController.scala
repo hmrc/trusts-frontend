@@ -46,7 +46,7 @@ class TrustAlreadyRegisteredController @Inject()(
     implicit request =>
 
       request.userAnswers.get(WhatIsTheUTRPage) match {
-        case Some(utr) => Ok(view(draftId, utr, request.affinityGroup == Agent))
+        case Some(utr) => Ok(view(draftId, utr, request.isAgent))
         case _ => redirect(draftId)
       }
   }

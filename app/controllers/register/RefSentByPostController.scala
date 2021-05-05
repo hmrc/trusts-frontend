@@ -35,7 +35,7 @@ class RefSentByPostController @Inject()(override val messagesApi: MessagesApi,
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions.identifiedUserWithData(draftId) {
     implicit request =>
-      val isAgent = request.affinityGroup == Agent
+      val isAgent = request.isAgent
 
       if (isAgent) Ok(agentView())else Ok(view())
   }

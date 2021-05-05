@@ -34,6 +34,6 @@ class NoNeedToRegisterController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithData(draftId) {
     implicit request =>
 
-      Ok(view(request.affinityGroup == Agent))
+      Ok(view(request.isAgent))
   }
 }

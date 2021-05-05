@@ -56,7 +56,7 @@ class SummaryAnswerPageController @Inject()(
               Ok(
                 view(
                   answerSections = sections,
-                  isAgent = request.affinityGroup == Agent,
+                  isAgent = request.isAgent,
                   agentClientRef = reference.getOrElse("")
                 )
               )
