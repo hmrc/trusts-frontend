@@ -32,7 +32,7 @@ class UTRSentByPostController @Inject()(override val messagesApi: MessagesApi,
 
   def onPageLoad: Action[AnyContent] = identify {
     implicit request =>
-      val isAgent = request.affinityGroup == Agent
+      val isAgent = request.isAgent
       Ok(view(isAgent))
   }
 }

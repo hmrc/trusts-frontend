@@ -25,7 +25,6 @@ import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import services.FeatureFlagService
-import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability._
 
@@ -51,24 +50,20 @@ class BeforeYouContinueController @Inject()(
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
-      val isAgent: Boolean = request.affinityGroup == AffinityGroup.Agent
-      val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
-      val trustTaxable = request.userAnswers.get(TrustTaxableYesNoPage)
-
-      (trustHasUtr, trustTaxable, isAgent) match {
-        case (Some(false), Some(true), _) => Ok(taxableView(draftId))
-        case (Some(true), Some(true), _) => Ok(existingTaxableView(draftId))
-        case (_, Some(false), false) =>
-          if(appConfig.disableNonTaxableRegistrations) {
+      (doesTrustHaveUtr, isTrustTaxable) match {
+        case (Some(false), Some(true)) =>
+          Ok(taxableView(draftId))
+        case (Some(true), Some(true)) =>
+          Ok(existingTaxableView(draftId))
+        case (_, Some(false)) =>
+          if (appConfig.disableNonTaxableRegistrations) {
             Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(draftId))
           } else {
-            Ok(nonTaxableView(draftId))
-          }
-        case (_, Some(false), true)  =>
-          if(appConfig.disableNonTaxableRegistrations) {
-            Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(draftId))
-          } else {
-            Ok(nonTaxableAgentView(draftId))
+            if (isAgentUser) {
+              Ok(nonTaxableAgentView(draftId))
+            } else {
+              Ok(nonTaxableView(draftId))
+            }
           }
         case _ =>
           Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
@@ -80,18 +75,29 @@ class BeforeYouContinueController @Inject()(
 
       featureFlagService.isNonTaxableAccessCodeEnabled() map { isNonTaxableAccessEnabled =>
         Redirect {
-          (request.userAnswers.get(ExpressTrustYesNoPage), request.userAnswers.get(TrustTaxableYesNoPage), isNonTaxableAccessEnabled) match {
+          (isExpressTrust, isTrustTaxable, isNonTaxableAccessEnabled) match {
             case (Some(true), Some(false), true) =>
               routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(draftId).url
             case _ =>
-              request.affinityGroup match {
-                case AffinityGroup.Agent =>
-                  navigator.agentDetailsJourneyUrl(draftId)
-                case _ =>
-                  controllers.register.routes.TaskListController.onPageLoad(draftId).url
+              if (isAgentUser) {
+                navigator.agentDetailsJourneyUrl(draftId)
+              } else {
+                controllers.register.routes.TaskListController.onPageLoad(draftId).url
               }
           }
         }
       }
   }
+
+  private def isTrustTaxable(implicit request: RegistrationDataRequest[_]): Option[Boolean] =
+    request.getPage(TrustTaxableYesNoPage)
+
+  private def isExpressTrust(implicit request: RegistrationDataRequest[_]): Option[Boolean] =
+    request.getPage(ExpressTrustYesNoPage)
+
+  private def doesTrustHaveUtr(implicit request: RegistrationDataRequest[_]): Option[Boolean] =
+    request.getPage(TrustHaveAUTRPage)
+
+  private def isAgentUser(implicit request: RegistrationDataRequest[_]): Boolean =
+    request.isAgent
 }
