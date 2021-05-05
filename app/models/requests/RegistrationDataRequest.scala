@@ -40,6 +40,5 @@ case class RegistrationDataRequest[A](request: Request[A],
 
   def isAgent: Boolean = affinityGroup == AffinityGroup.Agent
 
-  def getPage[T](page: QuestionPage[T])(implicit request: RegistrationDataRequest[_], rds: Reads[T]): Option[T] =
-    request.userAnswers.get(page)
+  def getPage[T](page: QuestionPage[T])(implicit rds: Reads[T]): Option[T] = userAnswers.get(page)
 }
