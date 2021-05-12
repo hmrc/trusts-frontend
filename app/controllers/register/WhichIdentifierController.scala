@@ -29,15 +29,15 @@ import views.html.register.WhichIdentifierView
 import javax.inject.Inject
 
 class WhichIdentifierController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                appConfig: FrontendAppConfig,
-                                                actions: StandardActionSets,
-                                                formProvider: WhichIdentifierFormProvider,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                view: WhichIdentifierView
-                                     ) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
+                                           override val messagesApi: MessagesApi,
+                                           appConfig: FrontendAppConfig,
+                                           actions: StandardActionSets,
+                                           formProvider: WhichIdentifierFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: WhichIdentifierView
+                                         ) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
-  val form = formProvider()
+  private val form: Form[WhichIdentifier] = formProvider()
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions.identifiedUserWithData(draftId) {
     implicit request =>
@@ -49,12 +49,12 @@ class WhichIdentifierController @Inject()(
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-         BadRequest(view(formWithErrors, draftId)),
+          BadRequest(view(formWithErrors, draftId)),
 
         {
-          case WhichIdentifier.UTRIdentifier => Redirect(appConfig.maintainATrustWithUTR)
-          case WhichIdentifier.URNIdentifier =>Redirect(appConfig.maintainATrustWithURN)
-          case WhichIdentifier.NoIdentifier =>Redirect(controllers.register.routes.RefSentByPostController.onPageLoad(draftId))
+          case WhichIdentifier.UTRIdentifier => Redirect(appConfig.maintainATrustWithUTR) // TODO - call removeDraft
+          case WhichIdentifier.URNIdentifier => Redirect(appConfig.maintainATrustWithURN) // TODO - call removeDraft
+          case WhichIdentifier.NoIdentifier => Redirect(controllers.register.routes.RefSentByPostController.onPageLoad(draftId))
         }
       )
   }

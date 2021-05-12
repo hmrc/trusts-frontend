@@ -21,11 +21,12 @@ import forms.YesNoFormProvider
 
 import javax.inject.Inject
 import models.Mode
+import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.register.TrustHaveAUTRPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.RegistrationsRepository
 import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -33,19 +34,20 @@ import views.html.register.TrustHaveAUTRView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
-                                        registrationsRepository: RegistrationsRepository,
-                                        navigator: Navigator,
-                                        identify: RegistrationIdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: RegistrationDataRequiredAction,
-                                        formProvider: YesNoFormProvider,
-                                        featureFlagService: FeatureFlagService,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: TrustHaveAUTRView)
-                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrustHaveAUTRController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         registrationsRepository: RegistrationsRepository,
+                                         navigator: Navigator,
+                                         identify: RegistrationIdentifierAction,
+                                         getData: DraftIdRetrievalActionProvider,
+                                         requireData: RegistrationDataRequiredAction,
+                                         formProvider: YesNoFormProvider,
+                                         featureFlagService: FeatureFlagService,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: TrustHaveAUTRView
+                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] = identify andThen getData(draftId) andThen requireData
 
   val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
@@ -60,7 +62,7 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
       Ok(view(preparedForm, mode, draftId))
   }
 
-  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
+  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
       form.bindFromRequest().fold(

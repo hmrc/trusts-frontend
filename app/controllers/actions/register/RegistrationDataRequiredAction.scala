@@ -16,16 +16,25 @@
 
 package controllers.actions.register
 
-import javax.inject.Inject
+import controllers.Assets.REFERER
 import models.requests.{OptionalRegistrationDataRequest, RegistrationDataRequest}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationDataRequiredActionImpl @Inject()(implicit val executionContext: ExecutionContext) extends RegistrationDataRequiredAction {
 
   override protected def refine[A](request: OptionalRegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
+
+    // TODO determine if session has expired or draft removed because maintaining
+
+    val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    println("***")
+    println(hc.headers(Seq(REFERER)))
 
     request.userAnswers match {
       case None =>

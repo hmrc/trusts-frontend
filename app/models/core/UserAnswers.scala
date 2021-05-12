@@ -24,6 +24,7 @@ import models.registration.pages.RegistrationStatus.NotStarted
 import play.api.Logging
 import play.api.libs.json._
 import queries.{Gettable, Settable}
+import play.api.libs.functional.syntax._
 
 import java.time.LocalDateTime
 import scala.util.{Failure, Success, Try}
@@ -45,13 +46,11 @@ object ReadOnlyUserAnswers {
   implicit lazy val formats: OFormat[ReadOnlyUserAnswers] = Json.format[ReadOnlyUserAnswers]
 }
 
-final case class UserAnswers(
-                              draftId: String,
-                              data: JsObject = Json.obj(),
-                              progress : RegistrationStatus = NotStarted,
-                              createdAt : LocalDateTime = LocalDateTime.now,
-                              internalAuthId :String
-                            ) extends ReadableUserAnswers with Logging {
+final case class UserAnswers(draftId: String,
+                             data: JsObject = Json.obj(),
+                             progress: RegistrationStatus = NotStarted,
+                             createdAt: LocalDateTime = LocalDateTime.now,
+                             internalAuthId: String) extends ReadableUserAnswers with Logging {
 
   import UserAnswerImplicits._
 
@@ -103,29 +102,19 @@ final case class UserAnswers(
 
 object UserAnswers {
 
-  implicit lazy val reads: Reads[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-
-    (
-      (__ \ "_id").read[String] and
+  implicit lazy val reads: Reads[UserAnswers] = (
+    (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
       (__ \ "progress").read[RegistrationStatus] and
       (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
       (__ \ "internalId").read[String]
-    ) (UserAnswers.apply _)
-  }
+    )(UserAnswers.apply _)
 
-  implicit lazy val writes: OWrites[UserAnswers] = {
-
-    import play.api.libs.functional.syntax._
-
-    (
-      (__ \ "_id").write[String] and
+  implicit lazy val writes: OWrites[UserAnswers] = (
+    (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
       (__ \ "progress").write[RegistrationStatus] and
       (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
       (__ \ "internalId").write[String]
-    ) (unlift(UserAnswers.unapply))
-  }
+    )(unlift(UserAnswers.unapply))
 }
