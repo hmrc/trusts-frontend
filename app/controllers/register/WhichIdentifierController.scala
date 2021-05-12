@@ -52,8 +52,8 @@ class WhichIdentifierController @Inject()(
           BadRequest(view(formWithErrors, draftId)),
 
         {
-          case WhichIdentifier.UTRIdentifier => Redirect(appConfig.maintainATrustWithUTR) // TODO - call removeDraft
-          case WhichIdentifier.URNIdentifier => Redirect(appConfig.maintainATrustWithURN) // TODO - call removeDraft
+          case WhichIdentifier.UTRIdentifier => Redirect(appConfig.maintainATrustWithUTR)
+          case WhichIdentifier.URNIdentifier => Redirect(appConfig.maintainATrustWithURN)
           case WhichIdentifier.NoIdentifier => Redirect(controllers.register.routes.RefSentByPostController.onPageLoad(draftId))
         }
       )

@@ -2,6 +2,7 @@ import play.sbt.routes.RoutesKeys
 import sbt.Def
 import scoverage.ScoverageKeys
 import uk.gov.hmrc.DefaultBuildSettings
+import uk.gov.hmrc.DefaultBuildSettings.integrationTestSettings
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 lazy val appName: String = "trusts-frontend"
@@ -19,7 +20,7 @@ lazy val root = (project in file("."))
   )
   .settings(inConfig(Test)(testSettings))
   .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(itSettings))
+  .settings(integrationTestSettings(): _*)
   .settings(
     majorVersion := 0,
     name := appName,
@@ -72,20 +73,6 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork        := true,
   javaOptions ++= Seq(
     "-Dconfig.resource=test.application.conf"
-  )
-)
-
-lazy val itSettings = Defaults.itSettings ++ Seq(
-  unmanagedSourceDirectories   := Seq(
-    baseDirectory.value / "it"
-  ),
-  unmanagedResourceDirectories := Seq(
-    baseDirectory.value / "it" / "resources"
-  ),
-  parallelExecution            := false,
-  fork                         := true,
-  javaOptions                  ++= Seq(
-    "-Dconfig.resource=it.application.conf"
   )
 )
 
