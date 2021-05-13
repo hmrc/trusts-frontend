@@ -18,7 +18,7 @@ package controllers.register.suitability
 
 import base.RegistrationSpecBase
 import controllers.actions.register._
-import controllers.actions.{FakeIdentifyForRegistration, FakeRegistrationDataRetrievalAction}
+import controllers.actions.{FakeIdentifyForRegistration, FakeMatchingAndSuitabilityDataRetrievalAction}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
@@ -38,7 +38,7 @@ import scala.concurrent.Future
 
 class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
-  private lazy val beforeYouContinueRoute: String = routes.BeforeYouContinueController.onPageLoad(fakeDraftId).url
+  private lazy val beforeYouContinueRoute: String = routes.BeforeYouContinueController.onPageLoad().url
 
   private val mockFeatureFlagService = mock[FeatureFlagService]
 
@@ -48,7 +48,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
       "return OK and the correct view for a taxable journey GET" in {
 
-        val answers = emptyUserAnswers
+        val answers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustTaxableYesNoPage, true).success.value
           .set(TrustHaveAUTRPage, false).success.value
 
@@ -64,7 +64,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeDraftId)(request, messages).toString
+          view()(request, messages).toString
 
         application.stop()
       }
@@ -75,7 +75,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
       "return OK and the correct view for a taxable journey GET" in {
 
-        val answers = emptyUserAnswers
+        val answers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustTaxableYesNoPage, true).success.value
           .set(TrustHaveAUTRPage, false).success.value
 
@@ -91,14 +91,14 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeDraftId)(request, messages).toString
+          view()(request, messages).toString
 
         application.stop()
       }
 
       "return OK and the correct view for an existing taxable journey GET" in {
 
-        val answers = emptyUserAnswers
+        val answers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustTaxableYesNoPage, true).success.value
           .set(TrustHaveAUTRPage, true).success.value
 
@@ -114,14 +114,14 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeDraftId)(request, messages).toString
+          view()(request, messages).toString
 
         application.stop()
       }
 
       "return OK and the correct view for a non taxable journey GET" in {
 
-        val answers = emptyUserAnswers
+        val answers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustTaxableYesNoPage, false).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
@@ -136,29 +136,25 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeDraftId)(request, messages).toString
+          view()(request, messages).toString
 
         application.stop()
       }
 
       "return 'No need to register' when disable non-taxable registration feature enabled for a non taxable organisation journey GET" in {
 
-        val answers = emptyUserAnswers
+        val answers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustTaxableYesNoPage, false).success.value
 
         val application = new GuiceApplicationBuilder()
           .overrides(
-            bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
             bind[RegistrationIdentifierAction].toInstance(
               new FakeIdentifyForRegistration(Organisation, fakeFrontendAppConfig)(injectedParsers, trustsAuth, Enrolments(Set()))
             ),
-            bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers))),
-            bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(Some(answers)))
-          )
-          .configure(
-            "microservice.services.features.non-taxable.registrations.block.enabled" -> true
-          )
-          .build()
+            bind[MatchingAndSuitabilityDataRetrievalAction].toInstance(new FakeMatchingAndSuitabilityDataRetrievalAction(Some(answers)))
+          ).configure(
+          "microservice.services.features.non-taxable.registrations.block.enabled" -> true
+        ).build()
 
         val request = FakeRequest(GET, beforeYouContinueRoute)
 
@@ -173,22 +169,18 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
       "return 'No need to register' when disable non-taxable registration feature enabled for a non taxable agent journey GET" in {
 
-        val answers = emptyUserAnswers
+        val answers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustTaxableYesNoPage, false).success.value
 
         val application = new GuiceApplicationBuilder()
           .overrides(
-            bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
             bind[RegistrationIdentifierAction].toInstance(
               new FakeIdentifyForRegistration(Agent, fakeFrontendAppConfig)(injectedParsers, trustsAuth, Enrolments(Set()))
             ),
-            bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(Some(answers))),
-            bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(Some(answers)))
-          )
-          .configure(
-            "microservice.services.features.non-taxable.registrations.block.enabled" -> true
-          )
-          .build()
+            bind[MatchingAndSuitabilityDataRetrievalAction].toInstance(new FakeMatchingAndSuitabilityDataRetrievalAction(Some(answers)))
+          ).configure(
+          "microservice.services.features.non-taxable.registrations.block.enabled" -> true
+        ).build()
 
         val request = FakeRequest(GET, beforeYouContinueRoute)
 
@@ -203,7 +195,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
       "return OK and the correct view for a non taxable agent journey GET" in {
 
-        val answers = emptyUserAnswers
+        val answers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustTaxableYesNoPage, false).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
@@ -218,7 +210,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeDraftId)(request, messages).toString
+          view()(request, messages).toString
 
         application.stop()
       }
@@ -230,7 +222,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
           when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
             .thenReturn(Future.successful(true))
 
-          val answers = emptyUserAnswers
+          val answers = emptyMatchingAndSuitabilityUserAnswers
             .set(ExpressTrustYesNoPage, true).success.value
             .set(TrustTaxableYesNoPage, false).success.value
 
@@ -258,7 +250,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
               when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
                 .thenReturn(Future.successful(isFeatureEnabled))
 
-              val answers = emptyUserAnswers
+              val answers = emptyMatchingAndSuitabilityUserAnswers
                 .set(ExpressTrustYesNoPage, isExpress).success.value
                 .set(TrustTaxableYesNoPage, isTaxable).success.value
 

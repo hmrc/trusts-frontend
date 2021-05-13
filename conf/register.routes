@@ -79,8 +79,8 @@ POST       /has-tax-liability-in-current-tax-year                               
 GET        /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad()
 POST       /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit()
 
-GET        /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onPageLoad(draftId: String)
-POST       /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onSubmit(draftId: String)
+GET        /before-you-continue                                                                     controllers.register.suitability.BeforeYouContinueController.onPageLoad()
+POST       /before-you-continue                                                                     controllers.register.suitability.BeforeYouContinueController.onSubmit()
 
 GET        /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad()
 POST       /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit()

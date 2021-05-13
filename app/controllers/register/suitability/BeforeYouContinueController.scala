@@ -18,11 +18,11 @@ package controllers.register.suitability
 
 import config.FrontendAppConfig
 import controllers.actions.StandardActionSets
-import models.requests.RegistrationDataRequest
+import models.requests.MatchingAndSuitabilityDataRequest
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability._
@@ -32,7 +32,7 @@ import scala.concurrent.ExecutionContext
 
 class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,
-                                             standardActionSets: StandardActionSets,
+                                             actions: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              taxableView: BeforeYouContinueTaxableView,
                                              existingTaxableView: BeforeYouContinueExistingTaxableView,
@@ -42,25 +42,22 @@ class BeforeYouContinueController @Inject()(
                                              appConfig: FrontendAppConfig
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithRegistrationData(draftId)
-
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       (doesTrustHaveUtr, isTrustTaxable) match {
         case (Some(false), Some(true)) =>
-          Ok(taxableView(draftId))
+          Ok(taxableView())
         case (Some(true), Some(true)) =>
-          Ok(existingTaxableView(draftId))
+          Ok(existingTaxableView())
         case (_, Some(false)) =>
           if (appConfig.disableNonTaxableRegistrations) {
             Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad())
           } else {
             if (isAgentUser) {
-              Ok(nonTaxableAgentView(draftId))
+              Ok(nonTaxableAgentView())
             } else {
-              Ok(nonTaxableView(draftId))
+              Ok(nonTaxableView())
             }
           }
         case _ =>
@@ -68,7 +65,7 @@ class BeforeYouContinueController @Inject()(
       }
   }
 
-  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       featureFlagService.isNonTaxableAccessCodeEnabled() map { isNonTaxableAccessEnabled =>
@@ -83,15 +80,15 @@ class BeforeYouContinueController @Inject()(
       }
   }
 
-  private def isTrustTaxable(implicit request: RegistrationDataRequest[_]): Option[Boolean] =
+  private def isTrustTaxable(implicit request: MatchingAndSuitabilityDataRequest[_]): Option[Boolean] =
     request.getPage(TrustTaxableYesNoPage)
 
-  private def isExpressTrust(implicit request: RegistrationDataRequest[_]): Option[Boolean] =
+  private def isExpressTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Option[Boolean] =
     request.getPage(ExpressTrustYesNoPage)
 
-  private def doesTrustHaveUtr(implicit request: RegistrationDataRequest[_]): Option[Boolean] =
+  private def doesTrustHaveUtr(implicit request: MatchingAndSuitabilityDataRequest[_]): Option[Boolean] =
     request.getPage(TrustHaveAUTRPage)
 
-  private def isAgentUser(implicit request: RegistrationDataRequest[_]): Boolean =
+  private def isAgentUser(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
     request.isAgent
 }

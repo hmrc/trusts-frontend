@@ -33,9 +33,9 @@ class Navigator @Inject()(config: FrontendAppConfig) {
     case _ => _ => _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
-  protected def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] =
+  protected def route(is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] =
     MatchingRoutes.route(config, is5mldEnabled) orElse
-      SuitabilityRoutes.route(draftId, is5mldEnabled) orElse
+      SuitabilityRoutes.route(is5mldEnabled) orElse
       defaultRoute
 
   def nextPage(page: Page,
@@ -43,6 +43,6 @@ class Navigator @Inject()(config: FrontendAppConfig) {
                draftId: String = "",
                af: AffinityGroup = AffinityGroup.Organisation,
                is5mldEnabled: Boolean = false): TrustsFrontendUserAnswers[_] => Call =
-    route(draftId, is5mldEnabled)(page)(af)
+    route(is5mldEnabled)(page)(af)
 
 }

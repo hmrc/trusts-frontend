@@ -40,7 +40,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
 
               navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
         "-> NO -> Any undeclared tax liability?" in {
@@ -61,7 +61,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, true).success.value
 
               navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
         "-> NO -> You do not need to register" in {
@@ -85,7 +85,7 @@ trait SuitabilityRoutes {
                 .set(TrustTaxableYesNoPage, true).success.value
 
               navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
 
@@ -96,7 +96,7 @@ trait SuitabilityRoutes {
                 .set(TrustTaxableYesNoPage, true).success.value
 
               navigator.nextPage(ExpressTrustYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
       }
@@ -109,7 +109,7 @@ trait SuitabilityRoutes {
                 .set(TrustTaxableYesNoPage, true).success.value
 
               navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
         "-> NO -> Any undeclared tax liability?" in {
@@ -134,7 +134,7 @@ trait SuitabilityRoutes {
                   .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
 
                 navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                  .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                  .mustBe(routes.BeforeYouContinueController.onPageLoad())
             }
           }
           "-> NO -> You do not need to register" in {
@@ -159,7 +159,7 @@ trait SuitabilityRoutes {
                   .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
 
                 navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                  .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                  .mustBe(routes.BeforeYouContinueController.onPageLoad())
             }
           }
           "-> No -> Before you continue" in {
@@ -170,11 +170,10 @@ trait SuitabilityRoutes {
                   .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
 
                 navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                  .mustBe(routes.BeforeYouContinueController.onPageLoad(fakeDraftId))
+                  .mustBe(routes.BeforeYouContinueController.onPageLoad())
             }
           }
         }
-
       }
     }
   }

@@ -25,34 +25,34 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 object SuitabilityRoutes extends Routes {
 
-  def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
+  def route(is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
     case ExpressTrustYesNoPage => _ => ua =>
       ua.get(TrustTaxableYesNoPage) match {
-        case Some(true) if is5mldEnabled => routes.BeforeYouContinueController.onPageLoad(draftId)
+        case Some(true) if is5mldEnabled => routes.BeforeYouContinueController.onPageLoad()
         case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
       }
-    case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
+    case TaxLiabilityInCurrentTaxYearYesNoPage => _ =>
       yesNoNav(
-        ua,
+        _,
         TaxLiabilityInCurrentTaxYearYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(draftId),
+        routes.BeforeYouContinueController.onPageLoad(),
         routes.UndeclaredTaxLiabilityYesNoController.onPageLoad()
       )
     case UndeclaredTaxLiabilityYesNoPage => _ => ua =>
       yesNoNav(
         ua,
         UndeclaredTaxLiabilityYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(draftId),
-        nonTaxableRoute(draftId, is5mldEnabled, ua)
+        routes.BeforeYouContinueController.onPageLoad(),
+        nonTaxableRoute(is5mldEnabled, ua)
       )
   }
 
-  private def nonTaxableRoute(draftId: String, is5mldEnabled: Boolean, answers: TrustsFrontendUserAnswers[_]): Call = {
+  private def nonTaxableRoute(is5mldEnabled: Boolean, answers: TrustsFrontendUserAnswers[_]): Call = {
     if (is5mldEnabled) {
       yesNoNav(
         answers,
         ExpressTrustYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(draftId),
+        routes.BeforeYouContinueController.onPageLoad(),
         routes.NoNeedToRegisterController.onPageLoad()
       )
     } else {

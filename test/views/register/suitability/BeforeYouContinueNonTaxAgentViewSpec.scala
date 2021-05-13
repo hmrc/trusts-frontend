@@ -27,7 +27,7 @@ class BeforeYouContinueNonTaxAgentViewSpec extends ViewBehaviours {
 
     val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
 
-    val applyView = view.apply(fakeDraftId)(fakeRequest, messages)
+    val applyView = view.apply()(fakeRequest, messages)
 
     behave like normalPage(
       applyView,
