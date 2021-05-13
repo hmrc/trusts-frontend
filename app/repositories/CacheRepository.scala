@@ -16,7 +16,7 @@
 
 package repositories
 
-import com.google.inject.ImplementedBy
+import models.core.MatchingAndSuitabilityUserAnswers
 import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
@@ -25,28 +25,27 @@ import reactivemongo.api.bson.collection.BSONSerializationPack
 import reactivemongo.api.indexes.Index.Aux
 import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.play.json.collection.Helpers.idWrites
-import models.ActiveSession
 
 import java.time.LocalDateTime
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ActiveSessionRepositoryImpl @Inject()(
-                                             override val mongo: ReactiveMongoApi,
-                                             override val config: Configuration
-                                           )(override implicit val ec: ExecutionContext)
-  extends IndexesManager with ActiveSessionRepository {
+class CacheRepositoryImpl @Inject()(
+                                     override val mongo: ReactiveMongoApi,
+                                     override val config: Configuration
+                                   )(override implicit val ec: ExecutionContext)
+  extends IndexesManager with CacheRepository {
 
-  override val collectionName: String = "session"
+  override val collectionName: String = "user-answers"
 
-  override val cacheTtl: Int = config.get[Int]("mongodb.session.ttlSeconds")
+  override val cacheTtl: Int = config.get[Int]("mongodb.local.ttlSeconds")
 
-  override val lastUpdatedIndexName: String = "session-updated-at-index"
+  override val lastUpdatedIndexName: String = "user-answers-updated-at-index"
 
   override def idIndex: Aux[BSONSerializationPack.type] = Index.apply(BSONSerializationPack)(
-    key = Seq("identifier" -> IndexType.Ascending),
-    name = Some("identifier-index"),
+    key = Seq("internalId" -> IndexType.Ascending),
+    name = Some("internal-id-index"),
     expireAfterSeconds = None,
     options = BSONDocument.empty,
     unique = false,
@@ -73,27 +72,26 @@ class ActiveSessionRepositoryImpl @Inject()(
     "internalId" -> internalId
   )
 
-  override def get(internalId: String): Future[Option[ActiveSession]] = {
-    findCollectionAndUpdate[ActiveSession](selector(internalId))
+  override def get(internalId: String): Future[Option[MatchingAndSuitabilityUserAnswers]] = {
+    findCollectionAndUpdate[MatchingAndSuitabilityUserAnswers](selector(internalId))
   }
 
-  override def set(session: ActiveSession): Future[Boolean] = {
+  override def set(userAnswers: MatchingAndSuitabilityUserAnswers): Future[Boolean] = {
 
     val modifier = Json.obj(
-      "$set" -> session.copy(updatedAt = LocalDateTime.now)
+      "$set" -> userAnswers.copy(updatedAt = LocalDateTime.now)
     )
 
     for {
       col <- collection
-      r <- col.update(ordered = false).one(selector(session.internalId), modifier, upsert = true, multi = false)
+      r <- col.update(ordered = false).one(selector(userAnswers.internalId), modifier, upsert = true, multi = false)
     } yield r.ok
   }
 }
 
-@ImplementedBy(classOf[ActiveSessionRepositoryImpl])
-trait ActiveSessionRepository {
+trait CacheRepository {
 
-  def get(internalId: String): Future[Option[ActiveSession]]
+  def get(internalId: String): Future[Option[MatchingAndSuitabilityUserAnswers]]
 
-  def set(session: ActiveSession): Future[Boolean]
+  def set(userAnswers: MatchingAndSuitabilityUserAnswers): Future[Boolean]
 }

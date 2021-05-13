@@ -34,8 +34,8 @@ import play.api.mvc._
 import repositories.RegistrationsRepository
 import services.{FeatureFlagService, SubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.register.DeclarationView
 
 import java.time.temporal.ChronoUnit.DAYS
@@ -52,10 +52,10 @@ class DeclarationController @Inject()(
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,
-                                       registrationComplete : TaskListCompleteActionRefiner,
-                                       requireDraft : RequireDraftRegistrationActionRefiner,
+                                       registrationComplete: TaskListCompleteActionRefiner,
+                                       requireDraft: RequireDraftRegistrationActionRefiner,
                                        standardAction: StandardActionSets
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private val form: Form[Declaration] = formProvider()
 
@@ -92,7 +92,7 @@ class DeclarationController @Inject()(
           } yield result
 
           r.recover {
-            case _ : UnableToRegister =>
+            case _: UnableToRegister =>
               logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
               Redirect(routes.TaskListController.onPageLoad(draftId))
             case NonFatal(e) =>
@@ -126,7 +126,7 @@ class DeclarationController @Inject()(
         Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate)).flatMap {
           dateSaved =>
             val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
-            logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission : $days")
+            logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days")
             registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
               _ =>
                 Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))

@@ -62,7 +62,7 @@ trait MongoSuite extends ScalaFutures {
       "mongo-async-driver.akka.log-dead-letters" -> 0
     ): _*)
     .overrides(
-      bind[ActiveSessionRepository].to(classOf[ActiveSessionRepositoryImpl])
+      bind[CacheRepository].to(classOf[CacheRepositoryImpl])
     ).build()
 
   def assertMongoTest(application: Application)(block: (Application, MongoConnection) => Assertion): Future[Assertion] =

@@ -17,29 +17,26 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
 class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
   "CreateDraftRegistrationController" must {
+    "return Redirect and create a draft registration" in {
 
-      "return Redirect and create a draft registration" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
 
-        val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
+      val result = route(application, request).value
 
-        val result = route(application, request).value
+      status(result) mustEqual SEE_OTHER
 
-        status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
 
-        redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, fakeDraftId).url
-
-        application.stop()
-      }
-
+      application.stop()
+    }
   }
 
 }

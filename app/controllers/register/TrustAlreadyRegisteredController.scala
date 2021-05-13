@@ -17,16 +17,15 @@
 package controllers.register
 
 import controllers.actions.StandardActionSets
-import javax.inject.Inject
 import models.NormalMode
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustAlreadyRegisteredView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrustAlreadyRegisteredController @Inject()(

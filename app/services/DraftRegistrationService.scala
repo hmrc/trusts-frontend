@@ -16,9 +16,6 @@
 
 package services
 
-import java.util.UUID
-
-import javax.inject.Inject
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import repositories.RegistrationsRepository
@@ -26,6 +23,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.Session
 import viewmodels.RegistrationAnswerSections
 
+import java.util.UUID
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsRepository)

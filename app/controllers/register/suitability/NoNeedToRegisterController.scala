@@ -17,12 +17,12 @@
 package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.NoNeedToRegisterView
+
+import javax.inject.Inject
 
 class NoNeedToRegisterController @Inject()(
                                             override val messagesApi: MessagesApi,

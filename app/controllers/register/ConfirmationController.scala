@@ -18,7 +18,6 @@ package controllers.register
 
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
-import javax.inject.Inject
 import models.NormalMode
 import models.core.UserAnswers
 import models.core.http.LeadTrusteeType
@@ -29,10 +28,10 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.confirmation._
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
@@ -49,9 +48,10 @@ class ConfirmationController @Inject()(
                                         existingAgentView: existingTrust.AgentView,
                                         errorHandler: ErrorHandler,
                                         registrationsRepository: RegistrationsRepository
-                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
-  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)(implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
+  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)
+                        (implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
     val isAgent = request.isAgent
     registrationsRepository.getLeadTrustee(draftId) flatMap {
       case LeadTrusteeType(Some(ltInd), None) => render(userAnswers, draftId, isAgent, trn, ltInd.name.toString)
@@ -61,10 +61,11 @@ class ConfirmationController @Inject()(
   }
 
   private def render(userAnswers: UserAnswers,
-                      draftId: String,
-                      isAgent: Boolean,
-                      trn: String,
-                      name: String)(implicit request : RegistrationDataRequest[AnyContent]) = {
+                     draftId: String,
+                     isAgent: Boolean,
+                     trn: String,
+                     name: String)
+                    (implicit request: RegistrationDataRequest[AnyContent]): Future[Result] = {
 
     val utr = userAnswers.get(TrustHaveAUTRPage)
     val taxable = userAnswers.isTaxable
@@ -92,7 +93,7 @@ class ConfirmationController @Inject()(
     implicit request =>
       val userAnswers = request.userAnswers
 
-       userAnswers.progress match {
+      userAnswers.progress match {
         case RegistrationStatus.Complete =>
           userAnswers.get(RegistrationTRNPage) match {
             case None =>

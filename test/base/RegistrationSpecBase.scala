@@ -59,8 +59,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation,
                                    enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
-                                   navigator: Navigator = fakeNavigator
-                                  ): GuiceApplicationBuilder =
+                                   navigator: Navigator = fakeNavigator): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
         bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],

@@ -17,25 +17,24 @@
 package controllers.register
 
 import controllers.actions.register.RegistrationIdentifierAction
-import javax.inject.Inject
-import models.NormalMode
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.DraftRegistrationService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class CreateDraftRegistrationController @Inject()(
                                                    val controllerComponents: MessagesControllerComponents,
-                                                   draftService : DraftRegistrationService,
+                                                   draftService: DraftRegistrationService,
                                                    identify: RegistrationIdentifierAction
                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def create: Action[AnyContent] = identify.async { implicit request =>
     draftService.create(request).map {
       draftId =>
-        Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
+        Redirect(routes.TaskListController.onPageLoad(draftId))
     }
   }
 

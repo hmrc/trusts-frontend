@@ -19,7 +19,6 @@ package controllers.register
 import controllers.actions.StandardActionSets
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.{RefSentByPostAgentView, RefSentByPostView}
 
@@ -37,6 +36,6 @@ class RefSentByPostController @Inject()(override val messagesApi: MessagesApi,
     implicit request =>
       val isAgent = request.isAgent
 
-      if (isAgent) Ok(agentView())else Ok(view())
+      if (isAgent) Ok(agentView()) else Ok(view())
   }
 }
