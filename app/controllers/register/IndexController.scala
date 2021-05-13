@@ -18,7 +18,6 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
-import javax.inject.Inject
 import models.NormalMode
 import pages.register.TrustRegisteredOnlinePage
 import play.api.Logging
@@ -27,16 +26,17 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
+import javax.inject.Inject
 import scala.concurrent.Future
 
 class IndexController @Inject()(
                                  identify: RegistrationIdentifierAction,
-                                 getData: RegistrationDataRetrievalAction,
+                                 getRegistrationData: RegistrationDataRetrievalAction,
                                  config: FrontendAppConfig,
                                  val controllerComponents: MessagesControllerComponents
                                ) extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData).async {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getRegistrationData).async {
     implicit request =>
 
       request.affinityGroup match {

@@ -27,6 +27,7 @@ class Module extends AbstractModule {
 
   override def configure(): Unit = {
 
+    bind(classOf[MatchingAndSuitabilityDataRetrievalAction]).to(classOf[MatchingAndSuitabilityDataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[RegistrationDataRetrievalAction]).to(classOf[RegistrationDataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[RegistrationDataRequiredAction]).to(classOf[RegistrationDataRequiredActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()

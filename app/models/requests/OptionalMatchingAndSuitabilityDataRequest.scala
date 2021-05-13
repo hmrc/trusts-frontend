@@ -16,21 +16,14 @@
 
 package models.requests
 
-import models.core.UserAnswers
-import pages.QuestionPage
-import play.api.libs.json.Reads
+import models.core.MatchingAndSuitabilityUserAnswers
 import play.api.mvc.{Request, WrappedRequest}
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
-case class RegistrationDataRequest[A](request: Request[A],
-                                      internalId: String,
-                                      sessionId: String,
-                                      userAnswers: UserAnswers,
-                                      affinityGroup: AffinityGroup,
-                                      enrolments: Enrolments,
-                                      agentARN: Option[String] = None) extends WrappedRequest[A](request) {
-
-  def isAgent: Boolean = affinityGroup == AffinityGroup.Agent
-
-  def getPage[T](page: QuestionPage[T])(implicit rds: Reads[T]): Option[T] = userAnswers.get(page)
-}
+case class OptionalMatchingAndSuitabilityDataRequest[A](request: Request[A],
+                                                        internalId: String,
+                                                        sessionId: String,
+                                                        userAnswers: Option[MatchingAndSuitabilityUserAnswers],
+                                                        affinityGroup: AffinityGroup,
+                                                        enrolments: Enrolments,
+                                                        agentARN: Option[String] = None) extends WrappedRequest[A](request)
