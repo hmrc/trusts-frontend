@@ -21,24 +21,23 @@ import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register.suitability._
 import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
 
 object SuitabilityRoutes extends Routes {
 
-  def route(is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
-    case ExpressTrustYesNoPage => _ => ua =>
+  def route(is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+    case ExpressTrustYesNoPage => ua =>
       ua.get(TrustTaxableYesNoPage) match {
         case Some(true) if is5mldEnabled => routes.BeforeYouContinueController.onPageLoad()
         case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
       }
-    case TaxLiabilityInCurrentTaxYearYesNoPage => _ =>
+    case TaxLiabilityInCurrentTaxYearYesNoPage =>
       yesNoNav(
         _,
         TaxLiabilityInCurrentTaxYearYesNoPage,
         routes.BeforeYouContinueController.onPageLoad(),
         routes.UndeclaredTaxLiabilityYesNoController.onPageLoad()
       )
-    case UndeclaredTaxLiabilityYesNoPage => _ => ua =>
+    case UndeclaredTaxLiabilityYesNoPage => ua =>
       yesNoNav(
         ua,
         UndeclaredTaxLiabilityYesNoPage,

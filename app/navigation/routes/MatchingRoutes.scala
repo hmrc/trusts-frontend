@@ -22,15 +22,14 @@ import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register._
 import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
 
 object MatchingRoutes extends Routes {
 
-  def route(config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
-    case TrustRegisteredOnlinePage => _ => ua => redirectToIdentifierQuestion(ua, is5mldEnabled)
-    case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, config, is5mldEnabled)
-    case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad()
-    case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
+  def route(config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+    case TrustRegisteredOnlinePage => ua => redirectToIdentifierQuestion(ua, is5mldEnabled)
+    case TrustHaveAUTRPage => userAnswers => trustHaveAUTRRoute(userAnswers, config, is5mldEnabled)
+    case WhatIsTheUTRPage => _ => controllers.register.routes.MatchingNameController.onPageLoad()
+    case MatchingNamePage => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
   }
 
   private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_], is5mldEnabled: Boolean): Call = {

@@ -17,32 +17,27 @@
 package navigation
 
 import config.FrontendAppConfig
-import models._
 import models.core.TrustsFrontendUserAnswers
 import navigation.routes._
 import pages._
 import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class Navigator @Inject()(config: FrontendAppConfig) {
 
-  private def defaultRoute: PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
-    case _ => _ => _ => controllers.register.routes.IndexController.onPageLoad()
+  private def defaultRoute: PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+    case _ => _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
-  protected def route(is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] =
+  protected def route(is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] =
     MatchingRoutes.route(config, is5mldEnabled) orElse
       SuitabilityRoutes.route(is5mldEnabled) orElse
       defaultRoute
 
   def nextPage(page: Page,
-               mode: Mode = NormalMode,
-               draftId: String = "",
-               af: AffinityGroup = AffinityGroup.Organisation,
                is5mldEnabled: Boolean = false): TrustsFrontendUserAnswers[_] => Call =
-    route(is5mldEnabled)(page)(af)
+    route(is5mldEnabled)(page)
 
 }

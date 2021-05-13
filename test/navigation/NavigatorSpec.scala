@@ -19,7 +19,6 @@ package navigation
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import generators.Generators
-import models.NormalMode
 import navigation.navigators.registration._
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages._
@@ -39,7 +38,7 @@ class NavigatorSpec extends RegistrationSpecBase
 
       "go to Index from a page that doesn't exist in the route map" in {
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, NormalMode, fakeDraftId)(emptyUserAnswers) mustBe IndexController.onPageLoad()
+        navigator.nextPage(UnknownPage)(emptyUserAnswers) mustBe IndexController.onPageLoad()
       }
 
       behave like matchingRoutes
