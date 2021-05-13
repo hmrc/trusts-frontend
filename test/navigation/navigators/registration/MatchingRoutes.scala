@@ -83,7 +83,7 @@ trait MatchingRoutes {
                 .set(TrustHaveAUTRPage, true).success.value
 
               navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.WhatIsTheUTRController.onPageLoad())
           }
         }
 

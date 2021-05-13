@@ -17,7 +17,6 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.NormalMode
 import models.core.UserAnswers
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
@@ -88,7 +87,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual
-        routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
+        routes.WhatIsTheUTRController.onPageLoad().url
 
       application.stop()
     }
@@ -110,7 +109,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual
-        routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
+        routes.WhatIsTheUTRController.onPageLoad().url
 
       val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(registrationsRepository).set(uaCaptor.capture)(any())

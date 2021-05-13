@@ -17,7 +17,6 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.NormalMode
 import models.core.TrustsFrontendUserAnswers
 import models.registration.Matched
 import navigation.Navigator
@@ -234,7 +233,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
+          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad().url
 
           application.stop()
         }

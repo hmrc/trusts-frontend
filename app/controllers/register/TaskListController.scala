@@ -18,7 +18,6 @@ package controllers.register
 
 import controllers.actions._
 import controllers.actions.register._
-import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
 import models.requests.RegistrationDataRequest
@@ -88,7 +87,7 @@ class TaskListController @Inject()(
         case (_, Some(AlreadyRegistered)) | (_, Some(Failed)) =>
           Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId).url))
         case _ =>
-          Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))
+          Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad().url))
       }
   }
 }

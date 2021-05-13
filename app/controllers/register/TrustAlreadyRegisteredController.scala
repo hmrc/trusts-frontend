@@ -17,10 +17,10 @@
 package controllers.register
 
 import controllers.actions.StandardActionSets
-import models.NormalMode
+import models.requests.RegistrationDataRequest
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustAlreadyRegisteredView
@@ -36,17 +36,17 @@ class TrustAlreadyRegisteredController @Inject()(
                                                   view: TrustAlreadyRegisteredView
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithRegistrationData(draftId)
 
-  private def redirect(draftId: String): Result = Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId))
+  private def redirect(): Result = Redirect(routes.WhatIsTheUTRController.onPageLoad())
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       request.userAnswers.get(WhatIsTheUTRPage) match {
         case Some(utr) => Ok(view(draftId, utr, request.isAgent))
-        case _ => redirect(draftId)
+        case _ => redirect()
       }
   }
 
@@ -61,6 +61,6 @@ class TrustAlreadyRegisteredController @Inject()(
           .flatMap(_.remove(PostcodeForTheTrustPage))
         )
         _ <- registrationsRepository.set(updatedAnswers)
-      } yield redirect(draftId)
+      } yield redirect()
   }
 }

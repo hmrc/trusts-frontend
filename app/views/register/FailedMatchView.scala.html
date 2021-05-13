@@ -16,7 +16,6 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.routes._
-@import models.Mode
 
 @this(
     main_template: MainTemplate,
@@ -55,7 +54,7 @@
 
     <p>@messages("failedMatch.paragraph3")</p>
 
-    @components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url)
+    @components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad().url)
 
     <h2>@messages("failedMatch.h2")</h2>
 

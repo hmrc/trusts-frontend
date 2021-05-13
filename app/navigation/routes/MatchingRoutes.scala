@@ -45,7 +45,7 @@ object MatchingRoutes extends Routes {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
-      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
+      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad()
       case (Some(false), Some(false)) => askExpressIf5mld(draftId, is5mldEnabled)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routeToMaintain(config)
