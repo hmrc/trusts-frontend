@@ -74,10 +74,8 @@ GET        /:draftId/your-declared-registration                                 
 
 ## Suitability
 
-GET        /:draftId/is-express-trust                                                               controllers.register.suitability.ExpressTrustYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/is-express-trust                                                               controllers.register.suitability.ExpressTrustYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-is-express-trust                                                        controllers.register.suitability.ExpressTrustYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-is-express-trust                                                        controllers.register.suitability.ExpressTrustYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onPageLoad()
+POST       /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onSubmit()
 
 GET        /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)

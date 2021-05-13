@@ -55,7 +55,7 @@ object MatchingRoutes extends Routes {
 
   private def askExpressIf5mld(draftId: String, is5mldEnabled: Boolean): Call = {
     if (is5mldEnabled) {
-      controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, draftId)
+      controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
     } else {
       controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
     }

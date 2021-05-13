@@ -15,14 +15,13 @@
  *@
 
 @import controllers.register.suitability.routes._
-@import models.Mode
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_])(implicit request: Request[_], messages: Messages)
 
 @content = {
     <p>@messages("suitability.expressTrust.p1")</p>
@@ -32,7 +31,7 @@
     title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}"
 ) {
 
-    @formHelper(action = ExpressTrustYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = ExpressTrustYesNoController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 

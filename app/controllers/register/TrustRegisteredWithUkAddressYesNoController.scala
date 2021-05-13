@@ -18,7 +18,6 @@ package controllers.register
 
 import controllers.actions._
 import forms.YesNoFormProvider
-import javax.inject.Inject
 import models.Mode
 import models.requests.RegistrationDataRequest
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
@@ -30,6 +29,7 @@ import services.MatchingService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustRegisteredWithUkAddressYesNoView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrustRegisteredWithUkAddressYesNoController @Inject()(
@@ -73,7 +73,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject()(
               if (value) {
                 Future.successful(Redirect(routes.PostcodeForTheTrustController.onPageLoad(mode, draftId)))
               } else {
-                matchingService.matching(updatedAnswers, draftId, request.isAgent, mode)
+                matchingService.matching(updatedAnswers, draftId, request.isAgent)
               }
             }
           } yield redirect

@@ -131,7 +131,7 @@ trait MatchingRoutes {
                 .set(TrustHaveAUTRPage, false).success.value
 
               navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                .mustBe(controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad())
           }
         }
       }

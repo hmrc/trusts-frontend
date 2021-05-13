@@ -20,7 +20,6 @@ import com.google.inject.Inject
 import connector.TrustConnector
 import controllers.Assets.Redirect
 import controllers.register.routes._
-import models.Mode
 import models.core.UserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered
 import models.core.http.{MatchData, MatchedResponse, SuccessOrFailureResponse}
@@ -39,17 +38,16 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
                                 featureFlagService: FeatureFlagService,
                                 navigator: TaskListNavigator) {
 
-  private case class MatchingContext(is5mld: Boolean, isAgent: Boolean, userAnswers: UserAnswers, draftId: String, mode: Mode)
+  // TODO - remove draft id
+  private case class MatchingContext(is5mld: Boolean, isAgent: Boolean, userAnswers: UserAnswers, draftId: String)
 
   def matching(userAnswers: UserAnswers,
                draftId: String,
-               isAgent: Boolean,
-               mode: Mode
-              )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
+               isAgent: Boolean)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
     val matchResult = for {
       is5mld <- featureFlagService.is5mldEnabled()
       result <- {
-        val context = MatchingContext(is5mld, isAgent, userAnswers, draftId, mode)
+        val context = MatchingContext(is5mld, isAgent, userAnswers, draftId)
         val data = payload(userAnswers)
         attemptMatch(context, data)
       }
@@ -92,7 +90,7 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
         saveTrustMatchedStatusAndRedirect(
           context.userAnswers,
           Matched.Success,
-          controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(context.mode, context.draftId)
+          controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
         )
       } else {
         saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Success, Call("GET", navigator.agentDetailsJourneyUrl(context.draftId)))
@@ -106,10 +104,10 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
         saveTrustMatchedStatusAndRedirect(
           context.userAnswers,
           Matched.Success,
-          controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(context.mode, context.draftId)
+          controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
         )
       } else {
-        saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Success, TaskListController.onPageLoad(context.draftId))
+        saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Success, CreateDraftRegistrationController.create())
       }
   }
 

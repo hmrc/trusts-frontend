@@ -16,41 +16,36 @@
 
 package controllers.register.suitability
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.StandardActionSets
 import forms.YesNoFormProvider
-import models.Mode
 import navigation.Navigator
+import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.CacheRepository
+import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.ExpressTrustYesNoView
-import javax.inject.Inject
-import pages.register.TrustHaveAUTRPage
-import services.FeatureFlagService
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ExpressTrustYesNoController @Inject()(
                                              override val messagesApi: MessagesApi,
-                                             registrationsRepository: RegistrationsRepository,
+                                             cacheRepository: CacheRepository,
                                              navigator: Navigator,
-                                             identify: RegistrationIdentifierAction,
-                                             getData: DraftIdRetrievalActionProvider,
-                                             requireData: RegistrationDataRequiredAction,
+                                             actions: StandardActionSets,
                                              formProvider: YesNoFormProvider,
                                              featureFlagService: FeatureFlagService,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: ExpressTrustYesNoView
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
-
   val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(ExpressTrustYesNoPage) match {
@@ -58,15 +53,15 @@ class ExpressTrustYesNoController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         value => {
           for {
@@ -76,12 +71,12 @@ class ExpressTrustYesNoController @Inject()(
               val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
               (is5mldEnabled, trustHasUtr) match {
                 case (true, Some(true)) => Future.fromTry(answers.set(TrustTaxableYesNoPage, true))
-                case (_, _) => Future(answers)
+                case _ => Future(answers)
               }
             }
-            _ <- registrationsRepository.set(updatedAnswers)
+            _ <- cacheRepository.set(updatedAnswers)
           } yield {
-            Redirect(navigator.nextPage(ExpressTrustYesNoPage, mode, draftId, request.affinityGroup, is5mldEnabled)(updatedAnswers))
+            Redirect(navigator.nextPage(ExpressTrustYesNoPage, is5mldEnabled = is5mldEnabled)(updatedAnswers))
           }
         }
       )

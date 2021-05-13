@@ -42,7 +42,6 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
   val fakeDraftId: String = TestUserAnswers.draftId
 
   def emptyUserAnswers: UserAnswers = TestUserAnswers.emptyUserAnswers
-
   def emptyMatchingAndSuitabilityUserAnswers: MatchingAndSuitabilityUserAnswers = TestUserAnswers.emptyMatchingAndSuitabilityUserAnswers
 
   lazy val fakeNavigator = new FakeNavigator(fakeFrontendAppConfig)
