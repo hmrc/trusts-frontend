@@ -18,7 +18,7 @@ package base
 
 import controllers.Assets.OK
 import models.RegistrationSubmission.AllStatus
-import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
+import models.requests.MatchingAndSuitabilityDataRequest
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -40,10 +40,7 @@ trait Mocked extends MockitoSugar {
   val mockSubmissionService: SubmissionService = mock[SubmissionService]
   val mockCreateDraftRegistrationService: DraftRegistrationService = mock[DraftRegistrationService]
 
-  when(mockCreateDraftRegistrationService.create(any[OptionalRegistrationDataRequest[AnyContent]])(any()))
-    .thenReturn(Future.successful(TestUserAnswers.draftId))
-
-  when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]])(any()))
+  when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
 
   when(mockCreateDraftRegistrationService.getAnswerSections(any())(any()))

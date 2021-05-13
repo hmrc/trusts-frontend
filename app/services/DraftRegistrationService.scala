@@ -17,10 +17,9 @@
 package services
 
 import models.core.UserAnswers
-import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
+import models.requests.MatchingAndSuitabilityDataRequest
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.Session
 import viewmodels.RegistrationAnswerSections
 
 import java.util.UUID
@@ -30,26 +29,21 @@ import scala.concurrent.{ExecutionContext, Future}
 class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsRepository)
                                         (implicit ec: ExecutionContext) {
 
-  private def build[A](request: OptionalRegistrationDataRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
-    val draftId = UUID.randomUUID().toString
-    val userAnswers = UserAnswers(draftId = draftId, internalAuthId = request.internalId)
+  def create[A](request: MatchingAndSuitabilityDataRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
 
-    registrationsRepository.set(userAnswers).map {
-      _ =>
-        draftId
+    val draftId = UUID.randomUUID().toString
+    val userAnswers = UserAnswers(
+      draftId = draftId,
+      data = request.userAnswers.data,
+      internalAuthId = request.internalId
+    )
+
+    registrationsRepository.set(userAnswers).map { _ =>
+      draftId
     }
   }
-
-  def create[A](request: IdentifierRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
-    val transformed = OptionalRegistrationDataRequest(request.request, request.internalId, Session.id(hc), None, request.affinityGroup, request.enrolments, request.agentARN)
-    build(transformed)
-  }
-
-  def create[A](request: OptionalRegistrationDataRequest[A])(implicit hc: HeaderCarrier): Future[String] =
-    build(request)
 
   def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[RegistrationAnswerSections] =
     registrationsRepository.getAnswerSections(draftId)
 
 }
-

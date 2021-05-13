@@ -17,11 +17,51 @@
 package services
 
 import base.RegistrationSpecBase
+import models.core.UserAnswers
+import models.requests.MatchingAndSuitabilityDataRequest
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers.any
+import org.mockito.Mockito.verify
+import org.scalatest.concurrent.ScalaFutures
+import pages.register.suitability.{ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage}
+import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage}
+import play.api.test.FakeRequest
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
+import uk.gov.hmrc.auth.core.Enrolments
+import uk.gov.hmrc.http.HeaderCarrier
 
-class DraftRegistrationServiceSpec extends RegistrationSpecBase {
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
-  "DraftRegistrationService" must {
+class DraftRegistrationServiceSpec extends RegistrationSpecBase with ScalaFutures {
 
+  val service: DraftRegistrationService = new DraftRegistrationService(registrationsRepository)
+
+  "DraftRegistrationService" when {
+
+    ".create" must {
+      "take matching and suitability answers and set them in the registrations repository" in {
+
+        implicit val hc: HeaderCarrier = HeaderCarrier()
+
+        val userAnswers = emptyMatchingAndSuitabilityUserAnswers
+          .set(TrustRegisteredOnlinePage, false).success.value
+          .set(TrustHaveAUTRPage, false).success.value
+          .set(ExpressTrustYesNoPage, true).success.value
+          .set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
+
+        val request = MatchingAndSuitabilityDataRequest(FakeRequest(), userAnswers.internalId, "sessionId", userAnswers, Organisation, Enrolments(Set()))
+
+        val draftId = Await.result(service.create(request), Duration.Inf)
+
+        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        verify(registrationsRepository).set(uaCaptor.capture)(any())
+
+        uaCaptor.getValue.draftId mustEqual draftId
+        uaCaptor.getValue.data mustEqual request.userAnswers.data
+        uaCaptor.getValue.internalAuthId mustEqual request.internalId
+      }
+    }
   }
 
 }

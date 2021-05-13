@@ -36,7 +36,7 @@ class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
         val redirectUrl = "redirect-url"
         when(navigator.agentDetailsJourneyUrl(any())).thenReturn(redirectUrl)
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent)
           .overrides(bind[TaskListNavigator].toInstance(navigator))
           .build()
 
@@ -53,7 +53,7 @@ class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
       "non-agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
         val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
 
