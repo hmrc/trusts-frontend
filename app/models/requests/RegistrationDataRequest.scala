@@ -17,9 +17,7 @@
 package models.requests
 
 import models.core.UserAnswers
-import pages.QuestionPage
-import play.api.libs.json.Reads
-import play.api.mvc.{Request, WrappedRequest}
+import play.api.mvc.Request
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
 case class RegistrationDataRequest[A](request: Request[A],
@@ -28,9 +26,4 @@ case class RegistrationDataRequest[A](request: Request[A],
                                       userAnswers: UserAnswers,
                                       affinityGroup: AffinityGroup,
                                       enrolments: Enrolments,
-                                      agentARN: Option[String] = None) extends WrappedRequest[A](request) {
-
-  def isAgent: Boolean = affinityGroup == AffinityGroup.Agent
-
-  def getPage[T](page: QuestionPage[T])(implicit rds: Reads[T]): Option[T] = userAnswers.get(page)
-}
+                                      agentARN: Option[String] = None) extends DataRequest[A](request)

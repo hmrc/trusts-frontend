@@ -17,7 +17,7 @@
 package models.requests
 
 import models.core.MatchingAndSuitabilityUserAnswers
-import play.api.mvc.{Request, WrappedRequest}
+import play.api.mvc.Request
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
 case class OptionalMatchingAndSuitabilityDataRequest[A](request: Request[A],
@@ -26,4 +26,4 @@ case class OptionalMatchingAndSuitabilityDataRequest[A](request: Request[A],
                                                         userAnswers: Option[MatchingAndSuitabilityUserAnswers],
                                                         affinityGroup: AffinityGroup,
                                                         enrolments: Enrolments,
-                                                        agentARN: Option[String] = None) extends WrappedRequest[A](request)
+                                                        agentARN: Option[String] = None) extends AffinityRequest[A](request)

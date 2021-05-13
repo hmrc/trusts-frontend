@@ -17,7 +17,7 @@
 package models.requests
 
 import models.core.UserAnswers
-import play.api.mvc.{Request, WrappedRequest}
+import play.api.mvc.Request
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
 case class OptionalRegistrationDataRequest[A](request: Request[A],
@@ -26,4 +26,4 @@ case class OptionalRegistrationDataRequest[A](request: Request[A],
                                               userAnswers: Option[UserAnswers],
                                               affinityGroup: AffinityGroup,
                                               enrolments: Enrolments,
-                                              agentARN: Option[String] = None) extends WrappedRequest[A](request)
+                                              agentARN: Option[String] = None) extends AffinityRequest[A](request)

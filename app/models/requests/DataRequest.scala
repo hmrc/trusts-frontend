@@ -16,11 +16,14 @@
 
 package models.requests
 
+import models.core.TrustsFrontendUserAnswers
+import pages.QuestionPage
+import play.api.libs.json.Reads
 import play.api.mvc.Request
-import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
-case class IdentifierRequest[A](request: Request[A],
-                                internalId: String,
-                                affinityGroup: AffinityGroup,
-                                enrolments: Enrolments,
-                                agentARN: Option[String] = None) extends AffinityRequest[A](request)
+abstract class DataRequest[A](request: Request[A]) extends AffinityRequest[A](request) {
+
+  val userAnswers: TrustsFrontendUserAnswers[_]
+
+  def getPage[T](page: QuestionPage[T])(implicit rds: Reads[T]): Option[T] = userAnswers.get(page)
+}
