@@ -21,7 +21,7 @@ import controllers.actions.register.{RegistrationDataRetrievalAction, Registrati
 import pages.register.TrustRegisteredOnlinePage
 import play.api.Logging
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
@@ -43,6 +43,12 @@ class IndexController @Inject()(
           logger.info(s"[Session ID: ${request.sessionId}] user is an agent, redirect to overview")
           Future.successful(Redirect(controllers.register.agents.routes.AgentOverviewController.onPageLoad()))
         case _ =>
+
+          def startRegistrationJourney(): Future[Result] = {
+            logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
+            Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+          }
+
           request.userAnswers match {
             case Some(userAnswers) =>
               userAnswers.get(TrustRegisteredOnlinePage) match {
@@ -53,12 +59,10 @@ class IndexController @Inject()(
                   logger.info(s"[Session ID: ${request.sessionId}] user previously indicated trust is registered online, redirecting to maintain")
                   Future.successful(Redirect(config.maintainATrustFrontendUrl))
                 case None =>
-                  logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
-                  Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+                  startRegistrationJourney()
               }
             case None =>
-              logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
-              Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
+              startRegistrationJourney()
           }
       }
   }

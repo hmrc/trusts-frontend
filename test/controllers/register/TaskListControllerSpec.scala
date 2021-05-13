@@ -126,7 +126,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId).url
+        redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad().url
 
         application.stop()
       }

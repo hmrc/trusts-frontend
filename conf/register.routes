@@ -31,10 +31,8 @@ POST       /which-reference                                                     
 
 GET        /reference-sent-by-post                                                                  controllers.register.RefSentByPostController.onPageLoad()
 
-GET        /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-have-utr                                                          controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-have-utr                                                          controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-have-utr                                                                          controllers.register.TrustHaveAUTRController.onPageLoad()
+POST       /trust-have-utr                                                                          controllers.register.TrustHaveAUTRController.onSubmit()
 
 GET        /:draftId/trust-utr                                                                      controllers.register.WhatIsTheUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-utr                                                                      controllers.register.WhatIsTheUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)

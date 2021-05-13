@@ -33,7 +33,7 @@ class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad().url
+      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
 
       application.stop()
     }

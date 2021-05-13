@@ -54,7 +54,7 @@ class TaskListController @Inject()(
       RequiredAnswer(TrustRegisteredOnlinePage, controllers.register.routes.TrustRegisteredOnlineController.onPageLoad())) andThen
       requiredAnswer(
         RequiredAnswer(
-          TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))
+          TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad())
       ) andThen requireDraft
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {

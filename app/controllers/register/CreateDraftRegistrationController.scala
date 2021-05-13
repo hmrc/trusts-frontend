@@ -34,7 +34,7 @@ class CreateDraftRegistrationController @Inject()(
   def create: Action[AnyContent] = identify.async { implicit request =>
     draftService.create(request).map {
       draftId =>
-        Redirect(routes.TrustRegisteredOnlineController.onPageLoad())
+        Redirect(routes.TaskListController.onPageLoad(draftId))
     }
   }
 

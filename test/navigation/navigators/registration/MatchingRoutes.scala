@@ -41,7 +41,7 @@ trait MatchingRoutes {
           userAnswers =>
 
             navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId)(userAnswers)
-              .mustBe(routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId))
+              .mustBe(routes.TrustHaveAUTRController.onPageLoad())
         }
       }
     }
@@ -55,7 +55,7 @@ trait MatchingRoutes {
             val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
 
             navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-              .mustBe(routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId))
+              .mustBe(routes.TrustHaveAUTRController.onPageLoad())
         }
       }
 
