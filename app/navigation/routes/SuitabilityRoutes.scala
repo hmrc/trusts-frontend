@@ -17,7 +17,6 @@
 package navigation.routes
 
 import controllers.register.suitability.routes
-import models.NormalMode
 import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register.suitability._
@@ -37,7 +36,7 @@ object SuitabilityRoutes extends Routes {
         ua,
         TaxLiabilityInCurrentTaxYearYesNoPage,
         routes.BeforeYouContinueController.onPageLoad(draftId),
-        routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, draftId)
+        routes.UndeclaredTaxLiabilityYesNoController.onPageLoad()
       )
     case UndeclaredTaxLiabilityYesNoPage => _ => ua =>
       yesNoNav(

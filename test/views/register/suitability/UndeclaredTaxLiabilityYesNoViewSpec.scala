@@ -17,7 +17,6 @@
 package views.register.suitability
 
 import forms.YesNoFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -34,7 +33,7 @@ class UndeclaredTaxLiabilityYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[UndeclaredTaxLiabilityYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), None, messageKeyPrefix)
 

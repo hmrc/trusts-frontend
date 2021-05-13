@@ -80,10 +80,8 @@ POST       /is-express-trust                                                    
 GET        /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
 POST       /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit()
 
-GET        /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad()
+POST       /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit()
 
 GET        /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onPageLoad(draftId: String)
 POST       /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onSubmit(draftId: String)
