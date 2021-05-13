@@ -20,7 +20,6 @@ import base.RegistrationSpecBase
 import connector.TrustsAuthConnector
 import forms.AccessCodeFormProvider
 import models.{TrustsAuthAllowed, TrustsAuthInternalServerError}
-import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -35,11 +34,9 @@ import scala.concurrent.Future
 class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
   private lazy val nonTaxableTrustRegistrationAccessCodeRoute: String =
-    routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(fakeDraftId).url
+    routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad().url
 
   private val form = new AccessCodeFormProvider()()
-
-  private val navigator: TaskListNavigator = mock[TaskListNavigator]
 
   private val mockTrustsAuthConnector = mock[TrustsAuthConnector]
 
@@ -49,7 +46,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, nonTaxableTrustRegistrationAccessCodeRoute)
 
@@ -60,64 +57,33 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" when {
 
-      "access code is authorised" when {
+      "access code is authorised" in {
 
-        "agent user" in {
+        when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
+          .thenReturn(Future.successful(TrustsAuthAllowed(authorised = true)))
 
-          val redirectUrl = "redirect-url"
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = AffinityGroup.Organisation)
+          .overrides(bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector))
+          .build()
 
-          when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
-            .thenReturn(Future.successful(TrustsAuthAllowed(authorised = true)))
+        val request = FakeRequest(POST, nonTaxableTrustRegistrationAccessCodeRoute)
+          .withFormUrlEncodedBody(("value", validAnswer))
 
-          when(navigator.agentDetailsJourneyUrl(any())).thenReturn(redirectUrl)
+        val result = route(application, request).value
 
-          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = AffinityGroup.Agent)
-            .overrides(
-              bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector),
-              bind[TaskListNavigator].toInstance(navigator)
-            )
-            .build()
+        status(result) mustEqual SEE_OTHER
 
-          val request = FakeRequest(POST, nonTaxableTrustRegistrationAccessCodeRoute)
-            .withFormUrlEncodedBody(("value", validAnswer))
+        redirectLocation(result).value mustEqual
+          controllers.register.routes.CreateDraftRegistrationController.create().url
 
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-
-          redirectLocation(result).value mustEqual redirectUrl
-
-          application.stop()
-        }
-
-        "non-agent user" in {
-
-          when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
-            .thenReturn(Future.successful(TrustsAuthAllowed(authorised = true)))
-
-          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = AffinityGroup.Organisation)
-            .overrides(bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector))
-            .build()
-
-          val request = FakeRequest(POST, nonTaxableTrustRegistrationAccessCodeRoute)
-            .withFormUrlEncodedBody(("value", validAnswer))
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-
-          redirectLocation(result).value mustEqual
-            controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
-
-          application.stop()
-        }
+        application.stop()
       }
 
       "access code is not authorised" in {
@@ -125,7 +91,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
         when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
           .thenReturn(Future.successful(TrustsAuthAllowed(authorised = false)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
           .overrides(bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector))
           .build()
 
@@ -144,7 +110,7 @@ class NonTaxableTrustRegistrationAccessCodeControllerSpec extends RegistrationSp
         when(mockTrustsAuthConnector.authoriseAccessCode(any())(any(), any()))
           .thenReturn(Future.successful(TrustsAuthInternalServerError))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
           .overrides(bind[TrustsAuthConnector].toInstance(mockTrustsAuthConnector))
           .build()
 

@@ -17,6 +17,7 @@
 package controllers.register
 
 import controllers.actions.register.RegistrationIdentifierAction
+import navigation.registration.TaskListNavigator
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.DraftRegistrationService
@@ -27,6 +28,7 @@ import scala.concurrent.ExecutionContext
 
 class CreateDraftRegistrationController @Inject()(
                                                    val controllerComponents: MessagesControllerComponents,
+                                                   navigator: TaskListNavigator,
                                                    draftService: DraftRegistrationService,
                                                    identify: RegistrationIdentifierAction
                                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -34,7 +36,11 @@ class CreateDraftRegistrationController @Inject()(
   def create: Action[AnyContent] = identify.async { implicit request =>
     draftService.create(request).map {
       draftId =>
-        Redirect(routes.TaskListController.onPageLoad(draftId))
+        if (request.isAgent) {
+          Redirect(navigator.agentDetailsJourneyUrl(draftId))
+        } else {
+          Redirect(routes.TaskListController.onPageLoad(draftId))
+        }
     }
   }
 

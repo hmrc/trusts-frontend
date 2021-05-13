@@ -88,8 +88,8 @@ POST       /:draftId/change-has-undeclared-tax-liability                        
 GET        /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onPageLoad(draftId: String)
 POST       /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onSubmit(draftId: String)
 
-GET        /:draftId/non-taxable-trust-registration-access-code                                     controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(draftId: String)
-POST       /:draftId/non-taxable-trust-registration-access-code                                     controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit(draftId: String)
+GET        /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad()
+POST       /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit()
 
 GET        /no-need-to-register                                                                     controllers.register.suitability.NoNeedToRegisterController.onPageLoad()
 

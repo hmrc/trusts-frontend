@@ -19,7 +19,6 @@ package controllers.register.suitability
 import config.FrontendAppConfig
 import controllers.actions.StandardActionSets
 import models.requests.RegistrationDataRequest
-import navigation.registration.TaskListNavigator
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -39,7 +38,6 @@ class BeforeYouContinueController @Inject()(
                                              existingTaxableView: BeforeYouContinueExistingTaxableView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
-                                             navigator: TaskListNavigator,
                                              featureFlagService: FeatureFlagService,
                                              appConfig: FrontendAppConfig
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -77,13 +75,9 @@ class BeforeYouContinueController @Inject()(
         Redirect {
           (isExpressTrust, isTrustTaxable, isNonTaxableAccessEnabled) match {
             case (Some(true), Some(false), true) =>
-              routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(draftId).url
+              routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad().url
             case _ =>
-              if (isAgentUser) {
-                navigator.agentDetailsJourneyUrl(draftId)
-              } else {
-                controllers.register.routes.TaskListController.onPageLoad(draftId).url
-              }
+              controllers.register.routes.CreateDraftRegistrationController.create().url
           }
         }
       }

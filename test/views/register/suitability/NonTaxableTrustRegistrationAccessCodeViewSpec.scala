@@ -33,7 +33,7 @@ class NonTaxableTrustRegistrationAccessCodeViewSpec extends StringViewBehaviours
     val view = viewFor[NonTaxableTrustRegistrationAccessCodeView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, fakeDraftId)(fakeRequest, messages)
+      view.apply(form)(fakeRequest, messages)
 
     behave like normalPageTitleWithCaption(
       applyView(form),

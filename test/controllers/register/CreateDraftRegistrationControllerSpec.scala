@@ -17,26 +17,54 @@
 package controllers.register
 
 import base.RegistrationSpecBase
+import navigation.registration.TaskListNavigator
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
   "CreateDraftRegistrationController" must {
-    "return Redirect and create a draft registration" in {
+    "create a draft registration and redirect" when {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "agent user" in {
 
-      val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
+        val navigator: TaskListNavigator = mock[TaskListNavigator]
+        val redirectUrl = "redirect-url"
+        when(navigator.agentDetailsJourneyUrl(any())).thenReturn(redirectUrl)
 
-      val result = route(application, request).value
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent)
+          .overrides(bind[TaskListNavigator].toInstance(navigator))
+          .build()
 
-      status(result) mustEqual SEE_OTHER
+        val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
 
-      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
+        val result = route(application, request).value
 
-      application.stop()
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustEqual redirectUrl
+
+        application.stop()
+      }
+
+      "non-agent user" in {
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+      }
     }
   }
-
 }
