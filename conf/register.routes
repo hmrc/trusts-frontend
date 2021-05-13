@@ -37,23 +37,19 @@ POST       /trust-have-utr                                                      
 GET        /trust-utr                                                                               controllers.register.WhatIsTheUTRController.onPageLoad()
 POST       /trust-utr                                                                               controllers.register.WhatIsTheUTRController.onSubmit()
 
-GET        /:draftId/trust-registered-with-uk-address                                               controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-registered-with-uk-address                                               controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-registered-with-uk-address                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-registered-with-uk-address                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-registered-with-uk-address                                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
+POST       /trust-registered-with-uk-address                                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit()
 
-GET        /:draftId/trust-postcode                                                                 controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-postcode                                                                 controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-postcode                                                          controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-postcode                                                          controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-postcode                                                                          controllers.register.PostcodeForTheTrustController.onPageLoad()
+POST       /trust-postcode                                                                          controllers.register.PostcodeForTheTrustController.onSubmit()
 
-GET        /:draftId/matching-failed                                                                controllers.register.FailedMatchController.onPageLoad(draftId: String)
+GET        /matching-failed                                                                         controllers.register.FailedMatchController.onPageLoad()
 
-GET        /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onPageLoad(draftId: String)
-POST       /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onSubmit(draftId: String)
+GET        /trust-already-registered                                                                controllers.register.TrustAlreadyRegisteredController.onPageLoad()
+POST       /trust-already-registered                                                                controllers.register.TrustAlreadyRegisteredController.onSubmit()
 
-GET        /:draftId/trust-name                                                                     controllers.register.MatchingNameController.onPageLoad(draftId: String)
-POST       /:draftId/trust-name                                                                     controllers.register.MatchingNameController.onSubmit(draftId: String)
+GET        /trust-name                                                                              controllers.register.MatchingNameController.onPageLoad()
+POST       /trust-name                                                                              controllers.register.MatchingNameController.onSubmit()
 
 GET        /problem-with-service                                                                    controllers.register.MatchingDownController.onPageLoad()
 
@@ -68,9 +64,9 @@ POST       /:draftId/declaration                                                
 
 GET        /:draftId/confirmation                                                                   controllers.register.ConfirmationController.onPageLoad(draftId: String)
 
-GET        /:draftId/your-draft-registration                                                        controllers.register.SummaryAnswerPageController.onPageLoad(draftId : String)
+GET        /:draftId/your-draft-registration                                                        controllers.register.SummaryAnswerPageController.onPageLoad(draftId: String)
 
-GET        /:draftId/your-declared-registration                                                     controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId : String)
+GET        /:draftId/your-declared-registration                                                     controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId: String)
 
 ## Suitability
 

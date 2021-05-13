@@ -20,7 +20,6 @@ import base.RegistrationSpecBase
 import controllers.Assets.Redirect
 import controllers.register.routes._
 import forms.YesNoFormProvider
-import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
@@ -29,7 +28,6 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.MatchingService
-import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.TrustRegisteredWithUkAddressYesNoView
 
 import scala.concurrent.Future
@@ -38,16 +36,13 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("trustRegisteredWithUkAddress")
 
-  private lazy val trustRegisteredWithUkAddressYesNoRoute: String = routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId).url
-  private lazy val postcodeRoute: String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId).url
-  private lazy val taskListRoute: String = routes.TaskListController.onPageLoad(fakeDraftId).url
-  private lazy val agentDetailsRoute: String = fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
+  private lazy val trustRegisteredWithUkAddressYesNoRoute: String = routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad().url
 
   "TrustRegisteredWithUkAddressYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, trustRegisteredWithUkAddressYesNoRoute)
 
@@ -58,14 +53,14 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers
         .set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -79,14 +74,14 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(request, messages).toString
+        view(form.fill(true))(request, messages).toString
 
       application.stop()
     }
 
     "redirect to PostcodeForTheTrust page when YES submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
         .withFormUrlEncodedBody(("value", "true"))
@@ -95,60 +90,37 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual postcodeRoute
+      redirectLocation(result).value mustEqual routes.PostcodeForTheTrustController.onPageLoad().url
 
       application.stop()
     }
 
-    "redirect to Task List when non-agent and valid data is submitted" in {
+    "redirect when valid data is submitted" in {
+
+      val redirectUrl = "redirect-url"
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
+      when(mockMatchingService.matching(any(), any())(any(), any())).thenReturn(Future.successful(Redirect(redirectUrl)))
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[MatchingService].toInstance(mockMatchingService))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
+        .overrides(bind[MatchingService].toInstance(mockMatchingService))
+        .build()
 
-      val request =
-        FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
-          .withFormUrlEncodedBody(("value", "false"))
+      val request = FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
+        .withFormUrlEncodedBody(("value", "false"))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual taskListRoute
-
-      application.stop()
-    }
-
-    "redirect to Agent Details when agent and valid data is submitted" in {
-
-      val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(agentDetailsRoute)))
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-          .overrides(bind[MatchingService].toInstance(mockMatchingService))
-          .build()
-
-      val request =
-        FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
-          .withFormUrlEncodedBody(("value", "false"))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual agentDetailsRoute
+      redirectLocation(result).value mustEqual redirectUrl
 
       application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
         .withFormUrlEncodedBody(("value", ""))
@@ -162,7 +134,7 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }
@@ -186,9 +158,8 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, trustRegisteredWithUkAddressYesNoRoute)
+        .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

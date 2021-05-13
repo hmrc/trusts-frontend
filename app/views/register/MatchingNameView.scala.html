@@ -17,32 +17,32 @@
 @import controllers.register.routes._
 
 @this(
-main_template: MainTemplate,
-formHelper: FormWithCSRF
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF
 )
 
-@(form: Form[_], draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-               title = s"${errorPrefix(form)}${messages("trustName.title")}"
-               ) {
+   title = s"${errorPrefix(form)}${messages("trustName.title")}"
+) {
 
-@formHelper(action = MatchingNameController.onSubmit(draftId), 'autoComplete -> "on") {
+    @formHelper(action = MatchingNameController.onSubmit(), 'autoComplete -> "on") {
 
-@components.back_link()
+        @components.back_link()
 
-@components.error_summary(form.errors)
+        @components.error_summary(form.errors)
 
-@components.input_text(
-                       field = form("value"),
-                       label = messages("trustName.heading"),
-                       labelAsHeading = true,
-                       hint = Some(messages("trustName.hint.hasUtr")),
-                       labelClass = Some("heading-large"),
-                       autocomplete = Some("name")
-                      )
+        @components.input_text(
+            field = form("value"),
+            label = messages("trustName.heading"),
+            labelAsHeading = true,
+            hint = Some(messages("trustName.hint.hasUtr")),
+            labelClass = Some("heading-large"),
+            autocomplete = Some("name")
+        )
 
-@components.submit_button()
+        @components.submit_button()
 
-  }
+    }
 }

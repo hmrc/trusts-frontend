@@ -17,11 +17,10 @@
 package controllers.register
 
 import controllers.actions.StandardActionSets
-import models.requests.RegistrationDataRequest
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import repositories.RegistrationsRepository
+import repositories.CacheRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustAlreadyRegisteredView
 
@@ -30,27 +29,24 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TrustAlreadyRegisteredController @Inject()(
                                                   override val messagesApi: MessagesApi,
-                                                  registrationsRepository: RegistrationsRepository,
-                                                  standardActionSets: StandardActionSets,
+                                                  cacheRepository: CacheRepository,
+                                                  actions: StandardActionSets,
                                                   val controllerComponents: MessagesControllerComponents,
                                                   view: TrustAlreadyRegisteredView
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithRegistrationData(draftId)
-
   private def redirect(): Result = Redirect(routes.WhatIsTheUTRController.onPageLoad())
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       request.userAnswers.get(WhatIsTheUTRPage) match {
-        case Some(utr) => Ok(view(draftId, utr, request.isAgent))
+        case Some(utr) => Ok(view(utr, request.isAgent))
         case _ => redirect()
       }
   }
 
-  def onSubmit(draftId : String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       for {
@@ -60,7 +56,7 @@ class TrustAlreadyRegisteredController @Inject()(
           .flatMap(_.remove(TrustRegisteredWithUkAddressYesNoPage))
           .flatMap(_.remove(PostcodeForTheTrustPage))
         )
-        _ <- registrationsRepository.set(updatedAnswers)
+        _ <- cacheRepository.set(updatedAnswers)
       } yield redirect()
   }
 }

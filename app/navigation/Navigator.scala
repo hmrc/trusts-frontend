@@ -34,7 +34,7 @@ class Navigator @Inject()(config: FrontendAppConfig) {
   }
 
   protected def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] =
-    MatchingRoutes.route(draftId, config, is5mldEnabled) orElse
+    MatchingRoutes.route(config, is5mldEnabled) orElse
       SuitabilityRoutes.route(draftId, is5mldEnabled) orElse
       defaultRoute
 

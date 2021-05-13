@@ -27,10 +27,11 @@ class FailedMatchController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        identify: RegistrationIdentifierAction,
                                        val controllerComponents: MessagesControllerComponents,
-                                       view: FailedMatchView) extends FrontendBaseController with I18nSupport {
+                                       view: FailedMatchView
+                                     ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(draftId: String): Action[AnyContent] = identify {
+  def onPageLoad(): Action[AnyContent] = identify {
     implicit request =>
-      Ok(view(draftId))
+      Ok(view())
   }
 }

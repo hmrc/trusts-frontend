@@ -85,7 +85,7 @@ class TaskListController @Inject()(
         case (true, Some(Success)) | (false, _) =>
           renderView(request.affinityGroup)
         case (_, Some(AlreadyRegistered)) | (_, Some(Failed)) =>
-          Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId).url))
+          Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad().url))
         case _ =>
           Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad().url))
       }

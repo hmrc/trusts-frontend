@@ -19,7 +19,6 @@ package controllers.register
 import base.RegistrationSpecBase
 import controllers.Assets.Redirect
 import forms.PostcodeForTheTrustFormProvider
-import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.PostcodeForTheTrustPage
@@ -28,7 +27,6 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.MatchingService
-import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.PostcodeForTheTrustView
 
 import scala.concurrent.Future
@@ -36,11 +34,9 @@ import scala.concurrent.Future
 class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new PostcodeForTheTrustFormProvider()
-  val form : Form[String] = formProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val postcodeForTheTrustRoute : String = routes.PostcodeForTheTrustController.onPageLoad(NormalMode, fakeDraftId).url
-  lazy val taskListRoute: String = routes.TaskListController.onPageLoad(fakeDraftId).url
-  private lazy val agentDetailsRoute: String = fakeFrontendAppConfig.agentDetailsFrontendUrl(fakeDraftId)
+  lazy val postcodeForTheTrustRoute: String = routes.PostcodeForTheTrustController.onPageLoad().url
 
   val validAnswer: String = "AA9A 9AA"
 
@@ -48,7 +44,7 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, postcodeForTheTrustRoute)
 
@@ -59,14 +55,14 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(PostcodeForTheTrustPage, validAnswer).success.value
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers.set(PostcodeForTheTrustPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -79,64 +75,40 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), NormalMode, fakeDraftId)(request, messages).toString
+        view(form.fill(validAnswer))(request, messages).toString
 
       application.stop()
     }
 
-    "redirect to Task List when non-agent and valid data is submitted" in {
+    "redirect when valid data is submitted" in {
+
+      val redirectUrl = "redirect-url"
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(taskListRoute)))
+      when(mockMatchingService.matching(any(), any())(any(), any())).thenReturn(Future.successful(Redirect(redirectUrl)))
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[MatchingService].toInstance(mockMatchingService))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
+        .overrides(bind[MatchingService].toInstance(mockMatchingService))
+        .build()
 
-      val request =
-        FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", validAnswer))
+      val request = FakeRequest(POST, postcodeForTheTrustRoute)
+        .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual taskListRoute
-
-      application.stop()
-    }
-
-    "redirect to Agent Details when agent and valid data is submitted" in {
-
-      val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any(), any())(any(), any())).thenReturn(Future.successful(Redirect(agentDetailsRoute)))
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-          .overrides(bind[MatchingService].toInstance(mockMatchingService))
-          .build()
-
-      val request =
-        FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", validAnswer))
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-
-      redirectLocation(result).value mustEqual agentDetailsRoute
+      redirectLocation(result).value mustEqual redirectUrl
 
       application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, postcodeForTheTrustRoute)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, postcodeForTheTrustRoute)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -147,7 +119,7 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }

@@ -187,7 +187,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
             status(result) mustEqual SEE_OTHER
 
-            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
+            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
 
             application.stop()
           }
@@ -210,7 +210,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
             status(result) mustEqual SEE_OTHER
 
-            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
+            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
 
             application.stop()
           }

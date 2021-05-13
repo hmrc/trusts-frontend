@@ -92,7 +92,7 @@ trait MatchingRoutes {
             userAnswers =>
 
               navigator.nextPage(WhatIsTheUTRPage, NormalMode, fakeDraftId)(userAnswers)
-                .mustBe(controllers.register.routes.MatchingNameController.onPageLoad(fakeDraftId))
+                .mustBe(controllers.register.routes.MatchingNameController.onPageLoad())
           }
         }
 
@@ -103,7 +103,7 @@ trait MatchingRoutes {
               val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
 
               navigator.nextPage(MatchingNamePage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad())
           }
         }
       }

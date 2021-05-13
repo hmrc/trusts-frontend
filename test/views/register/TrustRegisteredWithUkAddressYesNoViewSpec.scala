@@ -22,13 +22,13 @@ import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
 import views.html.register.TrustRegisteredWithUkAddressYesNoView
 
-class TaxRegisteredWithUkAddressYesNoViewSpec extends YesNoViewBehaviours {
+class TrustRegisteredWithUkAddressYesNoViewSpec extends YesNoViewBehaviours {
 
   private val messageKeyPrefix = "trustRegisteredWithUkAddress"
 
   override val form: Form[Boolean] = new YesNoFormProvider().withPrefix(messageKeyPrefix)
 
-  "TaxRegisteredWithUkAddressYesNo View" must {
+  "TrustRegisteredWithUkAddressYesNoView" must {
 
     val view = viewFor[TrustRegisteredWithUkAddressYesNoView](Some(emptyUserAnswers))
 
@@ -39,7 +39,7 @@ class TaxRegisteredWithUkAddressYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like yesNoPage(form, applyView, None, messageKeyPrefix, Some(messageKeyPrefix))
+    behave like yesNoPage(form, applyView, None, messageKeyPrefix, None)
 
     behave like pageWithASubmitButton(applyView(form))
   }

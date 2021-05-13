@@ -25,11 +25,15 @@ class FailedMatchViewSpec extends ViewBehaviours {
 
     val view = viewFor[FailedMatchView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(fakeDraftId)(fakeRequest, messages)
+    val applyView = view.apply()(fakeRequest, messages)
 
-    behave like normalPage(applyView, None, "failedMatch","paragraph1", "paragraph2","paragraph3",
-      "paragraph4", "paragraph5","bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6")
-
+    behave like normalPage(
+      view = applyView,
+      sectionKey = None,
+      messageKeyPrefix = "failedMatch",
+      expectedGuidanceKeys = "paragraph1", "paragraph2","paragraph3", "paragraph4", "paragraph5",
+      "bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6"
+    )
 
   }
 }

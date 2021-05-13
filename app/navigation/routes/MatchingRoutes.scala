@@ -18,7 +18,6 @@ package navigation.routes
 
 import config.FrontendAppConfig
 import controllers.register.routes
-import models.NormalMode
 import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register._
@@ -27,11 +26,11 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 object MatchingRoutes extends Routes {
 
-  def route(draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
+  def route(config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
     case TrustRegisteredOnlinePage => _ => ua => redirectToIdentifierQuestion(ua, is5mldEnabled)
     case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, config, is5mldEnabled)
-    case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad(draftId)
-    case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, draftId)
+    case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad()
+    case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
   }
 
   private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_], is5mldEnabled: Boolean): Call = {
