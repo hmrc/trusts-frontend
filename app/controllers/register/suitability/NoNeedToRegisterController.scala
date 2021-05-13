@@ -31,7 +31,7 @@ class NoNeedToRegisterController @Inject()(
                                             view: NoNeedToRegisterView
                                           ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithRegistrationData(draftId) {
+  def onPageLoad(): Action[AnyContent] = standardActionSets.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       Ok(view(request.isAgent))

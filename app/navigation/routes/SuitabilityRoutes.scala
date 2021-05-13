@@ -54,10 +54,10 @@ object SuitabilityRoutes extends Routes {
         answers,
         ExpressTrustYesNoPage,
         routes.BeforeYouContinueController.onPageLoad(draftId),
-        routes.NoNeedToRegisterController.onPageLoad(draftId)
+        routes.NoNeedToRegisterController.onPageLoad()
       )
     } else {
-      routes.NoNeedToRegisterController.onPageLoad(draftId)
+      routes.NoNeedToRegisterController.onPageLoad()
     }
   }
 

@@ -17,8 +17,8 @@
 package controllers.register.suitability
 
 import base.RegistrationSpecBase
+import controllers.actions.register._
 import controllers.actions.{FakeIdentifyForRegistration, FakeRegistrationDataRetrievalAction}
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationDataRequiredActionImpl, RegistrationDataRetrievalAction, RegistrationIdentifierAction}
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -31,8 +31,8 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.FeatureFlagService
-import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import views.html.register.suitability._
 
 import scala.concurrent.Future
@@ -169,7 +169,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(fakeDraftId).url
+        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad().url
 
         application.stop()
       }
@@ -199,7 +199,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(fakeDraftId).url
+        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad().url
 
         application.stop()
       }

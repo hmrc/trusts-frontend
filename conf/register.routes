@@ -91,7 +91,7 @@ POST       /:draftId/before-you-continue                                        
 GET        /:draftId/non-taxable-trust-registration-access-code                                     controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(draftId: String)
 POST       /:draftId/non-taxable-trust-registration-access-code                                     controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit(draftId: String)
 
-GET        /:draftId/no-need-to-register                                                            controllers.register.suitability.NoNeedToRegisterController.onPageLoad(draftId: String)
+GET        /no-need-to-register                                                                     controllers.register.suitability.NoNeedToRegisterController.onPageLoad()
 
 ## Agents
 

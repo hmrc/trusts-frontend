@@ -57,7 +57,7 @@ class BeforeYouContinueController @Inject()(
           Ok(existingTaxableView(draftId))
         case (_, Some(false)) =>
           if (appConfig.disableNonTaxableRegistrations) {
-            Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad(draftId))
+            Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad())
           } else {
             if (isAgentUser) {
               Ok(nonTaxableAgentView(draftId))

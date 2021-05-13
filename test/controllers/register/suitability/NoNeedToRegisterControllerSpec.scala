@@ -24,7 +24,7 @@ import views.html.register.suitability.NoNeedToRegisterView
 
 class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
 
-  private lazy val noNeedToRegisterRoute: String = routes.NoNeedToRegisterController.onPageLoad(fakeDraftId).url
+  private lazy val noNeedToRegisterRoute: String = routes.NoNeedToRegisterController.onPageLoad().url
 
   "NoNeedToRegister Controller" must {
 
@@ -32,7 +32,7 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
 
       "agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Agent).build()
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent).build()
 
         val request = FakeRequest(GET, noNeedToRegisterRoute)
 
@@ -50,7 +50,7 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
 
       "non-agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), affinityGroup = Organisation).build()
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Organisation).build()
 
         val request = FakeRequest(GET, noNeedToRegisterRoute)
 

@@ -70,7 +70,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, false).success.value
 
               navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId)(answers)
-                .mustBe(routes.NoNeedToRegisterController.onPageLoad(fakeDraftId))
+                .mustBe(routes.NoNeedToRegisterController.onPageLoad())
           }
         }
       }
@@ -145,7 +145,7 @@ trait SuitabilityRoutes {
                   .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
 
                 navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-                  .mustBe(routes.NoNeedToRegisterController.onPageLoad(fakeDraftId))
+                  .mustBe(routes.NoNeedToRegisterController.onPageLoad())
             }
           }
         }
