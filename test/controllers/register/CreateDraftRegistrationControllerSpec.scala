@@ -17,6 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
+import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
@@ -33,7 +34,7 @@ class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
+      redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, fakeDraftId).url
 
       application.stop()
     }
