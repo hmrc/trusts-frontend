@@ -23,10 +23,8 @@ GET        /logout                                                              
 GET        /keep-alive                                                                              controllers.SessionTimeoutController.keepAlive
 GET        /timeout                                                                                 controllers.SessionTimeoutController.timeout
 
-GET        /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad()
+POST       /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onSubmit()
 
 GET        /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onPageLoad(draftId: String)
 POST       /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onSubmit(draftId: String)

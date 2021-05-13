@@ -17,7 +17,6 @@
 package controllers.register
 
 import controllers.actions.register.RegistrationIdentifierAction
-import models.NormalMode
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.DraftRegistrationService
@@ -35,7 +34,7 @@ class CreateDraftRegistrationController @Inject()(
   def create: Action[AnyContent] = identify.async { implicit request =>
     draftService.create(request).map {
       draftId =>
-        Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))
+        Redirect(routes.TrustRegisteredOnlineController.onPageLoad())
     }
   }
 

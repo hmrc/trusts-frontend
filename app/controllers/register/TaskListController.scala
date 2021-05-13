@@ -51,7 +51,7 @@ class TaskListController @Inject()(
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRequiredAnswer(draftId,
-      RequiredAnswer(TrustRegisteredOnlinePage,controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))) andThen
+      RequiredAnswer(TrustRegisteredOnlinePage, controllers.register.routes.TrustRegisteredOnlineController.onPageLoad())) andThen
       requiredAnswer(
         RequiredAnswer(
           TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))

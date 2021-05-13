@@ -19,7 +19,7 @@ package navigation.routes
 import config.FrontendAppConfig
 import controllers.register.routes
 import models.NormalMode
-import models.core.UserAnswers
+import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register._
 import play.api.mvc.Call
@@ -27,21 +27,21 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 object MatchingRoutes extends Routes {
 
-  def route(draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  def route(draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
     case TrustRegisteredOnlinePage => _ => ua => redirectToIdentifierQuestion(ua, draftId, is5mldEnabled)
     case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config, is5mldEnabled)
     case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad(draftId)
     case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, draftId)
   }
 
-  private def redirectToIdentifierQuestion(answers: UserAnswers, draftId: String, is5mldEnabled: Boolean): Call = {
+  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_], draftId: String, is5mldEnabled: Boolean): Call = {
     answers.get(TrustRegisteredOnlinePage) match {
       case Some(true) if is5mldEnabled => routes.WhichIdentifierController.onPageLoad(draftId)
       case _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     }
   }
 
-  private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): Call = {
+  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[_], draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {

@@ -16,42 +16,40 @@
 
 package controllers.register
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.register.{MatchingAndSuitabilityDataRequiredAction, MatchingAndSuitabilityDataRetrievalAction, RegistrationIdentifierAction}
 import forms.YesNoFormProvider
-
-import javax.inject.Inject
-import models.Mode
-import models.requests.RegistrationDataRequest
+import models.requests.MatchingAndSuitabilityDataRequest
 import navigation.Navigator
 import pages.register.TrustRegisteredOnlinePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.CacheRepository
 import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustRegisteredOnlineView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TrustRegisteredOnlineController @Inject()(
                                                  override val messagesApi: MessagesApi,
-                                                 registrationsRepository: RegistrationsRepository,
+                                                 cacheRepository: CacheRepository,
                                                  navigator: Navigator,
                                                  identify: RegistrationIdentifierAction,
-                                                 getData: DraftIdRetrievalActionProvider,
-                                                 requireData: RegistrationDataRequiredAction,
+                                                 getData: MatchingAndSuitabilityDataRetrievalAction,
+                                                 requireData: MatchingAndSuitabilityDataRequiredAction,
                                                  featureFlagService: FeatureFlagService,
                                                  formProvider: YesNoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: TrustRegisteredOnlineView
                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] = identify andThen getData(draftId) andThen requireData
+  private def actions: ActionBuilder[MatchingAndSuitabilityDataRequest, AnyContent] = identify andThen getData andThen requireData
 
-  val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
+  private val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrustRegisteredOnlinePage) match {
@@ -59,22 +57,22 @@ class TrustRegisteredOnlineController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredOnlinePage, value))
             is5mldEnabled <- featureFlagService.is5mldEnabled()
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, mode, draftId, is5mldEnabled = is5mldEnabled)(updatedAnswers))
+            _ <- cacheRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, is5mldEnabled = is5mldEnabled)(updatedAnswers))
         }
       )
   }

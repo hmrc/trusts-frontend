@@ -18,7 +18,6 @@ package controllers.register
 
 import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
 import handlers.ErrorHandler
-import models.NormalMode
 import models.core.UserAnswers
 import models.core.http.LeadTrusteeType
 import models.registration.pages.RegistrationStatus
@@ -103,11 +102,11 @@ class ConfirmationController @Inject()(
               renderView(trn, userAnswers, draftId)
           }
         case RegistrationStatus.InProgress =>
-          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration inProgress status,redirecting to task list.")
+          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration inProgress status, redirecting to task list.")
           Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
         case RegistrationStatus.NotStarted =>
-          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration NotStarted status,redirecting to trust registered page online.")
-          Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId)))
+          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration NotStarted status, redirecting to trust registered page online.")
+          Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad()))
       }
   }
 }

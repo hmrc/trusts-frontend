@@ -18,7 +18,7 @@ package navigation.routes
 
 import controllers.register.suitability.routes
 import models.NormalMode
-import models.core.UserAnswers
+import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register.suitability._
 import play.api.mvc.Call
@@ -26,7 +26,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 
 object SuitabilityRoutes extends Routes {
 
-  def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
+  def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
     case ExpressTrustYesNoPage => _ => ua =>
       ua.get(TrustTaxableYesNoPage) match {
         case Some(true) =>
@@ -53,7 +53,7 @@ object SuitabilityRoutes extends Routes {
       )
   }
 
-  private def nonTaxableRoute(draftId: String, is5mldEnabled: Boolean, answers: UserAnswers): Call = {
+  private def nonTaxableRoute(draftId: String, is5mldEnabled: Boolean, answers: TrustsFrontendUserAnswers[_]): Call = {
     if (is5mldEnabled) {
       yesNoNav(
         answers,

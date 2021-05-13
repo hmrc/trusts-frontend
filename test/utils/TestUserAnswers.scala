@@ -16,19 +16,20 @@
 
 package utils
 
-import models.core.UserAnswers
 import models.core.pages.{Declaration, FullName}
+import models.core.{MatchingAndSuitabilityUserAnswers, UserAnswers}
 import models.registration.Matched.{Failed, Success}
 import org.scalatest.TryValues
 import pages.register._
-import play.api.libs.json.Json
 
 object TestUserAnswers extends TryValues {
 
   lazy val draftId = "id"
   lazy val userInternalId = "internalId"
 
-  def emptyUserAnswers: UserAnswers = models.core.UserAnswers(draftId, Json.obj(), internalAuthId = userInternalId)
+  def emptyUserAnswers: UserAnswers = UserAnswers(draftId = draftId, internalAuthId = userInternalId)
+
+  def emptyMatchingAndSuitabilityUserAnswers: MatchingAndSuitabilityUserAnswers = MatchingAndSuitabilityUserAnswers(internalId = userInternalId)
 
   def withDeclaration(userAnswers: UserAnswers): UserAnswers = {
     userAnswers

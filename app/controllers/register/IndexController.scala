@@ -18,7 +18,6 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
-import models.NormalMode
 import pages.register.TrustRegisteredOnlinePage
 import play.api.Logging
 import play.api.i18n.I18nSupport
@@ -55,7 +54,7 @@ class IndexController @Inject()(
                   Future.successful(Redirect(config.maintainATrustFrontendUrl))
                 case None =>
                   logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
-                  Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, userAnswers.draftId)))
+                  Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
               }
             case None =>
               logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")

@@ -30,10 +30,10 @@ import java.time.LocalDateTime
 import scala.util.{Success, Try}
 
 final case class UserAnswers(draftId: String,
-                                         override val data: JsObject = Json.obj(),
-                                         progress: RegistrationStatus = NotStarted,
-                                         createdAt: LocalDateTime = LocalDateTime.now,
-                                         internalAuthId: String) extends TrustsFrontendUserAnswers[UserAnswers] {
+                             override val data: JsObject = Json.obj(),
+                             progress: RegistrationStatus = NotStarted,
+                             createdAt: LocalDateTime = LocalDateTime.now,
+                             internalAuthId: String) extends TrustsFrontendUserAnswers[UserAnswers] {
 
   def isTaxable: Boolean = !this.get(TrustTaxableYesNoPage).contains(false)
 

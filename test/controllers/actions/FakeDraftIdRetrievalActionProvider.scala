@@ -17,27 +17,26 @@
 package controllers.actions
 
 import controllers.actions.register.{DraftIdDataRetrievalAction, DraftIdRetrievalActionProvider}
-import models.core.UserAnswers
-import org.mockito.Matchers._
-import org.mockito.Mockito._
+import models.core.{TrustsFrontendUserAnswers, UserAnswers}
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import repositories.RegistrationsRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeDraftIdRetrievalActionProvider(dataToReturn : Option[UserAnswers]) extends DraftIdRetrievalActionProvider with MockitoSugar {
+class FakeDraftIdRetrievalActionProvider(dataToReturn: Option[TrustsFrontendUserAnswers[_]]) extends DraftIdRetrievalActionProvider with MockitoSugar {
 
   implicit val executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global
 
   val mockedRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
-  when(mockedRegistrationsRepository.get(any())(any())).thenReturn(Future.successful(dataToReturn))
+  dataToReturn match {
+    case Some(x: UserAnswers) => when(mockedRegistrationsRepository.get(any())(any())).thenReturn(Future.successful(Some(x)))
+    case _ => when(mockedRegistrationsRepository.get(any())(any())).thenReturn(Future.successful(None))
+  }
 
-  override def apply(draftId : String) = new DraftIdDataRetrievalAction(draftId, mockedRegistrationsRepository, executionContext)
+  override def apply(draftId: String) = new DraftIdDataRetrievalAction(draftId, mockedRegistrationsRepository, executionContext)
 
 }
-
-
-
-
