@@ -20,19 +20,19 @@ import forms.WhichIdentifierFormProvider
 import models.WhichIdentifier
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.ViewBehaviours
+import views.behaviours.OptionsViewBehaviours
 import views.html.register.WhichIdentifierView
 
-class WhichIdentifierViewSpec extends ViewBehaviours {
+class WhichIdentifierViewSpec extends OptionsViewBehaviours {
 
   val messageKeyPrefix = "whichIdentifier"
 
   val form = new WhichIdentifierFormProvider()()
 
-  val view = viewFor[WhichIdentifierView](Some(emptyUserAnswers))
+  val view: WhichIdentifierView = viewFor[WhichIdentifierView](Some(emptyUserAnswers))
 
   def applyView(form: Form[_]): HtmlFormat.Appendable =
-    view.apply(form, fakeDraftId)(fakeRequest, messages)
+    view.apply(form)(fakeRequest, messages)
 
   "WhichIdentifierView" must {
 
@@ -41,40 +41,7 @@ class WhichIdentifierViewSpec extends ViewBehaviours {
     behave like pageWithBackLink(applyView(form))
 
     behave like pageWithASubmitButton(applyView(form))
-  }
 
-  "WhichIdentifierView" when {
-
-    "rendered" must {
-
-      "contain radio buttons for the value" in {
-
-        val doc = asDocument(applyView(form))
-
-        for (option <- WhichIdentifier.options) {
-          assertContainsRadioButton(doc, option._1.id, "value", option._1.value, false)
-          assertRadioButtonContainsHint(doc, option._1.id + ".hint", messages(option._2))
-        }
-      }
-    }
-
-    for (option <- WhichIdentifier.options) {
-
-      s"rendered with a value of '${option._1.value}'" must {
-
-        s"have the '${option._1.value}' radio button selected" in {
-
-          val doc = asDocument(applyView(form.bind(Map("value" -> s"${option._1.value}"))))
-
-          assertContainsRadioButton(doc, option._1.id, "value", option._1.value, true)
-          assertRadioButtonContainsHint(doc, option._1.id + ".hint", messages(option._2))
-
-          for (unselectedOption <- WhichIdentifier.options.filterNot(o => o == option)) {
-            assertContainsRadioButton(doc, unselectedOption._1.id, "value", unselectedOption._1.value, false)
-            assertRadioButtonContainsHint(doc, unselectedOption._1.id + ".hint", messages(unselectedOption._2))
-          }
-        }
-      }
-    }
+    behave like pageWithOptionsWithHints(form, applyView, WhichIdentifier.options)
   }
 }

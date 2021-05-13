@@ -26,10 +26,10 @@ GET        /timeout                                                             
 GET        /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad()
 POST       /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onSubmit()
 
-GET        /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onPageLoad(draftId: String)
-POST       /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onSubmit(draftId: String)
+GET        /which-reference                                                                         controllers.register.WhichIdentifierController.onPageLoad()
+POST       /which-reference                                                                         controllers.register.WhichIdentifierController.onSubmit()
 
-GET        /:draftId/reference-sent-by-post                                                         controllers.register.RefSentByPostController.onPageLoad(draftId: String)
+GET        /reference-sent-by-post                                                                  controllers.register.RefSentByPostController.onPageLoad()
 
 GET        /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)

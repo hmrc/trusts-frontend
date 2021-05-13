@@ -48,7 +48,7 @@ class RemoveDraftYesNoController @Inject()(
   private def redirect: Result = Redirect(routes.AgentOverviewController.onPageLoad())
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithData(draftId)
+    standardActionSets.identifiedUserWithRegistrationData(draftId)
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>

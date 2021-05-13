@@ -49,7 +49,7 @@ class TrustHaveAUTRController @Inject()(
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] = identify andThen getData(draftId) andThen requireData
 
-  val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
+  private val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

@@ -16,15 +16,16 @@
 
 package views.behaviours
 
+import models.WhichIdentifier
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import viewmodels.RadioOption
 
 trait OptionsViewBehaviours extends ViewBehaviours {
 
-  def pageWithOptions[T](form : Form[T],
-                      createView: Form[T] => HtmlFormat.Appendable,
-                      options : Set[RadioOption]) : Unit = {
+  def pageWithOptions[T](form: Form[T],
+                         applyView: Form[T] => HtmlFormat.Appendable,
+                         options: List[RadioOption]): Unit = {
 
     "behave like a page with radio options" when {
 
@@ -32,7 +33,7 @@ trait OptionsViewBehaviours extends ViewBehaviours {
 
         "contain radio buttons for the values" in {
 
-          val doc = asDocument(createView(form))
+          val doc = asDocument(applyView(form))
 
           for (option <- options) {
             assertContainsRadioButton(doc, option.id, "value", option.value, false)
@@ -46,19 +47,57 @@ trait OptionsViewBehaviours extends ViewBehaviours {
 
           s"have the '${option.value}' radio button selected" in {
 
-            val doc = asDocument(createView(form.bind(Map("value" -> s"${option.value}"))))
+            val doc = asDocument(applyView(form.bind(Map("value" -> s"${option.value}"))))
 
-            assertContainsRadioButton(doc, option.id, "value", option.value, true)
+            assertContainsRadioButton(doc, option.id, "value", option.value, isChecked = true)
 
             for (unselectedOption <- options.filterNot(o => o == option)) {
-              assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, false)
+              assertContainsRadioButton(doc, unselectedOption.id, "value", unselectedOption.value, isChecked = false)
             }
           }
         }
       }
     }
+  }
 
+  def pageWithOptionsWithHints[T](form: Form[T],
+                                  applyView: Form[T] => HtmlFormat.Appendable,
+                                  options: List[(RadioOption, String)]): Unit = {
 
+    "behave like a page with radio options" when {
+
+      "rendered" must {
+
+        "contain radio buttons for the values" in {
+
+          val doc = asDocument(applyView(form))
+
+          for (option <- options) {
+            assertContainsRadioButton(doc, option._1.id, "value", option._1.value, isChecked = false)
+            assertRadioButtonContainsHint(doc, option._1.id + ".hint", messages(option._2))
+          }
+        }
+      }
+
+      for (option <- options) {
+
+        s"rendered with a value of '${option._1.value}'" must {
+
+          s"have the '${option._1.value}' radio button selected" in {
+
+            val doc = asDocument(applyView(form.bind(Map("value" -> s"${option._1.value}"))))
+
+            assertContainsRadioButton(doc, option._1.id, "value", option._1.value, isChecked = true)
+            assertRadioButtonContainsHint(doc, option._1.id + ".hint", messages(option._2))
+
+            for (unselectedOption <- WhichIdentifier.options.filterNot(o => o == option)) {
+              assertContainsRadioButton(doc, unselectedOption._1.id, "value", unselectedOption._1.value, isChecked = false)
+              assertRadioButtonContainsHint(doc, unselectedOption._1.id + ".hint", messages(unselectedOption._2))
+            }
+          }
+        }
+      }
+    }
   }
 
 }

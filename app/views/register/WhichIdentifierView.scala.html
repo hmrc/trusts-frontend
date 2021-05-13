@@ -21,13 +21,13 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)} ${messages("whichIdentifier.title")}"
-    ) {
+) {
 
-    @formHelper(action = controllers.register.routes.WhichIdentifierController.onSubmit(draftId), 'autoComplete -> "off") {
+    @formHelper(action = controllers.register.routes.WhichIdentifierController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 

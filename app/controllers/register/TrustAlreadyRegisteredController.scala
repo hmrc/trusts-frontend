@@ -37,7 +37,7 @@ class TrustAlreadyRegisteredController @Inject()(
                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String) =
-    standardActionSets.identifiedUserWithData(draftId)
+    standardActionSets.identifiedUserWithRegistrationData(draftId)
 
   private def redirect(draftId: String): Result = Redirect(routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId))
 

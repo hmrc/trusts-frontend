@@ -41,7 +41,7 @@ class MatchingNameController @Inject()(
                                      view: MatchingNameView
                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = standardActions.identifiedUserWithData(draftId)
+  private def actions(draftId: String) = standardActions.identifiedUserWithRegistrationData(draftId)
 
   val form = formProvider()
 

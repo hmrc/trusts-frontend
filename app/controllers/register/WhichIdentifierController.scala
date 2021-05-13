@@ -39,22 +39,22 @@ class WhichIdentifierController @Inject()(
 
   private val form: Form[WhichIdentifier] = formProvider()
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions.identifiedUserWithData(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
-      Ok(view(form, draftId))
+      Ok(view(form))
   }
 
-  def onSubmit(draftId: String): Action[AnyContent] = actions.identifiedUserWithData(draftId) {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          BadRequest(view(formWithErrors, draftId)),
+          BadRequest(view(formWithErrors)),
 
         {
           case WhichIdentifier.UTRIdentifier => Redirect(appConfig.maintainATrustWithUTR)
           case WhichIdentifier.URNIdentifier => Redirect(appConfig.maintainATrustWithURN)
-          case WhichIdentifier.NoIdentifier => Redirect(controllers.register.routes.RefSentByPostController.onPageLoad(draftId))
+          case WhichIdentifier.NoIdentifier => Redirect(controllers.register.routes.RefSentByPostController.onPageLoad())
         }
       )
   }

@@ -45,7 +45,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject()(
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("trustRegisteredWithUkAddress")
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithData(draftId)
+    standardActionSets.identifiedUserWithRegistrationData(draftId)
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

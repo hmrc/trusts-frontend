@@ -31,7 +31,7 @@ trait MatchingRoutes {
 
   self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
 
-  def matchingRoutes()(implicit navigator : Navigator) = {
+  def matchingRoutes()(implicit navigator: Navigator): Unit = {
 
     "in 4mld mode" must {
 
@@ -66,7 +66,7 @@ trait MatchingRoutes {
             val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
 
             navigator.nextPage(TrustRegisteredOnlinePage, NormalMode, fakeDraftId, is5mldEnabled = true)(answers)
-              .mustBe(routes.WhichIdentifierController.onPageLoad(fakeDraftId))
+              .mustBe(routes.WhichIdentifierController.onPageLoad())
         }
       }
     }

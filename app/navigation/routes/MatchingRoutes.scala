@@ -36,7 +36,7 @@ object MatchingRoutes extends Routes {
 
   private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_], draftId: String, is5mldEnabled: Boolean): Call = {
     answers.get(TrustRegisteredOnlinePage) match {
-      case Some(true) if is5mldEnabled => routes.WhichIdentifierController.onPageLoad(draftId)
+      case Some(true) if is5mldEnabled => routes.WhichIdentifierController.onPageLoad()
       case _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
     }
   }

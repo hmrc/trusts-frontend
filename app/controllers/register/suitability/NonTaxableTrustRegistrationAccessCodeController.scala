@@ -49,7 +49,7 @@ class NonTaxableTrustRegistrationAccessCodeController @Inject()(
   private val messageKeyPrefix: String = "nonTaxableTrustRegistrationAccessCode"
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithData(draftId)
+    standardActionSets.identifiedUserWithRegistrationData(draftId)
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

@@ -60,7 +60,7 @@ class DeclarationController @Inject()(
   private val form: Form[Declaration] = formProvider()
 
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardAction.identifiedUserWithData(draftId) andThen registrationComplete andThen requireDraft
+    standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>

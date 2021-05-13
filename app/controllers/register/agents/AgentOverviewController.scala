@@ -57,7 +57,7 @@ class AgentOverviewController @Inject()(
     Redirect(controllers.register.routes.CreateDraftRegistrationController.create())
   }
 
-  def continue(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithData(draftId).async {
+  def continue(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithRegistrationData(draftId).async {
     implicit request =>
 
       (for {
@@ -76,7 +76,7 @@ class AgentOverviewController @Inject()(
       }
   }
 
-  def remove(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithData(draftId) {
+  def remove(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithRegistrationData(draftId) {
     Redirect(routes.RemoveDraftYesNoController.onPageLoad(draftId))
   }
 

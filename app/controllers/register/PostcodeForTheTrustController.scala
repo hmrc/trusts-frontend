@@ -43,7 +43,7 @@ class PostcodeForTheTrustController @Inject()(
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithData(draftId)
+    standardActionSets.identifiedUserWithRegistrationData(draftId)
 
   private val form: Form[String] = formProvider()
 

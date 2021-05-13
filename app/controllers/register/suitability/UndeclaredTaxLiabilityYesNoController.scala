@@ -47,7 +47,7 @@ class UndeclaredTaxLiabilityYesNoController @Inject()(
   val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.undeclaredTaxLiability")
 
   private def actions(draftId: String) =
-    standardActionSets.identifiedUserWithData(draftId)
+    standardActionSets.identifiedUserWithRegistrationData(draftId)
 
   def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
