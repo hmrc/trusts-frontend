@@ -18,7 +18,6 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import forms.DeclarationFormProvider
-import models.NormalMode
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
@@ -39,12 +38,10 @@ import views.html.register.DeclarationView
 
 import scala.concurrent.Future
 
-
 class DeclarationControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new DeclarationFormProvider()
   val form: Form[Declaration] = formProvider()
-  val name = "name"
 
   lazy val declarationRoute: String = routes.DeclarationController.onPageLoad(fakeDraftId).url
 
@@ -53,6 +50,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
   }
 
   when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
+
+  val validAnswer: Declaration = Declaration(FullName("First", None, "Last"), Some("email@email.com"))
 
   "Declaration Controller" must {
 
@@ -90,7 +89,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId,AffinityGroup.Organisation)(request, messages).toString
+        view(form, fakeDraftId, AffinityGroup.Organisation)(request, messages).toString
 
       application.stop()
     }
@@ -108,7 +107,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId,AffinityGroup.Agent)(request, messages).toString
+        view(form, fakeDraftId, AffinityGroup.Agent)(request, messages).toString
 
       application.stop()
     }
@@ -116,7 +115,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("email@email.com"))).success.value
+        .set(DeclarationPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -129,8 +128,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(Declaration(FullName("First",None, "Last"), Some("email@email.com"))),
-          NormalMode,fakeDraftId,AffinityGroup.Agent)(request, messages).toString
+        view(form.fill(validAnswer), fakeDraftId, AffinityGroup.Agent)(request, messages).toString
 
       application.stop()
     }
@@ -142,17 +140,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       val featureFlagService = mock[FeatureFlagService]
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-          .overrides(
-            bind[FeatureFlagService].toInstance(featureFlagService)
-          ).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        .overrides(
+          bind[FeatureFlagService].toInstance(featureFlagService)
+        ).build()
 
       when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-      val request =
-        FakeRequest(POST, declarationRoute)
-          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
       val result = route(application, request).value
 
@@ -169,17 +165,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       val featureFlagService = mock[FeatureFlagService]
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-          .overrides(
-            bind[FeatureFlagService].toInstance(featureFlagService)
-          ).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        .overrides(
+          bind[FeatureFlagService].toInstance(featureFlagService)
+        ).build()
 
       when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-      val request =
-        FakeRequest(POST, declarationRoute)
-          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
       val result = route(application, request).value
 
@@ -196,17 +190,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       val featureFlagService = mock[FeatureFlagService]
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-          .overrides(
-            bind[FeatureFlagService].toInstance(featureFlagService)
-          ).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
+        .overrides(
+          bind[FeatureFlagService].toInstance(featureFlagService)
+        ).build()
 
       when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-      val request =
-        FakeRequest(POST, declarationRoute)
-          .withFormUrlEncodedBody(("firstName", "value 1"), ("lastName", "value 2"))
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
       val result = route(application, request).value
 
@@ -220,9 +212,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
-      val request =
-        FakeRequest(POST, declarationRoute)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -233,7 +224,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode,fakeDraftId,AffinityGroup.Agent)(request, messages).toString
+        view(boundForm, fakeDraftId, AffinityGroup.Agent)(request, messages).toString
 
       application.stop()
     }
@@ -257,9 +248,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-      val request =
-        FakeRequest(POST, declarationRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
       val result = route(application, request).value
 

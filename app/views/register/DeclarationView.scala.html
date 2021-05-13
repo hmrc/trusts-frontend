@@ -15,7 +15,6 @@
  *@
 
 @import controllers.register.routes._
-@import models.Mode
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 @import config.FrontendAppConfig
@@ -26,11 +25,11 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], draftId: String, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)}${messages("declaration.title")}"
-    ) {
+) {
 
     @formHelper(action = DeclarationController.onSubmit(draftId), 'autoComplete -> "off") {
 

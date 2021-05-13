@@ -59,8 +59,8 @@ GET        /trust-utr-post                                                      
 
 GET        /:draftId/registration-progress                                                          controllers.register.TaskListController.onPageLoad(draftId: String)
 
-GET        /:draftId/declaration                                                                    controllers.register.DeclarationController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/declaration                                                                    controllers.register.DeclarationController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/declaration                                                                    controllers.register.DeclarationController.onPageLoad(draftId: String)
+POST       /:draftId/declaration                                                                    controllers.register.DeclarationController.onSubmit(draftId: String)
 
 GET        /:draftId/confirmation                                                                   controllers.register.ConfirmationController.onPageLoad(draftId: String)
 

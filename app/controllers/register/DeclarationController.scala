@@ -19,7 +19,6 @@ package controllers.register
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
-import models.Mode
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
@@ -62,7 +61,7 @@ class DeclarationController @Inject()(
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationPage) match {
@@ -70,16 +69,16 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId,request.affinityGroup))
+      Ok(view(preparedForm, draftId,request.affinityGroup))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
       implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, request.affinityGroup))),
+          Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
 
         value => {
 
