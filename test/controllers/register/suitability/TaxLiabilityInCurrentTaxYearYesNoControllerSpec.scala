@@ -20,7 +20,6 @@ package controllers.register.suitability
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.YesNoFormProvider
-import models.NormalMode
 import org.joda.time.LocalDate
 import org.mockito.Mockito._
 import pages.register.suitability.TaxLiabilityInCurrentTaxYearYesNoPage
@@ -35,7 +34,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("suitability.taxLiabilityInCurrentTaxYear")
 
-  private lazy val taxLiabilityInCurrentTaxYearYesNoRoute: String = routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+  private lazy val taxLiabilityInCurrentTaxYearYesNoRoute: String = routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad().url
 
   private val mockLocalDateService = mock[LocalDateService]
   when(mockLocalDateService.now()).thenReturn(LocalDate.parse("2018-08-18"))
@@ -46,7 +45,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
         .overrides(bind[LocalDateService].toInstance(mockLocalDateService))
         .build()
 
@@ -59,14 +58,14 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(request, messages).toString
+        view(form, currentTaxYearStartAndEnd)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers
         .set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
@@ -82,14 +81,14 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(request, messages).toString
+        view(form.fill(true), currentTaxYearStartAndEnd)(request, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
         .overrides(bind[LocalDateService].toInstance(mockLocalDateService))
         .build()
 
@@ -107,7 +106,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
         .overrides(bind[LocalDateService].toInstance(mockLocalDateService))
         .build()
 
@@ -123,7 +122,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(request, messages).toString
+        view(boundForm, currentTaxYearStartAndEnd)(request, messages).toString
 
       application.stop()
     }

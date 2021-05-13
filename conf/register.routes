@@ -77,10 +77,8 @@ GET        /:draftId/your-declared-registration                                 
 GET        /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onPageLoad()
 POST       /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onSubmit()
 
-GET        /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-has-tax-liability-in-current-tax-year                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-has-tax-liability-in-current-tax-year                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
+POST       /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit()
 
 GET        /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
 POST       /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)

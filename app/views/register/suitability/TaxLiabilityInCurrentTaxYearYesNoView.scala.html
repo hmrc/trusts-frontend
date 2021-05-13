@@ -15,20 +15,19 @@
  *@
 
 @import controllers.register.suitability.routes._
-@import models.Mode
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], mode: Mode, draftId: String, currentTaxYearStartAndEnd: (String, String))(implicit request: Request[_], messages: Messages)
+@(form: Form[_], currentTaxYearStartAndEnd: (String, String))(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)}${messages("suitability.taxLiabilityInCurrentTaxYear.title")}"
 ) {
 
-    @formHelper(action = TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode, draftId), 'autoComplete -> "off") {
+    @formHelper(action = TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 

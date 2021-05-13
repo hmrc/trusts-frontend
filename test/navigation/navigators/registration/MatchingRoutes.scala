@@ -118,7 +118,7 @@ trait MatchingRoutes {
                 .set(TrustHaveAUTRPage, false).success.value
 
               navigator.nextPage(TrustHaveAUTRPage, NormalMode, fakeDraftId)(answers)
-                .mustBe(controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, fakeDraftId))
+                .mustBe(controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad())
           }
         }
 

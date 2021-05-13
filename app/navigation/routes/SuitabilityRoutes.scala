@@ -29,13 +29,8 @@ object SuitabilityRoutes extends Routes {
   def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => TrustsFrontendUserAnswers[_] => Call] = {
     case ExpressTrustYesNoPage => _ => ua =>
       ua.get(TrustTaxableYesNoPage) match {
-        case Some(true) =>
-          if (is5mldEnabled) {
-            routes.BeforeYouContinueController.onPageLoad (draftId)
-          } else {
-            routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad (NormalMode, draftId)
-          }
-        case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
+        case Some(true) if is5mldEnabled => routes.BeforeYouContinueController.onPageLoad(draftId)
+        case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
       }
     case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
       yesNoNav(
@@ -65,4 +60,5 @@ object SuitabilityRoutes extends Routes {
       routes.NoNeedToRegisterController.onPageLoad(draftId)
     }
   }
+
 }
