@@ -18,22 +18,25 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
+import models.core.MatchingAndSuitabilityUserAnswers
 import pages.register.TrustRegisteredOnlinePage
 import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.CacheRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import javax.inject.Inject
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
+                                 cacheRepository: CacheRepository,
                                  identify: RegistrationIdentifierAction,
                                  getRegistrationData: RegistrationDataRetrievalAction,
                                  config: FrontendAppConfig,
                                  val controllerComponents: MessagesControllerComponents
-                               ) extends FrontendBaseController with I18nSupport with Logging {
+                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getRegistrationData).async {
     implicit request =>
@@ -46,7 +49,9 @@ class IndexController @Inject()(
 
           def startRegistrationJourney(): Future[Result] = {
             logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
-            Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+            cacheRepository.set(MatchingAndSuitabilityUserAnswers(request.internalId)) flatMap { _ =>
+              Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+            }
           }
 
           request.userAnswers match {
