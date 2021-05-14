@@ -116,7 +116,7 @@ class IndexControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       }
 
       "for a registration" should {
-        
+
         "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
 
           val answers = emptyUserAnswers.copy(progress = InProgress)

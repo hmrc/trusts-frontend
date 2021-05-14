@@ -19,17 +19,18 @@ package controllers.register.agents
 import connector.SubmissionDraftConnector
 import controllers.actions._
 import controllers.actions.register.RegistrationIdentifierAction
+import models.core.MatchingAndSuitabilityUserAnswers
 import models.requests.IdentifierRequest
 import navigation.registration.TaskListNavigator
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.{CacheRepository, RegistrationsRepository}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.agents.AgentOverviewView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class AgentOverviewController @Inject()(
                                          override val messagesApi: MessagesApi,
@@ -37,6 +38,7 @@ class AgentOverviewController @Inject()(
                                          identify: RegistrationIdentifierAction,
                                          hasAgentAffinityGroup: RequireStateActionProviderImpl,
                                          registrationsRepository: RegistrationsRepository,
+                                         cacheRepository: CacheRepository,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentOverviewView,
                                          submissionDraftConnector: SubmissionDraftConnector,
@@ -53,8 +55,11 @@ class AgentOverviewController @Inject()(
       }
   }
 
-  def onSubmit(): Action[AnyContent] = actions {
-    Redirect(controllers.register.routes.CreateDraftRegistrationController.create())
+  def onSubmit(): Action[AnyContent] = actions.async {
+    implicit request =>
+      cacheRepository.set(MatchingAndSuitabilityUserAnswers(request.internalId)) flatMap { _ =>
+        Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+      }
   }
 
   def continue(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithRegistrationData(draftId).async {

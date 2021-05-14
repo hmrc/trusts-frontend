@@ -22,7 +22,8 @@ import controllers.register.routes._
 import models.core.http.AddressType
 import navigation.registration.TaskListNavigator
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{reset, verify, when}
+import org.scalatest.BeforeAndAfterEach
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -34,7 +35,7 @@ import views.html.register.agents.AgentOverviewView
 import java.time.LocalDateTime
 import scala.concurrent.Future
 
-class AgentOverviewControllerSpec extends RegistrationSpecBase {
+class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
   lazy val agentOverviewRoute: String = routes.AgentOverviewController.onSubmit().url
 
@@ -48,6 +49,11 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
   )
 
   private val mockSubmissionDraftConnector: SubmissionDraftConnector = mock[SubmissionDraftConnector]
+
+  override def beforeEach(): Unit = {
+    reset(cacheRepository)
+    when(cacheRepository.set(any())).thenReturn(Future.successful(true))
+  }
 
   "AgentOverview Controller" when {
 
@@ -77,19 +83,18 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase {
 
         val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
-        val request =
-          FakeRequest(POST, agentOverviewRoute)
+        val request = FakeRequest(POST, agentOverviewRoute)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual CreateDraftRegistrationController.create().url
+        redirectLocation(result).value mustEqual TrustRegisteredOnlineController.onPageLoad().url
+
+        verify(cacheRepository).set(any())
 
         application.stop()
-
       }
-
     }
 
     "there are drafts" must {
