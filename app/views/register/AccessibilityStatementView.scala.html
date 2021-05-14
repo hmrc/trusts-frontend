@@ -15,16 +15,15 @@
  *@
 
 @import controllers.register.routes._
-@import models.Mode
 
 @this(
-main_template: MainTemplate
+    main_template: MainTemplate
 )
 
 @(userAction: String)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-title = messages("accessibilityStatement.title")
+    title = messages("accessibilityStatement.title")
 ) {
 
     @components.back_link()
@@ -118,5 +117,3 @@ title = messages("accessibilityStatement.title")
     <p class="govuk-body">@messages("accessibilityStatement.page.prepared.on")</p>
 
 }
-
-
