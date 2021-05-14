@@ -18,34 +18,31 @@ package controllers.register
 
 import controllers.actions.StandardActionSets
 import forms.TrustNameFormProvider
-import javax.inject.Inject
-import models.NormalMode
 import navigation.Navigator
 import pages.register.MatchingNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.CacheRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.MatchingNameView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class MatchingNameController @Inject()(
-                                     override val messagesApi: MessagesApi,
-                                     registrationsRepository: RegistrationsRepository,
-                                     navigator: Navigator,
-                                     formProvider: TrustNameFormProvider,
-                                     standardActions: StandardActionSets,
-                                     val controllerComponents: MessagesControllerComponents,
-                                     view: MatchingNameView
-                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                        override val messagesApi: MessagesApi,
+                                        cacheRepository: CacheRepository,
+                                        navigator: Navigator,
+                                        formProvider: TrustNameFormProvider,
+                                        actions: StandardActionSets,
+                                        val controllerComponents: MessagesControllerComponents,
+                                        view: MatchingNameView
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = standardActions.identifiedUserWithData(draftId)
+  private val form: Form[String] = formProvider()
 
-  val form = formProvider()
-
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(MatchingNamePage) match {
@@ -53,22 +50,22 @@ class MatchingNameController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-        Future.successful(Ok(view(preparedForm, draftId)))
-      }
+      Ok(view(preparedForm))
+  }
 
 
-  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId: String).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-           Future.successful(BadRequest(view(formWithErrors, draftId)))
-          ,
+          Future.successful(BadRequest(view(formWithErrors))),
+
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(MatchingNamePage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(MatchingNamePage, NormalMode ,draftId, request.affinityGroup)(updatedAnswers))
+            _              <- cacheRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(MatchingNamePage)(updatedAnswers))
         }
       )
   }

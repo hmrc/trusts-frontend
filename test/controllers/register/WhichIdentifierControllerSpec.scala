@@ -32,9 +32,9 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
   val formProvider = new WhichIdentifierFormProvider()
   val form: Form[WhichIdentifier] = formProvider()
 
-  lazy val onPageLoad: String = routes.WhichIdentifierController.onPageLoad(fakeDraftId).url
+  lazy val onPageLoad: String = routes.WhichIdentifierController.onPageLoad().url
 
-  lazy val onSubmit: Call = routes.WhichIdentifierController.onSubmit(fakeDraftId)
+  lazy val onSubmit: Call = routes.WhichIdentifierController.onSubmit()
 
   val appConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
@@ -42,9 +42,7 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
 
     "return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, onPageLoad)
 
@@ -55,15 +53,14 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "redirect to UTR page when user selects 'UTR'" in {
-      val userAnswers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
         .withFormUrlEncodedBody(("value", "utr"))
@@ -79,9 +76,8 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
     }
 
     "redirect to URN page when user selects 'URN'" in {
-      val userAnswers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
         .withFormUrlEncodedBody(("value", "urn"))
@@ -97,9 +93,8 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
     }
 
     "redirect to Ref Sent By Post page when user selects 'none of the above'" in {
-      val userAnswers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
         .withFormUrlEncodedBody(("value", "none"))
@@ -109,18 +104,17 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustBe
-        controllers.register.routes.RefSentByPostController.onPageLoad(fakeDraftId).url
+        controllers.register.routes.RefSentByPostController.onPageLoad().url
 
       application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, onSubmit.url)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, onSubmit.url)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -131,7 +125,7 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, fakeDraftId)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }

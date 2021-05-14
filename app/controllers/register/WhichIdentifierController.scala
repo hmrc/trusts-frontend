@@ -29,32 +29,32 @@ import views.html.register.WhichIdentifierView
 import javax.inject.Inject
 
 class WhichIdentifierController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                appConfig: FrontendAppConfig,
-                                                actions: StandardActionSets,
-                                                formProvider: WhichIdentifierFormProvider,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                view: WhichIdentifierView
-                                     ) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
+                                           override val messagesApi: MessagesApi,
+                                           appConfig: FrontendAppConfig,
+                                           actions: StandardActionSets,
+                                           formProvider: WhichIdentifierFormProvider,
+                                           val controllerComponents: MessagesControllerComponents,
+                                           view: WhichIdentifierView
+                                         ) extends FrontendBaseController with I18nSupport with Enumerable.Implicits {
 
-  val form = formProvider()
+  private val form: Form[WhichIdentifier] = formProvider()
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions.identifiedUserWithData(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
-      Ok(view(form, draftId))
+      Ok(view(form))
   }
 
-  def onSubmit(draftId: String): Action[AnyContent] = actions.identifiedUserWithData(draftId) {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-         BadRequest(view(formWithErrors, draftId)),
+          BadRequest(view(formWithErrors)),
 
         {
           case WhichIdentifier.UTRIdentifier => Redirect(appConfig.maintainATrustWithUTR)
-          case WhichIdentifier.URNIdentifier =>Redirect(appConfig.maintainATrustWithURN)
-          case WhichIdentifier.NoIdentifier =>Redirect(controllers.register.routes.RefSentByPostController.onPageLoad(draftId))
+          case WhichIdentifier.URNIdentifier => Redirect(appConfig.maintainATrustWithURN)
+          case WhichIdentifier.NoIdentifier => Redirect(controllers.register.routes.RefSentByPostController.onPageLoad())
         }
       )
   }

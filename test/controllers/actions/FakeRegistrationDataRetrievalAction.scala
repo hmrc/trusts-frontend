@@ -17,20 +17,21 @@
 package controllers.actions
 
 import controllers.actions.register.RegistrationDataRetrievalAction
-import models.core.UserAnswers
+import models.core.{TrustsFrontendUserAnswers, UserAnswers}
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeRegistrationDataRetrievalAction(dataToReturn: Option[UserAnswers]) extends RegistrationDataRetrievalAction {
+class FakeRegistrationDataRetrievalAction(dataToReturn: Option[TrustsFrontendUserAnswers[_]]) extends RegistrationDataRetrievalAction {
 
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] =
+  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
     dataToReturn match {
-      case None =>
+      case Some(x: UserAnswers) =>
+        Future(OptionalRegistrationDataRequest(request.request, request.internalId, "Fake Session ID", Some(x), request.affinityGroup, request.enrolments))
+      case _ =>
         Future(OptionalRegistrationDataRequest(request.request, request.internalId, "Fake Session ID", None, request.affinityGroup, request.enrolments))
-      case Some(userAnswers) =>
-        Future(OptionalRegistrationDataRequest(request.request, request.internalId, "Fake Session ID", Some(userAnswers), request.affinityGroup, request.enrolments))
     }
+  }
 
   override protected implicit val executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global

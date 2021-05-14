@@ -19,15 +19,15 @@ package base
 import config.FrontendAppConfig
 import controllers.actions.register._
 import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
-import models.core.UserAnswers
 import models.core.http.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
+import models.core.{MatchingAndSuitabilityUserAnswers, TrustsFrontendUserAnswers, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import repositories.RegistrationsRepository
+import repositories.{CacheRepository, RegistrationsRepository}
 import services.{DraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
@@ -42,6 +42,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
   val fakeDraftId: String = TestUserAnswers.draftId
 
   def emptyUserAnswers: UserAnswers = TestUserAnswers.emptyUserAnswers
+  def emptyMatchingAndSuitabilityUserAnswers: MatchingAndSuitabilityUserAnswers = TestUserAnswers.emptyMatchingAndSuitabilityUserAnswers
 
   lazy val fakeNavigator = new FakeNavigator(fakeFrontendAppConfig)
 
@@ -54,19 +55,21 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
       IdentificationOrgType(Some("utr"), None)))
   )
 
-  def fakeDraftIdAction(userAnswers: Option[UserAnswers]) = new FakeDraftIdRetrievalActionProvider(userAnswers)
+  def fakeDraftIdAction(userAnswers: Option[TrustsFrontendUserAnswers[_]]) = new FakeDraftIdRetrievalActionProvider(userAnswers)
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None,
+  protected def applicationBuilder(userAnswers: Option[TrustsFrontendUserAnswers[_]] = None,
                                    affinityGroup: AffinityGroup = AffinityGroup.Organisation,
                                    enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
-                                   navigator: Navigator = fakeNavigator
-                                  ): GuiceApplicationBuilder =
+                                   navigator: Navigator = fakeNavigator): GuiceApplicationBuilder =
+
     new GuiceApplicationBuilder()
       .overrides(
         bind[RegistrationDataRequiredAction].to[RegistrationDataRequiredActionImpl],
         bind[RegistrationIdentifierAction].toInstance(new FakeIdentifyForRegistration(affinityGroup, fakeFrontendAppConfig)(injectedParsers, trustsAuth, enrolments)),
+        bind[MatchingAndSuitabilityDataRetrievalAction].toInstance(new FakeMatchingAndSuitabilityDataRetrievalAction(userAnswers)),
         bind[RegistrationDataRetrievalAction].toInstance(new FakeRegistrationDataRetrievalAction(userAnswers)),
         bind[DraftIdRetrievalActionProvider].toInstance(fakeDraftIdAction(userAnswers)),
+        bind[CacheRepository].toInstance(cacheRepository),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
         bind[AffinityGroup].toInstance(Organisation),

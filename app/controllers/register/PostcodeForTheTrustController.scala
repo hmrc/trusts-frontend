@@ -18,36 +18,31 @@ package controllers.register
 
 import controllers.actions.StandardActionSets
 import forms.PostcodeForTheTrustFormProvider
-import javax.inject.Inject
-import models.Mode
-import models.requests.RegistrationDataRequest
 import pages.register.PostcodeForTheTrustPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.CacheRepository
 import services.MatchingService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.PostcodeForTheTrustView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PostcodeForTheTrustController @Inject()(
                                                override val messagesApi: MessagesApi,
-                                               registrationsRepository: RegistrationsRepository,
-                                               standardActionSets: StandardActionSets,
+                                               cacheRepository: CacheRepository,
+                                               actions: StandardActionSets,
                                                formProvider: PostcodeForTheTrustFormProvider,
                                                matchingService: MatchingService,
                                                val controllerComponents: MessagesControllerComponents,
                                                view: PostcodeForTheTrustView
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithData(draftId)
-
   private val form: Form[String] = formProvider()
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(PostcodeForTheTrustPage) match {
@@ -55,21 +50,21 @@ class PostcodeForTheTrustController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PostcodeForTheTrustPage, value))
-            _ <- registrationsRepository.set(updatedAnswers)
-            redirect <- matchingService.matching(updatedAnswers, draftId, request.isAgent, mode)
+            _ <- cacheRepository.set(updatedAnswers)
+            redirect <- matchingService.matching(updatedAnswers, request.isAgent)
           } yield redirect
         }
       )

@@ -17,7 +17,6 @@
 package views.register
 
 import forms.YesNoFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -33,7 +32,7 @@ class TrustHaveAUTRViewSpec extends YesNoViewBehaviours {
 
     val view = viewFor[TrustHaveAUTRView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable = view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+    def applyView(form: Form[_]): HtmlFormat.Appendable = view.apply(form)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), None, messageKeyPrefix)
 

@@ -29,7 +29,7 @@ class FailedMatchControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      val request = FakeRequest(GET, routes.FailedMatchController.onPageLoad(fakeDraftId).url)
+      val request = FakeRequest(GET, routes.FailedMatchController.onPageLoad().url)
 
       val result = route(application, request).value
 
@@ -38,7 +38,7 @@ class FailedMatchControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(fakeDraftId)(request, messages).toString
+        view()(request, messages).toString
 
       application.stop()
     }

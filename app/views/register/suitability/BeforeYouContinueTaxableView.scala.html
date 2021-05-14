@@ -16,7 +16,6 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
-@import models.Mode
 
 @this(
     main_template: MainTemplate,
@@ -24,13 +23,13 @@
     config: FrontendAppConfig
 )
 
-@(draftId: String)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = messages("suitability.beforeYouContinue.taxable.title")
 ) {
 
-    @formHelper(action = BeforeYouContinueController.onSubmit(draftId), 'autoComplete -> "off") {
+    @formHelper(action = BeforeYouContinueController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 

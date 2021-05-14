@@ -16,14 +16,11 @@
 
 package models.requests
 
-import play.api.mvc.{Request, WrappedRequest}
+import play.api.mvc.Request
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
 case class IdentifierRequest[A](request: Request[A],
                                 internalId: String,
                                 affinityGroup: AffinityGroup,
                                 enrolments: Enrolments,
-                                agentARN: Option[String] = None) extends WrappedRequest[A](request) {
-
-  def isAgent: Boolean = affinityGroup == AffinityGroup.Agent
-}
+                                agentARN: Option[String] = None) extends AffinityRequest[A](request)

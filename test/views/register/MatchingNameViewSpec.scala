@@ -29,27 +29,25 @@ class MatchingNameViewSpec extends StringViewBehaviours {
 
   val form = new TrustNameFormProvider()()
 
-  "MatchingNameView view" when {
+  "MatchingNameView view" must {
 
-    "the trust is an existing trust" must {
+    val view = viewFor[MatchingNameView](Some(emptyUserAnswers))
 
-      val view = viewFor[MatchingNameView](Some(emptyUserAnswers))
+    def applyView(form: Form[_]): HtmlFormat.Appendable =
+      view.apply(form)(fakeRequest, messages)
 
-      def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, fakeDraftId)(fakeRequest, messages)
+    behave like normalPage(applyView(form), None, messageKeyPrefix)
 
-      behave like normalPage(applyView(form), None, messageKeyPrefix)
+    behave like pageWithBackLink(applyView(form))
 
-      behave like pageWithBackLink(applyView(form))
+    behave like stringPage(
+      form,
+      applyView,
+      None,
+      messageKeyPrefix,
+      Some(hintKey)
+    )
 
-      behave like stringPage(form,
-        applyView,
-        None,
-        messageKeyPrefix,
-        Some(hintKey)
-      )
-
-      behave like pageWithASubmitButton(applyView(form))
-    }
+    behave like pageWithASubmitButton(applyView(form))
   }
 }

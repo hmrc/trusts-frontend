@@ -19,16 +19,15 @@ package services
 import auditing.TrustAuditing._
 import auditing.{AuditEvent, RegistrationErrorAuditEvent, TrustRegistrationSubmissionAuditEvent}
 import config.FrontendAppConfig
-import javax.inject.Inject
 import models.core.UserAnswers
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits._
 
 class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig) {

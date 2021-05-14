@@ -18,8 +18,7 @@ package controllers.register.suitability
 
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
-import models.NormalMode
-import models.core.UserAnswers
+import models.core.MatchingAndSuitabilityUserAnswers
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{reset, verify, when}
@@ -44,18 +43,18 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
   private val mockFeatureFlagService = mock[FeatureFlagService]
 
-  lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+  lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad().url
 
   override def beforeEach(): Unit = {
-    reset(registrationsRepository)
-    when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
+    reset(cacheRepository)
+    when(cacheRepository.set(any())).thenReturn(Future.successful(true))
   }
 
-  "CountryOfResidenceYesNo Controller" must {
+  "ExpressTrustYesNoController" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, expressTrustYesNo)
 
@@ -66,14 +65,14 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(ExpressTrustYesNoPage, true).success.value
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers.set(ExpressTrustYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -86,7 +85,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(request, messages).toString
+        view(form.fill(true))(request, messages).toString
 
       application.stop()
     }
@@ -97,7 +96,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
           .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
           .build()
 
@@ -110,8 +109,8 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+        verify(cacheRepository).set(uaCaptor.capture)
         uaCaptor.getValue.get(TrustHaveAUTRPage) mustNot be(defined)
         uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
 
@@ -126,7 +125,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
 
-        val answers = emptyUserAnswers.set(TrustHaveAUTRPage, true).success.value
+        val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
           .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
@@ -141,8 +140,8 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+        verify(cacheRepository).set(uaCaptor.capture)
         uaCaptor.getValue.get(TrustTaxableYesNoPage).get mustBe true
         
         application.stop()
@@ -152,7 +151,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
 
-        val answers = emptyUserAnswers.set(TrustHaveAUTRPage, false).success.value
+        val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, false).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
           .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
@@ -167,8 +166,8 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+        verify(cacheRepository).set(uaCaptor.capture)
         uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
 
         application.stop()
@@ -178,7 +177,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(POST, expressTrustYesNo)
         .withFormUrlEncodedBody(("value", ""))
@@ -192,7 +191,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }
@@ -229,4 +228,3 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
     }
   }
 }
-

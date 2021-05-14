@@ -20,11 +20,10 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.TrustNameFormProvider
 import generators.Generators
-import models.core.UserAnswers
-import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.{MatchingNamePage, TrustHaveAUTRPage}
+import pages.register.MatchingNamePage
+import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.MatchingNameView
@@ -32,99 +31,80 @@ import views.html.register.MatchingNameView
 class MatchingNameControllerSpec extends RegistrationSpecBase with MockitoSugar with Generators with ScalaCheckPropertyChecks {
 
   val formProvider = new TrustNameFormProvider()
-  val form = formProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val trustNameRoute = routes.MatchingNameController.onPageLoad(fakeDraftId).url
+  lazy val matchingNameRoute: String = routes.MatchingNameController.onPageLoad().url
 
-  "TrustName Controller" when {
+  val validAnswer: String = "Name"
 
-      "return OK and the correct view for a GET" in {
+  "MatchingNameController" when {
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+    "return OK and the correct view for a GET" in {
 
-            val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
-              .remove(MatchingNamePage).success.value
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-            val application = applicationBuilder(userAnswers = Some(answers)).build()
+      val request = FakeRequest(GET, matchingNameRoute)
 
-            val request = FakeRequest(GET, trustNameRoute)
+      val result = route(application, request).value
 
-            val result = route(application, request).value
+      val view = application.injector.instanceOf[MatchingNameView]
 
-            val view = application.injector.instanceOf[MatchingNameView]
+      status(result) mustEqual OK
 
-            status(result) mustEqual OK
+      contentAsString(result) mustEqual
+        view(form)(request, messages).toString
 
-            contentAsString(result) mustEqual
-              view(form, fakeDraftId)(request, messages).toString
+      application.stop()
+    }
 
-            application.stop()
+    "populate the view correctly on a GET when the question has previously been answered" in {
 
-        }
-      }
+      val answers = emptyMatchingAndSuitabilityUserAnswers
+        .set(MatchingNamePage, validAnswer).success.value
 
-      "populate the view correctly on a GET when the question has previously been answered" in {
+      val application = applicationBuilder(userAnswers = Some(answers)).build()
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+      val request = FakeRequest(GET, matchingNameRoute)
 
-            val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
-              .set(MatchingNamePage, "answer").success.value
+      val view = application.injector.instanceOf[MatchingNameView]
 
-            val application = applicationBuilder(userAnswers = Some(answers)).build()
+      val result = route(application, request).value
 
-            val request = FakeRequest(GET, trustNameRoute)
+      status(result) mustEqual OK
 
-            val view = application.injector.instanceOf[MatchingNameView]
+      contentAsString(result) mustEqual
+        view(form.fill(validAnswer))(request, messages).toString
 
-            val result = route(application, request).value
+      application.stop()
+    }
 
-            status(result) mustEqual OK
+    "return a Bad Request and errors when invalid data is submitted" in {
 
-            contentAsString(result) mustEqual
-              view(form.fill("answer"), fakeDraftId)(request, messages).toString
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-            application.stop()
-        }
-      }
+      val request = FakeRequest(POST, matchingNameRoute)
+        .withFormUrlEncodedBody(("value", ""))
 
-      "return a Bad Request and errors when invalid data is submitted" in {
+      val boundForm = form.bind(Map("value" -> ""))
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+      val view = application.injector.instanceOf[MatchingNameView]
 
-            val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
+      val result = route(application, request).value
 
-            val application = applicationBuilder(userAnswers = Some(answers)).build()
+      status(result) mustEqual BAD_REQUEST
 
-            val request =
-              FakeRequest(POST, trustNameRoute)
-                .withFormUrlEncodedBody(("value", ""))
+      contentAsString(result) mustEqual
+        view(boundForm)(request, messages).toString
 
-            val boundForm = form.bind(Map("value" -> ""))
-
-            val view = application.injector.instanceOf[MatchingNameView]
-
-            val result = route(application, request).value
-
-            status(result) mustEqual BAD_REQUEST
-
-            contentAsString(result) mustEqual
-              view(boundForm, fakeDraftId)(request, messages).toString
-
-            application.stop()
-        }
-      }
+      application.stop()
+    }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, trustNameRoute)
-          .withFormUrlEncodedBody(("value", "answer"))
+      val request = FakeRequest(POST, matchingNameRoute)
+        .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
@@ -138,7 +118,7 @@ class MatchingNameControllerSpec extends RegistrationSpecBase with MockitoSugar 
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request = FakeRequest(GET, trustNameRoute)
+      val request = FakeRequest(GET, matchingNameRoute)
 
       val result = route(application, request).value
 
@@ -153,9 +133,8 @@ class MatchingNameControllerSpec extends RegistrationSpecBase with MockitoSugar 
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, trustNameRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, matchingNameRoute)
+        .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 

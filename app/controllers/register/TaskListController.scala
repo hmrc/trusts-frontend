@@ -18,7 +18,6 @@ package controllers.register
 
 import controllers.actions._
 import controllers.actions.register._
-import models.NormalMode
 import models.registration.Matched.{AlreadyRegistered, Failed, Success}
 import models.registration.pages.RegistrationStatus.InProgress
 import models.requests.RegistrationDataRequest
@@ -51,10 +50,10 @@ class TaskListController @Inject()(
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRequiredAnswer(draftId,
-      RequiredAnswer(TrustRegisteredOnlinePage,controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, draftId))) andThen
+      RequiredAnswer(TrustRegisteredOnlinePage, controllers.register.routes.TrustRegisteredOnlineController.onPageLoad())) andThen
       requiredAnswer(
         RequiredAnswer(
-          TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId))
+          TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad())
       ) andThen requireDraft
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
@@ -86,9 +85,9 @@ class TaskListController @Inject()(
         case (true, Some(Success)) | (false, _) =>
           renderView(request.affinityGroup)
         case (_, Some(AlreadyRegistered)) | (_, Some(Failed)) =>
-          Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad(draftId).url))
+          Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad().url))
         case _ =>
-          Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId).url))
+          Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad().url))
       }
   }
 }

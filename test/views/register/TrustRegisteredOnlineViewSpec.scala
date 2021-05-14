@@ -17,7 +17,6 @@
 package views.register
 
 import forms.YesNoFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -27,14 +26,14 @@ class TrustRegisteredOnlineViewSpec extends YesNoViewBehaviours {
 
   val messageKeyPrefix = "trustRegisteredOnline"
 
-  val form = new YesNoFormProvider().withPrefix("trustRegisteredOnline")
+  val form: Form[Boolean] = new YesNoFormProvider().withPrefix("trustRegisteredOnline")
 
   "TrustRegisteredOnline view" must {
 
     val view = viewFor[TrustRegisteredOnlineView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), None, messageKeyPrefix)
 

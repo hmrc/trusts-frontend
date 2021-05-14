@@ -17,52 +17,46 @@
 package navigation.routes
 
 import controllers.register.suitability.routes
-import models.NormalMode
-import models.core.UserAnswers
+import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register.suitability._
 import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
 
 object SuitabilityRoutes extends Routes {
 
-  def route(draftId: String, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
-    case ExpressTrustYesNoPage => _ => ua =>
+  def route(is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+    case ExpressTrustYesNoPage => ua =>
       ua.get(TrustTaxableYesNoPage) match {
-        case Some(true) =>
-          if (is5mldEnabled) {
-            routes.BeforeYouContinueController.onPageLoad (draftId)
-          } else {
-            routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad (NormalMode, draftId)
-          }
-        case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
+        case Some(true) if is5mldEnabled => routes.BeforeYouContinueController.onPageLoad()
+        case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
       }
-    case TaxLiabilityInCurrentTaxYearYesNoPage => _ => ua =>
+    case TaxLiabilityInCurrentTaxYearYesNoPage =>
       yesNoNav(
-        ua,
+        _,
         TaxLiabilityInCurrentTaxYearYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(draftId),
-        routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, draftId)
+        routes.BeforeYouContinueController.onPageLoad(),
+        routes.UndeclaredTaxLiabilityYesNoController.onPageLoad()
       )
-    case UndeclaredTaxLiabilityYesNoPage => _ => ua =>
+    case UndeclaredTaxLiabilityYesNoPage => ua =>
       yesNoNav(
         ua,
         UndeclaredTaxLiabilityYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(draftId),
-        nonTaxableRoute(draftId, is5mldEnabled, ua)
+        routes.BeforeYouContinueController.onPageLoad(),
+        nonTaxableRoute(is5mldEnabled, ua)
       )
   }
 
-  private def nonTaxableRoute(draftId: String, is5mldEnabled: Boolean, answers: UserAnswers): Call = {
+  private def nonTaxableRoute(is5mldEnabled: Boolean, answers: TrustsFrontendUserAnswers[_]): Call = {
     if (is5mldEnabled) {
       yesNoNav(
         answers,
         ExpressTrustYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(draftId),
-        routes.NoNeedToRegisterController.onPageLoad(draftId)
+        routes.BeforeYouContinueController.onPageLoad(),
+        routes.NoNeedToRegisterController.onPageLoad()
       )
     } else {
-      routes.NoNeedToRegisterController.onPageLoad(draftId)
+      routes.NoNeedToRegisterController.onPageLoad()
     }
   }
+
 }

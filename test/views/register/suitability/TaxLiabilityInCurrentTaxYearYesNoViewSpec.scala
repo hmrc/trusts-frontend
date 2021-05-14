@@ -17,7 +17,6 @@
 package views.register.suitability
 
 import forms.YesNoFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.YesNoViewBehaviours
@@ -36,7 +35,7 @@ class TaxLiabilityInCurrentTaxYearYesNoViewSpec extends YesNoViewBehaviours {
     val view = viewFor[TaxLiabilityInCurrentTaxYearYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, currentTaxYearStartAndEnd)(fakeRequest, messages)
+      view.apply(form, currentTaxYearStartAndEnd)(fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), None, messageKeyPrefix, Seq(currentTaxYearStartAndEnd._1, currentTaxYearStartAndEnd._2))
 

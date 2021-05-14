@@ -17,7 +17,6 @@
 package views.register
 
 import forms.PostcodeForTheTrustFormProvider
-import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
 import views.behaviours.StringViewBehaviours
@@ -34,7 +33,7 @@ class PostcodeForTheTrustViewSpec extends StringViewBehaviours {
     val view = viewFor[PostcodeForTheTrustView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId)(fakeRequest, messages)
+      view.apply(form)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), None, messageKeyPrefix)
 

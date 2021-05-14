@@ -17,7 +17,6 @@
 package views.register
 
 import forms.DeclarationFormProvider
-import models.NormalMode
 import models.core.pages.Declaration
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
@@ -36,7 +35,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
     val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, NormalMode, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
+      view.apply(form, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
 
     behave like normalPage(applyView(form), None, messageKeyPrefix)
 
@@ -57,7 +56,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, fakeDraftId, AffinityGroup.Organisation)(fakeRequest, messages)
+        view.apply(form, fakeDraftId, AffinityGroup.Organisation)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that I have taken all reasonable steps to obtain up to " +
@@ -74,7 +73,7 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
       def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, NormalMode, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
+        view.apply(form, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(doc, "I confirm that my client has taken all reasonable steps to obtain up " +

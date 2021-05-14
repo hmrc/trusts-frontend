@@ -21,12 +21,9 @@ import controllers.actions.StandardActionSets
 import forms.AccessCodeFormProvider
 import handlers.ErrorHandler
 import models.TrustsAuthAllowed
-import models.requests.RegistrationDataRequest
-import navigation.registration.TaskListNavigator
 import play.api.data.{Form, FormError}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.NonTaxableTrustRegistrationAccessCodeView
 
@@ -35,10 +32,9 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class NonTaxableTrustRegistrationAccessCodeController @Inject()(
                                                                  override val messagesApi: MessagesApi,
-                                                                 standardActionSets: StandardActionSets,
+                                                                 actions: StandardActionSets,
                                                                  val controllerComponents: MessagesControllerComponents,
                                                                  view: NonTaxableTrustRegistrationAccessCodeView,
-                                                                 navigator: TaskListNavigator,
                                                                  trustsAuthConnector: TrustsAuthConnector,
                                                                  formProvider: AccessCodeFormProvider,
                                                                  errorHandler: ErrorHandler
@@ -48,32 +44,25 @@ class NonTaxableTrustRegistrationAccessCodeController @Inject()(
 
   private val messageKeyPrefix: String = "nonTaxableTrustRegistrationAccessCode"
 
-  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithData(draftId)
-
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
-      Ok(view(form, draftId))
+      Ok(view(form))
   }
 
-  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, draftId))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         accessCode => {
           trustsAuthConnector.authoriseAccessCode(accessCode) map {
-            case TrustsAuthAllowed(true) => request.affinityGroup match {
-              case AffinityGroup.Agent =>
-                Redirect(navigator.agentDetailsJourneyUrl(draftId))
-              case _ =>
-                Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId).url)
-            }
+            case TrustsAuthAllowed(true) =>
+              Redirect(controllers.register.routes.CreateDraftRegistrationController.create().url)
             case TrustsAuthAllowed(false) =>
-              BadRequest(view(form.withError(FormError("value", s"$messageKeyPrefix.error.unrecognised")), draftId))
+              BadRequest(view(form.withError(FormError("value", s"$messageKeyPrefix.error.unrecognised"))))
             case _ =>
               InternalServerError(errorHandler.internalServerErrorTemplate)
           }

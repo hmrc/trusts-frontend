@@ -17,37 +17,36 @@
 package base
 
 import controllers.Assets.OK
-
-import java.time.LocalDate
 import models.RegistrationSubmission.AllStatus
-import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
+import models.requests.MatchingAndSuitabilityDataRequest
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.mvc.AnyContent
-import repositories.RegistrationsRepository
+import repositories.{CacheRepository, RegistrationsRepository}
 import services.{DraftRegistrationService, SubmissionService}
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUserAnswers
 import viewmodels.RegistrationAnswerSections
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 trait Mocked extends MockitoSugar {
 
-  val registrationsRepository : RegistrationsRepository = mock[RegistrationsRepository]
+  val cacheRepository: CacheRepository = mock[CacheRepository]
+  val registrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
-  val mockSubmissionService : SubmissionService = mock[SubmissionService]
-  val mockCreateDraftRegistrationService : DraftRegistrationService = mock[DraftRegistrationService]
+  val mockSubmissionService: SubmissionService = mock[SubmissionService]
+  val mockCreateDraftRegistrationService: DraftRegistrationService = mock[DraftRegistrationService]
 
-  when(mockCreateDraftRegistrationService.create(any[OptionalRegistrationDataRequest[AnyContent]])(any()))
-    .thenReturn(Future.successful(TestUserAnswers.draftId))
-
-  when(mockCreateDraftRegistrationService.create(any[IdentifierRequest[AnyContent]])(any()))
+  when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
 
   when(mockCreateDraftRegistrationService.getAnswerSections(any())(any()))
     .thenReturn(Future.successful(RegistrationAnswerSections()))
+
+  when(cacheRepository.set(any())).thenReturn(Future.successful(true))
 
   when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
   when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))

@@ -18,25 +18,27 @@ package controllers.register
 
 import config.FrontendAppConfig
 import controllers.actions.register.{RegistrationDataRetrievalAction, RegistrationIdentifierAction}
-import javax.inject.Inject
-import models.NormalMode
+import models.core.MatchingAndSuitabilityUserAnswers
 import pages.register.TrustRegisteredOnlinePage
 import play.api.Logging
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.CacheRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
-import scala.concurrent.Future
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
+                                 cacheRepository: CacheRepository,
                                  identify: RegistrationIdentifierAction,
-                                 getData: RegistrationDataRetrievalAction,
+                                 getRegistrationData: RegistrationDataRetrievalAction,
                                  config: FrontendAppConfig,
                                  val controllerComponents: MessagesControllerComponents
-                               ) extends FrontendBaseController with I18nSupport with Logging {
+                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData).async {
+  def onPageLoad(): Action[AnyContent] = (identify andThen getRegistrationData).async {
     implicit request =>
 
       request.affinityGroup match {
@@ -44,6 +46,14 @@ class IndexController @Inject()(
           logger.info(s"[Session ID: ${request.sessionId}] user is an agent, redirect to overview")
           Future.successful(Redirect(controllers.register.agents.routes.AgentOverviewController.onPageLoad()))
         case _ =>
+
+          def startRegistrationJourney(): Future[Result] = {
+            logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
+            cacheRepository.set(MatchingAndSuitabilityUserAnswers(request.internalId)) flatMap { _ =>
+              Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+            }
+          }
+
           request.userAnswers match {
             case Some(userAnswers) =>
               userAnswers.get(TrustRegisteredOnlinePage) match {
@@ -54,12 +64,10 @@ class IndexController @Inject()(
                   logger.info(s"[Session ID: ${request.sessionId}] user previously indicated trust is registered online, redirecting to maintain")
                   Future.successful(Redirect(config.maintainATrustFrontendUrl))
                 case None =>
-                  logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
-                  Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, userAnswers.draftId)))
+                  startRegistrationJourney()
               }
             case None =>
-              logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
-              Future.successful(Redirect(routes.CreateDraftRegistrationController.create()))
+              startRegistrationJourney()
           }
       }
   }

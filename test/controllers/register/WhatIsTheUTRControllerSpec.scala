@@ -18,8 +18,8 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import forms.WhatIsTheUTRFormProvider
-import models.NormalMode
 import pages.register.WhatIsTheUTRPage
+import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.WhatIsTheUTRView
@@ -27,17 +27,17 @@ import views.html.register.WhatIsTheUTRView
 class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new WhatIsTheUTRFormProvider()
-  val form = formProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val whatIsTheUTRRoute = routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val whatIsTheUTRRoute: String = routes.WhatIsTheUTRController.onPageLoad().url
 
-  lazy val onSubmit = routes.WhatIsTheUTRController.onSubmit(NormalMode, fakeDraftId)
+  val validAnswer: String = "1111111111"
 
   "WhatIsTheUTR Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, whatIsTheUTRRoute)
 
@@ -48,14 +48,14 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, onSubmit)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(WhatIsTheUTRPage, "1111111111").success.value
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers.set(WhatIsTheUTRPage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -68,19 +68,17 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill("1111111111"), onSubmit)(request, messages).toString
+        view(form.fill(validAnswer))(request, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, whatIsTheUTRRoute)
-          .withFormUrlEncodedBody(("value", "1111111111"))
+      val request = FakeRequest(POST, whatIsTheUTRRoute)
+        .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 
@@ -92,11 +90,10 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, whatIsTheUTRRoute)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, whatIsTheUTRRoute)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -107,7 +104,7 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, onSubmit)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }
@@ -131,9 +128,8 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, whatIsTheUTRRoute)
-          .withFormUrlEncodedBody(("value", "1111111111"))
+      val request = FakeRequest(POST, whatIsTheUTRRoute)
+        .withFormUrlEncodedBody(("value", validAnswer))
 
       val result = route(application, request).value
 

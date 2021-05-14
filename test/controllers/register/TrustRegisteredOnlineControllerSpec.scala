@@ -18,10 +18,10 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
-import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.TrustRegisteredOnlinePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -33,17 +33,17 @@ import scala.concurrent.Future
 class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
-  val form = formProvider.withPrefix("trustRegisteredOnline")
+  val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
 
-  val featureFlagService = mock[FeatureFlagService]
+  val featureFlagService: FeatureFlagService = mock[FeatureFlagService]
 
-  lazy val trustRegisteredOnlineRoute = routes.TrustRegisteredOnlineController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val trustRegisteredOnlineRoute: String = routes.TrustRegisteredOnlineController.onPageLoad().url
 
   "TrustRegisteredOnline Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, trustRegisteredOnlineRoute)
 
@@ -54,14 +54,14 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode,fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(TrustRegisteredOnlinePage, true).success.value
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers.set(TrustRegisteredOnlinePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,18 +74,17 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(request, messages).toString
+        view(form.fill(true))(request, messages).toString
 
       application.stop()
     }
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[FeatureFlagService].toInstance(featureFlagService)
-          ).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
+        .overrides(
+          bind[FeatureFlagService].toInstance(featureFlagService)
+        ).build()
 
       when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
@@ -104,17 +103,15 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[FeatureFlagService].toInstance(featureFlagService)
-          ).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
+        .overrides(
+          bind[FeatureFlagService].toInstance(featureFlagService)
+        ).build()
 
       when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-      val request =
-        FakeRequest(POST, trustRegisteredOnlineRoute)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, trustRegisteredOnlineRoute)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -125,7 +122,7 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }
@@ -149,9 +146,8 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, trustRegisteredOnlineRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, trustRegisteredOnlineRoute)
+        .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
@@ -161,7 +157,6 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
       application.stop()
     }
-
 
   }
 }

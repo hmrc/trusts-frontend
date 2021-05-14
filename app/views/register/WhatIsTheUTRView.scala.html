@@ -19,13 +19,17 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], onSubmit: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_])(implicit request: Request[_], messages: Messages)
+
+@content = {
+    <p>messages("whatIsTheUTR.linkMessage") <a href="https://www.gov.uk/find-lost-utr-number" target="_blank">messages("whatIsTheUTR.linkText")</a>.</p>
+}
 
 @main_template(
     title = s"${errorPrefix(form)}${messages("whatIsTheUTR.title")}"
-    ) {
+) {
 
-    @formHelper(action = onSubmit, 'autoComplete -> "off") {
+    @formHelper(action = controllers.register.routes.WhatIsTheUTRController.onSubmit(), 'autoComplete -> "off") {
 
         @components.back_link()
 
@@ -38,9 +42,7 @@
             hint = Some(messages("whatIsTheUTR.hint")),
             labelClass = Some("heading-large"),
             inputMode = Some("numeric"),
-            optionalHtmlContent = Some(
-                Html(s"""<p>${messages("whatIsTheUTR.linkMessage")} <a href="https://www.gov.uk/find-lost-utr-number" target="_blank">${messages("whatIsTheUTR.linkText")}</a>.</p>""")
-            )
+            optionalHtmlContent = Some(content)
         )
 
         @components.submit_button()

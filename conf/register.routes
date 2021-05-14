@@ -23,43 +23,33 @@ GET        /logout                                                              
 GET        /keep-alive                                                                              controllers.SessionTimeoutController.keepAlive
 GET        /timeout                                                                                 controllers.SessionTimeoutController.timeout
 
-GET        /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-registered-online                                                        controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-registered-online                                                 controllers.register.TrustRegisteredOnlineController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad()
+POST       /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onSubmit()
 
-GET        /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onPageLoad(draftId: String)
-POST       /:draftId/which-reference                                                                controllers.register.WhichIdentifierController.onSubmit(draftId: String)
+GET        /which-reference                                                                         controllers.register.WhichIdentifierController.onPageLoad()
+POST       /which-reference                                                                         controllers.register.WhichIdentifierController.onSubmit()
 
-GET        /:draftId/reference-sent-by-post                                                         controllers.register.RefSentByPostController.onPageLoad(draftId: String)
+GET        /reference-sent-by-post                                                                  controllers.register.RefSentByPostController.onPageLoad()
 
-GET        /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-have-utr                                                                 controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-have-utr                                                          controllers.register.TrustHaveAUTRController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-have-utr                                                          controllers.register.TrustHaveAUTRController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-have-utr                                                                          controllers.register.TrustHaveAUTRController.onPageLoad()
+POST       /trust-have-utr                                                                          controllers.register.TrustHaveAUTRController.onSubmit()
 
-GET        /:draftId/trust-utr                                                                      controllers.register.WhatIsTheUTRController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-utr                                                                      controllers.register.WhatIsTheUTRController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-utr                                                               controllers.register.WhatIsTheUTRController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-utr                                                               controllers.register.WhatIsTheUTRController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-utr                                                                               controllers.register.WhatIsTheUTRController.onPageLoad()
+POST       /trust-utr                                                                               controllers.register.WhatIsTheUTRController.onSubmit()
 
-GET        /:draftId/trust-registered-with-uk-address                                               controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-registered-with-uk-address                                               controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-registered-with-uk-address                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-registered-with-uk-address                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-registered-with-uk-address                                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
+POST       /trust-registered-with-uk-address                                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit()
 
-GET        /:draftId/trust-postcode                                                                 controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/trust-postcode                                                                 controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-trust-postcode                                                          controllers.register.PostcodeForTheTrustController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-trust-postcode                                                          controllers.register.PostcodeForTheTrustController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /trust-postcode                                                                          controllers.register.PostcodeForTheTrustController.onPageLoad()
+POST       /trust-postcode                                                                          controllers.register.PostcodeForTheTrustController.onSubmit()
 
-GET        /:draftId/matching-failed                                                                controllers.register.FailedMatchController.onPageLoad(draftId: String)
+GET        /matching-failed                                                                         controllers.register.FailedMatchController.onPageLoad()
 
-GET        /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onPageLoad(draftId: String)
-POST       /:draftId/trust-already-registered                                                       controllers.register.TrustAlreadyRegisteredController.onSubmit(draftId: String)
+GET        /trust-already-registered                                                                controllers.register.TrustAlreadyRegisteredController.onPageLoad()
+POST       /trust-already-registered                                                                controllers.register.TrustAlreadyRegisteredController.onSubmit()
 
-GET        /:draftId/trust-name                                                                     controllers.register.MatchingNameController.onPageLoad(draftId: String)
-POST       /:draftId/trust-name                                                                     controllers.register.MatchingNameController.onSubmit(draftId: String)
+GET        /trust-name                                                                              controllers.register.MatchingNameController.onPageLoad()
+POST       /trust-name                                                                              controllers.register.MatchingNameController.onSubmit()
 
 GET        /problem-with-service                                                                    controllers.register.MatchingDownController.onPageLoad()
 
@@ -69,39 +59,33 @@ GET        /trust-utr-post                                                      
 
 GET        /:draftId/registration-progress                                                          controllers.register.TaskListController.onPageLoad(draftId: String)
 
-GET        /:draftId/declaration                                                                    controllers.register.DeclarationController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/declaration                                                                    controllers.register.DeclarationController.onSubmit(mode: Mode = NormalMode, draftId: String)
+GET        /:draftId/declaration                                                                    controllers.register.DeclarationController.onPageLoad(draftId: String)
+POST       /:draftId/declaration                                                                    controllers.register.DeclarationController.onSubmit(draftId: String)
 
 GET        /:draftId/confirmation                                                                   controllers.register.ConfirmationController.onPageLoad(draftId: String)
 
-GET        /:draftId/your-draft-registration                                                        controllers.register.SummaryAnswerPageController.onPageLoad(draftId : String)
+GET        /:draftId/your-draft-registration                                                        controllers.register.SummaryAnswerPageController.onPageLoad(draftId: String)
 
-GET        /:draftId/your-declared-registration                                                     controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId : String)
+GET        /:draftId/your-declared-registration                                                     controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId: String)
 
 ## Suitability
 
-GET        /:draftId/is-express-trust                                                               controllers.register.suitability.ExpressTrustYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/is-express-trust                                                               controllers.register.suitability.ExpressTrustYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-is-express-trust                                                        controllers.register.suitability.ExpressTrustYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-is-express-trust                                                        controllers.register.suitability.ExpressTrustYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onPageLoad()
+POST       /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onSubmit()
 
-GET        /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/has-tax-liability-in-current-tax-year                                          controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-has-tax-liability-in-current-tax-year                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-has-tax-liability-in-current-tax-year                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
+POST       /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit()
 
-GET        /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = NormalMode, draftId: String)
-POST       /:draftId/has-undeclared-tax-liability                                                   controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = NormalMode, draftId: String)
-GET        /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad(mode: Mode = CheckMode, draftId: String)
-POST       /:draftId/change-has-undeclared-tax-liability                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit(mode: Mode = CheckMode, draftId: String)
+GET        /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad()
+POST       /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit()
 
-GET        /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onPageLoad(draftId: String)
-POST       /:draftId/before-you-continue                                                            controllers.register.suitability.BeforeYouContinueController.onSubmit(draftId: String)
+GET        /before-you-continue                                                                     controllers.register.suitability.BeforeYouContinueController.onPageLoad()
+POST       /before-you-continue                                                                     controllers.register.suitability.BeforeYouContinueController.onSubmit()
 
-GET        /:draftId/non-taxable-trust-registration-access-code                                     controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad(draftId: String)
-POST       /:draftId/non-taxable-trust-registration-access-code                                     controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit(draftId: String)
+GET        /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad()
+POST       /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit()
 
-GET        /:draftId/no-need-to-register                                                            controllers.register.suitability.NoNeedToRegisterController.onPageLoad(draftId: String)
+GET        /no-need-to-register                                                                     controllers.register.suitability.NoNeedToRegisterController.onPageLoad()
 
 ## Agents
 

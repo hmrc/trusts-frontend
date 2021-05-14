@@ -17,10 +17,8 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.NormalMode
-import models.core.UserAnswers
+import models.core.MatchingAndSuitabilityUserAnswers
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
 import org.mockito.Mockito.verify
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.api.test.FakeRequest
@@ -30,14 +28,14 @@ import views.html.register.TrustAlreadyRegisteredView
 
 class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
 
-  private lazy val trustAlreadyRegisteredRoute: String = routes.TrustAlreadyRegisteredController.onPageLoad(fakeDraftId).url
+  private lazy val trustAlreadyRegisteredRoute: String = routes.TrustAlreadyRegisteredController.onPageLoad().url
 
   "TrustAlreadyRegistered Controller" must {
 
     "return OK and the correct view for a GET" when {
 
       val fakeUtr: String = "utr"
-      val userAnswers: UserAnswers = emptyUserAnswers.set(WhatIsTheUTRPage, fakeUtr).success.value
+      val userAnswers: MatchingAndSuitabilityUserAnswers = emptyMatchingAndSuitabilityUserAnswers.set(WhatIsTheUTRPage, fakeUtr).success.value
 
       "agent user" in {
 
@@ -52,7 +50,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeDraftId, fakeUtr, isAgent = true)(request, messages).toString
+          view(fakeUtr, isAgent = true)(request, messages).toString
 
         application.stop()
       }
@@ -70,7 +68,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeDraftId, fakeUtr, isAgent = false)(request, messages).toString
+          view(fakeUtr, isAgent = false)(request, messages).toString
 
         application.stop()
       }
@@ -79,7 +77,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
 
     "redirect to WhatIsTheUtrController when no UTR found" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, trustAlreadyRegisteredRoute)
 
@@ -88,14 +86,14 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual
-        routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
+        routes.WhatIsTheUTRController.onPageLoad().url
 
       application.stop()
     }
 
     "cleanup pages and redirect to WhatIsTheUtrController for a POST" in {
 
-      val userAnswers = emptyUserAnswers
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers
         .set(WhatIsTheUTRPage, "utr").success.value
         .set(MatchingNamePage, "name").success.value
         .set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
@@ -110,10 +108,10 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual SEE_OTHER
 
       redirectLocation(result).value mustEqual
-        routes.WhatIsTheUTRController.onPageLoad(NormalMode, fakeDraftId).url
+        routes.WhatIsTheUTRController.onPageLoad().url
 
-      val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-      verify(registrationsRepository).set(uaCaptor.capture)(any())
+      val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+      verify(cacheRepository).set(uaCaptor.capture)
       uaCaptor.getValue.get(WhatIsTheUTRPage) mustNot be(defined)
       uaCaptor.getValue.get(MatchingNamePage) mustNot be(defined)
       uaCaptor.getValue.get(TrustRegisteredWithUkAddressYesNoPage) mustNot be(defined)

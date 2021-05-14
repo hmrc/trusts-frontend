@@ -23,13 +23,13 @@
     config: FrontendAppConfig
 )
 
-@(form: Form[_], draftId: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_])(implicit request: Request[_], messages: Messages)
 
 @main_template(
     title = s"${errorPrefix(form)}${messages("nonTaxableTrustRegistrationAccessCode.title")}"
 ) {
 
-    @formHelper(action = NonTaxableTrustRegistrationAccessCodeController.onSubmit(draftId), 'autoComplete -> "on") {
+    @formHelper(action = NonTaxableTrustRegistrationAccessCodeController.onSubmit(), 'autoComplete -> "on") {
 
         @components.back_link()
 

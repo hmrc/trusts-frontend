@@ -16,38 +16,33 @@
 
 package controllers.register
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.StandardActionSets
 import forms.WhatIsTheUTRFormProvider
-import javax.inject.Inject
-import models.Mode
 import navigation.Navigator
 import pages.register.WhatIsTheUTRPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.CacheRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.WhatIsTheUTRView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class WhatIsTheUTRController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        registrationsRepository: RegistrationsRepository,
+                                        cacheRepository: CacheRepository,
                                         navigator: Navigator,
-                                        identify: RegistrationIdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: RegistrationDataRequiredAction,
+                                        actions: StandardActionSets,
                                         formProvider: WhatIsTheUTRFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: WhatIsTheUTRView
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+  private val form: Form[String] = formProvider()
 
-  val form = formProvider()
-
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(WhatIsTheUTRPage) match {
@@ -55,21 +50,21 @@ class WhatIsTheUTRController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, routes.WhatIsTheUTRController.onSubmit(mode, draftId)))
+      Ok(view(preparedForm))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, routes.WhatIsTheUTRController.onSubmit(mode, draftId)))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRPage, value))
-            _              <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhatIsTheUTRPage, mode, draftId)(updatedAnswers))
+            _ <- cacheRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(WhatIsTheUTRPage)(updatedAnswers))
         }
       )
   }

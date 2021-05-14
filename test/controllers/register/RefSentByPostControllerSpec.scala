@@ -29,14 +29,13 @@ class RefSentByPostControllerSpec extends RegistrationSpecBase {
     "return OK and the correct view for a GET" when {
 
       "an agent user" in {
-        val userAnswers = emptyUserAnswers
 
         val application = applicationBuilder(
           affinityGroup = AffinityGroup.Agent,
-          userAnswers = Some(userAnswers)
+          userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)
         ).build()
 
-        val request = FakeRequest(GET, routes.RefSentByPostController.onPageLoad(fakeDraftId).url)
+        val request = FakeRequest(GET, routes.RefSentByPostController.onPageLoad().url)
 
         val result = route(application, request).value
 
@@ -51,14 +50,13 @@ class RefSentByPostControllerSpec extends RegistrationSpecBase {
       }
 
       "an individual user" in {
-        val userAnswers = emptyUserAnswers
 
         val application = applicationBuilder(
           affinityGroup = AffinityGroup.Organisation,
-          userAnswers = Some(userAnswers)
+          userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)
         ).build()
 
-        val request = FakeRequest(GET, routes.RefSentByPostController.onPageLoad(fakeDraftId).url)
+        val request = FakeRequest(GET, routes.RefSentByPostController.onPageLoad().url)
 
         val result = route(application, request).value
 

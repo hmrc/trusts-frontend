@@ -17,17 +17,28 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.NormalMode
+import navigation.registration.TaskListNavigator
+import org.mockito.Matchers.any
+import org.mockito.Mockito.when
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
   "CreateDraftRegistrationController" must {
+    "create a draft registration and redirect" when {
 
-      "return Redirect and create a draft registration" in {
+      "agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val navigator: TaskListNavigator = mock[TaskListNavigator]
+        val redirectUrl = "redirect-url"
+        when(navigator.agentDetailsJourneyUrl(any())).thenReturn(redirectUrl)
+
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent)
+          .overrides(bind[TaskListNavigator].toInstance(navigator))
+          .build()
 
         val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
 
@@ -35,11 +46,25 @@ class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustBe routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, fakeDraftId).url
+        redirectLocation(result).value mustEqual redirectUrl
 
         application.stop()
       }
 
-  }
+      "non-agent user" in {
 
+        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
+
+        val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+
+        redirectLocation(result).value mustBe routes.TaskListController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+      }
+    }
+  }
 }

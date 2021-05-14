@@ -18,7 +18,6 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
-import models.NormalMode
 import pages.register.TrustHaveAUTRPage
 import play.api.data.Form
 import play.api.test.FakeRequest
@@ -30,13 +29,13 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
   val formProvider = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
-  lazy val trustHaveAUTRRoute: String = routes.TrustHaveAUTRController.onPageLoad(NormalMode,fakeDraftId).url
+  lazy val trustHaveAUTRRoute: String = routes.TrustHaveAUTRController.onPageLoad().url
 
   "TrustHaveAUTR Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, trustHaveAUTRRoute)
 
@@ -47,14 +46,14 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(TrustHaveAUTRPage, true).success.value
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -67,18 +66,17 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(request, messages).toString
+        view(form.fill(true))(request, messages).toString
 
       application.stop()
     }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      val request =
-        FakeRequest(POST, trustHaveAUTRRoute)
-          .withFormUrlEncodedBody(("value", ""))
+      val request = FakeRequest(POST, trustHaveAUTRRoute)
+        .withFormUrlEncodedBody(("value", ""))
 
       val boundForm = form.bind(Map("value" -> ""))
 
@@ -89,7 +87,7 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }
@@ -113,9 +111,8 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = None).build()
 
-      val request =
-        FakeRequest(POST, trustHaveAUTRRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, trustHaveAUTRRoute)
+        .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 

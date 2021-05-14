@@ -17,8 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.NormalMode
-import models.core.UserAnswers
+import models.core.TrustsFrontendUserAnswers
 import models.registration.Matched
 import navigation.Navigator
 import org.mockito.Matchers.any
@@ -78,7 +77,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
       .thenReturn(Future.successful(is5mldEnabled))
   }
 
-  override protected def applicationBuilder(userAnswers: Option[UserAnswers],
+  override protected def applicationBuilder(userAnswers: Option[TrustsFrontendUserAnswers[_]],
                                             affinityGroup: AffinityGroup,
                                             enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
                                             navigator: Navigator = fakeNavigator): GuiceApplicationBuilder = {
@@ -107,7 +106,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad(NormalMode, fakeDraftId).url
+        redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad().url
 
         application.stop()
       }
@@ -126,7 +125,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad(NormalMode, fakeDraftId).url
+        redirectLocation(result).value mustEqual routes.TrustHaveAUTRController.onPageLoad().url
 
         application.stop()
       }
@@ -188,7 +187,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
             status(result) mustEqual SEE_OTHER
 
-            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
+            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
 
             application.stop()
           }
@@ -211,7 +210,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
             status(result) mustEqual SEE_OTHER
 
-            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad(fakeDraftId).url
+            redirectLocation(result).value mustEqual routes.FailedMatchController.onPageLoad().url
 
             application.stop()
           }
@@ -234,7 +233,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad(NormalMode,fakeDraftId).url
+          redirectLocation(result).value mustEqual routes.WhatIsTheUTRController.onPageLoad().url
 
           application.stop()
         }

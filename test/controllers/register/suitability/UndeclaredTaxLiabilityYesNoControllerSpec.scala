@@ -19,7 +19,6 @@ package controllers.register.suitability
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.YesNoFormProvider
-import models.NormalMode
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.suitability.UndeclaredTaxLiabilityYesNoPage
@@ -36,13 +35,13 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("suitability.undeclaredTaxLiability")
 
-  private lazy val undeclaredTaxLiabilityYesNoRoute: String = routes.UndeclaredTaxLiabilityYesNoController.onPageLoad(NormalMode, fakeDraftId).url
+  private lazy val undeclaredTaxLiabilityYesNoRoute: String = routes.UndeclaredTaxLiabilityYesNoController.onPageLoad().url
 
   "UndeclaredTaxLiabilityYesNo Controller" must {
 
     "return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(GET, undeclaredTaxLiabilityYesNoRoute)
 
@@ -53,14 +52,14 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, NormalMode, fakeDraftId)(request, messages).toString
+        view(form)(request, messages).toString
 
       application.stop()
     }
 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers
+      val userAnswers = emptyMatchingAndSuitabilityUserAnswers
         .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -74,7 +73,7 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), NormalMode, fakeDraftId)(request, messages).toString
+        view(form.fill(true))(request, messages).toString
 
       application.stop()
     }
@@ -83,7 +82,7 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
       val mockFeatureFlagService = mock[FeatureFlagService]
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
         .overrides(
           bind[FeatureFlagService].toInstance(mockFeatureFlagService)
         ).build()
@@ -104,7 +103,7 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
       val request = FakeRequest(POST, undeclaredTaxLiabilityYesNoRoute)
         .withFormUrlEncodedBody(("value", ""))
@@ -118,7 +117,7 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, NormalMode, fakeDraftId)(request, messages).toString
+        view(boundForm)(request, messages).toString
 
       application.stop()
     }

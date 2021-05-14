@@ -16,7 +16,7 @@
 
 package pages.register
 
-import models.core.UserAnswers
+import models.core.TrustsFrontendUserAnswers
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
@@ -28,7 +28,7 @@ case object TrustRegisteredWithUkAddressYesNoPage extends QuestionPage[Boolean] 
 
   override def toString: String = "trustRegisteredWithUkAddressYesNo"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] = {
     value match {
       case Some(false) =>
         userAnswers.remove(PostcodeForTheTrustPage)

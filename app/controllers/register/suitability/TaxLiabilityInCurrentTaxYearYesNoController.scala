@@ -18,28 +18,25 @@ package controllers.register.suitability
 
 import controllers.actions.StandardActionSets
 import forms.YesNoFormProvider
-
-import javax.inject.Inject
-import models.Mode
-import models.requests.RegistrationDataRequest
 import navigation.Navigator
 import pages.register.suitability.{TaxLiabilityInCurrentTaxYearYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
-import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.CacheRepository
 import services.LocalDateService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.time.TaxYear
 import utils.DateFormatter
 import views.html.register.suitability.TaxLiabilityInCurrentTaxYearYesNoView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
                                                              override val messagesApi: MessagesApi,
-                                                             registrationsRepository: RegistrationsRepository,
-                                                             standardActionSets: StandardActionSets,
+                                                             cacheRepository: CacheRepository,
+                                                             actions: StandardActionSets,
                                                              navigator: Navigator,
                                                              yesNoFormProvider: YesNoFormProvider,
                                                              val controllerComponents: MessagesControllerComponents,
@@ -48,12 +45,9 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
                                                              localDateService: LocalDateService
                                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.taxLiabilityInCurrentTaxYear")
+  private val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.taxLiabilityInCurrentTaxYear")
 
-  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardActionSets.identifiedUserWithData(draftId)
-
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TaxLiabilityInCurrentTaxYearYesNoPage) match {
@@ -61,22 +55,22 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId, currentTaxYearStartAndEnd))
+      Ok(view(preparedForm, currentTaxYearStartAndEnd))
   }
 
-  def onSubmit(mode: Mode, draftId : String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, currentTaxYearStartAndEnd))),
+          Future.successful(BadRequest(view(formWithErrors, currentTaxYearStartAndEnd))),
 
         value => {
           for {
             answers <- Future.fromTry(request.userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, value))
             updatedAnswers <- Future.fromTry(answers.set(TrustTaxableYesNoPage, value))
-            _ <- registrationsRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, mode, draftId)(updatedAnswers))
+            _ <- cacheRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(updatedAnswers))
         }
       )
   }

@@ -18,56 +18,49 @@ package navigation.routes
 
 import config.FrontendAppConfig
 import controllers.register.routes
-import models.NormalMode
-import models.core.UserAnswers
+import models.core.TrustsFrontendUserAnswers
 import pages.Page
 import pages.register._
 import play.api.mvc.Call
-import uk.gov.hmrc.auth.core.AffinityGroup
 
 object MatchingRoutes extends Routes {
 
-  def route(draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, AffinityGroup => UserAnswers => Call] = {
-    case TrustRegisteredOnlinePage => _ => ua => redirectToIdentifierQuestion(ua, draftId, is5mldEnabled)
-    case TrustHaveAUTRPage => _ => userAnswers => trustHaveAUTRRoute(userAnswers, draftId, config, is5mldEnabled)
-    case WhatIsTheUTRPage => _ => _ => controllers.register.routes.MatchingNameController.onPageLoad(draftId)
-    case MatchingNamePage => _ => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad(NormalMode, draftId)
+  def route(config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+    case TrustRegisteredOnlinePage => ua => redirectToIdentifierQuestion(ua, is5mldEnabled)
+    case TrustHaveAUTRPage => userAnswers => trustHaveAUTRRoute(userAnswers, config, is5mldEnabled)
+    case WhatIsTheUTRPage => _ => controllers.register.routes.MatchingNameController.onPageLoad()
+    case MatchingNamePage => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
   }
 
-  private def redirectToIdentifierQuestion(answers: UserAnswers, draftId: String, is5mldEnabled: Boolean): Call = {
+  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_], is5mldEnabled: Boolean): Call = {
     answers.get(TrustRegisteredOnlinePage) match {
-      case Some(true) =>
-        if (is5mldEnabled) {
-          routes.WhichIdentifierController.onPageLoad(draftId)
-        } else {
-          routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
-        }
-      case _ => routes.TrustHaveAUTRController.onPageLoad(NormalMode, draftId)
+      case Some(true) if is5mldEnabled => routes.WhichIdentifierController.onPageLoad()
+      case _ => routes.TrustHaveAUTRController.onPageLoad()
     }
   }
 
-  private def trustHaveAUTRRoute(answers: UserAnswers, draftId: String, config: FrontendAppConfig, is5mldEnabled: Boolean): Call = {
+  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[_], config: FrontendAppConfig, is5mldEnabled: Boolean): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
-      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad(NormalMode, draftId)
-      case (Some(false), Some(false)) => askExpressIf5mld(draftId, is5mldEnabled)
+      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad()
+      case (Some(false), Some(false)) => askExpressIf5mld(is5mldEnabled)
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routeToMaintain(config)
       case _ => routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def askExpressIf5mld(draftId: String, is5mldEnabled: Boolean): Call = {
+  private def askExpressIf5mld(is5mldEnabled: Boolean): Call = {
     if (is5mldEnabled) {
-      controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad(NormalMode, draftId)
+      controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
     } else {
-      controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad(NormalMode, draftId)
+      controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
     }
   }
 
   private def routeToMaintain(config: FrontendAppConfig) : Call = {
     Call("GET", config.maintainATrustFrontendUrl)
   }
-}
 
+}

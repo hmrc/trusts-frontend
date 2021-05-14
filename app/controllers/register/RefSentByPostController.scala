@@ -19,24 +19,24 @@ package controllers.register
 import controllers.actions.StandardActionSets
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.{RefSentByPostAgentView, RefSentByPostView}
 
 import javax.inject.Inject
 
-class RefSentByPostController @Inject()(override val messagesApi: MessagesApi,
-                                        actions: StandardActionSets,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: RefSentByPostView,
-                                        agentView: RefSentByPostAgentView
+class RefSentByPostController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         actions: StandardActionSets,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: RefSentByPostView,
+                                         agentView: RefSentByPostAgentView
                                        ) extends FrontendBaseController with I18nSupport {
 
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions.identifiedUserWithData(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
       val isAgent = request.isAgent
 
-      if (isAgent) Ok(agentView())else Ok(view())
+      if (isAgent) Ok(agentView()) else Ok(view())
   }
 }

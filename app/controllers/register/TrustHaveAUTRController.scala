@@ -16,40 +16,35 @@
 
 package controllers.register
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.StandardActionSets
 import forms.YesNoFormProvider
-
-import javax.inject.Inject
-import models.Mode
 import navigation.Navigator
 import pages.register.TrustHaveAUTRPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.RegistrationsRepository
+import repositories.CacheRepository
 import services.FeatureFlagService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustHaveAUTRView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
-                                        registrationsRepository: RegistrationsRepository,
-                                        navigator: Navigator,
-                                        identify: RegistrationIdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: RegistrationDataRequiredAction,
-                                        formProvider: YesNoFormProvider,
-                                        featureFlagService: FeatureFlagService,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: TrustHaveAUTRView)
-                                       (implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrustHaveAUTRController @Inject()(
+                                         override val messagesApi: MessagesApi,
+                                         cacheRepository: CacheRepository,
+                                         navigator: Navigator,
+                                         actions: StandardActionSets,
+                                         formProvider: YesNoFormProvider,
+                                         featureFlagService: FeatureFlagService,
+                                         val controllerComponents: MessagesControllerComponents,
+                                         view: TrustHaveAUTRView
+                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId: String) = identify andThen getData(draftId) andThen requireData
+  private val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
-  val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
-
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(TrustHaveAUTRPage) match {
@@ -57,23 +52,23 @@ class TrustHaveAUTRController @Inject()(override val messagesApi: MessagesApi,
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId))
+      Ok(view(preparedForm))
   }
 
-  def onSubmit(mode: Mode, draftId: String) = actions(draftId).async {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
     implicit request =>
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId))),
+          Future.successful(BadRequest(view(formWithErrors))),
 
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
             is5mldEnabled <- featureFlagService.is5mldEnabled()
-            _ <- registrationsRepository.set(updatedAnswers)
+            _ <- cacheRepository.set(updatedAnswers)
           } yield {
-            Redirect(navigator.nextPage(TrustHaveAUTRPage, mode, draftId, request.affinityGroup, is5mldEnabled)(updatedAnswers))
+            Redirect(navigator.nextPage(TrustHaveAUTRPage, is5mldEnabled = is5mldEnabled)(updatedAnswers))
           }
         }
       )

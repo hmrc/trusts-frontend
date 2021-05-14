@@ -19,7 +19,6 @@ package controllers.register
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
-import models.Mode
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
@@ -34,8 +33,8 @@ import play.api.mvc._
 import repositories.RegistrationsRepository
 import services.{FeatureFlagService, SubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.register.DeclarationView
 
 import java.time.temporal.ChronoUnit.DAYS
@@ -52,17 +51,17 @@ class DeclarationController @Inject()(
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,
-                                       registrationComplete : TaskListCompleteActionRefiner,
-                                       requireDraft : RequireDraftRegistrationActionRefiner,
+                                       registrationComplete: TaskListCompleteActionRefiner,
+                                       requireDraft: RequireDraftRegistrationActionRefiner,
                                        standardAction: StandardActionSets
-                                    )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private val form: Form[Declaration] = formProvider()
 
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardAction.identifiedUserWithData(draftId) andThen registrationComplete andThen requireDraft
+    standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
-  def onPageLoad(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId) {
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(DeclarationPage) match {
@@ -70,16 +69,16 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, draftId,request.affinityGroup))
+      Ok(view(preparedForm, draftId,request.affinityGroup))
   }
 
-  def onSubmit(mode: Mode, draftId: String): Action[AnyContent] = actions(draftId).async {
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
       implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
       form.bindFromRequest().fold(
         (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, mode, draftId, request.affinityGroup))),
+          Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
 
         value => {
 
@@ -92,7 +91,7 @@ class DeclarationController @Inject()(
           } yield result
 
           r.recover {
-            case _ : UnableToRegister =>
+            case _: UnableToRegister =>
               logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
               Redirect(routes.TaskListController.onPageLoad(draftId))
             case NonFatal(e) =>
@@ -126,7 +125,7 @@ class DeclarationController @Inject()(
         Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate)).flatMap {
           dateSaved =>
             val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
-            logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission : $days")
+            logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days")
             registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
               _ =>
                 Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
