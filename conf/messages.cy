@@ -325,12 +325,6 @@ site.utr = Cyfeirnod Unigryw y Trethdalwr (UTR)
 site.warning = Rhybudd
 site.yes = Iawn
 
-suitability.beforeYouContinue.bullet1 = Ffurflen Dreth ar gyfer Ymddiriedolaeth ac Ystâd (SA900)
-suitability.beforeYouContinue.bullet2 = hysbysiad i gyflwyno Hunanasesiad (SA316)
-suitability.beforeYouContinue.continue = Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
-suitability.beforeYouContinue.heading = Cyn i chi fynd yn eich blaen
-suitability.beforeYouContinue.link1 = Pwy ddylai gofrestru (yn agor ffenestr neu dab newydd)
-suitability.beforeYouContinue.link2 = Ymddiriedolaethau a threthi (yn agor ffenestr neu dab newydd)
 suitability.beforeYouContinue.nonTaxable.agent.continue = Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
 suitability.beforeYouContinue.nonTaxable.agent.heading = Cyn i chi fynd yn eich blaen
 suitability.beforeYouContinue.nonTaxable.agent.link1 = Pwy ddylai gofrestru’r ymddiriedolaeth (yn agor ffenestr neu dab newydd)
@@ -338,6 +332,7 @@ suitability.beforeYouContinue.nonTaxable.agent.link2 = Ymddiriedolaethau a thret
 suitability.beforeYouContinue.nonTaxable.agent.p1 = Ar ôl i chi gofrestru’r ymddiriedolaeth
 suitability.beforeYouContinue.nonTaxable.agent.p2 = Ceir rhagor o wybodaeth am:
 suitability.beforeYouContinue.nonTaxable.agent.title = Cyn i chi fynd yn eich blaen
+
 suitability.beforeYouContinue.nonTaxable.continue = Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
 suitability.beforeYouContinue.nonTaxable.heading = Cyn i chi fynd yn eich blaen
 suitability.beforeYouContinue.nonTaxable.link1 = Pwy ddylai gofrestru’r ymddiriedolaeth (yn agor ffenestr neu dab newydd)
@@ -345,9 +340,16 @@ suitability.beforeYouContinue.nonTaxable.link2 = Ymddiriedolaethau a threthi (yn
 suitability.beforeYouContinue.nonTaxable.p1 = Ar ôl i chi gofrestru’r ymddiriedolaeth
 suitability.beforeYouContinue.nonTaxable.p2 = Ceir rhagor o wybodaeth am:
 suitability.beforeYouContinue.nonTaxable.title = Cyn i chi fynd yn eich blaen
-suitability.beforeYouContinue.p1 = Ar ôl i chi gofrestru’r ymddiriedolaeth
-suitability.beforeYouContinue.p2 = Gallwch ddarllen rhagor:
-suitability.beforeYouContinue.title = Cyn i chi fynd yn eich blaen
+
+suitability.beforeYouContinue.taxable.bullet1 = Ffurflen Dreth ar gyfer Ymddiriedolaeth ac Ystâd (SA900)
+suitability.beforeYouContinue.taxable.bullet2 = hysbysiad i gyflwyno Hunanasesiad (SA316)
+suitability.beforeYouContinue.taxable.continue = Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
+suitability.beforeYouContinue.taxable.heading = Cyn i chi fynd yn eich blaen
+suitability.beforeYouContinue.taxable.link1 = Pwy ddylai gofrestru (yn agor ffenestr neu dab newydd)
+suitability.beforeYouContinue.taxable.link2 = Ymddiriedolaethau a threthi (yn agor ffenestr neu dab newydd)
+suitability.beforeYouContinue.taxable.p1 = Ar ôl i chi gofrestru’r ymddiriedolaeth
+suitability.beforeYouContinue.taxable.p2 = Gallwch ddarllen rhagor:
+suitability.beforeYouContinue.taxable.title = Cyn i chi fynd yn eich blaen
 
 suitability.expressTrust.bullet1 = drwy ewyllys rhywun ar ôl iddo farw
 suitability.expressTrust.bullet2 = yn ystod oes rhywun
