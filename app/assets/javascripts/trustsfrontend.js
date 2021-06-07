@@ -30,7 +30,7 @@ $(document).ready(function() {
   }
   $('#back-link').on('click', function(e){
     e.preventDefault();
-    if (window.location.href.includes('#content')) {
+    if (window.location.href.indexOf("content") !== -1) {
         window.history.go(-2);
     } else {
         window.history.back();
