@@ -39,6 +39,26 @@
 
         <p>@messages("nonTaxableTrustRegistrationAccessCode.p1")</p>
 
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p2")</p>
+
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p3")</p>
+
+        <h2>@messages("nonTaxableTrustRegistrationAccessCode.subHeading")</h2>
+
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p4")
+            <a
+            href="mailto:@{config.trustsEmail}?subject=@messages("nonTaxableTrustRegistrationAccessCode.email.subject")">@{config.trustsEmail}
+            </a>
+        </p>
+
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p5")</p>
+
+        @components.warning("nonTaxableTrustRegistrationAccessCode")
+
+        <h2>@messages("nonTaxableTrustRegistrationAccessCode.subHeading2")</h2>
+
+        <p>@messages("nonTaxableTrustRegistrationAccessCode.p6")</p>
+
         <div class="panel-indent">
 
             @components.locked("nonTaxableTrustRegistrationAccessCode")
@@ -53,26 +73,16 @@
 
         </div>
 
-        @components.submit_button(Some("site.continue"))
-
-        <h2>@messages("nonTaxableTrustRegistrationAccessCode.subHeading")</h2>
-
-        <p>@messages("nonTaxableTrustRegistrationAccessCode.p2")</p>
-        <p>@messages("nonTaxableTrustRegistrationAccessCode.p3")
-            <a
-                href="mailto:@{config.trustsEmail}?subject=@messages("nonTaxableTrustRegistrationAccessCode.email.subject")&body=@messages("nonTaxableTrustRegistrationAccessCode.email.body")">@{config.trustsEmail}
-            </a>
-        </p>
-
-        <details class="govuk-details" data-module="govuk-details">
+        <details class="govuk-details section" data-module="govuk-details">
             <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
                   @messages("nonTaxableTrustRegistrationAccessCode.no-access")
                 </span>
             </summary>
+            <div class="govuk-details__text">
             <p>@messages("nonTaxableTrustRegistrationAccessCode.no-access.p1")
                 <a
-                    href="mailto:@{config.trustsEmail}?subject=@messages("nonTaxableTrustRegistrationAccessCode.email.subject")&body=@messages("nonTaxableTrustRegistrationAccessCode.email.body")">@{config.trustsEmail}
+                    href="mailto:@{config.trustsEmail}">@{config.trustsEmail}
                 </a>
                 @messages("nonTaxableTrustRegistrationAccessCode.no-access.p2")
             </p>
@@ -83,7 +93,9 @@
                     "bulletpoint3"
                 )
             )
+            </div>
         </details>
-        <p>@messages("nonTaxableTrustRegistrationAccessCode.p4")
+
+        @components.submit_button(Some("site.continue"))
     }
 }
