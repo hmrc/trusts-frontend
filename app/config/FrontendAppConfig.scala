@@ -147,6 +147,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
     configuration.get[String](path)
   }
 
+  def registerTrustAsTrusteeUrl: String = configuration.get[String]("urls.registerTrustAsTrustee")
+
   def trustsEmail: String = configuration.get[String]("email")
 
   def sa900FormUrl: String = configuration.get[String]("urls.sa900Form")
