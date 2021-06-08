@@ -381,6 +381,7 @@ nonTaxableTrustRegistrationAccessCode.warning = Do not contact the trust helplin
 nonTaxableTrustRegistrationAccessCode.subHeading2 = Enter your access code
 nonTaxableTrustRegistrationAccessCode.p6 = To register a non-taxable trust, enter your 6 character access code and select ‘continue’.
 nonTaxableTrustRegistrationAccessCode.locked = Enter your 6 character access code
+nonTaxableTrustRegistrationAccessCode.lockImageAltText = An image of a lock
 nonTaxableTrustRegistrationAccessCode.hint = Keep this access code safe. You will need to enter the code every time you access the beta.
 nonTaxableTrustRegistrationAccessCode.error.required = Enter an access code
 nonTaxableTrustRegistrationAccessCode.error.invalid = Your access code must be 6 characters long and alphanumeric
