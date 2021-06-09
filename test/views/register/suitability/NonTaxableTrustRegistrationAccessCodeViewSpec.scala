@@ -46,7 +46,7 @@ class NonTaxableTrustRegistrationAccessCodeViewSpec extends StringViewBehaviours
 
     behave like pageWithBackLink(applyView(form))
 
-    behave like stringPage(form, applyView, None, messageKeyPrefix)
+    behave like stringPage(form, applyView, None, messageKeyPrefix, "locked")
 
     behave like pageWithHint(applyView(form), s"$messageKeyPrefix.hint")
 

@@ -28,6 +28,7 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
                  createView: Form[String] => HtmlFormat.Appendable,
                  sectionKey: Option[String],
                  messageKeyPrefix: String,
+                 labelKey: String = "heading",
                  expectedHintKey: Option[String] = None) = {
 
     "behave like a page with a string value field" when {
@@ -38,7 +39,7 @@ trait StringViewBehaviours extends QuestionViewBehaviours[String] {
 
           val doc = asDocument(createView(form))
           val expectedHintText = expectedHintKey map (k => messages(k))
-          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.heading"), expectedHintText)
+          assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.$labelKey"), expectedHintText)
         }
 
         "contain an input for the value" in {
