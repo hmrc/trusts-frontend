@@ -45,7 +45,7 @@ class MatchingNameViewSpec extends StringViewBehaviours {
       applyView,
       None,
       messageKeyPrefix,
-      Some(hintKey)
+      expectedHintKey = Some(hintKey)
     )
 
     behave like pageWithASubmitButton(applyView(form))
