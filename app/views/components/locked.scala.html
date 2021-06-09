@@ -16,7 +16,7 @@
 
 @(messageKeyPrefix: String)(implicit messages: Messages)
 
-<div class="govuk-lock-text">
+<div class="govuk-lock-text" aria-hidden="true">
     <span class="govuk-lock-text__icon">
         <img src='@routes.Assets.versioned("images/lock.svg")' alt='@messages(s"$messageKeyPrefix.lockImageAltText")'/>
     </span>
