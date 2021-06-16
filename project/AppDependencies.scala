@@ -15,7 +15,7 @@ object AppDependencies {
     "com.typesafe.play" %% "play-json-joda"                 % "2.7.4",
     "org.typelevel"     %% "cats-core"                      % "2.0.0",
     "uk.gov.hmrc"       %% "tax-year"                       % "1.1.0",
-    "uk.gov.hmrc"       %% "play-language"                  % "4.10.0-play-27"
+    "uk.gov.hmrc"       %% "play-language"                  % "5.0.0-play-27"
   )
 
   val test: Seq[ModuleID] = Seq(
