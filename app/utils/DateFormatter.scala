@@ -40,9 +40,7 @@ class DateFormatter @Inject()(config: FrontendAppConfig, languageUtils: Language
   }
 
   def formatDate(date: JodaDate)(implicit messages: Messages): String = {
-    val jd = JavaDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth)
-
-    languageUtils.Dates.formatDate(jd)
+    languageUtils.Dates.formatDate(JavaDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth))
   }
 
 }
