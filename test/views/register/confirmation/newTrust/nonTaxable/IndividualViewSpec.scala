@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.register.confirmation.newTrust
+package views.register.confirmation.newTrust.nonTaxable
 
 import play.api.Application
 import utils.AccessibilityHelper.formatReferenceNumber
@@ -45,7 +45,8 @@ class IndividualViewSpec extends ViewBehaviours {
       None,
       "subheading1", "p1",
       "subheading2", "p2", "p3",
-      "link1"
+      "link1",
+      "warning"
     )
   }
 }

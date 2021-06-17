@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.register.confirmation.newTrust
+package views.register.confirmation.newTrust.nonTaxable
 
 import play.api.Application
 import utils.AccessibilityHelper.formatReferenceNumber
@@ -47,7 +47,8 @@ class AgentViewSpec extends ViewBehaviours {
       "subheading2", "p4", "p5", "b1", "b2", "p6", "p7",
       "subheading3", "p8", "p9", "p10", "link2", "p11",
       "subheading4", "p12", "p13",
-      "subheading5", "p14", "p15", "link3", "p16", "p17"
+      "subheading5", "p14", "p15", "link3", "p16", "p17",
+      "warning"
     )
   }
 }

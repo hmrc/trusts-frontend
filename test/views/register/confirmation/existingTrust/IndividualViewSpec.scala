@@ -45,7 +45,8 @@ class IndividualViewSpec extends ViewBehaviours {
       None,
       "subheading1", "p1",
       "subheading2", "p2", "p3",
-      "subheading3", "p4", "p5", "p6", "p6.a"
+      "subheading3", "p4", "p5", "p6", "p6.a",
+      "warning"
     )
   }
 }

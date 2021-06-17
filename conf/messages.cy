@@ -100,8 +100,6 @@ cannotMakeChanges.paragraph3 = Mae’n rhaid i chi gadw cofnod o bob newid arall
 cannotMakeChanges.postLink = anfon llythyr i Gyllid a Thollau EM drwy’r post
 cannotMakeChanges.title = Ni allwch wneud newidiadau i’r ymddiriedolaeth ar-lein
 
-confirmation.declare.warning=Dim ond os oes rhwymedigaeth treth y bydd angen i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn.
-
 confirmation.existing.agent.bullet1 = Mae angen i’r ymddiriedolwr hawlio’r ymddiriedolaeth
 confirmation.existing.agent.bullet1.p1 = Mae angen i ymddiriedolwr fewngofnodi i’r Gwasanaeth Cofrestru Ymddiriedolaeth a’i Chynnal gan ddefnyddio ei gyfrif Porth y Llywodraeth. Mae’n rhaid i’r cyfrif mae’n ei ddefnyddio fod yn gyfrif sefydliad
 confirmation.existing.agent.bullet1.p2 = Os nad oes ganddo gyfrif
@@ -120,6 +118,7 @@ confirmation.existing.agent.p2 = Gwnewch nodyn o’ch cyfeirnod rhag ofn bod ang
 confirmation.existing.agent.p3 = Bydd angen i un o’r ymddiriedolwyr gwblhau’r 2 gam nesaf ar ôl cael UTR yr ymddiriedolaeth fel y gallwch gynnal yr ymddiriedolaeth ar-lein ar ei ran.
 confirmation.existing.agent.subheading1 = Yr hyn sy’n digwydd nesaf
 confirmation.existing.agent.subheading2 = Yr hyn y mae angen i chi ei wneud nesaf
+confirmation.existing.agent.warning=Dim ond os oes rhwymedigaeth treth y bydd angen i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn.
 
 confirmation.existing.individual.p1 = Gallwch barhau i ddefnyddio Cyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer yr ymddiriedolaeth fel arfer. Os oes problem gyda’r cofrestriad
 confirmation.existing.individual.p2 = Gwnewch nodyn o’ch cyfeirnod rhag ofn bod angen i chi gysylltu â CThEM.
@@ -131,6 +130,7 @@ confirmation.existing.individual.p6.a = cysylltwch â Gwasanaeth Cwsmeriaid Cymr
 confirmation.existing.individual.subheading1 = Yr hyn sy’n digwydd nesaf
 confirmation.existing.individual.subheading2 = Yr hyn y mae angen i chi ei wneud nesaf
 confirmation.existing.individual.subheading3 = Mae’n rhaid i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn
+confirmation.existing.individual.warning=Dim ond os oes rhwymedigaeth treth y bydd angen i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn.
 
 confirmation.heading1 = Cofrestriad wedi dod i law
 confirmation.heading2 = Eich cyfeirnod yw:
@@ -153,6 +153,7 @@ confirmation.new.agent.p2 = Gwnewch nodyn o’ch cyfeirnod rhag ofn bod angen i 
 confirmation.new.agent.p3 = Bydd angen i un o’r ymddiriedolwyr gwblhau’r 2 gam nesaf ar ôl cael UTR yr ymddiriedolaeth. Yna byddwch yn gallu cynnal yr ymddiriedolaeth ar-lein ar ei ran.
 confirmation.new.agent.subheading1 = Yr hyn sy’n digwydd nesaf
 confirmation.new.agent.subheading2 = Yr hyn y mae angen i chi ei wneud nesaf
+confirmation.new.agent.warning=Dim ond os oes rhwymedigaeth treth y bydd angen i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn.
 
 confirmation.new.individual.p1 = Byddwn yn anfon Cyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer yr ymddiriedolaeth {0} drwy’r post. Os ydyw wedi’i leoli yn y DU
 confirmation.new.individual.p2 = Gwnewch nodyn o’ch cyfeirnod rhag ofn bod angen i chi gysylltu â CThEM.
@@ -164,6 +165,7 @@ confirmation.new.individual.p6.a = cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg C
 confirmation.new.individual.subheading1 = Yr hyn sy’n digwydd nesaf
 confirmation.new.individual.subheading2 = Yr hyn y mae angen i chi ei wneud nesaf
 confirmation.new.individual.subheading3 = Ble i ddatgan bod yr ymddiriedolaeth yn gyfredol
+confirmation.new.individual.warning=Dim ond os oes rhwymedigaeth treth y bydd angen i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn.
 
 confirmation.print.link = Argraffu neu gadw copi wedi’i ddatgan o gofrestriad yr ymddiriedolaeth
 confirmation.title = Cofrestriad wedi dod i law
