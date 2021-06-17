@@ -101,10 +101,13 @@ class FrontendAppConfig @Inject() (val configuration: Configuration) {
 
   lazy val trustsAuthUrl: String = configuration.get[Service]("microservice.services.trusts-auth").baseUrl
 
-  def languageMap: Map[String, Lang] = Map(
-    "english" -> Lang(ENGLISH),
-    "cymraeg" -> Lang(WELSH)
-  )
+  def languageMap: Map[String, Lang] =
+    if (languageTranslationEnabled) {
+      Map(
+        "english" -> Lang(ENGLISH),
+        "cymraeg" -> Lang(WELSH)
+      )
+    } else { Map("english" -> Lang(ENGLISH)) }
 
   def routeToSwitchLanguage: String => Call =
     (lang: String) => controllers.register.routes.LanguageSwitchController.switchToLanguage(lang)

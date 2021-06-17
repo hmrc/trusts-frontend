@@ -34,12 +34,11 @@ class DateFormatter @Inject()(config: FrontendAppConfig, languageUtils: Language
     formatDate(dateTime.toLocalDate)
   }
 
-  def formatDate(date: JavaDate)(implicit messages: Messages): String = {
-    val convertedDate: JodaDate = new JodaDate(date.getYear, date.getMonthValue, date.getDayOfMonth)
-    formatDate(convertedDate)
+  def formatDate(date: JodaDate)(implicit messages: Messages): String = {
+    formatDate(JavaDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth))
   }
 
-  def formatDate(date: JodaDate)(implicit messages: Messages): String = {
+  def formatDate(date: JavaDate)(implicit messages: Messages): String = {
     languageUtils.Dates.formatDate(date)
   }
 
