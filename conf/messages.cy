@@ -520,8 +520,14 @@ trustRegisteredWithUkAddress.heading = A gofrestrwyd yr ymddiriedolaeth gyda chy
 trustRegisteredWithUkAddress.hint = Bydd i’w weld ar hysbysiad i gyflwyno Hunanasesiad (SA316) diweddaraf yr ymddiriedolaeth. Er enghraifft,
 trustRegisteredWithUkAddress.title = A gofrestrwyd yr ymddiriedolaeth gyda chyfeiriad yn y DU?
 
-unauthorised.heading = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 unauthorised.title = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
+unauthorised.heading = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
+unauthorised.p1 = Er mwyn defnyddio’r Gwasanaeth Cofrestru Ymddiriedolaethau, mae angen i chi fewngofnodi gyda chyfrif Porth y Llywodraeth ar gyfer sefydliad.
+unauthorised.p2 = Os nad oes gennych gyfrif Porth y Llywodraeth ar gyfer sefydliad,
+unauthorised.link = gallwch greu cyfrif ar-lein wrth gofrestru’r ymddiriedolaeth (yn agor tab neu ffenestr newydd).
+unauthorised.p3 = Er mwyn creu cyfrif, bydd angen arnoch:
+unauthorised.bullet1 = eich enw llawn
+unauthorised.bullet2 = cyfeiriad e-bost
 
 UTRSentByPost.heading = Mae Cyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer yr ymddiriedolaeth wedi’i anfon drwy’r post
 UTRSentByPost.link.contactHelpline = Cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg CThEM (yn agor ffenestr neu dab newydd)
