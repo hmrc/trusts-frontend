@@ -86,13 +86,13 @@ class BeforeYouContinueController @Inject()(
   }
 
   private def isTrustTaxable(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
-    request.getPage(TrustTaxableYesNoPage).getOrElse(true)
+    request.getPage(TrustTaxableYesNoPage).contains(true)
 
   private def isExpressTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
-    request.getPage(ExpressTrustYesNoPage).getOrElse(true)
+    request.getPage(ExpressTrustYesNoPage).contains(true)
 
   private def isExistingTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
-    request.getPage(TrustHaveAUTRPage).getOrElse(false)
+    request.getPage(TrustHaveAUTRPage).contains(true)
 
   private def isAgentUser(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
     request.isAgent
