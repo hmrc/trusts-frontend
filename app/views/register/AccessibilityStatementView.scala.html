@@ -65,6 +65,10 @@
       <li>@messages("accessibilityStatement.some.people.may.find.b4")</li>
       <li>@messages("accessibilityStatement.some.people.may.find.b5")</li>
       <li>@messages("accessibilityStatement.some.people.may.find.b6")</li>
+      <li>@messages("accessibilityStatement.some.people.may.find.b7")</li>
+      <li>@messages("accessibilityStatement.some.people.may.find.b8")</li>
+      <li>@messages("accessibilityStatement.some.people.may.find.b9")</li>
+      <li>@messages("accessibilityStatement.some.people.may.find.b10")</li>
     </ul>
 
     <h2 class="govuk-heading-l">@messages("accessibilityStatement.reporting.problems")</h2>
@@ -101,18 +105,79 @@
 
     <h4 class="govuk-heading-s">@messages("accessibilityStatement.non.compliance.with")</h4>
 
-    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.info.pre.link") <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html">@messages("accessibilityStatement.non.compliance.info.link")</a> @messages("accessibilityStatement.non.compliance.info.post.link")</p>
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.skip-to-main-content-link.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html">@messages("accessibilityStatement.non.compliance.skip-to-main-content-link.link")</a>
+        @messages("accessibilityStatement.non.compliance.skip-to-main-content-link.post.link")
+    </p>
 
-    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.keyboard.pre.link") <a href="https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html">@messages("accessibilityStatement.non.compliance.keyboard.link")</a> @messages("accessibilityStatement.non.compliance.keyboard.post.link"), <a href="https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html">@messages("accessibilityStatement.non.compliance.bypass.link")</a> @messages("accessibilityStatement.non.compliance.bypass.post.link")</p>
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.error-link.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html">@messages("accessibilityStatement.non.compliance.error-link.link")</a>
+        @messages("accessibilityStatement.non.compliance.error-link.post.link")
+    </p>
 
-    <p class="govuk-body">@messages("accessibilityStatement.non.compliance.change.pre.link") <a href="https://www.w3.org/TR/WCAG21/#link-purpose-in-context">@messages("accessibilityStatement.non.compliance.change.link")</a> @messages("accessibilityStatement.non.compliance.change.post.link")</p>
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.change-link.pre.links")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-in-context.html">@messages("accessibilityStatement.non.compliance.change-link.link1")</a>
+        @messages("accessibilityStatement.non.compliance.change-link.between.links")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-link-only.html">@messages("accessibilityStatement.non.compliance.change-link.link2")</a>
+        @messages("accessibilityStatement.non.compliance.change-link.post.links")
+    </p>
+
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.hierarchy.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html">@messages("accessibilityStatement.non.compliance.hierarchy.link")</a>
+        @messages("accessibilityStatement.non.compliance.hierarchy.post.link")
+    </p>
+
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.pdf.pre.links")
+        <a href="https://www.w3.org/TR/WCAG21/#non-text-content">@messages("accessibilityStatement.non.compliance.pdf.link1")</a>,
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html">@messages("accessibilityStatement.non.compliance.pdf.link2")</a>,
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/page-titled.html">@messages("accessibilityStatement.non.compliance.pdf.link3")</a>,
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/language-of-page.html">@messages("accessibilityStatement.non.compliance.pdf.link4")</a>
+        @messages("accessibilityStatement.non.compliance.pdf.between.links")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-enhanced.html">@messages("accessibilityStatement.non.compliance.pdf.link5")</a>
+        @messages("accessibilityStatement.non.compliance.pdf.post.links")
+    </p>
+
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.monetary.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/headings-and-labels.html">@messages("accessibilityStatement.non.compliance.monetary.link")</a>
+        @messages("accessibilityStatement.non.compliance.monetary.post.link")
+    </p>
+
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.complete-assets.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/headings-and-labels.html">@messages("accessibilityStatement.non.compliance.complete-assets.link")</a>
+        @messages("accessibilityStatement.non.compliance.complete-assets.post.link")
+    </p>
+
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.draft-navigation.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/section-headings.html">@messages("accessibilityStatement.non.compliance.draft-navigation.link")</a>
+        @messages("accessibilityStatement.non.compliance.draft-navigation.post.link")
+    </p>
+
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.colour-contrast.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-enhanced.html">@messages("accessibilityStatement.non.compliance.colour-contrast.link")</a>
+        @messages("accessibilityStatement.non.compliance.colour-contrast.post.link")
+    </p>
+
+    <p class="govuk-body">
+        @messages("accessibilityStatement.non.compliance.hint-contrast.pre.link")
+        <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-enhanced.html">@messages("accessibilityStatement.non.compliance.hint-contrast.link")</a>
+        @messages("accessibilityStatement.non.compliance.hint-contrast.post.link")
+    </p>
 
     <h2 class="govuk-heading-l">@messages("accessibilityStatement.how.we.tested")</h2>
     <p class="govuk-body">@messages("accessibilityStatement.service.last.tested.on")</p>
     <p class="govuk-body">
-      @messages("accessibilityStatement.this.service.was.built.pre.link")
-      <a href="http://www.digitalaccessibilitycentre.org/">@messages("accessibilityStatement.this.service.was.built.link")</a>.
-      @messages("accessibilityStatement.this.service.was.built.post.link")
+        @messages("accessibilityStatement.this.service.was.built.pre.link")
+        <a href="http://www.digitalaccessibilitycentre.org/">@messages("accessibilityStatement.this.service.was.built.link")</a>.
+        @messages("accessibilityStatement.this.service.was.built.post.link")
     </p>
     <p class="govuk-body">@messages("accessibilityStatement.page.prepared.on")</p>
 
