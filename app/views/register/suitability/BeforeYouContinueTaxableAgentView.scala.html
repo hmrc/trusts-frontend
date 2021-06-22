@@ -1,0 +1,58 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+@import controllers.register.suitability.routes._
+
+@this(
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF,
+    config: FrontendAppConfig
+)
+
+@()(implicit request: Request[_], messages: Messages)
+
+@main_template(
+    title = messages("suitability.beforeYouContinue.taxable.agent.title")
+) {
+
+    @formHelper(action = BeforeYouContinueController.onSubmit(), 'autoComplete -> "off") {
+
+        @components.back_link()
+
+        @components.heading("suitability.beforeYouContinue.taxable.agent.heading")
+
+        <p>@messages("suitability.beforeYouContinue.taxable.agent.p1")</p>
+        <p>@messages("suitability.beforeYouContinue.taxable.agent.p2")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("suitability.beforeYouContinue.taxable.agent.bullet1")</li>
+            <li>@messages("suitability.beforeYouContinue.taxable.agent.bullet2")</li>
+            <li>@messages("suitability.beforeYouContinue.taxable.agent.bullet3")</li>
+        </ul>
+
+        <p>@messages("suitability.beforeYouContinue.taxable.agent.p3")</p>
+        <p>@messages("suitability.beforeYouContinue.taxable.agent.p4")</p>
+        <p>@messages("suitability.beforeYouContinue.taxable.agent.p5")</p>
+
+        <ul>
+            <li><a href="@config.whoShouldRegisterUrl" target="_blank">@messages("suitability.beforeYouContinue.taxable.agent.link1")</a></li>
+            <li><a href="@config.trustsAndTaxesUrl" target="_blank">@messages("suitability.beforeYouContinue.taxable.agent.link2")</a></li>
+        </ul>
+
+        @components.submit_button(Some("suitability.beforeYouContinue.taxable.agent.continue"))
+    }
+}

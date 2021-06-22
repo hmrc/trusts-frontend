@@ -17,23 +17,23 @@
 package views.register.suitability
 
 import views.behaviours.ViewBehaviours
-import views.html.register.suitability.BeforeYouContinueTaxableView
+import views.html.register.suitability.BeforeYouContinueTaxableAgentView
 
-class BeforeYouContinueTaxableViewSpec extends ViewBehaviours {
+class BeforeYouContinueTaxableAgentViewSpec extends ViewBehaviours {
 
-  "BeforeYouContinueTaxable View" must {
+  "BeforeYouContinueAgentTaxable View" must {
 
     val application = applicationBuilder().build()
 
-    val view = application.injector.instanceOf[BeforeYouContinueTaxableView]
+    val view = application.injector.instanceOf[BeforeYouContinueTaxableAgentView]
 
     val applyView = view.apply()(fakeRequest, messages)
 
     behave like normalPage(
       applyView,
       None,
-      "suitability.beforeYouContinue.taxable",
-      "p1", "p2", "bullet1", "bullet2", "bullet3", "p3", "p4", "link1", "link2"
+      "suitability.beforeYouContinue.taxable.agent",
+      "p1", "p2", "bullet1", "bullet2", "bullet3", "p3", "p4", "p5", "link1", "link2"
     )
 
     behave like pageWithASubmitButton(applyView)

@@ -96,6 +96,29 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         application.stop()
       }
 
+      "return OK and the correct view for a taxable agent journey GET" in {
+
+        val answers = emptyMatchingAndSuitabilityUserAnswers
+          .set(TrustTaxableYesNoPage, true).success.value
+          .set(TrustHaveAUTRPage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[BeforeYouContinueTaxableAgentView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view()(request, messages).toString
+
+        application.stop()
+      }
+
       "return OK and the correct view for an existing taxable journey GET" in {
 
         val answers = emptyMatchingAndSuitabilityUserAnswers
@@ -132,6 +155,28 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[BeforeYouContinueNonTaxableView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual
+          view()(request, messages).toString
+
+        application.stop()
+      }
+
+      "return OK and the correct view for a non taxable agent journey GET" in {
+
+        val answers = emptyMatchingAndSuitabilityUserAnswers
+          .set(TrustTaxableYesNoPage, false).success.value
+
+        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+          .build()
+
+        val request = FakeRequest(GET, beforeYouContinueRoute)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
 
         status(result) mustEqual OK
 
@@ -189,28 +234,6 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         status(result) mustEqual SEE_OTHER
 
         redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad().url
-
-        application.stop()
-      }
-
-      "return OK and the correct view for a non taxable agent journey GET" in {
-
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, false).success.value
-
-        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-          .build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view()(request, messages).toString
 
         application.stop()
       }
