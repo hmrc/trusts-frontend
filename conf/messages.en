@@ -826,6 +826,7 @@ accessibilityStatement.non.compliance.pdf.link3 = 2.4.2: Page Titled
 accessibilityStatement.non.compliance.pdf.link4 = 3.1.1: Language of Page
 accessibilityStatement.non.compliance.pdf.between.links = or
 accessibilityStatement.non.compliance.pdf.link5 = 1.4.6: Contrast (Enhanced)
+#TODO - decide on date
 accessibilityStatement.non.compliance.pdf.post.links = (Level A). We plan to fix this by ???.
 
 accessibilityStatement.non.compliance.monetary.pre.link = The service asks users to input a monetary value. Users of screen readers may not correctly understand that it needs to be in pounds sterling. This does not meet WCAG 2.1 success criterion
