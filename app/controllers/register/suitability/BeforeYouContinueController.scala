@@ -35,6 +35,7 @@ class BeforeYouContinueController @Inject()(
                                              actions: StandardActionSets,
                                              val controllerComponents: MessagesControllerComponents,
                                              taxableView: BeforeYouContinueTaxableView,
+                                             taxableAgentView: BeforeYouContinueTaxableAgentView,
                                              existingTaxableView: BeforeYouContinueExistingTaxableView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
@@ -42,26 +43,33 @@ class BeforeYouContinueController @Inject()(
                                              appConfig: FrontendAppConfig
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
+  private def routeNonTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (appConfig.disableNonTaxableRegistrations) {
+    Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad())
+  } else {
+    if (isAgentUser) {
+      Ok(nonTaxableAgentView())
+    } else {
+      Ok(nonTaxableView())
+    }
+  }
+
+  private def routeTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (isAgentUser) {
+    Ok(taxableAgentView())
+  } else {
+    Ok(taxableView())
+  }
+
   def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
 
-      (doesTrustHaveUtr, isTrustTaxable) match {
-        case (Some(false), Some(true)) =>
-          Ok(taxableView())
-        case (Some(true), Some(true)) =>
-          Ok(existingTaxableView())
-        case (_, Some(false)) =>
-          if (appConfig.disableNonTaxableRegistrations) {
-            Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad())
-          } else {
-            if (isAgentUser) {
-              Ok(nonTaxableAgentView())
-            } else {
-              Ok(nonTaxableView())
-            }
-          }
-        case _ =>
-          Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())
+      if (isExistingTrust) {
+        Ok(existingTaxableView())
+      } else {
+        if (isTrustTaxable) {
+          routeTaxable()
+        } else {
+          routeNonTaxable()
+        }
       }
   }
 
@@ -69,25 +77,22 @@ class BeforeYouContinueController @Inject()(
     implicit request =>
 
       featureFlagService.isNonTaxableAccessCodeEnabled() map { isNonTaxableAccessEnabled =>
-        Redirect {
-          (isExpressTrust, isTrustTaxable, isNonTaxableAccessEnabled) match {
-            case (Some(true), Some(false), true) =>
-              routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad().url
-            case _ =>
-              controllers.register.routes.CreateDraftRegistrationController.create().url
-          }
+        if(isExpressTrust && !isTrustTaxable && isNonTaxableAccessEnabled) {
+          Redirect(routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad().url)
+        } else {
+          Redirect(controllers.register.routes.CreateDraftRegistrationController.create().url)
         }
       }
   }
 
-  private def isTrustTaxable(implicit request: MatchingAndSuitabilityDataRequest[_]): Option[Boolean] =
-    request.getPage(TrustTaxableYesNoPage)
+  private def isTrustTaxable(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
+    request.getPage(TrustTaxableYesNoPage).getOrElse(true)
 
-  private def isExpressTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Option[Boolean] =
-    request.getPage(ExpressTrustYesNoPage)
+  private def isExpressTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
+    request.getPage(ExpressTrustYesNoPage).getOrElse(true)
 
-  private def doesTrustHaveUtr(implicit request: MatchingAndSuitabilityDataRequest[_]): Option[Boolean] =
-    request.getPage(TrustHaveAUTRPage)
+  private def isExistingTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
+    request.getPage(TrustHaveAUTRPage).getOrElse(false)
 
   private def isAgentUser(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
     request.isAgent

@@ -333,13 +333,27 @@ suitability.beforeYouContinue.taxable.link1 = Who should register (opens in a ne
 suitability.beforeYouContinue.taxable.link2 = Trusts and taxes (opens in a new window or tab)
 suitability.beforeYouContinue.taxable.continue = Continue to register the trust
 
+suitability.beforeYouContinue.taxable.agent.title = Before you continue
+suitability.beforeYouContinue.taxable.agent.heading = Before you continue
+suitability.beforeYouContinue.taxable.agent.p1 = While all trustees are equally legally responsible for the trust, you need to nominate a ‘lead’ trustee.
+suitability.beforeYouContinue.taxable.agent.p2 = The lead trustee will:
+suitability.beforeYouContinue.taxable.agent.bullet1 = receive the trust’s Unique Taxpayer Reference (UTR)
+suitability.beforeYouContinue.taxable.agent.bullet2 = receive all official documents for the trust, such as reminders to file tax returns
+suitability.beforeYouContinue.taxable.agent.bullet3 = be the main point of contact with HMRC for the trust
+suitability.beforeYouContinue.taxable.agent.p3 = The UTR will be sent to the lead trustee by post, and can take 15 working days to arrive. For addresses outside the UK it can take 21 working days.
+suitability.beforeYouContinue.taxable.agent.p4 = As the lead trustee is the main point of contact for the trust, you need to keep their contact information up to date.
+suitability.beforeYouContinue.taxable.agent.p5 = You can find out more about:
+suitability.beforeYouContinue.taxable.agent.link1 = Who should register (opens in a new window or tab)
+suitability.beforeYouContinue.taxable.agent.link2 = Trusts and taxes (opens in a new window or tab)
+suitability.beforeYouContinue.taxable.agent.continue = Continue to register the trust
+
 suitability.beforeYouContinue.existing.taxable.title = Before you continue
 suitability.beforeYouContinue.existing.taxable.heading = Before you continue
 suitability.beforeYouContinue.existing.taxable.p1 = You need to confirm with HMRC that the trust was registered for self assessment tax returns.
 suitability.beforeYouContinue.existing.taxable.p2 = This is so you can register the trust under the rules of the Fifth Money Laundering Directive.
 suitability.beforeYouContinue.existing.taxable.h2 = Confirm the trust was registered with HMRC for self assessment tax returns
 suitability.beforeYouContinue.existing.taxable.p3 = By continuing, you are confirming that the trust was registered with HMRC for self assessment tax returns.
-suitability.beforeYouContinue.existing.taxable.continue = Continue
+suitability.beforeYouContinue.existing.taxable.continue = Continue to register the trust
 
 suitability.beforeYouContinue.nonTaxable.title = Before you continue
 suitability.beforeYouContinue.nonTaxable.heading = Before you continue
