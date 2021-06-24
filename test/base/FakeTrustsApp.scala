@@ -20,7 +20,6 @@ import config.FrontendAppConfig
 import controllers.actions.TrustsAuthorisedFunctions
 import org.scalatest.TestSuite
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.Configuration
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.Injector
 import play.api.mvc.BodyParsers
@@ -33,11 +32,7 @@ trait FakeTrustsApp extends GuiceOneAppPerSuite {
 
   def injector: Injector = app.injector
 
-  private lazy val config: Configuration = injector.instanceOf[FrontendAppConfig].configuration
-
-  def fakeFrontendAppConfig: FrontendAppConfig = {
-    new FrontendAppConfig(config)
-  }
+  lazy val fakeFrontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
