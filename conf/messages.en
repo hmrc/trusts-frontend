@@ -441,7 +441,7 @@ settlorsPassportOrIdCard.checkYourAnswersLabel = What are {0}’s passport or ID
 settlorsName.checkYourAnswersLabel = What is the settlor’s name?
 settlorsNationalInsuranceYesNo.checkYourAnswersLabel = Do you know {0}’s National Insurance number?
 settlorsUKAddress.checkYourAnswersLabel = What is {0}’s last known address?
-setUpAfterSettlorDied.checkYourAnswersLabel = Was the trust set up after the settlor died?
+setUpAfterSettlorDiedYesNo.checkYourAnswersLabel = Was the trust set up after the settlor died?
 setUpInAdditionToWillTrustYesNo.checkYourAnswersLabel = Is this in addition to a will trust?
 wasSettlorsAddressUKYesNo.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 
