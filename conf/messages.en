@@ -118,22 +118,22 @@ trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
-governedInsideTheUK.checkYourAnswersLabel = Is the trust governed by UK law?
+governedInsideTheUKYesNo.checkYourAnswersLabel = Is the trust governed by UK law?
 countryGoverningTrust.checkYourAnswersLabel = What country governs the trust?
-administrationInsideUK.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
+administrationInsideUKYesNo.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
 countryAdministeringTrust.checkYourAnswersLabel = In what country is the trust administered?
 trustResidentInUK.checkYourAnswersLabel = Is the trust resident in the UK?
-establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
-registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust because the settlor benefits from the trust’s assets?
-trustResidentOffshore.checkYourAnswersLabel = Has the trust ever been resident offshore?
+establishedUnderScotsLawYesNo.checkYourAnswersLabel = Is the trust established under Scots Law?
+registeringTrustFor5AYesNo.checkYourAnswersLabel = Are you registering the trust because the settlor benefits from the trust’s assets?
+trustResidentOffshoreYesNo.checkYourAnswersLabel = Has the trust ever been resident offshore?
 trustPreviouslyResident.checkYourAnswersLabel = In what country was the trust previously resident?
 nonresidentType.checkYourAnswersLabel = What is the non-resident type?
-inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
-agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
+inheritanceTaxActYesNo.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
+agentOtherThanBarristerYesNo.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
 whenTrustSetup.checkYourAnswersLabel = When was the trust created?
-trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
-trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
-trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
+trustHasBusinessRelationshipInUkYesNo.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
+trustListedOnEeaRegisterYesNo.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
+trustOwnsUkPropertyOrLandYesNo.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?
@@ -677,7 +677,7 @@ trusteesBasedInTheUK.NonUkBasedTrustees = None of the trustees are based in the 
 trusteesBasedInTheUK.InternationalAndUKTrustees = The trust contains trustees based in and outside the UK
 trusteesBasedInTheUK.checkYourAnswersLabel = How many of the trustees are based in the UK?
 
-settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
+settlorsBasedInTheUKYesNo.checkYourAnswersLabel = Are any of the settlors based in the UK?
 
 businessProtector.name.checkYourAnswersLabel = What is the business’s name?
 businessProtector.utrYesNo.checkYourAnswersLabel = Do you know {0}’s Unique Taxpayer Reference (UTR) number?

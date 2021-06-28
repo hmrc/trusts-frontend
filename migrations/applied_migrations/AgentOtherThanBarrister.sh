@@ -16,7 +16,7 @@ echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
 echo "agentOtherThanBarrister.title = agentOtherThanBarrister" >> ../conf/messages.en
 echo "agentOtherThanBarrister.heading = agentOtherThanBarrister" >> ../conf/messages.en
-echo "agentOtherThanBarrister.checkYourAnswersLabel = agentOtherThanBarrister" >> ../conf/messages.en
+echo "agentOtherThanBarristerYesNo.checkYourAnswersLabel = agentOtherThanBarrister" >> ../conf/messages.en
 echo "agentOtherThanBarrister.error.required = Select yes if agentOtherThanBarrister" >> ../conf/messages.en
 
 echo "Adding to UserAnswersEntryGenerators"
@@ -51,7 +51,7 @@ awk '/class/ {\
      print;\
      print "";\
      print "  def agentOtherThanBarrister: Option[AnswerRow] = userAnswers.get(AgentOtherThanBarristerPage) map {";\
-     print "    x => AnswerRow(\"agentOtherThanBarrister.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.AgentOtherThanBarristerController.onPageLoad(CheckMode).url)"; print "  }";\
+     print "    x => AnswerRow(\"agentOtherThanBarristerYesNo.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.AgentOtherThanBarristerController.onPageLoad(CheckMode).url)"; print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 
 echo "Migration AgentOtherThanBarrister completed"

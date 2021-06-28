@@ -16,7 +16,7 @@ echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
 echo "establishedUnderScotsLaw.title = establishedUnderScotsLaw" >> ../conf/messages.en
 echo "establishedUnderScotsLaw.heading = establishedUnderScotsLaw" >> ../conf/messages.en
-echo "establishedUnderScotsLaw.checkYourAnswersLabel = establishedUnderScotsLaw" >> ../conf/messages.en
+echo "establishedUnderScotsLawYesNo.checkYourAnswersLabel = establishedUnderScotsLaw" >> ../conf/messages.en
 echo "establishedUnderScotsLaw.error.required = Select yes if establishedUnderScotsLaw" >> ../conf/messages.en
 
 echo "Adding to UserAnswersEntryGenerators"
@@ -51,7 +51,7 @@ awk '/class/ {\
      print;\
      print "";\
      print "  def establishedUnderScotsLaw: Option[AnswerRow] = userAnswers.get(EstablishedUnderScotsLawPage) map {";\
-     print "    x => AnswerRow(\"establishedUnderScotsLaw.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.EstablishedUnderScotsLawController.onPageLoad(CheckMode).url)"; print "  }";\
+     print "    x => AnswerRow(\"establishedUnderScotsLawYesNo.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.EstablishedUnderScotsLawController.onPageLoad(CheckMode).url)"; print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 
 echo "Migration EstablishedUnderScotsLaw completed"

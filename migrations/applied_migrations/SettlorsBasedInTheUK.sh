@@ -16,7 +16,7 @@ echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
 echo "settlorsBasedInTheUK.title = settlorsBasedInTheUK" >> ../conf/messages.en
 echo "settlorsBasedInTheUK.heading = settlorsBasedInTheUK" >> ../conf/messages.en
-echo "settlorsBasedInTheUK.checkYourAnswersLabel = settlorsBasedInTheUK" >> ../conf/messages.en
+echo "settlorsBasedInTheUKYesNo.checkYourAnswersLabel = settlorsBasedInTheUK" >> ../conf/messages.en
 echo "settlorsBasedInTheUK.error.required = Select yes if settlorsBasedInTheUK" >> ../conf/messages.en
 
 echo "Adding to UserAnswersEntryGenerators"
@@ -53,7 +53,7 @@ awk '/class / {\
      print "  def settlorsBasedInTheUK: Option[AnswerRow] = userAnswers.get(SettlorsBasedInTheUKPage) map {";\
      print "    x =>";\
      print "      AnswerRow(";\
-     print "        \"settlorsBasedInTheUK.checkYourAnswersLabel\",";\
+     print "        \"settlorsBasedInTheUKYesNo.checkYourAnswersLabel\",";\
      print "        yesOrNo(x),";\
      print "        routes.SettlorsBasedInTheUKController.onPageLoad(CheckMode, draftId).url";\
      print "      )";\
