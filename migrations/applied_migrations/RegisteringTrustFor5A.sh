@@ -16,7 +16,7 @@ echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
 echo "registeringTrustFor5A.title = registeringTrustFor5A" >> ../conf/messages.en
 echo "registeringTrustFor5A.heading = registeringTrustFor5A" >> ../conf/messages.en
-echo "registeringTrustFor5A.checkYourAnswersLabel = registeringTrustFor5A" >> ../conf/messages.en
+echo "registeringTrustFor5AYesNo.checkYourAnswersLabel = registeringTrustFor5A" >> ../conf/messages.en
 echo "registeringTrustFor5A.error.required = Select yes if registeringTrustFor5A" >> ../conf/messages.en
 
 echo "Adding to UserAnswersEntryGenerators"
@@ -51,7 +51,7 @@ awk '/class/ {\
      print;\
      print "";\
      print "  def registeringTrustFor5A: Option[AnswerRow] = userAnswers.get(RegisteringTrustFor5APage) map {";\
-     print "    x => AnswerRow(\"registeringTrustFor5A.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.RegisteringTrustFor5AController.onPageLoad(CheckMode).url)"; print "  }";\
+     print "    x => AnswerRow(\"registeringTrustFor5AYesNo.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.RegisteringTrustFor5AController.onPageLoad(CheckMode).url)"; print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 
 echo "Migration RegisteringTrustFor5A completed"

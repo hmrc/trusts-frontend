@@ -16,7 +16,7 @@ echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
 echo "inheritanceTaxAct.title = inheritanceTaxAct" >> ../conf/messages.en
 echo "inheritanceTaxAct.heading = inheritanceTaxAct" >> ../conf/messages.en
-echo "inheritanceTaxAct.checkYourAnswersLabel = inheritanceTaxAct" >> ../conf/messages.en
+echo "inheritanceTaxActYesNo.checkYourAnswersLabel = inheritanceTaxAct" >> ../conf/messages.en
 echo "inheritanceTaxAct.error.required = Select yes if inheritanceTaxAct" >> ../conf/messages.en
 
 echo "Adding to UserAnswersEntryGenerators"
@@ -51,7 +51,7 @@ awk '/class/ {\
      print;\
      print "";\
      print "  def inheritanceTaxAct: Option[AnswerRow] = userAnswers.get(InheritanceTaxActPage) map {";\
-     print "    x => AnswerRow(\"inheritanceTaxAct.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.InheritanceTaxActController.onPageLoad(CheckMode).url)"; print "  }";\
+     print "    x => AnswerRow(\"inheritanceTaxActYesNo.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.InheritanceTaxActController.onPageLoad(CheckMode).url)"; print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 
 echo "Migration InheritanceTaxAct completed"

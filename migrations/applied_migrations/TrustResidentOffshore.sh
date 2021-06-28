@@ -16,7 +16,7 @@ echo "Adding messages to conf.messages"
 echo "" >> ../conf/messages.en
 echo "trustResidentOffshore.title = trustResidentOffshore" >> ../conf/messages.en
 echo "trustResidentOffshore.heading = trustResidentOffshore" >> ../conf/messages.en
-echo "trustResidentOffshore.checkYourAnswersLabel = trustResidentOffshore" >> ../conf/messages.en
+echo "trustResidentOffshoreYesNo.checkYourAnswersLabel = trustResidentOffshore" >> ../conf/messages.en
 echo "trustResidentOffshore.error.required = Select yes if trustResidentOffshore" >> ../conf/messages.en
 
 echo "Adding to UserAnswersEntryGenerators"
@@ -51,7 +51,7 @@ awk '/class/ {\
      print;\
      print "";\
      print "  def trustResidentOffshore: Option[AnswerRow] = userAnswers.get(TrustResidentOffshorePage) map {";\
-     print "    x => AnswerRow(\"trustResidentOffshore.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.TrustResidentOffshoreController.onPageLoad(CheckMode).url)"; print "  }";\
+     print "    x => AnswerRow(\"trustResidentOffshoreYesNo.checkYourAnswersLabel\", if(x) \"site.yes\" else \"site.no\", true, routes.TrustResidentOffshoreController.onPageLoad(CheckMode).url)"; print "  }";\
      next }1' ../app/utils/CheckYourAnswersHelper.scala > tmp && mv tmp ../app/utils/CheckYourAnswersHelper.scala
 
 echo "Migration TrustResidentOffshore completed"
