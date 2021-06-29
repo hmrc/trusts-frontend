@@ -55,7 +55,11 @@ object RegistrationAnswerSections {
   private def convert(section: RegistrationSubmission.AnswerSection)
                      (answerRowUtils: AnswerRowUtils)
                      (implicit messages: Messages): AnswerSection =
-    AnswerSection(section.headingKey, section.rows.map(convert(_)(answerRowUtils)), section.sectionKey)
+    AnswerSection(
+      headingKey = section.headingKey.map(x => messages(x, section.headingArg.getOrElse(""))),
+      rows = section.rows.map(convert(_)(answerRowUtils)),
+      sectionKey = section.sectionKey.map(messages(_))
+    )
 
   private def convert(section: Option[List[RegistrationSubmission.AnswerSection]])
                      (answerRowUtils: AnswerRowUtils)

@@ -274,33 +274,37 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
           beneficiaries = Some(
             List(
               RegistrationSubmission.AnswerSection(
-                Some("headingKey1"),
-                List(
+                headingKey = Some("headingKey1"),
+                headingArg = None,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
-                Some("sectionKey1")),
+                sectionKey = Some("sectionKey1")),
               RegistrationSubmission.AnswerSection(
-                Some("headingKey2"),
-                List(
+                headingKey = Some("headingKey2"),
+                headingArg = None,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),
-                Some("sectionKey2"))
+                sectionKey = Some("sectionKey2"))
             )
           ),
           trustees = Some(
             List(
               RegistrationSubmission.AnswerSection(
-                Some("trusteeHeadingKey1"),
-                List(
+                headingKey = Some("trusteeHeadingKey1"),
+                headingArg = None,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
-                Some("trusteeSectionKey1")),
+                sectionKey = Some("trusteeSectionKey1")),
               RegistrationSubmission.AnswerSection(
-                Some("trusteeHeadingKey2"),
-                List(
+                headingKey = Some("trusteeHeadingKey2"),
+                headingArg = None,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),
-                Some("trusteeSectionKey2"))
+                sectionKey = Some("trusteeSectionKey2"))
             )
           ),
           protectors = None,
