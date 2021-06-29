@@ -43,7 +43,7 @@ trait Mocked extends MockitoSugar {
   when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
 
-  when(mockCreateDraftRegistrationService.getAnswerSections(any())(any()))
+  when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
     .thenReturn(Future.successful(RegistrationAnswerSections()))
 
   when(cacheRepository.set(any())).thenReturn(Future.successful(true))

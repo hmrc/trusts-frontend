@@ -31,7 +31,7 @@ import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import utils.DateFormatter
+import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -48,7 +48,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
 
-    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, injector.instanceOf[AnswerRowUtils])
   }
 
   "RegistrationRepository" when {

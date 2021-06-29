@@ -18,6 +18,7 @@ package services
 
 import models.core.UserAnswers
 import models.requests.MatchingAndSuitabilityDataRequest
+import play.api.i18n.Messages
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.RegistrationAnswerSections
@@ -43,7 +44,8 @@ class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsR
     }
   }
 
-  def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[RegistrationAnswerSections] =
+  def getAnswerSections(draftId: String)
+                       (implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
     registrationsRepository.getAnswerSections(draftId)
 
 }

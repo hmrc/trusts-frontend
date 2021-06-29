@@ -757,6 +757,10 @@ individualBeneficiary.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabe
 individualBeneficiary.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
 individualBeneficiary.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
 
+individualBeneficiary.roleInCompany.Director = Director
+individualBeneficiary.roleInCompany.Employee = Employee
+individualBeneficiary.roleInCompany.checkYourAnswersLabel.na = Not a director or employee
+
 charity.name.checkYourAnswersLabel = What is the charity’s name?
 charity.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s income is {0} entitled to?

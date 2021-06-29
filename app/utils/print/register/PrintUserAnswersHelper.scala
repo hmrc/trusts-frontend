@@ -16,17 +16,18 @@
 
 package utils.print.register
 
-import javax.inject.Inject
+import play.api.i18n.Messages
 import services.DraftRegistrationService
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.AnswerSection
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class PrintUserAnswersHelper @Inject()(draftRegistrationService: DraftRegistrationService)
                                       (implicit ec: ExecutionContext) {
 
-  def summary(draftId: String)(implicit hc: HeaderCarrier): Future[List[AnswerSection]] = {
+  def summary(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[List[AnswerSection]] = {
 
     draftRegistrationService.getAnswerSections(draftId).map {
       registrationAnswerSections =>
