@@ -46,25 +46,30 @@ object RegistrationAnswerSections {
     )
   }
 
-  private def convert(row: RegistrationSubmission.AnswerRow)
+  private def convert(section: Option[List[RegistrationSubmission.AnswerSection]])
                      (answerRowUtils: AnswerRowUtils)
-                     (implicit messages: Messages): AnswerRow = {
-    AnswerRow(row.label, HtmlFormat.raw(answerRowUtils.reverseEngineerAnswer(row.answer)), None, row.labelArg, canEdit = false)
+                     (implicit messages: Messages): Option[List[AnswerSection]] = {
+    section map {
+      _.map(convert(_)(answerRowUtils))
+    }
   }
 
   private def convert(section: RegistrationSubmission.AnswerSection)
                      (answerRowUtils: AnswerRowUtils)
-                     (implicit messages: Messages): AnswerSection =
-    AnswerSection(
-      headingKey = section.headingKey.map(x => messages(x, section.headingArg.getOrElse(""))),
-      rows = section.rows.map(convert(_)(answerRowUtils)),
-      sectionKey = section.sectionKey.map(messages(_))
-    )
+                     (implicit messages: Messages): AnswerSection = AnswerSection(
+    headingKey = section.headingKey.map(x => messages(x, section.headingArg.getOrElse(""))),
+    rows = section.rows.map(convert(_)(answerRowUtils)),
+    sectionKey = section.sectionKey.map(messages(_))
+  )
 
-  private def convert(section: Option[List[RegistrationSubmission.AnswerSection]])
+  private def convert(row: RegistrationSubmission.AnswerRow)
                      (answerRowUtils: AnswerRowUtils)
-                     (implicit messages: Messages): Option[List[AnswerSection]] =
-    section map {
-      _.map(convert(_)(answerRowUtils))
-    }
+                     (implicit messages: Messages): AnswerRow = AnswerRow(
+    label = row.label,
+    answer = HtmlFormat.raw(answerRowUtils.reverseEngineerAnswer(row.answer)),
+    changeUrl = None,
+    labelArg = row.labelArg,
+    canEdit = false
+  )
+
 }
