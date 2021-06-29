@@ -118,6 +118,18 @@ trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
+governedInsideTheUK.checkYourAnswersLabel = Is the trust governed by UK law?
+administrationInsideUK.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
+establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
+registeringTrustFor5A.checkYourAnswersLabel = Are you registering the trust because the settlor benefits from the trust’s assets?
+trustResidentOffshore.checkYourAnswersLabel = Has the trust ever been resident offshore?
+inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
+agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
+trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
+trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
+trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
+settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
+
 governedInsideTheUKYesNo.checkYourAnswersLabel = Is the trust governed by UK law?
 countryGoverningTrust.checkYourAnswersLabel = What country governs the trust?
 administrationInsideUKYesNo.checkYourAnswersLabel = Is the trust’s general administration done in the UK?

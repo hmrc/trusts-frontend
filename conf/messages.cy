@@ -489,6 +489,18 @@ whichIdentifier.urn.hint=Mae hwn yn cynnwys 15 rhif a chymeriad, er enghraifft A
 whichIdentifier.utr=Cyfeirnod Unigryw y Trethdalwr (UTR)
 whichIdentifier.utr.hint=Rhif 10 digid yw hwn, er enghraifft 1234567890.
 
+administrationInsideUK.checkYourAnswersLabel = A yw gweinyddu cyffredinol yr ymddiriedolaeth yn cael ei wneud yn y DU?
+agentOtherThanBarrister.checkYourAnswersLabel = A oes asiant nad yw’n fargyfreithiwr wedi creu’r ymddiriedolaeth hon?
+establishedUnderScotsLaw.checkYourAnswersLabel = A yw’r ymddiriedolaeth wedi’i sefydlu o dan Gyfraith yr Alban?
+governedInsideTheUK.checkYourAnswersLabel = A yw’r ymddiriedolaeth yn cael ei llywodraethu gan gyfraith y DU?
+inheritanceTaxAct.checkYourAnswersLabel = A ydych yn cofrestru’r ymddiriedolaeth am resymau Treth Etifeddiant?
+registeringTrustFor5A.checkYourAnswersLabel = A ydych yn cofrestru’r ymddiriedolaeth oherwydd bod y setlwr yn elwa o asedion yr ymddiriedolaeth?
+settlorsBasedInTheUK.checkYourAnswersLabel = A oes unrhyw un o’r setlwyr wedi’u lleoli yn y DU?
+trustHasBusinessRelationshipInUk.checkYourAnswersLabel = A oes gan yr ymddiriedolaeth berthynas fusnes yn y DU?
+trustListedOnEeaRegister.checkYourAnswersLabel = A yw’r ymddiriedolaeth wedi’i rhestru ar gofrestr Ardal Economaidd Ewropeaidd (AEE)?
+trustOwnsUkPropertyOrLand.checkYourAnswersLabel = A yw’r ymddiriedolaeth wedi caffael tir neu eiddo yn y DU ers 6 Hydref 2020?
+trustResidentOffshore.checkYourAnswersLabel = A yw’r ymddiriedolaeth erioed wedi preswylio alltraeth?
+
 5mld.countryOfNationality.checkYourAnswersLabel = Beth oedd gwlad cenedligrwydd {0}?
 5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oedd gan {0} genedligrwydd y DU?
 5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod gwlad cenedligrwydd {0}?
