@@ -118,6 +118,7 @@ trustName.error.length = The trust’s name must be 53 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
+#TODO - delete below at least 28 days after deployment
 governedInsideTheUK.checkYourAnswersLabel = Is the trust governed by UK law?
 administrationInsideUK.checkYourAnswersLabel = Is the trust’s general administration done in the UK?
 establishedUnderScotsLaw.checkYourAnswersLabel = Is the trust established under Scots Law?
@@ -129,6 +130,7 @@ trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a b
 trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
+#TODO - delete above at least 28 days after deployment
 
 governedInsideTheUKYesNo.checkYourAnswersLabel = Is the trust governed by UK law?
 countryGoverningTrust.checkYourAnswersLabel = What country governs the trust?
