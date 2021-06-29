@@ -964,3 +964,6 @@ individualProtector.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you 
 notification.warning = You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.
 notification.important = Important
 notification.instruction = The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.
+
+answerPage.section.otherIndividuals.heading = Other individuals
+answerPage.section.otherIndividual.subheading = Other individual {0}

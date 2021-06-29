@@ -48,9 +48,9 @@ object RegistrationSubmission {
   }
 
   case class AnswerSection(headingKey: Option[String],
-                           headingArg: Option[String],
                            rows: Seq[AnswerRow],
-                           sectionKey: Option[String])
+                           sectionKey: Option[String],
+                           headingArgs: Seq[String])
 
   object AnswerSection {
     implicit lazy val format: OFormat[AnswerSection] = Json.format[AnswerSection]

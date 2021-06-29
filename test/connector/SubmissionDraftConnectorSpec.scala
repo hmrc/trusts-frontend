@@ -265,14 +265,14 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             List(
               AnswerSection(
                 headingKey = Some("headingKey1"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   AnswerRow("label1", "answer1", "labelArg1")
                 ),
                 sectionKey = Some("sectionKey1")),
               AnswerSection(
                 headingKey = Some("headingKey2"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   AnswerRow("label2", "answer2", "labelArg2")
                 ),
@@ -283,14 +283,14 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
             List(
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("trusteeHeadingKey1"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
                 sectionKey = Some("trusteeSectionKey1")),
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("trusteeHeadingKey2"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),

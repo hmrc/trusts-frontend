@@ -275,14 +275,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
             List(
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("headingKey1"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
                 sectionKey = Some("sectionKey1")),
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("headingKey2"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),
@@ -293,14 +293,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
             List(
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("trusteeHeadingKey1"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
                 sectionKey = Some("trusteeSectionKey1")),
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("trusteeHeadingKey2"),
-                headingArg = None,
+                headingArgs = Nil,
                 rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),

@@ -834,3 +834,6 @@ whatKindOfAsset.Partnership = Partneriaeth
 whatKindOfAsset.PropertyOrLand = Eiddo neu dir
 whatKindOfAsset.Shares = Cyfranddaliadau
 whenTrustSetup.checkYourAnswersLabel = Pryd y cafodd yr ymddiriedolaeth ei chreu?
+
+answerPage.section.otherIndividuals.heading = Unigolion Eraill
+answerPage.section.otherIndividual.subheading = Unigolyn Arall {0}
