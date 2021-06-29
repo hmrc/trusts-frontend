@@ -46,15 +46,15 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
 
   private def parseAsYesOrNo(answer: String)(implicit messages: Messages): Try[String] = {
     val keys = Seq("site.yes", "site.no")
-    parseAgainstKeys(answer, Some(keys))
+    findAnswerInMessages(answer, Some(keys))
   }
 
   private def parseAsEnumerable(answer: String)(implicit messages: Messages): Try[String] = {
-    parseAgainstKeys(answer)
+    findAnswerInMessages(answer)
   }
 
-  private def parseAgainstKeys(answer: String, messageKeys: Option[Seq[String]] = None)
-                              (implicit messages: Messages): Try[String] = {
+  private def findAnswerInMessages(answer: String, messageKeys: Option[Seq[String]] = None)
+                                  (implicit messages: Messages): Try[String] = {
     languages.foldLeft[Try[String]](Failure(new IllegalArgumentException()))((acc1, language) => {
       val messagesForLanguage = MessagesImpl(Lang(language), messagesApi)
 
@@ -105,7 +105,7 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
   }
 
   private def getCountriesForLanguage(language: String): Seq[Seq[String]] = {
-    environment.resourceAsStream(getCanonicalListForLanguage(language)) match {
+    environment.resourceAsStream(getCountryListForLanguage(language)) match {
       case Some(value) => Json.fromJson[Seq[Seq[String]]](Json.parse(value)) match {
         case JsSuccess(value, _) => value
         case _ => Nil
@@ -114,7 +114,7 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
     }
   }
 
-  private def getCanonicalListForLanguage(language: String): String = {
+  private def getCountryListForLanguage(language: String): String = {
     if (language == ENGLISH) {
       "location-autocomplete-canonical-list.json"
     } else {
