@@ -47,53 +47,68 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
-  private val mockConnector : TrustConnector = mock[TrustConnector]
+  private val mockConnector: TrustConnector = mock[TrustConnector]
 
   private val stubbedRegistrationsRepository: RegistrationsRepository = new RegistrationsRepository {
     private val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
     override def get(draftId: String)
-                    (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = Future.successful(None)
+                    (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
+      Future.successful(None)
 
     override def set(userAnswers: UserAnswers)
-                    (implicit hc: HeaderCarrier): Future[Boolean] = Future.successful(true)
+                    (implicit hc: HeaderCarrier): Future[Boolean] =
+      Future.successful(true)
 
-    override def getMostRecentDraftId()(implicit hc: HeaderCarrier) : Future[Option[String]] = Future.successful(None)
+    override def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]] =
+      Future.successful(None)
 
     override def listDrafts()
-                           (implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] = Future.successful(List.empty)
+                           (implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] =
+      Future.successful(List.empty)
 
     override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
-                                             (implicit hc: HeaderCarrier): Future[JsValue] = Future.successful(registrationJson)
+                                             (implicit hc: HeaderCarrier): Future[JsValue] =
+      Future.successful(registrationJson)
 
     override def getAllStatus(draftId: String)
-                             (implicit hc: HeaderCarrier) : Future[AllStatus] = Future.successful(AllStatus())
+                             (implicit hc: HeaderCarrier): Future[AllStatus] =
+      Future.successful(AllStatus())
 
     override def getAnswerSections(draftId: String)
-                                  (implicit hc:HeaderCarrier) : Future[RegistrationAnswerSections] = Future.successful(RegistrationAnswerSections())
+                                  (implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
+      Future.successful(RegistrationAnswerSections())
 
     override def getLeadTrustee(draftId: String)
-                               (implicit hc: HeaderCarrier): Future[LeadTrusteeType] = Future.successful(testLeadTrusteeOrg)
+                               (implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
+      Future.successful(testLeadTrusteeOrg)
 
     override def getCorrespondenceAddress(draftId: String)
-                                         (implicit hc: HeaderCarrier): Future[AddressType] = Future.successful(correspondenceAddress)
+                                         (implicit hc: HeaderCarrier): Future[AddressType] =
+      Future.successful(correspondenceAddress)
 
     override def getTrustName(draftId: String)
-                             (implicit hc: HeaderCarrier): Future[String] = Future.successful("Name")
+                             (implicit hc: HeaderCarrier): Future[String] =
+      Future.successful("Name")
 
     override def getTrustSetupDate(draftId: String)
-                                  (implicit hc: HeaderCarrier): Future[Option[LocalDate]] = Future.successful(Some(LocalDate.parse("2020-10-05")))
+                                  (implicit hc: HeaderCarrier): Future[Option[LocalDate]] =
+      Future.successful(Some(LocalDate.parse("2020-10-05")))
 
-    override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(OK, ""))
+    override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+      Future.successful(HttpResponse(OK, ""))
 
-    override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] = Future.successful(None)
+    override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] =
+      Future.successful(None)
 
-    override def getClientReference(draftId: String)(implicit hc: HeaderCarrier): Future[Option[String]] = Future.successful(None)
+    override def getClientReference(draftId: String)(implicit hc: HeaderCarrier): Future[Option[String]] =
+      Future.successful(None)
 
-    override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = Future.successful(HttpResponse(OK, ""))
+    override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+      Future.successful(HttpResponse(OK, ""))
   }
 
-  private val auditService : AuditService = injector.instanceOf[FakeAuditService]
+  private val auditService: AuditService = injector.instanceOf[FakeAuditService]
 
   private val submissionService = new DefaultSubmissionService(
     registrationMapper,

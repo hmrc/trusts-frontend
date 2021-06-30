@@ -586,6 +586,9 @@ individualBeneficiary.5mld.countryOfResidence.checkYourAnswersLabel = Beth yw gw
 individualBeneficiary.5mld.countryOfResidenceInTheUkYesNo.checkYourAnswersLabel = A yw {0} yn breswylydd yn y DU?
 individualBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = A ydych yn gwybod gwlad breswyl {0}?
 individualBeneficiary.5mld.mentalCapacityYesNo.checkYourAnswersLabel = A oes gan {0} alluedd meddyliol ar adeg y cofrestru?
+individualBeneficiary.roleInCompany.checkYourAnswersLabel.na=Ddim yn gyfarwyddwr nac yn gyflogai
+individualBeneficiary.roleInCompany.Director=Cyfarwyddwr
+individualBeneficiary.roleInCompany.Employee=Cyflogai
 individualBeneficiaryAddressInternational.checkYourAnswersLabel = Beth yw cyfeiriad {0}?
 individualBeneficiaryAddressUK.checkYourAnswersLabel = Beth yw cyfeiriad {0}?
 individualBeneficiaryAddressUKYesNo.checkYourAnswersLabel = A yw {0} yn byw yn y DU?
@@ -845,3 +848,42 @@ whatKindOfAsset.Partnership = Partneriaeth
 whatKindOfAsset.PropertyOrLand = Eiddo neu dir
 whatKindOfAsset.Shares = Cyfranddaliadau
 whenTrustSetup.checkYourAnswersLabel = Pryd y cafodd yr ymddiriedolaeth ei chreu?
+
+answerPage.section.agent.heading = Manylion yr asiantaeth
+
+answerPage.section.trustDetails.heading = Manylion yr ymddiriedolaeth
+
+answersPage.section.trustees.heading = Ymddiriedolwyr
+answersPage.section.trustee.subheading = Ymddiriedolwr {0}
+
+answerPage.section.deceasedSettlor.heading = Setlwr
+answerPage.section.settlor.subheading = Setlwr {0}
+answerPage.section.settlors.heading = Setlwyr
+
+answerPage.section.beneficiaries.heading = Buddiolwyr
+answerPage.section.individualBeneficiary.subheading = Buddiolwr unigol {0}
+answerPage.section.classOfBeneficiary.subheading = Dosbarth o fuddiolwyr {0}
+answerPage.section.charityBeneficiary.subheading = Buddiolwr elusennol {0}
+answerPage.section.trustBeneficiary.subheading = Buddiolwr sy’n ymddiriedolaeth {0}
+answerPage.section.companyBeneficiary.subheading = Buddiolwr sy’n gwmni {0}
+answerPage.section.largeBeneficiary.subheading = Buddiolwr sy’n ymwneud â chyflogaeth {0}
+answerPage.section.otherBeneficiary.subheading = Buddiolwr arall {0}
+
+answerPage.section.assets.heading = Asedion
+#answerPage.section.companyOwnershipOrControllingInterest.heading =
+answerPage.section.moneyAsset.subheading = Arian
+answerPage.section.propertyOrLandAsset.subheading = Eiddo neu dir {0}
+answerPage.section.shareAsset.subheading = Cyfranddaliad {0}
+answerPage.section.businessAsset.subheading = Busnes {0}
+answerPage.section.partnershipAsset.subheading = Partneriaeth {0}
+answerPage.section.nonEeaBusinessAsset.subheading = Cwmni nad yw’n rhan o’r AEE {0}
+answerPage.section.otherAsset.subheading = Arall {0}
+
+taxLiabilityBetweenYears.checkYourAnswerSectionHeading = Rhwymedigaeth treth {0} i {1}
+
+answerPage.section.protectors.heading = Amddiffynyddion
+answerPage.section.individualProtector.subheading = Amddiffynnydd sy’n unigolyn {0}
+answerPage.section.businessProtector.subheading = Amddiffynnydd sy’n fusnes {0}
+
+answerPage.section.otherIndividuals.heading = Unigolion Eraill
+answerPage.section.otherIndividual.subheading = Unigolyn Arall {0}

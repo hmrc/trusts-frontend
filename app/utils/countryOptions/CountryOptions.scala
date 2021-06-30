@@ -18,12 +18,13 @@ package utils.countryOptions
 
 import com.typesafe.config.ConfigException
 import config.FrontendAppConfig
-import javax.inject.{Inject, Singleton}
+import mapping.Constants.WELSH
 import play.api.Environment
 import play.api.i18n.Messages
 import play.api.libs.json.Json
 import utils.InputOption
 
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class CountryOptions @Inject()(environment: Environment, config: FrontendAppConfig) {
@@ -32,8 +33,8 @@ class CountryOptions @Inject()(environment: Environment, config: FrontendAppConf
     CountryOptions.getCountries(environment, getFileName)
   }
 
-  def getFileName()(implicit messages: Messages) = {
-    val isWelsh = messages.lang.code == config.WELSH
+  def getFileName()(implicit messages: Messages): String = {
+    val isWelsh = messages.lang.code == WELSH
     if (isWelsh) config.locationCanonicalListCY else config.locationCanonicalList
   }
 

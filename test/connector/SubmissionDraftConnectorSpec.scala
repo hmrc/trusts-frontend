@@ -16,7 +16,6 @@
 
 package connector
 
-import java.time.{LocalDate, LocalDateTime}
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -33,6 +32,7 @@ import play.api.test.Helpers.CONTENT_TYPE
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
 
+import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -264,33 +264,37 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           beneficiaries = Some(
             List(
               AnswerSection(
-                Some("headingKey1"),
-                List(
+                headingKey = Some("headingKey1"),
+                headingArgs = Nil,
+                rows = List(
                   AnswerRow("label1", "answer1", "labelArg1")
                 ),
-                Some("sectionKey1")),
+                sectionKey = Some("sectionKey1")),
               AnswerSection(
-                Some("headingKey2"),
-                List(
+                headingKey = Some("headingKey2"),
+                headingArgs = Nil,
+                rows = List(
                   AnswerRow("label2", "answer2", "labelArg2")
                 ),
-                Some("sectionKey2"))
+                sectionKey = Some("sectionKey2"))
             )
           ),
           trustees = Some(
             List(
               RegistrationSubmission.AnswerSection(
-                Some("trusteeHeadingKey1"),
-                List(
+                headingKey = Some("trusteeHeadingKey1"),
+                headingArgs = Nil,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
-                Some("trusteeSectionKey1")),
+                sectionKey = Some("trusteeSectionKey1")),
               RegistrationSubmission.AnswerSection(
-                Some("trusteeHeadingKey2"),
-                List(
+                headingKey = Some("trusteeHeadingKey2"),
+                headingArgs = Nil,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),
-                Some("trusteeSectionKey2"))
+                sectionKey = Some("trusteeSectionKey2"))
             )
           ),
           protectors = None,
@@ -449,7 +453,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         )
 
         val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
-        result mustEqual Some(LocalDate.of(2012, 2, 20))
+        result mustBe Some(LocalDate.of(2012, 2, 20))
       }
 
       "can handle draft without trust setup date" in {
@@ -463,7 +467,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         )
 
         val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
-        result mustEqual None
+        result mustBe None
       }
 
       "can retrieve trust name for a draft" in {

@@ -31,7 +31,7 @@ import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import utils.DateFormatter
+import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -48,7 +48,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
 
-    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, injector.instanceOf[AnswerRowUtils])
   }
 
   "RegistrationRepository" when {
@@ -274,33 +274,37 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
           beneficiaries = Some(
             List(
               RegistrationSubmission.AnswerSection(
-                Some("headingKey1"),
-                List(
+                headingKey = Some("headingKey1"),
+                headingArgs = Nil,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
-                Some("sectionKey1")),
+                sectionKey = Some("sectionKey1")),
               RegistrationSubmission.AnswerSection(
-                Some("headingKey2"),
-                List(
+                headingKey = Some("headingKey2"),
+                headingArgs = Nil,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),
-                Some("sectionKey2"))
+                sectionKey = Some("sectionKey2"))
             )
           ),
           trustees = Some(
             List(
               RegistrationSubmission.AnswerSection(
-                Some("trusteeHeadingKey1"),
-                List(
+                headingKey = Some("trusteeHeadingKey1"),
+                headingArgs = Nil,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
                 ),
-                Some("trusteeSectionKey1")),
+                sectionKey = Some("trusteeSectionKey1")),
               RegistrationSubmission.AnswerSection(
-                Some("trusteeHeadingKey2"),
-                List(
+                headingKey = Some("trusteeHeadingKey2"),
+                headingArgs = Nil,
+                rows = List(
                   RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
                 ),
-                Some("trusteeSectionKey2"))
+                sectionKey = Some("trusteeSectionKey2"))
             )
           ),
           protectors = None,

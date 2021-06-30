@@ -115,7 +115,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     assets = Some(assetSections.toList)
   )
 
-  when(mockCreateDraftRegistrationService.getAnswerSections(any())(any())).thenReturn(Future.successful(registrationSections))
+  when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
+    .thenReturn(Future.successful(registrationSections))
 
   "SummaryAnswersController" must {
 

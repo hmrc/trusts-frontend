@@ -25,7 +25,7 @@ import play.api.http
 import play.api.i18n.Messages
 import play.api.libs.json._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import utils.DateFormatter
+import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
 import java.time.LocalDate
@@ -33,7 +33,8 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
-                                               submissionDraftConnector: SubmissionDraftConnector)
+                                               submissionDraftConnector: SubmissionDraftConnector,
+                                               answerRowUtils: AnswerRowUtils)
                                               (implicit ec: ExecutionContext) extends RegistrationsRepository {
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
@@ -105,8 +106,9 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     submissionDraftConnector.getStatus(draftId)
   }
 
-  override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[RegistrationAnswerSections] = {
-    submissionDraftConnector.getAnswerSections(draftId).map(RegistrationAnswerSections.fromAllAnswerSections)
+  override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] = {
+    submissionDraftConnector.getAnswerSections(draftId)
+      .map(RegistrationAnswerSections.fromAllAnswerSections(_)(answerRowUtils))
   }
 
   override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
@@ -154,7 +156,7 @@ trait RegistrationsRepository {
 
   def getAllStatus(draftId: String)(implicit hc: HeaderCarrier): Future[AllStatus]
 
-  def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[RegistrationAnswerSections]
+  def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections]
 
   def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType]
 

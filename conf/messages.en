@@ -771,6 +771,10 @@ individualBeneficiary.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabe
 individualBeneficiary.5mld.countryOfNationality.checkYourAnswersLabel = What is {0}’s country of nationality?
 individualBeneficiary.5mld.mentalCapacityYesNo.checkYourAnswersLabel = Does {0} have mental capacity at the time of registration?
 
+individualBeneficiary.roleInCompany.Director = Director
+individualBeneficiary.roleInCompany.Employee = Employee
+individualBeneficiary.roleInCompany.checkYourAnswersLabel.na = Not a director or employee
+
 charity.name.checkYourAnswersLabel = What is the charity’s name?
 charity.discretionYesNo.checkYourAnswersLabel = Do the trustees have discretion over how much income {0} may get?
 charity.shareOfIncome.checkYourAnswersLabel = What percentage of the trust’s income is {0} entitled to?
@@ -974,3 +978,43 @@ individualProtector.5mld.countryOfResidenceYesNo.checkYourAnswersLabel = Do you 
 notification.warning = You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.
 notification.important = Important
 notification.instruction = The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.
+
+
+answerPage.section.agent.heading = Agent details
+
+answerPage.section.trustDetails.heading = Trust details
+
+answersPage.section.trustees.heading = Trustees
+answersPage.section.trustee.subheading = Trustee {0}
+
+answerPage.section.deceasedSettlor.heading = Settlor
+answerPage.section.settlors.heading = Settlors
+answerPage.section.settlor.subheading = Settlor {0}
+
+answerPage.section.beneficiaries.heading = Beneficiaries
+answerPage.section.individualBeneficiary.subheading = Individual beneficiary {0}
+answerPage.section.classOfBeneficiary.subheading = Class of beneficiary {0}
+answerPage.section.charityBeneficiary.subheading = Charity beneficiary {0}
+answerPage.section.trustBeneficiary.subheading = Trust beneficiary {0}
+answerPage.section.companyBeneficiary.subheading = Company beneficiary {0}
+answerPage.section.largeBeneficiary.subheading = Employment related beneficiary {0}
+answerPage.section.otherBeneficiary.subheading = Other beneficiary {0}
+
+answerPage.section.assets.heading = Assets
+answerPage.section.companyOwnershipOrControllingInterest.heading = Company ownership or controlling interest
+answerPage.section.moneyAsset.subheading = Money
+answerPage.section.propertyOrLandAsset.subheading = Property or land {0}
+answerPage.section.shareAsset.subheading = Share {0}
+answerPage.section.businessAsset.subheading = Business {0}
+answerPage.section.partnershipAsset.subheading = Partnership {0}
+answerPage.section.nonEeaBusinessAsset.subheading = Non-EEA Company {0}
+answerPage.section.otherAsset.subheading = Other {0}
+
+taxLiabilityBetweenYears.checkYourAnswerSectionHeading = Tax liability {0} to {1}
+
+answerPage.section.protectors.heading = Protectors
+answerPage.section.individualProtector.subheading = Individual protector {0}
+answerPage.section.businessProtector.subheading = Business protector {0}
+
+answerPage.section.otherIndividuals.heading = Other individuals
+answerPage.section.otherIndividual.subheading = Other individual {0}

@@ -16,9 +16,6 @@
 
 package controllers.register
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.AllStatus
 import org.mockito.Matchers.any
@@ -31,6 +28,8 @@ import utils.TestUserAnswers
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.ConfirmationAnswerPageView
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
 class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
@@ -100,7 +99,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
     when(registrationsRepository.getAllStatus(any())(any()))
       .thenReturn(Future.successful(AllStatus.withAllComplete))
 
-    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any()))
+    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
       .thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {
