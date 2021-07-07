@@ -44,6 +44,11 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
       answer
   }
 
+  def reverseEngineerHeadingArg(headingArg: String)(implicit messages: Messages): String = {
+    parseAsDate(headingArg) getOrElse
+      headingArg
+  }
+
   private def parseAsYesOrNo(answer: String)(implicit messages: Messages): Try[String] = {
     val keys = Seq("site.yes", "site.no")
     findAnswerInMessages(answer, Some(keys))
