@@ -54,7 +54,7 @@ object RegistrationAnswerSections {
 
   private def convert(section: RegistrationSubmission.AnswerSection)
                      (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = AnswerSection(
-    headingKey = section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerHeadingArg): _*)),
+    headingKey = section.headingKey.map(x => messages(x, section.headingArgs: _*)),
     rows = section.rows.map(convert(_)),
     sectionKey = section.sectionKey.map(messages(_))
   )
