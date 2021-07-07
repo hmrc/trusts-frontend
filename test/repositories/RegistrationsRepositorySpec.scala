@@ -48,7 +48,8 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
 
-    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, injector.instanceOf[AnswerRowUtils])
+    implicit val answerRowUtils: AnswerRowUtils = injector.instanceOf[AnswerRowUtils]
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
   }
 
   "RegistrationRepository" when {
