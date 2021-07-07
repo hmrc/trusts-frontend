@@ -17,6 +17,7 @@
 package repositories
 
 import connector.SubmissionDraftConnector
+import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.{AddressType, LeadTrusteeType}
@@ -139,6 +140,10 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     submissionDraftConnector.updateTaxLiability(draftId)
+
+  override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] = {
+    submissionDraftConnector.getFirstTaxYearAvailable(draftId)
+  }
 }
 
 trait RegistrationsRepository {
@@ -172,4 +177,6 @@ trait RegistrationsRepository {
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 
   def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
+
+  def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]]
 }

@@ -16,13 +16,13 @@
 
 package pages.register
 
+import models.FirstTaxYearAvailable
 import navigation.registration.TaskListNavigator
+import pages.register.RegistrationProgress.showTaxLiability
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.TaxLiabilityHelper
 import viewmodels._
 
-import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,7 +31,7 @@ class RegistrationProgress @Inject()(
                                       registrationsRepository: RegistrationsRepository
                                     )(implicit ec: ExecutionContext) {
 
-  def items(draftId: String, trustSetupDate: Option[LocalDate], isTaxable: Boolean, isExistingTrust: Boolean)
+  def items(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
            (implicit hc: HeaderCarrier): Future[List[Task]] = {
     registrationsRepository.getAllStatus(draftId) map {
       allStatus =>
@@ -44,7 +44,7 @@ class RegistrationProgress @Inject()(
 
         val taxableTasks: List[Task] = if (isTaxable) {
           val assetsTask = Task(Link("assets", navigator.assetsJourneyUrl(draftId)), allStatus.assets)
-          val taxLiabilityTask = if (TaxLiabilityHelper.showTaxLiability(trustSetupDate, isTaxable, isExistingTrust)) {
+          val taxLiabilityTask = if (showTaxLiability(firstTaxYearAvailable, isTaxable, isExistingTrust)) {
             List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability))
           } else {
             Nil
@@ -75,12 +75,21 @@ class RegistrationProgress @Inject()(
     }
   }
 
-  def isTaskListComplete(draftId: String, trustSetupDate: Option[LocalDate], isTaxable: Boolean, isExistingTrust: Boolean)
+  def isTaskListComplete(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
                         (implicit hc: HeaderCarrier): Future[Boolean] = {
     registrationsRepository.getAllStatus(draftId).map { status =>
-      val showTaxLiability: Boolean = TaxLiabilityHelper.showTaxLiability(trustSetupDate, isTaxable, isExistingTrust)
-      status.allComplete(showTaxLiability)
+      status.allComplete(showTaxLiability(firstTaxYearAvailable, isTaxable, isExistingTrust))
     }
   }
 
+}
+
+object RegistrationProgress {
+  def showTaxLiability(firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean): Boolean = {
+    if (isTaxable && !isExistingTrust) {
+      firstTaxYearAvailable.fold(false)(_.yearsAgo > 0)
+    } else {
+      false
+    }
+  }
 }

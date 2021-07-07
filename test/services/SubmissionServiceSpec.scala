@@ -20,6 +20,7 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
+import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
@@ -106,6 +107,9 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
     override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
       Future.successful(HttpResponse(OK, ""))
+
+    override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] =
+      Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false)))
   }
 
   private val auditService: AuditService = injector.instanceOf[FakeAuditService]
