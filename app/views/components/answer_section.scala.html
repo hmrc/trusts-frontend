@@ -20,11 +20,11 @@
 @(answerSection: AnswerSection)(implicit messages: Messages)
 
 @if(answerSection.sectionKey.isDefined){
-    <h2 class="heading-large">@messages(answerSection.sectionKey.get)</h2>
+    <h2 class="heading-large">@{answerSection.sectionKey.get}</h2>
 }
 
 @if(answerSection.headingKey.isDefined){
-    <h3 class="heading-medium">@messages(answerSection.headingKey.get)</h3>
+    <h3 class="heading-medium">@{answerSection.headingKey.get}</h3>
 }
 
 @if(answerSection.rows) {

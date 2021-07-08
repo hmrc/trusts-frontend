@@ -19,7 +19,7 @@
 @(row: AnswerRow)(implicit messages: Messages)
 
 <li>
-    <div class="cya-question">@messages(row.label, row.labelArg)</div>
+    <div class="cya-question">@messages(row.label, row.labelArgs: _*)</div>
     <div class="cya-answer">
         @row.answer
     </div>
@@ -28,7 +28,7 @@
             @row.changeUrl.map { url =>
             <a href='@url'>
                 <span aria-hidden="true">@messages("site.edit")</span>
-                <span class="visually-hidden">@messages("site.hidden-edit", messages(row.label, row.labelArg))</span>
+                <span class="visually-hidden">@messages("site.hidden-edit", messages(row.label, row.labelArgs: _*))</span>
             </a>
             }
         </div>

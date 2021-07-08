@@ -300,5 +300,92 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
         }
       }
     }
+
+    "reverse engineer arg" when {
+
+      "arg is a date" when {
+
+        "saved in English and displayed in English" in {
+
+          val inputsAndOutputs = Seq(
+            ("3 February 1996", "3 February 1996"),
+            ("13 March 2020", "13 March 2020")
+          )
+
+          val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
+
+          inputsAndOutputs.foreach { inputAndOutput =>
+            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            result mustEqual inputAndOutput._2
+          }
+        }
+
+        "saved in English and displayed in Welsh" in {
+
+          val inputsAndOutputs = Seq(
+            ("3 February 1996", "3 Chwefror 1996"),
+            ("13 March 2020", "13 Mawrth 2020")
+          )
+
+          val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
+
+          inputsAndOutputs.foreach { inputAndOutput =>
+            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            result mustEqual inputAndOutput._2
+          }
+        }
+
+        "saved in Welsh and displayed in English" in {
+
+          val inputsAndOutputs = Seq(
+            ("3 Chwefror 1996", "3 February 1996"),
+            ("13 Mawrth 2020", "13 March 2020")
+          )
+
+          val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
+
+          inputsAndOutputs.foreach { inputAndOutput =>
+            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            result mustEqual inputAndOutput._2
+          }
+        }
+
+        "saved in Welsh and displayed in Welsh" in {
+
+          val inputsAndOutputs = Seq(
+            ("3 Chwefror 1996", "3 Chwefror 1996"),
+            ("13 Mawrth 2020", "13 Mawrth 2020")
+          )
+
+          val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
+
+          inputsAndOutputs.foreach { inputAndOutput =>
+            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            result mustEqual inputAndOutput._2
+          }
+        }
+      }
+
+      "arg is something else" must {
+        "display original arg" in {
+
+          val inputsAndOutputs = Seq(
+            ("Google", "Google"),
+            ("John Smith", "John Smith"),
+            ("£1000", "£1000"),
+            ("Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB", "Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB")
+          )
+
+          Seq(ENGLISH, WELSH).foreach { language =>
+            val messages: MessagesImpl = MessagesImpl(Lang(language), messagesApi)
+
+            inputsAndOutputs.foreach { inputAndOutput =>
+              val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+              result mustEqual inputAndOutput._2
+            }
+          }
+        }
+      }
+    }
   }
 }

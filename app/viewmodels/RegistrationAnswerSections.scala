@@ -54,7 +54,7 @@ object RegistrationAnswerSections {
 
   private def convert(section: RegistrationSubmission.AnswerSection)
                      (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = AnswerSection(
-    headingKey = section.headingKey.map(x => messages(x, section.headingArgs: _*)),
+    headingKey = section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg): _*)),
     rows = section.rows.map(convert(_)),
     sectionKey = section.sectionKey.map(messages(_))
   )
@@ -64,7 +64,7 @@ object RegistrationAnswerSections {
     label = row.label,
     answer = HtmlFormat.raw(answerRowUtils.reverseEngineerAnswer(row.answer)),
     changeUrl = None,
-    labelArg = row.labelArg,
+    labelArgs = row.labelArgs.map(answerRowUtils.reverseEngineerArg),
     canEdit = false
   )
 

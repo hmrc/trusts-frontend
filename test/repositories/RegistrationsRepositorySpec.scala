@@ -278,14 +278,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
                 headingKey = Some("headingKey1"),
                 headingArgs = Nil,
                 rows = List(
-                  RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
+                  RegistrationSubmission.AnswerRow("label1", "answer1", Seq("labelArg1"))
                 ),
                 sectionKey = Some("sectionKey1")),
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("headingKey2"),
                 headingArgs = Nil,
                 rows = List(
-                  RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
+                  RegistrationSubmission.AnswerRow("label2", "answer2", Seq("labelArg2"))
                 ),
                 sectionKey = Some("sectionKey2"))
             )
@@ -296,14 +296,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
                 headingKey = Some("trusteeHeadingKey1"),
                 headingArgs = Nil,
                 rows = List(
-                  RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
+                  RegistrationSubmission.AnswerRow("label1", "answer1", Seq("labelArg1"))
                 ),
                 sectionKey = Some("trusteeSectionKey1")),
               RegistrationSubmission.AnswerSection(
                 headingKey = Some("trusteeHeadingKey2"),
                 headingArgs = Nil,
                 rows = List(
-                  RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
+                  RegistrationSubmission.AnswerRow("label2", "answer2", Seq("labelArg2"))
                 ),
                 sectionKey = Some("trusteeSectionKey2"))
             )
@@ -323,14 +323,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
           AnswerSection(
             Some("headingKey1"),
             List(
-              AnswerRow("label1", HtmlFormat.raw("answer1"), None, "labelArg1", canEdit = false)
+              AnswerRow("label1", HtmlFormat.raw("answer1"), None, Seq("labelArg1"), canEdit = false)
             ),
             Some("sectionKey1")
           ),
           AnswerSection(
             Some("headingKey2"),
             List(
-              AnswerRow("label2", HtmlFormat.raw("answer2"), None, "labelArg2", canEdit = false)
+              AnswerRow("label2", HtmlFormat.raw("answer2"), None, Seq("labelArg2"), canEdit = false)
             ),
             Some("sectionKey2")
           )
@@ -340,14 +340,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
           AnswerSection(
             Some("trusteeHeadingKey1"),
             List(
-              AnswerRow("label1", HtmlFormat.raw("answer1"), None, "labelArg1", canEdit = false)
+              AnswerRow("label1", HtmlFormat.raw("answer1"), None, Seq("labelArg1"), canEdit = false)
             ),
             Some("trusteeSectionKey1")
           ),
           AnswerSection(
             Some("trusteeHeadingKey2"),
             List(
-              AnswerRow("label2", HtmlFormat.raw("answer2"), None, "labelArg2", canEdit = false)
+              AnswerRow("label2", HtmlFormat.raw("answer2"), None, Seq("labelArg2"), canEdit = false)
             ),
             Some("trusteeSectionKey2")
           )
