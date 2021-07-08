@@ -52,7 +52,7 @@ site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.save.continue = Save and continue
-site.service_name = Register and Maintain a Trust
+service.name = Register and Maintain a Trust
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
@@ -236,7 +236,7 @@ failedMatch.contactLink =  contact the trusts helpline
 
 trustAlreadyRegistered.title = This trust has already been registered
 trustAlreadyRegistered.heading = This trust has already been registered
-trustAlreadyRegistered.subHeading = This trust’s UTR: {0}
+trustAlreadyRegistered.caption = This trust’s UTR: {0}
 trustAlreadyRegistered.continue = Register another trust
 trustAlreadyRegistered.agent.p1 = You can
 trustAlreadyRegistered.agent.p1.link = return to register and maintain a trust for a client

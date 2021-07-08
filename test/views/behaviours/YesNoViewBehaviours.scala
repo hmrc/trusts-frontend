@@ -42,7 +42,7 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
           hintTextPrefix.map {
             pref =>
-              doc.getElementsByClass("form-hint").first.text must include(messages(s"$pref.hint"))
+              doc.getElementsByClass("govuk-hint").first.text must include(messages(s"$pref.hint"))
           }
         }
 
@@ -82,13 +82,13 @@ trait YesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
         "show an error summary" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertRenderedById(doc, "error-summary-heading")
+          assertRenderedById(doc, "error-summary-title")
         }
 
         "show an error in the value field's label" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          val errorSpan = doc.getElementsByClass("error-message").first
+          val errorSpan = doc.getElementsByClass("govuk-error-message").first
           errorSpan.text mustBe (s"""${messages(errorPrefix)} ${messages(errorMessage)}""")
         }
 

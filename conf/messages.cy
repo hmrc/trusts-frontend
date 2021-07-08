@@ -306,7 +306,7 @@ site.onlyContinue = Yn eich blaen
 site.print-or-save = Argraffu neu gadw’r dudalen hon
 site.return-to-top=Yn ôl i’r brig
 site.save.continue = Cadw ac yn eich blaen
-site.service_name = Cofrestru Ymddiriedolaeth a’i Chynnal
+service.name = Cofrestru Ymddiriedolaeth a’i Chynnal
 site.sign_in = Mewngofnodi
 site.sign_out = Allgofnodi
 site.textarea.char_limit = (Y terfyn yw {0} o gymeriadau)
@@ -425,7 +425,7 @@ trustAlreadyRegistered.heading = Mae’r ymddiriedolaeth hon eisoes wedi’i cho
 trustAlreadyRegistered.p1 = Os nad oes yn rhaid i chi gofrestru ymddiriedolaeth arall:
 trustAlreadyRegistered.p2 = Gallwch
 trustAlreadyRegistered.p2.link = gysylltu â Gwasanaeth Cwsmeriaid Cymraeg CThEM os ydych wedi colli manylion mewngofnodi Porth y Llywodraeth ar gyfer yr ymddiriedolaeth hon (yn agor tab newydd)
-trustAlreadyRegistered.subHeading = UTR yr ymddiriedolaeth hon: {0}
+trustAlreadyRegistered.caption = UTR yr ymddiriedolaeth hon: {0}
 trustAlreadyRegistered.title = Mae’r ymddiriedolaeth hon eisoes wedi’i chofrestru
 
 trustHaveAUTR.checkYourAnswersLabel = A oes gan yr ymddiriedolaeth Gyfeirnod Unigryw y Trethdalwr?

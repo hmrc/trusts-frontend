@@ -16,19 +16,21 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.routes._
+@import views.html.components.Heading
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    heading: Heading,
     config: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
+@mainTemplate(
     title = messages("cannotMakeChanges.title")
 ) {
 
-    @components.heading("cannotMakeChanges.heading")
+    @heading("cannotMakeChanges.heading")
 
     <p>@messages("cannotMakeChanges.paragraph1") <a href="@config.helplineUrl" target="_blank" rel="external">@messages("cannotMakeChanges.postLink")</a> @messages("cannotMakeChanges.paragraph2")</p>
 

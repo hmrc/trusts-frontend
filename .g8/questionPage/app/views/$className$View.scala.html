@@ -1,34 +1,34 @@
 @import models.Mode
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF
 )
 
 @(form: Form[_], mode: Mode, draftId: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
+@mainTemplate(
     title = s"\${errorPrefix(form)} \${messages("$className;format="decap"$.title")}"
     ) {
 
     @formHelper(action = $className;format="cap"$Controller.onSubmit(mode, draftId), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @back_link()
         
-        @components.error_summary(form.errors)
+        @errorSummary(form.errors)
 
-        @components.heading("$className;format="decap"$.heading")
+        @heading("$className;format="decap"$.heading")
 
-        @components.input_text(
+        @inputText(
             field = form("field1"),
             label = messages("$className;format="decap"$.field1")
         )
 
-        @components.input_text(
+        @inputText(
             field = form("field2"),
             label = messages("$className;format="decap"$.field2")
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

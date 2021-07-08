@@ -15,34 +15,37 @@
  *@
 
 @import controllers.register.routes._
+@import views.html.components.{ErrorSummary, InputText, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    inputText: InputText,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-   title = s"${errorPrefix(form)}${messages("trustName.title")}"
+@mainTemplate(
+   title = s"${errorPrefix(form)}${messages("trustName.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = MatchingNameController.onSubmit(), 'autoComplete -> "on") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
-
-        @components.input_text(
+        @inputText(
             field = form("value"),
             label = messages("trustName.heading"),
             labelAsHeading = true,
             hint = Some(messages("trustName.hint.hasUtr")),
-            labelClass = Some("heading-large"),
+            labelClass = Some("govuk-label--l"),
             autocomplete = Some("name")
         )
 
-        @components.submit_button()
+        @submitButton()
 
     }
 }

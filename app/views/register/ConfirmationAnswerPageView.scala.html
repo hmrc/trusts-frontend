@@ -17,48 +17,47 @@
 @import controllers.register.routes._
 @import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
 @import utils.AccessibilityHelper._
+@import utils.SectionFormatter.formatSections
+@import views.html.components.{Heading, Button, Warning, ReturnToTop}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    heading: Heading,
+    warning: Warning,
+    button: Button,
+    returnToTop: ReturnToTop,
+    formHelper: FormWithCSRF,
+    govukSummaryList: GovukSummaryList
 )
 
 @(answerSections: Seq[Section], trn: String, declarationSent: String, isTaxable: Boolean)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("confirmationAnswerPage.title")
+@mainTemplate(
+    title = messages("confirmationAnswerPage.title"),
+    showBackLink = true
 ) {
 
-    @components.back_link()
-
-    @components.heading("confirmationAnswerPage.heading", headingSize = "heading-xlarge")
+    @heading("confirmationAnswerPage.heading", headingSize = "govuk-heading-xl")
 
     <p class="declarationReferenceNumber">
         <span aria-hidden=true>@messages("confirmationAnswerPage.paragraph1", trn)</span>
-        <span class="visually-hidden">@messages("confirmationAnswerPage.paragraph1", formatReferenceNumber(trn))</span>
+        <span class="govuk-visually-hidden">@messages("confirmationAnswerPage.paragraph1", formatReferenceNumber(trn))</span>
     </p>
 
     <p>@messages("confirmationAnswerPage.paragraph2", declarationSent)</p>
 
     @if(isTaxable){
-        @components.warning("confirmationAnswerPage")
+        @warning("confirmationAnswerPage")
     }
 
     <div class="section">
-        <p>@components.button_print()</p>
+        <p>@button(messageKey = "site.print-or-save", isPrintButton = true)</p>
     </div>
 
     <div class="two-column-answers">
-        @for(section <- answerSections){
-            @{
-                section match {
-                    case a: AnswerSection => components.answer_section(a)
-                    case r: RepeaterAnswerSection => components.repeater_answer_section(r)
-                }
-            }
-        }
+        @govukSummaryList(SummaryList(rows = formatSections(answerSections)))
     </div>
 
-    @components.return_to_top()
+    @returnToTop()
 
 }

@@ -16,31 +16,32 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.routes._
+@import views.html.components.{HeadingWithCaption, SubmitButton, Link}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF,
+    headingWithCaption: HeadingWithCaption,
+    submitButton: SubmitButton,
+    link: Link,
     config: FrontendAppConfig
 )
 
 @(utr: String, isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("trustAlreadyRegistered.title")
+@mainTemplate(
+    title = messages("trustAlreadyRegistered.title"),
+    showBackLink = true
 ) {
 
     @formHelper(action = TrustAlreadyRegisteredController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @headingWithCaption("trustAlreadyRegistered", captionParam = Some(utr))
 
-        @components.sub_heading("trustAlreadyRegistered.subHeading", utr)
-
-        @components.heading("trustAlreadyRegistered.heading")
-
-        @components.submit_button(Some("trustAlreadyRegistered.continue"))
+        @submitButton(Some("trustAlreadyRegistered.continue"))
 
         @if(isAgent) {
-            <p>@messages("trustAlreadyRegistered.agent.p1") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "trustAlreadyRegistered.agent.p1.link", false).</p>
+            <p>@messages("trustAlreadyRegistered.agent.p1") @link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "trustAlreadyRegistered.agent.p1.link", false).</p>
         } else {
             <p>@messages("trustAlreadyRegistered.p1")</p>
 

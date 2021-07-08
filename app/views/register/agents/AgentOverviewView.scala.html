@@ -17,24 +17,26 @@
 @import viewmodels.DraftRegistration
 @import controllers.register.agents.routes._
 @import config.FrontendAppConfig
-@import components.warning
-@import components.notification
+@import views.html.components.{Heading, Notification, Warning, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF,
+    heading: Heading,
+    notification: Notification,
+    warning: Warning,
+    submitButton: SubmitButton,
     appConfig: FrontendAppConfig
 )
 
 @(drafts: List[DraftRegistration])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("agentOverview.title")
+@mainTemplate(
+    title = messages("agentOverview.title"),
+    showBackLink = true
     ) {
 
-    @components.back_link()
-
-    @components.heading("agentOverview.heading")
+    @heading("agentOverview.heading")
 
     @if(appConfig.deploymentNotification) {
         @notification()
@@ -55,7 +57,7 @@
     <p>@messages("agentOverview.paragraph4")</p>
 
     @formHelper(action = AgentOverviewController.onSubmit(), 'autoComplete -> "off") {
-        @components.submit_button(Some("agentOverview.start"))
+        @submitButton(Some("agentOverview.start"))
     }
 
 }

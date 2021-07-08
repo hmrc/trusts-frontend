@@ -1,99 +1,106 @@
 # Registration
+->         /govuk-frontend                              govuk.Routes
+->         /hmrc-frontend                               hmrcfrontend.Routes
 
-GET        /                                                                                        controllers.register.IndexController.onPageLoad()
+GET        /                                            controllers.register.IndexController.onPageLoad()
 
-GET        /create-draft-registration                                                               controllers.register.CreateDraftRegistrationController.create()
+GET        /create-draft-registration                   controllers.register.CreateDraftRegistrationController.create()
 
-GET        /assets/*file                                                                            controllers.Assets.versioned(path="/public", file: Asset)
+GET        /assets/*file                                controllers.Assets.versioned(path="/public", file: Asset)
 
-GET        /language/:lang                                                                          controllers.register.LanguageSwitchController.switchToLanguage(lang: String)
+GET        /language/:lang                              controllers.register.LanguageSwitchController.switchToLanguage(lang: String)
 
-GET        /this-service-has-been-reset                                                             controllers.register.SessionExpiredController.onPageLoad()
+GET        /this-service-has-been-reset                 controllers.register.SessionExpiredController.onPageLoad()
+POST       /this-service-has-been-reset                 controllers.register.SessionExpiredController.onSubmit()
 
-GET        /unauthorised                                                                            controllers.register.UnauthorisedController.onPageLoad()
+GET        /unauthorised                                controllers.register.UnauthorisedController.onPageLoad()
 
-GET        /create-agent-services-account                                                           controllers.register.CreateAgentServicesAccountController.onPageLoad()
+GET        /create-agent-services-account               controllers.register.CreateAgentServicesAccountController.onPageLoad()
+POST       /create-agent-services-account               controllers.register.CreateAgentServicesAccountController.onSubmit()
 
-GET        /signed-out                                                                              controllers.register.SignedOutController.onPageLoad()
+GET        /signed-out                                  controllers.register.SignedOutController.onPageLoad()
 
-GET        /logout                                                                                  controllers.register.LogoutController.logout()
+GET        /logout                                      controllers.register.LogoutController.logout()
 
-GET        /keep-alive                                                                              controllers.SessionTimeoutController.keepAlive
-GET        /timeout                                                                                 controllers.SessionTimeoutController.timeout
+GET        /keep-alive                                  controllers.SessionTimeoutController.keepAlive
+GET        /timeout                                     controllers.SessionTimeoutController.timeout
 
-GET        /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onPageLoad()
-POST       /trust-registered-online                                                                 controllers.register.TrustRegisteredOnlineController.onSubmit()
+GET        /trust-registered-online                     controllers.register.TrustRegisteredOnlineController.onPageLoad()
+POST       /trust-registered-online                     controllers.register.TrustRegisteredOnlineController.onSubmit()
 
-GET        /which-reference                                                                         controllers.register.WhichIdentifierController.onPageLoad()
-POST       /which-reference                                                                         controllers.register.WhichIdentifierController.onSubmit()
+GET        /which-reference                             controllers.register.WhichIdentifierController.onPageLoad()
+POST       /which-reference                             controllers.register.WhichIdentifierController.onSubmit()
 
-GET        /reference-sent-by-post                                                                  controllers.register.RefSentByPostController.onPageLoad()
+GET        /reference-sent-by-post                      controllers.register.RefSentByPostController.onPageLoad()
 
-GET        /trust-have-utr                                                                          controllers.register.TrustHaveAUTRController.onPageLoad()
-POST       /trust-have-utr                                                                          controllers.register.TrustHaveAUTRController.onSubmit()
+GET        /trust-have-utr                              controllers.register.TrustHaveAUTRController.onPageLoad()
+POST       /trust-have-utr                              controllers.register.TrustHaveAUTRController.onSubmit()
 
-GET        /trust-utr                                                                               controllers.register.WhatIsTheUTRController.onPageLoad()
-POST       /trust-utr                                                                               controllers.register.WhatIsTheUTRController.onSubmit()
+GET        /trust-utr                                   controllers.register.WhatIsTheUTRController.onPageLoad()
+POST       /trust-utr                                   controllers.register.WhatIsTheUTRController.onSubmit()
 
-GET        /trust-registered-with-uk-address                                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
-POST       /trust-registered-with-uk-address                                                        controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit()
+GET        /trust-registered-with-uk-address            controllers.register.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
+POST       /trust-registered-with-uk-address            controllers.register.TrustRegisteredWithUkAddressYesNoController.onSubmit()
 
-GET        /trust-postcode                                                                          controllers.register.PostcodeForTheTrustController.onPageLoad()
-POST       /trust-postcode                                                                          controllers.register.PostcodeForTheTrustController.onSubmit()
+GET        /trust-postcode                              controllers.register.PostcodeForTheTrustController.onPageLoad()
+POST       /trust-postcode                              controllers.register.PostcodeForTheTrustController.onSubmit()
 
-GET        /matching-failed                                                                         controllers.register.FailedMatchController.onPageLoad()
+GET        /matching-failed                             controllers.register.FailedMatchController.onPageLoad()
+POST       /matching-failed                             controllers.register.FailedMatchController.onSubmit()
 
-GET        /trust-already-registered                                                                controllers.register.TrustAlreadyRegisteredController.onPageLoad()
-POST       /trust-already-registered                                                                controllers.register.TrustAlreadyRegisteredController.onSubmit()
+GET        /trust-already-registered                    controllers.register.TrustAlreadyRegisteredController.onPageLoad()
+POST       /trust-already-registered                    controllers.register.TrustAlreadyRegisteredController.onSubmit()
 
-GET        /trust-name                                                                              controllers.register.MatchingNameController.onPageLoad()
-POST       /trust-name                                                                              controllers.register.MatchingNameController.onSubmit()
+GET        /trust-name                                  controllers.register.MatchingNameController.onPageLoad()
+POST       /trust-name                                  controllers.register.MatchingNameController.onSubmit()
 
-GET        /problem-with-service                                                                    controllers.register.MatchingDownController.onPageLoad()
+GET        /problem-with-service                        controllers.register.MatchingDownController.onPageLoad()
+POST       /problem-with-service                        controllers.register.MatchingDownController.onSubmit()
 
-GET        /cannot-change                                                                           controllers.register.CannotMakeChangesController.onPageLoad()
+GET        /cannot-change                               controllers.register.CannotMakeChangesController.onPageLoad()
 
-GET        /trust-utr-post                                                                          controllers.register.UTRSentByPostController.onPageLoad()
+GET        /trust-utr-post                              controllers.register.UTRSentByPostController.onPageLoad()
 
-GET        /:draftId/registration-progress                                                          controllers.register.TaskListController.onPageLoad(draftId: String)
+GET        /:draftId/registration-progress              controllers.register.TaskListController.onPageLoad(draftId: String)
+POST       /:draftId/registration-progress              controllers.register.TaskListController.onSubmit(draftId: String)
 
-GET        /:draftId/declaration                                                                    controllers.register.DeclarationController.onPageLoad(draftId: String)
-POST       /:draftId/declaration                                                                    controllers.register.DeclarationController.onSubmit(draftId: String)
+GET        /:draftId/declaration                        controllers.register.DeclarationController.onPageLoad(draftId: String)
+POST       /:draftId/declaration                        controllers.register.DeclarationController.onSubmit(draftId: String)
 
-GET        /:draftId/confirmation                                                                   controllers.register.ConfirmationController.onPageLoad(draftId: String)
+GET        /:draftId/confirmation                       controllers.register.ConfirmationController.onPageLoad(draftId: String)
 
-GET        /:draftId/your-draft-registration                                                        controllers.register.SummaryAnswerPageController.onPageLoad(draftId: String)
+GET        /:draftId/your-draft-registration            controllers.register.SummaryAnswerPageController.onPageLoad(draftId: String)
 
-GET        /:draftId/your-declared-registration                                                     controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId: String)
+GET        /:draftId/your-declared-registration         controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId: String)
 
 ## Suitability
 
-GET        /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onPageLoad()
-POST       /is-express-trust                                                                        controllers.register.suitability.ExpressTrustYesNoController.onSubmit()
+GET        /is-express-trust                            controllers.register.suitability.ExpressTrustYesNoController.onPageLoad()
+POST       /is-express-trust                            controllers.register.suitability.ExpressTrustYesNoController.onSubmit()
 
-GET        /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
-POST       /has-tax-liability-in-current-tax-year                                                   controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit()
+GET        /has-tax-liability-in-current-tax-year       controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
+POST       /has-tax-liability-in-current-tax-year       controllers.register.suitability.TaxLiabilityInCurrentTaxYearYesNoController.onSubmit()
 
-GET        /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad()
-POST       /has-undeclared-tax-liability                                                            controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit()
+GET        /has-undeclared-tax-liability                controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onPageLoad()
+POST       /has-undeclared-tax-liability                controllers.register.suitability.UndeclaredTaxLiabilityYesNoController.onSubmit()
 
-GET        /before-you-continue                                                                     controllers.register.suitability.BeforeYouContinueController.onPageLoad()
-POST       /before-you-continue                                                                     controllers.register.suitability.BeforeYouContinueController.onSubmit()
+GET        /before-you-continue                         controllers.register.suitability.BeforeYouContinueController.onPageLoad()
+POST       /before-you-continue                         controllers.register.suitability.BeforeYouContinueController.onSubmit()
 
-GET        /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad()
-POST       /non-taxable-trust-registration-access-code                                              controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit()
+GET        /non-taxable-trust-registration-access-code  controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad()
+POST       /non-taxable-trust-registration-access-code  controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit()
 
-GET        /no-need-to-register                                                                     controllers.register.suitability.NoNeedToRegisterController.onPageLoad()
+GET        /no-need-to-register                         controllers.register.suitability.NoNeedToRegisterController.onPageLoad()
 
 ## Agents
 
-GET        /agent-overview                                                                          controllers.register.agents.AgentOverviewController.onPageLoad()
-POST       /agent-overview                                                                          controllers.register.agents.AgentOverviewController.onSubmit()
+GET        /agent-overview                              controllers.register.agents.AgentOverviewController.onPageLoad()
+POST       /agent-overview                              controllers.register.agents.AgentOverviewController.onSubmit()
 
-GET        /:draftId/maintain-saved-registration                                                    controllers.register.agents.AgentOverviewController.continue(draftId: String)
-GET        /:draftId/remove-saved-registration                                                      controllers.register.agents.AgentOverviewController.remove(draftId: String)
+GET        /:draftId/maintain-saved-registration        controllers.register.agents.AgentOverviewController.continue(draftId: String)
+GET        /:draftId/remove-saved-registration          controllers.register.agents.AgentOverviewController.remove(draftId: String)
 
-GET        /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onPageLoad(draftId: String)
-POST       /:draftId/remove                                                                         controllers.register.agents.RemoveDraftYesNoController.onSubmit(draftId: String)
+GET        /:draftId/remove                             controllers.register.agents.RemoveDraftYesNoController.onPageLoad(draftId: String)
+POST       /:draftId/remove                             controllers.register.agents.RemoveDraftYesNoController.onSubmit(draftId: String)
 
-GET        /feature-not-available                                                                   controllers.FeatureNotAvailableController.onPageLoad()
+GET        /feature-not-available                       controllers.FeatureNotAvailableController.onPageLoad()

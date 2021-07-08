@@ -14,37 +14,41 @@
  * limitations under the License.
  *@
 
+@import views.html.components.{ErrorSummary, Heading, InputText, SubmitButton}
+
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    heading: Heading,
+    inputText: InputText,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@content = {
-    <p>@messages("whatIsTheUTR.linkMessage") <a href="https://www.gov.uk/find-lost-utr-number" target="_blank">@messages("whatIsTheUTR.linkText")</a>.</p>
-}
-
-@main_template(
-    title = s"${errorPrefix(form)}${messages("whatIsTheUTR.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("whatIsTheUTR.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = controllers.register.routes.WhatIsTheUTRController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
+        @heading(messages("whatIsTheUTR.heading"))
 
-        @components.input_utr(
+        <p>@messages("whatIsTheUTR.linkMessage") <a href="https://www.gov.uk/find-lost-utr-number" target="_blank">@messages("whatIsTheUTR.linkText")</a>.</p>
+
+        @inputText(
             field = form("value"),
             label = messages("whatIsTheUTR.heading"),
-            labelAsHeading = true,
+            labelAsHeading = false,
             hint = Some(messages("whatIsTheUTR.hint")),
-            labelClass = Some("heading-large"),
-            inputMode = Some("numeric"),
-            optionalHtmlContent = Some(content)
+            labelClass = Some("govuk-visually-hidden"),
+            inputMode = Some("numeric")
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

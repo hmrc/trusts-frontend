@@ -16,24 +16,26 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
+@import views.html.components.{Heading, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF,
+    heading: Heading,
+    submitButton: SubmitButton,
     config: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("suitability.beforeYouContinue.nonTaxable.agent.title")
+@mainTemplate(
+    title = messages("suitability.beforeYouContinue.nonTaxable.agent.title"),
+    showBackLink = true
 ) {
 
     @formHelper(action = BeforeYouContinueController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
-
-        @components.heading("suitability.beforeYouContinue.nonTaxable.agent.heading")
+        @heading("suitability.beforeYouContinue.nonTaxable.agent.heading")
 
         <p>@messages("suitability.beforeYouContinue.nonTaxable.agent.p1")</p>
 
@@ -54,6 +56,6 @@
             <li><a href="@config.trustsAndTaxesUrl" target="_blank">@messages("suitability.beforeYouContinue.nonTaxable.agent.link2")</a></li>
         </ul>
 
-        @components.submit_button(Some("suitability.beforeYouContinue.nonTaxable.agent.continue"))
+        @submitButton(Some("suitability.beforeYouContinue.nonTaxable.agent.continue"))
     }
 }
