@@ -17,12 +17,13 @@
 package connector
 
 import config.FrontendAppConfig
+import controllers.Assets.NOT_FOUND
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.core.http.{AddressType, LeadTrusteeType}
-import models.{SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
+import models.{FirstTaxYearAvailable, SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.HttpReads.Implicits.{readFromJson, readRaw}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse, UpstreamErrorResponse}
 
 import java.time.LocalDate
 import javax.inject.Inject
@@ -121,4 +122,13 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     http.DELETE[HttpResponse](s"$submissionsBaseUrl/$draftId")
   }
+
+  def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[FirstTaxYearAvailable]] = {
+    http.GET[FirstTaxYearAvailable](s"$submissionsBaseUrl/$draftId/first-tax-year-available")
+      .map(Some(_))
+      .recover {
+        case e: UpstreamErrorResponse if e.statusCode == NOT_FOUND => None
+      }
+  }
+
 }

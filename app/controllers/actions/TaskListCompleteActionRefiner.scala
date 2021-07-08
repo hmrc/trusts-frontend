@@ -40,10 +40,10 @@ class TaskListCompleteActionRefinerImpl @Inject()(
     val draftId = request.userAnswers.draftId
 
     for {
-      trustSetupDate <- registrationsRepository.getTrustSetupDate(draftId)
+      firstTaxYearAvailable <- registrationsRepository.getFirstTaxYearAvailable(draftId)
       isTaxable = request.userAnswers.isTaxable
       isExistingTrust = request.userAnswers.isExistingTrust
-      result <- registrationProgress.isTaskListComplete(draftId, trustSetupDate, isTaxable, isExistingTrust)
+      result <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
     } yield {
       if (result) {
         Right(request)

@@ -18,6 +18,7 @@ package controllers.actions
 
 import base.RegistrationSpecBase
 import generators.ModelGenerators
+import models.FirstTaxYearAvailable
 import models.requests.RegistrationDataRequest
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
@@ -32,7 +33,6 @@ import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.Enrolments
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks with ModelGenerators {
@@ -51,14 +51,14 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
     "task list complete" must {
       "return request" in {
 
-        forAll(arbitrary[Option[LocalDate]], arbitrary[Boolean], arbitrary[Boolean]) {
-          (trustSetupDate, isTaxable, isExistingTrust) =>
+        forAll(arbitrary[Option[FirstTaxYearAvailable]], arbitrary[Boolean], arbitrary[Boolean]) {
+          (firstTaxYearAvailable, isTaxable, isExistingTrust) =>
 
             val mockRegistrationProgress = mock[RegistrationProgress]
             val mockRegistrationsRepository = mock[RegistrationsRepository]
 
-            when(mockRegistrationsRepository.getTrustSetupDate(any())(any()))
-              .thenReturn(Future.successful(trustSetupDate))
+            when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
+              .thenReturn(Future.successful(firstTaxYearAvailable))
 
             when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
               .thenReturn(Future.successful(true))
@@ -89,14 +89,14 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
     "task list incomplete" must {
       "redirect to task list" in {
 
-        forAll(arbitrary[Option[LocalDate]], arbitrary[Boolean], arbitrary[Boolean]) {
-          (trustSetupDate, isTaxable, isExistingTrust) =>
+        forAll(arbitrary[Option[FirstTaxYearAvailable]], arbitrary[Boolean], arbitrary[Boolean]) {
+          (firstTaxYearAvailable, isTaxable, isExistingTrust) =>
 
             val mockRegistrationProgress = mock[RegistrationProgress]
             val mockRegistrationsRepository = mock[RegistrationsRepository]
 
-            when(mockRegistrationsRepository.getTrustSetupDate(any())(any()))
-              .thenReturn(Future.successful(trustSetupDate))
+            when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
+              .thenReturn(Future.successful(firstTaxYearAvailable))
 
             when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
               .thenReturn(Future.successful(false))

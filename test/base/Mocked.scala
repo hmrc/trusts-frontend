@@ -17,6 +17,7 @@
 package base
 
 import controllers.Assets.OK
+import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
 import models.requests.MatchingAndSuitabilityDataRequest
 import org.mockito.Matchers.any
@@ -54,4 +55,7 @@ trait Mocked extends MockitoSugar {
 
   val mockedTrustStartDate: LocalDate = LocalDate.parse("2019-02-03")
   when(registrationsRepository.getTrustSetupDate(any())(any())).thenReturn(Future.successful(Some(mockedTrustStartDate)))
+
+  when(registrationsRepository.getFirstTaxYearAvailable(any())(any()))
+    .thenReturn(Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false))))
 }
