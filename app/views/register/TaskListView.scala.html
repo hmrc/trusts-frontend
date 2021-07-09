@@ -18,7 +18,7 @@
 @import controllers.register.routes._
 @import viewmodels.Task
 @import uk.gov.hmrc.auth.core.AffinityGroup
-@import views.html.components.{Heading, Notification, Warning, Link, SubmitButton}
+@import views.html.components.{Heading, Notification, Warning, Link, TaskList, SubmitButton}
 
 
 @this(
@@ -27,6 +27,7 @@
     notification: Notification,
     warning: Warning,
     link: Link,
+    taskList: TaskList,
     submitButton: SubmitButton,
     formHelper: FormWithCSRF,
     config: FrontendAppConfig
@@ -67,7 +68,7 @@
         <p id="saved-until">@savedUntil</p>
     }
 
-    @components.task_list(sections, additionalSections)
+    @taskList(sections, additionalSections)
 
     @if(isTaskListComplete) {
         <h2>@messages("taskList.summary.heading1")</h2>
