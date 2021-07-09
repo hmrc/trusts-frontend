@@ -1,6 +1,7 @@
 @import "lib/govuk-frontend/govuk/base";
 @import "lib/govuk-frontend/govuk/core/typography";
 @import "location-autocomplete.min";
+@import "lib/govuk-frontend/govuk/core/links";
 
 $govuk-global-styles: true;
 
@@ -32,6 +33,10 @@ body:not(.js-enabled) {
 
 p {
   @extend .govuk-body;
+}
+
+a {
+  @extend .govuk-link;
 }
 
 .agentClientRef, .declarationReferenceNumber {font-weight:700;}
