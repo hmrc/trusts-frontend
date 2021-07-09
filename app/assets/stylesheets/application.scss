@@ -39,6 +39,10 @@ a {
   @extend .govuk-link;
 }
 
+h2 {
+  @extend .govuk-heading-m;
+}
+
 .agentClientRef, .declarationReferenceNumber {font-weight:700;}
 
 @media print {
