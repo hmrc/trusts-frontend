@@ -16,7 +16,7 @@
 
 @import viewmodels.Task
 @import views.html.components.Link
-
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.table.HeadCell
 @this(
         govukTable : GovukTable,
         govukTag: GovukTag,
@@ -47,7 +47,7 @@
 
         )
     },
-    head = None,
+    head = Some(Seq(HeadCell())),
     caption = Some(messages("taskList.sections.heading")),
     captionClasses = "govuk-table__caption--m",
     firstCellIsHeader = false
@@ -73,7 +73,7 @@
 
         )
     },
-    head = None,
+    head = Some(Seq(HeadCell())),
     caption = Some(messages("taskList.additionalSections.heading")),
     captionClasses = "govuk-table__caption--m",
     firstCellIsHeader = false
