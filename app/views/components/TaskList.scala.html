@@ -14,71 +14,29 @@
  * limitations under the License.
  *@
 
+@import views.html.components.{Link, TaskItem}
 @import viewmodels.Task
-@import views.html.components.Link
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.table.HeadCell
+
 @this(
-        govukTable : GovukTable,
-        govukTag: GovukTag,
+        taskItem: TaskItem,
         link: Link
 )
 
 
 @(sections: List[Task], additionalSections: List[Task])(implicit messages: Messages)
 
+<h2 id="task-list--heading" class="app-task-list__section">@messages("taskList.sections.heading")</h2>
 
-@govukTable(Table(
-    rows = sections.map { task =>
-        Seq(
-            TableRow(
-                content = HtmlContent(link(href = task.link.url, key = messages(s"taskList.${task.link.text}.label"), id = s"task-list__task--${task.link.text}")),
-                attributes = Map("id" -> s"task-list__item--${task.link.text}")
-            ),
-            TableRow(
-                content = task.tag.map { t =>
-                    HtmlContent(
-                        govukTag(Tag(
-                            content = Text(messages(s"taskList.${t.toString}")),
-                            classes = if(t.toString == "progress") "govuk-tag--grey" else "",
-                            attributes = Map("id" -> s"task-list__task--${task.link.text}__tag")
-                        ))
-                    )
-                }.getOrElse(Text("")),
-                format = Some("numeric")
-            )
+<ul class="app-task-list__items">
+@for(task <- sections){
+    @taskItem(task)
+}
+</ul>
 
-        )
-    },
-    head = Some(Seq(HeadCell(), HeadCell())),
-    caption = Some(messages("taskList.sections.heading")),
-    captionClasses = "govuk-table__caption--m",
-    firstCellIsHeader = false
-))
+<h2 id="task-list-additional--heading" class="app-task-list__section">@messages("taskList.additionalSections.heading")</h2>
 
-@govukTable(Table(
-    rows = additionalSections.map { task =>
-        Seq(
-            TableRow(
-                content = HtmlContent(link(href = task.link.url, key = messages(s"taskList.${task.link.text}.label"), id = s"task-list__task--${task.link.text}")),
-                attributes = Map("id" -> s"task-list__item--${task.link.text}")
-            ),
-            TableRow(
-                content = task.tag.map { t =>
-                    HtmlContent(
-                        govukTag(Tag(
-                            content = Text(messages(s"taskList.${t.toString}")),
-                            classes = if(t.toString == "progress") "govuk-tag--grey" else "",
-                            attributes = Map("id" -> s"task-list__task--${task.link.text}__tag")
-                        ))
-                    )
-                }.getOrElse(Text("")),
-                format = Some("numeric")
-            )
-
-        )
-    },
-    head = Some(Seq(HeadCell(), HeadCell())),
-    caption = Some(messages("taskList.additionalSections.heading")),
-    captionClasses = "govuk-table__caption--m",
-    firstCellIsHeader = false
-))
+<ul class="app-task-list__items">
+@for(task <- additionalSections){
+    @taskItem(task)
+}
+</ul>
