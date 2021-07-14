@@ -275,9 +275,6 @@ UTRSentByPost.link.contactHelpline = Contact the trusts helpline (opens in a new
 UTRSentByPost.paragraph3 = You can
 UTRSentByPost.link.returnToRegister = return to register and maintain a trust for a client
 
-trustDetailsAnswerPage.title = Check trust details
-trustDetailsAnswerPage.heading = Check trust details
-
 emailAddress.checkYourAnswersLabel = What is {0}’s email address?
 
 taskList.title = Registration progress
@@ -612,19 +609,6 @@ confirmationAnswerPage.paragraph1 = Declaration reference number is: {0}
 confirmationAnswerPage.paragraph2 = The trust’s registration was sent on {0}.
 confirmationAnswerPage.warning = You need to declare every year through this service that the details we have are up to date.
 
-answerPage.section.trustsDetails.heading = Trust details
-answerPage.section.deceasedSettlor.heading = Settlor
-answerPage.section.settlors.heading = Settlors
-answerPage.section.settlor.subheading = Settlor {0}
-answerPage.section.assets.heading = Assets
-answerPage.section.companyOwnershipOrControllingInterest.heading = Company ownership or controlling interest
-answerPage.section.moneyAsset.subheading = Money
-answerPage.section.shareAsset.subheading = Share {0}
-answerPage.section.propertyOrLandAsset.subheading = Property or land {0}
-answerPage.section.partnershipAsset.subheading = Partnership {0}
-answerPage.section.businessAsset.subheading = Business {0}
-answerPage.section.otherAsset.subheading = Other {0}
-answerPage.section.nonEeaBusinessAsset.subheading = Non-EEA Company {0}
 answerPage.agentClientRef = Client reference number: {0}
 answerPage.section.trustType.heading = Trust type
 

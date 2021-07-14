@@ -14,18 +14,6 @@ agentOverview.start = Dechrau nawr
 agentOverview.title = Cofrestru ymddiriedolaeth a’i chynnal ar ran cleient
 
 answerPage.agentClientRef = Cyfeirnod y cleient: {0}
-answerPage.section.assets.heading = Asedion
-answerPage.section.businessAsset.subheading = Busnes {0}
-answerPage.section.deceasedSettlor.heading = Setlwr
-answerPage.section.moneyAsset.subheading = Arian
-answerPage.section.nonEeaBusinessAsset.subheading = Cwmni nad yw’n rhan o’r AEE {0}
-answerPage.section.otherAsset.subheading = Arall {0}
-answerPage.section.partnershipAsset.subheading = Partneriaeth {0}
-answerPage.section.propertyOrLandAsset.subheading = Eiddo neu dir {0}
-answerPage.section.settlor.subheading = Setlwr {0}
-answerPage.section.settlors.heading = Setlwyr
-answerPage.section.shareAsset.subheading = Cyfranddaliad {0}
-answerPage.section.trustsDetails.heading = Manylion yr ymddiriedolaeth
 answerPage.section.trustType.heading = Math o ymddiriedolaeth
 
 cannotMakeChanges.heading = Ni allwch wneud newidiadau i’r ymddiriedolaeth ar-lein
@@ -793,8 +781,6 @@ trustBeneficiaryDiscretionYesNo.checkYourAnswersLabel = A oes gan yr ymddiriedol
 trustBeneficiaryName.checkYourAnswersLabel = Beth yw enw’r ymddiriedolaeth?
 trustBeneficiaryShareOfIncome.checkYourAnswersLabel = Pa ganran o incwm yr ymddiriedolaeth y mae gan {0} hawl iddi?
 trustBeneficiaryUtr.checkYourAnswersLabel = Beth yw Cyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer {0}?
-trustDetailsAnswerPage.heading = Gwirio manylion yr ymddiriedolaeth
-trustDetailsAnswerPage.title = Gwirio manylion yr ymddiriedolaeth
 trustee.individual.5mld.countryOfNationality.checkYourAnswersLabel = Beth yw gwlad cenedligrwydd {0}?
 trustee.individual.5mld.countryOfNationalityInTheUkYesNo.checkYourAnswersLabel = A oes gan {0} genedligrwydd y DU?
 trustee.individual.5mld.countryOfNationalityYesNo.checkYourAnswersLabel = A ydych yn gwybod gwlad cenedligrwydd {0}?
