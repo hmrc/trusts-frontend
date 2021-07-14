@@ -34,4 +34,8 @@ class FailedMatchController @Inject()(
     implicit request =>
       Ok(view())
   }
+
+  def onSubmit(): Action[AnyContent] = identify { _ =>
+    Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad())
+  }
 }

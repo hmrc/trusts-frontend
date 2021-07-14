@@ -16,21 +16,23 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
+@import views.html.components.{Heading, Link}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    heading: Heading,
+    link: Link,
     config: FrontendAppConfig
 )
 
 @(isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("suitability.noNeedToRegister.title")
+@mainTemplate(
+    title = messages("suitability.noNeedToRegister.title"),
+    showBackLink = true
 ) {
 
-    @components.back_link()
-
-    @components.heading("suitability.noNeedToRegister.heading")
+    @heading("suitability.noNeedToRegister.heading")
 
     <p>@messages("suitability.noNeedToRegister.p1")</p>
 
@@ -39,6 +41,6 @@
     <p>@messages("suitability.noNeedToRegister.p3") <a href="@config.helplineUrl" target="_blank">@messages("suitability.noNeedToRegister.p3.link")</a>.</p>
 
     @if(isAgent) {
-        <p>@messages("suitability.noNeedToRegister.p4") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "suitability.noNeedToRegister.p4.link", false).</p>
+        <p>@messages("suitability.noNeedToRegister.p4") @link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "suitability.noNeedToRegister.p4.link", false).</p>
     }
 }

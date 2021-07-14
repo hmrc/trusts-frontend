@@ -16,54 +16,61 @@
 
 @import controllers.register.routes._
 @import uk.gov.hmrc.auth.core.AffinityGroup
-@import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 @import config.FrontendAppConfig
+@import views.html.components.{ErrorSummary, Heading, InputText, SubmitButton}
 
 @this(
     appConfig: FrontendAppConfig,
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    heading: Heading,
+    inputText: InputText,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_], draftId: String, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("declaration.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("declaration.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = DeclarationController.onSubmit(draftId), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
+        <fieldset class="govuk-fieldset">
 
-        <fieldset>
-
-            <legend>
-                @components.heading("declaration.heading")
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            @heading("declaration.heading")
             </legend>
 
-            @components.input_text(
+            @inputText(
                 field = form("firstName"),
                 label = messages("declaration.firstName"),
+                inputClass = Some("govuk-!-width-one-half"),
                 autocomplete = Some("given-name")
             )
 
-            @components.input_text(
+            @inputText(
                 field = form("middleName"),
-                label = messages("declaration.middleName")
+                label = messages("declaration.middleName"),
+                inputClass = Some("govuk-!-width-one-half"),
+                autocomplete = Some("additional-name")
             )
 
-            @components.input_text(
+            @inputText(
                 field = form("lastName"),
                 label = messages("declaration.lastName"),
+                inputClass = Some("govuk-!-width-one-half"),
                 autocomplete = Some("family-name")
             )
 
             @if(appConfig.declarationEmailEnabled) {
                 <p>@messages("declaration.paragraph1")</p>
                 <p>@messages("declaration.paragraph2")</p>
-                @components.input_text(
+                @inputText(
                     field = form("email"),
                     inputClass = Some("declaration-email"),
                     label = messages("declaration.email")
@@ -73,9 +80,9 @@
 
         @{
             val key: String = if (affinityGroup == AffinityGroup.Agent) "agent" else "individual"
-            <p class="panel-indent">{messages(s"declaration.$key.warning")}</p>
+            <p class="govuk-inset-text">{messages(s"declaration.$key.warning")}</p>
         }
 
-        @components.submit_button(Some("site.confirm-send"))
+        @submitButton(Some("site.confirm-send"))
     }
 }

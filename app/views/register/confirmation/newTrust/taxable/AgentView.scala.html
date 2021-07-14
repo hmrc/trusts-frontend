@@ -16,23 +16,25 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.routes._
-@import models.core.pages.FullName
+@import views.html.components.{RegistrationReceived, Link}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    registrationReceived: RegistrationReceived,
+    link: Link,
     config: FrontendAppConfig
 )
 
 @(draftId: String, refNumber: String, leadTrusteeName: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
+@mainTemplate(
     title = messages("confirmation.title")
 ) {
 
-    @components.registration_received(refNumber)
+    @registrationReceived(refNumber)
 
-    <div class="panel-indent">
-        <p>@components.link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
+    <div class="govuk-inset-text">
+        <p>@link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
         <p>@messages("confirmation.new.agent.warning")</p>
     </div>
 
@@ -56,7 +58,7 @@
             <p>@messages("confirmation.new.agent.bullet2.p1")</p>
             <p>@messages("confirmation.new.agent.bullet2.p2")</p>
             <p>@messages("confirmation.new.agent.bullet2.p3") <a href="@{config.helplineUrl}" target="_blank">@messages("confirmation.new.agent.bullet2.p3.a")</a>.</p>
-            <p>@messages("confirmation.new.agent.bullet2.p4") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "confirmation.new.agent.bullet2.p4.a", false).</p>
+            <p>@messages("confirmation.new.agent.bullet2.p4") @link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "confirmation.new.agent.bullet2.p4.a", false).</p>
         </li>
     </ol>
 

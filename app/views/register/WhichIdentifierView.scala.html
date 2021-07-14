@@ -15,33 +15,35 @@
  *@
 
 @import models.WhichIdentifier
+@import views.html.components.{ErrorSummary, InputRadio, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    inputRadio: InputRadio,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)} ${messages("whichIdentifier.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)} ${messages("whichIdentifier.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = controllers.register.routes.WhichIdentifierController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors, WhichIdentifier.options.map(_._1))
 
-        @components.error_summary(form.errors)
-
-        @components.input_radio_with_hint(
+        @inputRadio(
             field = form("value"),
             legend = messages("whichIdentifier.heading"),
-            legendClass = Some("heading-large"),
             headingIsLegend = true,
-            inputs = WhichIdentifier.options,
-            boldLabels = false
+            inline = false,
+            inputs = mapRadioOptionsToRadioItems(form("value"), false, WhichIdentifier.options)
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

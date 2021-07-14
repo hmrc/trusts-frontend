@@ -90,4 +90,8 @@ class TaskListController @Inject()(
           Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad().url))
       }
   }
+
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId) { _ =>
+    Redirect(controllers.register.routes.DeclarationController.onPageLoad(draftId))
+  }
 }

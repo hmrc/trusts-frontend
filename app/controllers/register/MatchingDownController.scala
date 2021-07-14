@@ -33,7 +33,10 @@ class MatchingDownController @Inject()(
 
   def onPageLoad(): Action[AnyContent] = identify {
     implicit request =>
-
       Ok(view(request.isAgent))
+  }
+
+  def onSubmit: Action[AnyContent] = identify { _ =>
+    Redirect(controllers.register.routes.LogoutController.logout())
   }
 }

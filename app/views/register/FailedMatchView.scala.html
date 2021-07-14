@@ -16,23 +16,28 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.routes._
+@import views.html.components.{Heading, BulletList, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    heading: Heading,
+    bulletList: BulletList,
+    submitButton: SubmitButton,
     config: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
+@mainTemplate(
     title = messages("failedMatch.title")
 ) {
 
-    @components.heading("failedMatch.heading")
+    @heading("failedMatch.heading")
 
     <p>@messages("failedMatch.paragraph1")</p>
 
-    @components.bullet_list(
+    @bulletList(
         "failedMatch",
         List(
             "bulletpoint1",
@@ -43,7 +48,7 @@
 
     <p>@messages("failedMatch.paragraph2")</p>
 
-    @components.bullet_list(
+    @bulletList(
         "failedMatch",
         List(
             "bulletpoint4",
@@ -54,7 +59,9 @@
 
     <p>@messages("failedMatch.paragraph3")</p>
 
-    @components.button_link(messages("site.try-again"), WhatIsTheUTRController.onPageLoad().url)
+    @formHelper(action = FailedMatchController.onSubmit(), 'autoComplete -> "off") {
+        @submitButton(Some(messages("site.try-again")))
+    }
 
     <h2>@messages("failedMatch.h2")</h2>
 

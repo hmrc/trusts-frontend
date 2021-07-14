@@ -16,8 +16,10 @@
 
 package views
 
-import play.api.data.Form
+import play.api.data.{Field, Form, FormError}
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.html.components.{RadioItem, Text, Hint}
+import viewmodels.RadioOption
 
 object ViewUtils {
 
@@ -25,10 +27,43 @@ object ViewUtils {
     if (form.hasErrors || form.hasGlobalErrors) s"${messages("error.browser.title.prefix")} " else ""
   }
 
-  def breadcrumbTitle(title: String, section: Option[String])(implicit messages: Messages): String = {
+  def breadcrumbTitle(title: String, section: Option[String] = None)(implicit messages: Messages): String = {
     section match {
-      case Some(sect) => s"$title - $sect - ${messages("site.service_name")} - GOV.UK"
-      case _ => s"$title - ${messages("site.service_name")} - GOV.UK"
+      case Some(sect) => s"$title - $sect - ${messages("service.name")} - GOV.UK"
+      case _ => s"$title - ${messages("service.name")} - GOV.UK"
     }
   }
+
+  def errorHref(error: FormError, radioOptions: Seq[RadioOption] = Nil, isYesNo: Boolean = false): String = {
+    error.args match {
+      case x if x.contains("day") || x.contains("month") || x.contains("year") =>
+        s"${error.key}.${error.args.head}"
+      case _ if isYesNo =>
+        s"${error.key}-yes"
+      case _ if radioOptions.size != 0 =>
+        radioOptions.head.id
+      case _ =>
+        val isSingleDateField = error.message.toLowerCase.contains("date") && !error.message.toLowerCase.contains("yesno")
+        if (error.key.toLowerCase.contains("date") || isSingleDateField) {
+          s"${error.key}.day"
+        } else {
+          s"${error.key}"
+        }
+    }
+  }
+
+  def mapRadioOptionsToRadioItems(field: Field, trackGa: Boolean,
+                                  inputs: Seq[(RadioOption, String)])(implicit messages: Messages): Seq[RadioItem] =
+    inputs.map {
+      input =>
+        val (item, hint) = input
+        RadioItem(
+          id = Some(item.id),
+          value = Some(item.value),
+          checked = field.value.contains(item.value),
+          content = Text(messages(item.messageKey)),
+          hint = if (hint.nonEmpty) Some(Hint(content = Text(messages(hint)))) else None,
+          attributes = if (trackGa) Map[String, String]("data-journey-click" -> s"trusts-frontend:click:${item.id}") else Map.empty
+        )
+    }
 }

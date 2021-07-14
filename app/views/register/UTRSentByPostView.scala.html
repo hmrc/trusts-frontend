@@ -16,28 +16,30 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.agents.routes._
+@import views.html.components.{Heading, Link}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    heading: Heading,
+    link: Link,
     config: FrontendAppConfig
 )
 
 @(isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("UTRSentByPost.title")
+@mainTemplate(
+    title = messages("UTRSentByPost.title"),
+    showBackLink = true
 ) {
 
-    @components.back_link()
-
-    @components.heading("UTRSentByPost.heading")
+    @heading("UTRSentByPost.heading")
 
     <p>@messages("UTRSentByPost.paragraph1")</p>
 
     <p><a id="help-link" href="@config.helplineUrl" target="_blank">@messages("UTRSentByPost.link.contactHelpline")</a> @messages("UTRSentByPost.paragraph2")</p>
 
     @if(isAgent: Boolean) {
-        <p>@messages("UTRSentByPost.paragraph3")@components.link(AgentOverviewController.onPageLoad.url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>
+        <p>@messages("UTRSentByPost.paragraph3")@link(AgentOverviewController.onPageLoad.url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>
     }
 
 }

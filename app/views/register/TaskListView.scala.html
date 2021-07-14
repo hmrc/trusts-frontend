@@ -18,10 +18,18 @@
 @import controllers.register.routes._
 @import viewmodels.Task
 @import uk.gov.hmrc.auth.core.AffinityGroup
-@import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
+@import views.html.components.{Heading, Notification, Warning, Link, TaskList, SubmitButton}
+
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    heading: Heading,
+    notification: Notification,
+    warning: Warning,
+    link: Link,
+    taskList: TaskList,
+    submitButton: SubmitButton,
+    formHelper: FormWithCSRF,
     config: FrontendAppConfig
 )
 
@@ -36,37 +44,36 @@
     is5mldEnabled: Boolean
 )(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("taskList.title")
+@mainTemplate(
+    title = messages("taskList.title"),
+    showBackLink = true
 ) {
 
-    @components.back_link()
-
-    @components.heading("taskList.heading", headingSize = "heading-xlarge")
+    @heading("taskList.heading", headingSize = "govuk-heading-xl")
 
     @if(config.deploymentNotification) {
-        @components.notification()
-        @components.warning("notification")
+        @notification()
+        @warning("notification")
     } else {
         <p>@messages("taskList.paragraph1")</p>
     }
 
     @if(affinityGroup == AffinityGroup.Agent) {
-        <p>@components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
+        <p>@link(controllers.register.agents.routes.AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
-        <p>@components.link(config.agentDetailsFrontendUrl(draftId), "agent-details", "taskList.agent.agentDetails")</p>
+        <p>@link(config.agentDetailsFrontendUrl(draftId), "agent-details", "taskList.agent.agentDetails")</p>
     } else {
         <h2>@messages("taskList.savedUntil.heading")</h2>
 
         <p id="saved-until">@savedUntil</p>
     }
 
-    @components.task_list(sections, additionalSections)
+    @taskList(sections, additionalSections)
 
     @if(isTaskListComplete) {
         <h2>@messages("taskList.summary.heading1")</h2>
 
-        <p>@messages("taskList.summary.paragraph1.start") @components.link(SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link1", openInNewWindow = false)@messages("taskList.summary.paragraph1.end")</p>
+        <p>@messages("taskList.summary.paragraph1.start") @link(SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link1", openInNewWindow = false)@messages("taskList.summary.paragraph1.end")</p>
 
         @if(isTaxable) {
             <h2>@messages("taskList.summary.heading2")</h2>
@@ -85,6 +92,8 @@
             <p>@messages("taskList.summary.paragraph3")</p>
         }
 
-        @components.button_link(messages("taskList.summary.continue"), DeclarationController.onPageLoad(draftId).url)
+        @formHelper(action = TaskListController.onSubmit(draftId), 'autoComplete -> "off") {
+            @submitButton(Some(messages("taskList.summary.continue")))
+        }
     }
 }

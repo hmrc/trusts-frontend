@@ -15,31 +15,33 @@
  *@
 
 @import controllers.register.routes._
+@import views.html.components.{ErrorSummary, InputYesNo, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    inputYesNo: InputYesNo,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("trustRegisteredOnline.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("trustRegisteredOnline.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = TrustRegisteredOnlineController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors, isYesNo = true)
 
-        @components.error_summary(form.errors)
-
-        @components.input_yes_no(
+        @inputYesNo(
             field = form("value"),
             label = messages("trustRegisteredOnline.heading"),
-            legendClass = Some("heading-large"),
             legendAsHeading = true
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

@@ -15,33 +15,36 @@
  *@
 
 @import config.FrontendAppConfig
+@import views.html.components.{Heading, BulletList, Link}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    heading: Heading,
+    bulletList: BulletList,
+    link: Link,
     config: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("refSentByPost.agent.title")
+@mainTemplate(
+    title = messages("refSentByPost.agent.title"),
+    showBackLink = true
 ) {
 
-    @components.back_link()
-
-    @components.heading("refSentByPost.agent.heading")
+    @heading("refSentByPost.agent.heading")
 
     <p>@messages("refSentByPost.agent.paragraph1")</p>
 
     <p>@messages("refSentByPost.agent.paragraph2")</p>
 
-    @components.bullet_list("refSentByPost.agent", Seq("bullet1", "bullet2"))
+    @bulletList("refSentByPost.agent", Seq("bullet1", "bullet2"))
 
     <p>@messages("refSentByPost.agent.paragraph3")</p>
 
-    <p>@messages("refSentByPost.agent.paragraph4") @components.link(config.helplineUrl, "help-link", "refSentByPost.agent.paragraph4.link", true)</p>
+    <p>@messages("refSentByPost.agent.paragraph4") @link(config.helplineUrl, "help-link", "refSentByPost.agent.paragraph4.link", true)</p>
 
-    <p>@messages("refSentByPost.agent.paragraph5") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "refSentByPost.agent.paragraph5.link", false)</p>
+    <p>@messages("refSentByPost.agent.paragraph5") @link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "refSentByPost.agent.paragraph5.link", false)</p>
 
 }
 
