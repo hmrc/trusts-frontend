@@ -144,7 +144,12 @@ trustPreviouslyResident.checkYourAnswersLabel = In what country was the trust pr
 nonresidentType.checkYourAnswersLabel = What is the non-resident type?
 inheritanceTaxActYesNo.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
 agentOtherThanBarristerYesNo.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
+whenTrustSetupDate.checkYourAnswersLabel = When was the trust created?
+
+//Todo: Remove below 28 days after deployment
 whenTrustSetup.checkYourAnswersLabel = When was the trust created?
+//Todo: Remove above 28 days after deployment
+
 trustHasBusinessRelationshipInUkYesNo.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
 trustListedOnEeaRegisterYesNo.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLandYesNo.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?

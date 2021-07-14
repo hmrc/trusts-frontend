@@ -847,7 +847,12 @@ whatKindOfAsset.Other = Arall
 whatKindOfAsset.Partnership = Partneriaeth
 whatKindOfAsset.PropertyOrLand = Eiddo neu dir
 whatKindOfAsset.Shares = Cyfranddaliadau
+
+//Todo: Remove below 28 days after deployment
 whenTrustSetup.checkYourAnswersLabel = Pryd y cafodd yr ymddiriedolaeth ei chreu?
+//Todo: Remove above 28 days after deployment
+
+whenTrustSetupDate.checkYourAnswersLabel = Pryd y cafodd yr ymddiriedolaeth ei chreu?
 
 answerPage.section.agent.heading = Manylion yr asiantaeth
 
