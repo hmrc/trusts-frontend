@@ -17,24 +17,27 @@
 @import viewmodels.DraftRegistration
 @import controllers.register.agents.routes._
 @import config.FrontendAppConfig
-@import components.warning
-@import components.notification
+@import views.html.components.{Heading, Notification, Warning, SubmitButton, DraftRegistrationList}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF,
+    heading: Heading,
+    notification: Notification,
+    warning: Warning,
+    draftRegistrationList: DraftRegistrationList,
+    submitButton: SubmitButton,
     appConfig: FrontendAppConfig
 )
 
 @(drafts: List[DraftRegistration])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("agentOverview.title")
+@mainTemplate(
+    title = messages("agentOverview.title"),
+    showBackLink = true
     ) {
 
-    @components.back_link()
-
-    @components.heading("agentOverview.heading")
+    @heading("agentOverview.heading")
 
     @if(appConfig.deploymentNotification) {
         @notification()
@@ -48,14 +51,14 @@
     <p>@messages("agentOverview.paragraph3") <a href="https://www.gov.uk/guidance/register-your-clients-trust" target="_blank">@messages("agentOverview.contactLink")</a>.</p>
 
     @if(drafts) {
-    <h2 id="data-list-heading--agent-registrations">@messages("agentOverview.h2")</h2>
-    @components.draft_registration_list(drafts, "agent-registrations")
+        <h2 id="data-list-heading--agent-registrations">@messages("agentOverview.h2")</h2>
+        @draftRegistrationList(drafts, "agent-registrations")
     }
 
     <p>@messages("agentOverview.paragraph4")</p>
 
     @formHelper(action = AgentOverviewController.onSubmit(), 'autoComplete -> "off") {
-        @components.submit_button(Some("agentOverview.start"))
+        @submitButton(Some("agentOverview.start"))
     }
 
 }

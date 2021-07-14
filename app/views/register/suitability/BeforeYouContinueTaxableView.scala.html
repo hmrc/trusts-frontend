@@ -16,24 +16,26 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
+@import views.html.components.{Heading, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF,
+    heading: Heading,
+    submitButton: SubmitButton,
     config: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("suitability.beforeYouContinue.taxable.title")
+@mainTemplate(
+    title = messages("suitability.beforeYouContinue.taxable.title"),
+    showBackLink = true
 ) {
 
     @formHelper(action = BeforeYouContinueController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
-
-        @components.heading("suitability.beforeYouContinue.taxable.heading")
+        @heading("suitability.beforeYouContinue.taxable.heading")
 
         <p>@messages("suitability.beforeYouContinue.taxable.p1")</p>
 
@@ -48,11 +50,11 @@
         <p>@messages("suitability.beforeYouContinue.taxable.p3")</p>
         <p>@messages("suitability.beforeYouContinue.taxable.p4")</p>
 
-        <ul>
+        <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
             <li><a href="@config.whoShouldRegisterUrl" target="_blank">@messages("suitability.beforeYouContinue.taxable.link1")</a></li>
             <li><a href="@config.trustsAndTaxesUrl" target="_blank">@messages("suitability.beforeYouContinue.taxable.link2")</a></li>
         </ul>
 
-        @components.submit_button(Some("suitability.beforeYouContinue.taxable.continue"))
+        @submitButton(Some("suitability.beforeYouContinue.taxable.continue"))
     }
 }

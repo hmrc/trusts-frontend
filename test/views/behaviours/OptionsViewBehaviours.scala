@@ -74,7 +74,7 @@ trait OptionsViewBehaviours extends ViewBehaviours {
 
           for (option <- options) {
             assertContainsRadioButton(doc, option._1.id, "value", option._1.value, isChecked = false)
-            assertRadioButtonContainsHint(doc, option._1.id + ".hint", messages(option._2))
+            if (option._2.nonEmpty) assertRadioButtonContainsHint(doc, option._1.id + "-item-hint", messages(option._2))
           }
         }
       }
@@ -88,11 +88,11 @@ trait OptionsViewBehaviours extends ViewBehaviours {
             val doc = asDocument(applyView(form.bind(Map("value" -> s"${option._1.value}"))))
 
             assertContainsRadioButton(doc, option._1.id, "value", option._1.value, isChecked = true)
-            assertRadioButtonContainsHint(doc, option._1.id + ".hint", messages(option._2))
+            if (option._2.nonEmpty) assertRadioButtonContainsHint(doc, option._1.id + "-item-hint", messages(option._2))
 
             for (unselectedOption <- WhichIdentifier.options.filterNot(o => o == option)) {
               assertContainsRadioButton(doc, unselectedOption._1.id, "value", unselectedOption._1.value, isChecked = false)
-              assertRadioButtonContainsHint(doc, unselectedOption._1.id + ".hint", messages(unselectedOption._2))
+              if (unselectedOption._2.nonEmpty) assertRadioButtonContainsHint(doc, unselectedOption._1.id + "-item-hint", messages(unselectedOption._2))
             }
           }
         }

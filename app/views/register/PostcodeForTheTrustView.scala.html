@@ -15,32 +15,35 @@
  *@
 
 @import controllers.register.routes._
+@import views.html.components.{ErrorSummary, InputText, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    inputText: InputText,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("postcodeForTheTrust.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("postcodeForTheTrust.title")}",
+    showBackLink = true
     ) {
 
     @formHelper(action = PostcodeForTheTrustController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
-
-        @components.input_text(
+        @inputText(
           field = form("value"),
           label = messages("postcodeForTheTrust.heading"),
           labelAsHeading = true,
           hint = Some(messages(s"postcodeForTheTrust.hint")),
-          labelClass = Some("heading-large")
+          labelClass = Some("govuk-label--l")
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

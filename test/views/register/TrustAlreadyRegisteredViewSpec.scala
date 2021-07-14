@@ -36,10 +36,10 @@ class TrustAlreadyRegisteredViewSpec extends ViewBehaviours {
 
       behave like pageWithSubHeading(applyView, s"This trust’s UTR: $fakeUtr")
 
-      behave like normalPage(
+      behave like normalPageTitleWithCaption(
         applyView,
-        None,
         "trustAlreadyRegistered",
+        fakeUtr,
         "agent.p1", "agent.p1.link"
       )
 
@@ -52,11 +52,15 @@ class TrustAlreadyRegisteredViewSpec extends ViewBehaviours {
 
       behave like pageWithSubHeading(applyView, s"This trust’s UTR: $fakeUtr")
 
-      behave like normalPage(
+      behave like normalPageTitleWithCaption(
         applyView,
-        None,
         "trustAlreadyRegistered",
-        "p1", "bullet1", "bullet2", "p2", "p2.link"
+        fakeUtr,
+        "p1",
+        "bullet1",
+        "bullet2",
+        "p2",
+        "p2.link"
       )
 
       behave like pageWithASubmitButton(applyView)

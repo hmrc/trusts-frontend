@@ -15,36 +15,39 @@
  *@
 
 @import controllers.register.suitability.routes._
+@import views.html.components.{ErrorSummary, Heading, InputYesNo, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    heading: Heading,
+    inputYesNo: InputYesNo,
+    submitButton: SubmitButton
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@content = {
-    <p>@messages("suitability.expressTrust.p1")</p>
-}
-
-@main_template(
-    title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = ExpressTrustYesNoController.onSubmit(), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors, isYesNo = true)
 
-        @components.error_summary(form.errors)
+        @heading(messages("suitability.expressTrust.heading"))
 
-        @components.input_yes_no(
+        <p>@messages("suitability.expressTrust.p1")</p>
+
+        @inputYesNo(
             field = form("value"),
             label = messages("suitability.expressTrust.heading"),
-            legendClass = Some("heading-large"),
-            legendAsHeading = true,
-            additionalContent = Some(content)
+            legendAsHeading = false,
+            legendClass = Some("govuk-visually-hidden")
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

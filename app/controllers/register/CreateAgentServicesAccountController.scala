@@ -16,6 +16,8 @@
 
 package controllers.register
 
+import config.FrontendAppConfig
+
 import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -24,10 +26,15 @@ import views.html.register.CreateAgentServicesAccountView
 
 class CreateAgentServicesAccountController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
+                                        config: FrontendAppConfig,
                                         view: CreateAgentServicesAccountView
                                       ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = Action { implicit request =>
     Ok(view())
+  }
+
+  def onSubmit: Action[AnyContent] = Action { _ =>
+    Redirect(config.agentServiceRegistrationUrl)
   }
 }

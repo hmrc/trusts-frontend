@@ -15,30 +15,33 @@
  *@
 
 @import controllers.register.agents.routes._
+@import views.html.components.{ErrorSummary, InputYesNo, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
-    formHelper: FormWithCSRF
+    mainTemplate: MainTemplate,
+    formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    inputYesNo: InputYesNo,
+    submitButton: SubmitButton,
 )
 
 @(form: Form[_], draftId: String, crn: String)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("removeDraftYesNo.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("removeDraftYesNo.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = RemoveDraftYesNoController.onSubmit(draftId), 'autoComplete -> "off") {
 
-        @components.back_link()
+        @errorSummary(form.errors, isYesNo = true)
 
-        @components.error_summary(form.errors)
-
-        @components.input_yes_no(
+        @inputYesNo(
             field = form("value"),
             label = messages("removeDraftYesNo.heading", crn),
             legendAsHeading = true
         )
 
-        @components.submit_button()
+        @submitButton()
     }
 }

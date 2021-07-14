@@ -31,12 +31,12 @@ trait TaskListViewBehaviours extends ViewSpecBase {
 
         "contain a heading" in {
           val doc = asDocument(view)
-          assertRenderedById(doc, "task-list--heading")
+          assertContainsMessages(doc, "taskList.sections.heading")
         }
 
         "contain an additional heading" in {
           val doc = asDocument(view)
-          assertRenderedById(doc, "task-list-additional--heading")
+          assertContainsMessages(doc, "taskList.additionalSections.heading")
         }
 
         expectedSections.foreach {

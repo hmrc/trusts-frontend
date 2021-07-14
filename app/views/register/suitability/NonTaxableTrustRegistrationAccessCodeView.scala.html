@@ -16,26 +16,33 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.suitability.routes._
+@import views.html.components.{ErrorSummary, HeadingWithCaption, Warning, Locked, InputText, BulletList, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
     formHelper: FormWithCSRF,
+    errorSummary: ErrorSummary,
+    headingWithCaption: HeadingWithCaption,
+    warning: Warning,
+    locked: Locked,
+    inputText: InputText,
+    bulletList: BulletList,
+    submitButton: SubmitButton,
     config: FrontendAppConfig
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = s"${errorPrefix(form)}${messages("nonTaxableTrustRegistrationAccessCode.title")}"
+@mainTemplate(
+    title = s"${errorPrefix(form)}${messages("nonTaxableTrustRegistrationAccessCode.title")}",
+    showBackLink = true
 ) {
 
     @formHelper(action = NonTaxableTrustRegistrationAccessCodeController.onSubmit(), 'autoComplete -> "on") {
 
-        @components.back_link()
+        @errorSummary(form.errors)
 
-        @components.error_summary(form.errors)
-
-        @components.heading_with_caption(headingKey = "nonTaxableTrustRegistrationAccessCode.heading", caption = "nonTaxableTrustRegistrationAccessCode.caption")
+        @headingWithCaption(messagePrefix = "nonTaxableTrustRegistrationAccessCode")
 
         <p>@messages("nonTaxableTrustRegistrationAccessCode.p1")</p>
 
@@ -53,22 +60,22 @@
 
         <p>@messages("nonTaxableTrustRegistrationAccessCode.p5")</p>
 
-        @components.warning("nonTaxableTrustRegistrationAccessCode")
+        @warning("nonTaxableTrustRegistrationAccessCode")
 
         <h2>@messages("nonTaxableTrustRegistrationAccessCode.subHeading2")</h2>
 
         <p>@messages("nonTaxableTrustRegistrationAccessCode.p6")</p>
 
-        <div class="panel-indent">
+        <div class="govuk-inset-text">
 
-            @components.locked("nonTaxableTrustRegistrationAccessCode")
+            @locked("nonTaxableTrustRegistrationAccessCode")
 
-            @components.input_text(
+            @inputText(
                 field = form("value"),
                 label = messages("nonTaxableTrustRegistrationAccessCode.locked"),
-                labelClass = Some("visually-hidden"),
+                labelClass = Some("govuk-visually-hidden"),
                 hint = Some(messages("nonTaxableTrustRegistrationAccessCode.hint")),
-                inputClass = Some("form-control-1-2")
+                inputClass = Some("govuk-!-width-one-half")
             )
 
         </div>
@@ -86,7 +93,7 @@
                 </a>
                 @messages("nonTaxableTrustRegistrationAccessCode.no-access.p2")
             </p>
-            @components.bullet_list("nonTaxableTrustRegistrationAccessCode.no-access",
+            @bulletList("nonTaxableTrustRegistrationAccessCode.no-access",
                 List(
                     "bulletpoint1",
                     "bulletpoint2",
@@ -96,6 +103,6 @@
             </div>
         </details>
 
-        @components.submit_button(Some("site.continue"))
+        @submitButton(Some("site.continue"))
     }
 }

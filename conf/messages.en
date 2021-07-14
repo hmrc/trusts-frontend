@@ -52,7 +52,7 @@ site.hidden-edit = Change {0}
 site.no = No
 site.yes = Yes
 site.save.continue = Save and continue
-site.service_name = Register and Maintain a Trust
+service.name = Register and Maintain a Trust
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed
@@ -144,7 +144,12 @@ trustPreviouslyResident.checkYourAnswersLabel = In what country was the trust pr
 nonresidentType.checkYourAnswersLabel = What is the non-resident type?
 inheritanceTaxActYesNo.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
 agentOtherThanBarristerYesNo.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
+whenTrustSetupDate.checkYourAnswersLabel = When was the trust created?
+
+#Todo: Remove below 28 days after deployment
 whenTrustSetup.checkYourAnswersLabel = When was the trust created?
+#Todo: Remove above 28 days after deployment
+
 trustHasBusinessRelationshipInUkYesNo.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
 trustListedOnEeaRegisterYesNo.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLandYesNo.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
@@ -236,7 +241,7 @@ failedMatch.contactLink =  contact the trusts helpline
 
 trustAlreadyRegistered.title = This trust has already been registered
 trustAlreadyRegistered.heading = This trust has already been registered
-trustAlreadyRegistered.subHeading = This trust’s UTR: {0}
+trustAlreadyRegistered.caption = This trust’s UTR: {0}
 trustAlreadyRegistered.continue = Register another trust
 trustAlreadyRegistered.agent.p1 = You can
 trustAlreadyRegistered.agent.p1.link = return to register and maintain a trust for a client

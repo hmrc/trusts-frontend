@@ -16,29 +16,35 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.routes._
+@import views.html.components.{Heading, Link, SubmitButton}
 
 @this(
-    main_template: MainTemplate,
+    mainTemplate: MainTemplate,
+    heading: Heading,
+    link: Link,
+    formHelper: FormWithCSRF,
+    submitButton: SubmitButton,
     config: FrontendAppConfig
 )
 
 @(isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
-@main_template(
-    title = messages("matchingDown.title")
+@mainTemplate(
+    title = messages("matchingDown.title"),
+    showBackLink = true
 ) {
 
-    @components.back_link()
-
-    @components.heading("matchingDown.heading")
+    @heading("matchingDown.heading")
 
     <p>@messages("matchingDown.p1")</p>
 
     <p>@messages("matchingDown.p2.beforeLink") <a href="@config.helplineUrl" target="_blank">@messages("matchingDown.p2.link")</a> @messages("matchingDown.p2.afterLink")</p>
 
     @if(isAgent) {
-        <p>@messages("matchingDown.p3") @components.link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "matchingDown.p3.link", false).</p>
+        <p>@messages("matchingDown.p3") @link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "matchingDown.p3.link", false).</p>
     }
 
-    @components.sign_out_button()
+    @formHelper(action = MatchingDownController.onSubmit, 'autoComplete -> "off") {
+        @submitButton(overrideMessage = Some(messages("site.sign_out")), id = "sign-out")
+    }
 }

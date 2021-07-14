@@ -48,15 +48,13 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
     }
 
     "assert agent header present for Agent user" in {
-      val wrapper = agentDoc.getElementById("wrapper")
-      val headers = wrapper.getElementsByTag("h2")
+      val headers = agentDoc.getElementsByClass("agentClientRef")
 
       headers.size mustBe 1
     }
 
     "assert agent header not present for Organisation user" in {
-      val wrapper = orgDoc.getElementById("wrapper")
-      val headers = wrapper.getElementsByTag("h2")
+      val headers = orgDoc.getElementsByClass("agentClientRef")
 
       headers.size mustBe 0
     }
