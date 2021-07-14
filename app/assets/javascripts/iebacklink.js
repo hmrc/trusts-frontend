@@ -10,6 +10,10 @@ $(document).ready(function() {
     }
     $('#back-link').on('click', function(e){
         e.preventDefault();
-        window.history.back();
+        if (window.location.href.indexOf("main-content") !== -1) {
+            window.history.go(-2);
+        } else {
+            window.history.back();
+        }
     });
 });
