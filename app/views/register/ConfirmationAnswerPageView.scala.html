@@ -57,11 +57,11 @@
     <div class="two-column-answers">
         @for(answerSection <- answerSections){
             @answerSection.sectionKey.map{ sk =>
-                <h2>@messages(sk)</h2>
+                <h2 class="govuk-heading-l">@messages(sk)</h2>
             }
 
             @answerSection.headingKey.map{ hk =>
-                <h3>@messages(hk)</h3>
+                <h3 class="govuk-heading-m">@messages(hk)</h3>
             }
 
             @govukSummaryList(SummaryList(rows = formatAnswerSection(answerSection)))
