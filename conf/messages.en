@@ -537,11 +537,20 @@ confirmation.existing.agent.bullet2.p4 = You can
 confirmation.existing.agent.bullet2.p4.a = return to register and maintain a trust for a client
 confirmation.existing.agent.warning = You only need to declare the trust is up to date every year if there is a tax liability.
 
-confirmation.nonTaxable.individual.subheading1 = What happens next
-confirmation.nonTaxable.individual.p1 = The Unique Reference Number for the trust has been linked to this Government Gateway account. You can return to this service using the same Government Gateway account used to register the trust, to update the trust details.
-confirmation.nonTaxable.individual.subheading2 = Managing the trust
-confirmation.nonTaxable.individual.p2 = This trust does not need to make an annual declaration, or submit an annual tax return. However, you need to keep the details of the trust up to date. You also need to let us know if the trust becomes liable for tax.
-confirmation.nonTaxable.individual.p3 = If you need any help with the service
+confirmation.nonTaxable.individual.p1 = Keep a note of this reference in case you need to contact HMRC. This is a reference number for this declaration, and will not be used to identify the trust.
+confirmation.nonTaxable.individual.subheading1 = The reference number for the trust
+confirmation.nonTaxable.individual.p2 = The Unique Reference Number (URN) for the trust has been linked to this Government Gateway account.
+confirmation.nonTaxable.individual.p3 = The URN is a permanent reference number, and its how HMRC will identify this trust.
+confirmation.nonTaxable.individual.p4 = A URN has 15 letters and numbers, for example ABTRUST71234567
+confirmation.nonTaxable.individual.p5 = You can return to this service using the same Government Gateway account used to register the trust.
+confirmation.nonTaxable.individual.subheading2 = How to get the trust's URN
+confirmation.nonTaxable.individual.p6 = To view the trust's URN you need to sign out of the service, then sign back in using the Government Gateway account used to register the trust.
+confirmation.nonTaxable.individual.p7 = When you return to the service, you can:
+confirmation.nonTaxable.individual.p8 = view the trust's URN
+confirmation.nonTaxable.individual.p9 = update the trust details
+confirmation.nonTaxable.individual.subheading3 = Managing the trust
+confirmation.nonTaxable.individual.p10 = This trust does not need to make an annual declaration, or submit an annual tax return. However, you need to keep the details of the trust up to date. You also need to let us know if the trust becomes liable for tax.
+confirmation.nonTaxable.individual.p11 = If you need any help with the service
 confirmation.nonTaxable.individual.link1 = contact the trusts helpline (opens in a new window or tab)
 confirmation.nonTaxable.individual.warning = You only need to declare the trust is up to date every year if there is a tax liability.
 
