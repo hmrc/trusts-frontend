@@ -15,9 +15,9 @@
  *@
 
 @import controllers.register.routes._
-@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
+@import viewmodels.AnswerSection
 @import utils.AccessibilityHelper._
-@import utils.SectionFormatter.formatSections
+@import utils.SectionFormatter.formatAnswerSection
 @import views.html.components.{Heading, Button, Warning, ReturnToTop}
 
 @this(
@@ -30,7 +30,7 @@
     govukSummaryList: GovukSummaryList
 )
 
-@(answerSections: Seq[Section], trn: String, declarationSent: String, isTaxable: Boolean)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[AnswerSection], trn: String, declarationSent: String, isTaxable: Boolean)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
     title = messages("confirmationAnswerPage.title"),
@@ -55,7 +55,17 @@
     </div>
 
     <div class="two-column-answers">
-        @govukSummaryList(SummaryList(rows = formatSections(answerSections)))
+        @for(answerSection <- answerSections){
+            @answerSection.sectionKey.map{ sk =>
+                <h2>@messages(sk)</h2>
+            }
+
+            @answerSection.headingKey.map{ hk =>
+                <h3>@messages(hk)</h3>
+            }
+
+            @govukSummaryList(SummaryList(rows = formatAnswerSection(answerSection)))
+        }
     </div>
 
     @returnToTop()

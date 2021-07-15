@@ -15,9 +15,9 @@
  *@
 
 @import controllers.register.routes._
-@import viewmodels.{AnswerSection, RepeaterAnswerSection, Section}
+@import viewmodels.AnswerSection
 @import views.html.components.{Heading, Button, ReturnToTop}
-@import utils.SectionFormatter.formatSections
+@import utils.SectionFormatter.formatAnswerSection
 
 @this(
     mainTemplate: MainTemplate,
@@ -28,12 +28,12 @@
     heading: Heading
 )
 
-@(answerSections: Seq[Section], isAgent: Boolean, agentClientRef: String)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[AnswerSection], isAgent: Boolean, agentClientRef: String)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
     title = messages("summaryAnswerPage.title"),
     showBackLink = true
-    ) {
+) {
 
     @heading("summaryAnswerPage.heading", headingSize = "govuk-heading-xl")
 
@@ -46,11 +46,21 @@
     <p>@messages("summaryAnswerPage.paragraph2")</p>
 
     <div class="section">
-    <p>@button(messageKey = "site.print-or-save", isPrintButton = true)</p>
+        <p>@button(messageKey = "site.print-or-save", isPrintButton = true)</p>
     </div>
 
     <div class="two-column-answers">
-        @govukSummaryList(SummaryList(rows = formatSections(answerSections)))
+        @for(answerSection <- answerSections){
+            @answerSection.sectionKey.map{ sk =>
+                <h2>@messages(sk)</h2>
+            }
+
+            @answerSection.headingKey.map{ hk =>
+                <h3>@messages(hk)</h3>
+            }
+
+            @govukSummaryList(SummaryList(rows = formatAnswerSection(answerSection)))
+        }
     </div>
 
     @returnToTop()
