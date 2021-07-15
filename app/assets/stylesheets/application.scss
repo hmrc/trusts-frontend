@@ -43,6 +43,10 @@ h2 {
   @extend .govuk-heading-m;
 }
 
+h3 {
+  @extend .govuk-heading-s;
+}
+
 .agentClientRef, .declarationReferenceNumber {font-weight:700;}
 
 .app-task-list__items {

@@ -35,13 +35,16 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
                                environment: Environment) {
 
   private val languages = Seq(ENGLISH, WELSH)
+  private val lineBreak = "<br />"
 
   def reverseEngineerAnswer(answer: String)(implicit messages: Messages): String = {
-    parseAsYesOrNo(answer) orElse
-      parseAsDate(answer) orElse
-      parseAsEnumerable(answer) orElse
-      parseAsCountry(answer) getOrElse
-      answer
+    answer.split(lineBreak).map(line =>
+      parseAsYesOrNo(line) orElse
+        parseAsDate(line) orElse
+        parseAsEnumerable(line) orElse
+        parseAsCountry(line) getOrElse
+        line
+    ).mkString(lineBreak)
   }
 
   def reverseEngineerArg(arg: String)(implicit messages: Messages): String = {
