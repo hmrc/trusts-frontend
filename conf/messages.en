@@ -185,9 +185,9 @@ refSentByPost.paragraph4 = If the trust does not need to pay tax, your unique id
 refSentByPost.bullet2 = A URN has 15 numbers and characters, for example ABTRUST12345678
 refSentByPost.subheading3 = Next steps
 refSentByPost.paragraph5 = Once you have the unique identifier for the trust, you can come back to this service to
-refSentByPost.paragraph5.link = register and maintain a trust.
+refSentByPost.paragraph5.link = register and maintain a trust
 refSentByPost.paragraph6 = If you do not have the URN or the UTR has not arrived by post,
-refSentByPost.paragraph6.link = contact the trusts helpline (opens in a new window or tab).
+refSentByPost.paragraph6.link = contact the trusts helpline (opens in a new window or tab)
 
 refSentByPost.agent.title = The trust’s unique identifier has been sent by post
 refSentByPost.agent.heading = The trust’s unique identifier has been sent by post
@@ -197,9 +197,9 @@ refSentByPost.agent.bullet1 = a Unique Taxpayer Reference (UTR) which is ten num
 refSentByPost.agent.bullet2 = a Unique Reference Number (URN) which has 15 numbers and characters, for example ABTRUST12345678
 refSentByPost.agent.paragraph3 = It can take 15 working days for the unique identifier to arrive. For addresses outside the UK it can take 21 working days.
 refSentByPost.agent.paragraph4 = If the unique identifier has not arrived after this time,
-refSentByPost.agent.paragraph4.link = contact the trusts helpline (opens in a new window or tab).
+refSentByPost.agent.paragraph4.link = contact the trusts helpline (opens in a new window or tab)
 refSentByPost.agent.paragraph5 = Once you have the unique identifier, you can come back to this service to
-refSentByPost.agent.paragraph5.link = register and maintain a trust for a client.
+refSentByPost.agent.paragraph5.link = register and maintain a trust for a client
 
 whatIsTheUTR.title = What is the trust’s Unique Taxpayer Reference (UTR)?
 whatIsTheUTR.heading = What is the trust’s Unique Taxpayer Reference (UTR)?
@@ -256,7 +256,7 @@ matchingDown.heading = Sorry, there is a problem with the service
 matchingDown.p1 = Try again later.
 matchingDown.p2.beforeLink = You can
 matchingDown.p2.link = contact the trusts helpline (opens in a new window or tab)
-matchingDown.p2.afterLink = if you need to speak to someone about registering and maintaining a trust.
+matchingDown.p2.afterLink = if you need to speak to someone about registering and maintaining a trust
 matchingDown.p3 = You can
 matchingDown.p3.link = return to register a trust for a client
 
