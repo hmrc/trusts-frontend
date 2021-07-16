@@ -878,3 +878,35 @@ answerPage.section.businessProtector.subheading = Amddiffynnydd sy’n fusnes {0
 
 answerPage.section.otherIndividuals.heading = Unigolion Eraill
 answerPage.section.otherIndividual.subheading = Unigolyn Arall {0}
+
+confirmation.nonTaxable.individual.p1 = Gwnewch nodyn o’r cyfeirnod hwn rhag ofn y bydd angen i chi gysylltu â CThEM. Cyfeirnod ar gyfer y datganiad hwn yw hwn, ac ni chaiff ei ddefnyddio i adnabod yr ymddiriedolaeth.
+confirmation.nonTaxable.individual.subheading1 = Cyfeirnod ar gyfer yr ymddiriedolaeth
+confirmation.nonTaxable.individual.p2 = Bydd Cyfeirnod Unigryw (URN) ar gyfer yr ymddiriedolaeth yn gysylltiedig â’r cyfrif Porth y Llywodraeth hwn.
+confirmation.nonTaxable.individual.p3 = Mae’r URN yn gyfeirnod parhaol, a dyma sut y bydd CThEM yn adnabod yr ymddiriedolaeth hon.
+confirmation.nonTaxable.individual.p4 = Mae gan URN 15 llythyren a rhifau, er enghraifft ABTRUST71234567
+confirmation.nonTaxable.individual.p5 = Gallwch ddychwelyd i’r gwasanaeth hwn gan ddefnyddio’r un cyfrif Porth y Llywodraeth a ddefnyddir i gofrestru’r ymddiriedolaeth.
+confirmation.nonTaxable.individual.subheading2 = Sut i gael URN yr ymddiriedolaeth
+confirmation.nonTaxable.individual.p6 = I fwrw golwg dros URN yr ymddiriedolaeth mae angen i chi allgofnodi o’r gwasanaeth, yna mewngofnodwch eto drwy ddefnyddio cyfrif Porth y Llywodraeth a ddefnyddir i gofrestru’r ymddiriedolaeth.
+confirmation.nonTaxable.individual.p7 = Pan fyddwch yn dychwelyd i’r gwasanaeth, gallwch wneud y canlynol:
+confirmation.nonTaxable.individual.p8 = bwrw golwg dros URN yr ymddiriedolaeth
+confirmation.nonTaxable.individual.p9 = diweddaru manylion yr ymddiriedolaeth
+confirmation.nonTaxable.individual.subheading3 = Rheoli’r ymddiriedolaeth
+confirmation.nonTaxable.individual.p10 = Nid oes angen i’r ymddiriedolaeth hon wneud datganiad blynyddol na chyflwyno Ffurflen Dreth flynyddol. Fodd bynnag, mae angen i chi wneud yn siŵr bod manylon yr ymddiriedolaeth yn gyfredol. Mae hefyd angen i chi roi gwybod i ni pe bai’r ymddiriedolaeth yn dod yn agored i dreth.
+confirmation.nonTaxable.individual.p11 = Os oes angen help arnoch gyda’r gwasanaeth,
+confirmation.nonTaxable.individual.link1 = cysylltwch â’r llinell gymorth ar gyfer ymddiriedolaethau
+
+confirmation.nonTaxable.agent.p1 = Cadwch nodyn o’r cyfeirnod hwn rhag ofn y bydd angen i chi gysylltu â CThEM. Cyfeirnod ar gyfer y datganiad hwn yw hwn, ac ni chaiff ei ddefnyddio i adnabod yr ymddiriedolaeth.
+confirmation.nonTaxable.agent.subheading1 = Cyfeirnod ar gyfer yr ymddiriedolaeth
+confirmation.nonTaxable.agent.p2 = Byddwn yn anfon Cyfeirnod Unigryw (URN) yr ymddiriedolaeth at {0} drwy’r post.
+confirmation.nonTaxable.agent.p3 = Mae gan URN 15 rhif a chymeriad, er enghraifft ABTRUST71234567
+confirmation.nonTaxable.agent.p4 = Gall gymryd hyd at 15 diwrnod gwaith i’r URN gyrraedd. Gall gymryd 21 diwrnod gwaith ar gyfer cyfeiriadau y tu allan i’r DU.
+confirmation.nonTaxable.agent.p5 = Os nad yw’r URN wedi cyrraedd ar ôl yr amser hwn,
+confirmation.nonTaxable.agent.link1 = cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg CThEM
+confirmation.nonTaxable.agent.subheading2 = Yr hyn y mae angen i chi ei wneud
+confirmation.nonTaxable.agent.p6 = Unwaith bod yr URN yn cyrraedd, bydd angen i {0} eich awdurdodi i reoli’r ymddiriedolaeth ar-lein.
+confirmation.nonTaxable.agent.p7 = Mae angen i chi anfon y cysylltiad awdurdodi at {0}. Gallwch greu cysylltiad awdurdodi drwy’r Gwasanaethau Asiant.
+confirmation.nonTaxable.agent.p8 = Yna, bydd angen i {0} fewngofnodi gyda’r un cyfrif Porth y Llywodraeth a ddefnyddiodd i hawlio’r ymddiriedolaeth, er mwyn cymeradwyo’ch cais am awdurdodiad.
+confirmation.nonTaxable.agent.subheading3 = Rheoli’r ymddiriedolaeth
+confirmation.nonTaxable.agent.p9 = Nid oes angen i’r ymddiriedolaeth hon wneud datganiad blynyddol na chyflwyno Ffurflen Dreth flynyddol. Fodd bynnag, mae angen i chi wneud yn siŵr bod manylon yr ymddiriedolaeth yn gyfredol. Mae hefyd angen i chi roi gwybod i ni pe bai’r ymddiriedolaeth yn dod yn agored i dreth.
+confirmation.nonTaxable.agent.p10 = Os oes angen help arnoch gyda’r gwasanaeth,
+confirmation.nonTaxable.agent.link2 = cysylltwch â’r llinell gymorth ar gyfer ymddiriedolaethau
