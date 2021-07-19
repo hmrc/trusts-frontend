@@ -17,8 +17,9 @@
 package models
 
 import base.RegistrationSpecBase
-import models.RegistrationSubmission.AllStatus
+import models.RegistrationSubmission.{AllStatus, AnswerRow}
 import models.registration.pages.Status._
+import play.api.libs.json.Json
 
 class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
@@ -93,6 +94,100 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
           )
 
           allStatus.allComplete(showTaxLiability = true) mustBe false
+        }
+      }
+    }
+
+    "AnswerRow" must {
+      "read json" when {
+
+        "old shape" when {
+
+          "labelArg empty" in {
+
+            val json = Json.parse(
+              """
+                |{
+                |  "label": "Label",
+                |  "answer": "Answer",
+                |  "labelArg": ""
+                |}
+                |""".stripMargin)
+
+            val result = json.as[AnswerRow]
+
+            result mustEqual AnswerRow(
+              label = "Label",
+              answer = "Answer",
+              labelArgs = Nil
+            )
+          }
+
+          "labelArg not empty" in {
+
+            val json = Json.parse(
+              """
+                |{
+                |  "label": "Label",
+                |  "answer": "Answer",
+                |  "labelArg": "Label Arg"
+                |}
+                |""".stripMargin)
+
+            val result = json.as[AnswerRow]
+
+            result mustEqual AnswerRow(
+              label = "Label",
+              answer = "Answer",
+              labelArgs = Seq("Label Arg")
+            )
+          }
+        }
+
+        "new shape" when {
+
+          "labelArgs empty" in {
+
+            val json = Json.parse(
+              """
+                |{
+                |  "label": "Label",
+                |  "answer": "Answer",
+                |  "labelArgs": []
+                |}
+                |""".stripMargin)
+
+            val result = json.as[AnswerRow]
+
+            result mustEqual AnswerRow(
+              label = "Label",
+              answer = "Answer",
+              labelArgs = Nil
+            )
+          }
+
+          "labelArgs not empty" in {
+
+            val json = Json.parse(
+              """
+                |{
+                |  "label": "Label",
+                |  "answer": "Answer",
+                |  "labelArgs": [
+                |    "Label Arg 1",
+                |    "Label Arg 2"
+                |  ]
+                |}
+                |""".stripMargin)
+
+            val result = json.as[AnswerRow]
+
+            result mustEqual AnswerRow(
+              label = "Label",
+              answer = "Answer",
+              labelArgs = Seq("Label Arg 1", "Label Arg 2")
+            )
+          }
         }
       }
     }

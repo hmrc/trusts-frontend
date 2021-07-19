@@ -20,9 +20,9 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
+import models._
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.registration.pages.Status.{Completed, InProgress}
-import models.{RegistrationSubmission, SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -63,6 +63,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val trustNameUrl = s"$submissionsUrl/$testDraftId/trust-name"
   private val adjustDraftUrl = s"$submissionsUrl/adjust-draft/$testDraftId"
   private val updateTaxLiabilityUrl = s"$submissionsUrl/$testDraftId/update/tax-liability"
+  private val firstTaxYearAvailableUrl = s"$submissionsUrl/$testDraftId/first-tax-year-available"
 
   "SubmissionDraftConnector" - {
 
@@ -163,6 +164,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
         result.data mustBe draftData
       }
+
       "can have list of ids retrieved" in {
 
         val draftIdsResponseJson =
@@ -267,32 +269,32 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
                 headingKey = Some("headingKey1"),
                 headingArgs = Nil,
                 rows = List(
-                  AnswerRow("label1", "answer1", "labelArg1")
+                  AnswerRow("label1", "answer1", Seq("labelArg1"))
                 ),
                 sectionKey = Some("sectionKey1")),
               AnswerSection(
                 headingKey = Some("headingKey2"),
                 headingArgs = Nil,
                 rows = List(
-                  AnswerRow("label2", "answer2", "labelArg2")
+                  AnswerRow("label2", "answer2", Seq("labelArg2"))
                 ),
                 sectionKey = Some("sectionKey2"))
             )
           ),
           trustees = Some(
             List(
-              RegistrationSubmission.AnswerSection(
+              AnswerSection(
                 headingKey = Some("trusteeHeadingKey1"),
                 headingArgs = Nil,
                 rows = List(
-                  RegistrationSubmission.AnswerRow("label1", "answer1", "labelArg1")
+                  AnswerRow("label1", "answer1", Seq("labelArg1"))
                 ),
                 sectionKey = Some("trusteeSectionKey1")),
-              RegistrationSubmission.AnswerSection(
+              AnswerSection(
                 headingKey = Some("trusteeHeadingKey2"),
                 headingArgs = Nil,
                 rows = List(
-                  RegistrationSubmission.AnswerRow("label2", "answer2", "labelArg2")
+                  AnswerRow("label2", "answer2", Seq("labelArg2"))
                 ),
                 sectionKey = Some("trusteeSectionKey2"))
             )
@@ -488,119 +490,158 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         val result = Await.result(connector.getTrustName(testDraftId), Duration.Inf)
         result mustEqual "My Lovely Trust"
       }
+    }
 
-      ".resetTaxLiability" - {
+    ".resetTaxLiability" - {
 
-        "resets tax liability" in {
-
-          server.stubFor(
-            post(urlEqualTo(resetTaxLiabilityUrl))
-              .willReturn(
-                aResponse()
-                  .withStatus(Status.OK)
-              )
-          )
-
-          val result = Await.result(connector.resetTaxLiability(testDraftId), Duration.Inf)
-          result.status mustBe Status.OK
-        }
-
-      }
-
-      ".removeDraft" in {
-
-        val draftId: String = "draftId"
+      "resets tax liability" in {
 
         server.stubFor(
-          delete(urlEqualTo(s"$submissionsUrl/$draftId"))
+          post(urlEqualTo(resetTaxLiabilityUrl))
             .willReturn(
               aResponse()
                 .withStatus(Status.OK)
             )
         )
 
-        val result = Await.result(connector.removeDraft(draftId), Duration.Inf)
+        val result = Await.result(connector.resetTaxLiability(testDraftId), Duration.Inf)
         result.status mustBe Status.OK
       }
 
-      ".adjustDraft" - {
+    }
 
-        def wiremock(expectedStatus: Int): StubMapping =
-          server.stubFor(
-            post(urlEqualTo(adjustDraftUrl))
-              .willReturn(
-                aResponse()
-                  .withStatus(expectedStatus)
-              )
+    ".removeDraft" in {
+
+      val draftId: String = "draftId"
+
+      server.stubFor(
+        delete(urlEqualTo(s"$submissionsUrl/$draftId"))
+          .willReturn(
+            aResponse()
+              .withStatus(Status.OK)
           )
+      )
 
-        "must return Ok" - {
-          "when successful" in {
+      val result = Await.result(connector.removeDraft(draftId), Duration.Inf)
+      result.status mustBe Status.OK
+    }
 
-            wiremock(expectedStatus = Status.OK)
+    ".adjustDraft" - {
 
-            val result = Await.result(connector.adjustDraft(testDraftId), Duration.Inf)
+      def wiremock(expectedStatus: Int): StubMapping =
+        server.stubFor(
+          post(urlEqualTo(adjustDraftUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(expectedStatus)
+            )
+        )
 
-            result.status mustBe Status.OK
-          }
-        }
+      "must return Ok" - {
+        "when successful" in {
 
-        "must return NotFound" - {
-          "when draft not found" in {
+          wiremock(expectedStatus = Status.OK)
 
-            wiremock(expectedStatus = Status.NOT_FOUND)
+          val result = Await.result(connector.adjustDraft(testDraftId), Duration.Inf)
 
-            val result = Await.result(connector.adjustDraft(testDraftId), Duration.Inf)
-
-            result.status mustBe Status.NOT_FOUND
-          }
+          result.status mustBe Status.OK
         }
       }
 
-      ".updateTaxLiability" - {
+      "must return NotFound" - {
+        "when draft not found" in {
 
-        def wiremock(expectedStatus: Int): StubMapping =
-          server.stubFor(
-            post(urlEqualTo(updateTaxLiabilityUrl))
-              .willReturn(
-                aResponse()
-                  .withStatus(expectedStatus)
-              )
-          )
+          wiremock(expectedStatus = Status.NOT_FOUND)
 
-        "must return Ok" - {
-          "when successful" in {
+          val result = Await.result(connector.adjustDraft(testDraftId), Duration.Inf)
 
-            wiremock(expectedStatus = Status.OK)
-
-            val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
-
-            result.status mustBe Status.OK
-          }
-        }
-
-        "must return NotFound" - {
-          "when draft not found" in {
-
-            wiremock(expectedStatus = Status.NOT_FOUND)
-
-            val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
-
-            result.status mustBe Status.NOT_FOUND
-          }
-        }
-
-        "must return InternalServerError" - {
-          "when otherwise unsuccessful" in {
-
-            wiremock(expectedStatus = Status.INTERNAL_SERVER_ERROR)
-
-            val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
-
-            result.status mustBe Status.INTERNAL_SERVER_ERROR
-          }
+          result.status mustBe Status.NOT_FOUND
         }
       }
     }
+
+    ".updateTaxLiability" - {
+
+      def wiremock(expectedStatus: Int): StubMapping =
+        server.stubFor(
+          post(urlEqualTo(updateTaxLiabilityUrl))
+            .willReturn(
+              aResponse()
+                .withStatus(expectedStatus)
+            )
+        )
+
+      "must return Ok" - {
+        "when successful" in {
+
+          wiremock(expectedStatus = Status.OK)
+
+          val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
+
+          result.status mustBe Status.OK
+        }
+      }
+
+      "must return NotFound" - {
+        "when draft not found" in {
+
+          wiremock(expectedStatus = Status.NOT_FOUND)
+
+          val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
+
+          result.status mustBe Status.NOT_FOUND
+        }
+      }
+
+      "must return InternalServerError" - {
+        "when otherwise unsuccessful" in {
+
+          wiremock(expectedStatus = Status.INTERNAL_SERVER_ERROR)
+
+          val result = Await.result(connector.updateTaxLiability(testDraftId), Duration.Inf)
+
+          result.status mustBe Status.INTERNAL_SERVER_ERROR
+        }
+      }
+    }
+
+    ".getFirstTaxYearAvailable" - {
+
+      "return first tax year available" - {
+        "when successful" in {
+
+          val firstTaxYearAvailable = FirstTaxYearAvailable(2, earlierYearsToDeclare = false)
+
+          server.stubFor(
+            get(urlEqualTo(firstTaxYearAvailableUrl))
+              .willReturn(
+                aResponse()
+                  .withStatus(Status.OK)
+                  .withBody(Json.toJson(firstTaxYearAvailable).toString())
+              )
+          )
+
+          val result = Await.result(connector.getFirstTaxYearAvailable(testDraftId), Duration.Inf)
+          result mustBe Some(firstTaxYearAvailable)
+        }
+      }
+
+      "return None" - {
+        "when not found" in {
+
+          server.stubFor(
+            get(urlEqualTo(firstTaxYearAvailableUrl))
+              .willReturn(
+                aResponse()
+                  .withStatus(Status.NOT_FOUND)
+              )
+          )
+
+          val result = Await.result(connector.getFirstTaxYearAvailable(testDraftId), Duration.Inf)
+          result mustBe None
+        }
+      }
+    }
+
   }
 }

@@ -17,6 +17,7 @@
 package repositories
 
 import connector.SubmissionDraftConnector
+import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.{AddressType, LeadTrusteeType}
@@ -33,9 +34,8 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
-                                               submissionDraftConnector: SubmissionDraftConnector,
-                                               answerRowUtils: AnswerRowUtils)
-                                              (implicit ec: ExecutionContext) extends RegistrationsRepository {
+                                               submissionDraftConnector: SubmissionDraftConnector)
+                                              (implicit ec: ExecutionContext, answerRowUtils: AnswerRowUtils) extends RegistrationsRepository {
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
@@ -108,7 +108,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] = {
     submissionDraftConnector.getAnswerSections(draftId)
-      .map(RegistrationAnswerSections.fromAllAnswerSections(_)(answerRowUtils))
+      .map(RegistrationAnswerSections.fromAllAnswerSections(_))
   }
 
   override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
@@ -140,6 +140,10 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     submissionDraftConnector.updateTaxLiability(draftId)
+
+  override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] = {
+    submissionDraftConnector.getFirstTaxYearAvailable(draftId)
+  }
 }
 
 trait RegistrationsRepository {
@@ -173,4 +177,6 @@ trait RegistrationsRepository {
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 
   def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
+
+  def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]]
 }

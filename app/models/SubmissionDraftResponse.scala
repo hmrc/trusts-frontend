@@ -18,7 +18,8 @@ package models
 
 import models.registration.pages.Status
 import models.registration.pages.Status.Completed
-import play.api.libs.json.{JsValue, Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 import java.time.LocalDateTime
 
@@ -41,10 +42,26 @@ object SubmissionDraftId {
 
 object RegistrationSubmission {
   // Answer row and section, for display in print summary.
-  case class AnswerRow(label: String, answer: String, labelArg: String)
+  case class AnswerRow(label: String, answer: String, labelArgs: Seq[String])
 
   object AnswerRow {
-    implicit lazy val format: OFormat[AnswerRow] = Json.format[AnswerRow]
+
+    lazy val labelArgReads: Reads[Seq[String]] =
+      (JsPath \ "labelArg").read[String].map[Seq[String]] {
+        case x if x.isEmpty => Nil
+        case x => x :: Nil
+      } orElse
+        (JsPath \ "labelArgs").readWithDefault[Seq[String]](Nil)
+
+    implicit lazy val reads: Reads[AnswerRow] = (
+      (JsPath \ "label").read[String] and
+        (JsPath \ "answer").read[String] and
+        labelArgReads
+      )(AnswerRow.apply _)
+
+    implicit lazy val writes: Writes[AnswerRow] = Json.writes[AnswerRow]
+
+    implicit lazy val format: Format[AnswerRow] = Format(reads, writes)
   }
 
   case class AnswerSection(headingKey: Option[String],

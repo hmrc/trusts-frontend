@@ -69,11 +69,11 @@ class TaskListController @Inject()(
         for {
           _ <- registrationsRepository.set(updatedAnswers)
           _ <- registrationsRepository.updateTaxLiability(draftId)
-          trustSetUpDate <- registrationsRepository.getTrustSetupDate(draftId)
+          firstTaxYearAvailable <- registrationsRepository.getFirstTaxYearAvailable(draftId)
           isTaxable = updatedAnswers.isTaxable
-          sections <- registrationProgress.items(draftId, trustSetUpDate, isTaxable, isExistingTrust)
+          sections <- registrationProgress.items(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
           additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
-          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, trustSetUpDate, isTaxable, isExistingTrust)
+          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
           is5mldEnabled <- featureFlagService.is5mldEnabled()
         } yield {
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")

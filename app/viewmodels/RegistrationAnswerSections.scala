@@ -33,42 +33,38 @@ case class RegistrationAnswerSections(beneficiaries: Option[List[AnswerSection]]
 object RegistrationAnswerSections {
 
   def fromAllAnswerSections(sections: AllAnswerSections)
-                           (answerRowUtils: AnswerRowUtils)
-                           (implicit messages: Messages): RegistrationAnswerSections = {
+                           (implicit messages: Messages, answerRowUtils: AnswerRowUtils): RegistrationAnswerSections = {
     RegistrationAnswerSections(
-      beneficiaries = convert(sections.beneficiaries)(answerRowUtils),
-      trustees = convert(sections.trustees)(answerRowUtils),
-      protectors = convert(sections.protectors)(answerRowUtils),
-      otherIndividuals = convert(sections.otherIndividuals)(answerRowUtils),
-      trustDetails = convert(sections.trustDetails)(answerRowUtils),
-      settlors = convert(sections.settlors)(answerRowUtils),
-      assets = convert(sections.assets)(answerRowUtils)
+      beneficiaries = convert(sections.beneficiaries),
+      trustees = convert(sections.trustees),
+      protectors = convert(sections.protectors),
+      otherIndividuals = convert(sections.otherIndividuals),
+      trustDetails = convert(sections.trustDetails),
+      settlors = convert(sections.settlors),
+      assets = convert(sections.assets)
     )
   }
 
   private def convert(section: Option[List[RegistrationSubmission.AnswerSection]])
-                     (answerRowUtils: AnswerRowUtils)
-                     (implicit messages: Messages): Option[List[AnswerSection]] = {
+                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): Option[List[AnswerSection]] = {
     section map {
-      _.map(convert(_)(answerRowUtils))
+      _.map(convert(_))
     }
   }
 
   private def convert(section: RegistrationSubmission.AnswerSection)
-                     (answerRowUtils: AnswerRowUtils)
-                     (implicit messages: Messages): AnswerSection = AnswerSection(
-    headingKey = section.headingKey.map(x => messages(x, section.headingArgs: _*)),
-    rows = section.rows.map(convert(_)(answerRowUtils)),
+                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = AnswerSection(
+    headingKey = section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg): _*)),
+    rows = section.rows.map(convert(_)),
     sectionKey = section.sectionKey.map(messages(_))
   )
 
   private def convert(row: RegistrationSubmission.AnswerRow)
-                     (answerRowUtils: AnswerRowUtils)
-                     (implicit messages: Messages): AnswerRow = AnswerRow(
+                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerRow = AnswerRow(
     label = row.label,
     answer = HtmlFormat.raw(answerRowUtils.reverseEngineerAnswer(row.answer)),
     changeUrl = None,
-    labelArg = row.labelArg,
+    labelArgs = row.labelArgs.map(answerRowUtils.reverseEngineerArg),
     canEdit = false
   )
 

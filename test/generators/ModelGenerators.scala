@@ -16,6 +16,7 @@
 
 package generators
 
+import models.FirstTaxYearAvailable
 import models.core.pages._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
@@ -24,7 +25,7 @@ import java.time.LocalDate
 
 trait ModelGenerators {
 
-  implicit lazy val arbitraryFullName : Arbitrary[FullName] = {
+  implicit lazy val arbitraryFullName: Arbitrary[FullName] = {
     Arbitrary {
       for {
         str <- arbitrary[String]
@@ -34,7 +35,7 @@ trait ModelGenerators {
     }
   }
 
-  implicit lazy val arbitraryDeclaration : Arbitrary[Declaration] = {
+  implicit lazy val arbitraryDeclaration: Arbitrary[Declaration] = {
     Arbitrary {
       for {
         str <- arbitrary[String]
@@ -44,9 +45,20 @@ trait ModelGenerators {
     }
   }
 
-  implicit lazy val arbitraryLocalDate : Arbitrary[LocalDate] =
+  implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] =
     Arbitrary {
       Gen.const(LocalDate.of(2010, 10, 10))
     }
+    
+  implicit lazy val arbitraryFirstTaxYearAvailable: Arbitrary[FirstTaxYearAvailable] = {
+    Arbitrary {
+      for {
+        yearsAgo <- arbitrary[Int]
+        earlierYearsToDeclare <- arbitrary[Boolean]
+      } yield {
+        FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)
+      }
+    }
+  }
 
 }

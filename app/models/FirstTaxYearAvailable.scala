@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-    button: GovukButton,
-)
+package models
 
-@(overrideMessage: Option[String] = None, submitClass: Option[String] = None, id: String = "submit")(implicit messages: Messages)
+import play.api.libs.json.{Format, Json}
 
-@button(Button(
-    attributes = Map("id" -> id),
-    preventDoubleClick = true,
-    classes = s"button ${submitClass.getOrElse("")}",
-    content = if(overrideMessage.isEmpty) {
-        Text(messages("site.save.continue"))
-    } else {
-        Text(messages(overrideMessage.get))
-    }
-))
+case class FirstTaxYearAvailable(yearsAgo: Int, earlierYearsToDeclare: Boolean)
+
+object FirstTaxYearAvailable {
+  implicit val format: Format[FirstTaxYearAvailable] = Json.format[FirstTaxYearAvailable]
+}
