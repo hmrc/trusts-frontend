@@ -70,7 +70,15 @@ object RegistrationSubmission {
                            headingArgs: Seq[String])
 
   object AnswerSection {
-    implicit lazy val format: OFormat[AnswerSection] = Json.format[AnswerSection]
+
+    implicit lazy val reads: Reads[AnswerSection] = (
+      (JsPath \ "headingKey").readNullable[String] and
+        (JsPath \ "rows").read[Seq[AnswerRow]] and
+        (JsPath \ "sectionKey").readNullable[String] and
+        (JsPath \ "headingArgs").readWithDefault[Seq[String]](Nil)
+      )(AnswerSection.apply _)
+
+    implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
   }
 
   case class AllStatus(beneficiaries: Option[Status] = None,

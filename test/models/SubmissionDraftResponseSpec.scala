@@ -17,7 +17,7 @@
 package models
 
 import base.RegistrationSpecBase
-import models.RegistrationSubmission.{AllStatus, AnswerRow}
+import models.RegistrationSubmission.{AllStatus, AnswerRow, AnswerSection}
 import models.registration.pages.Status._
 import play.api.libs.json.Json
 
@@ -189,6 +189,35 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             )
           }
         }
+      }
+    }
+
+    "AnswerSection" must {
+      "read headingArgs with default empty list" in {
+
+        val json = Json.parse(
+          """
+            |{
+            |  "headingKey": "Heading Key",
+            |  "rows": [
+            |    {
+            |      "label": "Label",
+            |      "answer": "Answer",
+            |      "labelArgs": []
+            |    }
+            |  ],
+            |  "sectionKey": "Section Key"
+            |}
+            |""".stripMargin)
+
+        val result = json.as[AnswerSection]
+
+        result mustEqual AnswerSection(
+          headingKey = Some("Heading Key"),
+          rows = Seq(AnswerRow("Label", "Answer", Nil)),
+          sectionKey = Some("Section Key"),
+          headingArgs = Nil
+        )
       }
     }
   }
