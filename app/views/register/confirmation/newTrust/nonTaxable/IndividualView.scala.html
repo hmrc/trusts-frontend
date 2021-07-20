@@ -16,11 +16,12 @@
 
 @import config.FrontendAppConfig
 @import controllers.register.routes._
-@import views.html.components.{RegistrationReceived, Link}
+@import views.html.components.{BulletList, RegistrationReceived, Link}
 
 @this(
     mainTemplate: MainTemplate,
     registrationReceived: RegistrationReceived,
+    bulletList: BulletList,
     link: Link,
     config: FrontendAppConfig
 )
@@ -35,14 +36,29 @@
 
     <div class="govuk-inset-text">
         <p>@link(ConfirmationAnswerPageController.onPageLoad(draftId).url, "print-and-save", "confirmation.print.link", openInNewWindow = false)</p>
-        <p>@messages("confirmation.nonTaxable.individual.warning")</p>
     </div>
 
+    <p>@messages("confirmation.nonTaxable.individual.p1")</p>
+
     <h2>@messages("confirmation.nonTaxable.individual.subheading1")</h2>
-        <p>@messages("confirmation.nonTaxable.individual.p1")</p>
+        <p>@messages("confirmation.nonTaxable.individual.p2")</p>
+        <p>@messages("confirmation.nonTaxable.individual.p3")</p>
+        @bulletList(
+            "confirmation.nonTaxable.individual",
+            Seq("p4")
+        )
+    <p>@messages("confirmation.nonTaxable.individual.p5")</p>
 
     <h2>@messages("confirmation.nonTaxable.individual.subheading2")</h2>
-        <p>@messages("confirmation.nonTaxable.individual.p2")</p>
-        <p>@messages("confirmation.nonTaxable.individual.p3") <a href="@{config.helplineUrl}" target="_blank">@messages("confirmation.nonTaxable.individual.link1")</a>.</p>
+        <p>@messages("confirmation.nonTaxable.individual.p6")</p>
+        <p>@messages("confirmation.nonTaxable.individual.p7")</p>
+        @bulletList(
+            "confirmation.nonTaxable.individual",
+            Seq("p8", "p9")
+        )
+
+    <h2>@messages("confirmation.nonTaxable.individual.subheading3")</h2>
+        <p>@messages("confirmation.nonTaxable.individual.p10")</p>
+        <p>@messages("confirmation.nonTaxable.individual.p11") <a href="@{config.helplineUrl}" target="_blank">@messages("confirmation.nonTaxable.individual.link1")</a>.</p>
 
 }

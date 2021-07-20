@@ -43,12 +43,10 @@ class AgentViewSpec extends ViewBehaviours {
       formattedFakeRef,
       fakeName,
       None,
-      "subheading1", "p1", "p2", "p3", "link1",
-      "subheading2", "p4", "p5", "b1", "b2", "p6", "p7",
-      "subheading3", "p8", "p9", "p10", "link2", "p11",
-      "subheading4", "p12", "p13",
-      "subheading5", "p14", "p15", "link3", "p16", "p17",
-      "warning"
+      "p1",
+      "subheading1", "p2", "p3", "p4", "p5",
+      "subheading2", "p6", "p7", "p8",
+      "subheading3", "p9", "p10"
     )
   }
 }
