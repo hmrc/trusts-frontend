@@ -553,7 +553,7 @@ confirmation.nonTaxable.individual.p10 = This trust does not need to make an ann
 confirmation.nonTaxable.individual.p11 = If you need any help with the service
 confirmation.nonTaxable.individual.link1 = contact the trusts helpline (opens in a new window or tab)
 
-confirmation.nonTaxable.agent.p1 = Keep a note of this reference in case you need to contct HMRC. This is a reference number for this declaration, and will not be used to identify the trust.
+confirmation.nonTaxable.agent.p1 = Keep a note of this reference in case you need to contact HMRC. This is a reference number for this declaration, and will not be used to identify the trust.
 confirmation.nonTaxable.agent.subheading1 = The reference number for this trust
 confirmation.nonTaxable.agent.p2 = We will send the trust’s Unique Reference Number (URN) to {0} by post.
 confirmation.nonTaxable.agent.p3 = A URN has 15 letters and numbers, for example ABTRUST71234567
