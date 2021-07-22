@@ -49,6 +49,24 @@ h2 {
   padding-left: 0 !important;
 }
 
+.govuk-lock-text {
+  position: relative;
+  border-radius: 0;
+  margin-bottom: 1rem;
+}
+
+.govuk-lock-text .govuk-lock-text__icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  position: absolute;
+}
+
+.govuk-lock-text .govuk-lock-text__body {
+  display: block;
+  padding: 0 0 0 2rem;
+  font-weight: bold;
+}
+
 @media print {
   .print-hidden, .header-wrapper, .service-info, .report-error  {
     display: none !important;
