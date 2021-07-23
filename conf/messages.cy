@@ -119,14 +119,21 @@ confirmation.nonTaxable.agent.p16 = Mae hefyd angen i chi roi gwybod i ni pe bai
 confirmation.nonTaxable.agent.p17 = Os oes angen unrhyw help arnoch gyda’r gwasanaeth
 confirmation.nonTaxable.agent.warning = Dim ond os oes rhwymedigaeth treth y bydd angen i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn.
 
-
-confirmation.nonTaxable.individual.subheading1 = Yr hyn sy’n digwydd nesaf
-confirmation.nonTaxable.individual.p1 = Mae’r Cyfeirnod Unigryw ar gyfer yr ymddiriedolaeth wedi’i gysylltu â’r cyfrif Porth y Llywodraeth hwn. Gallwch fynd yn ôl i’r gwasanaeth hwn, gan ddefnyddio’r un cyfrif Porth y Llywodraeth a ddefnyddiwyd i gofrestru’r ymddiriedolaeth, er mwyn diweddaru manylion yr ymddiriedolaeth.
-confirmation.nonTaxable.individual.subheading2 = Rheoli’r ymddiriedolaeth
-confirmation.nonTaxable.individual.p2 = Nid oes angen i’r ymddiriedolaeth hon wneud datganiad blynyddol na chyflwyno Ffurflen Dreth flynyddol. Fodd bynnag, mae angen i chi wneud yn siŵr bod manylon yr ymddiriedolaeth yn gyfredol. Mae hefyd angen i chi roi gwybod i ni pe bai’r ymddiriedolaeth yn dod yn agored i dreth.
-confirmation.nonTaxable.individual.p3 = Os oes angen unrhyw help arnoch gyda’r gwasanaeth
+confirmation.nonTaxable.individual.p1 = Gwnewch nodyn o’r cyfeirnod hwn rhag ofn y bydd angen i chi gysylltu â CThEM. Cyfeirnod ar gyfer y datganiad hwn yw hwn, ac ni chaiff ei ddefnyddio i adnabod yr ymddiriedolaeth.
+#confirmation.nonTaxable.individual.subheading1 =
+#confirmation.nonTaxable.individual.p2 =
+confirmation.nonTaxable.individual.p3 = Mae’r URN yn gyfeirnod parhaol, a dyma sut y bydd CThEM yn adnabod yr ymddiriedolaeth hon.
+confirmation.nonTaxable.individual.p4 = Mae gan URN 15 llythyren a rhifau, er enghraifft ABTRUST71234567
+confirmation.nonTaxable.individual.p5 = Gallwch ddychwelyd i’r gwasanaeth hwn gan ddefnyddio’r un cyfrif Porth y Llywodraeth a ddefnyddir i gofrestru’r ymddiriedolaeth.
+confirmation.nonTaxable.individual.subheading2 = Sut i gael URN yr ymddiriedolaeth
+confirmation.nonTaxable.individual.p6 = I fwrw golwg dros URN yr ymddiriedolaeth mae angen i chi allgofnodi o’r gwasanaeth, yna mewngofnodwch eto drwy ddefnyddio cyfrif Porth y Llywodraeth a ddefnyddir i gofrestru’r ymddiriedolaeth.
+confirmation.nonTaxable.individual.p7 = Pan fyddwch yn dychwelyd i’r gwasanaeth, gallwch wneud y canlynol:
+confirmation.nonTaxable.individual.p8 = bwrw golwg dros URN yr ymddiriedolaeth
+confirmation.nonTaxable.individual.p9 = diweddaru manylion yr ymddiriedolaeth
+confirmation.nonTaxable.individual.subheading3 = Rheoli’r ymddiriedolaeth
+confirmation.nonTaxable.individual.p10 = Nid oes angen i’r ymddiriedolaeth hon wneud datganiad blynyddol na chyflwyno Ffurflen Dreth flynyddol. Fodd bynnag, mae angen i chi wneud yn siŵr bod manylon yr ymddiriedolaeth yn gyfredol. Mae hefyd angen i chi roi gwybod i ni pe bai’r ymddiriedolaeth yn dod yn agored i dreth.
+confirmation.nonTaxable.individual.p11 = Os oes angen help arnoch gyda’r gwasanaeth
 confirmation.nonTaxable.individual.link1 = cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg CThEM (yn agor ffenestr neu dab newydd)
-confirmation.nonTaxable.individual.warning = Dim ond os oes rhwymedigaeth treth y bydd angen i chi ddatgan bod yr ymddiriedolaeth yn gyfredol bob blwyddyn.
 
 confirmation.print.link = Argraffu neu gadw copi wedi’i ddatgan o gofrestriad yr ymddiriedolaeth
 confirmation.title = Cofrestriad wedi dod i law
