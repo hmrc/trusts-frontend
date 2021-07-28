@@ -34,19 +34,13 @@ class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
                                              config: FrontendAppConfig)
                                             (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] with Logging {
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
-    val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
-    request match {
-      case req: IdentifierRequest[A] =>
-        logger.debug(s"[Session ID: ${Session.id(hc)}] Request is already an IdentifierRequest")
-        block(req)
-      case _ =>
-        logger.debug(s"[Session ID: ${Session.id(hc)}] Redirect to Login")
-        Future.successful(trustsAuth.redirectToLogin)
-    }
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = request match {
+    case req: IdentifierRequest[A] =>
+      block(req)
+    case _ =>
+      Future.successful(trustsAuth.redirectToLogin)
   }
 
-  override def composeAction[A](action: Action[A]): Action[A] = new AffinityGroupIdentifierAction(action, trustsAuth, config, checkForTrustIdentifier = true)
+  override def composeAction[A](action: Action[A]): Action[A] =
+    new AffinityGroupIdentifierAction(action, trustsAuth, config, checkForTrustIdentifier = true)
 }
