@@ -39,7 +39,16 @@ class FakeIdentifyForRegistration @Inject()(affinityGroup: AffinityGroup, config
 
 }
 
-class FakeAffinityGroupIdentifierAction[A](action: Action[A], trustsAuth: TrustsAuthorisedFunctions, config: FrontendAppConfig) extends AffinityGroupIdentifierAction(action, trustsAuth, config)  {
+class FakeAffinityGroupIdentifierAction[A](
+  action: Action[A],
+  trustsAuth: TrustsAuthorisedFunctions,
+  config: FrontendAppConfig
+  ) extends AffinityGroupIdentifierAction(
+    action,
+    trustsAuth,
+    config,
+    checkForTrustIdentifier = true
+  ) {
   override def apply(request: Request[A]): Future[Result] = {
     action(request)
   }

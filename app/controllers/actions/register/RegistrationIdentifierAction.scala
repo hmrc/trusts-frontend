@@ -48,5 +48,5 @@ class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
     }
   }
 
-  override def composeAction[A](action: Action[A]): Action[A] = new AffinityGroupIdentifierAction(action, trustsAuth, config)
+  override def composeAction[A](action: Action[A]): Action[A] = new AffinityGroupIdentifierAction(action, trustsAuth, config, checkForTrustIdentifier = true)
 }
