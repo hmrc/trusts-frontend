@@ -18,7 +18,7 @@ package pages.register
 
 import models.FirstTaxYearAvailable
 import navigation.registration.TaskListNavigator
-import pages.register.RegistrationProgress.enableTaxLiabilityLink
+import pages.register.RegistrationProgress.taxLiabilityLinkDisplay
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
@@ -44,11 +44,12 @@ class RegistrationProgress @Inject()(
 
         val taxableTasks: List[Task] = if (isTaxable) {
           val assetsTask = Task(Link("assets", Some(navigator.assetsJourneyUrl(draftId))), allStatus.assets)
-          val taxLiabilityTask = if (enableTaxLiabilityLink(firstTaxYearAvailable, isTaxable, isExistingTrust)) {
-            List(Task(Link("taxLiability", Some(navigator.taxLiabilityJourney(draftId))), allStatus.taxLiability))
-          } else {
-            Nil
+
+          val taxLiabilityTask = taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust) match {
+            case HideTask => Nil
+            case x => List(Task(Link("taxLiability", if (x.isEnabled) Some(navigator.taxLiabilityJourney(draftId)) else None), allStatus.taxLiability))
           }
+
           assetsTask +: taxLiabilityTask
         } else {
           Nil
@@ -78,18 +79,18 @@ class RegistrationProgress @Inject()(
   def isTaskListComplete(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
                         (implicit hc: HeaderCarrier): Future[Boolean] = {
     registrationsRepository.getAllStatus(draftId).map { status =>
-      status.allComplete(enableTaxLiabilityLink(firstTaxYearAvailable, isTaxable, isExistingTrust))
+      status.allComplete(taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled)
     }
   }
 
 }
 
 object RegistrationProgress {
-  def enableTaxLiabilityLink(firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean): Boolean = {
+  def taxLiabilityLinkDisplay(firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean): TaskDisplay = {
     if (isTaxable && !isExistingTrust) {
-      firstTaxYearAvailable.fold(false)(_.yearsAgo > 0)
+      if (firstTaxYearAvailable.fold(false)(_.yearsAgo > 0)) EnableTask else DisableTask
     } else {
-      false
+      HideTask
     }
   }
 }

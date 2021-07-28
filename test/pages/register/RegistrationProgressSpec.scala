@@ -24,7 +24,7 @@ import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import uk.gov.hmrc.http.HeaderCarrier
-import viewmodels.{Link, Task}
+import viewmodels._
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -33,7 +33,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   
-  val mockFirstTaxYearAvailable: FirstTaxYearAvailable = FirstTaxYearAvailable(4, earlierYearsToDeclare = false)
+  def mockFirstTaxYearAvailable(yearsAgo: Int = 4): FirstTaxYearAvailable = FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare = false)
 
   "RegistrationProgress" when {
 
@@ -49,7 +49,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
           val result = Await.result(registrationProgress.isTaskListComplete(
             draftId = fakeDraftId,
-            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable),
+            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
             isTaxable = true,
             isExistingTrust = false
           ), Duration.Inf)
@@ -68,7 +68,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
           val result = Await.result(registrationProgress.isTaskListComplete(
             draftId = fakeDraftId,
-            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable),
+            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
             isTaxable = true,
             isExistingTrust = false
           ), Duration.Inf)
@@ -82,29 +82,58 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
       "taxable" when {
 
-        "new trust" must {
-          "render all items" in {
+        "new trust" when {
 
-            when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+          "there is a tax liability" must {
+            "render all items" in {
 
-            val application = applicationBuilder().build()
-            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+              when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
 
-            val result = Await.result(registrationProgress.items(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable),
-              isTaxable = true,
-              isExistingTrust = false
-            ), Duration.Inf)
+              val application = applicationBuilder().build()
+              val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            result mustBe List(
-              Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-              Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-              Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-              Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
-              Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
-              Task(Link("taxLiability", Some(fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId))), None)
-            )
+              val result = Await.result(registrationProgress.items(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = true,
+                isExistingTrust = false
+              ), Duration.Inf)
+
+              result mustBe List(
+                Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
+                Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
+                Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
+                Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
+                Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
+                Task(Link("taxLiability", Some(fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId))), None)
+              )
+            }
+          }
+
+          "there isn't a tax liability" must {
+            "disable tax liability" in {
+
+              when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+
+              val application = applicationBuilder().build()
+              val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+              val result = Await.result(registrationProgress.items(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(yearsAgo = 0)),
+                isTaxable = true,
+                isExistingTrust = false
+              ), Duration.Inf)
+
+              result mustBe List(
+                Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
+                Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
+                Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
+                Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
+                Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
+                Task(Link("taxLiability", None), None)
+              )
+            }
           }
         }
 
@@ -118,7 +147,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
             val result = Await.result(registrationProgress.items(
               draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable),
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
               isTaxable = true,
               isExistingTrust = true
             ), Duration.Inf)
@@ -144,7 +173,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
           val result = Await.result(registrationProgress.items(
             draftId = fakeDraftId,
-            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable),
+            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
             isTaxable = false,
             isExistingTrust = false
           ), Duration.Inf)
@@ -197,68 +226,70 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       }
     }
 
-    ".showTaxLiability" must {
+    ".taxLiabilityLinkDisplay" must {
 
-      "show tax liability" when {
+      "enable tax liability" when {
         "trust is taxable, non-existing, and first tax year is more than 0 years ago" in {
 
           forAll(arbitrary[Int].suchThat(_ > 0), arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare) =>
-            val result = RegistrationProgress.enableTaxLiabilityLink(
+            val result = RegistrationProgress.taxLiabilityLinkDisplay(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
               isTaxable = true,
               isExistingTrust = false
             )
-            result mustBe true
+            result mustBe EnableTask
           }
         }
       }
 
-      "not show tax liability" when {
+      "disable tax liability" when {
+
+        "trust is taxable, non-existing, but first tax year is 0 years ago" in {
+
+          forAll(arbitrary[Boolean]) { earlierYearsToDeclare =>
+            val result = RegistrationProgress.taxLiabilityLinkDisplay(
+              firstTaxYearAvailable = Some(FirstTaxYearAvailable(0, earlierYearsToDeclare)),
+              isTaxable = true,
+              isExistingTrust = false
+            )
+            result mustBe DisableTask
+          }
+        }
+
+        "trust start date not found" in {
+
+          val result = RegistrationProgress.taxLiabilityLinkDisplay(
+            firstTaxYearAvailable = None,
+            isTaxable = true,
+            isExistingTrust = false
+          )
+          result mustBe DisableTask
+        }
+      }
+
+      "hide tax liability" when {
+
         "non-taxable" in {
 
           forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare, isExistingTrust) =>
-            val result = RegistrationProgress.enableTaxLiabilityLink(
+            val result = RegistrationProgress.taxLiabilityLinkDisplay(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
               isTaxable = false,
               isExistingTrust = isExistingTrust
             )
-            result mustBe false
+            result mustBe HideTask
           }
         }
 
         "an existing trust" in {
 
           forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare, isTaxable) =>
-            val result = RegistrationProgress.enableTaxLiabilityLink(
+            val result = RegistrationProgress.taxLiabilityLinkDisplay(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
               isTaxable = isTaxable,
               isExistingTrust = true
             )
-            result mustBe false
-          }
-        }
-
-        "trust is taxable, non-existing, but first tax year is 0 years ago" in {
-
-          forAll(arbitrary[Boolean]) { earlierYearsToDeclare =>
-            val result = RegistrationProgress.enableTaxLiabilityLink(
-              firstTaxYearAvailable = Some(FirstTaxYearAvailable(0, earlierYearsToDeclare)),
-              isTaxable = true,
-              isExistingTrust = false
-            )
-            result mustBe false
-          }
-        }
-
-        "trust start date not found" in {
-
-          forAll(arbitrary[Boolean], arbitrary[Boolean]) { (isTaxable, isExistingTrust) =>
-            val result = RegistrationProgress.enableTaxLiabilityLink(
-              firstTaxYearAvailable = None,
-              isTaxable = isTaxable,
-              isExistingTrust = isExistingTrust
-            )
-            result mustBe false
+            result mustBe HideTask
           }
         }
       }

@@ -42,7 +42,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(showTaxLiability = true) mustBe true
+          allStatus.allComplete(taxLiabilityEnabled = true) mustBe true
         }
 
         "non-taxable and tax liability empty" in {
@@ -58,7 +58,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(showTaxLiability = false) mustBe true
+          allStatus.allComplete(taxLiabilityEnabled = false) mustBe true
         }
       }
 
@@ -77,7 +77,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(showTaxLiability = true) mustBe false
+          allStatus.allComplete(taxLiabilityEnabled = true) mustBe false
         }
 
         "trust start date before current tax year start date and tax liability incomplete" in {
@@ -93,7 +93,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             assets = Some(Completed)
           )
 
-          allStatus.allComplete(showTaxLiability = true) mustBe false
+          allStatus.allComplete(taxLiabilityEnabled = true) mustBe false
         }
       }
     }
