@@ -30,13 +30,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val savedUntil = "21 April 2021"
 
   private val fakeSections = List(
-    Task(Link("link 1", "url 1"), None),
-    Task(Link("link 2", "url 2"), None)
+    Task(Link("link 1", Some("url 1")), None),
+    Task(Link("link 2", Some("url 2")), None)
   )
 
   private val fakeAdditionalSections = List(
-    Task(Link("additional link 1", "additional url 1"), None),
-    Task(Link("additional link 2", "additional url 2"), None)
+    Task(Link("additional link 1", Some("additional url 1")), None),
+    Task(Link("additional link 2", Some("additional url 2")), None)
   )
 
   private def assertionForSavedUntil(doc: Document, rendered: Boolean): Assertion = {

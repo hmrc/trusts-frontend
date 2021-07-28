@@ -98,12 +98,12 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             ), Duration.Inf)
 
             result mustBe List(
-              Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
-              Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
-              Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
-              Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None),
-              Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
-              Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), None)
+              Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
+              Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
+              Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
+              Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
+              Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
+              Task(Link("taxLiability", Some(fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId))), None)
             )
           }
         }
@@ -124,11 +124,11 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             ), Duration.Inf)
 
             result mustBe List(
-              Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
-              Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
-              Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
-              Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None),
-              Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None)
+              Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
+              Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
+              Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
+              Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
+              Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None)
             )
           }
         }
@@ -150,10 +150,10 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           ), Duration.Inf)
 
           result mustBe List(
-            Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), None),
-            Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), None),
-            Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), None),
-            Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), None)
+            Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
+            Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
+            Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
+            Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None)
           )
         }
       }
@@ -172,8 +172,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = true), Duration.Inf)
 
           result mustBe List(
-            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), None),
-            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), None)
+            Task(Link("protectors", Some(fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId))), None),
+            Task(Link("otherIndividuals", Some(fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId))), None)
           )
         }
       }
@@ -189,9 +189,9 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = false), Duration.Inf)
 
           result mustBe List(
-            Task(Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), None),
-            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), None),
-            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), None)
+            Task(Link("companyOwnershipOrControllingInterest", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
+            Task(Link("protectors", Some(fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId))), None),
+            Task(Link("otherIndividuals", Some(fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId))), None)
           )
         }
       }
@@ -203,7 +203,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "trust is taxable, non-existing, and first tax year is more than 0 years ago" in {
 
           forAll(arbitrary[Int].suchThat(_ > 0), arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare) =>
-            val result = RegistrationProgress.showTaxLiability(
+            val result = RegistrationProgress.enableTaxLiabilityLink(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
               isTaxable = true,
               isExistingTrust = false
@@ -217,7 +217,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "non-taxable" in {
 
           forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare, isExistingTrust) =>
-            val result = RegistrationProgress.showTaxLiability(
+            val result = RegistrationProgress.enableTaxLiabilityLink(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
               isTaxable = false,
               isExistingTrust = isExistingTrust
@@ -229,7 +229,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "an existing trust" in {
 
           forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare, isTaxable) =>
-            val result = RegistrationProgress.showTaxLiability(
+            val result = RegistrationProgress.enableTaxLiabilityLink(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
               isTaxable = isTaxable,
               isExistingTrust = true
@@ -241,7 +241,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "trust is taxable, non-existing, but first tax year is 0 years ago" in {
 
           forAll(arbitrary[Boolean]) { earlierYearsToDeclare =>
-            val result = RegistrationProgress.showTaxLiability(
+            val result = RegistrationProgress.enableTaxLiabilityLink(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(0, earlierYearsToDeclare)),
               isTaxable = true,
               isExistingTrust = false
@@ -253,7 +253,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "trust start date not found" in {
 
           forAll(arbitrary[Boolean], arbitrary[Boolean]) { (isTaxable, isExistingTrust) =>
-            val result = RegistrationProgress.showTaxLiability(
+            val result = RegistrationProgress.enableTaxLiabilityLink(
               firstTaxYearAvailable = None,
               isTaxable = isTaxable,
               isExistingTrust = isExistingTrust

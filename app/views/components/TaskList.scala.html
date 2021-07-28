@@ -18,8 +18,8 @@
 @import viewmodels.Task
 
 @this(
-        taskItem: TaskItem,
-        link: Link
+    taskItem: TaskItem,
+    link: Link
 )
 
 
@@ -28,15 +28,15 @@
 <h2 id="task-list--heading" class="app-task-list__section">@messages("taskList.sections.heading")</h2>
 
 <ul class="app-task-list__items">
-@for(task <- sections){
-    @taskItem(task)
-}
+    @for(task <- sections){
+        @taskItem(task)
+    }
 </ul>
 
 <h2 id="task-list-additional--heading" class="app-task-list__section">@messages("taskList.additionalSections.heading")</h2>
 
 <ul class="app-task-list__items">
-@for(task <- additionalSections){
-    @taskItem(task)
-}
+    @for(task <- additionalSections){
+        @taskItem(task)
+    }
 </ul>

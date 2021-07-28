@@ -18,7 +18,7 @@ package pages.register
 
 import models.FirstTaxYearAvailable
 import navigation.registration.TaskListNavigator
-import pages.register.RegistrationProgress.showTaxLiability
+import pages.register.RegistrationProgress.enableTaxLiabilityLink
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
@@ -36,16 +36,16 @@ class RegistrationProgress @Inject()(
     registrationsRepository.getAllStatus(draftId) map {
       allStatus =>
         val entityTasks: List[Task] = List(
-          Task(Link("trustDetails", navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
-          Task(Link("settlors", navigator.settlorsJourney(draftId)), allStatus.settlors),
-          Task(Link("trustees", navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
-          Task(Link("beneficiaries", navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries)
+          Task(Link("trustDetails", Some(navigator.trustDetailsJourney(draftId))), allStatus.trustDetails),
+          Task(Link("settlors", Some(navigator.settlorsJourney(draftId))), allStatus.settlors),
+          Task(Link("trustees", Some(navigator.trusteesJourneyUrl(draftId))), allStatus.trustees),
+          Task(Link("beneficiaries", Some(navigator.beneficiariesJourneyUrl(draftId))), allStatus.beneficiaries)
         )
 
         val taxableTasks: List[Task] = if (isTaxable) {
-          val assetsTask = Task(Link("assets", navigator.assetsJourneyUrl(draftId)), allStatus.assets)
-          val taxLiabilityTask = if (showTaxLiability(firstTaxYearAvailable, isTaxable, isExistingTrust)) {
-            List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability))
+          val assetsTask = Task(Link("assets", Some(navigator.assetsJourneyUrl(draftId))), allStatus.assets)
+          val taxLiabilityTask = if (enableTaxLiabilityLink(firstTaxYearAvailable, isTaxable, isExistingTrust)) {
+            List(Task(Link("taxLiability", Some(navigator.taxLiabilityJourney(draftId))), allStatus.taxLiability))
           } else {
             Nil
           }
@@ -64,11 +64,11 @@ class RegistrationProgress @Inject()(
         val nonTaxableTask = if (isTaxable) {
           Nil
         } else {
-          List(Task(Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)), allStatus.assets))
+          List(Task(Link("companyOwnershipOrControllingInterest", Some(navigator.assetsJourneyUrl(draftId))), allStatus.assets))
         }
         val entityTasks = List(
-          Task(Link("protectors", navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
-          Task(Link("otherIndividuals", navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
+          Task(Link("protectors", Some(navigator.protectorsJourneyUrl(draftId))), allStatus.protectors),
+          Task(Link("otherIndividuals", Some(navigator.otherIndividualsJourneyUrl(draftId))), allStatus.otherIndividuals)
         )
 
         nonTaxableTask ::: entityTasks
@@ -78,14 +78,14 @@ class RegistrationProgress @Inject()(
   def isTaskListComplete(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
                         (implicit hc: HeaderCarrier): Future[Boolean] = {
     registrationsRepository.getAllStatus(draftId).map { status =>
-      status.allComplete(showTaxLiability(firstTaxYearAvailable, isTaxable, isExistingTrust))
+      status.allComplete(enableTaxLiabilityLink(firstTaxYearAvailable, isTaxable, isExistingTrust))
     }
   }
 
 }
 
 object RegistrationProgress {
-  def showTaxLiability(firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean): Boolean = {
+  def enableTaxLiabilityLink(firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean): Boolean = {
     if (isTaxable && !isExistingTrust) {
       firstTaxYearAvailable.fold(false)(_.yearsAgo > 0)
     } else {
