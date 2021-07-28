@@ -22,25 +22,22 @@ import controllers.actions.{AffinityGroupIdentifierAction, TrustsAuthorisedFunct
 import models.requests.IdentifierRequest
 import play.api.Logging
 import play.api.mvc.{Action, ActionBuilder, AnyContent, BodyParsers, Request, Result}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
 
-class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
+class ConfirmationIdentifierAction @Inject()(val parser: BodyParsers.Default,
                                              trustsAuth: TrustsAuthorisedFunctions,
                                              config: FrontendAppConfig)
                                             (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = request match {
     case req: IdentifierRequest[A] =>
-      block(req)
+        block(req)
     case _ =>
-      Future.successful(trustsAuth.redirectToLogin)
-  }
+        Future.successful(trustsAuth.redirectToLogin)
+    }
 
   override def composeAction[A](action: Action[A]): Action[A] =
-    new AffinityGroupIdentifierAction(action, trustsAuth, config, checkForTrustIdentifier = true)
+    new AffinityGroupIdentifierAction(action, trustsAuth, config, checkForTrustIdentifier = false)
 }

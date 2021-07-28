@@ -34,7 +34,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
                                                  trustsAuthFunctions: TrustsAuthorisedFunctions,
-                                                 config: FrontendAppConfig
+                                                 config: FrontendAppConfig,
+                                                 checkForTrustIdentifier: Boolean
                                                 ) extends Action[A] with Logging {
 
   private def authoriseAgent(request: Request[A],
@@ -84,19 +85,24 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
     val nonTaxEnrolment = "HMRC-TERSNT-ORG"
     val nonTaxIdentifier = "URN"
 
-    val enrolment: Option[Enrolment] = for {
+    lazy val enrolment: Option[Enrolment] = for {
       enrolment <- enrolments.getEnrolment(taxEnrolment).orElse(enrolments.getEnrolment(nonTaxEnrolment))
       id        <- enrolment.getIdentifier(taxIdentifier).orElse(enrolment.getIdentifier(nonTaxIdentifier))
       _         <- if(id.value.nonEmpty) Some(id) else None
     } yield enrolment
 
-    enrolment.fold {
-      logger.info(s"[Session ID: ${Session.id(hc)}] user is not enrolled for Trusts, continuing to register online")
+    if(checkForTrustIdentifier) {
+      enrolment.fold {
+        logger.info(s"[Session ID: ${Session.id(hc)}] user is not enrolled for Trusts, continuing to register online")
+        continueWithoutEnrolment
+      } {
+        x =>
+          logger.info(s"[Session ID: ${Session.id(hc)}] user is already enrolled with ${x.key}, redirecting to maintain")
+          Future.successful(Redirect(config.maintainATrustFrontendUrl))
+      }
+    } else {
+      logger.info(s"[Session ID: ${Session.id(hc)}] not checking for presence of UTR/URN, continuing")
       continueWithoutEnrolment
-    } {
-      x =>
-        logger.info(s"[Session ID: ${Session.id(hc)}] user is already enrolled with ${x.key}, redirecting to maintain")
-        Future.successful(Redirect(config.maintainATrustFrontendUrl))
     }
 
   }

@@ -26,6 +26,7 @@ import queries.Gettable
 import javax.inject.Inject
 
 class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
+                                   identifyConfirmation: ConfirmationIdentifierAction,
                                    getMatchingAndSuitabilityData: MatchingAndSuitabilityDataRetrievalAction,
                                    requireMatchingAndSuitabilityData: MatchingAndSuitabilityDataRequiredAction,
                                    getRegistrationData: DraftIdRetrievalActionProvider,
@@ -35,6 +36,9 @@ class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
 
   def identifiedUserWithRegistrationData(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getRegistrationData(draftId) andThen requireRegistrationData
+
+  def identifyAtConfirmation(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
+    identifyConfirmation andThen getRegistrationData(draftId) andThen requireRegistrationData
 
   def identifiedUserMatchingAndSuitabilityData(): ActionBuilder[MatchingAndSuitabilityDataRequest, AnyContent] =
     identify andThen getMatchingAndSuitabilityData andThen requireMatchingAndSuitabilityData
