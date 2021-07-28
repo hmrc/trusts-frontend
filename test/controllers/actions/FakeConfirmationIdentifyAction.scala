@@ -17,7 +17,7 @@
 package controllers.actions
 
 import config.FrontendAppConfig
-import controllers.actions.register.RegistrationIdentifierAction
+import controllers.actions.register.ConfirmationIdentifierAction
 import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc._
@@ -25,29 +25,30 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeIdentifyForRegistration @Inject()(affinityGroup: AffinityGroup, config: FrontendAppConfig)
+class FakeIdentifyForConfirmation @Inject()(affinityGroup: AffinityGroup,
+                                            config: FrontendAppConfig)
                                            (override val parser: BodyParsers.Default,
                                             trustsAuth: TrustsAuthorisedFunctions,
                                             enrolments: Enrolments = Enrolments(Set.empty[Enrolment]))
                                            (override implicit val executionContext: ExecutionContext)
-  extends RegistrationIdentifierAction(parser, trustsAuth, config) {
+  extends ConfirmationIdentifierAction(parser, trustsAuth, config) {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
     block(IdentifierRequest(request, "id", affinityGroup, enrolments))
 
-  override def composeAction[A](action: Action[A]): Action[A] = new FakeAffinityGroupIdentifierAction(action, trustsAuth, config)
+  override def composeAction[A](action: Action[A]): Action[A] = new FakeActionWithoutIdentityCheck(action, trustsAuth, config)
 
 }
 
-class FakeAffinityGroupIdentifierAction[A](
+class FakeActionWithoutIdentityCheck[A](
   action: Action[A],
   trustsAuth: TrustsAuthorisedFunctions,
   config: FrontendAppConfig
-  )extends AffinityGroupIdentifierAction(
+  ) extends AffinityGroupIdentifierAction(
     action,
     trustsAuth,
     config,
-    checkForTrustIdentifier = true
+    checkForTrustIdentifier = false
   ) {
   override def apply(request: Request[A]): Future[Result] = {
     action(request)

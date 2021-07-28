@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, ConfirmationIdentifierAction}
 import handlers.ErrorHandler
 import models.core.UserAnswers
 import models.core.http.LeadTrusteeType
@@ -35,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmationController @Inject()(
                                         override val messagesApi: MessagesApi,
-                                        identify: RegistrationIdentifierAction,
+                                        identify: ConfirmationIdentifierAction,
                                         getData: DraftIdRetrievalActionProvider,
                                         requireData: RegistrationDataRequiredAction,
                                         val controllerComponents: MessagesControllerComponents,

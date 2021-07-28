@@ -44,7 +44,7 @@ class ConfirmationAnswerPageController @Inject()(
   extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId : String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    actionSet.identifiedUserWithRegistrationData(draftId) andThen registrationComplete
+    actionSet.identifyAtConfirmation(draftId) andThen registrationComplete
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
