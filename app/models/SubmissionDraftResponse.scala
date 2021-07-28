@@ -92,7 +92,7 @@ object RegistrationSubmission {
 
     /**
      *
-     * @param taxLiabilityEnabled - used to determine if the tax liability task needs to be rendered on the task list
+     * @param taxLiabilityEnabled - used to determine if the tax liability task needs to be enabled on the task list
      * @return true if all of the relevant sections have a status of Completed
      */
     def allComplete(taxLiabilityEnabled: Boolean): Boolean =
