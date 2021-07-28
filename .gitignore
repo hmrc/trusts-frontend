@@ -1,4 +1,6 @@
 **/test.json
+.vscode
+project/metals.sbt
 *.bloop/
 *.metals
 .cache
