@@ -92,10 +92,10 @@ object RegistrationSubmission {
 
     /**
      *
-     * @param showTaxLiability - used to determine if the tax liability task needs to be rendered on the task list
+     * @param taxLiabilityEnabled - used to determine if the tax liability task needs to be enabled on the task list
      * @return true if all of the relevant sections have a status of Completed
      */
-    def allComplete(showTaxLiability: Boolean): Boolean =
+    def allComplete(taxLiabilityEnabled: Boolean): Boolean =
       beneficiaries.contains(Completed) &&
         trustees.contains(Completed) &&
         protectors.contains(Completed) &&
@@ -103,7 +103,7 @@ object RegistrationSubmission {
         trustDetails.contains(Completed) &&
         settlors.contains(Completed) &&
         assets.contains(Completed) &&
-        (taxLiability.contains(Completed) || !showTaxLiability)
+        (taxLiability.contains(Completed) || !taxLiabilityEnabled)
   }
 
   object AllStatus {

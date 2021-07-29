@@ -16,4 +16,10 @@
 
 package viewmodels
 
-case class Link(text: String, url: Option[String])
+sealed trait TaskDisplay {
+  def isEnabled: Boolean = this == EnableTask
+}
+
+case object EnableTask extends TaskDisplay
+case object DisableTask extends TaskDisplay
+case object HideTask extends TaskDisplay

@@ -17,7 +17,7 @@
 @import viewmodels.Task
 
 @this(
-        govukTag: GovukTag
+    govukTag: GovukTag
 )
 
 @(task: Task)(implicit messages: Messages)
@@ -25,20 +25,33 @@
 <li class="app-task-list__item" id="task-list__item--@{task.link.text}">
 
     <span class="app-task-link">
-        <a class="app-task-list__task-name"
-           id="task-list__task-link--@{task.link.text}"
-           href="@{task.link.url}"
-           @task.tag.map { t => aria-describedby="task-list__task--@{task.link.text}__tag" }>
+        @task.link.url match {
 
-            @messages(s"taskList.${task.link.text}.label")
-        </a>
+            case Some(url) => {
+                <a class="app-task-list__task-name"
+                   id="task-list__task-link--@{task.link.text}"
+                   href="@url"
+                   @task.tag.map { t => aria-describedby="task-list__task--@{task.link.text}__tag" }>
+                    @messages(s"taskList.${task.link.text}.label")
+                </a>
+            }
+
+            case _ => {
+                <span class="app-task-list__task-name"
+                      id="task-list__task--@{task.link.text}"
+                      @task.tag.map { t => aria-describedby="task-list__task--@{task.link.text}__tag" }>
+                    <span class="govuk-visually-hidden">@messages(s"taskList.${task.link.text}.hidden")</span>
+                    @messages(s"taskList.${task.link.text}.label")
+                </span>
+            }
+        }
     </span>
 
     @task.tag.map { t =>
         @govukTag(Tag(
-        content = Text(messages(s"taskList.${t.toString}")),
-        classes = if(t.toString == "progress") "app-task-list__task-completed govuk-tag--grey" else s"app-task-list__task-completed",
-        attributes = Map("id" -> s"task-list__task--${task.link.text}__tag")
+            content = Text(messages(s"taskList.$t")),
+            classes = if(t.toString == "progress") "app-task-list__task-completed govuk-tag--grey" else "app-task-list__task-completed",
+            attributes = Map("id" -> s"task-list__task--${task.link.text}__tag")
         ))
     }
 </li>

@@ -21,13 +21,9 @@ import config.FrontendAppConfig
 import controllers.actions.{AffinityGroupIdentifierAction, TrustsAuthorisedFunctions}
 import models.requests.IdentifierRequest
 import play.api.Logging
-import play.api.mvc.{Action, ActionBuilder, AnyContent, BodyParsers, Request, Result}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import utils.Session
+import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
-
 
 class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
                                              trustsAuth: TrustsAuthorisedFunctions,
