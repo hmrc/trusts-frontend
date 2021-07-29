@@ -32,7 +32,6 @@
                    id="task-list__task-link--@{task.link.text}"
                    href="@url"
                    @task.tag.map { t => aria-describedby="task-list__task--@{task.link.text}__tag" }>
-
                     @messages(s"taskList.${task.link.text}.label")
                 </a>
             }
@@ -41,6 +40,7 @@
                 <span class="app-task-list__task-name"
                       id="task-list__task--@{task.link.text}"
                       @task.tag.map { t => aria-describedby="task-list__task--@{task.link.text}__tag" }>
+                    <span class="govuk-visually-hidden">@messages(s"taskList.${task.link.text}.hidden")</span>
                     @messages(s"taskList.${task.link.text}.label")
                 </span>
             }
