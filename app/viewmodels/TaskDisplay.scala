@@ -16,7 +16,7 @@
 
 package viewmodels
 
-trait TaskDisplay {
+sealed trait TaskDisplay {
   def isEnabled: Boolean = this == EnableTask
 }
 
