@@ -24,15 +24,13 @@ class WhatIsTheUTRFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("whatIsTheUTR.error.required")
-        .verifying(
-          firstError(
-            maxLength(10, "whatIsTheUTR.error.length"),
-            minLength(10, "whatIsTheUTR.error.length"),
-            regexp(Validation.utrRegex, "whatIsTheUTR.error.invalidCharacters"),
-            isNotEmpty("value", "whatIsTheUTR.error.required")
-          ))
+      "value" -> utr(
+        requiredKey = "whatIsTheUTR.error.required",
+        invalidKey  = "whatIsTheUTR.error.invalidCharacters",
+        lengthKey   = "whatIsTheUTR.error.length"
+      ).verifying(isNotEmpty("value", "whatIsTheUTR.error.required"))
     )
+
 }
 
 
