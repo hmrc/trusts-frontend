@@ -39,9 +39,9 @@
             case _ => {
                 <span class="app-task-list__task-name"
                       id="task-list__task--@{task.link.text}"
-                      @task.tag.map { t => aria-describedby="task-list__task--@{task.link.text}__tag" }>
-                    <span class="govuk-visually-hidden">@messages(s"taskList.${task.link.text}.hidden")</span>
+                      aria-describedby="task-list__task--@{task.link.text}__hidden">
                     @messages(s"taskList.${task.link.text}.label")
+                    <span class="govuk-visually-hidden" id="task-list__task--@{task.link.text}__hidden">@messages(s"taskList.${task.link.text}.hidden")</span>
                 </span>
             }
         }
