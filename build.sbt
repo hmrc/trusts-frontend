@@ -22,7 +22,7 @@ lazy val root = (project in file("."))
   .configs(IntegrationTest)
   .settings(integrationTestSettings(): _*)
   .settings(
-    majorVersion := 0,
+    majorVersion := 1,
     name := appName,
     RoutesKeys.routesImport += "models._",
     TwirlKeys.templateImports ++= Seq(
