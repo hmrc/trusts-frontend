@@ -17,7 +17,7 @@
 package controllers.actions.register
 
 import connector.SubmissionDraftConnector
-import controllers.Assets.OK
+import play.api.http.Status.OK
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import play.api.Logging

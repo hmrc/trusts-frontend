@@ -17,7 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import controllers.Assets.Redirect
+import play.api.mvc.Results.Redirect
 import controllers.register.routes._
 import forms.YesNoFormProvider
 import org.mockito.Matchers.any

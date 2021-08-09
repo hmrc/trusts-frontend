@@ -17,7 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import controllers.Assets.Redirect
+import play.api.mvc.Results.Redirect
 import forms.PostcodeForTheTrustFormProvider
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
