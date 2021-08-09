@@ -17,7 +17,7 @@
 package connector
 
 import config.FrontendAppConfig
-import controllers.Assets.NOT_FOUND
+import play.api.http.Status.NOT_FOUND
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models.core.http.{AddressType, LeadTrusteeType}
 import models.{FirstTaxYearAvailable, SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}

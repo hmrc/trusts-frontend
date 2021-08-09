@@ -16,7 +16,7 @@
 
 package base
 
-import controllers.Assets.OK
+import play.api.http.Status.OK
 import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
 import models.requests.MatchingAndSuitabilityDataRequest

@@ -18,7 +18,7 @@ package services
 
 import com.google.inject.Inject
 import connector.TrustConnector
-import controllers.Assets.Redirect
+import play.api.mvc.Results.Redirect
 import controllers.register.routes._
 import models.core.MatchingAndSuitabilityUserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered

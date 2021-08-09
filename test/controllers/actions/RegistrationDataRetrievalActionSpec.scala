@@ -18,7 +18,7 @@ package controllers.actions
 
 import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
-import controllers.Assets._
+import play.api.http.Status.OK
 import controllers.actions.register.RegistrationDataRetrievalActionImpl
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.{eq => eqTo, _}
