@@ -339,9 +339,9 @@ site.yes = Iawn
 suitability.beforeYouContinue.existing.taxable.continue=Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
 suitability.beforeYouContinue.existing.taxable.h2=Cadarnhau fod yr ymddiriedolaeth wedi’i chofrestru â CThEM ar gyfer Ffurflenni Treth Hunanasesiad
 suitability.beforeYouContinue.existing.taxable.heading=Cyn i chi fynd yn eich blaen
-suitability.beforeYouContinue.existing.taxable.p1=Mae angen i chi gadarnhau fod yr ymddiriedolaeth wedi’i chofrestru â CThEM ar gyfer Ffurflenni Treth Hunanasesiad.
+suitability.beforeYouContinue.existing.taxable.p1=Mae angen i chi gadarnhau â CThEM fod yr ymddiriedolaeth wedi’i chofrestru ar gyfer Ffurflenni Treth Hunanasesiad.
 suitability.beforeYouContinue.existing.taxable.p2=Mae hyn er mwyn i chi allu cofrestru’r ymddiriedolaeth o dan reolau’r Pumed Gyfarwyddeb Gwyngalchu Arian.
-suitability.beforeYouContinue.existing.taxable.p3=Drwy fynd yn eich blaen
+suitability.beforeYouContinue.existing.taxable.p3=Drwy fynd yn eich blaen, rydych yn cadarnhau bod yr ymddiriedolaeth wedi’i chofrestru â CThEM ar gyfer Ffurflenni Treth Hunanasesiad.
 suitability.beforeYouContinue.existing.taxable.title=Cyn i chi fynd yn eich blaen
 
 suitability.beforeYouContinue.nonTaxable.agent.bullet1 = yn cael Cyfeirnod Unigryw (URN) yr ymddiriedolaeth wedi’i anfon ato
