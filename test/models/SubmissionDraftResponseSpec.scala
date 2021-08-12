@@ -18,7 +18,7 @@ package models
 
 import base.RegistrationSpecBase
 import models.RegistrationSubmission.{AllStatus, AnswerRow, AnswerSection}
-import models.registration.pages.Status._
+import models.registration.pages.TagStatus._
 import play.api.libs.json.Json
 
 class SubmissionDraftResponseSpec extends RegistrationSpecBase {

@@ -22,7 +22,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
 import models._
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
-import models.registration.pages.Status.{Completed, InProgress}
+import models.registration.pages.TagStatus.{Completed, InProgress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status

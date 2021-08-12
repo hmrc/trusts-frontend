@@ -16,8 +16,8 @@
 
 package models
 
-import models.registration.pages.Status
-import models.registration.pages.Status.Completed
+import models.registration.pages.TagStatus
+import models.registration.pages.TagStatus.Completed
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -81,14 +81,14 @@ object RegistrationSubmission {
     implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
   }
 
-  case class AllStatus(beneficiaries: Option[Status] = None,
-                       trustees: Option[Status] = None,
-                       taxLiability: Option[Status] = None,
-                       protectors: Option[Status] = None,
-                       otherIndividuals: Option[Status] = None,
-                       trustDetails: Option[Status] = None,
-                       settlors: Option[Status] = None,
-                       assets: Option[Status] = None) {
+  case class AllStatus(beneficiaries: Option[TagStatus] = None,
+                       trustees: Option[TagStatus] = None,
+                       taxLiability: Option[TagStatus] = None,
+                       protectors: Option[TagStatus] = None,
+                       otherIndividuals: Option[TagStatus] = None,
+                       trustDetails: Option[TagStatus] = None,
+                       settlors: Option[TagStatus] = None,
+                       assets: Option[TagStatus] = None) {
 
     /**
      *

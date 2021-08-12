@@ -22,7 +22,7 @@ import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
-import models.registration.pages.Status.Completed
+import models.registration.pages.TagStatus.Completed
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.MustMatchers
