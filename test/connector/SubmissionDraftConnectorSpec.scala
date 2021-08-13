@@ -201,7 +201,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
       "can retrieve status for a draft" in {
 
-        val allStatus = AllStatus(beneficiaries = Some(Completed))
+        val allStatus = AllStatus(beneficiaries = Completed)
         val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allStatus), None)
 
         server.stubFor(
@@ -219,7 +219,7 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
 
       "can set status for a draft" in {
 
-        val status = AllStatus(beneficiaries = Some(Completed), trustees = Some(InProgress))
+        val status = AllStatus(beneficiaries = Completed, trustees = InProgress)
 
         val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
 

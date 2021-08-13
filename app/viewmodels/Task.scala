@@ -18,4 +18,4 @@ package viewmodels
 
 import models.registration.pages.TagStatus
 
-case class Task(link: Link, tag: Option[TagStatus])
+case class Task(link: Link, tag: TagStatus)

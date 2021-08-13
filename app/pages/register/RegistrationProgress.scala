@@ -36,18 +36,18 @@ class RegistrationProgress @Inject()(
     registrationsRepository.getAllStatus(draftId) map {
       allStatus =>
         val entityTasks: List[Task] = List(
-          Task(Link("trustDetails", Some(navigator.trustDetailsJourney(draftId))), allStatus.trustDetails),
-          Task(Link("settlors", Some(navigator.settlorsJourney(draftId))), allStatus.settlors),
-          Task(Link("trustees", Some(navigator.trusteesJourneyUrl(draftId))), allStatus.trustees),
-          Task(Link("beneficiaries", Some(navigator.beneficiariesJourneyUrl(draftId))), allStatus.beneficiaries)
+          Task(Link("trustDetails", navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
+          Task(Link("settlors", navigator.settlorsJourney(draftId)), allStatus.settlors),
+          Task(Link("trustees", navigator.trusteesJourneyUrl(draftId)), allStatus.trustees),
+          Task(Link("beneficiaries", navigator.beneficiariesJourneyUrl(draftId)), allStatus.beneficiaries)
         )
 
         val taxableTasks: List[Task] = if (isTaxable) {
-          val assetsTask = Task(Link("assets", Some(navigator.assetsJourneyUrl(draftId))), allStatus.assets)
+          val assetsTask = Task(Link("assets", navigator.assetsJourneyUrl(draftId)), allStatus.assets)
 
           val taxLiabilityTask = taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust) match {
             case HideTask => Nil
-            case x => List(Task(Link("taxLiability", if (x.isEnabled) Some(navigator.taxLiabilityJourney(draftId)) else None), allStatus.taxLiability))
+            case x => List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability))
           }
 
           assetsTask +: taxLiabilityTask
@@ -65,11 +65,11 @@ class RegistrationProgress @Inject()(
         val nonTaxableTask = if (isTaxable) {
           Nil
         } else {
-          List(Task(Link("companyOwnershipOrControllingInterest", Some(navigator.assetsJourneyUrl(draftId))), allStatus.assets))
+          List(Task(Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)), allStatus.assets))
         }
         val entityTasks = List(
-          Task(Link("protectors", Some(navigator.protectorsJourneyUrl(draftId))), allStatus.protectors),
-          Task(Link("otherIndividuals", Some(navigator.otherIndividualsJourneyUrl(draftId))), allStatus.otherIndividuals)
+          Task(Link("protectors", navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
+          Task(Link("otherIndividuals", navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
         )
 
         nonTaxableTask ::: entityTasks

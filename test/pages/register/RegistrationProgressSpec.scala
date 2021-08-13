@@ -19,6 +19,7 @@ package pages.register
 import base.RegistrationSpecBase
 import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
+import models.registration.pages.TagStatus.{CannotStartYet, NoActionNeeded, NotStarted}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
@@ -100,12 +101,12 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
               ), Duration.Inf)
 
               result mustBe List(
-                Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-                Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-                Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-                Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
-                Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
-                Task(Link("taxLiability", Some(fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId))), None)
+                Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), CannotStartYet)
               )
             }
           }
@@ -126,17 +127,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
               ), Duration.Inf)
 
               result mustBe List(
-                Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-                Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-                Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-                Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
-                Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
-                Task(Link("taxLiability", None), None)
+                Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), NoActionNeeded)
               )
             }
           }
         }
 
+        // TODO - amed this test?
         "existing trust" must {
           "not render tax liability" in {
 
@@ -153,11 +155,11 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             ), Duration.Inf)
 
             result mustBe List(
-              Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-              Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-              Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-              Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
-              Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None)
+              Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted)
             )
           }
         }
@@ -179,10 +181,10 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           ), Duration.Inf)
 
           result mustBe List(
-            Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-            Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-            Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-            Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None)
+            Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted)
           )
         }
       }
@@ -201,8 +203,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = true), Duration.Inf)
 
           result mustBe List(
-            Task(Link("protectors", Some(fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId))), None),
-            Task(Link("otherIndividuals", Some(fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId))), None)
+            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), NotStarted)
           )
         }
       }
@@ -218,9 +220,9 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = false), Duration.Inf)
 
           result mustBe List(
-            Task(Link("companyOwnershipOrControllingInterest", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
-            Task(Link("protectors", Some(fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId))), None),
-            Task(Link("otherIndividuals", Some(fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId))), None)
+            Task(Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), NotStarted)
           )
         }
       }

@@ -17,7 +17,7 @@
 package models
 
 import models.registration.pages.TagStatus
-import models.registration.pages.TagStatus.Completed
+import models.registration.pages.TagStatus.{CannotStartYet, Completed, NotStarted}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -81,14 +81,14 @@ object RegistrationSubmission {
     implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
   }
 
-  case class AllStatus(beneficiaries: Option[TagStatus] = None,
-                       trustees: Option[TagStatus] = None,
-                       taxLiability: Option[TagStatus] = None,
-                       protectors: Option[TagStatus] = None,
-                       otherIndividuals: Option[TagStatus] = None,
-                       trustDetails: Option[TagStatus] = None,
-                       settlors: Option[TagStatus] = None,
-                       assets: Option[TagStatus] = None) {
+  case class AllStatus(beneficiaries: TagStatus = NotStarted,
+                       trustees: TagStatus = NotStarted,
+                       taxLiability: TagStatus = CannotStartYet,
+                       protectors: TagStatus = NotStarted,
+                       otherIndividuals: TagStatus = NotStarted,
+                       trustDetails: TagStatus = NotStarted,
+                       settlors: TagStatus = NotStarted,
+                       assets: TagStatus = NotStarted) {
 
     /**
      *
@@ -96,27 +96,27 @@ object RegistrationSubmission {
      * @return true if all of the relevant sections have a status of Completed
      */
     def allComplete(taxLiabilityEnabled: Boolean): Boolean =
-      beneficiaries.contains(Completed) &&
-        trustees.contains(Completed) &&
-        protectors.contains(Completed) &&
-        otherIndividuals.contains(Completed) &&
-        trustDetails.contains(Completed) &&
-        settlors.contains(Completed) &&
-        assets.contains(Completed) &&
-        (taxLiability.contains(Completed) || !taxLiabilityEnabled)
+      beneficiaries.equals(Completed) &&
+        trustees.equals(Completed) &&
+        protectors.equals(Completed) &&
+        otherIndividuals.equals(Completed) &&
+        trustDetails.equals(Completed) &&
+        settlors.equals(Completed) &&
+        assets.equals(Completed) &&
+        (taxLiability.equals(Completed) || !taxLiabilityEnabled)
   }
 
   object AllStatus {
     implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
     val withAllComplete: AllStatus = AllStatus(
-      beneficiaries = Some(Completed),
-      trustees = Some(Completed),
-      taxLiability = Some(Completed),
-      protectors = Some(Completed),
-      otherIndividuals = Some(Completed),
-      trustDetails = Some(Completed),
-      settlors = Some(Completed),
-      assets = Some(Completed)
+      beneficiaries = Completed,
+      trustees = Completed,
+      taxLiability = Completed,
+      protectors = Completed,
+      otherIndividuals = Completed,
+      trustDetails = Completed,
+      settlors = Completed,
+      assets = Completed
     )
   }
 

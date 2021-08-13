@@ -251,7 +251,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
         val repository = createRepository(mockConnector)
 
-        val allStatus = AllStatus(beneficiaries = Some(Completed))
+        val allStatus = AllStatus(beneficiaries = Completed)
 
         when(mockConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(allStatus))
 

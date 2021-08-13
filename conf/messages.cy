@@ -429,17 +429,21 @@ summaryAnswerPage.paragraph1 = Gallwch gadw’ch cofrestriad a dod yn ôl yn nes
 summaryAnswerPage.paragraph2 = Nid yw hwn yn ddatganiad sy’n cadarnhau bod yr ymddiriedolaeth wedi’i chofrestru. Gallwch argraffu copi wedi’i ddatgan ar ôl i chi wneud datganiad.
 summaryAnswerPage.title = Copi drafft o gofrestriad yr ymddiriedolaeth
 
+taskList.completed = Wedi cwblhau
+taskList.progress = Ar waith
+taskList.not-started = Heb ddechrau
+taskList.cannot-start-yet = Methu dechrau eto
+taskList.no-action-needed = Dim angen gweithredu
+
 taskList.additionalSections.heading = Adrannau ychwanegol i’w cwblhau
 taskList.agent.agentDetails = Manylion yr asiant
 taskList.agent.savedRegistrations = Yn ôl i gofrestriadau sydd wedi’u cadw
 taskList.assets.label = Asedion
 taskList.beneficiaries.label = Buddiolwyr
 taskList.companyOwnershipOrControllingInterest.label=Perchnogaeth y cwmni neu gyfran reolaethol
-taskList.completed = Wedi’i gwblhau
 taskList.heading = Cynnydd cofrestru
 taskList.otherIndividuals.label = Unigolion eraill
 taskList.paragraph1 = Gallwch gadw’ch cofrestriad a dod yn ôl yn nes ymlaen. Mae gennych 28 diwrnod i gwblhau’r cofrestriad hwn o’r tro cyntaf y byddwch yn ei gadw neu bydd eich gwybodaeth yn cael ei dileu.
-taskList.progress = Ar y gweill
 taskList.protectors.label = Amddiffynyddion
 taskList.savedUntil.heading = Cadwyd hyd nes
 taskList.sections.heading = Adrannau i’w cwblhau

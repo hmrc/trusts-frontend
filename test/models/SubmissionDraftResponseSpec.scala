@@ -32,30 +32,30 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
         "all sections completed" in {
 
           val allStatus = AllStatus(
-            beneficiaries = Some(Completed),
-            trustees = Some(Completed),
-            taxLiability = Some(Completed),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
+            beneficiaries = Completed,
+            trustees = Completed,
+            taxLiability = Completed,
+            protectors = Completed,
+            otherIndividuals = Completed,
+            trustDetails = Completed,
+            settlors = Completed,
+            assets = Completed
           )
 
           allStatus.allComplete(taxLiabilityEnabled = true) mustBe true
         }
 
-        "non-taxable and tax liability empty" in {
+        "non-taxable and tax liability no action needed" in {
 
           val allStatus = AllStatus(
-            beneficiaries = Some(Completed),
-            trustees = Some(Completed),
-            taxLiability = None,
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
+            beneficiaries = Completed,
+            trustees = Completed,
+            taxLiability = NoActionNeeded,
+            protectors = Completed,
+            otherIndividuals = Completed,
+            trustDetails = Completed,
+            settlors = Completed,
+            assets = Completed
           )
 
           allStatus.allComplete(taxLiabilityEnabled = false) mustBe true
@@ -67,14 +67,30 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
         "any section incomplete" in {
 
           val allStatus = AllStatus(
-            beneficiaries = None,
-            trustees = Some(Completed),
-            taxLiability = Some(Completed),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
+            beneficiaries = InProgress,
+            trustees = Completed,
+            taxLiability = Completed,
+            protectors = Completed,
+            otherIndividuals = Completed,
+            trustDetails = Completed,
+            settlors = Completed,
+            assets = Completed
+          )
+
+          allStatus.allComplete(taxLiabilityEnabled = true) mustBe false
+        }
+
+        "any section not started" in {
+
+          val allStatus = AllStatus(
+            beneficiaries = NotStarted,
+            trustees = Completed,
+            taxLiability = Completed,
+            protectors = Completed,
+            otherIndividuals = Completed,
+            trustDetails = Completed,
+            settlors = Completed,
+            assets = Completed
           )
 
           allStatus.allComplete(taxLiabilityEnabled = true) mustBe false
@@ -83,14 +99,14 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
         "trust start date before current tax year start date and tax liability incomplete" in {
 
           val allStatus = AllStatus(
-            beneficiaries = None,
-            trustees = Some(Completed),
-            taxLiability = Some(InProgress),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
+            beneficiaries = Completed,
+            trustees = Completed,
+            taxLiability = InProgress,
+            protectors = Completed,
+            otherIndividuals = Completed,
+            trustDetails = Completed,
+            settlors = Completed,
+            assets = Completed
           )
 
           allStatus.allComplete(taxLiabilityEnabled = true) mustBe false

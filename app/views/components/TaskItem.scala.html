@@ -15,6 +15,7 @@
 *@
 
 @import viewmodels.Task
+@import models.registration.pages.TagStatus._
 
 @this(
     govukTag: GovukTag
@@ -25,33 +26,33 @@
 <li class="app-task-list__item" id="task-list__item--@{task.link.text}">
 
     <span class="app-task-link">
-        @task.link.url match {
-
-            case Some(url) => {
-                <a class="app-task-list__task-name"
-                   id="task-list__task-link--@{task.link.text}"
-                   href="@url"
-                   @task.tag.map { t => aria-describedby="task-list__task--@{task.link.text}__tag" }>
-                    @messages(s"taskList.${task.link.text}.label")
-                </a>
-            }
-
-            case _ => {
+           @task.tag match {
+            case CannotStartYet | NoActionNeeded => {
                 <span class="app-task-list__task-name"
                       id="task-list__task--@{task.link.text}"
-                      aria-describedby="task-list__task--@{task.link.text}__hidden">
+                      aria-describedby="task-list__task--@{task.link.text}__tag">
                     @messages(s"taskList.${task.link.text}.label")
-                    <span class="govuk-visually-hidden" id="task-list__task--@{task.link.text}__hidden">@messages(s"taskList.${task.link.text}.hidden")</span>
                 </span>
+            }
+            case _ => {
+                <a class="app-task-list__task-name"
+                   id="task-list__task-link--@{task.link.text}"
+                   href="@{task.link.url}"
+                   aria-describedby="task-list__task--@{task.link.text}__tag">
+                    @messages(s"taskList.${task.link.text}.label")
+                </a>
             }
         }
     </span>
 
-    @task.tag.map { t =>
-        @govukTag(Tag(
-            content = Text(messages(s"taskList.$t")),
-            classes = if(t.toString == "progress") "app-task-list__task-completed govuk-tag--grey" else "app-task-list__task-completed",
-            attributes = Map("id" -> s"task-list__task--${task.link.text}__tag")
-        ))
-    }
+    @govukTag(Tag(
+        content = Text(messages(s"taskList.${task.tag}")),
+        classes = "app-task-list__task-completed" + (task.tag match {
+            case InProgress => " govuk-tag--blue"
+            case NotStarted | CannotStartYet => " govuk-tag--grey"
+            case _ => ""
+        }),
+    attributes = Map("id" -> s"task-list__task--${task.link.text}__tag")
+    ))
+
 </li>
