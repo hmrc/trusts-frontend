@@ -17,7 +17,9 @@
 package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.FeatureResponse
+import models.RegistrationSubmission.AllStatus
+import models.registration.pages.TagStatus.Completed
+import models.{FeatureResponse, SubmissionDraftResponse}
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
@@ -25,8 +27,10 @@ import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.TestUserAnswers.draftId
 import utils.WireMockHelper
 
+import java.time.LocalDateTime
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -44,6 +48,7 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
   private lazy val connector = app.injector.instanceOf[TrustsStoreConnector]
 
   private val url = s"/trusts-store/features/5mld"
+  private val statusUrl = s"/trusts-store/register/tasks/$draftId"
 
   "TrustsStoreConnector" must {
 
@@ -84,5 +89,23 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
       val result = Await.result(connector.getFeature("5mld"), Duration.Inf)
       result mustBe FeatureResponse("5mld", isEnabled = false)
     }
+  }
+
+  "can retrieve status for a draft" in {
+
+    val allStatus = AllStatus(beneficiaries = Completed)
+    val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allStatus), None)
+
+    server.stubFor(
+      get(urlEqualTo(statusUrl))
+        .willReturn(
+          aResponse()
+            .withStatus(Status.OK)
+            .withBody(Json.toJson(response).toString)
+        )
+    )
+
+    val result = Await.result(connector.getTaskStatus(draftId), Duration.Inf)
+    result mustEqual allStatus
   }
 }
