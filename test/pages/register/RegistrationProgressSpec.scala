@@ -19,7 +19,7 @@ package pages.register
 import base.RegistrationSpecBase
 import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
-import models.registration.pages.TagStatus.{CannotStartYet, NoActionNeeded, NotStarted}
+import models.registration.pages.TagStatus.{CannotStartYet, Completed, NoActionNeeded, NotStarted}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
@@ -85,8 +85,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
         "new trust" when {
 
-          "there is a tax liability" must {
-            "render all items" in {
+          "there is a tax liability and trustDetails is not started" must {
+            "render all items with taxLiability as CannotStartYet" in {
 
               when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
 
@@ -95,7 +95,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
               val result = Await.result(registrationProgress.items(
                 draftId = fakeDraftId,
-                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                firstTaxYearAvailable = None,
                 isTaxable = true,
                 isExistingTrust = false
               ), Duration.Inf)
@@ -111,8 +111,34 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             }
           }
 
+          "there is a tax liability and trustDetails is completed" must {
+            "render all items with taxLiability as NotStarted" in {
+
+              when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+
+              val application = applicationBuilder().build()
+              val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+              val result = Await.result(registrationProgress.items(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = true,
+                isExistingTrust = false
+              ), Duration.Inf)
+
+              result mustBe List(
+                Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), Completed),
+                Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), NotStarted)
+              )
+            }
+          }
+
           "there isn't a tax liability" must {
-            "disable tax liability" in {
+            "disable tax liability - display as NoActionNeeded" in {
 
               when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
 
