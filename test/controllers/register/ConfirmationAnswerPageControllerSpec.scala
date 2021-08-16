@@ -17,7 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.RegistrationSubmission.AllStatus
+import models.AllStatus
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}

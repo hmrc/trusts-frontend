@@ -17,9 +17,8 @@
 package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.RegistrationSubmission.AllStatus
 import models.registration.pages.TagStatus.Completed
-import models.{FeatureResponse, SubmissionDraftResponse}
+import models.{AllStatus, FeatureResponse}
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
@@ -30,7 +29,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers.draftId
 import utils.WireMockHelper
 
-import java.time.LocalDateTime
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -47,10 +45,11 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
 
   private lazy val connector = app.injector.instanceOf[TrustsStoreConnector]
 
-  private val url = s"/trusts-store/features/5mld"
-  private val statusUrl = s"/trusts-store/register/tasks/$draftId"
+  "TrustsStoreConnector" when {
 
-  "TrustsStoreConnector" must {
+    ".getFeature" must {
+
+      val url = s"/trusts-store/features/5mld"
 
       "return a feature flag of true if 5mld is enabled" in {
 
@@ -61,7 +60,7 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
                 .withStatus(Status.OK)
                 .withBody(
                   Json.stringify(
-                  Json.toJson(FeatureResponse("5mld", isEnabled = true))
+                    Json.toJson(FeatureResponse("5mld", isEnabled = true))
                   )
                 )
             )
@@ -71,41 +70,46 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
         result mustBe FeatureResponse("5mld", isEnabled = true)
       }
 
-    "return a feature flag of false if 5mld is not enabled" in {
+      "return a feature flag of false if 5mld is not enabled" in {
 
-      server.stubFor(
-        get(urlEqualTo(url))
-          .willReturn(
-            aResponse()
-              .withStatus(Status.OK)
-              .withBody(
-                Json.stringify(
-                  Json.toJson(FeatureResponse("5mld", isEnabled = false))
+        server.stubFor(
+          get(urlEqualTo(url))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(
+                  Json.stringify(
+                    Json.toJson(FeatureResponse("5mld", isEnabled = false))
+                  )
                 )
-              )
-          )
-      )
-
-      val result = Await.result(connector.getFeature("5mld"), Duration.Inf)
-      result mustBe FeatureResponse("5mld", isEnabled = false)
-    }
-  }
-
-  "can retrieve status for a draft" in {
-
-    val allStatus = AllStatus(beneficiaries = Completed)
-    val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allStatus), None)
-
-    server.stubFor(
-      get(urlEqualTo(statusUrl))
-        .willReturn(
-          aResponse()
-            .withStatus(Status.OK)
-            .withBody(Json.toJson(response).toString)
+            )
         )
-    )
 
-    val result = Await.result(connector.getTaskStatus(draftId), Duration.Inf)
-    result mustEqual allStatus
+        val result = Await.result(connector.getFeature("5mld"), Duration.Inf)
+        result mustBe FeatureResponse("5mld", isEnabled = false)
+      }
+    }
+
+    ".getTaskStatus" must {
+
+      val url = s"/trusts-store/register/tasks/$draftId"
+
+      "retrieve status for a draft" in {
+
+        val allStatus = AllStatus(beneficiaries = Completed)
+
+        server.stubFor(
+          get(urlEqualTo(url))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(allStatus).toString)
+            )
+        )
+
+        val result = Await.result(connector.getTaskStatus(draftId), Duration.Inf)
+        result mustEqual allStatus
+      }
+    }
   }
 }

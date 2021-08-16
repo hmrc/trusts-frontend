@@ -19,10 +19,9 @@ package connector
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import models.RegistrationSubmission.{AllAnswerSections, AllStatus, AnswerRow, AnswerSection}
+import models.RegistrationSubmission.{AllAnswerSections, AnswerRow, AnswerSection}
 import models._
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
-import models.registration.pages.TagStatus.{Completed, InProgress}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
 import play.api.Application
 import play.api.http.Status
@@ -52,7 +51,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
   private val mainUrl = s"$submissionsUrl/$testDraftId/main"
   private val resetTaxLiabilityUrl = s"$submissionsUrl/$testDraftId/reset/taxLiability"
   private val beneficiariesUrl = s"$submissionsUrl/$testDraftId/beneficiaries"
-  private val statusUrl = s"$submissionsUrl/$testDraftId/status"
   private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
   private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
   private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
@@ -197,44 +195,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
           SubmissionDraftId("Draft1", LocalDateTime.of(2012, 2, 3, 9, 30), Some("ref")),
           SubmissionDraftId("Draft2", LocalDateTime.of(2010, 6, 21, 14, 44), None)
         )
-      }
-
-      "can retrieve status for a draft" in {
-
-        val allStatus = AllStatus(beneficiaries = Completed)
-        val response = SubmissionDraftResponse(LocalDateTime.now(), Json.toJson(allStatus), None)
-
-        server.stubFor(
-          get(urlEqualTo(statusUrl))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-                .withBody(Json.toJson(response).toString)
-            )
-        )
-
-        val result = Await.result(connector.getStatus(testDraftId), Duration.Inf)
-        result mustEqual allStatus
-      }
-
-      "can set status for a draft" in {
-
-        val status = AllStatus(beneficiaries = Completed, trustees = InProgress)
-
-        val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
-
-        server.stubFor(
-          post(urlEqualTo(statusUrl))
-            .withHeader(CONTENT_TYPE, containing("application/json"))
-            .withRequestBody(equalTo(Json.toJson(submissionDraftData).toString()))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-            )
-        )
-
-        val result = Await.result(connector.setStatus(testDraftId, status), Duration.Inf)
-        result.status mustBe Status.OK
       }
 
       "can retrieve registrations for a draft" in {

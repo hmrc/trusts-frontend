@@ -17,10 +17,10 @@
 package connector
 
 import config.FrontendAppConfig
-import play.api.http.Status.NOT_FOUND
-import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
+import models.RegistrationSubmission.AllAnswerSections
 import models.core.http.{AddressType, LeadTrusteeType}
 import models.{FirstTaxYearAvailable, SubmissionDraftData, SubmissionDraftId, SubmissionDraftResponse}
+import play.api.http.Status.NOT_FOUND
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.HttpReads.Implicits.{readFromJson, readRaw}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse, UpstreamErrorResponse}
@@ -34,7 +34,6 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
   private val mainSection = "main"
   private val beneficiariesSection = "beneficiaries"
   private val registrationSection = "registration"
-  private val statusSection = "status"
   private val answerSectionsSection = "answerSections"
 
   private val submissionsBaseUrl = s"${config.trustsUrl}/trusts/register/submission-drafts"
@@ -57,19 +56,6 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
 
   def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[List[SubmissionDraftId]] = {
     http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
-  }
-
-  // @deprecated - status is now retrieved from trusts-store
-  def getStatus(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AllStatus] =
-    getDraftSection(draftId, statusSection).map {
-      section => section.data.as[AllStatus]
-    }
-
-  // @deprecated - status is now set in trusts-store
-  def setStatus(draftId: String, status: AllStatus)
-               (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)
-    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/status", Json.toJson(submissionDraftData))
   }
 
   def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[JsObject] =

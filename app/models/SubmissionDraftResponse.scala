@@ -16,8 +16,6 @@
 
 package models
 
-import models.registration.pages.TagStatus
-import models.registration.pages.TagStatus.{CannotStartYet, Completed, NotStarted}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -79,45 +77,6 @@ object RegistrationSubmission {
       )(AnswerSection.apply _)
 
     implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
-  }
-
-  case class AllStatus(beneficiaries: TagStatus = NotStarted,
-                       trustees: TagStatus = NotStarted,
-                       taxLiability: TagStatus = CannotStartYet,
-                       protectors: TagStatus = NotStarted,
-                       otherIndividuals: TagStatus = NotStarted,
-                       trustDetails: TagStatus = NotStarted,
-                       settlors: TagStatus = NotStarted,
-                       assets: TagStatus = NotStarted) {
-
-    /**
-     *
-     * @param taxLiabilityEnabled - used to determine if the tax liability task needs to be enabled on the task list
-     * @return true if all of the relevant sections have a status of Completed
-     */
-    def allComplete(taxLiabilityEnabled: Boolean): Boolean =
-      beneficiaries.equals(Completed) &&
-        trustees.equals(Completed) &&
-        protectors.equals(Completed) &&
-        otherIndividuals.equals(Completed) &&
-        trustDetails.equals(Completed) &&
-        settlors.equals(Completed) &&
-        assets.equals(Completed) &&
-        (taxLiability.equals(Completed) || !taxLiabilityEnabled)
-  }
-
-  object AllStatus {
-    implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
-    val withAllComplete: AllStatus = AllStatus(
-      beneficiaries = Completed,
-      trustees = Completed,
-      taxLiability = Completed,
-      protectors = Completed,
-      otherIndividuals = Completed,
-      trustDetails = Completed,
-      settlors = Completed,
-      assets = Completed
-    )
   }
 
   case class AllAnswerSections(beneficiaries: Option[List[AnswerSection]],

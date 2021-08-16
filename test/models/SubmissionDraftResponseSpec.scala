@@ -17,7 +17,7 @@
 package models
 
 import base.RegistrationSpecBase
-import models.RegistrationSubmission.{AllStatus, AnswerRow, AnswerSection}
+import models.RegistrationSubmission.{AnswerRow, AnswerSection}
 import models.registration.pages.TagStatus._
 import play.api.libs.json.Json
 
@@ -36,7 +36,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             trustees = Completed,
             taxLiability = Completed,
             protectors = Completed,
-            otherIndividuals = Completed,
+            other = Completed,
             trustDetails = Completed,
             settlors = Completed,
             assets = Completed
@@ -52,7 +52,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             trustees = Completed,
             taxLiability = NoActionNeeded,
             protectors = Completed,
-            otherIndividuals = Completed,
+            other = Completed,
             trustDetails = Completed,
             settlors = Completed,
             assets = Completed
@@ -71,7 +71,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             trustees = Completed,
             taxLiability = Completed,
             protectors = Completed,
-            otherIndividuals = Completed,
+            other = Completed,
             trustDetails = Completed,
             settlors = Completed,
             assets = Completed
@@ -87,7 +87,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             trustees = Completed,
             taxLiability = Completed,
             protectors = Completed,
-            otherIndividuals = Completed,
+            other = Completed,
             trustDetails = Completed,
             settlors = Completed,
             assets = Completed
@@ -103,7 +103,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
             trustees = Completed,
             taxLiability = InProgress,
             protectors = Completed,
-            otherIndividuals = Completed,
+            other = Completed,
             trustDetails = Completed,
             settlors = Completed,
             assets = Completed

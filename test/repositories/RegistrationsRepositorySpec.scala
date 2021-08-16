@@ -18,7 +18,7 @@ package repositories
 
 import base.RegistrationSpecBase
 import connector.{SubmissionDraftConnector, TrustsStoreConnector}
-import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
+import models.RegistrationSubmission.AllAnswerSections
 import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
@@ -260,13 +260,13 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
         val allStatus = AllStatus(beneficiaries = Completed)
 
-        when(mockConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(allStatus))
+        when(mockTrustsStoreConnector.getTaskStatus(any())(any(), any())).thenReturn(Future.successful(allStatus))
 
         val result = Await.result(repository.getAllStatus(fakeDraftId), Duration.Inf)
 
         result mustBe allStatus
 
-        verify(mockConnector).getStatus(fakeDraftId)(hc, executionContext)
+        verify(mockTrustsStoreConnector).getTaskStatus(fakeDraftId)(hc, executionContext)
       }
     }
 

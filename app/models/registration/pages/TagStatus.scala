@@ -16,9 +16,12 @@
 
 package models.registration.pages
 
+import models.registration.pages.TagStatus.Completed
 import models.{Enumerable, WithName}
 
-sealed trait TagStatus
+sealed trait TagStatus {
+  def isCompleted: Boolean = this == Completed
+}
 
 object TagStatus extends Enumerable.Implicits {
 

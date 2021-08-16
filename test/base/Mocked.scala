@@ -16,13 +16,12 @@
 
 package base
 
-import play.api.http.Status.OK
-import models.FirstTaxYearAvailable
-import models.RegistrationSubmission.AllStatus
 import models.requests.MatchingAndSuitabilityDataRequest
+import models.{AllStatus, FirstTaxYearAvailable}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.http.Status.OK
 import play.api.mvc.AnyContent
 import repositories.{CacheRepository, RegistrationsRepository}
 import services.{DraftRegistrationService, SubmissionService}

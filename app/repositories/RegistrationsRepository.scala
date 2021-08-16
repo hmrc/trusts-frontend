@@ -17,11 +17,10 @@
 package repositories
 
 import connector.{SubmissionDraftConnector, TrustsStoreConnector}
-import models.FirstTaxYearAvailable
-import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.{AddressType, LeadTrusteeType}
 import models.registration.pages.RegistrationStatus.InProgress
+import models.{AllStatus, FirstTaxYearAvailable}
 import play.api.http
 import play.api.i18n.Messages
 import play.api.libs.json._

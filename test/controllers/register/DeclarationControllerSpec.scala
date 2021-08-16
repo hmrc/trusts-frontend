@@ -18,7 +18,7 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import forms.DeclarationFormProvider
-import models.RegistrationSubmission.AllStatus
+import models.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._

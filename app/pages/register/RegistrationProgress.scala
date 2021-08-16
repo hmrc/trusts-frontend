@@ -17,7 +17,8 @@
 package pages.register
 
 import models.FirstTaxYearAvailable
-import models.registration.pages.TagStatus.{NoActionNeeded, NotStarted}
+import models.registration.pages.TagStatus
+import models.registration.pages.TagStatus.{CannotStartYet, NoActionNeeded}
 import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress.taxLiabilityLinkDisplay
 import repositories.RegistrationsRepository
@@ -46,11 +47,15 @@ class RegistrationProgress @Inject()(
         val taxableTasks: List[Task] = if (isTaxable) {
           val assetsTask = Task(Link("assets", navigator.assetsJourneyUrl(draftId)), allStatus.assets)
 
-          val taxLiabilityTask = taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust) match {
-            case HideTask => Nil
-            case DisableTask => List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability))
-            case _ => List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), NotStarted))
+          val taxLiabilityStatus: Option[TagStatus] = taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust) match {
+            case HideTask => None
+            case x if allStatus.trustDetails.isCompleted => Some(if (x.isEnabled) allStatus.taxLiability else NoActionNeeded)
+            case _ => Some(CannotStartYet)
           }
+
+          val taxLiabilityTask = (taxLiabilityStatus map { value =>
+            Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), value)
+          }).toList
 
           assetsTask +: taxLiabilityTask
         } else {
@@ -71,7 +76,7 @@ class RegistrationProgress @Inject()(
         }
         val entityTasks = List(
           Task(Link("protectors", navigator.protectorsJourneyUrl(draftId)), allStatus.protectors),
-          Task(Link("otherIndividuals", navigator.otherIndividualsJourneyUrl(draftId)), allStatus.otherIndividuals)
+          Task(Link("otherIndividuals", navigator.otherIndividualsJourneyUrl(draftId)), allStatus.other)
         )
 
         nonTaxableTask ::: entityTasks

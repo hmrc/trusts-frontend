@@ -20,12 +20,11 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
-import models.FirstTaxYearAvailable
-import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
 import models.core.http._
 import models.requests.RegistrationDataRequest
+import models.{AllStatus, FirstTaxYearAvailable}
 import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
