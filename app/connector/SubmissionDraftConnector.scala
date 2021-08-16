@@ -59,11 +59,13 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
     http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
   }
 
+  // @deprecated - status is now retrieved from trusts-store
   def getStatus(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AllStatus] =
     getDraftSection(draftId, statusSection).map {
       section => section.data.as[AllStatus]
     }
 
+  // @deprecated - status is now set in trusts-store
   def setStatus(draftId: String, status: AllStatus)
                (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     val submissionDraftData = SubmissionDraftData(Json.toJson(status), None, None)

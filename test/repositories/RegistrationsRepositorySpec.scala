@@ -17,7 +17,7 @@
 package repositories
 
 import base.RegistrationSpecBase
-import connector.SubmissionDraftConnector
+import connector.{SubmissionDraftConnector, TrustsStoreConnector}
 import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
 import models._
 import models.core.UserAnswers
@@ -44,12 +44,12 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
   private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
 
-  private def createRepository(mockConnector: SubmissionDraftConnector) = {
+  private def createRepository(mockConnector: SubmissionDraftConnector, mockTrustsStoreConnector: TrustsStoreConnector) = {
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
 
     implicit val answerRowUtils: AnswerRowUtils = injector.instanceOf[AnswerRowUtils]
-    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
+    new DefaultRegistrationsRepository(mockDateFormatter, mockConnector, mockTrustsStoreConnector)
   }
 
   "RegistrationRepository" when {
@@ -60,8 +60,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         val userAnswers = models.core.UserAnswers(draftId = fakeDraftId, internalAuthId = "internalAuthId", createdAt = userAnswersDateTime)
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val response = SubmissionDraftResponse(LocalDateTime.now, Json.toJson(userAnswers), None)
 
@@ -79,8 +80,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val drafts = List(
           SubmissionDraftId(
@@ -108,8 +110,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
       "return the drafts received from connector" in {
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val drafts = List(
           SubmissionDraftId(
@@ -144,8 +147,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         "write answers to main section" in {
 
           val mockConnector = mock[SubmissionDraftConnector]
+          val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-          val repository = createRepository(mockConnector)
+          val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
           when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
           when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
@@ -161,8 +165,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         "write answers to main section" in {
 
           val mockConnector = mock[SubmissionDraftConnector]
+          val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-          val repository = createRepository(mockConnector)
+          val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
           when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("no client ref found")))
           when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
@@ -182,8 +187,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val registrationSectionsData = Json.obj(
           "field/subfield" -> Json.obj(
@@ -248,8 +254,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val allStatus = AllStatus(beneficiaries = Completed)
 
@@ -268,8 +275,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val answerSections = AllAnswerSections(
           beneficiaries = Some(
@@ -368,8 +376,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val leadTrusteeOrg = LeadTrusteeType(
           None,
@@ -397,8 +406,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
@@ -418,8 +428,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         "return Some(agent address)" in {
 
           val mockConnector = mock[SubmissionDraftConnector]
+          val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-          val repository = createRepository(mockConnector)
+          val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
           val agentAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
@@ -437,8 +448,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         "return None" in {
 
           val mockConnector = mock[SubmissionDraftConnector]
+          val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-          val repository = createRepository(mockConnector)
+          val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
           when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.failed(new Throwable("agent address not found")))
 
@@ -459,8 +471,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         "return Some(client reference)" in {
 
           val mockConnector = mock[SubmissionDraftConnector]
+          val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-          val repository = createRepository(mockConnector)
+          val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
           when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
 
@@ -476,8 +489,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         "return None" in {
 
           val mockConnector = mock[SubmissionDraftConnector]
+          val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-          val repository = createRepository(mockConnector)
+          val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
           when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("client ref not found")))
 
@@ -497,8 +511,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val expected = LocalDate.parse("2020-10-10")
 
@@ -517,8 +532,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
+        val mockTrustsStoreConnector = mock[TrustsStoreConnector]
 
-        val repository = createRepository(mockConnector)
+        val repository = createRepository(mockConnector, mockTrustsStoreConnector)
 
         val status: Int = 200
 

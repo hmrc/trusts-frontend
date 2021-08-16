@@ -17,6 +17,7 @@
 package pages.register
 
 import models.FirstTaxYearAvailable
+import models.registration.pages.TagStatus.{NoActionNeeded, NotStarted}
 import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress.taxLiabilityLinkDisplay
 import repositories.RegistrationsRepository
@@ -47,7 +48,8 @@ class RegistrationProgress @Inject()(
 
           val taxLiabilityTask = taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust) match {
             case HideTask => Nil
-            case x => List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability))
+            case DisableTask => List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), allStatus.taxLiability))
+            case _ => List(Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), NotStarted))
           }
 
           assetsTask +: taxLiabilityTask

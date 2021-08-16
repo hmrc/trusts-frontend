@@ -138,7 +138,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           }
         }
 
-        // TODO - amed this test?
         "existing trust" must {
           "not render tax liability" in {
 

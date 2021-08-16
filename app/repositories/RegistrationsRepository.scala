@@ -16,7 +16,7 @@
 
 package repositories
 
-import connector.SubmissionDraftConnector
+import connector.{SubmissionDraftConnector, TrustsStoreConnector}
 import models.FirstTaxYearAvailable
 import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
@@ -34,7 +34,8 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
-                                               submissionDraftConnector: SubmissionDraftConnector)
+                                               submissionDraftConnector: SubmissionDraftConnector,
+                                               trustsStoreConnector: TrustsStoreConnector)
                                               (implicit ec: ExecutionContext, answerRowUtils: AnswerRowUtils) extends RegistrationsRepository {
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
@@ -103,7 +104,7 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
   }
 
   override def getAllStatus(draftId: String)(implicit hc: HeaderCarrier): Future[AllStatus] = {
-    submissionDraftConnector.getStatus(draftId)
+    trustsStoreConnector.getTaskStatus(draftId)
   }
 
   override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] = {
