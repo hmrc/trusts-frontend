@@ -430,7 +430,7 @@ summaryAnswerPage.paragraph2 = Nid yw hwn yn ddatganiad sy’n cadarnhau bod yr 
 summaryAnswerPage.title = Copi drafft o gofrestriad yr ymddiriedolaeth
 
 taskList.completed = Wedi cwblhau
-taskList.progress = Ar waith
+taskList.in-progress = Ar waith
 taskList.not-started = Heb ddechrau
 taskList.cannot-start-yet = Methu dechrau eto
 taskList.no-action-needed = Dim angen gweithredu

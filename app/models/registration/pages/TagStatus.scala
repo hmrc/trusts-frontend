@@ -26,7 +26,7 @@ sealed trait TagStatus {
 object TagStatus extends Enumerable.Implicits {
 
   case object Completed extends WithName("completed") with TagStatus
-  case object InProgress extends WithName("progress") with TagStatus
+  case object InProgress extends WithName("in-progress") with TagStatus
   case object NotStarted extends WithName("not-started") with TagStatus
   case object CannotStartYet extends WithName("cannot-start-yet") with TagStatus
   case object NoActionNeeded extends WithName("no-action-needed") with TagStatus

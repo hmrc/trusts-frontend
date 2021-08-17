@@ -310,7 +310,7 @@ taskList.summary.paragraph3 = You can return to this service at any time to add,
 taskList.summary.continue = Continue to declaration
 
 taskList.completed = Completed
-taskList.progress = In progress
+taskList.in-progress = In progress
 taskList.not-started = Not started
 taskList.cannot-start-yet = Cannot start yet
 taskList.no-action-needed = No action needed
