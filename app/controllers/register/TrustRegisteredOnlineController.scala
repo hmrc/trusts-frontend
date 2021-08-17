@@ -25,7 +25,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.CacheRepository
-import services.FeatureFlagService
+import services.TrustsStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustRegisteredOnlineView
 
@@ -39,7 +39,7 @@ class TrustRegisteredOnlineController @Inject()(
                                                  identify: RegistrationIdentifierAction,
                                                  getData: MatchingAndSuitabilityDataRetrievalAction,
                                                  requireData: MatchingAndSuitabilityDataRequiredAction,
-                                                 featureFlagService: FeatureFlagService,
+                                                 featureFlagService: TrustsStoreService,
                                                  formProvider: YesNoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: TrustRegisteredOnlineView

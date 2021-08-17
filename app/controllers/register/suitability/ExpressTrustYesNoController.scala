@@ -25,7 +25,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.CacheRepository
-import services.FeatureFlagService
+import services.TrustsStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability.ExpressTrustYesNoView
 
@@ -38,7 +38,7 @@ class ExpressTrustYesNoController @Inject()(
                                              navigator: Navigator,
                                              actions: StandardActionSets,
                                              formProvider: YesNoFormProvider,
-                                             featureFlagService: FeatureFlagService,
+                                             featureFlagService: TrustsStoreService,
                                              val controllerComponents: MessagesControllerComponents,
                                              view: ExpressTrustYesNoView
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {

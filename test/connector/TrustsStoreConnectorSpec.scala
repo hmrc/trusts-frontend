@@ -90,7 +90,7 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
       }
     }
 
-    ".getTaskStatus" must {
+    ".getAllTaskStatuses" must {
 
       val url = s"/trusts-store/register/tasks/$draftId"
 
@@ -107,7 +107,7 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
             )
         )
 
-        val result = Await.result(connector.getTaskStatus(draftId), Duration.Inf)
+        val result = Await.result(connector.getAllTaskStatuses(draftId), Duration.Inf)
         result mustEqual allStatus
       }
     }

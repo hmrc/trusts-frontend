@@ -38,7 +38,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
   private val mockConnector: TrustConnector = mock[TrustConnector]
 
-  private val mockFeatureFlagService: FeatureFlagService = mock[FeatureFlagService]
+  private val mockFeatureFlagService: TrustsStoreService = mock[TrustsStoreService]
 
   override def beforeEach(): Unit = {
     reset(mockConnector)

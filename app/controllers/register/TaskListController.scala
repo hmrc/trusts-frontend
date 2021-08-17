@@ -26,7 +26,7 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.FeatureFlagService
+import services.TrustsStoreService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.DateFormatter
@@ -45,7 +45,7 @@ class TaskListController @Inject()(
                                     requireDraft: RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
                                     standardAction: StandardActionSets,
-                                    featureFlagService: FeatureFlagService
+                                    featureFlagService: TrustsStoreService
                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =

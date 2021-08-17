@@ -16,11 +16,11 @@
 
 package repositories
 
-import connector.{SubmissionDraftConnector, TrustsStoreConnector}
+import connector.SubmissionDraftConnector
+import models.FirstTaxYearAvailable
 import models.core.UserAnswers
 import models.core.http.{AddressType, LeadTrusteeType}
 import models.registration.pages.RegistrationStatus.InProgress
-import models.{AllStatus, FirstTaxYearAvailable}
 import play.api.http
 import play.api.i18n.Messages
 import play.api.libs.json._
@@ -33,8 +33,7 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
-                                               submissionDraftConnector: SubmissionDraftConnector,
-                                               trustsStoreConnector: TrustsStoreConnector)
+                                               submissionDraftConnector: SubmissionDraftConnector)
                                               (implicit ec: ExecutionContext, answerRowUtils: AnswerRowUtils) extends RegistrationsRepository {
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
@@ -102,10 +101,6 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
-  override def getAllStatus(draftId: String)(implicit hc: HeaderCarrier): Future[AllStatus] = {
-    trustsStoreConnector.getTaskStatus(draftId)
-  }
-
   override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] = {
     submissionDraftConnector.getAnswerSections(draftId)
       .map(RegistrationAnswerSections.fromAllAnswerSections(_))
@@ -157,8 +152,6 @@ trait RegistrationsRepository {
   def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]]
 
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier): Future[JsValue]
-
-  def getAllStatus(draftId: String)(implicit hc: HeaderCarrier): Future[AllStatus]
 
   def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections]
 

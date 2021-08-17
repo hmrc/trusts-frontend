@@ -26,10 +26,8 @@ import org.scalatest.BeforeAndAfterEach
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
-import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.FeatureFlagService
 import views.html.register.suitability.ExpressTrustYesNoView
 
 import scala.concurrent.Future
@@ -40,8 +38,6 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
   val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
   val index: Int = 0
   val businessName = "Test"
-
-  private val mockFeatureFlagService = mock[FeatureFlagService]
 
   lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad().url
 
@@ -94,10 +90,9 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
       "redirect to the next page when valid data is submitted" in {
 
-        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+        when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
         val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
-          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
           .build()
 
         val request = FakeRequest(POST, expressTrustYesNo)
@@ -123,12 +118,11 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
       "redirect to the next page when valid data is submitted and the trust has a UTR" in {
 
-        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+        when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
 
         val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, true).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
-          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
           .build()
 
         val request = FakeRequest(POST, expressTrustYesNo)
@@ -143,18 +137,17 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
         val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
         verify(cacheRepository).set(uaCaptor.capture)
         uaCaptor.getValue.get(TrustTaxableYesNoPage).get mustBe true
-        
+
         application.stop()
       }
 
       "redirect to the next page when valid data is submitted and the trust doesn't have a UTR" in {
 
-        when(mockFeatureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
+        when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
 
         val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, false).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
-          .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
           .build()
 
         val request = FakeRequest(POST, expressTrustYesNo)

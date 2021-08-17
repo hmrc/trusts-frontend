@@ -21,7 +21,7 @@ import models.registration.pages.TagStatus
 import models.registration.pages.TagStatus.{CannotStartYet, NoActionNeeded}
 import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress.taxLiabilityLinkDisplay
-import repositories.RegistrationsRepository
+import services.TrustsStoreService
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
@@ -30,12 +30,12 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationProgress @Inject()(
                                       navigator: TaskListNavigator,
-                                      registrationsRepository: RegistrationsRepository
+                                      trustsStoreService: TrustsStoreService
                                     )(implicit ec: ExecutionContext) {
 
   def items(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
            (implicit hc: HeaderCarrier): Future[List[Task]] = {
-    registrationsRepository.getAllStatus(draftId) map {
+    trustsStoreService.getAllTaskStatuses(draftId) map {
       allStatus =>
         val entityTasks: List[Task] = List(
           Task(Link("trustDetails", navigator.trustDetailsJourney(draftId)), allStatus.trustDetails),
@@ -67,7 +67,7 @@ class RegistrationProgress @Inject()(
   }
 
   def additionalItems(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[List[Task]] = {
-    registrationsRepository.getAllStatus(draftId) map {
+    trustsStoreService.getAllTaskStatuses(draftId) map {
       allStatus =>
         val nonTaxableTask = if (isTaxable) {
           Nil
@@ -85,7 +85,7 @@ class RegistrationProgress @Inject()(
 
   def isTaskListComplete(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
                         (implicit hc: HeaderCarrier): Future[Boolean] = {
-    registrationsRepository.getAllStatus(draftId).map { status =>
+    trustsStoreService.getAllTaskStatuses(draftId).map { status =>
       status.allComplete(taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled)
     }
   }

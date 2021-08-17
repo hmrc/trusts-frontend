@@ -28,7 +28,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import repositories.{CacheRepository, RegistrationsRepository}
-import services.{DraftRegistrationService, SubmissionService}
+import services.{DraftRegistrationService, SubmissionService, TrustsStoreService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
@@ -73,6 +73,7 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[CacheRepository].toInstance(cacheRepository),
         bind[RegistrationsRepository].toInstance(registrationsRepository),
         bind[SubmissionService].toInstance(mockSubmissionService),
+        bind[TrustsStoreService].toInstance(mockTrustsStoreService),
         bind[AffinityGroup].toInstance(Organisation),
         bind[DraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),

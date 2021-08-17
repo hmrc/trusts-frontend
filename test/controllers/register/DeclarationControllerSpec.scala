@@ -18,7 +18,6 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import forms.DeclarationFormProvider
-import models.AllStatus
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
@@ -28,10 +27,8 @@ import org.mockito.Mockito.{verify, when, _}
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
 import play.api.inject
-import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.register.DeclarationView
@@ -48,8 +45,6 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
   before {
     reset(mockSubmissionService)
   }
-
-  when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
   val validAnswer: Declaration = Declaration(FullName("First", None, "Last"), Some("email@email.com"))
 
@@ -138,14 +133,9 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
-      val featureFlagService = mock[FeatureFlagService]
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-        .overrides(
-          bind[FeatureFlagService].toInstance(featureFlagService)
-        ).build()
-
-      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+      when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request = FakeRequest(POST, declarationRoute)
         .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
@@ -163,14 +153,9 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.failed(UnableToRegister()))
 
-      val featureFlagService = mock[FeatureFlagService]
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-        .overrides(
-          bind[FeatureFlagService].toInstance(featureFlagService)
-        ).build()
-
-      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+      when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request = FakeRequest(POST, declarationRoute)
         .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
@@ -188,14 +173,9 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(mockSubmissionService.submit(any[UserAnswers], any[Boolean])(any(), any[HeaderCarrier], any())).
         thenReturn(Future.successful(AlreadyRegistered))
 
-      val featureFlagService = mock[FeatureFlagService]
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-        .overrides(
-          bind[FeatureFlagService].toInstance(featureFlagService)
-        ).build()
-
-      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+      when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request = FakeRequest(POST, declarationRoute)
         .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))

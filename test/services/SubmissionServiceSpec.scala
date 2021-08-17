@@ -20,11 +20,11 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
+import models.FirstTaxYearAvailable
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
 import models.core.http._
 import models.requests.RegistrationDataRequest
-import models.{AllStatus, FirstTaxYearAvailable}
 import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
@@ -70,10 +70,6 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
                                              (implicit hc: HeaderCarrier): Future[JsValue] =
       Future.successful(registrationJson)
-
-    override def getAllStatus(draftId: String)
-                             (implicit hc: HeaderCarrier): Future[AllStatus] =
-      Future.successful(AllStatus())
 
     override def getAnswerSections(draftId: String)
                                   (implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =

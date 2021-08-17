@@ -23,7 +23,7 @@ import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.FeatureFlagService
+import services.TrustsStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability._
 
@@ -39,7 +39,7 @@ class BeforeYouContinueController @Inject()(
                                              existingTaxableView: BeforeYouContinueExistingTaxableView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
                                              nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
-                                             featureFlagService: FeatureFlagService,
+                                             featureFlagService: TrustsStoreService,
                                              appConfig: FrontendAppConfig
                                            )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
