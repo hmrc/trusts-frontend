@@ -17,7 +17,6 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.RegistrationSubmission.AllStatus
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.RegistrationProgress
@@ -135,8 +134,6 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
       otherIndividualSections.head,
       otherIndividualSections(1)
     )
-
-    when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 

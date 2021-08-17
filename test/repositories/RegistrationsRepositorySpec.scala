@@ -18,11 +18,10 @@ package repositories
 
 import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
-import models.RegistrationSubmission.{AllAnswerSections, AllStatus}
+import models.RegistrationSubmission.AllAnswerSections
 import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
-import models.registration.pages.Status.Completed
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.MustMatchers
@@ -238,28 +237,6 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
         result mustBe expectedCombinedRegistrationJson
         verify(mockConnector).getRegistrationPieces(fakeDraftId)(hc, executionContext)
-      }
-    }
-
-    "reading status" must {
-
-      "read existing status from connector" in {
-
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-        val mockConnector = mock[SubmissionDraftConnector]
-
-        val repository = createRepository(mockConnector)
-
-        val allStatus = AllStatus(beneficiaries = Some(Completed))
-
-        when(mockConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(allStatus))
-
-        val result = Await.result(repository.getAllStatus(fakeDraftId), Duration.Inf)
-
-        result mustBe allStatus
-
-        verify(mockConnector).getStatus(fakeDraftId)(hc, executionContext)
       }
     }
 

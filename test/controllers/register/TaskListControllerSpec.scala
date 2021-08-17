@@ -31,7 +31,6 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.DateFormatter
@@ -44,7 +43,6 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
   private val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
   private val mockDateFormatter: DateFormatter = mock[DateFormatter]
-  private val mockFeatureFlagService: FeatureFlagService = mock[FeatureFlagService]
 
   private val fakeItems: List[Task] = Nil
   private val fakeAdditionalItems: List[Task] = Nil
@@ -71,9 +69,9 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
     when(mockDateFormatter.savedUntil(any())(any()))
       .thenReturn(savedUntil)
 
-    reset(mockFeatureFlagService)
+    reset(mockTrustsStoreService)
 
-    when(mockFeatureFlagService.is5mldEnabled()(any(), any()))
+    when(mockTrustsStoreService.is5mldEnabled()(any(), any()))
       .thenReturn(Future.successful(is5mldEnabled))
   }
 
@@ -86,8 +84,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
       .configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
       .overrides(
         bind[RegistrationProgress].toInstance(mockRegistrationProgress),
-        bind[DateFormatter].toInstance(mockDateFormatter),
-        bind[FeatureFlagService].toInstance(mockFeatureFlagService)
+        bind[DateFormatter].toInstance(mockDateFormatter)
       )
   }
 
@@ -251,7 +248,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
               .set(TrustHaveAUTRPage, false).success.value
               .set(TrustTaxableYesNoPage, isTaxable).success.value
 
-            when(mockFeatureFlagService.is5mldEnabled()(any(), any()))
+            when(mockTrustsStoreService.is5mldEnabled()(any(), any()))
               .thenReturn(Future.successful(is5mldEnabled))
 
             val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()

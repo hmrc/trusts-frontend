@@ -16,16 +16,15 @@
 
 package base
 
-import play.api.http.Status.OK
-import models.FirstTaxYearAvailable
-import models.RegistrationSubmission.AllStatus
 import models.requests.MatchingAndSuitabilityDataRequest
+import models.{TaskStatuses, FirstTaxYearAvailable}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.http.Status.OK
 import play.api.mvc.AnyContent
 import repositories.{CacheRepository, RegistrationsRepository}
-import services.{DraftRegistrationService, SubmissionService}
+import services.{DraftRegistrationService, SubmissionService, TrustsStoreService}
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUserAnswers
 import viewmodels.RegistrationAnswerSections
@@ -41,6 +40,8 @@ trait Mocked extends MockitoSugar {
   val mockSubmissionService: SubmissionService = mock[SubmissionService]
   val mockCreateDraftRegistrationService: DraftRegistrationService = mock[DraftRegistrationService]
 
+  val mockTrustsStoreService: TrustsStoreService = mock[TrustsStoreService]
+
   when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
 
@@ -50,7 +51,6 @@ trait Mocked extends MockitoSugar {
   when(cacheRepository.set(any())).thenReturn(Future.successful(true))
 
   when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
-  when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
   when(registrationsRepository.updateTaxLiability(any())(any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
   val mockedTrustStartDate: LocalDate = LocalDate.parse("2019-02-03")
@@ -58,4 +58,7 @@ trait Mocked extends MockitoSugar {
 
   when(registrationsRepository.getFirstTaxYearAvailable(any())(any()))
     .thenReturn(Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false))))
+
+  when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+    .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 }

@@ -21,7 +21,6 @@ import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
 import models.FirstTaxYearAvailable
-import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
 import models.core.http._
@@ -71,10 +70,6 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
                                              (implicit hc: HeaderCarrier): Future[JsValue] =
       Future.successful(registrationJson)
-
-    override def getAllStatus(draftId: String)
-                             (implicit hc: HeaderCarrier): Future[AllStatus] =
-      Future.successful(AllStatus())
 
     override def getAnswerSections(draftId: String)
                                   (implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =

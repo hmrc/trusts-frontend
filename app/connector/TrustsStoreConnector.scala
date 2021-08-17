@@ -17,19 +17,25 @@
 package connector
 
 import config.FrontendAppConfig
-import javax.inject.Inject
-import models.FeatureResponse
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import models.{TaskStatuses, FeatureResponse}
 import uk.gov.hmrc.http.HttpReads.Implicits.readFromJson
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustsStoreConnector @Inject()(http: HttpClient, config : FrontendAppConfig) {
+class TrustsStoreConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
 
-  private def featureUrl(feature: String): String = s"${config.trustsStoreUrl}/trusts-store/features/$feature"
+  private val baseUrl: String = s"${config.trustsStoreUrl}/trusts-store"
 
-  def getFeature(feature: String)(implicit hc : HeaderCarrier, ec : ExecutionContext): Future[FeatureResponse] = {
-    http.GET[FeatureResponse](featureUrl(feature))
+  def getFeature(feature: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[FeatureResponse] = {
+    val url: String = s"$baseUrl/features/$feature"
+    http.GET[FeatureResponse](url)
+  }
+
+  def getTaskStatuses(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TaskStatuses] = {
+    val url: String = s"$baseUrl/register/tasks/$draftId"
+    http.GET[TaskStatuses](url)
   }
 
 }

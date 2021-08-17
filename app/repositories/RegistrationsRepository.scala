@@ -18,7 +18,6 @@ package repositories
 
 import connector.SubmissionDraftConnector
 import models.FirstTaxYearAvailable
-import models.RegistrationSubmission.AllStatus
 import models.core.UserAnswers
 import models.core.http.{AddressType, LeadTrusteeType}
 import models.registration.pages.RegistrationStatus.InProgress
@@ -102,10 +101,6 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
-  override def getAllStatus(draftId: String)(implicit hc: HeaderCarrier): Future[AllStatus] = {
-    submissionDraftConnector.getStatus(draftId)
-  }
-
   override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] = {
     submissionDraftConnector.getAnswerSections(draftId)
       .map(RegistrationAnswerSections.fromAllAnswerSections(_))
@@ -157,8 +152,6 @@ trait RegistrationsRepository {
   def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]]
 
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier): Future[JsValue]
-
-  def getAllStatus(draftId: String)(implicit hc: HeaderCarrier): Future[AllStatus]
 
   def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections]
 

@@ -17,6 +17,7 @@
 package views.register
 
 import controllers.register.agents.routes
+import models.registration.pages.TagStatus.NotStarted
 import org.jsoup.nodes.Document
 import org.scalatest.Assertion
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -30,13 +31,13 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
   private val savedUntil = "21 April 2021"
 
   private val fakeSections = List(
-    Task(Link("link 1", Some("url 1")), None),
-    Task(Link("link 2", Some("url 2")), None)
+    Task(Link("link 1", "url 1"), NotStarted),
+    Task(Link("link 2", "url 2"), NotStarted)
   )
 
   private val fakeAdditionalSections = List(
-    Task(Link("additional link 1", Some("additional url 1")), None),
-    Task(Link("additional link 2", Some("additional url 2")), None)
+    Task(Link("additional link 1", "additional url 1"), NotStarted),
+    Task(Link("additional link 2", "additional url 2"), NotStarted)
   )
 
   private def assertionForSavedUntil(doc: Document, rendered: Boolean): Assertion = {

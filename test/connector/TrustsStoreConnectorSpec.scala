@@ -17,7 +17,8 @@
 package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
-import models.FeatureResponse
+import models.registration.pages.TagStatus.Completed
+import models.{TaskStatuses, FeatureResponse}
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
@@ -25,6 +26,7 @@ import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.TestUserAnswers.draftId
 import utils.WireMockHelper
 
 import scala.concurrent.Await
@@ -43,9 +45,11 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
 
   private lazy val connector = app.injector.instanceOf[TrustsStoreConnector]
 
-  private val url = s"/trusts-store/features/5mld"
+  "TrustsStoreConnector" when {
 
-  "TrustsStoreConnector" must {
+    ".getFeature" must {
+
+      val url = s"/trusts-store/features/5mld"
 
       "return a feature flag of true if 5mld is enabled" in {
 
@@ -56,7 +60,7 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
                 .withStatus(Status.OK)
                 .withBody(
                   Json.stringify(
-                  Json.toJson(FeatureResponse("5mld", isEnabled = true))
+                    Json.toJson(FeatureResponse("5mld", isEnabled = true))
                   )
                 )
             )
@@ -66,23 +70,46 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
         result mustBe FeatureResponse("5mld", isEnabled = true)
       }
 
-    "return a feature flag of false if 5mld is not enabled" in {
+      "return a feature flag of false if 5mld is not enabled" in {
 
-      server.stubFor(
-        get(urlEqualTo(url))
-          .willReturn(
-            aResponse()
-              .withStatus(Status.OK)
-              .withBody(
-                Json.stringify(
-                  Json.toJson(FeatureResponse("5mld", isEnabled = false))
+        server.stubFor(
+          get(urlEqualTo(url))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(
+                  Json.stringify(
+                    Json.toJson(FeatureResponse("5mld", isEnabled = false))
+                  )
                 )
-              )
-          )
-      )
+            )
+        )
 
-      val result = Await.result(connector.getFeature("5mld"), Duration.Inf)
-      result mustBe FeatureResponse("5mld", isEnabled = false)
+        val result = Await.result(connector.getFeature("5mld"), Duration.Inf)
+        result mustBe FeatureResponse("5mld", isEnabled = false)
+      }
+    }
+
+    ".getTaskStatuses" must {
+
+      val url = s"/trusts-store/register/tasks/$draftId"
+
+      "retrieve status for a draft" in {
+
+        val taskStatuses = TaskStatuses(beneficiaries = Completed)
+
+        server.stubFor(
+          get(urlEqualTo(url))
+            .willReturn(
+              aResponse()
+                .withStatus(Status.OK)
+                .withBody(Json.toJson(taskStatuses).toString)
+            )
+        )
+
+        val result = Await.result(connector.getTaskStatuses(draftId), Duration.Inf)
+        result mustEqual taskStatuses
+      }
     }
   }
 }

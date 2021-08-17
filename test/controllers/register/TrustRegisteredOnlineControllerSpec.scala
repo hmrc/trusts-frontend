@@ -22,10 +22,8 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.TrustRegisteredOnlinePage
 import play.api.data.Form
-import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.FeatureFlagService
 import views.html.register.TrustRegisteredOnlineView
 
 import scala.concurrent.Future
@@ -34,8 +32,6 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
   val formProvider = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
-
-  val featureFlagService: FeatureFlagService = mock[FeatureFlagService]
 
   lazy val trustRegisteredOnlineRoute: String = routes.TrustRegisteredOnlineController.onPageLoad().url
 
@@ -81,16 +77,12 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
-        .overrides(
-          bind[FeatureFlagService].toInstance(featureFlagService)
-        ).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+      when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
-      val request =
-        FakeRequest(POST, trustRegisteredOnlineRoute)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, trustRegisteredOnlineRoute)
+        .withFormUrlEncodedBody(("value", "true"))
 
       val result = route(application, request).value
 
@@ -103,12 +95,9 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
-        .overrides(
-          bind[FeatureFlagService].toInstance(featureFlagService)
-        ).build()
+      val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      when(featureFlagService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
+      when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request = FakeRequest(POST, trustRegisteredOnlineRoute)
         .withFormUrlEncodedBody(("value", ""))

@@ -16,8 +16,6 @@
 
 package models
 
-import models.registration.pages.Status
-import models.registration.pages.Status.Completed
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -79,45 +77,6 @@ object RegistrationSubmission {
       )(AnswerSection.apply _)
 
     implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
-  }
-
-  case class AllStatus(beneficiaries: Option[Status] = None,
-                       trustees: Option[Status] = None,
-                       taxLiability: Option[Status] = None,
-                       protectors: Option[Status] = None,
-                       otherIndividuals: Option[Status] = None,
-                       trustDetails: Option[Status] = None,
-                       settlors: Option[Status] = None,
-                       assets: Option[Status] = None) {
-
-    /**
-     *
-     * @param taxLiabilityEnabled - used to determine if the tax liability task needs to be enabled on the task list
-     * @return true if all of the relevant sections have a status of Completed
-     */
-    def allComplete(taxLiabilityEnabled: Boolean): Boolean =
-      beneficiaries.contains(Completed) &&
-        trustees.contains(Completed) &&
-        protectors.contains(Completed) &&
-        otherIndividuals.contains(Completed) &&
-        trustDetails.contains(Completed) &&
-        settlors.contains(Completed) &&
-        assets.contains(Completed) &&
-        (taxLiability.contains(Completed) || !taxLiabilityEnabled)
-  }
-
-  object AllStatus {
-    implicit lazy val format: OFormat[AllStatus] = Json.format[AllStatus]
-    val withAllComplete: AllStatus = AllStatus(
-      beneficiaries = Some(Completed),
-      trustees = Some(Completed),
-      taxLiability = Some(Completed),
-      protectors = Some(Completed),
-      otherIndividuals = Some(Completed),
-      trustDetails = Some(Completed),
-      settlors = Some(Completed),
-      assets = Some(Completed)
-    )
   }
 
   case class AllAnswerSections(beneficiaries: Option[List[AnswerSection]],

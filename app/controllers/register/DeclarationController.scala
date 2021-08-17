@@ -31,7 +31,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.{FeatureFlagService, SubmissionService}
+import services.{TrustsStoreService, SubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -47,7 +47,7 @@ class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        formProvider: DeclarationFormProvider,
-                                       featureFlagService: FeatureFlagService,
+                                       featureFlagService: TrustsStoreService,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,

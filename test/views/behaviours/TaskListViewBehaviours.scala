@@ -55,14 +55,11 @@ trait TaskListViewBehaviours extends ViewSpecBase {
                 doc.getElementById(id).hasAttr("href")
               }
 
-              section.tag.foreach {
-                _ =>
-
-                  s"render a tag" in {
-                    val doc = asDocument(view)
-                    assertRenderedById(doc, s"task-list__task--${section.link.text}__tag")
-                  }
+              s"render a tag" in {
+                val doc = asDocument(view)
+                assertRenderedById(doc, s"task-list__task--${section.link.text}__tag")
               }
+
             }
         }
       }

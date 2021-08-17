@@ -17,7 +17,6 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import models.RegistrationSubmission.AllStatus
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.register.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
@@ -95,9 +94,6 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
       settlors = Some(settlorsSection),
       assets = Some(assetsSection)
     )
-
-    when(registrationsRepository.getAllStatus(any())(any()))
-      .thenReturn(Future.successful(AllStatus.withAllComplete))
 
     when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
       .thenReturn(Future.successful(registrationSections))

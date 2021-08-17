@@ -17,8 +17,8 @@
 package pages.register
 
 import base.RegistrationSpecBase
-import models.FirstTaxYearAvailable
-import models.RegistrationSubmission.AllStatus
+import models.registration.pages.TagStatus._
+import models.{TaskStatuses, FirstTaxYearAvailable}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
@@ -42,7 +42,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "all entities marked as complete" must {
         "return true for isTaskListComplete" in {
 
-          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus.withAllComplete))
+          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
@@ -61,7 +62,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "any entity marked as incomplete" must {
         "return false for isTaskListComplete" in {
 
-          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            .thenReturn(Future.successful(TaskStatuses()))
 
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
@@ -84,55 +86,117 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
         "new trust" when {
 
-          "there is a tax liability" must {
-            "render all items" in {
+          "trustDetails is not completed" must {
+            "render taxLiability as CannotStartYet" in {
 
-              when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+              when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+                .thenReturn(Future.successful(TaskStatuses()))
 
               val application = applicationBuilder().build()
               val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
               val result = Await.result(registrationProgress.items(
                 draftId = fakeDraftId,
-                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                firstTaxYearAvailable = None,
                 isTaxable = true,
                 isExistingTrust = false
               ), Duration.Inf)
 
               result mustBe List(
-                Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-                Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-                Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-                Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
-                Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
-                Task(Link("taxLiability", Some(fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId))), None)
+                Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+                Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), CannotStartYet)
               )
             }
           }
 
-          "there isn't a tax liability" must {
-            "disable tax liability" in {
+          "trustDetails is completed" when {
 
-              when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+            "start date >0 tax years ago" when {
 
-              val application = applicationBuilder().build()
-              val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+              "taxLiability not started" must {
+                "render taxLiability as NotStarted" in {
 
-              val result = Await.result(registrationProgress.items(
-                draftId = fakeDraftId,
-                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(yearsAgo = 0)),
-                isTaxable = true,
-                isExistingTrust = false
-              ), Duration.Inf)
+                  when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+                    .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed)))
 
-              result mustBe List(
-                Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-                Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-                Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-                Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
-                Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
-                Task(Link("taxLiability", None), None)
-              )
+                  val application = applicationBuilder().build()
+                  val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+                  val result = Await.result(registrationProgress.items(
+                    draftId = fakeDraftId,
+                    firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                    isTaxable = true,
+                    isExistingTrust = false
+                  ), Duration.Inf)
+
+                  result mustBe List(
+                    Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), Completed),
+                    Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), NotStarted)
+                  )
+                }
+              }
+
+              "taxLiability started" must {
+                "render taxLiability as InProgress" in {
+
+                  when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+                    .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed, taxLiability = InProgress)))
+
+                  val application = applicationBuilder().build()
+                  val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+                  val result = Await.result(registrationProgress.items(
+                    draftId = fakeDraftId,
+                    firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                    isTaxable = true,
+                    isExistingTrust = false
+                  ), Duration.Inf)
+
+                  result mustBe List(
+                    Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), Completed),
+                    Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+                    Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), InProgress)
+                  )
+                }
+              }
+            }
+
+            "start date 0 tax years ago" must {
+              "render tax liability as NoActionNeeded" in {
+
+                when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+                  .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed)))
+
+                val application = applicationBuilder().build()
+                val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+                val result = Await.result(registrationProgress.items(
+                  draftId = fakeDraftId,
+                  firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(yearsAgo = 0)),
+                  isTaxable = true,
+                  isExistingTrust = false
+                ), Duration.Inf)
+
+                result mustBe List(
+                  Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), Completed),
+                  Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+                  Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+                  Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+                  Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+                  Task(Link("taxLiability", fakeFrontendAppConfig.taxLiabilityFrontendUrl(fakeDraftId)), NoActionNeeded)
+                )
+              }
             }
           }
         }
@@ -140,7 +204,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "existing trust" must {
           "not render tax liability" in {
 
-            when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              .thenReturn(Future.successful(TaskStatuses()))
 
             val application = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
@@ -153,11 +218,11 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             ), Duration.Inf)
 
             result mustBe List(
-              Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-              Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-              Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-              Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None),
-              Task(Link("assets", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None)
+              Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted),
+              Task(Link("assets", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted)
             )
           }
         }
@@ -166,7 +231,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "non-taxable" must {
         "not render assets or tax liability" in {
 
-          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            .thenReturn(Future.successful(TaskStatuses()))
 
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
@@ -179,10 +245,10 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           ), Duration.Inf)
 
           result mustBe List(
-            Task(Link("trustDetails", Some(fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId))), None),
-            Task(Link("settlors", Some(fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId))), None),
-            Task(Link("trustees", Some(fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId))), None),
-            Task(Link("beneficiaries", Some(fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId))), None)
+            Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("settlors", fakeFrontendAppConfig.settlorsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("beneficiaries", fakeFrontendAppConfig.beneficiariesFrontendUrl(fakeDraftId)), NotStarted)
           )
         }
       }
@@ -193,7 +259,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "taxable" must {
         "only render protectors and other individuals" in {
 
-          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            .thenReturn(Future.successful(TaskStatuses()))
 
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
@@ -201,8 +268,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = true), Duration.Inf)
 
           result mustBe List(
-            Task(Link("protectors", Some(fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId))), None),
-            Task(Link("otherIndividuals", Some(fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId))), None)
+            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), NotStarted)
           )
         }
       }
@@ -210,7 +277,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "non-taxable" must {
         "also render non-EEA business asset" in {
 
-          when(registrationsRepository.getAllStatus(any())(any())).thenReturn(Future.successful(AllStatus()))
+          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            .thenReturn(Future.successful(TaskStatuses()))
 
           val application = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
@@ -218,9 +286,9 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           val result = Await.result(registrationProgress.additionalItems(fakeDraftId, isTaxable = false), Duration.Inf)
 
           result mustBe List(
-            Task(Link("companyOwnershipOrControllingInterest", Some(fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId))), None),
-            Task(Link("protectors", Some(fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId))), None),
-            Task(Link("otherIndividuals", Some(fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId))), None)
+            Task(Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("protectors", fakeFrontendAppConfig.protectorsFrontendUrl(fakeDraftId)), NotStarted),
+            Task(Link("otherIndividuals", fakeFrontendAppConfig.otherIndividualsFrontendUrl(fakeDraftId)), NotStarted)
           )
         }
       }

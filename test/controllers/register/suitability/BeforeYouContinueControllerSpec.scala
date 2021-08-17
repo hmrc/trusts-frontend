@@ -29,7 +29,6 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.FeatureFlagService
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import views.html.register.suitability._
@@ -39,8 +38,6 @@ import scala.concurrent.Future
 class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
   private lazy val beforeYouContinueRoute: String = routes.BeforeYouContinueController.onPageLoad().url
-
-  private val mockFeatureFlagService = mock[FeatureFlagService]
 
   "BeforeYouContinue Controller" must {
 
@@ -242,7 +239,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
         "express, non-taxable trust with non-taxable access code feature enabled" in {
 
-          when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+          when(mockTrustsStoreService.isNonTaxableAccessCodeEnabled()(any(), any()))
             .thenReturn(Future.successful(true))
 
           val answers = emptyMatchingAndSuitabilityUserAnswers
@@ -250,7 +247,6 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
             .set(TrustTaxableYesNoPage, false).success.value
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-            .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
             .build()
 
           val request = FakeRequest(POST, beforeYouContinueRoute)
@@ -270,7 +266,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
           forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
             case (isExpress, isTaxable, isFeatureEnabled) =>
 
-              when(mockFeatureFlagService.isNonTaxableAccessCodeEnabled()(any(), any()))
+              when(mockTrustsStoreService.isNonTaxableAccessCodeEnabled()(any(), any()))
                 .thenReturn(Future.successful(isFeatureEnabled))
 
               val answers = emptyMatchingAndSuitabilityUserAnswers
@@ -278,7 +274,6 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
                 .set(TrustTaxableYesNoPage, isTaxable).success.value
 
               val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
-                .overrides(bind[FeatureFlagService].toInstance(mockFeatureFlagService))
                 .build()
 
               val request = FakeRequest(POST, beforeYouContinueRoute)

@@ -16,20 +16,25 @@
 
 package models.registration.pages
 
+import models.registration.pages.TagStatus.Completed
 import models.{Enumerable, WithName}
 
-sealed trait Status
+sealed trait TagStatus {
+  def isCompleted: Boolean = this == Completed
+}
 
-object Status extends Enumerable.Implicits {
+object TagStatus extends Enumerable.Implicits {
 
-  case object Completed extends WithName("completed") with Status
+  case object Completed extends WithName("completed") with TagStatus
+  case object InProgress extends WithName("in-progress") with TagStatus
+  case object NotStarted extends WithName("not-started") with TagStatus
+  case object CannotStartYet extends WithName("cannot-start-yet") with TagStatus
+  case object NoActionNeeded extends WithName("no-action-needed") with TagStatus
 
-  case object InProgress extends WithName("progress") with Status
-
-  val values: Set[Status] = Set(
-    Completed, InProgress
+  val values: Set[TagStatus] = Set(
+    Completed, InProgress, NotStarted, CannotStartYet, NoActionNeeded
   )
 
-  implicit val enumerable: Enumerable[Status] =
+  implicit val enumerable: Enumerable[TagStatus] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
 }

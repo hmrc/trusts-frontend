@@ -34,7 +34,7 @@ import scala.util.control.NonFatal
 
 class MatchingService @Inject()(trustConnector: TrustConnector,
                                 cacheRepository: CacheRepository,
-                                featureFlagService: FeatureFlagService) {
+                                featureFlagService: TrustsStoreService) {
 
   private case class MatchingContext(is5mldEnabled: Boolean, isAgent: Boolean, userAnswers: MatchingAndSuitabilityUserAnswers)
 

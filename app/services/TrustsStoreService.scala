@@ -17,19 +17,16 @@
 package services
 
 import connector.TrustsStoreConnector
-import models.FeatureResponse
+import models.{TaskStatuses, FeatureResponse}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FeatureFlagService @Inject()(trustsStoreConnector: TrustsStoreConnector) {
+class TrustsStoreService @Inject()(trustsStoreConnector: TrustsStoreConnector) {
 
-  private def isFeatureEnabled(feature: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Boolean] = {
-    trustsStoreConnector.getFeature(feature).map {
-      case FeatureResponse(_, true) => true
-      case _ => false
-    }
+  def getTaskStatuses(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TaskStatuses] = {
+    trustsStoreConnector.getTaskStatuses(draftId)
   }
 
   def is5mldEnabled()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Boolean] =
@@ -37,5 +34,12 @@ class FeatureFlagService @Inject()(trustsStoreConnector: TrustsStoreConnector) {
 
   def isNonTaxableAccessCodeEnabled()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Boolean] =
     isFeatureEnabled("non-taxable.access-code")
+
+  private def isFeatureEnabled(feature: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Boolean] = {
+    trustsStoreConnector.getFeature(feature).map {
+      case FeatureResponse(_, true) => true
+      case _ => false
+    }
+  }
 
 }

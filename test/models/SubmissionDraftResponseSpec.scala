@@ -17,86 +17,13 @@
 package models
 
 import base.RegistrationSpecBase
-import models.RegistrationSubmission.{AllStatus, AnswerRow, AnswerSection}
-import models.registration.pages.Status._
+import models.RegistrationSubmission.{AnswerRow, AnswerSection}
+import models.registration.pages.TagStatus._
 import play.api.libs.json.Json
 
 class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
   "SubmissionDraftResponse" when {
-
-    "AllStatus" must {
-
-      "return allComplete true" when {
-
-        "all sections completed" in {
-
-          val allStatus = AllStatus(
-            beneficiaries = Some(Completed),
-            trustees = Some(Completed),
-            taxLiability = Some(Completed),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
-          )
-
-          allStatus.allComplete(taxLiabilityEnabled = true) mustBe true
-        }
-
-        "non-taxable and tax liability empty" in {
-
-          val allStatus = AllStatus(
-            beneficiaries = Some(Completed),
-            trustees = Some(Completed),
-            taxLiability = None,
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
-          )
-
-          allStatus.allComplete(taxLiabilityEnabled = false) mustBe true
-        }
-      }
-
-      "return allComplete false" when {
-
-        "any section incomplete" in {
-
-          val allStatus = AllStatus(
-            beneficiaries = None,
-            trustees = Some(Completed),
-            taxLiability = Some(Completed),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
-          )
-
-          allStatus.allComplete(taxLiabilityEnabled = true) mustBe false
-        }
-
-        "trust start date before current tax year start date and tax liability incomplete" in {
-
-          val allStatus = AllStatus(
-            beneficiaries = None,
-            trustees = Some(Completed),
-            taxLiability = Some(InProgress),
-            protectors = Some(Completed),
-            otherIndividuals = Some(Completed),
-            trustDetails = Some(Completed),
-            settlors = Some(Completed),
-            assets = Some(Completed)
-          )
-
-          allStatus.allComplete(taxLiabilityEnabled = true) mustBe false
-        }
-      }
-    }
 
     "AnswerRow" must {
       "read json" when {
