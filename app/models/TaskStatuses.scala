@@ -20,14 +20,14 @@ import models.registration.pages.TagStatus
 import models.registration.pages.TagStatus.{Completed, NotStarted}
 import play.api.libs.json.{Format, Json}
 
-case class AllStatus(beneficiaries: TagStatus = NotStarted,
-                     trustees: TagStatus = NotStarted,
-                     taxLiability: TagStatus = NotStarted,
-                     protectors: TagStatus = NotStarted,
-                     other: TagStatus = NotStarted,
-                     trustDetails: TagStatus = NotStarted,
-                     settlors: TagStatus = NotStarted,
-                     assets: TagStatus = NotStarted) {
+case class TaskStatuses(beneficiaries: TagStatus = NotStarted,
+                        trustees: TagStatus = NotStarted,
+                        taxLiability: TagStatus = NotStarted,
+                        protectors: TagStatus = NotStarted,
+                        other: TagStatus = NotStarted,
+                        trustDetails: TagStatus = NotStarted,
+                        settlors: TagStatus = NotStarted,
+                        assets: TagStatus = NotStarted) {
 
   /**
    *
@@ -45,11 +45,11 @@ case class AllStatus(beneficiaries: TagStatus = NotStarted,
       (taxLiability.equals(Completed) || !taxLiabilityEnabled)
 }
 
-object AllStatus {
+object TaskStatuses {
 
-  implicit lazy val format: Format[AllStatus] = Json.format[AllStatus]
+  implicit lazy val format: Format[TaskStatuses] = Json.format[TaskStatuses]
 
-  val withAllComplete: AllStatus = AllStatus(
+  val withAllComplete: TaskStatuses = TaskStatuses(
     beneficiaries = Completed,
     trustees = Completed,
     taxLiability = Completed,

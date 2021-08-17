@@ -17,7 +17,7 @@
 package services
 
 import connector.TrustsStoreConnector
-import models.{AllStatus, FeatureResponse}
+import models.{TaskStatuses, FeatureResponse}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
@@ -25,8 +25,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TrustsStoreService @Inject()(trustsStoreConnector: TrustsStoreConnector) {
 
-  def getAllTaskStatuses(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AllStatus] = {
-    trustsStoreConnector.getAllTaskStatuses(draftId)
+  def getTaskStatuses(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TaskStatuses] = {
+    trustsStoreConnector.getTaskStatuses(draftId)
   }
 
   def is5mldEnabled()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Boolean] =

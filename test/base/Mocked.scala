@@ -17,7 +17,7 @@
 package base
 
 import models.requests.MatchingAndSuitabilityDataRequest
-import models.{AllStatus, FirstTaxYearAvailable}
+import models.{TaskStatuses, FirstTaxYearAvailable}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -59,6 +59,6 @@ trait Mocked extends MockitoSugar {
   when(registrationsRepository.getFirstTaxYearAvailable(any())(any()))
     .thenReturn(Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false))))
 
-  when(mockTrustsStoreService.getAllTaskStatuses(any())(any(), any()))
-    .thenReturn(Future.successful(AllStatus.withAllComplete))
+  when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+    .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 }

@@ -18,7 +18,7 @@ package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import models.registration.pages.TagStatus.Completed
-import models.{AllStatus, FeatureResponse}
+import models.{TaskStatuses, FeatureResponse}
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
@@ -90,25 +90,25 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
       }
     }
 
-    ".getAllTaskStatuses" must {
+    ".getTaskStatuses" must {
 
       val url = s"/trusts-store/register/tasks/$draftId"
 
       "retrieve status for a draft" in {
 
-        val allStatus = AllStatus(beneficiaries = Completed)
+        val taskStatuses = TaskStatuses(beneficiaries = Completed)
 
         server.stubFor(
           get(urlEqualTo(url))
             .willReturn(
               aResponse()
                 .withStatus(Status.OK)
-                .withBody(Json.toJson(allStatus).toString)
+                .withBody(Json.toJson(taskStatuses).toString)
             )
         )
 
-        val result = Await.result(connector.getAllTaskStatuses(draftId), Duration.Inf)
-        result mustEqual allStatus
+        val result = Await.result(connector.getTaskStatuses(draftId), Duration.Inf)
+        result mustEqual taskStatuses
       }
     }
   }

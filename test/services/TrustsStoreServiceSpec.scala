@@ -19,7 +19,7 @@ package services
 import base.RegistrationSpecBase
 import connector.TrustsStoreConnector
 import models.registration.pages.TagStatus.Completed
-import models.{AllStatus, FeatureResponse}
+import models.{TaskStatuses, FeatureResponse}
 import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures.whenReady
@@ -35,19 +35,19 @@ class TrustsStoreServiceSpec extends RegistrationSpecBase {
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  "getAllTaskStatuses" must {
+  "getTaskStatuses" must {
     "call trusts store connector" in {
 
-      val allStatus = AllStatus(beneficiaries = Completed)
+      val taskStatuses = TaskStatuses(beneficiaries = Completed)
 
-      when(mockConnector.getAllTaskStatuses(any())(any(), any()))
-        .thenReturn(Future.successful(allStatus))
+      when(mockConnector.getTaskStatuses(any())(any(), any()))
+        .thenReturn(Future.successful(taskStatuses))
 
-      val result = trustsStoreService.getAllTaskStatuses(fakeDraftId)
+      val result = trustsStoreService.getTaskStatuses(fakeDraftId)
 
       whenReady(result) { res =>
-        res mustEqual allStatus
-        verify(mockConnector).getAllTaskStatuses(eqTo(fakeDraftId))(any(), any())
+        res mustEqual taskStatuses
+        verify(mockConnector).getTaskStatuses(eqTo(fakeDraftId))(any(), any())
       }
     }
   }
