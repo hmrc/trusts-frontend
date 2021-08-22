@@ -81,20 +81,20 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
       val format = new SimpleDateFormat("d MMMM y", new ULocale(language))
 
       Try(format.parse(answer))
-        .map(x => x.toInstant.atZone(ZoneId.systemDefault()).toLocalDate)
-        .map(date => languageUtils.Dates.formatDate(date))
+        .map(_.toInstant.atZone(ZoneId.systemDefault()).toLocalDate)
+        .map(languageUtils.Dates.formatDate)
         .orElse(acc)
     })
   }
 
   private def parseAsCountry(answer: String)(implicit messages: Messages): Try[String] = {
     languages.foldLeft[Try[String]](Failure(new IllegalArgumentException()))((acc, language) => {
-      val countryCode: Option[String] = getCountriesForLanguage(language).find(_.exists(_.contains(answer))) map {
-        _.last.split("country:").last
-      }
+      val countryCode: Option[String] = getCountriesForLanguage(language)
+        .find(_.exists(_.contains(answer)))
+        .map(_.last.split("country:").last.trim)
 
       countryCode match {
-        case Some(cc) => getCountriesForLanguage(messages.lang.code).find(x => x.last.contains(cc)) match {
+        case Some(cc) => getCountriesForLanguage(messages.lang.code).find(_.last.contains(cc)) match {
           case Some(country) => Success(country.head)
           case _ => acc
         }
@@ -108,7 +108,7 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
 
     environment.resourceAsStream(fileName).fold[Seq[String]](Nil)(inputStream => {
       val reader = new BufferedReader(new InputStreamReader(inputStream))
-      reader.lines().iterator().asScala.map(x => x.split("=").head.trim).toSeq
+      reader.lines().iterator().asScala.map(_.split("=").head.trim).toSeq
     })
   }
 
