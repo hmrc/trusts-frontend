@@ -67,6 +67,7 @@ site.sign_out = Sign out
 site.sign_in = Sign in
 site.print-or-save = Print or save this page
 site.return-to-top = Back to top
+site.number-ending = Number ending {0}
 
 featureNotAvailable.title = This part of the online service is not available yet
 featureNotAvailable.heading = This part of the online service is not available yet

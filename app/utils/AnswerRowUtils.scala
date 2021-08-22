@@ -27,6 +27,7 @@ import uk.gov.hmrc.play.language.LanguageUtils
 import java.io.{BufferedReader, InputStreamReader}
 import java.time.ZoneId
 import javax.inject.Inject
+import scala.annotation.tailrec
 import scala.collection.JavaConverters.asScalaIteratorConverter
 import scala.util.{Failure, Success, Try}
 
@@ -40,6 +41,7 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
   def reverseEngineerAnswer(answer: String)(implicit messages: Messages): String = {
     answer.split(lineBreak).map(line =>
       parseAsYesOrNo(line) orElse
+        parseAsMaskedIdNumber(line) orElse
         parseAsDate(line) orElse
         parseAsEnumerable(line) orElse
         parseAsCountry(line) getOrElse
@@ -61,46 +63,83 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
     findAnswerInMessages(answer)
   }
 
+  private def parseAsMaskedIdNumber(answer: String)(implicit messages: Messages): Try[String] = {
+    val keys = Seq("site.number-ending")
+    findAnswerInMessages(answer, Some(keys))
+  }
+
   private def findAnswerInMessages(answer: String, messageKeys: Option[Seq[String]] = None)
                                   (implicit messages: Messages): Try[String] = {
-    languages.foldLeft[Try[String]](Failure(new IllegalArgumentException()))((acc1, language) => {
-      val messagesForLanguage = MessagesImpl(Lang(language), messagesApi)
 
-      messageKeys.getOrElse(getMessageKeysForLanguage(language)).foldLeft(acc1)((acc2, key) => {
-        if (answer == messagesForLanguage(key)) {
-          Success(messages(key))
-        } else {
-          acc2
-        }
-      })
-    })
+    def findAnswerInMessages(languages: Seq[String]): Try[String] = {
+      languages match {
+        case Nil => Failure(new IllegalArgumentException())
+        case _ =>
+          val language = languages.head
+          findAnswerInMessagesForLanguage(messageKeys.getOrElse(getMessageKeysForLanguage(language)), language)
+            .orElse(findAnswerInMessages(languages.tail))
+      }
+    }
+
+    @tailrec
+    def findAnswerInMessagesForLanguage(messageKeys: Seq[String], language: String): Try[String] = {
+      val messagesForLanguage = MessagesImpl(Lang(language), messagesApi)
+      messageKeys match {
+        case Nil => Failure(new IllegalArgumentException())
+        case _ =>
+          val key = messageKeys.head
+          if (answer == messagesForLanguage(key)) {
+            Success(messages(key))
+          } else {
+            val pattern = messagesForLanguage(key, "(.+)").r
+            if (answer.matches(pattern.toString())) {
+              val pattern(arg) = answer
+              Success(messages(key, arg))
+            } else {
+              findAnswerInMessagesForLanguage(messageKeys.tail, language)
+            }
+          }
+      }
+    }
+
+    findAnswerInMessages(languages)
   }
 
   private def parseAsDate(answer: String)(implicit messages: Messages): Try[String] = {
-    languages.foldLeft[Try[String]](Failure(new IllegalArgumentException()))((acc, language) => {
-      val format = new SimpleDateFormat("d MMMM y", new ULocale(language))
 
-      Try(format.parse(answer))
-        .map(x => x.toInstant.atZone(ZoneId.systemDefault()).toLocalDate)
-        .map(date => languageUtils.Dates.formatDate(date))
-        .orElse(acc)
-    })
+    def parseAsDate(languages: Seq[String]): Try[String] = {
+      languages match {
+        case Nil => Failure(new IllegalArgumentException())
+        case _ =>
+          val format = new SimpleDateFormat("d MMMM y", new ULocale(languages.head))
+          Try(format.parse(answer))
+            .map(_.toInstant.atZone(ZoneId.systemDefault()).toLocalDate)
+            .map(languageUtils.Dates.formatDate)
+            .orElse(parseAsDate(languages.tail))
+      }
+    }
+
+    parseAsDate(languages)
   }
 
   private def parseAsCountry(answer: String)(implicit messages: Messages): Try[String] = {
-    languages.foldLeft[Try[String]](Failure(new IllegalArgumentException()))((acc, language) => {
-      val countryCode: Option[String] = getCountriesForLanguage(language).find(_.exists(_.contains(answer))) map {
-        _.last.split("country:").last
-      }
 
-      countryCode match {
-        case Some(cc) => getCountriesForLanguage(messages.lang.code).find(x => x.last.contains(cc)) match {
-          case Some(country) => Success(country.head)
-          case _ => acc
-        }
-        case _ => acc
+    def parseAsCountry(languages: Seq[String]): Try[String] = {
+      languages match {
+        case Nil => Failure(new IllegalArgumentException())
+        case _ =>
+          val countryCode: Option[String] = getCountriesForLanguage(languages.head)
+            .find(_.exists(_.contains(answer)))
+            .map(_.last.split("country:").last)
+
+          countryCode
+            .flatMap(cc => getCountriesForLanguage(messages.lang.code).find(_.last.contains(cc)))
+            .map(country => Success(country.head))
+            .getOrElse(parseAsCountry(languages.tail))
       }
-    })
+    }
+
+    parseAsCountry(languages)
   }
 
   private def getMessageKeysForLanguage(language: String): Seq[String] = {
@@ -108,18 +147,21 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
 
     environment.resourceAsStream(fileName).fold[Seq[String]](Nil)(inputStream => {
       val reader = new BufferedReader(new InputStreamReader(inputStream))
-      reader.lines().iterator().asScala.map(x => x.split("=").head.trim).toSeq
+      reader.lines().iterator().asScala.map(_.split("=").head.trim).toSeq
     })
   }
 
   private def getCountriesForLanguage(language: String): Seq[Seq[String]] = {
-    environment.resourceAsStream(getCountryListForLanguage(language)) match {
-      case Some(value) => Json.fromJson[Seq[Seq[String]]](Json.parse(value)) match {
-        case JsSuccess(value, _) => value
-        case _ => Nil
-      }
-      case _ => Nil
-    }
+
+    type CountriesForLanguage = Seq[Seq[String]]
+
+    environment.resourceAsStream(getCountryListForLanguage(language))
+      .fold[CountriesForLanguage](Nil)(inputStream => {
+        Json.fromJson[CountriesForLanguage](Json.parse(inputStream)) match {
+          case JsSuccess(countriesForLanguage, _) => countriesForLanguage
+          case _ => Nil
+        }
+      })
   }
 
   private def getCountryListForLanguage(language: String): String = {

@@ -335,6 +335,7 @@ site.try-again = Rhoi cynnig arall arni
 site.utr = Cyfeirnod Unigryw y Trethdalwr (UTR)
 site.warning = Rhybudd
 site.yes = Iawn
+site.number-ending = Rhif sy’n gorffen gyda {0}
 
 suitability.beforeYouContinue.existing.taxable.continue=Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
 suitability.beforeYouContinue.existing.taxable.h2=Cadarnhau fod yr ymddiriedolaeth wedi’i chofrestru â CThEM ar gyfer Ffurflenni Treth Hunanasesiad
