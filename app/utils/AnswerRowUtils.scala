@@ -29,6 +29,7 @@ import java.time.ZoneId
 import javax.inject.Inject
 import scala.annotation.tailrec
 import scala.collection.JavaConverters.asScalaIteratorConverter
+import scala.util.matching.Regex
 import scala.util.{Failure, Success, Try}
 
 class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
@@ -88,13 +89,15 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
         case Nil => Failure(new IllegalArgumentException())
         case _ =>
           val key = messageKeys.head
-          if (answer == messagesForLanguage(key)) {
+          val message = messagesForLanguage(key)
+          if (answer == message) {
             Success(messages(key))
           } else {
-            val pattern = messagesForLanguage(key, "(.+)").r
-            if (answer.matches(pattern.toString())) {
-              val pattern(arg) = answer
-              Success(messages(key, arg))
+            // replace wildcards with regex capture groups
+            val messageAsRegex = message.replaceAll("""\{[0-9]*}""", "(.+)")
+            if (answer.matches(messageAsRegex)) {
+              val args = extractArgsFromAnswer(answer, messageAsRegex.r)
+              Success(messages(key, args: _*))
             } else {
               findAnswerInMessagesForLanguage(messageKeys.tail, language)
             }
@@ -103,6 +106,20 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
     }
 
     findAnswerInMessages(languages)
+  }
+
+  private def extractArgsFromAnswer(answer: String, regex: Regex): Seq[String] = {
+    regex
+      .findAllMatchIn(answer)
+      .toSeq
+      .flatMap { `match` =>
+        (1 to `match`.groupCount).foldLeft[Seq[String]](Nil)((acc, index) => {
+          Option(`match`.group(index)) match {
+            case Some(value) => acc :+ value
+            case None => acc
+          }
+        })
+      }
   }
 
   private def parseAsDate(answer: String)(implicit messages: Messages): Try[String] = {
