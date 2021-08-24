@@ -137,7 +137,7 @@ createAgentServicesAccount.insetText = Mae’n rhaid mai chi yw’r person sy’
 createAgentServicesAccount.link = Gwiriwch yr arweiniad
 createAgentServicesAccount.paragraph1 = Cyn i chi allu cofrestru ymddiriedolaeth, bydd angen i chi greu cyfrif gwasanaethau asiant. Gallwch wneud hyn nawr.
 createAgentServicesAccount.paragraph2 = i gael gwybod yr hyn y bydd ei angen arnoch er mwyn creu cyfrif gwasanaethau asiant.
-createAgentServicesAccount.paragraph3 = Pan fyddwch wedi creu eich cyfrif gwasanaethau asiant
+createAgentServicesAccount.paragraph3 = Pan fyddwch wedi creu eich cyfrif gwasanaethau asiant, gallwch barhau â chofrestriad eich ymddiriedolaeth.
 createAgentServicesAccount.title = Creu cyfrif gwasanaethau asiant
 
 date.day = Diwrnod
