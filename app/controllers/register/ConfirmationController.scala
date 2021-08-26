@@ -41,10 +41,10 @@ class ConfirmationController @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
                                         newTaxableIndividualView: newTrust.taxable.IndividualView,
                                         newTaxableAgentView: newTrust.taxable.AgentView,
-                                        newNoneTaxableIndividualView: newTrust.nonTaxable.IndividualView,
-                                        newNoneTaxableAgentView: newTrust.nonTaxable.AgentView,
-                                        existingIndividualView: existingTrust.IndividualView,
-                                        existingAgentView: existingTrust.AgentView,
+                                        nonTaxableIndividualView: newTrust.nonTaxable.IndividualView,
+                                        nonTaxableAgentView: newTrust.nonTaxable.AgentView,
+                                        existingTaxableIndividualView: existingTrust.IndividualView,
+                                        existingTaxableAgentView: existingTrust.AgentView,
                                         errorHandler: ErrorHandler,
                                         registrationsRepository: RegistrationsRepository
                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
@@ -71,17 +71,17 @@ class ConfirmationController @Inject()(
 
     (utr, taxable) match {
       case (Some(true), true) if isAgent =>
-        Future.successful(Ok(existingAgentView(draftId, trn, name)))
+        Future.successful(Ok(existingTaxableAgentView(draftId, trn, name)))
       case (Some(true), true) =>
-        Future.successful(Ok(existingIndividualView(draftId, trn, name)))
+        Future.successful(Ok(existingTaxableIndividualView(draftId, trn, name)))
       case (Some(false), true) if isAgent =>
         Future.successful(Ok(newTaxableAgentView(draftId, trn, name)))
       case (Some(false), true) =>
         Future.successful(Ok(newTaxableIndividualView(draftId, trn, name)))
       case (Some(false), false) if isAgent =>
-        Future.successful(Ok(newNoneTaxableAgentView(draftId, trn, name)))
+        Future.successful(Ok(nonTaxableAgentView(draftId, trn, name)))
       case (Some(false), false) =>
-        Future.successful(Ok(newNoneTaxableIndividualView(draftId, trn, name)))
+        Future.successful(Ok(nonTaxableIndividualView(draftId, trn, name)))
       case _ =>
         errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }
