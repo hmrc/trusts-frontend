@@ -237,7 +237,7 @@ failedMatch.paragraph3 = The trust name must be entered exactly as it is shown o
 failedMatch.h2 = What to do next
 failedMatch.paragraph4 = If we still cannot match your trust details to our records, you can
 failedMatch.paragraph5 = . You will need the details of the trust to answer some security questions.
-failedMatch.contactLink =  contact the trusts helpline
+failedMatch.contactLink = contact the trusts helpline
 
 trustAlreadyRegistered.title = This trust has already been registered
 trustAlreadyRegistered.heading = This trust has already been registered
@@ -270,7 +270,7 @@ cannotMakeChanges.postLink = send a letter by post to HM Revenue and Customs
 UTRSentByPost.title = The trust’s Unique Taxpayer Reference (UTR) has been sent by post
 UTRSentByPost.heading = The trust’s Unique Taxpayer Reference (UTR) has been sent by post
 UTRSentByPost.paragraph1 = It can take 15 working days for you to get the trust’s UTR. For International addresses it can take 21 working days.
-UTRSentByPost.paragraph2 =  if you have not received the trust’s UTR after this time.
+UTRSentByPost.paragraph2 = if you have not received the trust’s UTR after this time.
 UTRSentByPost.link.contactHelpline = Contact the trusts helpline (opens in a new window or tab)
 UTRSentByPost.paragraph3 = You can
 UTRSentByPost.link.returnToRegister = return to register and maintain a trust for a client
