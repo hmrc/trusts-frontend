@@ -18,9 +18,9 @@
 @import views.html.components.Heading
 
 @this(
-        mainTemplate: MainTemplate,
-        config: FrontendAppConfig,
-        heading: Heading
+    mainTemplate: MainTemplate,
+    config: FrontendAppConfig,
+    heading: Heading
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -32,7 +32,7 @@
 
     @heading("featureNotAvailable.heading")
 
-    <p>@messages("featureNotAvailable.p1") <a href="@config.helplineUrl" target="_blank">@messages("featureNotAvailable.link")</a></p>
+    <p>@messages("featureNotAvailable.p1") <a href="@config.helplineUrl" target="_blank" rel="noopener noreferrer">@messages("featureNotAvailable.link")</a></p>
 
     <p>@messages("featureNotAvailable.p2")</p>
 
