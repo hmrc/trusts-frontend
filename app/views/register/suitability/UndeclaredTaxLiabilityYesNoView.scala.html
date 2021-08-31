@@ -15,11 +15,13 @@
  *@
 
 @import controllers.register.suitability.routes._
-@import views.html.components.{ErrorSummary, InputYesNo, SubmitButton}
+@import views.html.components.{ErrorSummary, Heading, BulletList, InputYesNo, SubmitButton}
 
 @this(
     mainTemplate: MainTemplate,
     errorSummary: ErrorSummary,
+    heading: Heading,
+    bulletList: BulletList,
     inputYesNo: InputYesNo,
     submitButton: SubmitButton,
     formHelper: FormWithCSRF
@@ -36,10 +38,21 @@
 
         @errorSummary(form.errors, isYesNo = true)
 
+        @heading(messages("suitability.undeclaredTaxLiability.heading"))
+
+        <p>@messages("suitability.undeclaredTaxLiability.p1")</p>
+
+        @bulletList("suitability.undeclaredTaxLiability", Seq(
+            "bullet1",
+            "bullet2",
+            "bullet3"
+        ))
+
         @inputYesNo(
             field = form("value"),
             label = messages("suitability.undeclaredTaxLiability.heading"),
-            legendAsHeading = true
+            legendAsHeading = false,
+            legendClass = Some("govuk-visually-hidden")
         )
 
         @submitButton()

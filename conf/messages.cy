@@ -418,8 +418,12 @@ suitability.taxLiabilityInCurrentTaxYear.heading = A oes gan yr ymddiriedolaeth 
 suitability.taxLiabilityInCurrentTaxYear.title = A oes gan yr ymddiriedolaeth unrhyw rwymedigaeth treth yn y flwyddyn dreth bresennol?
 
 suitability.undeclaredTaxLiability.error.required = Dewiswch ‘Iawn’ os oes gan yr ymddiriedolaeth unrhyw rwymedigaeth treth ar hyn o bryd
-suitability.undeclaredTaxLiability.heading = A oes gan yr ymddiriedolaeth unrhyw rwymedigaeth treth sydd heb ei datgan ers 10 Gorffennaf 2017?
-suitability.undeclaredTaxLiability.title = A oes gan yr ymddiriedolaeth unrhyw rwymedigaeth treth sydd heb ei datgan ers 10 Gorffennaf 2017?
+suitability.undeclaredTaxLiability.heading = A yw’r ymddiriedolaeth wedi cael unrhyw rwymedigaeth treth yn y DU yn ystod y pedair blynedd diwethaf?
+suitability.undeclaredTaxLiability.title = A yw’r ymddiriedolaeth wedi cael unrhyw rwymedigaeth treth yn y DU yn ystod y pedair blynedd diwethaf?
+suitability.undeclaredTaxLiability.p1 = Mae gan ymddiriedolaeth rwymedigaeth treth os yw un o’r canlynol yn berthnasol:
+suitability.undeclaredTaxLiability.bullet1 = mae angen iddi lenwi Ffurflen Dreth Hunanasesiad: Ymddiriedolaeth ac Ystâd (SA900)
+suitability.undeclaredTaxLiability.bullet2 = mae’n agored i Dreth Enillion Cyfalaf
+suitability.undeclaredTaxLiability.bullet3 = mae’n agored i Dreth Incwm
 
 summaryAnswerPage.heading = Copi drafft o gofrestriad yr ymddiriedolaeth
 summaryAnswerPage.paragraph1 = Gallwch gadw’ch cofrestriad a dod yn ôl yn nes ymlaen. Mae gennych 28 diwrnod i gwblhau’r cofrestriad hwn o’r tro cyntaf y byddwch yn ei gadw neu bydd eich gwybodaeth yn cael ei dileu.

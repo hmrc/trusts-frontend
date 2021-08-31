@@ -402,8 +402,12 @@ suitability.beforeYouContinue.nonTaxable.agent.link1 = Who should register (open
 suitability.beforeYouContinue.nonTaxable.agent.link2 = Trusts and taxes (opens in a new window or tab)
 suitability.beforeYouContinue.nonTaxable.agent.continue = Continue to register the trust
 
-suitability.undeclaredTaxLiability.title = Does the trust have any undeclared tax liability since 10 July 2017?
-suitability.undeclaredTaxLiability.heading = Does the trust have any undeclared tax liability since 10 July 2017?
+suitability.undeclaredTaxLiability.title = Has the trust had any UK tax liability in the last four tax years?
+suitability.undeclaredTaxLiability.heading = Has the trust had any UK tax liability in the last four tax years?
+suitability.undeclaredTaxLiability.p1 = A trust has a tax liability if it either:
+suitability.undeclaredTaxLiability.bullet1 = needs to fill out a Self Assessment: Trust and Estate Tax Return (SA900)
+suitability.undeclaredTaxLiability.bullet2 = is liable for Capital Gains Tax
+suitability.undeclaredTaxLiability.bullet3 = is liable for Income Tax
 suitability.undeclaredTaxLiability.error.required = Select yes if the trust currently has any tax liability
 
 suitability.noNeedToRegister.title = You do not need to register this trust
