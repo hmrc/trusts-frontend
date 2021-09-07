@@ -7,6 +7,36 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 lazy val appName: String = "trusts-frontend"
 
+val excludedPackages = Seq(
+  "<empty>",
+  ".*Reverse.*",
+  ".*Routes.*",
+  ".*standardError*.*",
+  ".*main_template*.*",
+  "uk.gov.hmrc.BuildInfo",
+  "app.*",
+  "prod.*",
+  "config.*",
+  "testOnlyDoNotUseInAppConf.*",
+  "views.html.*",
+  "testOnly.*",
+  "com.kenshoo.play.metrics*.*",
+  ".*repositories.*",
+  ".*LanguageSwitchController",
+  ".*GuiceInjector",
+  ".*models.Mode",
+  ".*filters.*",
+  ".*handlers.*",
+  ".*components.*",
+  ".*FrontendAuditConnector.*",
+  ".*javascript.*",
+  ".*ControllerConfiguration",
+  ".*mapping.Constants.*",
+  ".*pages.Page.*",
+  ".*viewmodels.*",
+  ".*Message.*"
+)
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
@@ -36,10 +66,8 @@ lazy val root = (project in file("."))
       "controllers.routes._"
     ),
     PlayKeys.playDefaultPort := 9781,
-    ScoverageKeys.coverageExcludedFiles := "<empty>;Reverse.*;.*filters.*;.*handlers.*;.*components.*;" +
-      ".*BuildInfo.*;.*javascript.*;.*FrontendAuditConnector.*;.*Routes.*;.*GuiceInjector;" +
-      ".*ControllerConfiguration;.*LanguageSwitchController;.*models;.*views.html.*;.*config.Service;.*models.Mode;",
-    ScoverageKeys.coverageMinimum := 74,
+    ScoverageKeys.coverageExcludedFiles := excludedPackages.mkString(";"),
+    ScoverageKeys.coverageMinimum := 80,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
     scalacOptions ++= Seq("-feature"),
@@ -74,6 +102,7 @@ lazy val root = (project in file("."))
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork        := true,
   javaOptions ++= Seq(
+    "-Dlogger.resource=logback-test.xml",
     "-Dconfig.resource=test.application.conf"
   )
 )
