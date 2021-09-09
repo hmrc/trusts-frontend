@@ -87,8 +87,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
 
   lazy val trustsStoreUrl: String = configuration.get[Service]("microservice.services.trusts-store").baseUrl
 
-  lazy val trustsAuthUrl: String = configuration.get[Service]("microservice.services.trusts-auth").baseUrl
-
   def languageMap: Map[String, Lang] =
     if (languageTranslationEnabled) {
       Map(
@@ -105,9 +103,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
 
   lazy val deploymentNotification : Boolean =
     configuration.get[Boolean]("microservice.services.features.deployment.notification.enabled")
-
-  lazy val disableNonTaxableRegistrations: Boolean =
-    configuration.get[Boolean]("microservice.services.features.non-taxable.registrations.block.enabled")
 
   lazy val declarationEmailEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")

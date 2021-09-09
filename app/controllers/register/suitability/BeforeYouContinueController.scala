@@ -16,19 +16,17 @@
 
 package controllers.register.suitability
 
-import config.FrontendAppConfig
 import controllers.actions.StandardActionSets
 import models.requests.MatchingAndSuitabilityDataRequest
 import pages.register.TrustHaveAUTRPage
-import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
+import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.TrustsStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.suitability._
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 class BeforeYouContinueController @Inject()(
                                              override val messagesApi: MessagesApi,
@@ -38,19 +36,13 @@ class BeforeYouContinueController @Inject()(
                                              taxableAgentView: BeforeYouContinueTaxableAgentView,
                                              existingTaxableView: BeforeYouContinueExistingTaxableView,
                                              nonTaxableView: BeforeYouContinueNonTaxableView,
-                                             nonTaxableAgentView: BeforeYouContinueNonTaxAgentView,
-                                             featureFlagService: TrustsStoreService,
-                                             appConfig: FrontendAppConfig
-                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+                                             nonTaxableAgentView: BeforeYouContinueNonTaxAgentView
+                                           ) extends FrontendBaseController with I18nSupport {
 
-  private def routeNonTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (appConfig.disableNonTaxableRegistrations) {
-    Redirect(controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad())
+  private def routeNonTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (isAgentUser) {
+    Ok(nonTaxableAgentView())
   } else {
-    if (isAgentUser) {
-      Ok(nonTaxableAgentView())
-    } else {
-      Ok(nonTaxableView())
-    }
+    Ok(nonTaxableView())
   }
 
   private def routeTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (isAgentUser) {
@@ -61,7 +53,6 @@ class BeforeYouContinueController @Inject()(
 
   def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
-
       if (isExistingTrust) {
         Ok(existingTaxableView())
       } else {
@@ -73,23 +64,12 @@ class BeforeYouContinueController @Inject()(
       }
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      featureFlagService.isNonTaxableAccessCodeEnabled() map { isNonTaxableAccessEnabled =>
-        if(isExpressTrust && !isTrustTaxable && isNonTaxableAccessEnabled) {
-          Redirect(routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad().url)
-        } else {
-          Redirect(controllers.register.routes.CreateDraftRegistrationController.create().url)
-        }
-      }
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { _ =>
+      Future.successful(Redirect(controllers.register.routes.CreateDraftRegistrationController.create().url))
   }
 
   private def isTrustTaxable(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
     request.getPage(TrustTaxableYesNoPage).contains(true)
-
-  private def isExpressTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
-    request.getPage(ExpressTrustYesNoPage).contains(true)
 
   private def isExistingTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
     request.getPage(TrustHaveAUTRPage).contains(true)

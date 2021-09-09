@@ -87,9 +87,6 @@ POST       /has-undeclared-tax-liability                controllers.register.sui
 GET        /before-you-continue                         controllers.register.suitability.BeforeYouContinueController.onPageLoad()
 POST       /before-you-continue                         controllers.register.suitability.BeforeYouContinueController.onSubmit()
 
-GET        /non-taxable-trust-registration-access-code  controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onPageLoad()
-POST       /non-taxable-trust-registration-access-code  controllers.register.suitability.NonTaxableTrustRegistrationAccessCodeController.onSubmit()
-
 GET        /no-need-to-register                         controllers.register.suitability.NoNeedToRegisterController.onPageLoad()
 
 ## Agents
