@@ -78,31 +78,4 @@ class TrustsStoreServiceSpec extends RegistrationSpecBase {
       }
     }
   }
-
-  "isNonTaxableAccessCodeEnabled" must {
-
-    "return true when non-taxable access codes are enabled" in {
-
-      when(mockConnector.getFeature(any())(any(), any()))
-        .thenReturn(Future.successful(FeatureResponse("non-taxable.access-code", isEnabled = true)))
-
-      val result = trustsStoreService.isNonTaxableAccessCodeEnabled()
-
-      whenReady(result) { res =>
-        res mustEqual true
-      }
-    }
-
-    "return false when non-taxable access codes are disabled" in {
-
-      when(mockConnector.getFeature(any())(any(), any()))
-        .thenReturn(Future.successful(FeatureResponse("non-taxable.access-code", isEnabled = false)))
-
-      val result = trustsStoreService.isNonTaxableAccessCodeEnabled()
-
-      whenReady(result) { res =>
-        res mustEqual false
-      }
-    }
-  }
 }

@@ -41,33 +41,6 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
   "BeforeYouContinue Controller" must {
 
-    "in 4mld mode" when {
-
-      "return OK and the correct view for a taxable journey GET" in {
-
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, true).success.value
-          .set(TrustHaveAUTRPage, false).success.value
-
-        val application = applicationBuilder(userAnswers = Some(answers))
-          .build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[BeforeYouContinueTaxableView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view()(request, messages).toString
-
-        application.stop()
-      }
-
-    }
-
     "in 5mld mode" when {
 
       "return OK and the correct view for a taxable journey GET" in {
@@ -183,71 +156,12 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
         application.stop()
       }
 
-      "return 'No need to register' when disable non-taxable registration feature enabled for a non taxable organisation journey GET" in {
+      "redirect to the next page when valid data is submitted" must {
 
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, false).success.value
-
-        val application = new GuiceApplicationBuilder()
-          .overrides(
-            bind[RegistrationIdentifierAction].toInstance(
-              new FakeIdentifyForRegistration(Organisation, fakeFrontendAppConfig)(injectedParsers, trustsAuth, Enrolments(Set()))
-            ),
-            bind[MatchingAndSuitabilityDataRetrievalAction].toInstance(new FakeMatchingAndSuitabilityDataRetrievalAction(Some(answers)))
-          ).configure(
-          "microservice.services.features.non-taxable.registrations.block.enabled" -> true
-        ).build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad().url
-
-        application.stop()
-      }
-
-      "return 'No need to register' when disable non-taxable registration feature enabled for a non taxable agent journey GET" in {
-
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, false).success.value
-
-        val application = new GuiceApplicationBuilder()
-          .overrides(
-            bind[RegistrationIdentifierAction].toInstance(
-              new FakeIdentifyForRegistration(Agent, fakeFrontendAppConfig)(injectedParsers, trustsAuth, Enrolments(Set()))
-            ),
-            bind[MatchingAndSuitabilityDataRetrievalAction].toInstance(new FakeMatchingAndSuitabilityDataRetrievalAction(Some(answers)))
-          ).configure(
-          "microservice.services.features.non-taxable.registrations.block.enabled" -> true
-        ).build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustBe controllers.register.suitability.routes.NoNeedToRegisterController.onPageLoad().url
-
-        application.stop()
-      }
-
-      "redirect to the next page when valid data is submitted" when {
-
-        "express, non-taxable trust with non-taxable access code feature enabled" in {
-
-          when(mockTrustsStoreService.isNonTaxableAccessCodeEnabled()(any(), any()))
-            .thenReturn(Future.successful(true))
-
+        "create the draft registration" in {
           val answers = emptyMatchingAndSuitabilityUserAnswers
-            .set(ExpressTrustYesNoPage, true).success.value
-            .set(TrustTaxableYesNoPage, false).success.value
 
-          val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-            .build()
+          val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation).build()
 
           val request = FakeRequest(POST, beforeYouContinueRoute)
 
@@ -255,37 +169,9 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
           status(result) mustEqual SEE_OTHER
 
-          redirectLocation(result).value mustEqual
-            routes.NonTaxableTrustRegistrationAccessCodeController.onPageLoad().url
+          redirectLocation(result).value mustEqual controllers.register.routes.CreateDraftRegistrationController.create().url
 
           application.stop()
-        }
-
-        "not an express, non-taxable trust with non-taxable access code feature enabled" in {
-
-          forAll(arbitrary[(Boolean, Boolean, Boolean)].suchThat(x => !(x._1 && !x._2 && x._3))) {
-            case (isExpress, isTaxable, isFeatureEnabled) =>
-
-              when(mockTrustsStoreService.isNonTaxableAccessCodeEnabled()(any(), any()))
-                .thenReturn(Future.successful(isFeatureEnabled))
-
-              val answers = emptyMatchingAndSuitabilityUserAnswers
-                .set(ExpressTrustYesNoPage, isExpress).success.value
-                .set(TrustTaxableYesNoPage, isTaxable).success.value
-
-              val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
-                .build()
-
-              val request = FakeRequest(POST, beforeYouContinueRoute)
-
-              val result = route(application, request).value
-
-              status(result) mustEqual SEE_OTHER
-
-              redirectLocation(result).value mustEqual controllers.register.routes.CreateDraftRegistrationController.create().url
-
-              application.stop()
-          }
         }
       }
     }
