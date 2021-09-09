@@ -374,7 +374,7 @@ suitability.beforeYouContinue.taxable.agent.continue = Ewch yn eich blaen i gofr
 
 suitability.expressTrust.title = A ydych yn cofrestru ymddiriedolaeth ddatganedig?
 suitability.expressTrust.heading = A ydych yn cofrestru ymddiriedolaeth ddatganedig?
-#suitability.expressTrust.p1 =
+suitability.expressTrust.p1 = Ymddiriedolaeth ddatganedig yw ymddiriedolaeth a grëwyd yn fwriadol gan setlwr, fel arfer ar ffurf dogfen fel gweithred ysgrifenedig o ymddiriedaeth. Gellir creu ymddiriedolaethau datganedig drwy ewyllys neu yn ystod oes rhywun, a elwir hefyd yn inter-vivos.
 suitability.expressTrust.error.required = Dewiswch ‘Iawn’ neu ‘Na’ i roi gwybod i ni a ydych yn cofrestru ymddiriedolaeth ddatganedig.
 
 suitability.noNeedToRegister.heading = Nid oes yn rhaid i chi gofrestru’r ymddiriedolaeth hon
@@ -435,6 +435,7 @@ taskList.summary.paragraph1.start = Gallwch
 taskList.summary.paragraph2 = I ddiweddaru unrhyw fanylion asedion ar ôl gwneud y datganiad ar gyfer yr ymddiriedolaeth hon
 taskList.summary.paragraph3=Gallwch ddychwelyd i’r gwasanaeth hon ar unrhyw adeg er mwyn ychwanegu, dileu, neu newid manylion perchnogaeth neu gyfran reolaethol mewn cwmni nad yw’n rhan o’r AEE.
 taskList.taxLiability.label = Blynyddoedd rhwymedigaeth treth
+taskList.taxLiability.hidden = Dim angen gweithredu
 taskList.title = Cynnydd cofrestru
 taskList.trustDetails.label = Manylion yr ymddiriedolaeth
 taskList.trustees.label = Ymddiriedolwyr
@@ -699,6 +700,9 @@ nonEeaBusiness.internationalAddress.checkYourAnswersLabel = Beth yw cyfeiriad {0
 nonEeaBusiness.name.checkYourAnswersLabel = Beth yw enw’r cwmni?
 nonEeaBusiness.startDate.checkYourAnswersLabel = Pryd y gwnaeth yr ymddiriedolaeth ddechrau ei pherchnogaeth neu gyfran reolaethol yn {0}?
 nonresidentType.checkYourAnswersLabel = Beth yw’r math dibreswyl?
+notification.warning = Mae angen i chi lenwi unrhyw gofrestriadau ymddiriedolaeth sydd wedi’u llenwi’n rhannol erbyn 28 Ebrill, 4:30 PM. Bydd unrhyw gofrestriadau anghyflawn yn cael eu dileu ar ôl yr amser hwn.
+notification.important = Pwysig
+notification.instruction = Ni fydd y Gwasanaeth Cofrestru Ymddiriedolaethau ar gael rhwng 29 Ebrill a 4 Mai. Mae hyn er mwyn i CThEM allu gwneud newidiadau hanfodol i’r gwasanaeth.
 other.description.checkYourAnswersLabel = Beth yw’r disgrifiad o’r ased?
 other.value.checkYourAnswersLabel = Beth yw gwerth presennol {0}?
 otherBeneficiary.addressUkYesNo.checkYourAnswersLabel = A yw cyfeiriad {0} yn y DU?
