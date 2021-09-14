@@ -31,13 +31,12 @@ class Navigator @Inject()(config: FrontendAppConfig) {
     case _ => _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
-  protected def route(is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] =
-    MatchingRoutes.route(config, is5mldEnabled) orElse
-      SuitabilityRoutes.route(is5mldEnabled) orElse
+  protected def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] =
+    MatchingRoutes.route(config) orElse
+      SuitabilityRoutes.route() orElse
       defaultRoute
 
-  def nextPage(page: Page,
-               is5mldEnabled: Boolean = false): TrustsFrontendUserAnswers[_] => Call =
-    route(is5mldEnabled)(page)
+  def nextPage(page: Page): TrustsFrontendUserAnswers[_] => Call =
+    route()(page)
 
 }

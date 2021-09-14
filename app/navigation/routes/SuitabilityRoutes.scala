@@ -24,10 +24,10 @@ import play.api.mvc.Call
 
 object SuitabilityRoutes extends Routes {
 
-  def route(is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+  def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
     case ExpressTrustYesNoPage => ua =>
       ua.get(TrustTaxableYesNoPage) match {
-        case Some(true) if is5mldEnabled => routes.BeforeYouContinueController.onPageLoad()
+        case Some(true) => routes.BeforeYouContinueController.onPageLoad()
         case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
       }
     case TaxLiabilityInCurrentTaxYearYesNoPage =>
@@ -42,21 +42,17 @@ object SuitabilityRoutes extends Routes {
         ua,
         UndeclaredTaxLiabilityYesNoPage,
         routes.BeforeYouContinueController.onPageLoad(),
-        nonTaxableRoute(is5mldEnabled, ua)
+        nonTaxableRoute(ua)
       )
   }
 
-  private def nonTaxableRoute(is5mldEnabled: Boolean, answers: TrustsFrontendUserAnswers[_]): Call = {
-    if (is5mldEnabled) {
+  private def nonTaxableRoute(answers: TrustsFrontendUserAnswers[_]): Call = {
       yesNoNav(
         answers,
         ExpressTrustYesNoPage,
         routes.BeforeYouContinueController.onPageLoad(),
         routes.NoNeedToRegisterController.onPageLoad()
       )
-    } else {
-      routes.NoNeedToRegisterController.onPageLoad()
-    }
   }
 
 }

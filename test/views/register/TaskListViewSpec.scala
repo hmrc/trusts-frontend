@@ -137,8 +137,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           sections = Nil,
           additionalSections = Nil,
           isTaskListComplete = false,
-          affinityGroup = Organisation,
-          is5mldEnabled = false
+          affinityGroup = Organisation
         )(fakeRequest, messages)
 
         val doc = asDocument(applyView)
@@ -152,147 +151,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
     "deployment notification is disabled" when {
 
-      "4mld" when {
-
-        "organisation" when {
-
-          "task list complete" must {
-
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-            val applyView = view.apply(
-              isTaxable = true,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = true,
-              affinityGroup = Organisation,
-              is5mldEnabled = false
-            )(fakeRequest, messages)
-
-            behave like normalPage(applyView, None, "taskList", "paragraph1")
-
-            behave like pageWithBackLink(applyView)
-
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-            "display correct content" in {
-              val doc = asDocument(applyView)
-
-              assertionForSavedUntil(doc, rendered = true)
-              assertionForPrintACopySection(doc, rendered = true)
-              assertionForUpdateAssetDetailsSection(doc, rendered = true)
-              assertionForNonEeaCompanySection(doc, rendered = false)
-              assertionForPrintAndSave(doc, rendered = true)
-            }
-          }
-
-          "task list incomplete" must {
-
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-            val applyView = view.apply(
-              isTaxable = true,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = false,
-              affinityGroup = Organisation,
-              is5mldEnabled = false
-            )(fakeRequest, messages)
-
-            behave like normalPage(applyView, None, "taskList", "paragraph1")
-
-            behave like pageWithBackLink(applyView)
-
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-            "display correct content" in {
-              val doc = asDocument(applyView)
-
-              assertionForSavedUntil(doc, rendered = true)
-              assertionForPrintACopySection(doc, rendered = false)
-              assertionForUpdateAssetDetailsSection(doc, rendered = false)
-              assertionForNonEeaCompanySection(doc, rendered = false)
-              assertionForPrintAndSave(doc, rendered = false)
-            }
-          }
-        }
-
-        "agent" when {
-
-          "task list complete" must {
-
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-            val applyView = view.apply(
-              isTaxable = true,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = true,
-              affinityGroup = Agent,
-              is5mldEnabled = false
-            )(fakeRequest, messages)
-
-            behave like normalPage(applyView, None, "taskList", "paragraph1")
-
-            behave like pageWithBackLink(applyView)
-
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-            "display correct content" in {
-              val doc = asDocument(applyView)
-
-              assertSavedRegistrationsAndAgentDetailsRendered(doc)
-              assertionForSavedUntil(doc, rendered = false)
-              assertionForPrintACopySection(doc, rendered = true)
-              assertionForUpdateAssetDetailsSection(doc, rendered = true)
-              assertionForNonEeaCompanySection(doc, rendered = false)
-              assertionForPrintAndSave(doc, rendered = true)
-            }
-          }
-
-          "task list incomplete" must {
-
-            val view = viewFor[TaskListView](Some(emptyUserAnswers))
-
-            val applyView = view.apply(
-              isTaxable = true,
-              draftId = fakeDraftId,
-              savedUntil = savedUntil,
-              sections = fakeSections,
-              additionalSections = fakeAdditionalSections,
-              isTaskListComplete = false,
-              affinityGroup = Agent,
-              is5mldEnabled = false
-            )(fakeRequest, messages)
-
-            behave like normalPage(applyView, None, "taskList", "paragraph1")
-
-            behave like pageWithBackLink(applyView)
-
-            behave like taskList(applyView, fakeSections ++ fakeAdditionalSections)
-
-            "display correct content" in {
-              val doc = asDocument(applyView)
-
-              assertSavedRegistrationsAndAgentDetailsRendered(doc)
-              assertionForSavedUntil(doc, rendered = false)
-              assertionForPrintACopySection(doc, rendered = false)
-              assertionForUpdateAssetDetailsSection(doc, rendered = false)
-              assertionForNonEeaCompanySection(doc, rendered = false)
-              assertionForPrintAndSave(doc, rendered = false)
-            }
-          }
-        }
-      }
-
-      "5mld" when {
-
         "organisation" when {
 
           "task list complete" when {
@@ -308,8 +166,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Organisation,
-                is5mldEnabled = true
+                affinityGroup = Organisation
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -340,8 +197,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Organisation,
-                is5mldEnabled = true
+                affinityGroup = Organisation
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -375,8 +231,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Organisation,
-                is5mldEnabled = true
+                affinityGroup = Organisation
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -407,8 +262,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Organisation,
-                is5mldEnabled = true
+                affinityGroup = Organisation
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -445,8 +299,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Agent,
-                is5mldEnabled = true
+                affinityGroup = Agent
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -478,8 +331,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Agent,
-                is5mldEnabled = true
+                affinityGroup = Agent
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -514,8 +366,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Agent,
-                is5mldEnabled = true
+                affinityGroup = Agent
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -547,8 +398,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Agent,
-                is5mldEnabled = true
+                affinityGroup = Agent
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -570,7 +420,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
             }
           }
         }
-      }
     }
   }
 }

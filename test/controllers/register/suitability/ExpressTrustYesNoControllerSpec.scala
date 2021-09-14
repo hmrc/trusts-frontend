@@ -86,39 +86,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       application.stop()
     }
 
-    "in 4mld mode" when {
-
-      "redirect to the next page when valid data is submitted" in {
-
-        when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
-
-        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
-          .build()
-
-        val request = FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", "true"))
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
-
-        val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
-        verify(cacheRepository).set(uaCaptor.capture)
-        uaCaptor.getValue.get(TrustHaveAUTRPage) mustNot be(defined)
-        uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
-
-        application.stop()
-      }
-
-    }
-
-    "in 5mld mode" when {
-
       "redirect to the next page when valid data is submitted and the trust has a UTR" in {
-
-        when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
 
         val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, true).success.value
 
@@ -143,8 +111,6 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
       "redirect to the next page when valid data is submitted and the trust doesn't have a UTR" in {
 
-        when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(true))
-
         val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, false).success.value
 
         val application = applicationBuilder(userAnswers = Some(answers))
@@ -165,8 +131,6 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         application.stop()
       }
-
-    }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 

@@ -74,10 +74,9 @@ class TaskListController @Inject()(
           sections <- registrationProgress.items(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
           additionalSections <- registrationProgress.additionalItems(draftId, isTaxable)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
-          is5mldEnabled <- featureFlagService.is5mldEnabled()
         } yield {
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
-          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup, is5mldEnabled))
+          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup))
         }
       }
 

@@ -17,8 +17,8 @@
 package connector
 
 import com.github.tomakehurst.wiremock.client.WireMock._
+import models.TaskStatuses
 import models.registration.pages.TagStatus.Completed
-import models.{TaskStatuses, FeatureResponse}
 import org.scalatest.{MustMatchers, OptionValues}
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
@@ -46,49 +46,6 @@ class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionVal
   private lazy val connector = app.injector.instanceOf[TrustsStoreConnector]
 
   "TrustsStoreConnector" when {
-
-    ".getFeature" must {
-
-      val url = s"/trusts-store/features/5mld"
-
-      "return a feature flag of true if 5mld is enabled" in {
-
-        server.stubFor(
-          get(urlEqualTo(url))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-                .withBody(
-                  Json.stringify(
-                    Json.toJson(FeatureResponse("5mld", isEnabled = true))
-                  )
-                )
-            )
-        )
-
-        val result = Await.result(connector.getFeature("5mld"), Duration.Inf)
-        result mustBe FeatureResponse("5mld", isEnabled = true)
-      }
-
-      "return a feature flag of false if 5mld is not enabled" in {
-
-        server.stubFor(
-          get(urlEqualTo(url))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-                .withBody(
-                  Json.stringify(
-                    Json.toJson(FeatureResponse("5mld", isEnabled = false))
-                  )
-                )
-            )
-        )
-
-        val result = Await.result(connector.getFeature("5mld"), Duration.Inf)
-        result mustBe FeatureResponse("5mld", isEnabled = false)
-      }
-    }
 
     ".getTaskStatuses" must {
 
