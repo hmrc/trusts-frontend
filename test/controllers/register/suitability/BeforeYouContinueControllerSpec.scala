@@ -17,31 +17,19 @@
 package controllers.register.suitability
 
 import base.RegistrationSpecBase
-import controllers.actions.register._
-import controllers.actions.{FakeIdentifyForRegistration, FakeMatchingAndSuitabilityDataRetrievalAction}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.TrustHaveAUTRPage
-import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
+import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
-import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
+import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.suitability._
-
-import scala.concurrent.Future
 
 class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
   private lazy val beforeYouContinueRoute: String = routes.BeforeYouContinueController.onPageLoad().url
 
   "BeforeYouContinue Controller" must {
-
-    "in 5mld mode" when {
 
       "return OK and the correct view for a taxable journey GET" in {
 
@@ -174,6 +162,5 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
           application.stop()
         }
       }
-    }
   }
 }

@@ -85,8 +85,7 @@ class DeclarationController @Inject()(
           val r = for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers)
-            is5mldEnabled <- featureFlagService.is5mldEnabled()
-            response <- submissionService.submit(updatedAnswers, is5mldEnabled)
+            response <- submissionService.submit(updatedAnswers)
             result <- handleResponse(updatedAnswers, response, draftId)
           } yield result
 

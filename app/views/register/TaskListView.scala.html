@@ -40,8 +40,7 @@
     sections: List[Task],
     additionalSections: List[Task],
     isTaskListComplete: Boolean,
-    affinityGroup: AffinityGroup,
-    is5mldEnabled: Boolean
+    affinityGroup: AffinityGroup
 )(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
@@ -86,11 +85,9 @@
             </ul>
         }
 
-        @if(is5mldEnabled) {
             <h2>@messages("taskList.summary.heading3")</h2>
 
             <p>@messages("taskList.summary.paragraph3")</p>
-        }
 
         @formHelper(action = TaskListController.onSubmit(draftId), 'autoComplete -> "off") {
             @submitButton(Some(messages("taskList.summary.continue")))

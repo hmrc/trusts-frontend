@@ -31,51 +31,6 @@ trait SuitabilityRoutes {
 
   def suitabilityRoutes()(implicit navigator: Navigator): Unit = {
 
-    "when in 4mld mode" must {
-      "Any tax liability in current tax year?" when {
-        "-> YES -> Before you continue" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
-
-              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad())
-          }
-        }
-        "-> NO -> Any undeclared tax liability?" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, false).success.value
-
-              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
-                .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad())
-          }
-        }
-      }
-
-      "Any undeclared tax liability?" when {
-        "-> YES -> Before you continue" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, true).success.value
-
-              navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad())
-          }
-        }
-        "-> NO -> You do not need to register" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(UndeclaredTaxLiabilityYesNoPage, false).success.value
-
-              navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
-                .mustBe(routes.NoNeedToRegisterController.onPageLoad())
-          }
-        }
-      }
-    }
-    "when in 5mld mode" must {
-
       "ExpressTrust Page" when {
         "-> YES -> Any tax liability in current tax year?" in {
           forAll(arbitrary[UserAnswers]) {
@@ -83,7 +38,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(ExpressTrustYesNoPage, true).success.value
                 .set(TrustTaxableYesNoPage, true).success.value
 
-              navigator.nextPage(ExpressTrustYesNoPage, is5mldEnabled = true)(answers)
+              navigator.nextPage(ExpressTrustYesNoPage)(answers)
                 .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
@@ -94,7 +49,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(ExpressTrustYesNoPage, false).success.value
                 .set(TrustTaxableYesNoPage, true).success.value
 
-              navigator.nextPage(ExpressTrustYesNoPage, is5mldEnabled = true)(answers)
+              navigator.nextPage(ExpressTrustYesNoPage)(answers)
                 .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
@@ -107,7 +62,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
                 .set(TrustTaxableYesNoPage, true).success.value
 
-              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, is5mldEnabled = true)(answers)
+              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
                 .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
         }
@@ -117,7 +72,7 @@ trait SuitabilityRoutes {
               val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, false).success.value
                 .set(TrustTaxableYesNoPage, true).success.value
 
-              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage, is5mldEnabled = true)(answers)
+              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
                 .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad())
           }
         }
@@ -132,7 +87,7 @@ trait SuitabilityRoutes {
                   .set(ExpressTrustYesNoPage, false).success.value
                   .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
 
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, is5mldEnabled = true)(answers)
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
                   .mustBe(routes.BeforeYouContinueController.onPageLoad())
             }
           }
@@ -143,7 +98,7 @@ trait SuitabilityRoutes {
                   .set(ExpressTrustYesNoPage, false).success.value
                   .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
 
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, is5mldEnabled = true)(answers)
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
                   .mustBe(routes.NoNeedToRegisterController.onPageLoad())
             }
           }
@@ -157,7 +112,7 @@ trait SuitabilityRoutes {
                   .set(ExpressTrustYesNoPage, true).success.value
                   .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
 
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, is5mldEnabled = true)(answers)
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
                   .mustBe(routes.BeforeYouContinueController.onPageLoad())
             }
           }
@@ -168,12 +123,11 @@ trait SuitabilityRoutes {
                   .set(ExpressTrustYesNoPage, true).success.value
                   .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
 
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage, is5mldEnabled = true)(answers)
+                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
                   .mustBe(routes.BeforeYouContinueController.onPageLoad())
             }
           }
         }
       }
-    }
   }
 }

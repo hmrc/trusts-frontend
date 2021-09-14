@@ -32,28 +32,13 @@ trait MatchingRoutes {
 
   def matchingRoutes()(implicit navigator: Navigator): Unit = {
 
-    "in 4mld mode" must {
-
-      "go to TrustHaveAUTR from TrustRegisteredOnline page" in {
-
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-
-            navigator.nextPage(TrustRegisteredOnlinePage)(userAnswers)
-              .mustBe(routes.TrustHaveAUTRController.onPageLoad())
-        }
-      }
-    }
-
-    "in 5mld mode" must {
-
       "TrustRegisteredOnline page -> Yes -> TrustHaveAUTR page" in {
         forAll(arbitrary[UserAnswers]) {
           userAnswers =>
 
             val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
 
-            navigator.nextPage(TrustRegisteredOnlinePage, is5mldEnabled = true)(answers)
+            navigator.nextPage(TrustRegisteredOnlinePage)(answers)
               .mustBe(routes.TrustHaveAUTRController.onPageLoad())
         }
       }
@@ -64,11 +49,10 @@ trait MatchingRoutes {
 
             val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
 
-            navigator.nextPage(TrustRegisteredOnlinePage, is5mldEnabled = true)(answers)
+            navigator.nextPage(TrustRegisteredOnlinePage)(answers)
               .mustBe(routes.WhichIdentifierController.onPageLoad())
         }
       }
-    }
 
     "navigate when trust is not registered online" when {
 
@@ -107,8 +91,9 @@ trait MatchingRoutes {
         }
       }
 
-      "the user does not have a UTR for the trust" when {
-        "4mld mode go to TaxLiabilityInCurrentTaxYearYesNo Controller" in {
+      "the user does not have a UTR for the trust" must {
+
+        "go to ExpressTrustYesNo Controller" in {
           forAll(arbitrary[UserAnswers]) {
             userAnswers =>
 
@@ -117,19 +102,6 @@ trait MatchingRoutes {
                 .set(TrustHaveAUTRPage, false).success.value
 
               navigator.nextPage(TrustHaveAUTRPage)(answers)
-                .mustBe(controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad())
-          }
-        }
-
-        "5mld mode go to ExpressTrustYesNo Controller" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-
-              val answers = userAnswers
-                .set(TrustRegisteredOnlinePage, false).success.value
-                .set(TrustHaveAUTRPage, false).success.value
-
-              navigator.nextPage(TrustHaveAUTRPage, is5mldEnabled = true)(answers)
                 .mustBe(controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad())
           }
         }

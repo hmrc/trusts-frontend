@@ -50,8 +50,6 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
   private val savedUntil = "21 April 2021"
   private val utr = "1234567890"
 
-  private val is5mldEnabled: Boolean = true
-
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress)
 
@@ -68,11 +66,6 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
     when(mockDateFormatter.savedUntil(any())(any()))
       .thenReturn(savedUntil)
-
-    reset(mockTrustsStoreService)
-
-    when(mockTrustsStoreService.is5mldEnabled()(any(), any()))
-      .thenReturn(Future.successful(is5mldEnabled))
   }
 
   override protected def applicationBuilder(userAnswers: Option[TrustsFrontendUserAnswers[_]],
@@ -157,8 +150,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
               sections = fakeItems,
               additionalSections = fakeAdditionalItems,
               isTaskListComplete = true,
-              affinityGroup = Organisation,
-              is5mldEnabled = is5mldEnabled
+              affinityGroup = Organisation
             )(request, messages).toString
 
           application.stop()
@@ -240,16 +232,13 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
     "a new trust" must {
       "return OK and the correct view for a GET" in {
 
-        forAll(arbitrary[Boolean], arbitrary[Boolean]) {
-          (isTaxable, is5mldEnabled) =>
+        forAll(arbitrary[Boolean]) {
+          (isTaxable) =>
 
             val answers = emptyUserAnswers
               .set(TrustRegisteredOnlinePage, false).success.value
               .set(TrustHaveAUTRPage, false).success.value
               .set(TrustTaxableYesNoPage, isTaxable).success.value
-
-            when(mockTrustsStoreService.is5mldEnabled()(any(), any()))
-              .thenReturn(Future.successful(is5mldEnabled))
 
             val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
@@ -269,8 +258,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
                 sections = fakeItems,
                 additionalSections = fakeAdditionalItems,
                 isTaskListComplete = true,
-                affinityGroup = Organisation,
-                is5mldEnabled = is5mldEnabled
+                affinityGroup = Organisation
               )(request, messages).toString
 
             application.stop()

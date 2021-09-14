@@ -33,17 +33,15 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
 class MatchingService @Inject()(trustConnector: TrustConnector,
-                                cacheRepository: CacheRepository,
-                                featureFlagService: TrustsStoreService) {
+                                cacheRepository: CacheRepository) {
 
-  private case class MatchingContext(is5mldEnabled: Boolean, isAgent: Boolean, userAnswers: MatchingAndSuitabilityUserAnswers)
+  private case class MatchingContext(isAgent: Boolean, userAnswers: MatchingAndSuitabilityUserAnswers)
 
   def matching(userAnswers: MatchingAndSuitabilityUserAnswers, isAgent: Boolean)
               (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
     val matchResult = for {
-      is5mldEnabled <- featureFlagService.is5mldEnabled()
       result <- {
-        val context = MatchingContext(is5mldEnabled, isAgent, userAnswers)
+        val context = MatchingContext(isAgent, userAnswers)
         val data = payload(userAnswers)
         attemptMatch(context, data)
       }
@@ -82,15 +80,11 @@ class MatchingService @Inject()(trustConnector: TrustConnector,
   private def successful(context: MatchingContext)
                         (implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
     case SuccessOrFailureResponse(true) =>
-      if (context.is5mldEnabled) {
         saveTrustMatchedStatusAndRedirect(
           context.userAnswers,
           Matched.Success,
           controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
         )
-      } else {
-        saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Success, CreateDraftRegistrationController.create())
-      }
   }
 
   private def unsuccessful(context: MatchingContext)

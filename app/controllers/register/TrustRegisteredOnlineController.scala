@@ -25,7 +25,6 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
 import repositories.CacheRepository
-import services.TrustsStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustRegisteredOnlineView
 
@@ -39,7 +38,6 @@ class TrustRegisteredOnlineController @Inject()(
                                                  identify: RegistrationIdentifierAction,
                                                  getData: MatchingAndSuitabilityDataRetrievalAction,
                                                  requireData: MatchingAndSuitabilityDataRequiredAction,
-                                                 featureFlagService: TrustsStoreService,
                                                  formProvider: YesNoFormProvider,
                                                  val controllerComponents: MessagesControllerComponents,
                                                  view: TrustRegisteredOnlineView
@@ -70,9 +68,8 @@ class TrustRegisteredOnlineController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredOnlinePage, value))
-            is5mldEnabled <- featureFlagService.is5mldEnabled()
             _ <- cacheRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage, is5mldEnabled = is5mldEnabled)(updatedAnswers))
+          } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage)(updatedAnswers))
         }
       )
   }

@@ -25,37 +25,29 @@ import play.api.mvc.Call
 
 object MatchingRoutes extends Routes {
 
-  def route(config: FrontendAppConfig, is5mldEnabled: Boolean): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
-    case TrustRegisteredOnlinePage => ua => redirectToIdentifierQuestion(ua, is5mldEnabled)
-    case TrustHaveAUTRPage => userAnswers => trustHaveAUTRRoute(userAnswers, config, is5mldEnabled)
+  def route(config: FrontendAppConfig): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+    case TrustRegisteredOnlinePage => ua => redirectToIdentifierQuestion(ua)
+    case TrustHaveAUTRPage => userAnswers => trustHaveAUTRRoute(userAnswers, config)
     case WhatIsTheUTRPage => _ => controllers.register.routes.MatchingNameController.onPageLoad()
     case MatchingNamePage => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
   }
 
-  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_], is5mldEnabled: Boolean): Call = {
+  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_]): Call = {
     answers.get(TrustRegisteredOnlinePage) match {
-      case Some(true) if is5mldEnabled => routes.WhichIdentifierController.onPageLoad()
+      case Some(true) => routes.WhichIdentifierController.onPageLoad()
       case _ => routes.TrustHaveAUTRController.onPageLoad()
     }
   }
 
-  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[_], config: FrontendAppConfig, is5mldEnabled: Boolean): Call = {
+  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[_], config: FrontendAppConfig): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
       case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad()
-      case (Some(false), Some(false)) => askExpressIf5mld(is5mldEnabled)
+      case (Some(false), Some(false)) => controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
       case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
       case (Some(true), Some(true)) => routeToMaintain(config)
       case _ => routes.SessionExpiredController.onPageLoad()
-    }
-  }
-
-  private def askExpressIf5mld(is5mldEnabled: Boolean): Call = {
-    if (is5mldEnabled) {
-      controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
-    } else {
-      controllers.register.suitability.routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
     }
   }
 

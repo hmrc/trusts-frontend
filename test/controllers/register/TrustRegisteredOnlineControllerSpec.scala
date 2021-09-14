@@ -18,15 +18,11 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import forms.YesNoFormProvider
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
 import pages.register.TrustRegisteredOnlinePage
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.TrustRegisteredOnlineView
-
-import scala.concurrent.Future
 
 class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
@@ -79,8 +75,6 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
-
       val request = FakeRequest(POST, trustRegisteredOnlineRoute)
         .withFormUrlEncodedBody(("value", "true"))
 
@@ -96,8 +90,6 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
     "return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
-
-      when(mockTrustsStoreService.is5mldEnabled()(any(), any())).thenReturn(Future.successful(false))
 
       val request = FakeRequest(POST, trustRegisteredOnlineRoute)
         .withFormUrlEncodedBody(("value", ""))

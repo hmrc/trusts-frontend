@@ -24,7 +24,6 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.CacheRepository
-import services.TrustsStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustHaveAUTRView
 
@@ -37,7 +36,6 @@ class TrustHaveAUTRController @Inject()(
                                          navigator: Navigator,
                                          actions: StandardActionSets,
                                          formProvider: YesNoFormProvider,
-                                         featureFlagService: TrustsStoreService,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: TrustHaveAUTRView
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
@@ -65,10 +63,9 @@ class TrustHaveAUTRController @Inject()(
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
-            is5mldEnabled <- featureFlagService.is5mldEnabled()
             _ <- cacheRepository.set(updatedAnswers)
           } yield {
-            Redirect(navigator.nextPage(TrustHaveAUTRPage, is5mldEnabled = is5mldEnabled)(updatedAnswers))
+            Redirect(navigator.nextPage(TrustHaveAUTRPage)(updatedAnswers))
           }
         }
       )

@@ -65,18 +65,16 @@ class ExpressTrustYesNoController @Inject()(
 
         value => {
           for {
-            is5mldEnabled <- featureFlagService.is5mldEnabled
             answers <- Future.fromTry(request.userAnswers.set(ExpressTrustYesNoPage, value))
             updatedAnswers <- {
-              val trustHasUtr = request.userAnswers.get(TrustHaveAUTRPage)
-              (is5mldEnabled, trustHasUtr) match {
-                case (true, Some(true)) => Future.fromTry(answers.set(TrustTaxableYesNoPage, true))
+              request.userAnswers.get(TrustHaveAUTRPage) match {
+                case Some(true) => Future.fromTry(answers.set(TrustTaxableYesNoPage, true))
                 case _ => Future(answers)
               }
             }
             _ <- cacheRepository.set(updatedAnswers)
           } yield {
-            Redirect(navigator.nextPage(ExpressTrustYesNoPage, is5mldEnabled = is5mldEnabled)(updatedAnswers))
+            Redirect(navigator.nextPage(ExpressTrustYesNoPage)(updatedAnswers))
           }
         }
       )

@@ -25,6 +25,6 @@ class FakeNavigator(config: FrontendAppConfig) extends Navigator(config) {
 
   val desiredRoute: Call = Call("GET", "/foo")
 
-  override def nextPage(page: Page, is5mldEnabled: Boolean = false): TrustsFrontendUserAnswers[_] => Call =
+  override def nextPage(page: Page): TrustsFrontendUserAnswers[_] => Call =
     _ => desiredRoute
 }

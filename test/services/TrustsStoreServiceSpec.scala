@@ -18,8 +18,8 @@ package services
 
 import base.RegistrationSpecBase
 import connector.TrustsStoreConnector
+import models.TaskStatuses
 import models.registration.pages.TagStatus.Completed
-import models.{TaskStatuses, FeatureResponse}
 import org.mockito.Matchers.{any, eq => eqTo}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures.whenReady
@@ -48,33 +48,6 @@ class TrustsStoreServiceSpec extends RegistrationSpecBase {
       whenReady(result) { res =>
         res mustEqual taskStatuses
         verify(mockConnector).getTaskStatuses(eqTo(fakeDraftId))(any(), any())
-      }
-    }
-  }
-
-  "is5mldEnabled" must {
-
-    "return true when 5mld is enabled" in {
-
-      when(mockConnector.getFeature(any())(any(), any()))
-        .thenReturn(Future.successful(FeatureResponse("5mld", isEnabled = true)))
-
-      val result = trustsStoreService.is5mldEnabled()
-
-       whenReady(result) { res =>
-         res mustEqual true
-       }
-    }
-
-    "return false when 5mld is disabled" in {
-
-      when(mockConnector.getFeature(any())(any(), any()))
-        .thenReturn(Future.successful(FeatureResponse("5mld", isEnabled = false)))
-
-      val result = trustsStoreService.is5mldEnabled()
-
-      whenReady(result) { res =>
-        res mustEqual false
       }
     }
   }
