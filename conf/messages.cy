@@ -246,7 +246,7 @@ postcodeForTheTrust.title = Beth yw cod post yr ymddiriedolaeth?
 refSentByPost.bullet1=Mae UTR yn 10 rhif o hyd, er enghraifft 1234567890
 refSentByPost.bullet2=Mae URN yn cynnwys 15 o rifau a chymeriadau, er enghraifft ABTRUTS12345678
 refSentByPost.heading=Mae dynodydd unigryw wedi’i greu ar gyfer yr ymddiriedolaeth
-refSentByPost.paragraph1=Mae’r math o ddynodydd unigryw a ddefnyddir ar gyfer yr ymddiriedolaeth yn dibynnu ar p''un a oes angen i’r ymddiriedolaeth dalu treth neu beidio.
+refSentByPost.paragraph1=Mae’r math o ddynodydd unigryw a ddefnyddir ar gyfer yr ymddiriedolaeth yn dibynnu ar p’’un a oes angen i’r ymddiriedolaeth dalu treth neu beidio.
 refSentByPost.paragraph2=Os oes angen i’r ymddiriedolaeth dalu treth, eich dynodydd unigryw fydd Cyfeirnod Unigryw y Trethdalwr (UTR)
 refSentByPost.paragraph3=Caiff yr UTR ei anfon atoch drwy’r post. Gall gymryd hyd at 15 diwrnod gwaith i’r dynodydd unigryw gyrraedd. Gall gymryd 21 diwrnod gwaith ar gyfer cyfeiriadau y tu allan i’r DU.
 refSentByPost.paragraph4=Os nad oes angen i’r ymddiriedolaeth dalu treth, eich dynodydd unigryw fydd Cyfeirnod Unigryw (URN)
@@ -276,8 +276,8 @@ removeDraftYesNo.title = A ydych yn siŵr eich bod am dynnu’r cofrestriad sydd
 
 session_expired.guidance = Mae hyn oherwydd eich bod wedi bod yn segur ar y gwasanaeth ers 15 munud.
 session_expired.guidance.2 = Bydd angen i chi fewngofnodi er mwyn mynd yn eich blaen i gofrestru’r ymddiriedolaeth.
-session_expired.heading = Er eich diogelwch, mae'r gwasanaeth hwn wedi'i ailosod
-session_expired.title = Er eich diogelwch, mae'r gwasanaeth hwn wedi'i ailosod
+session_expired.heading = Er eich diogelwch, mae’r gwasanaeth hwn wedi’i ailosod
+session_expired.title = Er eich diogelwch, mae’r gwasanaeth hwn wedi’i ailosod
 
 site.address = Cyfeiriad
 site.address.international.checkYourAnswersLabel = Beth yw cyfeiriad {0}?

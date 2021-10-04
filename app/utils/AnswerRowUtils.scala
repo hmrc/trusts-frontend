@@ -104,7 +104,7 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
   }
 
   private def getMessageKeysForLanguage(language: String): Seq[String] = {
-    val fileName = s"messages.$language"
+    val fileName = if (language == ENGLISH) "messages" else s"messages.$language"
 
     environment.resourceAsStream(fileName).fold[Seq[String]](Nil)(inputStream => {
       val reader = new BufferedReader(new InputStreamReader(inputStream))
