@@ -1,18 +1,20 @@
 
 # Trusts Frontend
 
-[ ![Download](https://api.bintray.com/packages/hmrc/releases/trusts-frontend/images/download.svg) ](https://bintray.com/hmrc/releases/trusts-frontend/_latestVersion)
+This service allows users to register or maintain a trust. It asks initial questions to determine if the user needs to register or maintain their trust and redirects them to maintain-a-trust-frontend if they wish to maintain, otherwise this service is the hub for registering a trust and the data from all other trust registration services is gathered here for declaration.
 
-This service allows users to register a trusts.
+To run locally using the micro-service provided by the service manager:
 
-The UI is generated based on the following template repository, known as Scaffolds.
+***sm --start TRUSTS_ALL -r***
 
-https://github.com/hmrc/hmrc-frontend-scaffold.g8
+alternatively if only the registration journey is needed use:
 
-to run locally using the micro-service provided by the service manager:
+***sm --start REGISTER_TRUST_ALL -r***
 
-***sm --start TRUSTS_ALL -f***
+or if only the maintain journey is needed use:
 
-If you want to run your local copy, then stop the frontend ran by the service manager and run your local code by
+***sm --start MAINTAIN_TRUST_ALL -r***
 
-***sbt "run 9781"***
+If you want to run your local copy, then stop the frontend ran by the service manager and run your local code by using the following (port number is 9781 but is defaulted to that in build.sbt):
+
+***sbt run***
