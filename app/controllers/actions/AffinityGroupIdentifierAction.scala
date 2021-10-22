@@ -111,6 +111,8 @@ class AffinityGroupIdentifierAction[A] @Inject()(action: Action[A],
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
+    logger.debug(s"[AffinityGroupHeaderCarrier] headers: $hc")
+
     val retrievals = Retrievals.internalId and
       Retrievals.affinityGroup and
       Retrievals.allEnrolments
