@@ -55,7 +55,7 @@ class DraftRegistrationServiceSpec extends RegistrationSpecBase with ScalaFuture
         val draftId = Await.result(service.create(request), Duration.Inf)
 
         val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
-        verify(registrationsRepository).set(uaCaptor.capture)(any())
+        verify(registrationsRepository).set(uaCaptor.capture, any())(any())
 
         uaCaptor.getValue.draftId mustEqual draftId
         uaCaptor.getValue.data mustEqual request.userAnswers.data

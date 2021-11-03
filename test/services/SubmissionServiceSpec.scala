@@ -56,7 +56,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
                     (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
       Future.successful(None)
 
-    override def set(userAnswers: UserAnswers)
+    override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)
                     (implicit hc: HeaderCarrier): Future[Boolean] =
       Future.successful(true)
 
@@ -97,7 +97,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] =
       Future.successful(None)
 
-    override def getClientReference(draftId: String)(implicit hc: HeaderCarrier): Future[Option[String]] =
+    override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]] =
       Future.successful(None)
 
     override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
@@ -117,7 +117,9 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
   )
 
   private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-  private implicit lazy val request: RegistrationDataRequest[_] = RegistrationDataRequest(fakeRequest, "internalId", "sessionId", emptyUserAnswers, AffinityGroup.Organisation, Enrolments(Set()))
+
+  private implicit lazy val request: RegistrationDataRequest[_] =
+    RegistrationDataRequest(fakeRequest, "internalId", "sessionId", emptyUserAnswers, AffinityGroup.Organisation, Enrolments(Set()))
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers

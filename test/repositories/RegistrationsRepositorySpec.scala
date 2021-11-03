@@ -23,12 +23,13 @@ import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import org.mockito.Matchers.any
-import org.mockito.Mockito.{times, verify, when}
+import org.mockito.Mockito.{never, times, verify, when}
 import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
@@ -149,7 +150,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
           when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
           when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-          val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+          val result = Await.result(repository.set(baseAnswers, AffinityGroup.Agent), Duration.Inf)
 
           result mustBe true
           verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, Some(clientRef))(hc, executionContext)
@@ -166,7 +167,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
           when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("no client ref found")))
           when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-          val result = Await.result(repository.set(baseAnswers), Duration.Inf)
+          val result = Await.result(repository.set(baseAnswers, AffinityGroup.Agent), Duration.Inf)
 
           result mustBe true
           verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, None)(hc, executionContext)
@@ -432,39 +433,60 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
       val clientRef = "client-ref"
 
-      "successful call" must {
-        "return Some(client reference)" in {
+      "not an agent" must {
 
+        "not attempt the call" in {
           val mockConnector = mock[SubmissionDraftConnector]
 
           val repository = createRepository(mockConnector)
 
-          when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
-
-          val result = Await.result(repository.getClientReference(fakeDraftId), Duration.Inf)
-
-          result mustBe Some(clientRef)
-
-          verify(mockConnector, times(1)).getClientReference(any())(any(), any())
-        }
-      }
-
-      "unsuccessful call" must {
-        "return None" in {
-
-          val mockConnector = mock[SubmissionDraftConnector]
-
-          val repository = createRepository(mockConnector)
-
-          when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("client ref not found")))
-
-          val result = Await.result(repository.getClientReference(fakeDraftId), Duration.Inf)
+          val result = Await.result(repository.getClientReference(fakeDraftId, AffinityGroup.Organisation), Duration.Inf)
 
           result mustBe None
 
-          verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+          verify(mockConnector, never()).getClientReference(any())(any(), any())
+        }
+
+      }
+
+      "an agent" must {
+
+        "successful call" must {
+          "return Some(client reference)" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector)
+
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
+
+            val result = Await.result(repository.getClientReference(fakeDraftId, AffinityGroup.Agent), Duration.Inf)
+
+            result mustBe Some(clientRef)
+
+            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+          }
+        }
+
+        "unsuccessful call" must {
+          "return None" in {
+
+            val mockConnector = mock[SubmissionDraftConnector]
+
+            val repository = createRepository(mockConnector)
+
+            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.failed(new Throwable("client ref not found")))
+
+            val result = Await.result(repository.getClientReference(fakeDraftId, AffinityGroup.Agent), Duration.Inf)
+
+            result mustBe None
+
+            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+          }
         }
       }
+
+
     }
 
     "reading when trust setup date" must {

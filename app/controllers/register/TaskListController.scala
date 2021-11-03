@@ -67,7 +67,7 @@ class TaskListController @Inject()(
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
         for {
-          _ <- registrationsRepository.set(updatedAnswers)
+          _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
           _ <- registrationsRepository.updateTaxLiability(draftId)
           firstTaxYearAvailable <- registrationsRepository.getFirstTaxYearAvailable(draftId)
           isTaxable = updatedAnswers.isTaxable

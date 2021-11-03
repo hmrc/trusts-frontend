@@ -24,6 +24,7 @@ import models.registration.pages.RegistrationStatus.InProgress
 import play.api.http
 import play.api.i18n.Messages
 import play.api.libs.json._
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
@@ -57,9 +58,9 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
-  override def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] = {
+  override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Boolean] = {
     for {
-      reference <- getClientReference(userAnswers.draftId)
+      reference <- getClientReference(userAnswers.draftId, affinityGroup)
       response <- submissionDraftConnector.setDraftMain(
         draftId = userAnswers.draftId,
         draftData = Json.toJson(userAnswers),
@@ -118,10 +119,18 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
     }
   }
 
-  override def getClientReference(draftId: String)(implicit hc: HeaderCarrier): Future[Option[String]] = {
-    submissionDraftConnector.getClientReference(draftId).map(Some(_)).recover {
-      case _ => None
+  override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]] = {
+    affinityGroup match {
+      case AffinityGroup.Agent =>
+        submissionDraftConnector
+          .getClientReference(draftId).map(Some(_))
+          .recover {
+            case _ => None
+          }
+      case _ =>
+        Future.successful(None)
     }
+
   }
 
   override def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier): Future[Option[LocalDate]] =
@@ -145,7 +154,7 @@ trait RegistrationsRepository {
 
   def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]]
 
-  def set(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean]
+  def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Boolean]
 
   def listDrafts()(implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]]
 
@@ -161,7 +170,7 @@ trait RegistrationsRepository {
 
   def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]]
 
-  def getClientReference(draftId: String)(implicit hc: HeaderCarrier): Future[Option[String]]
+  def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]]
 
   def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier): Future[Option[LocalDate]]
 

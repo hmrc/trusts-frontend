@@ -48,7 +48,7 @@ class SummaryAnswerPageController @Inject()(
   def onPageLoad(draftId : String): Action[AnyContent] = actions(draftId).async {
     implicit request =>
 
-      registrationsRepository.getClientReference(draftId) flatMap {
+      registrationsRepository.getClientReference(draftId, request.affinityGroup) flatMap {
         reference =>
           printUserAnswersHelper.summary(draftId).map {
             sections =>

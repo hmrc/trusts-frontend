@@ -39,7 +39,7 @@ class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsR
       internalAuthId = request.internalId
     )
 
-    registrationsRepository.set(userAnswers).map { _ =>
+    registrationsRepository.set(userAnswers, request.affinityGroup).map { _ =>
       draftId
     }
   }
