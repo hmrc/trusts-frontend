@@ -17,8 +17,6 @@
 package controllers.actions
 
 import base.RegistrationSpecBase
-import connector.SubmissionDraftConnector
-import play.api.http.Status.OK
 import controllers.actions.register.RegistrationDataRetrievalActionImpl
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.Matchers.{eq => eqTo, _}
@@ -27,14 +25,12 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
-import uk.gov.hmrc.http.HttpResponse
 
 import scala.concurrent.Future
 
 class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures {
 
-  class Harness(registrationsRepository: RegistrationsRepository,
-                submissionDraftConnector: SubmissionDraftConnector) extends RegistrationDataRetrievalActionImpl(registrationsRepository, submissionDraftConnector) {
+  class Harness(registrationsRepository: RegistrationsRepository) extends RegistrationDataRetrievalActionImpl(registrationsRepository) {
     def callTransform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = transform(request)
   }
 
@@ -45,11 +41,10 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
       "set userAnswers to 'None' in the request" in {
 
         val registrationsRepository = mock[RegistrationsRepository]
-        val submissionDraftConnector = mock[SubmissionDraftConnector]
 
         when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(None)
 
-        val action = new Harness(registrationsRepository, submissionDraftConnector)
+        val action = new Harness(registrationsRepository)
 
         val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
 
@@ -66,13 +61,11 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
         "agent user" in {
 
           val registrationsRepository = mock[RegistrationsRepository]
-          val submissionDraftConnector = mock[SubmissionDraftConnector]
 
           when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
           when(registrationsRepository.get(any())(any())) thenReturn Future(Some(emptyUserAnswers))
-          when(submissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-          val action = new Harness(registrationsRepository, submissionDraftConnector)
+          val action = new Harness(registrationsRepository)
 
           val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
 
@@ -80,20 +73,17 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isDefined mustBe true
           }
 
-          verify(submissionDraftConnector, times(0)).adjustDraft(eqTo(fakeDraftId))(any(), any())
           verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
         }
 
         "org user" in {
 
           val registrationsRepository = mock[RegistrationsRepository]
-          val submissionDraftConnector = mock[SubmissionDraftConnector]
 
           when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
           when(registrationsRepository.get(any())(any())) thenReturn Future(Some(emptyUserAnswers))
-          when(submissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-          val action = new Harness(registrationsRepository, submissionDraftConnector)
+          val action = new Harness(registrationsRepository)
 
           val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
@@ -101,7 +91,6 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isDefined mustBe true
           }
 
-          verify(submissionDraftConnector).adjustDraft(eqTo(fakeDraftId))(any(), any())
           verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
         }
       }
@@ -111,13 +100,11 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
         "agent user" in {
 
           val registrationsRepository = mock[RegistrationsRepository]
-          val submissionDraftConnector = mock[SubmissionDraftConnector]
 
           when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
           when(registrationsRepository.get(any())(any())) thenReturn Future(None)
-          when(submissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-          val action = new Harness(registrationsRepository, submissionDraftConnector)
+          val action = new Harness(registrationsRepository)
 
           val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
 
@@ -125,20 +112,17 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isEmpty mustBe true
           }
 
-          verify(submissionDraftConnector, times(0)).adjustDraft(eqTo(fakeDraftId))(any(), any())
           verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
         }
 
         "org user" in {
 
           val registrationsRepository = mock[RegistrationsRepository]
-          val submissionDraftConnector = mock[SubmissionDraftConnector]
 
           when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
           when(registrationsRepository.get(any())(any())) thenReturn Future(None)
-          when(submissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-          val action = new Harness(registrationsRepository, submissionDraftConnector)
+          val action = new Harness(registrationsRepository)
 
           val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
 
@@ -146,7 +130,6 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isEmpty mustBe true
           }
 
-          verify(submissionDraftConnector).adjustDraft(eqTo(fakeDraftId))(any(), any())
           verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
         }
       }

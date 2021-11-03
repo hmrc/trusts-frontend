@@ -17,7 +17,6 @@
 package controllers.register.agents
 
 import base.RegistrationSpecBase
-import connector.SubmissionDraftConnector
 import controllers.register.routes._
 import models.core.http.AddressType
 import navigation.registration.TaskListNavigator
@@ -28,7 +27,6 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.http.HttpResponse
 import viewmodels.DraftRegistration
 import views.html.register.agents.AgentOverviewView
 
@@ -47,8 +45,6 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
     postCode = None,
     country = "FR"
   )
-
-  private val mockSubmissionDraftConnector: SubmissionDraftConnector = mock[SubmissionDraftConnector]
 
   override def beforeEach(): Unit = {
     reset(cacheRepository)
@@ -123,15 +119,13 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
       }
 
       "redirect to registration progress page" when {
-        "draft has completed agent details and data did not need to be adjusted to conform with the new microservices" in {
+
+        "draft has completed agent details" in {
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-            .overrides(bind[SubmissionDraftConnector].toInstance(mockSubmissionDraftConnector))
             .build()
-
-          when(mockSubmissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
@@ -153,14 +147,12 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
         "draft has incomplete agent details" in {
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
-            .overrides(bind[SubmissionDraftConnector].toInstance(mockSubmissionDraftConnector))
             .overrides(bind[TaskListNavigator].toInstance(mockTaskListNavigator))
             .build()
 
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
-          when(mockSubmissionDraftConnector.adjustDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(OK, "")))
           when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
 
           val result = route(application, request).value
