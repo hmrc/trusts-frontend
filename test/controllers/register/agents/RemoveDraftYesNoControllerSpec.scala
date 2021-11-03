@@ -45,7 +45,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(Some(clientReferenceNumber)))
+      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(Some(clientReferenceNumber)))
 
       val request = FakeRequest(GET, removeDraftYesNoRoute)
 
@@ -107,7 +107,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(Some(clientReferenceNumber)))
+      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(Some(clientReferenceNumber)))
 
       val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", ""))
@@ -130,7 +130,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(None))
+      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(None))
 
       val request = FakeRequest(GET, removeDraftYesNoRoute)
 
@@ -147,7 +147,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(None))
+      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(None))
 
       val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", ""))

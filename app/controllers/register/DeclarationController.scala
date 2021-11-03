@@ -84,7 +84,7 @@ class DeclarationController @Inject()(
 
           val r = for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
-            _ <- registrationsRepository.set(updatedAnswers)
+            _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
             response <- submissionService.submit(updatedAnswers)
             result <- handleResponse(updatedAnswers, response, draftId)
           } yield result
@@ -124,10 +124,14 @@ class DeclarationController @Inject()(
         Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate)).flatMap {
           dateSaved =>
             val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
+
             logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days")
-            registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete)).map {
-              _ =>
-                Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
+
+            registrationsRepository.set(
+              dateSaved.copy(progress = RegistrationStatus.Complete),
+              request.affinityGroup
+            ).map { _ =>
+              Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
             }
         }
     }

@@ -50,7 +50,7 @@ trait Mocked extends MockitoSugar {
 
   when(cacheRepository.set(any())).thenReturn(Future.successful(true))
 
-  when(registrationsRepository.set(any())(any())).thenReturn(Future.successful(true))
+  when(registrationsRepository.set(any(), any())(any())).thenReturn(Future.successful(true))
   when(registrationsRepository.updateTaxLiability(any())(any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
   val mockedTrustStartDate: LocalDate = LocalDate.parse("2019-02-03")

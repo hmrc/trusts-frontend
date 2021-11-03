@@ -137,7 +137,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 
-      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(None))
+      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(None))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
 
@@ -157,7 +157,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET when tasklist completed for Agent user" in {
 
-      when(registrationsRepository.getClientReference(any())(any())).thenReturn(Future.successful(Some("agentClientReference")))
+      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(Some("agentClientReference")))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
