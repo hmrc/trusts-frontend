@@ -16,7 +16,6 @@
 
 package controllers.register.agents
 
-import connector.SubmissionDraftConnector
 import controllers.actions._
 import controllers.actions.register.RegistrationIdentifierAction
 import models.core.MatchingAndSuitabilityUserAnswers
@@ -41,7 +40,6 @@ class AgentOverviewController @Inject()(
                                          cacheRepository: CacheRepository,
                                          val controllerComponents: MessagesControllerComponents,
                                          view: AgentOverviewView,
-                                         submissionDraftConnector: SubmissionDraftConnector,
                                          taskListNavigator: TaskListNavigator
                                        )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
@@ -66,7 +64,6 @@ class AgentOverviewController @Inject()(
     implicit request =>
 
       (for {
-        _ <- submissionDraftConnector.adjustDraft(draftId)
         address <- registrationsRepository.getAgentAddress(draftId)
       } yield {
         if (address.isEmpty) {

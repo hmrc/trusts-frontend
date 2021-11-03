@@ -99,10 +99,6 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
         (response.json \ "trustName").as[String]
     }
 
-  def adjustDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/adjust-draft/$draftId")
-  }
-
   def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/update/tax-liability")
   }

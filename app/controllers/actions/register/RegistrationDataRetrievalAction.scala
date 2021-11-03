@@ -16,24 +16,20 @@
 
 package controllers.actions.register
 
-import connector.SubmissionDraftConnector
-import play.api.http.Status.OK
 import models.core.UserAnswers
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import play.api.Logging
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.Session
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: RegistrationsRepository,
-                                                    submissionDraftConnector: SubmissionDraftConnector
-                                                   )(implicit val executionContext: ExecutionContext)
+class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: RegistrationsRepository)
+                                                   (implicit val executionContext: ExecutionContext)
   extends RegistrationDataRetrievalAction with Logging {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
@@ -57,20 +53,8 @@ class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: Reg
         case None =>
           Future.successful(createdOptionalDataRequest(request, None))
         case Some(draftId) =>
-          val adjustDraftIfNotAnAgentUser: Future[HttpResponse] = if (request.affinityGroup != Agent) {
-            logger.info(s"[Draft ID: $draftId] Adjusting draft data.")
-            submissionDraftConnector.adjustDraft(draftId)
-          } else {
-            Future.successful(HttpResponse(OK, ""))
-          }
-
-          adjustDraftIfNotAnAgentUser flatMap { _ =>
-            registrationsRepository.get(draftId).map(createdOptionalDataRequest(request, _))
-          } recover {
-            case e =>
-              logger.error(s"[Draft ID: $draftId][Session ID: ${Session.id(hc)}] call to adjust draft data failed: ${e.getMessage}")
-              createdOptionalDataRequest(request, None)
-          }
+          registrationsRepository.get(draftId)
+            .map(createdOptionalDataRequest(request, _))
     }
   }
 }
