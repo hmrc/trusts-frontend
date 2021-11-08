@@ -451,24 +451,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
       }
     }
 
-    ".resetTaxLiability" - {
-
-      "resets tax liability" in {
-
-        server.stubFor(
-          post(urlEqualTo(resetTaxLiabilityUrl))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-            )
-        )
-
-        val result = Await.result(connector.resetTaxLiability(testDraftId), Duration.Inf)
-        result.status mustBe Status.OK
-      }
-
-    }
-
     ".removeDraft" in {
 
       val draftId: String = "draftId"

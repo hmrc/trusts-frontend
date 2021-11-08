@@ -26,7 +26,6 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.TrustsStoreService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.DateFormatter
@@ -44,8 +43,7 @@ class TaskListController @Inject()(
                                     registrationsRepository: RegistrationsRepository,
                                     requireDraft: RequireDraftRegistrationActionRefiner,
                                     dateFormatter: DateFormatter,
-                                    standardAction: StandardActionSets,
-                                    featureFlagService: TrustsStoreService
+                                    standardAction: StandardActionSets
                                   )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
@@ -66,6 +64,7 @@ class TaskListController @Inject()(
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
+        // TODO CALL trusts-store to update tax-liability status if required, this is done in trusts but no longer read anywhere due to now reading from trusts-store
         for {
           _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
           _ <- registrationsRepository.updateTaxLiability(draftId)
