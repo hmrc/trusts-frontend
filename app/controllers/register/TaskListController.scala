@@ -64,10 +64,8 @@ class TaskListController @Inject()(
 
         val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
-        // TODO CALL trusts-store to update tax-liability status if required, this is done in trusts but no longer read anywhere due to now reading from trusts-store
         for {
           _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
-          _ <- registrationsRepository.updateTaxLiability(draftId)
           firstTaxYearAvailable <- registrationsRepository.getFirstTaxYearAvailable(draftId)
           isTaxable = updatedAnswers.isTaxable
           sections <- registrationProgress.items(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
@@ -79,7 +77,10 @@ class TaskListController @Inject()(
         }
       }
 
-      (isExistingTrust, request.userAnswers.get(ExistingTrustMatched)) match {
+      (
+        isExistingTrust,
+        request.userAnswers.get(ExistingTrustMatched)
+      ) match {
         case (true, Some(Success)) | (false, _) =>
           renderView(request.affinityGroup)
         case (_, Some(AlreadyRegistered)) | (_, Some(Failed)) =>

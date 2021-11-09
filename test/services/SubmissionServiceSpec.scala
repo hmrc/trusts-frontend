@@ -96,9 +96,6 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
     override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]] =
       Future.successful(None)
 
-    override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
-      Future.successful(HttpResponse(OK, ""))
-
     override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] =
       Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false)))
   }

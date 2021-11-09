@@ -51,8 +51,6 @@ trait Mocked extends MockitoSugar {
 
   when(registrationsRepository.set(any(), any())(any())).thenReturn(Future.successful(true))
 
-  when(registrationsRepository.updateTaxLiability(any())(any())).thenReturn(Future.successful(HttpResponse(OK, "")))
-
   when(registrationsRepository.getFirstTaxYearAvailable(any())(any()))
     .thenReturn(Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false))))
 
