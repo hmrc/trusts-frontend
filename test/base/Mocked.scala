@@ -36,10 +36,9 @@ trait Mocked extends MockitoSugar {
 
   val cacheRepository: CacheRepository = mock[CacheRepository]
   val registrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
-
   val mockSubmissionService: SubmissionService = mock[SubmissionService]
-  val mockCreateDraftRegistrationService: DraftRegistrationService = mock[DraftRegistrationService]
-
+  val mockCreateDraftRegistrationService: DraftRegistrationService =
+    mock[DraftRegistrationService]
   val mockTrustsStoreService: TrustsStoreService = mock[TrustsStoreService]
 
   when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
@@ -51,10 +50,8 @@ trait Mocked extends MockitoSugar {
   when(cacheRepository.set(any())).thenReturn(Future.successful(true))
 
   when(registrationsRepository.set(any(), any())(any())).thenReturn(Future.successful(true))
-  when(registrationsRepository.updateTaxLiability(any())(any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
-  val mockedTrustStartDate: LocalDate = LocalDate.parse("2019-02-03")
-  when(registrationsRepository.getTrustSetupDate(any())(any())).thenReturn(Future.successful(Some(mockedTrustStartDate)))
+  when(registrationsRepository.updateTaxLiability(any())(any())).thenReturn(Future.successful(HttpResponse(OK, "")))
 
   when(registrationsRepository.getFirstTaxYearAvailable(any())(any()))
     .thenReturn(Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false))))

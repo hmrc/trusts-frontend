@@ -33,8 +33,10 @@ class FakeDraftIdRetrievalActionProvider(dataToReturn: Option[TrustsFrontendUser
   val mockedRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
   dataToReturn match {
-    case Some(x: UserAnswers) => when(mockedRegistrationsRepository.get(any())(any())).thenReturn(Future.successful(Some(x)))
-    case _ => when(mockedRegistrationsRepository.get(any())(any())).thenReturn(Future.successful(None))
+    case Some(x: UserAnswers) =>
+      when(mockedRegistrationsRepository.get(any())(any())).thenReturn(Future.successful(Some(x)))
+    case _ =>
+      when(mockedRegistrationsRepository.get(any())(any())).thenReturn(Future.successful(None))
   }
 
   override def apply(draftId: String) = new DraftIdDataRetrievalAction(draftId, mockedRegistrationsRepository, executionContext)

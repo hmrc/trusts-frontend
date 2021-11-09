@@ -80,15 +80,6 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
   def getClientReference(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[String] =
     http.GET[String](s"$submissionsBaseUrl/$draftId/client-reference")
 
-  def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[LocalDate]] = {
-    http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/when-trust-setup").map {
-      response =>
-        (response.json \ "startDate").asOpt[LocalDate]
-    }.recover {
-      case _ => None
-    }
-  }
-
   def getTrustName(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[String] =
     http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/trust-name").map {
       response =>
