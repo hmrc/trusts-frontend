@@ -143,9 +143,6 @@ class DefaultRegistrationsRepository @Inject()(
   override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     submissionDraftConnector.removeDraft(draftId)
 
-  override def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
-    submissionDraftConnector.updateTaxLiability(draftId)
-
   override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] = {
     submissionDraftConnector.getFirstTaxYearAvailable(draftId)
   }
@@ -176,8 +173,6 @@ trait RegistrationsRepository {
   def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String]
 
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
-
-  def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse]
 
   def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]]
 }
