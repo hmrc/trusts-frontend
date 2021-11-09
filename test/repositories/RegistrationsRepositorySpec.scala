@@ -489,28 +489,6 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers
 
     }
 
-    "reading when trust setup date" must {
-
-      "read existing date from connector" in {
-
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-
-        val mockConnector = mock[SubmissionDraftConnector]
-
-        val repository = createRepository(mockConnector)
-
-        val expected = LocalDate.parse("2020-10-10")
-
-        when(mockConnector.getTrustSetupDate(any())(any(), any())).thenReturn(Future.successful(Some(LocalDate.parse("2020-10-10"))))
-
-        val result = Await.result(repository.getTrustSetupDate(fakeDraftId), Duration.Inf)
-
-        result.get mustBe expected
-
-        verify(mockConnector).getTrustSetupDate(fakeDraftId)(hc, executionContext)
-      }
-    }
-
     "removing draft" must {
       "get response from connector" in {
         implicit lazy val hc: HeaderCarrier = HeaderCarrier()

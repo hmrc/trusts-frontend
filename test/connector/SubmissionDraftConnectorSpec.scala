@@ -398,39 +398,6 @@ class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with Optio
         result mustEqual expected
       }
 
-      "can retrieve trust setup date for a draft" in {
-
-        val response = Json.obj(
-          "startDate" -> "2012-02-20"
-        )
-
-        server.stubFor(
-          get(urlEqualTo(trustSetupDateUrl))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.OK)
-                .withBody(response.toString)
-            )
-        )
-
-        val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
-        result mustBe Some(LocalDate.of(2012, 2, 20))
-      }
-
-      "can handle draft without trust setup date" in {
-
-        server.stubFor(
-          get(urlEqualTo(trustSetupDateUrl))
-            .willReturn(
-              aResponse()
-                .withStatus(Status.NOT_FOUND)
-            )
-        )
-
-        val result = Await.result(connector.getTrustSetupDate(testDraftId), Duration.Inf)
-        result mustBe None
-      }
-
       "can retrieve trust name for a draft" in {
 
         val response = Json.obj(

@@ -33,9 +33,13 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
-                                               submissionDraftConnector: SubmissionDraftConnector)
-                                              (implicit ec: ExecutionContext, answerRowUtils: AnswerRowUtils) extends RegistrationsRepository {
+class DefaultRegistrationsRepository @Inject()(
+                                                dateFormatter: DateFormatter,
+                                                submissionDraftConnector: SubmissionDraftConnector
+                                              )(
+                                                implicit ec: ExecutionContext,
+                                                answerRowUtils: AnswerRowUtils
+                                              ) extends RegistrationsRepository {
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
@@ -133,9 +137,6 @@ class DefaultRegistrationsRepository @Inject()(dateFormatter: DateFormatter,
 
   }
 
-  override def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier): Future[Option[LocalDate]] =
-    submissionDraftConnector.getTrustSetupDate(draftId)
-
   override def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String] =
     submissionDraftConnector.getTrustName(draftId)
 
@@ -171,8 +172,6 @@ trait RegistrationsRepository {
   def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]]
 
   def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]]
-
-  def getTrustSetupDate(draftId: String)(implicit hc: HeaderCarrier): Future[Option[LocalDate]]
 
   def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String]
 
