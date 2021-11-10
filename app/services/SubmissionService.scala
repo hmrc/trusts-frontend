@@ -100,6 +100,7 @@ class DefaultSubmissionService @Inject()(
 
   private def register(draftId: String, fullRegistrationJson: JsValue)
                       (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+
     trustConnector.register(fullRegistrationJson, draftId) map {
       case response@RegistrationTRNResponse(_) =>
         logger.info(s"[register][Session ID: ${Session.id(hc)}] Registration successfully submitted.")

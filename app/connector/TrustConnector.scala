@@ -18,6 +18,8 @@ package connector
 
 import config.FrontendAppConfig
 import models.core.http.{MatchData, MatchedResponse, TrustResponse}
+import models.requests.RegistrationDataRequest
+import play.api.http.HeaderNames
 import play.api.libs.json.{JsValue, Writes}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
@@ -28,10 +30,12 @@ class TrustConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
 
   val registrationUrl = s"${config.trustsUrl}/trusts/register"
 
-  def register(registrationJson: JsValue, draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+  def register(registrationJson: JsValue, draftId: String)
+              (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
 
     val newHc: HeaderCarrier = hc.withExtraHeaders(
-      Headers.DraftRegistrationId -> draftId
+      Headers.DraftRegistrationId -> draftId,
+      Headers.TrueUserAgent -> request.headers.get(HeaderNames.USER_AGENT).getOrElse("No user agent provided")
     )
 
     http.POST[JsValue, TrustResponse](registrationUrl, registrationJson)(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)

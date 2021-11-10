@@ -34,7 +34,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 

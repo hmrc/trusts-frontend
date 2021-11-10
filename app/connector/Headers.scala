@@ -19,5 +19,6 @@ package connector
 object Headers {
 
   val DraftRegistrationId = "Draft-Registration-ID"
+  val TrueUserAgent = "True-User-Agent"
 
 }
