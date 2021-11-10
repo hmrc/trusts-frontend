@@ -25,7 +25,6 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.HttpReads.Implicits.{readFromJson, readRaw}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse, UpstreamErrorResponse}
 
-import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 

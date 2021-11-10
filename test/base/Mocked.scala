@@ -17,19 +17,16 @@
 package base
 
 import models.requests.MatchingAndSuitabilityDataRequest
-import models.{TaskStatuses, FirstTaxYearAvailable}
+import models.{FirstTaxYearAvailable, TaskStatuses}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.http.Status.OK
 import play.api.mvc.AnyContent
 import repositories.{CacheRepository, RegistrationsRepository}
 import services.{DraftRegistrationService, SubmissionService, TrustsStoreService}
-import uk.gov.hmrc.http.HttpResponse
 import utils.TestUserAnswers
 import viewmodels.RegistrationAnswerSections
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 trait Mocked extends MockitoSugar {

@@ -31,7 +31,7 @@ import play.api.test.Helpers.CONTENT_TYPE
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 

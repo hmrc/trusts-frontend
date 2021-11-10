@@ -17,11 +17,9 @@
 package config
 
 import com.google.inject.AbstractModule
-import connector.OtacAuthConnectorImpl
 import controllers.actions._
 import controllers.actions.register._
 import repositories.{CacheRepository, CacheRepositoryImpl, DefaultRegistrationsRepository, RegistrationsRepository}
-import uk.gov.hmrc.auth.otac.OtacAuthConnector
 
 class Module extends AbstractModule {
 
@@ -40,7 +38,5 @@ class Module extends AbstractModule {
 
     bind(classOf[RegistrationsRepository]).to(classOf[DefaultRegistrationsRepository]).asEagerSingleton()
     bind(classOf[CacheRepository]).to(classOf[CacheRepositoryImpl]).asEagerSingleton()
-
-    bind(classOf[OtacAuthConnector]).to(classOf[OtacAuthConnectorImpl]).asEagerSingleton()
   }
 }
