@@ -29,7 +29,6 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
-import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 

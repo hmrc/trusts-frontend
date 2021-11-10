@@ -38,7 +38,6 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TestUserAnswers
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
-import java.time.LocalDate
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
@@ -140,7 +139,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
+        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
@@ -151,7 +150,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[JsValue], any())(any[HeaderCarrier], any())).
+        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any())).
           thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
@@ -237,7 +236,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.InternalServerError))
+        when(mockConnector.register(any(), any())(any(), any(), any())).thenReturn(Future.successful(TrustResponse.InternalServerError))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationSubmissionFailed(any(), any())(any(), any())
@@ -249,7 +248,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
+        when(mockConnector.register(any(), any())(any(), any(), any())).thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationAlreadySubmitted(any(), any())(any(), any())
@@ -263,7 +262,7 @@ class SubmissionServiceSpec extends FreeSpec with MustMatchers
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
         when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any())).thenReturn(Future.successful(response))
+        when(mockConnector.register(any(), any())(any(), any(), any())).thenReturn(Future.successful(response))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationSubmitted(any(), any(), eqTo(response))(any(), any())
