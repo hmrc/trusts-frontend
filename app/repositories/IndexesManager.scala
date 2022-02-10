@@ -80,6 +80,9 @@ trait IndexesManager extends Logging {
       wildcardProjection = None
     )
 
+    logger.info(s"[IndexesManager]: Collection name: $collectionName")
+    logger.info(s"[IndexesManager]: idIndex: $idIndex")
+
     for {
       collection              <- mongo.database.map(_.collection[JSONCollection](collectionName))
       createdLastUpdatedIndex <- collection.indexesManager.ensure(lastUpdatedIndex)
