@@ -45,7 +45,7 @@ class CacheRepositoryImpl @Inject()(
 
   override def idIndex: Aux[BSONSerializationPack.type] = Index.apply(BSONSerializationPack)(
     key = Seq("internalId" -> IndexType.Ascending),
-    name = Some("internal-id-index"),
+    name = Some("internal-auth-id-index"),
     expireAfterSeconds = None,
     options = BSONDocument.empty,
     unique = false,
