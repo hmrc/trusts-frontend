@@ -18,6 +18,7 @@
 @import viewmodels.AnswerSection
 @import views.html.components.{Heading, Button, ReturnToTop}
 @import utils.SectionFormatter.formatAnswerSection
+@import views.html.helper.CSPNonce
 
 @this(
     mainTemplate: MainTemplate,
@@ -35,6 +36,8 @@
     showBackLink = true
 ) {
 
+    <script src='@routes.Assets.versioned("javascripts/print.js")' @{CSPNonce.attr}></script>
+
     @heading("summaryAnswerPage.heading", headingSize = "govuk-heading-xl")
 
     @if(isAgent) {
@@ -46,7 +49,7 @@
     <p>@messages("summaryAnswerPage.paragraph2")</p>
 
     <div class="section">
-        <p>@button(messageKey = "site.print-or-save", isPrintButton = true)</p>
+        <p>@button(messageKey = "site.print-or-save", isPrintButton = true, attributes = Map("id" -> "print-button"))</p>
     </div>
 
     <div class="two-column-answers">

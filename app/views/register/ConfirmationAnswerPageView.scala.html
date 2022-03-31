@@ -19,6 +19,7 @@
 @import utils.AccessibilityHelper._
 @import utils.SectionFormatter.formatAnswerSection
 @import views.html.components.{Heading, Button, Warning, ReturnToTop}
+@import views.html.helper.CSPNonce
 
 @this(
     mainTemplate: MainTemplate,
@@ -36,6 +37,7 @@
     title = messages("confirmationAnswerPage.title"),
     showBackLink = true
 ) {
+    <script src='@routes.Assets.versioned("javascripts/print.js")' @{CSPNonce.attr}></script>
 
     @heading("confirmationAnswerPage.heading", headingSize = "govuk-heading-xl")
 
@@ -51,7 +53,7 @@
     }
 
     <div class="section">
-        <p>@button(messageKey = "site.print-or-save", isPrintButton = true)</p>
+        <p>@button(messageKey = "site.print-or-save", isPrintButton = true, attributes = Map("id" -> "print-button"))</p>
     </div>
 
     <div class="two-column-answers">
