@@ -39,4 +39,4 @@ bin
 /.classpath
 *.log
 *.iws
-
+.bsp

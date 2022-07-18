@@ -19,12 +19,14 @@ package mapping.registration
 import base.SpecBaseHelpers
 import generators.Generators
 import models.core.http.MatchData
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
 import pages.register.{PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
-class MatchingMapperSpec extends FreeSpec with MustMatchers
+class MatchingMapperSpec extends AnyFreeSpec with Matchers
   with OptionValues with Generators with SpecBaseHelpers {
 
   val matchingMapper: MatchingMapper = injector.instanceOf[MatchingMapper]

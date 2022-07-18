@@ -18,9 +18,11 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
 
-class CorrespondenceMapperSpec extends FreeSpec with MustMatchers
+class CorrespondenceMapperSpec extends AnyFreeSpec with Matchers
   with OptionValues with Generators with SpecBaseHelpers {
 
   private val correspondenceMapper: CorrespondenceMapper = injector.instanceOf[CorrespondenceMapper]

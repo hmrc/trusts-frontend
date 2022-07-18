@@ -22,7 +22,9 @@ import models.core.http.{AddressType, Declaration}
 import models.core.pages.FullName
 import org.mockito.Matchers.any
 import org.mockito.Mockito.when
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.OptionValues
 import pages.register.DeclarationPage
 import repositories.DefaultRegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -30,7 +32,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class DeclarationMapperSpec extends FreeSpec with MustMatchers
+class DeclarationMapperSpec extends AnyFreeSpec with Matchers
   with OptionValues with Generators with SpecBaseHelpers {
 
   private implicit val hc: HeaderCarrier = HeaderCarrier()
