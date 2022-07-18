@@ -20,7 +20,7 @@ package controllers.register.suitability
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.YesNoFormProvider
-import org.joda.time.LocalDate
+import java.time.LocalDate
 import org.mockito.Mockito._
 import pages.register.suitability.TaxLiabilityInCurrentTaxYearYesNoPage
 import play.api.data.Form

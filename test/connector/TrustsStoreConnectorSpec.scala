@@ -19,7 +19,8 @@ package connector
 import com.github.tomakehurst.wiremock.client.WireMock._
 import models.TaskStatuses
 import models.registration.pages.TagStatus.Completed
-import org.scalatest.{MustMatchers, OptionValues}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
 import play.api.http.Status
@@ -32,7 +33,7 @@ import utils.WireMockHelper
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class TrustsStoreConnectorSpec extends PlaySpec with MustMatchers with OptionValues with WireMockHelper {
+class TrustsStoreConnectorSpec extends PlaySpec with Matchers with OptionValues with WireMockHelper {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global

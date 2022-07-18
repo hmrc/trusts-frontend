@@ -20,7 +20,9 @@ import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
 import mapping.registration.RegistrationMapper
 import models.core.http._
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -33,7 +35,7 @@ import utils.{TestUserAnswers, WireMockHelper}
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class TrustConnectorSpec extends FreeSpec with MustMatchers with OptionValues with SpecBaseHelpers with WireMockHelper {
+class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues with SpecBaseHelpers with WireMockHelper {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 

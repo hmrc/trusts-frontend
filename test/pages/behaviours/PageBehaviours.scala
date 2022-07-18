@@ -20,12 +20,14 @@ import generators.Generators
 import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest.{MustMatchers, OptionValues, TryValues, WordSpec}
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.{OptionValues, TryValues}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.QuestionPage
 import play.api.libs.json._
 
-trait PageBehaviours extends WordSpec with MustMatchers with ScalaCheckPropertyChecks with Generators with OptionValues with TryValues {
+trait PageBehaviours extends AnyWordSpec with Matchers with ScalaCheckPropertyChecks with Generators with OptionValues with TryValues {
 
   val emptyAnswers: UserAnswers = UserAnswers(draftId = "id", internalAuthId = "internalAuthId")
 
@@ -46,7 +48,7 @@ trait PageBehaviours extends WordSpec with MustMatchers with ScalaCheckPropertyC
             forAll(gen) {
               case (page, userAnswers) =>
 
-                userAnswers.get(page) must be(empty)
+                userAnswers.get(page) mustBe empty
             }
           }
         }

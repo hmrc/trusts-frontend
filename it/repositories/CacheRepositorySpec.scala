@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,13 @@
 package repositories
 
 import models.core.MatchingAndSuitabilityUserAnswers
-import org.scalatest._
+import org.scalatest.OptionValues
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.freespec.AsyncFreeSpec
+
 import org.scalatest.concurrent.ScalaFutures
 
-class CacheRepositorySpec extends AsyncFreeSpec with MustMatchers
+class CacheRepositorySpec extends AsyncFreeSpec with Matchers
   with ScalaFutures with OptionValues with MongoSuite {
 
   "a cache repository" - {

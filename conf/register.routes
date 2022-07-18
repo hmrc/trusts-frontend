@@ -1,5 +1,4 @@
 # Registration
-->         /govuk-frontend                              govuk.Routes
 ->         /hmrc-frontend                               hmrcfrontend.Routes
 
 GET        /                                            controllers.register.IndexController.onPageLoad()

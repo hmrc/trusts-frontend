@@ -22,7 +22,9 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import models.RegistrationSubmission.{AllAnswerSections, AnswerRow, AnswerSection}
 import models._
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -35,7 +37,7 @@ import java.time.LocalDateTime
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class SubmissionDraftConnectorSpec extends FreeSpec with MustMatchers with OptionValues with SpecBaseHelpers with WireMockHelper {
+class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with OptionValues with SpecBaseHelpers with WireMockHelper {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()

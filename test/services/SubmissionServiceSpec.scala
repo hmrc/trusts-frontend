@@ -27,7 +27,9 @@ import models.core.http._
 import models.requests.RegistrationDataRequest
 import org.mockito.Matchers.{eq => eqTo, _}
 import org.mockito.Mockito.{verify, when}
-import org.scalatest.{FreeSpec, MustMatchers, OptionValues}
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.OptionValues
 import play.api.i18n.Messages
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.Helpers.OK
@@ -41,7 +43,7 @@ import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class SubmissionServiceSpec extends FreeSpec with MustMatchers
+class SubmissionServiceSpec extends AnyFreeSpec with Matchers
   with OptionValues with Generators with SpecBaseHelpers {
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]

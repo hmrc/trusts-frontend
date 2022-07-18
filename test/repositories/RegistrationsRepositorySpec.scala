@@ -24,7 +24,6 @@ import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{never, times, verify, when}
-import org.scalatest.MustMatchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
@@ -33,12 +32,14 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
-
 import java.time.LocalDateTime
+
+import org.scalatest.matchers.must.Matchers
+
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class RegistrationsRepositorySpec extends RegistrationSpecBase with MustMatchers with MockitoSugar {
+class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers with MockitoSugar {
 
   private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
