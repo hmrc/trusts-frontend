@@ -39,11 +39,28 @@
 
         @heading(messages("suitability.expressTrust.heading"))
 
+        <h2>@messages("suitability.expressTrust.subheading1")</h2>
+
         <p>@messages("suitability.expressTrust.p1")</p>
+
+        <p>@messages("suitability.expressTrust.p2")</p>
+
+        <p>@messages("suitability.expressTrust.p3")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("suitability.expressTrust.bullet1")</li>
+            <li>@messages("suitability.expressTrust.bullet2")</li>
+        </ul>
+
+        <h2>@messages("suitability.expressTrust.subheading2")</h2>
+
+        <p>@messages("suitability.expressTrust.p4")</p>
+
+        <h2>@messages("suitability.expressTrust.subheading3")</h2>
 
         @inputYesNo(
             field = form("value"),
-            label = messages("suitability.expressTrust.heading"),
+            label = messages("suitability.expressTrust.subheading3"),
             legendAsHeading = false,
             legendClass = Some("govuk-visually-hidden")
         )

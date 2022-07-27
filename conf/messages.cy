@@ -380,9 +380,17 @@ suitability.beforeYouContinue.taxable.agent.link2 = Ymddiriedolaethau a threthi 
 suitability.beforeYouContinue.taxable.agent.continue = Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
 
 suitability.expressTrust.title = A ydych yn cofrestru ymddiriedolaeth ddatganedig?
-suitability.expressTrust.heading = A ydych yn cofrestru ymddiriedolaeth ddatganedig?
-suitability.expressTrust.p1 = Ymddiriedolaeth ddatganedig yw ymddiriedolaeth a grëwyd yn fwriadol gan setlwr, fel arfer ar ffurf dogfen fel gweithred ysgrifenedig o ymddiriedaeth. Gellir creu ymddiriedolaethau datganedig drwy ewyllys neu yn ystod oes rhywun, a elwir hefyd yn inter-vivos.
-suitability.expressTrust.error.required = Dewiswch ‘Iawn’ neu ‘Na’ i roi gwybod i ni a ydych yn cofrestru ymddiriedolaeth ddatganedig.
+suitability.expressTrust.heading = Ymddiriedolaethau datganedig
+suitability.expressTrust.subheading1 = Beth yw ymddiriedolaeth ddatganedig
+suitability.expressTrust.p1 = Mae ymddiriedolaeth ddatganedig yn ymddiriedolaeth a grëwyd gan y person neu’r sefydliad sy’n rhoi asedion i mewn i’r ymddiriedolaeth. Mae’n bosibl y bydd dogfen yn bodoli fel gweithred ymddiriedolaeth ysgrifenedig.
+suitability.expressTrust.p2 = Mae’r rhan fwyaf o ymddiriedolaethau’n ymddiriedolaethau datganedig.
+suitability.expressTrust.p3 = Gellir creu ymddiriedolaethau datganedig:
+suitability.expressTrust.bullet1 = drwy ewyllys rhywun ar ôl iddo farw
+suitability.expressTrust.bullet2 = yn ystod oes rhywun, a elwir hefyd yn inter-vivos
+suitability.expressTrust.subheading2 = Yr hyn sydd ddim yn ymddiriedolaeth ddatganedig
+suitability.expressTrust.p4 = Nid yw ymddiriedolaethau a osodwyd gan y gyfraith yn ymddiriedolaethau datganedig, er enghraifft ymddiriedolaeth a grëwyd gan ddeddfau diewyllysedd pan fydd person yn marw heb ewyllys.
+suitability.expressTrust.subheading3 = A ydych yn cofrestru ymddiriedolaeth ddatganedig?
+suitability.expressTrust.error.required = Dewiswch ‘Iawn’ os ydych yn cofrestru ymddiriedolaeth ddatganedig
 
 suitability.noNeedToRegister.heading = Nid oes yn rhaid i chi gofrestru’r ymddiriedolaeth hon
 suitability.noNeedToRegister.p1 = Pan fo gan yr ymddiriedolaeth dreth i’w thalu
