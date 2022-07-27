@@ -339,8 +339,16 @@ removeDraftYesNo.heading = Are you sure you want to remove {0}?
 removeDraftYesNo.error.required = Select yes if you want to remove the saved registration
 
 suitability.expressTrust.title = Are you registering an express trust?
-suitability.expressTrust.heading = Are you registering an express trust?
-suitability.expressTrust.p1 = An express trust is a trust created deliberately by a settlor, usually in the form of a document such as a written deed of trust. Express trusts can be created by will or during lifetime, also known as inter-vivos.
+suitability.expressTrust.heading = Express trusts
+suitability.expressTrust.subheading1 = What is an express trust
+suitability.expressTrust.p1 = An express trust is a trust created by the person or organisation who puts assets into the trust. There may be a document such as a written deed of trust.
+suitability.expressTrust.p2 = Most trusts are express trusts.
+suitability.expressTrust.p3 = Express trusts can be created:
+suitability.expressTrust.bullet1 = by someone’s will after they have died
+suitability.expressTrust.bullet2 = during someone’s lifetime, which are known as inter-vivos
+suitability.expressTrust.subheading2 = What is not an express trust
+suitability.expressTrust.p4 = Trusts that are imposed by law are not express trusts, for example a trust created by intestacy laws when a person dies without a will.
+suitability.expressTrust.subheading3 = Are you registering an express trust?
 suitability.expressTrust.error.required = Select yes if you are registering an express trust
 
 suitability.taxLiabilityInCurrentTaxYear.title = Does the trust have any tax liability in the current tax year?

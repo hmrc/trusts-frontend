@@ -19,10 +19,10 @@ package views.register.suitability
 import forms.YesNoFormProvider
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import views.behaviours.YesNoViewBehaviours
+import views.behaviours.IsExpressYesNoViewBehaviours
 import views.html.register.suitability.ExpressTrustYesNoView
 
-class ExpressTrustYesNoViewSpec extends YesNoViewBehaviours {
+class ExpressTrustYesNoViewSpec extends IsExpressYesNoViewBehaviours {
 
   val prefix = "suitability.expressTrust"
 
@@ -35,7 +35,8 @@ class ExpressTrustYesNoViewSpec extends YesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), None, prefix, "p1")
+    behave like normalPage(applyView(form), None, prefix,
+      "subheading1", "p1", "p2", "p3", "bullet1", "bullet2", "subheading2", "p4", "subheading3")
 
     behave like pageWithBackLink(applyView(form))
 
