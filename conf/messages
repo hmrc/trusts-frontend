@@ -160,6 +160,7 @@ whenTrustSetup.checkYourAnswersLabel = When was the trust created?
 trustHasBusinessRelationshipInUkYesNo.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
 trustListedOnEeaRegisterYesNo.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLandYesNo.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
+schedule3aExemptYesNo.checkYourAnswersLabel = Does the trust have a Schedule 3a data sharing exemption?
 
 trustRegisteredOnline.title = Has the trust already been registered online?
 trustRegisteredOnline.heading = Has the trust already been registered online?
