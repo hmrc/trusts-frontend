@@ -134,7 +134,7 @@ trustResidentOffshore.checkYourAnswersLabel = Has the trust ever been resident o
 inheritanceTaxAct.checkYourAnswersLabel = Are you registering the trust for Inheritance Tax reasons?
 agentOtherThanBarrister.checkYourAnswersLabel = Has an agent who is not a barrister created this trust?
 trustHasBusinessRelationshipInUk.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
-trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
+trustListedOnEeaRegister.checkYourAnswersLabel = Is the trust registered on the trust register of any countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLand.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 settlorsBasedInTheUK.checkYourAnswersLabel = Are any of the settlors based in the UK?
 #TODO - delete above at least 28 days after deployment
@@ -158,7 +158,7 @@ whenTrustSetup.checkYourAnswersLabel = When was the trust created?
 #Todo: Remove above 28 days after deployment
 
 trustHasBusinessRelationshipInUkYesNo.checkYourAnswersLabel = Does the trust have a business relationship in the UK?
-trustListedOnEeaRegisterYesNo.checkYourAnswersLabel = Is the trust registered on the trust register of any other countries within the European Economic Area (EEA)?
+trustListedOnEeaRegisterYesNo.checkYourAnswersLabel = Is the trust registered on the trust register of any countries within the European Economic Area (EEA)?
 trustOwnsUkPropertyOrLandYesNo.checkYourAnswersLabel = Has the trust acquired land or property in the UK since 6 October 2020?
 
 trustRegisteredOnline.title = Has the trust already been registered online?
