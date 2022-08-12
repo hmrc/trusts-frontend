@@ -316,6 +316,7 @@ site.try-again = Rhoi cynnig arall arni
 site.utr = Cyfeirnod Unigryw y Trethdalwr (UTR)
 site.warning = Rhybudd
 site.yes = Iawn
+site.dontKnow = Nid wyf yn gwybod
 
 suitability.beforeYouContinue.existing.taxable.continue=Ewch yn eich blaen i gofrestru’r ymddiriedolaeth
 suitability.beforeYouContinue.existing.taxable.h2=Cadarnhau fod yr ymddiriedolaeth wedi’i chofrestru â CThEM ar gyfer Ffurflenni Treth Hunanasesiad
@@ -694,6 +695,8 @@ leadTrustee.individual.ninoYesNo.checkYourAnswersLabel = A oes gan {0} rif Yswir
 leadTrustee.individual.passportDetails.checkYourAnswersLabel = Beth yw manylion pasbort {0}?
 leadTrustee.individual.telephoneNumber.checkYourAnswersLabel = Beth yw rhif ffôn {0}?
 leadTrustee.individual.trusteeDetailsChoice.checkYourAnswersLabel = Pa fanylion ar gyfer {0} y gallwch eu rhoi?
+leadTrustee.individual.trusteeDetailsChoice.passport=Pasbort
+leadTrustee.individual.trusteeDetailsChoice.idCard=Cerdyn adnabod
 leadTrustee.individual.ukAddress.checkYourAnswersLabel = Beth yw cyfeiriad {0}?
 leadTrustee.individualOrBusiness.checkYourAnswersLabel = A yw’r prif ymddiriedolwr yn unigolyn neu’n fusnes?
 leadTrustee.individualOrBusiness.checkYourAnswersLabel = A yw’r prif ymddiriedolwr yn unigolyn neu’n fusnes?
