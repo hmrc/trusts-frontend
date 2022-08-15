@@ -880,6 +880,7 @@ trusteesBasedInTheUK.UKBasedTrustees = Mae pob un o’r ymddiriedolwyr wedi’u 
 trustHasBusinessRelationshipInUkYesNo.checkYourAnswersLabel = A oes gan yr ymddiriedolaeth berthynas fusnes yn y DU?
 trustListedOnEeaRegisterYesNo.checkYourAnswersLabel = A yw’r ymddiriedolaeth wedi’i chofrestru ar gofrestr ymddiriedolaeth unrhyw wledydd o fewn yr Ardal Economaidd Ewropeaidd (AEE)?
 trustOwnsUkPropertyOrLandYesNo.checkYourAnswersLabel = A yw’r ymddiriedolaeth wedi caffael tir neu eiddo yn y DU ers 6 Hydref 2020?
+schedule3aExemptYesNo.checkYourAnswersLabel = A oes gan yr ymddiriedolaeth eithriad rhag rhannu data o dan Atodlen 3a?
 trustPreviouslyResident.checkYourAnswersLabel = Ym mha wlad yr oedd yr ymddiriedolaeth yn preswylio yn flaenorol?
 trustResidentInUK.checkYourAnswersLabel = A yw’r ymddiriedolaeth yn breswylydd yn y DU?
 trustResidentOffshoreYesNo.checkYourAnswersLabel = A yw’r ymddiriedolaeth erioed wedi preswylio alltraeth?
