@@ -75,6 +75,21 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       validDataGenerator = RegexpGen.from(Validation.nameRegex)
     )
+
+    "bind whitespace trim values" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "  middle  ", "lastName" -> "lastName"))
+      result.value.value.name.middleName shouldBe Some("middle")
+    }
+
+    "bind whitespace blank values" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "  ", "lastName" -> "lastName"))
+      result.value.value.name.middleName shouldBe None
+    }
+
+    "bind whitespace no values" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "", "lastName" -> "lastName"))
+      result.value.value.name.middleName shouldBe None
+    }
   }
 
   ".lastName" must {
@@ -119,6 +134,16 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       validDataGenerator = RegexpGen.from(Validation.emailRegex)
     )
+
+    "bind whitespace trim values" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middle", "lastName" -> "lastName", "email" -> "  test@test.com  "))
+      result.value.value.email shouldBe Some("test@test.com")
+    }
+
+    "bind whitespace no values" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middle", "lastName" -> "lastName", "email" -> ""))
+      result.value.value.email shouldBe None
+    }
   }
 
 }
