@@ -16,7 +16,9 @@
 
 package forms
 
+import forms.helpers.WhitespaceHelper._
 import forms.mappings.Mappings
+
 import javax.inject.Inject
 import models.core.pages.{Declaration, FullName}
 import play.api.data.Form
@@ -28,10 +30,13 @@ class DeclarationFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         "" -> fullName,
-        "email" -> optional(text().verifying(
-          firstError(
-            regexp(Validation.emailRegex, "declaration.error.email.invalid"))
-        ))
+        "email" -> optional(text()
+          .transform(trimWhitespace, identity[String])
+          .verifying(
+            firstError(
+              regexp(Validation.emailRegex, "declaration.error.email.invalid"))
+          )
+        ).transform(emptyToNone, identity[Option[String]])
       )(Declaration.apply)(Declaration.unapply)
     )
 
@@ -45,11 +50,12 @@ class DeclarationFormProvider @Inject() extends Mappings {
           regexp(Validation.nameRegex, "declaration.error.firstName.invalid")
         )),
     "middleName" -> optional(text()
+      .transform(trimWhitespace, identity[String])
       .verifying(
         firstError(
           maxLength(35, "declaration.error.middleName.length"),
           regexp(Validation.nameRegex, "declaration.error.middleName.invalid"))
-      )),
+      )).transform(emptyToNone, identity[Option[String]]),
     "lastName" -> text("declaration.error.lastName.required")
       .verifying(
         firstError(
