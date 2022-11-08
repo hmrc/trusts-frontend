@@ -20,8 +20,7 @@ import base.RegistrationSpecBase
 import forms.YesNoFormProvider
 import models.core.MatchingAndSuitabilityUserAnswers
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verify, when}
+import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}

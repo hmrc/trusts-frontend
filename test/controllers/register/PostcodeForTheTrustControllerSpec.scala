@@ -19,8 +19,7 @@ package controllers.register
 import base.RegistrationSpecBase
 import play.api.mvc.Results.Redirect
 import forms.PostcodeForTheTrustFormProvider
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import pages.register.PostcodeForTheTrustPage
 import play.api.data.Form
 import play.api.inject.bind

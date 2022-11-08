@@ -18,7 +18,7 @@ package utils.countryOptions
 
 import base.RegistrationSpecBase
 import com.typesafe.config.ConfigException
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
 import play.api.inject.guice.GuiceApplicationBuilder
 import utils.InputOption

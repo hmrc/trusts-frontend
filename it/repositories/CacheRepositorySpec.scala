@@ -17,37 +17,40 @@
 package repositories
 
 import models.core.MatchingAndSuitabilityUserAnswers
-import org.scalatest.OptionValues
-import org.scalatest.matchers.must.Matchers
-import org.scalatest.freespec.AsyncFreeSpec
-
+import org.mongodb.scala.bson.BsonDocument
+import org.scalatest.{BeforeAndAfterEach, OptionValues}
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.wordspec.AnyWordSpec
+import uk.gov.hmrc.mongo.test.MongoSupport
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
-class CacheRepositorySpec extends AsyncFreeSpec with Matchers
-  with ScalaFutures with OptionValues with MongoSuite {
+class CacheRepositorySpec extends AnyWordSpec with Matchers
+  with ScalaFutures with OptionValues with MongoSupport with MongoSuite with BeforeAndAfterEach {
 
-  "a cache repository" - {
+  override def beforeEach(): Unit =
+    Await.result(repository.collection.deleteMany(BsonDocument()).toFuture(), Duration.Inf)
 
-    "must return true when creating document for given internal id" in assertMongoTest(application) {
-      (app, _) =>
+  lazy val repository: CacheRepositoryImpl = new CacheRepositoryImpl(mongoComponent, config)
+
+  "a cache repository" should {
+
+    "must return true when creating document for given internal id" in {
 
         val internalId = "internalId1"
-
-        val repository = app.injector.instanceOf[CacheRepository]
 
         val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
 
         val initial = repository.set(userAnswers).futureValue
 
-        initial mustBe true
+        initial shouldBe true
     }
 
-    "must return true when updating document for given internal id" in assertMongoTest(application) {
-      (app, _) =>
+    "must return true when updating document for given internal id" in {
 
         val internalId = "internalId2"
-
-        val repository = app.injector.instanceOf[CacheRepository]
 
         val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
 
@@ -55,33 +58,28 @@ class CacheRepositorySpec extends AsyncFreeSpec with Matchers
 
         val updated = repository.set(userAnswers).futureValue
 
-        updated mustBe true
+        updated shouldBe true
     }
 
-    "must return None when no cache exists" in assertMongoTest(application) {
-      (app, _) =>
+    "must return None when no cache exists" in {
 
         val internalId = "internalId3"
 
-        val repository = app.injector.instanceOf[CacheRepository]
-        repository.get(internalId).futureValue mustBe None
+        repository.get(internalId).futureValue shouldBe None
     }
 
-    "must return Some user answers when document exists for given internal id" in assertMongoTest(application) {
-      (app, _) =>
+    "must return Some user answers when document exists for given internal id" in {
 
         val internalId = "internalId4"
-
-        val repository = app.injector.instanceOf[CacheRepository]
 
         val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
 
         val initial = repository.set(userAnswers).futureValue
 
-        initial mustBe true
+        initial shouldBe true
 
-        repository.get(internalId).futureValue.value.internalId mustBe userAnswers.internalId
-        repository.get(internalId).futureValue.value.data mustBe userAnswers.data
+        repository.get(internalId).futureValue.value.internalId shouldBe userAnswers.internalId
+        repository.get(internalId).futureValue.value.data shouldBe userAnswers.data
     }
   }
 }

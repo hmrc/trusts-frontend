@@ -16,15 +16,17 @@
 
 package repositories
 
+import java.time.LocalDateTime
+
 import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
 import models.RegistrationSubmission.AllAnswerSections
 import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{never, times, verify, when}
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.any
+import org.mockito.MockitoSugar
+import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
@@ -32,9 +34,6 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
-import java.time.LocalDateTime
-
-import org.scalatest.matchers.must.Matchers
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -445,7 +444,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
           result mustBe None
 
-          verify(mockConnector, never()).getClientReference(any())(any(), any())
+          verify(mockConnector, never).getClientReference(any())(any(), any())
         }
 
       }

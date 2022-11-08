@@ -19,8 +19,7 @@ package pages.register
 import base.RegistrationSpecBase
 import models.registration.pages.TagStatus._
 import models.{TaskStatuses, FirstTaxYearAvailable}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import uk.gov.hmrc.http.HeaderCarrier

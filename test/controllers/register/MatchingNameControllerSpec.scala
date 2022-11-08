@@ -20,7 +20,7 @@ import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.TrustNameFormProvider
 import generators.Generators
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.MatchingNamePage
 import play.api.data.Form

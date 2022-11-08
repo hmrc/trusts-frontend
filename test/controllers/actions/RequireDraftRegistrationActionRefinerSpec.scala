@@ -23,7 +23,7 @@ import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import play.api.http.HeaderNames
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
@@ -67,7 +67,7 @@ class RequireDraftRegistrationActionRefinerSpec extends RegistrationSpecBase wit
         val futureResult = action.callRefine(dataRequest)
 
         whenReady(futureResult) { result =>
-          result.right.value mustEqual dataRequest
+          result.value mustEqual dataRequest
         }
       }
 

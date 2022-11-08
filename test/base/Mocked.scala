@@ -18,9 +18,8 @@ package base
 
 import models.requests.MatchingAndSuitabilityDataRequest
 import models.{FirstTaxYearAvailable, TaskStatuses}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.any
+import org.mockito.MockitoSugar
 import play.api.mvc.AnyContent
 import repositories.{CacheRepository, RegistrationsRepository}
 import services.{DraftRegistrationService, SubmissionService, TrustsStoreService}

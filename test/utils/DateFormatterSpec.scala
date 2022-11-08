@@ -21,7 +21,6 @@ import java.time.{LocalDateTime, LocalDate => JavaDate}
 import base.RegistrationSpecBase
 import config.FrontendAppConfig
 import org.joda.time.{LocalDate => JodaDate}
-import org.mockito.Mockito.when
 import play.api.i18n.{Lang, MessagesImpl}
 import uk.gov.hmrc.play.language.LanguageUtils
 

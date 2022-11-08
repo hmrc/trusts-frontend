@@ -20,8 +20,7 @@ import base.RegistrationSpecBase
 import models.core.UserAnswers
 import models.requests.MatchingAndSuitabilityDataRequest
 import org.mockito.ArgumentCaptor
-import org.mockito.Matchers.any
-import org.mockito.Mockito.verify
+import org.mockito.ArgumentMatchers.any
 import org.scalatest.concurrent.ScalaFutures
 import pages.register.suitability.{ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage}
 import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage}

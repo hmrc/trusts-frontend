@@ -20,7 +20,7 @@ import base.RegistrationSpecBase
 import config.FrontendAppConfig
 import forms.WhichIdentifierFormProvider
 import models.WhichIdentifier
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.MockitoSugar
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest

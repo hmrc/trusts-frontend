@@ -108,3 +108,5 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
 )
 
 dependencyOverrides ++= AppDependencies.overrides
+
+addCommandAlias("scalastyleAll", "all scalastyle test:scalastyle it:scalastyle")

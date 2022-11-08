@@ -133,4 +133,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
 
   def sa900FormUrl: String = configuration.get[String]("urls.sa900Form")
 
+  val cachettllocalInSeconds: Long = configuration.get[Long]("mongodb.local.ttlSeconds")
+
+  val dropIndexes: Boolean = configuration.getOptional[Boolean]("microservice.services.features.mongo.dropIndexes").getOrElse(false)
+
 }
