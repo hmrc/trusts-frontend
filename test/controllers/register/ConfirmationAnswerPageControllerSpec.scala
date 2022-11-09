@@ -17,8 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import pages.register.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.inject
 import play.api.test.FakeRequest

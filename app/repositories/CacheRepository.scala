@@ -16,76 +16,65 @@
 
 package repositories
 
-import models.core.MatchingAndSuitabilityUserAnswers
-import play.api.Configuration
-import play.api.libs.json._
-import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.api.bson.BSONDocument
-import reactivemongo.api.bson.collection.BSONSerializationPack
-import reactivemongo.api.indexes.Index.Aux
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.play.json.collection.Helpers.idWrites
-
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
+import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
+import models.core.MatchingAndSuitabilityUserAnswers
+import org.bson.conversions.Bson
+import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Indexes.ascending
+import org.mongodb.scala.model._
+import play.api.libs.json._
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CacheRepositoryImpl @Inject()(
-                                     override val mongo: ReactiveMongoApi,
-                                     override val config: Configuration
-                                   )(override implicit val ec: ExecutionContext)
-  extends IndexesManager with CacheRepository {
+                                     val mongo: MongoComponent,
+                                     val config: FrontendAppConfig
+                                   )(implicit val ec: ExecutionContext)
 
-  override val collectionName: String = "user-answers"
+  extends PlayMongoRepository[MatchingAndSuitabilityUserAnswers](
+    collectionName = "user-answers",
+    mongoComponent = mongo,
+    domainFormat = Format(MatchingAndSuitabilityUserAnswers.reads, MatchingAndSuitabilityUserAnswers.writes),
+    indexes = Seq(
+      IndexModel(
+        ascending("updatedAt"),
+        IndexOptions()
+          .unique(false)
+          .name("user-answers-updated-at-index")
+          .expireAfter(config.cachettllocalInSeconds, TimeUnit.SECONDS)),
+       IndexModel(
+        ascending("internalId"),
+        IndexOptions()
+          .unique(false)
+          .name("internal-auth-id-index"))
 
-  override val cacheTtl: Int = config.get[Int]("mongodb.local.ttlSeconds")
+    ), replaceIndexes = config.dropIndexes
 
-  override val lastUpdatedIndexName: String = "user-answers-updated-at-index"
+  ) with CacheRepository {
 
-  override def idIndex: Aux[BSONSerializationPack.type] = Index.apply(BSONSerializationPack)(
-    key = Seq("internalId" -> IndexType.Ascending),
-    name = Some("internal-auth-id-index"),
-    expireAfterSeconds = None,
-    options = BSONDocument.empty,
-    unique = false,
-    background = false,
-    dropDups = false,
-    sparse = false,
-    version = None,
-    partialFilter = None,
-    storageEngine = None,
-    weights = None,
-    defaultLanguage = None,
-    languageOverride = None,
-    textIndexVersion = None,
-    sphereIndexVersion = None,
-    bits = None,
-    min = None,
-    max = None,
-    bucketSize = None,
-    collation = None,
-    wildcardProjection = None
-  )
-
-  private def selector(internalId: String): JsObject = Json.obj(
-    "internalId" -> internalId
-  )
+  private def selector(internalId: String): Bson = equal("internalId" , internalId)
 
   override def get(internalId: String): Future[Option[MatchingAndSuitabilityUserAnswers]] = {
-    findCollectionAndUpdate[MatchingAndSuitabilityUserAnswers](selector(internalId))
+    val modifier = Updates.set("updatedAt", LocalDateTime.now())
+    val updateOption = new FindOneAndUpdateOptions()
+      .upsert(false)
+
+    collection.findOneAndUpdate(selector(internalId), modifier, updateOption).toFutureOption()
   }
 
   override def set(userAnswers: MatchingAndSuitabilityUserAnswers): Future[Boolean] = {
 
-    val modifier = Json.obj(
-      "$set" -> userAnswers.copy(updatedAt = LocalDateTime.now)
-    )
+    val find = selector(userAnswers.internalId)
+    val updatedObject = userAnswers.copy(updatedAt = LocalDateTime.now)
+    val options = ReplaceOptions().upsert(true)
 
-    for {
-      col <- collection
-      r <- col.update(ordered = false).one(selector(userAnswers.internalId), modifier, upsert = true, multi = false)
-    } yield r.ok
+    collection.replaceOne(find, updatedObject, options).headOption().map(_.exists(_.wasAcknowledged()))
   }
 }
 

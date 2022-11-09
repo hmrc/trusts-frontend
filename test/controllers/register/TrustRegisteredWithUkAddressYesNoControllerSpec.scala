@@ -20,8 +20,7 @@ import base.RegistrationSpecBase
 import play.api.mvc.Results.Redirect
 import controllers.register.routes._
 import forms.YesNoFormProvider
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
 import play.api.data.Form
 import play.api.inject.bind

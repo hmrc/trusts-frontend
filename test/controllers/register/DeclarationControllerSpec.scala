@@ -22,8 +22,7 @@ import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{verify, when, _}
+import org.mockito.ArgumentMatchers.any
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
 import play.api.inject

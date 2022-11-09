@@ -20,8 +20,7 @@ import base.RegistrationSpecBase
 import generators.ModelGenerators
 import models.FirstTaxYearAvailable
 import models.requests.RegistrationDataRequest
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.concurrent.ScalaFutures.whenReady
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks

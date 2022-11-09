@@ -19,9 +19,8 @@ package controllers.register.agents
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.YesNoFormProvider
-import org.mockito.Matchers
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, times, verify, when}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -78,7 +77,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       redirectLocation(result).value mustEqual agentOverviewRoute
 
-      verify(registrationsRepository, times(1)).removeDraft(Matchers.eq(fakeDraftId))(any[HeaderCarrier])
+      verify(registrationsRepository, times(1)).removeDraft(ArgumentMatchers.eq(fakeDraftId))(any[HeaderCarrier])
 
       application.stop()
     }
@@ -98,7 +97,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       redirectLocation(result).value mustEqual agentOverviewRoute
 
-      verify(registrationsRepository, times(0)).removeDraft(Matchers.eq(fakeDraftId))(any[HeaderCarrier])
+      verify(registrationsRepository, times(0)).removeDraft(ArgumentMatchers.eq(fakeDraftId))(any[HeaderCarrier])
 
       application.stop()
     }

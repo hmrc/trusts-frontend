@@ -19,7 +19,6 @@ package controllers.register
 import base.RegistrationSpecBase
 import models.core.MatchingAndSuitabilityUserAnswers
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito.verify
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

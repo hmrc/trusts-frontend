@@ -17,8 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import org.mockito.Matchers.{eq => eqTo, _}
-import org.mockito.Mockito._
+import org.mockito.ArgumentMatchers.{eq => eqTo, _}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import play.api.inject.bind

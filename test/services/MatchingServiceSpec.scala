@@ -22,9 +22,8 @@ import models.core.MatchingAndSuitabilityUserAnswers
 import models.core.http.MatchedResponse._
 import models.core.http.SuccessOrFailureResponse
 import models.registration.Matched
-import org.mockito.Matchers
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verify, when}
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
 import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
 import play.api.test.Helpers._
@@ -71,7 +70,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
           val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
 
-          verify(cacheRepository).set(Matchers.eq(expectedAnswers))
+          verify(cacheRepository).set(ArgumentMatchers.eq(expectedAnswers))
         }
       }
 
@@ -89,7 +88,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
           val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
 
-          verify(cacheRepository).set(Matchers.eq(expectedAnswers))
+          verify(cacheRepository).set(ArgumentMatchers.eq(expectedAnswers))
         }
       }
     }

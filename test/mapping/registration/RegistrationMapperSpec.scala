@@ -19,8 +19,7 @@ package mapping.registration
 import base.RegistrationSpecBase
 import models.core.http.{AddressType, Correspondence, Declaration, MatchData, Registration}
 import models.core.pages.FullName
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import play.api.libs.json.Json
 import uk.gov.hmrc.auth.core.AffinityGroup._
 import uk.gov.hmrc.http.HeaderCarrier

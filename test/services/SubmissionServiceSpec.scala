@@ -25,8 +25,7 @@ import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
 import models.core.http._
 import models.requests.RegistrationDataRequest
-import org.mockito.Matchers.{eq => eqTo, _}
-import org.mockito.Mockito.{verify, when}
+import org.mockito.ArgumentMatchers.{eq => eqTo, _}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues

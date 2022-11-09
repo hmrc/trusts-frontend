@@ -19,8 +19,7 @@ package controllers.register
 import base.RegistrationSpecBase
 import controllers.register.agents.routes._
 import models.registration.pages.RegistrationStatus.InProgress
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{reset, verify, when}
+import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
 import pages.register.TrustRegisteredOnlinePage
 import play.api.test.FakeRequest

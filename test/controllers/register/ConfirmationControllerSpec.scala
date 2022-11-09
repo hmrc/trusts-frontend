@@ -20,8 +20,7 @@ import base.RegistrationSpecBase
 import models.core.http.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType}
 import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
