@@ -49,7 +49,20 @@ class SessionTimeoutControllerSpec extends RegistrationSpecBase {
         redirectLocation(res).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
       }
     }
+    "redirect to next page for a POST" in {
 
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      val request = FakeRequest(POST, controllers.register.routes.SessionExpiredController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustBe "http://localhost:9949/auth-login-stub/gg-sign-in?continue=" +
+        "http%3A%2F%2Flocalhost%3A9781%2Ftrusts-registration&origin=trusts-frontend"
+      application.stop()
+
+    }
   }
 
 }
