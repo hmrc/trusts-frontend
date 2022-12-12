@@ -84,7 +84,6 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
           val declarationMapper: DeclarationMapper = new DeclarationMapper(registrationsRepository)
-          
           val result = Await.result(declarationMapper.build(userAnswers, leadTrusteeAddress), Duration.Inf).value
 
           result mustBe Declaration(

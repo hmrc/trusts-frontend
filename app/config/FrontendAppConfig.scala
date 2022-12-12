@@ -31,6 +31,8 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
 
   val betaFeedbackUrl = s"${contactFrontendConfig.baseUrl.get}/contact/beta-feedback?service=${contactFrontendConfig.serviceId.get}"
 
+  lazy val appName: String = configuration.get[String]("appName")
+
   val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
   val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
 

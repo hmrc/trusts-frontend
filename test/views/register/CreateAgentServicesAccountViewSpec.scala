@@ -29,6 +29,5 @@ class CreateAgentServicesAccountViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, None, "createAgentServicesAccount", "paragraph1", "insetText", "paragraph2", "paragraph3")
 
- 
   }
 }
