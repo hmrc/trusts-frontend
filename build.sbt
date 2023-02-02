@@ -75,10 +75,6 @@ lazy val root = (project in file("."))
     retrieveManaged := true,
     update / evictionWarningOptions :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    resolvers ++= Seq(
-      Resolver.jcenterRepo,
-      "hmrc-artefactory-releases" at "https://artefacts.tax.service.gov.uk/artifactory/hmrc-releases/"
-    ),
     // concatenate js
     Concat.groups := Seq(
       "javascripts/trustsfrontend-app.js" ->
