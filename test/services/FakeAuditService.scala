@@ -17,6 +17,7 @@
 package services
 
 import config.FrontendAppConfig
+
 import javax.inject.Inject
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
@@ -25,7 +26,11 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
-class FakeAuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig) extends AuditService(auditConnector, config) {
+import scala.concurrent.ExecutionContext
+
+
+class FakeAuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig)(ec: ExecutionContext)
+  extends AuditService(auditConnector, config)(ec) {
 
   override def auditRegistrationSubmitted(payload: JsValue,
                                           draftId: String,
