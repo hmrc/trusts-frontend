@@ -43,7 +43,6 @@ lazy val root = (project in file("."))
   .settings(
     DefaultBuildSettings.scalaSettings,
     DefaultBuildSettings.defaultSettings(),
-    SbtDistributablesPlugin.publishingSettings,
     scalaVersion := "2.12.16",
     SilencerSettings(),
     Compile / unmanagedSourceDirectories += baseDirectory.value / "resources",
