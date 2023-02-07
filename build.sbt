@@ -43,7 +43,6 @@ lazy val root = (project in file("."))
   .settings(
     DefaultBuildSettings.scalaSettings,
     DefaultBuildSettings.defaultSettings(),
-    SbtDistributablesPlugin.publishingSettings,
     scalaVersion := "2.12.16",
     SilencerSettings(),
     Compile / unmanagedSourceDirectories += baseDirectory.value / "resources",
@@ -75,10 +74,6 @@ lazy val root = (project in file("."))
     retrieveManaged := true,
     update / evictionWarningOptions :=
       EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    resolvers ++= Seq(
-      Resolver.jcenterRepo,
-      "hmrc-artefactory-releases" at "https://artefacts.tax.service.gov.uk/artifactory/hmrc-releases/"
-    ),
     // concatenate js
     Concat.groups := Seq(
       "javascripts/trustsfrontend-app.js" ->
