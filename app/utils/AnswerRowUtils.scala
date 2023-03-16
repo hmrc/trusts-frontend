@@ -19,6 +19,7 @@ package utils
 import com.ibm.icu.text.SimpleDateFormat
 import com.ibm.icu.util.ULocale
 import mapping.Constants._
+import models.RegistrationSubmission
 import play.api.Environment
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json.{JsSuccess, Json}
@@ -51,6 +52,19 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
     parseAsDate(arg) getOrElse
       arg
   }
+
+  def rowsWithCorrectTense(section: RegistrationSubmission.AnswerSection)
+                          (implicit messages: Messages): Seq[RegistrationSubmission.AnswerRow] =
+    section.rows.map(row => {
+      val rowLabelPrefix: String = row.label.split("""\.""").head
+      val pastTenseQuestion = s"${rowLabelPrefix}PastTense.checkYourAnswersLabel"
+      if(messages.messages.isDefinedAt(pastTenseQuestion)) {
+        row.copy(
+          label = pastTenseQuestion
+        )
+      } else {
+        row
+      }})
 
   private def parseAsYesOrNo(answer: String)(implicit messages: Messages): Try[String] = {
     val keys = Seq("site.yes", "site.no")

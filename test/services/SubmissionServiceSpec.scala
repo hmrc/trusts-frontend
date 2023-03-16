@@ -20,7 +20,7 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
-import models.FirstTaxYearAvailable
+import models.{FirstTaxYearAvailable, RegistrationSubmission}
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
 import models.core.http._
@@ -30,7 +30,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 import play.api.i18n.Messages
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.test.Helpers.OK
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
@@ -39,8 +39,9 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TestUserAnswers
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
+import java.time.LocalDateTime
 import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{Await, ExecutionContext, Future}
 
 class SubmissionServiceSpec extends AnyFreeSpec with Matchers
   with OptionValues with Generators with SpecBaseHelpers {
@@ -98,6 +99,20 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
     override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] =
       Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false)))
+
+    override def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier): Future[JsObject] =
+      Future.successful(Json.parse("{}").as[JsObject])
+
+    override def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier): Future[JsValue] =
+      Future.successful(Json.parse("{}"))
+
+    override def setDraftSettlors(draftId: String, data: JsValue)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+      Future.successful(HttpResponse(OK, ""))
+
+    override def getSettlorsAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
+      Future.successful(
+        RegistrationSubmission.AllAnswerSections().settlors.getOrElse(Seq.empty[RegistrationSubmission.AnswerSection])
+      )
   }
 
   private val auditService: AuditService = injector.instanceOf[FakeAuditService]

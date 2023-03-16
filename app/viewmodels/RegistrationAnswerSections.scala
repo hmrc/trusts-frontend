@@ -53,11 +53,23 @@ object RegistrationAnswerSections {
   }
 
   private def convert(section: RegistrationSubmission.AnswerSection)
-                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = AnswerSection(
-    headingKey = section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg): _*)),
-    rows = section.rows.map(convert(_)),
-    sectionKey = section.sectionKey.map(messages(_))
-  )
+                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = {
+
+    val checkSettlorAlive: Boolean =
+      section.rows.exists(row =>
+        row.label.contains("settlorAliveYesNo.checkYourAnswersLabel") &&
+          row.answer == "No"
+      )
+
+    val rowsInCorrectTense =
+      if (checkSettlorAlive) answerRowUtils.rowsWithCorrectTense(section) else section.rows
+
+      AnswerSection(
+        headingKey = section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg): _*)),
+        rows = rowsInCorrectTense.map(convert(_)),
+        sectionKey = section.sectionKey.map(messages(_))
+      )
+  }
 
   private def convert(row: RegistrationSubmission.AnswerRow)
                      (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerRow = AnswerRow(

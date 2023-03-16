@@ -17,12 +17,15 @@
 package base
 
 import models.requests.MatchingAndSuitabilityDataRequest
-import models.{FirstTaxYearAvailable, TaskStatuses}
+import models.{FirstTaxYearAvailable, RegistrationSubmission, TaskStatuses}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockitoSugar
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.AnyContent
+import play.api.test.Helpers.OK
 import repositories.{CacheRepository, RegistrationsRepository}
 import services.{DraftRegistrationService, SubmissionService, TrustsStoreService}
+import uk.gov.hmrc.http.HttpResponse
 import utils.TestUserAnswers
 import viewmodels.RegistrationAnswerSections
 
@@ -52,4 +55,16 @@ trait Mocked extends MockitoSugar {
 
   when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
     .thenReturn(Future.successful(TaskStatuses.withAllComplete))
+
+  when(registrationsRepository.getDraftSettlors(any())(any()))
+    .thenReturn(Future.successful(Json.parse("{}")))
+
+  when(registrationsRepository.getSettlorsAnswerSections(any())(any()))
+    .thenReturn(Future.successful(Seq.empty[RegistrationSubmission.AnswerSection]))
+
+  when(registrationsRepository.getRegistrationPieces(any())(any()))
+    .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
+
+  when(registrationsRepository.setDraftSettlors(any(), any())(any()))
+    .thenReturn(Future.successful(HttpResponse(OK, "")))
 }

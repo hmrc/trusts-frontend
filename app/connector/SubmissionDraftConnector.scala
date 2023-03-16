@@ -32,6 +32,7 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
 
   private val mainSection = "main"
   private val beneficiariesSection = "beneficiaries"
+  private val settlorsSection = "settlors"
   private val registrationSection = "registration"
   private val answerSectionsSection = "answerSections"
 
@@ -52,6 +53,13 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
 
   def getDraftBeneficiaries(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[SubmissionDraftResponse] =
     getDraftSection(draftId, beneficiariesSection)
+
+  def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[SubmissionDraftResponse] =
+    getDraftSection(draftId, settlorsSection)
+
+  def setDraftSettlors(draftId: String, data: JsValue)
+                     (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] =
+    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/set/$settlorsSection", data)
 
   def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[List[SubmissionDraftId]] = {
     http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
