@@ -16,9 +16,11 @@
 
 package utils
 
-import play.api.libs.json.{JsArray, JsObject, JsValue, __}
+import models.core.{Settlor, Settlors}
+import play.api.Logging
+import play.api.libs.json.{JsArray, JsObject, JsSuccess, JsValue, __}
 
-object JsonTransformers {
+object JsonTransformers extends Logging{
 
   def removeAliveAtRegistrationFromJson(registrationPieces: JsObject): Option[JsValue] =
     registrationPieces
@@ -42,9 +44,18 @@ object JsonTransformers {
   def checkIfAliveAtRegistrationFieldPresent(registrationPieces: JsObject): Boolean =
     registrationPieces
       .transform(
-        (__ \ "trust/entities/settlors" \ "settlor" \\ "aliveAtRegistration").json.pick
-      )
-      .asOpt
-      .isDefined
+        (__ \ "trust/entities/settlors").json.pick
+      ) match {
+      case JsSuccess(value, _) =>
+        value
+          .as[Settlors]
+          .settlor
+          .getOrElse(List.empty[Settlor])
+          .map(_.aliveAtRegistration.isDefined)
+          .exists(identity)
+      case _ =>
+        logger.info(s"[checkIfAliveAtRegistrationFieldPresent]: trust/entities/settlors not found in reg Json.")
+        false
+    }
 
 }

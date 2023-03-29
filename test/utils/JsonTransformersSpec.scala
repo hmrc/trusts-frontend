@@ -21,7 +21,7 @@ import play.api.libs.json.{JsObject, Json}
 
 class JsonTransformersSpec extends PlaySpec {
 
-    val registrationPiecesString: String = """
+  val singleSettlorsWithAliveAtRegField: String = """
                                              |{
                                              |  "trust/entities/settlors": {
                                              |    "settlor": [
@@ -47,66 +47,315 @@ class JsonTransformersSpec extends PlaySpec {
                                              |}
                                              |""".stripMargin
 
-    val transformedRegistrationPiecesString: String = """
-                                                        |{
-                                                        | "settlor": [
-                                                        |   {
-                                                        |     "name": {
-                                                        |       "firstName": "Mark",
-                                                        |       "lastName": "B"
-                                                        |     },
-                                                        |     "identification": {
-                                                        |       "address": {
-                                                        |         "line1": "123",
-                                                        |         "line2": "Test address",
-                                                        |         "postCode": "AB1 1AB",
-                                                        |         "country": "GB"
-                                                        |       }
-                                                        |     },
-                                                        |     "countryOfResidence": "GB",
-                                                        |     "nationality": "GB"
-                                                        |   }
-                                                        | ]
-                                                        |}
-                                                        |""".stripMargin
+  val singleSettlorsWithoutAliveAtRegField: String = """
+                                                       |{
+                                                       |  "trust/entities/settlors": {
+                                                       |    "settlor": [
+                                                       |      {
+                                                       |        "name": {
+                                                       |          "firstName": "Mark",
+                                                       |          "lastName": "B"
+                                                       |        },
+                                                       |        "identification": {
+                                                       |          "address": {
+                                                       |            "line1": "123",
+                                                       |            "line2": "Test address",
+                                                       |            "postCode": "AB1 1AB",
+                                                       |            "country": "GB"
+                                                       |          }
+                                                       |        },
+                                                       |        "countryOfResidence": "GB",
+                                                       |        "nationality": "GB"
+                                                       |      }
+                                                       |    ]
+                                                       |  }
+                                                       |}
+                                                       |""".stripMargin
 
-    val registrationPiecesStringWithoutAliveAtRegistration: String = """
-                                                               |{
-                                                               |  "trust/entities/settlors": {
-                                                               |    "settlor": []
-                                                               |  }
-                                                               |}
-                                                               |""".stripMargin
+  val transformedSingleSettlors: String = """
+                                                                   |{
+                                                                   | "settlor": [
+                                                                   |   {
+                                                                   |     "name": {
+                                                                   |       "firstName": "Mark",
+                                                                   |       "lastName": "B"
+                                                                   |     },
+                                                                   |     "identification": {
+                                                                   |       "address": {
+                                                                   |         "line1": "123",
+                                                                   |         "line2": "Test address",
+                                                                   |         "postCode": "AB1 1AB",
+                                                                   |         "country": "GB"
+                                                                   |       }
+                                                                   |     },
+                                                                   |     "countryOfResidence": "GB",
+                                                                   |     "nationality": "GB"
+                                                                   |   }
+                                                                   | ]
+                                                                   |}
+                                                                   |""".stripMargin
+
+  val multipleSettlorsWithAliveAtRegField: String = """
+                                                          |{
+                                                          |  "trust/entities/settlors": {
+                                                          |    "settlor": [
+                                                          |      {
+                                                          |        "aliveAtRegistration": false,
+                                                          |        "name": {
+                                                          |          "firstName": "Mark",
+                                                          |          "lastName": "B"
+                                                          |        },
+                                                          |        "identification": {
+                                                          |          "address": {
+                                                          |            "line1": "123",
+                                                          |            "line2": "Test address",
+                                                          |            "postCode": "AB1 1AB",
+                                                          |            "country": "GB"
+                                                          |          }
+                                                          |        },
+                                                          |        "countryOfResidence": "GB",
+                                                          |        "nationality": "GB"
+                                                          |      },
+                                                          |      {
+                                                          |        "aliveAtRegistration": false,
+                                                          |        "name": {
+                                                          |          "firstName": "Mark",
+                                                          |          "lastName": "BC"
+                                                          |        },
+                                                          |        "identification": {
+                                                          |          "address": {
+                                                          |            "line1": "123",
+                                                          |            "line2": "Test address",
+                                                          |            "postCode": "AB1 1AB",
+                                                          |            "country": "GB"
+                                                          |          }
+                                                          |        },
+                                                          |        "countryOfResidence": "GB",
+                                                          |        "nationality": "GB"
+                                                          |      },
+                                                          |      {
+                                                          |        "name": {
+                                                          |          "firstName": "Mark",
+                                                          |          "lastName": "BC"
+                                                          |        },
+                                                          |        "identification": {
+                                                          |          "address": {
+                                                          |            "line1": "123",
+                                                          |            "line2": "Test address",
+                                                          |            "postCode": "AB1 1AB",
+                                                          |            "country": "GB"
+                                                          |          }
+                                                          |        },
+                                                          |        "countryOfResidence": "GB",
+                                                          |        "nationality": "GB"
+                                                          |      }
+                                                          |    ]
+                                                          |  }
+                                                          |}
+                                                          |""".stripMargin
+
+  val multipleSettlorsWithoutAliveAtRegField: String = """
+                                                      |{
+                                                      |  "trust/entities/settlors": {
+                                                      |    "settlor": [
+                                                      |      {
+                                                      |        "name": {
+                                                      |          "firstName": "Mark",
+                                                      |          "lastName": "B"
+                                                      |        },
+                                                      |        "identification": {
+                                                      |          "address": {
+                                                      |            "line1": "123",
+                                                      |            "line2": "Test address",
+                                                      |            "postCode": "AB1 1AB",
+                                                      |            "country": "GB"
+                                                      |          }
+                                                      |        },
+                                                      |        "countryOfResidence": "GB",
+                                                      |        "nationality": "GB"
+                                                      |      },
+                                                      |      {
+                                                      |        "name": {
+                                                      |          "firstName": "Mark",
+                                                      |          "lastName": "BC"
+                                                      |        },
+                                                      |        "identification": {
+                                                      |          "address": {
+                                                      |            "line1": "123",
+                                                      |            "line2": "Test address",
+                                                      |            "postCode": "AB1 1AB",
+                                                      |            "country": "GB"
+                                                      |          }
+                                                      |        },
+                                                      |        "countryOfResidence": "GB",
+                                                      |        "nationality": "GB"
+                                                      |      },
+                                                      |      {
+                                                      |        "name": {
+                                                      |          "firstName": "Mark",
+                                                      |          "lastName": "BC"
+                                                      |        },
+                                                      |        "identification": {
+                                                      |          "address": {
+                                                      |            "line1": "123",
+                                                      |            "line2": "Test address",
+                                                      |            "postCode": "AB1 1AB",
+                                                      |            "country": "GB"
+                                                      |          }
+                                                      |        },
+                                                      |        "countryOfResidence": "GB",
+                                                      |        "nationality": "GB"
+                                                      |      }
+                                                      |    ]
+                                                      |  }
+                                                      |}
+                                                      |""".stripMargin
+
+  val transformedRegistrationPiecesMultipleSettlor: String = """
+                                                                   |{
+                                                                   |    "settlor": [
+                                                                   |      {
+                                                                   |        "name": {
+                                                                   |          "firstName": "Mark",
+                                                                   |          "lastName": "B"
+                                                                   |        },
+                                                                   |        "identification": {
+                                                                   |          "address": {
+                                                                   |            "line1": "123",
+                                                                   |            "line2": "Test address",
+                                                                   |            "postCode": "AB1 1AB",
+                                                                   |            "country": "GB"
+                                                                   |          }
+                                                                   |        },
+                                                                   |        "countryOfResidence": "GB",
+                                                                   |        "nationality": "GB"
+                                                                   |      },
+                                                                   |      {
+                                                                   |        "name": {
+                                                                   |          "firstName": "Mark",
+                                                                   |          "lastName": "BC"
+                                                                   |        },
+                                                                   |        "identification": {
+                                                                   |          "address": {
+                                                                   |            "line1": "123",
+                                                                   |            "line2": "Test address",
+                                                                   |            "postCode": "AB1 1AB",
+                                                                   |            "country": "GB"
+                                                                   |          }
+                                                                   |        },
+                                                                   |        "countryOfResidence": "GB",
+                                                                   |        "nationality": "GB"
+                                                                   |      },
+                                                                   |      {
+                                                                   |        "name": {
+                                                                   |          "firstName": "Mark",
+                                                                   |          "lastName": "BC"
+                                                                   |        },
+                                                                   |        "identification": {
+                                                                   |          "address": {
+                                                                   |            "line1": "123",
+                                                                   |            "line2": "Test address",
+                                                                   |            "postCode": "AB1 1AB",
+                                                                   |            "country": "GB"
+                                                                   |          }
+                                                                   |        },
+                                                                   |        "countryOfResidence": "GB",
+                                                                   |        "nationality": "GB"
+                                                                   |      }
+                                                                   |    ]
+                                                                   |}
+                                                                   |""".stripMargin
+
+  val businessSettlorRegistrationJson: String =
+    """
+      |{
+      | "trust/entities/settlors": {
+      |   "settlorCompany": [
+      |     {
+      |       "name": "Lennon Ltd",
+      |       "companyType": "Trading",
+      |       "companyTime": true,
+      |       "identification": {
+      |         "utr": "1234567890"
+      |       },
+      |       "countryOfResidence": "GB"
+      |     }
+      |   ]
+      | }
+      |}
+      |""".stripMargin
 
   "removeAliveAtRegistrationFromJson" when {
-    "parsed Json in the correct format with the aliveAtRegistration field return the same Json with the field removed" in {
-        val registrationPiecesJson: JsObject = Json.parse(registrationPiecesString).as[JsObject]
-        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedRegistrationPiecesString))
+
+    "there is a single settlor in the registration Json" must {
+      "return the expected Json when the aliveAtRegistration field is present" in {
+        val registrationPiecesJson: JsObject = Json.parse(singleSettlorsWithAliveAtRegField).as[JsObject]
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedSingleSettlors))
       }
+
+      "return the expected Json when the the aliveAtRegistration field is not present" in {
+        val registrationPiecesJson: JsObject = Json.parse(singleSettlorsWithoutAliveAtRegField).as[JsObject]
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedSingleSettlors))
+      }
+    }
+
+    "there are multiple settlors in the registration Json" must {
+      "return the expected Json when the aliveAtRegistration field is present" in {
+        val registrationPiecesJson: JsObject = Json.parse(multipleSettlorsWithAliveAtRegField).as[JsObject]
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedRegistrationPiecesMultipleSettlor))
+      }
+
+      "return the expected Json when the aliveAtRegistration field is not present" in {
+        val registrationPiecesJson: JsObject = Json.parse(multipleSettlorsWithoutAliveAtRegField).as[JsObject]
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedRegistrationPiecesMultipleSettlor))
+      }
+    }
 
     "parsed Json without trust/entities/settlors field return None" in {
       val registrationPiecesJson: JsObject = Json.parse("{}").as[JsObject]
       JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe None
     }
 
-    "parsed Json with trust/entities/settlors and settlors should return the settlors josn unchanged if aliveAtRegistration not present" in {
-      val registrationPiecesJson: JsObject = Json.parse(registrationPiecesStringWithoutAliveAtRegistration).as[JsObject]
-      JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse("""{"settlor": []}"""))
+    "parsed Json with the trust/entities/settlors field but no settlor field return false" in {
+      val registrationPiecesJson: JsObject = Json.parse(businessSettlorRegistrationJson).as[JsObject]
+      JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe None
     }
   }
 
   "checkIfAliveAtRegistrationFieldPresent" when {
 
-    "parsed Json which contains the nested field aliveAtRegistration return true" in {
-      val registrationPiecesJson: JsObject = Json.parse(registrationPiecesString).as[JsObject]
-      JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe(true)
+    "there is a single settlor in the registration Json" must {
+      "return true when the aliveAtRegistration field is present" in {
+        val registrationPiecesJson: JsObject = Json.parse(singleSettlorsWithAliveAtRegField).as[JsObject]
+        JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe true
+      }
+
+      "return false when the aliveAtRegistration field is not present" in {
+        val registrationPiecesJson: JsObject = Json.parse(singleSettlorsWithoutAliveAtRegField).as[JsObject]
+        JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe false
+      }
     }
 
-    "parsed Json which does not contains the nested field aliveAtRegistration return false" in {
-      val registrationPiecesJson: JsObject = Json.parse(transformedRegistrationPiecesString).as[JsObject]
-      JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe(false)
+    "there are multiple settlor in the registration Json" must {
+      "return true when parsed Json with multiple settlors where some contain the nested field aliveAtRegistration" in {
+        val registrationPiecesJson: JsObject = Json.parse(multipleSettlorsWithAliveAtRegField).as[JsObject]
+        JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe true
+      }
+
+      "return false when parsed Json with multiple settlors where none contain the nested field aliveAtRegistration" in {
+        val registrationPiecesJson: JsObject = Json.parse(multipleSettlorsWithoutAliveAtRegField).as[JsObject]
+        JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe false
+      }
     }
 
+    "parsed Json without the trust/entities/settlors field return false" in {
+      val registrationPiecesJson: JsObject = Json.parse("{}").as[JsObject]
+      JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe false
+    }
+
+    "parsed Json with the trust/entities/settlors field but no settlor field return false" in {
+      val registrationPiecesJson: JsObject = Json.parse(businessSettlorRegistrationJson).as[JsObject]
+      JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe false
+    }
   }
-
 }
