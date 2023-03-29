@@ -17,7 +17,8 @@
 package utils
 
 import base.RegistrationSpecBase
-import play.api.i18n.{Lang, MessagesImpl}
+import models.RegistrationSubmission.{AnswerRow, AnswerSection}
+import play.api.i18n.{DefaultMessagesApi, Lang, MessagesImpl}
 
 class AnswerRowUtilsSpec extends RegistrationSpecBase {
 
@@ -512,6 +513,70 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           }
         }
       }
+    }
+
+    "rowsWithCorrectTense return rows with the correct tense" when {
+
+      val messagesApiWithPastTense = new DefaultMessagesApi(
+        messages = Map(
+          ENGLISH -> Map(
+            "test.checkYourAnswersLabel" -> "",
+            "testPastTense.checkYourAnswersLabel" -> "",
+            "settlor1.checkYourAnswersLabel" -> "",
+            "settlor2.checkYourAnswersLabel" -> "",
+            "settlor3.checkYourAnswersLabel" -> "",
+            "settlor4.checkYourAnswersLabel" -> "",
+            "settlor5.checkYourAnswersLabel" -> ""
+          ),
+          WELSH -> Map(
+            "test.checkYourAnswersLabel" -> "",
+            "testPastTense.checkYourAnswersLabel" -> "",
+            "settlor1.checkYourAnswersLabel" -> "",
+            "settlor2.checkYourAnswersLabel" -> "",
+            "settlor3.checkYourAnswersLabel" -> "",
+            "settlor4.checkYourAnswersLabel" -> "",
+            "settlor5.checkYourAnswersLabel" -> ""
+          )
+        )
+      )
+
+      Seq(ENGLISH, WELSH).foreach(language =>
+        s"there are no messages with a past tense suffix it should return the rows unchanged (when using $language)" in {
+
+          val languageWithPastTense = MessagesImpl(Lang(language), messagesApiWithPastTense)
+
+          val rows = Seq(
+            AnswerRow(label = s"settlor1.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty),
+            AnswerRow(label = s"settlor2.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty),
+            AnswerRow(label = s"settlor3.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty),
+            AnswerRow(label = s"settlor4.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty),
+            AnswerRow(label = s"settlor5.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty)
+          )
+
+          val section = AnswerSection(headingKey = None, rows = rows, sectionKey = None, headingArgs = Seq.empty)
+          util.rowsWithCorrectTense(section = section)(languageWithPastTense) mustBe rows
+        }
+      )
+
+      Seq(ENGLISH, WELSH).foreach(language =>
+        s"there are messages with the past tense suffix it should return those rows (when using $language)" in {
+
+          val languageWithPastTense = MessagesImpl(Lang(language), messagesApiWithPastTense)
+
+          val rows = Seq(
+            AnswerRow(label = "test.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty),
+            AnswerRow(label = "settlor2.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty)
+          )
+
+          val section = AnswerSection(headingKey = None, rows = rows, sectionKey = None, headingArgs = Seq.empty)
+
+          util.rowsWithCorrectTense(section = section)(languageWithPastTense) mustBe Seq(
+            AnswerRow(label = "testPastTense.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty),
+            AnswerRow(label = "settlor2.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty)
+          )
+        }
+      )
+
     }
   }
 }

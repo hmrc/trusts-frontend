@@ -17,7 +17,7 @@
 package repositories
 
 import connector.SubmissionDraftConnector
-import models.FirstTaxYearAvailable
+import models.{FirstTaxYearAvailable, RegistrationSubmission}
 import models.core.UserAnswers
 import models.core.http.{AddressType, LeadTrusteeType}
 import models.registration.pages.RegistrationStatus.InProgress
@@ -105,10 +105,25 @@ class DefaultRegistrationsRepository @Inject()(
     }
   }
 
+  override def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier): Future[JsObject] =
+    submissionDraftConnector.getRegistrationPieces(draftId)
+
   override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] = {
     submissionDraftConnector.getAnswerSections(draftId)
       .map(RegistrationAnswerSections.fromAllAnswerSections(_))
   }
+
+  override def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier): Future[JsValue] =
+    submissionDraftConnector
+      .getDraftSettlors(draftId)
+      .map(_.data)
+
+  override def setDraftSettlors(draftId: String, data: JsValue)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+    submissionDraftConnector.setDraftSettlors(draftId, data)
+
+  override def getSettlorsAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
+    submissionDraftConnector.getAnswerSections(draftId)
+      .map(_.settlors.getOrElse(Seq.empty[RegistrationSubmission.AnswerSection]))
 
   override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
     submissionDraftConnector.getLeadTrustee(draftId)
@@ -159,7 +174,15 @@ trait RegistrationsRepository {
 
   def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier): Future[JsValue]
 
-  def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections]
+  def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier): Future[JsObject]
+
+  def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages):Future[RegistrationAnswerSections]
+
+  def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier): Future[JsValue]
+
+  def setDraftSettlors(draftId: String, data: JsValue)(implicit hc: HeaderCarrier): Future[HttpResponse]
+
+  def getSettlorsAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]]
 
   def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType]
 

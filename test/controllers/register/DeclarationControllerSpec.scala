@@ -23,13 +23,16 @@ import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
+import play.api.http.Status.OK
 import play.api.inject
+import play.api.libs.json.{JsObject, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import views.html.register.DeclarationView
 
 import scala.concurrent.Future
@@ -46,6 +49,34 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
   }
 
   val validAnswer: Declaration = Declaration(FullName("First", None, "Last"), Some("email@email.com"))
+
+  val jsonReturnedByGetRequestPieces: JsObject = Json.parse(
+    """
+      |{
+      |  "trust/entities/settlors": {
+      |    "settlor": [
+      |      {
+      |        "aliveAtRegistration": false,
+      |        "name": {
+      |          "firstName": "Mark",
+      |          "lastName": "B"
+      |        },
+      |        "identification": {
+      |          "address": {
+      |            "line1": "123",
+      |            "line2": "Test address",
+      |            "postCode": "AB1 1AB",
+      |            "country": "GB"
+      |          }
+      |        },
+      |        "countryOfResidence": "GB",
+      |        "nationality": "GB"
+      |      }
+      |    ]
+      |  }
+      |}
+      """.stripMargin
+  ).as[JsObject]
 
   "Declaration Controller" must {
 
@@ -142,6 +173,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
       application.stop()
     }
 
@@ -160,6 +192,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
       application.stop()
     }
 
@@ -178,6 +211,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.UTRSentByPostController.onPageLoad().url
       verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
       application.stop()
     }
 
@@ -232,5 +266,47 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       application.stop()
     }
+
+    Seq(
+      ("not", BAD_REQUEST),
+      ("is", OK)
+    ).foreach {
+      case (outcome, setDraftSettlorsHttpResponse) =>
+        s"redirect to the confirmation page when valid data is submitted, aliveAtRegistration field $outcome removed successfully " +
+          "and registration submitted successfully " in
+      {
+
+        val draftId = s"${outcome}RemovedAliveAtRegistrationUnsuccessful"
+
+        when (
+        registrationsRepository.getRegistrationPieces (eqTo (draftId) ) (any () )
+        ).thenReturn (Future.successful (jsonReturnedByGetRequestPieces) )
+
+        when (
+        mockSubmissionService.submit (any[UserAnswers] ) (any (), any[HeaderCarrier], any () )
+        ).thenReturn (Future.successful (RegistrationTRNResponse ("xTRN12456") ) )
+
+        when (
+        registrationsRepository.setDraftSettlors (eqTo (draftId), any () ) (any () )
+        ).thenReturn (Future.successful (HttpResponse (setDraftSettlorsHttpResponse, "") ) )
+
+        val application = applicationBuilder (userAnswers = Some (emptyUserAnswers), AffinityGroup.Agent).build ()
+
+        val removedAliveAtRegistrationDeclarationRoute: String =
+        routes.DeclarationController.onPageLoad (draftId).url
+
+        val request = FakeRequest (POST, removedAliveAtRegistrationDeclarationRoute)
+        .withFormUrlEncodedBody (("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName) )
+
+        val result = route (application, request).value
+
+        status (result) mustEqual SEE_OTHER
+        redirectLocation (result).value mustEqual routes.ConfirmationController.onPageLoad (fakeDraftId).url
+        verify (mockSubmissionService, times (1) ).submit (any[UserAnswers] ) (any (), any[HeaderCarrier], any () )
+        verify (registrationsRepository, times (1) ).setDraftSettlors (eqTo (draftId), any () ) (any () )
+        application.stop ()
+      }
+    }
+
   }
 }

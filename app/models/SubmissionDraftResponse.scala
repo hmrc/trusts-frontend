@@ -79,16 +79,35 @@ object RegistrationSubmission {
     implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
   }
 
-  case class AllAnswerSections(beneficiaries: Option[List[AnswerSection]],
-                               trustees: Option[List[AnswerSection]],
-                               protectors: Option[List[AnswerSection]],
-                               otherIndividuals: Option[List[AnswerSection]],
-                               trustDetails: Option[List[AnswerSection]],
-                               settlors: Option[List[AnswerSection]],
-                               assets: Option[List[AnswerSection]])
+  case class AllAnswerSections(beneficiaries: Option[List[AnswerSection]] = None,
+                               trustees: Option[List[AnswerSection]] = None,
+                               protectors: Option[List[AnswerSection]] = None,
+                               otherIndividuals: Option[List[AnswerSection]] = None,
+                               trustDetails: Option[List[AnswerSection]] = None,
+                               settlors: Option[List[AnswerSection]] = None,
+                               assets: Option[List[AnswerSection]] = None)
 
   object AllAnswerSections {
     implicit lazy val format: OFormat[AllAnswerSections] = Json.format[AllAnswerSections]
   }
+
+  case class MappedPiece(elementPath: String, data: JsValue)
+
+  object MappedPiece {
+
+    val path: JsPath = JsPath \ "registration"
+
+    implicit lazy val format: Format[MappedPiece] = Json.format[MappedPiece]
+  }
+
+ // Set of data sent by sub-frontend, with user answers, status, any mapped pieces and answer sections.
+ case class DataSet(data: JsValue,
+                    registrationPieces: Seq[MappedPiece],
+                    answerSections: Seq[AnswerSection]
+                   )
+
+ object DataSet {
+   implicit lazy val format: OFormat[DataSet] = Json.format[DataSet]
+ }
 
 }

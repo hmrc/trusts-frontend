@@ -23,3 +23,15 @@ If you want to run your local copy, then stop the frontend ran by the service ma
 Run unit and integration tests before raising a PR to ensure your code changes pass the Jenkins pipeline. This runs all the unit tests and integration tests with scalastyle and checks for dependency updates:
 
 `./run_all_tests.sh`
+
+## Making content changes
+
+### Messages in the past tense
+
+For the Settlor registration journey several questions have both a past and present tense. 
+Which tense the question is displayed in depends on whether the settlor is alive at the time of registration and the answer to the question `settlorAliveYesNo`. 
+
+For example if the settlor is deceased the question `What is the settlor name?` becomes `What was the settlors name?`.
+To add a past tense question create a new question with `PastTense` appended to the key for example: `settlorIndividualNamePastTense.checkYourAnswersLabel`.
+
+The past tense question should then be displayed correctly in the print draft of the registration.

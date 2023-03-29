@@ -19,6 +19,8 @@ package controllers.register
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
+import models.RegistrationSubmission.{DataSet, MappedPiece}
+import models.RegistrationSubmission
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
@@ -29,10 +31,11 @@ import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, Registra
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.{TrustsStoreService, SubmissionService}
-import uk.gov.hmrc.http.HeaderCarrier
+import services.{SubmissionService, TrustsStoreService}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.register.DeclarationView
@@ -42,6 +45,9 @@ import java.time.{LocalDateTime, ZoneOffset}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
+import play.api.libs.json._
+import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAliveAtRegistrationFromJson}
+import cats.syntax.all._
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -56,10 +62,58 @@ class DeclarationController @Inject()(
                                        standardAction: StandardActionSets
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
 
+  private val className = getClass.getSimpleName
   private val form: Form[Declaration] = formProvider()
 
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
+
+  private def updateSettlorRemoveAliveAtRegistrationField(draftId: String)(implicit request: RegistrationDataRequest[AnyContent]): Future[Status] =
+    for {
+      settlors: JsValue <- registrationsRepository
+        .getDraftSettlors(draftId)
+
+      settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <- registrationsRepository
+        .getSettlorsAnswerSections(draftId)
+
+      registrationPieces: JsObject <- registrationsRepository
+        .getRegistrationPieces(draftId)
+
+      maybeUpdatedMappedPieces: Option[Seq[MappedPiece]] =
+        if (checkIfAliveAtRegistrationFieldPresent(registrationPieces))
+          removeAliveAtRegistrationFromJson(registrationPieces).map(piece => Seq(MappedPiece("trust/entities/settlors", piece)))
+        else None
+
+      response: Option[HttpResponse] <- maybeUpdatedMappedPieces
+        .map(
+          updatedMappedPieces =>
+            registrationsRepository.setDraftSettlors(
+              draftId,
+              Json.toJson(
+                DataSet(settlors, updatedMappedPieces, settlorsAnswersSection
+                )
+              )
+            )
+        ).traverse(identity)
+    } yield response match {
+      case Some(httpResponse: HttpResponse) => Status(httpResponse.status) match {
+        case Ok =>
+          logger.info(s"[$className][updateSettlorRemoveAliveAtRegistrationField][Session ID: ${request.sessionId}]: " +
+            s"Updated Settlor mapped pieces, removing aliveAtRegistration field."
+          )
+          Ok
+        case _ =>
+          logger.error(s"[$className][updateSettlorRemoveAliveAtRegistrationField][Session ID: ${request.sessionId}]: " +
+            s"Remove alive at registration field failed."
+          )
+          InternalServerError
+      }
+      case None =>
+        logger.info(s"[$className][updateSettlorRemoveAliveAtRegistrationField][Session ID: ${request.sessionId}]: " +
+          s"Settlor responses did not contain aliveAtRegistration and therefore did not need updating."
+        )
+        Ok
+    }
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
     implicit request =>
@@ -83,6 +137,7 @@ class DeclarationController @Inject()(
         value => {
 
           val r = for {
+            _ <- updateSettlorRemoveAliveAtRegistrationField(draftId)
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
             _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
             response <- submissionService.submit(updatedAnswers)
@@ -91,10 +146,10 @@ class DeclarationController @Inject()(
 
           r.recover {
             case _: UnableToRegister =>
-              logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
+              logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
               Redirect(routes.TaskListController.onPageLoad(draftId))
             case NonFatal(e) =>
-              logger.error(s"[onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
+              logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
               throw e
           }
         }
@@ -105,13 +160,13 @@ class DeclarationController @Inject()(
                             (implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[Result] = {
     response match {
       case trn: RegistrationTRNResponse =>
-        logger.info(s"[handleResponse][Session ID: ${request.sessionId}] Saving trust registration trn.")
+        logger.info(s"[$className][handleResponse][Session ID: ${request.sessionId}] Saving trust registration trn.")
         saveTRNAndCompleteRegistration(updatedAnswers, trn)
       case AlreadyRegistered =>
-        logger.info(s"[handleResponse][Session ID: ${request.sessionId}] unable to submit as trust is already registered")
+        logger.info(s"[$className][handleResponse][Session ID: ${request.sessionId}] unable to submit as trust is already registered")
         Future.successful(Redirect(routes.UTRSentByPostController.onPageLoad()))
       case e =>
-        logger.warn(s"[handleResponse][Session ID: ${request.sessionId}] unable to submit due to error $e")
+        logger.warn(s"[$className][handleResponse][Session ID: ${request.sessionId}] unable to submit due to error $e")
         Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
     }
   }
@@ -125,7 +180,7 @@ class DeclarationController @Inject()(
           dateSaved =>
             val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
 
-            logger.info(s"[saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days")
+            logger.info(s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days")
 
             registrationsRepository.set(
               dateSaved.copy(progress = RegistrationStatus.Complete),
