@@ -639,7 +639,6 @@ setUpByLivingSettlorYesNo.checkYourAnswersLabel = Was the trust set up by a livi
 settlorAliveYesNo.checkYourAnswersLabel = Is the settlor alive at the time of registration?
 
 settlorIndividualNamePastTense.checkYourAnswersLabel = What was the settlor’s name?
-settlorIndividualDateOfBirthPastTense.checkYourAnswersLabel = What was {0}’s date of birth?
 settlorIndividualUkCountryOfNationalityYesNoPastTense.checkYourAnswersLabel = Did {0} have UK nationality?
 settlorIndividualCountryOfNationalityPastTense.checkYourAnswersLabel = What was {0}’s country of nationality?
 settlorIndividualCountryOfResidencyYesNoPastTense.checkYourAnswersLabel = Do you know {0}’s last known country of residence?
@@ -648,7 +647,7 @@ settlorIndividualCountryOfResidencyPastTense.checkYourAnswersLabel = What was {0
 settlorIndividualAddressYesNoPastTense.checkYourAnswersLabel = Do you know {0}’s last known address?
 settlorIndividualAddressInternationalPastTense.checkYourAnswersLabel = What is {0}’s last known address?
 settlorIndividualAddressUKPastTense.checkYourAnswersLabel = What is {0}’s last known address?
-settlorIndividualAddressUKYesNoPastTense.checkYourAnswersLabel = Was {0} last known address in the UK?
+settlorIndividualAddressUKYesNoPastTense.checkYourAnswersLabel = Was {0}’s last known address in the UK?
 settlorIndividualIDCardPastTense.checkYourAnswersLabel = What are the details for {0}’s last ID card?
 settlorIndividualPassportPastTense.checkYourAnswersLabel = What are the details for {0}’s last passport?
 

@@ -796,7 +796,6 @@ setUpByLivingSettlorYesNo.checkYourAnswersLabel = A gafodd yr ymddiriedolaeth ei
 settlorAliveYesNo.checkYourAnswersLabel = A yw’r setlwr yn fyw ar adeg y cofrestru?
 
 settlorIndividualNamePastTense.checkYourAnswersLabel = Beth oedd enw’r setlwr?
-settlorIndividualDateOfBirthPastTense.checkYourAnswersLabel = Beth oedd dyddiad geni {0}?
 settlorIndividualUkCountryOfNationalityYesNoPastTense.checkYourAnswersLabel = A oedd gan {0} genedligrwydd y DU?
 settlorIndividualCountryOfNationalityPastTense.checkYourAnswersLabel = Beth oedd gwlad cenedligrwydd {0}?
 settlorIndividualCountryOfResidencyYesNoPastTense.checkYourAnswersLabel = A ydych yn gwybod beth oedd gwlad breswyl hysbys ddiwethaf {0}?
