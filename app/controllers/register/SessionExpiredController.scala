@@ -34,7 +34,7 @@ class SessionExpiredController @Inject()(
     Ok(view())
   }
 
-  def onSubmit: Action[AnyContent] = Action { implicit request =>
+  def onSubmit: Action[AnyContent] = Action {
     Redirect(
       appConfig.loginUrl,
       Map("continue" -> Seq(appConfig.loginContinueUrl),

@@ -32,7 +32,7 @@
     showBackLink = true
 ) {
 
-    @formHelper(action = RemoveDraftYesNoController.onSubmit(draftId), 'autoComplete -> "off") {
+    @formHelper(action = RemoveDraftYesNoController.onSubmit(draftId), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors, isYesNo = true)
 

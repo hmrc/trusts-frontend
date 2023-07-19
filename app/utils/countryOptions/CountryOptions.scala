@@ -30,7 +30,7 @@ import javax.inject.{Inject, Singleton}
 class CountryOptions @Inject()(environment: Environment, config: FrontendAppConfig) {
 
   def options()(implicit messages: Messages): Seq[InputOption] = {
-    CountryOptions.getCountries(environment, getFileName)
+    CountryOptions.getCountries(environment, getFileName())
   }
 
   def getFileName()(implicit messages: Messages): String = {

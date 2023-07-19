@@ -78,8 +78,7 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
             val action = new Harness(mockRegistrationProgress, mockRegistrationsRepository)
 
             whenReady(action.callRefine(request)) { r =>
-              r mustBe 'right
-              r.right.get mustEqual request
+              r.value mustEqual request
             }
         }
       }
@@ -116,8 +115,7 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
             val action = new Harness(mockRegistrationProgress, mockRegistrationsRepository)
 
             whenReady(action.callRefine(request)) { r =>
-              r mustBe 'left
-              val result = Future.successful(r.left.get)
+              val result = Future.successful(r.left.value)
               status(result) mustEqual SEE_OTHER
               redirectLocation(result).value mustBe controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
             }

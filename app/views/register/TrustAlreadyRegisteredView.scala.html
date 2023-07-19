@@ -34,7 +34,7 @@
     showBackLink = true
 ) {
 
-    @formHelper(action = TrustAlreadyRegisteredController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = TrustAlreadyRegisteredController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @headingWithCaption("trustAlreadyRegistered", captionParam = Some(utr))
 

@@ -76,7 +76,7 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     val gen = arbitrary[BigDecimal]
       .suchThat(_.abs < Int.MaxValue)
       .suchThat(!_.isValidInt)
-      .map(_.formatted("%f"))
+      .map("%f".format(_))
 
     maxLength match {
       case Some(size) =>

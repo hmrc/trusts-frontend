@@ -44,7 +44,7 @@
         <p>@messages("matchingDown.p3") @link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "agent-overview", "matchingDown.p3.link", false).</p>
     }
 
-    @formHelper(action = MatchingDownController.onSubmit, 'autoComplete -> "off") {
+    @formHelper(action = MatchingDownController.onSubmit(), Symbol("autoComplete") -> "off") {
         @submitButton(overrideMessage = Some(messages("site.sign_out")), id = "sign-out")
     }
 }

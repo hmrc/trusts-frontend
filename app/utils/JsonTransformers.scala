@@ -30,10 +30,10 @@ object JsonTransformers extends Logging{
           .json
           .update(
             __.read[JsArray].map {
-              case JsArray(elements: IndexedSeq[JsValue]) => JsArray {
+              case JsArray(elements: Iterable[JsValue]) => JsArray {
                 elements.map {
                   case JsObject(p) =>
-                    JsObject(p - "aliveAtRegistration")
+                    JsObject(p.toMap - "aliveAtRegistration")
                 }
               }
             }

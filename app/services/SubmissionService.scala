@@ -129,8 +129,8 @@ class DefaultSubmissionService @Inject()(
       }
 
       registrationJson.transform(
-        putNewValue(__ \ 'trust \ 'details \ 'expressTrust, userAnswers.get(ExpressTrustYesNoPage)) andThen
-          putNewValue(__ \ 'trust \ 'details \ 'trustTaxable, userAnswers.get(TrustTaxableYesNoPage))
+        putNewValue(__ \ Symbol("trust") \ Symbol("details") \ Symbol("expressTrust"), userAnswers.get(ExpressTrustYesNoPage)) andThen
+          putNewValue(__ \ Symbol("trust") \ Symbol("details") \ Symbol("trustTaxable"), userAnswers.get(TrustTaxableYesNoPage))
       ).fold(
         _ => {
           logger.error("[add5mldData] Could not add expressTrust and trustTaxable data to registration JSON")

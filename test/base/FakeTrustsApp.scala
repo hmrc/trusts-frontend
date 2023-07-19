@@ -22,10 +22,11 @@ import org.scalatest.TestSuite
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.Injector
-import play.api.mvc.BodyParsers
+import play.api.mvc.{AnyContentAsEmpty, BodyParsers}
 import play.api.test.FakeRequest
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.global
+import scala.concurrent.ExecutionContextExecutor
 
 trait FakeTrustsApp extends GuiceOneAppPerSuite {
   this: TestSuite =>
@@ -36,13 +37,13 @@ trait FakeTrustsApp extends GuiceOneAppPerSuite {
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
-  def fakeRequest = FakeRequest("", "")
+  def fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
 
-  def injectedParsers = injector.instanceOf[BodyParsers.Default]
+  def injectedParsers: BodyParsers.Default = injector.instanceOf[BodyParsers.Default]
 
-  def trustsAuth = injector.instanceOf[TrustsAuthorisedFunctions]
+  def trustsAuth: TrustsAuthorisedFunctions = injector.instanceOf[TrustsAuthorisedFunctions]
 
-  implicit def executionContext = injector.instanceOf[ExecutionContext]
+  implicit val executionContext: ExecutionContextExecutor = global
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 

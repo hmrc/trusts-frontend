@@ -41,9 +41,9 @@ class NavigatorSpec extends RegistrationSpecBase
         navigator.nextPage(UnknownPage)(emptyUserAnswers) mustBe IndexController.onPageLoad()
       }
 
-      behave like matchingRoutes
+      behave like matchingRoutes()
 
-      behave like suitabilityRoutes
+      behave like suitabilityRoutes()
 
     }
 

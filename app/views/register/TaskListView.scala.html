@@ -58,7 +58,7 @@
     }
 
     @if(affinityGroup == AffinityGroup.Agent) {
-        <p>@link(controllers.register.agents.routes.AgentOverviewController.onPageLoad.url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
+        <p>@link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
         <p>@link(config.agentDetailsFrontendUrl(draftId), "agent-details", "taskList.agent.agentDetails")</p>
     } else {
@@ -89,7 +89,7 @@
 
             <p>@messages("taskList.summary.paragraph3")</p>
 
-        @formHelper(action = TaskListController.onSubmit(draftId), 'autoComplete -> "off") {
+        @formHelper(action = TaskListController.onSubmit(draftId), Symbol("autoComplete") -> "off") {
             @submitButton(Some(messages("taskList.summary.continue")))
         }
     }

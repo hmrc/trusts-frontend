@@ -5,15 +5,15 @@ This service allows users to register or maintain a trust. It asks initial quest
 
 To run locally using the micro-service provided by the service manager:
 
-***sm2 --start TRUSTS_ALL -r***
+***sm2 --start TRUSTS_ALL***
 
 alternatively if only the registration journey is needed use:
 
-***sm2 --start REGISTER_TRUST_ALL -r***
+***sm2 --start REGISTER_TRUST_ALL***
 
 or if only the maintain journey is needed use:
 
-***sm2 --start MAINTAIN_TRUST_ALL -r***
+***sm2 --start MAINTAIN_TRUST_ALL***
 
 If you want to run your local copy, then stop the frontend ran by the service manager and run your local code by using the following (port number is 9781 but is defaulted to that in build.sbt):
 
