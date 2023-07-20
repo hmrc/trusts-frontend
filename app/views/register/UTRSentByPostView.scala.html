@@ -39,7 +39,7 @@
     <p><a id="help-link" href="@config.helplineUrl" target="_blank" rel="noopener noreferrer">@messages("UTRSentByPost.link.contactHelpline")</a> @messages("UTRSentByPost.paragraph2")</p>
 
     @if(isAgent: Boolean) {
-        <p>@messages("UTRSentByPost.paragraph3")@link(AgentOverviewController.onPageLoad.url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>
+        <p>@messages("UTRSentByPost.paragraph3")@link(AgentOverviewController.onPageLoad().url, "saved-registrations", "UTRSentByPost.link.returnToRegister").</p>
     }
 
 }

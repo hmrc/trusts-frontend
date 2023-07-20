@@ -31,7 +31,7 @@
     showBackLink = true
 ) {
 
-    @formHelper(action = BeforeYouContinueController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = BeforeYouContinueController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @heading("suitability.beforeYouContinue.existing.taxable.heading")
 

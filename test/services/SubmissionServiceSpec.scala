@@ -20,15 +20,15 @@ import base.SpecBaseHelpers
 import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
-import models.{FirstTaxYearAvailable, RegistrationSubmission}
 import models.core.UserAnswers
 import models.core.http.TrustResponse.UnableToRegister
 import models.core.http._
 import models.requests.RegistrationDataRequest
+import models.{FirstTaxYearAvailable, RegistrationSubmission}
 import org.mockito.ArgumentMatchers.{eq => eqTo, _}
+import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.OptionValues
 import play.api.i18n.Messages
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.test.Helpers.OK
@@ -39,9 +39,8 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TestUserAnswers
 import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 
-import java.time.LocalDateTime
 import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{Await, Future}
 
 class SubmissionServiceSpec extends AnyFreeSpec with Matchers
   with OptionValues with Generators with SpecBaseHelpers {

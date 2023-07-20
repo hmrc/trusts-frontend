@@ -25,10 +25,9 @@ import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json.{JsSuccess, Json}
 import uk.gov.hmrc.play.language.LanguageUtils
 
-import java.io.{BufferedReader, InputStreamReader}
 import java.time.ZoneId
 import javax.inject.Inject
-import scala.collection.JavaConverters.asScalaIteratorConverter
+import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
 class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
@@ -121,8 +120,8 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
     val fileName = if (language == ENGLISH) "messages" else s"messages.$language"
 
     environment.resourceAsStream(fileName).fold[Seq[String]](Nil)(inputStream => {
-      val reader = new BufferedReader(new InputStreamReader(inputStream))
-      reader.lines().iterator().asScala.map(_.split("=").head.trim).toSeq
+      val fileContent = Source.fromInputStream(inputStream)
+      fileContent.getLines().map(_.split("=").head.trim).toSeq
     })
   }
 

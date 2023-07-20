@@ -23,7 +23,7 @@ import models.core.http.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeT
 import models.core.{MatchingAndSuitabilityUserAnswers, TrustsFrontendUserAnswers, UserAnswers}
 import models.requests.RegistrationDataRequest
 import navigation.{FakeNavigator, Navigator}
-import org.scalatest.{BeforeAndAfter, TestSuite, TryValues}
+import org.scalatest.{BeforeAndAfter, EitherValues, TestSuite, TryValues}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
@@ -34,7 +34,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
 
-trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter with FakeTrustsApp {
+trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked with BeforeAndAfter with FakeTrustsApp with EitherValues {
   this: TestSuite =>
 
   final val ENGLISH = "en"

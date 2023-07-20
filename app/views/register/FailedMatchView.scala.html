@@ -59,7 +59,7 @@
 
     <p>@messages("failedMatch.paragraph3")</p>
 
-    @formHelper(action = FailedMatchController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = FailedMatchController.onSubmit(), Symbol("autoComplete") -> "off") {
         @submitButton(Some(messages("site.try-again")))
     }
 
