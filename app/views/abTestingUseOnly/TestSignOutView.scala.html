@@ -29,7 +29,8 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
-title = messages("abTestingUseOnly.signOutPage.title")
+    title = messages("abTestingUseOnly.signOutPage.title"),
+    canSignOut = false
 ) {
 
     @heading("abTestingUseOnly.signOutPage.heading", headingSize = "govuk-heading-l")

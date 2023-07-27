@@ -31,7 +31,8 @@
 @(draftId: String, refNumber: String)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
-    title = messages("abTestingUseOnly.confirmationPage.title")
+    title = messages("abTestingUseOnly.confirmationPage.title"),
+    canSignOut = false
 ) {
 
     @heading("abTestingUseOnly.confirmationPage.heading", headingSize = "govuk-heading-xl")
