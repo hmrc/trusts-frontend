@@ -332,9 +332,10 @@ trait ViewBehaviours extends ViewSpecBase {
   }
 
   def pageWithText[A](view: HtmlFormat.Appendable,
-                      text: String): Unit = {
+                      text: String,
+                      testDescription: String = ""): Unit = {
 
-    "behave like a page with content" in {
+    s"behave like a page with content $testDescription" in {
 
       val doc = asDocument(view)
       assertContainsText(doc, text)

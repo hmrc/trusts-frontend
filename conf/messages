@@ -1017,3 +1017,25 @@ answerPage.section.businessProtector.subheading = Business protector {0}
 
 answerPage.section.otherIndividuals.heading = Other individuals
 answerPage.section.otherIndividual.subheading = Other individual {0}
+
+# A/B Testing
+
+abTestingUseOnly.confirmationPage.title = Registration submitted
+abTestingUseOnly.confirmationPage.heading = Registration submitted
+abTestingUseOnly.confirmationPage.print.link = Print or save a copy of your answers
+abTestingUseOnly.confirmationPage.heading2.WhatNext = What you must do next
+abTestingUseOnly.confirmationPage.p1 = You need to get the Unique Reference Number (URN) for the trust.
+abTestingUseOnly.confirmationPage.p2 = The URN is how HMRC will identify this trust. You can give the URN to people who are authorised to be involved with managing the trust such as agents, financial advisors and other trustees.
+abTestingUseOnly.confirmationPage.heading3.howToGetURN = How to get the URN for the trust
+abTestingUseOnly.confirmationPage.p3 = You will need to sign out of this service and sign in to manage the trust using the same Government Gateway user ID and password that you set up to register this trust.
+abTestingUseOnly.confirmationPage.heading4.contactHMRC = If you need to contact HMRC
+abTestingUseOnly.confirmationPage.p4 = The reference number for this registration is:
+abTestingUseOnly.confirmationPage.p5 = Keep a note of this reference number in case you need to contact HMRC. It is not the URN for the trust.
+abTestingUseOnly.confirmationPage.signOut = Sign out
+
+abTestingUseOnly.signOutPage.title = You have signed out
+abTestingUseOnly.signOutPage.heading = You have signed out
+abTestingUseOnly.signOutPage.p1 = You have signed out of the trust registration.
+abTestingUseOnly.signOutPage.heading2 = Get the URN for the trust
+abTestingUseOnly.signOutPage.p2 = You need to sign in to manage the trust using the Government Gateway user ID and password that you set up to register this trust.
+abTestingUseOnly.signOutPage.signIn.link = Sign in to manage a trust

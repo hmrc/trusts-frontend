@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers.register
+package controllers.abTestingUseOnly.register
 
 import base.RegistrationSpecBase
+import controllers.abTestingUseOnly.routes.TestSignOutController
 import models.core.http.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType}
 import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
@@ -26,14 +27,15 @@ import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
+import views.html.abTestingUseOnly.register.confirmation._
 import views.html.register.confirmation._
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class ConfirmationControllerSpec extends RegistrationSpecBase {
+class TestConfirmationControllerSpec extends RegistrationSpecBase {
 
-  private def agentUrl = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
+  private def agentUrl: String = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
 
   private val leadTrusteeInd = LeadTrusteeType(
     Some(LeadTrusteeIndType(
@@ -50,7 +52,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
     None
   )
 
-  "Confirmation Controller" must {
+  "TestConfirmationController" must {
 
     "return OK and the correct view for a GET when TRN is available" when {
 
@@ -68,7 +70,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -96,7 +98,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -128,7 +130,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -156,7 +158,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -176,67 +178,62 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
         }
 
-        "non-taxable" when {
+        "render TestIndividualView (non-taxable organisation user type)" in {
 
-          "agent - render nonTaxableAgentView" in {
+          val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+            .set(RegistrationTRNPage, "xTRN1234678").success.value
+            .set(TrustTaxableYesNoPage, false).success.value
+            .set(TrustHaveAUTRPage, false).success.value
 
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, false).success.value
-              .set(TrustHaveAUTRPage, false).success.value
+          when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+          val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
+          val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+          val result = route(application, request).value
 
-            val result = route(application, request).value
+          val view = application.injector.instanceOf[nonTaxable.TestIndividualView]
 
-            val view = application.injector.instanceOf[newTrust.nonTaxable.AgentView]
+          val content = contentAsString(result)
 
-            val content = contentAsString(result)
+          status(result) mustEqual OK
 
-            status(result) mustEqual OK
+          content mustEqual
+            view(fakeDraftId, "xTRN1234678")(request, messages).toString
 
-            content mustEqual
-              view(fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+          content mustNot include(agentUrl)
 
-            content mustNot include(agentUrl)
+          application.stop()
+        }
 
-            application.stop()
-          }
+        "render nonTaxableAgentView" in {
 
-          "org - render IndividualView" in {
+          val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+            .set(RegistrationTRNPage, "xTRN1234678").success.value
+            .set(TrustTaxableYesNoPage, false).success.value
+            .set(TrustHaveAUTRPage, false).success.value
 
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, false).success.value
-              .set(TrustHaveAUTRPage, false).success.value
+          when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+          val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+          val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+          val result = route(application, request).value
 
-            val result = route(application, request).value
+          val view = application.injector.instanceOf[newTrust.nonTaxable.AgentView]
 
-            val view = application.injector.instanceOf[newTrust.nonTaxable.IndividualView]
+          val content = contentAsString(result)
 
-            val content = contentAsString(result)
+          status(result) mustEqual OK
 
-            status(result) mustEqual OK
+          content mustEqual
+            view(fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
 
-            content mustEqual
-              view(fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+          content mustNot include(agentUrl)
 
-            content mustNot include(agentUrl)
-
-            application.stop()
-          }
-
-
+          application.stop()
         }
       }
 
@@ -254,7 +251,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -278,7 +275,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -305,7 +302,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -329,7 +326,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
 
             val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
-            val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+            val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
             val result = route(application, request).value
 
@@ -347,52 +344,83 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
       }
     }
 
-    "return to Task List view  when registration is in progress " in {
-
-      val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.InProgress)
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
-
-      application.stop()
-    }
-
-    "return to trust registered online page when registration is not started. " in {
-
-      val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.NotStarted)
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TrustRegisteredOnlineController.onPageLoad().url
-
-      application.stop()
-    }
-
-    "return InternalServerError when TRN is not available" in {
+    "redirect to TestSignOutController for POST when TRN is available (non-taxable organisation user type)" in {
 
       val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+        .set(RegistrationTRNPage, "xTRN1234678").success.value
+        .set(TrustTaxableYesNoPage, false).success.value
+        .set(TrustHaveAUTRPage, false).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-      val request = FakeRequest(GET, routes.ConfirmationController.onPageLoad(fakeDraftId).url)
+      val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+
+      val request = FakeRequest(POST, routes.TestConfirmationController.onSubmit(fakeDraftId).url)
 
       val result = route(application, request).value
 
-      status(result) mustEqual INTERNAL_SERVER_ERROR
+      val content = contentAsString(result)
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result) mustBe Some(TestSignOutController.onPageLoad().url)
+
+      content mustNot include(agentUrl)
 
       application.stop()
     }
 
+    Seq(GET, POST).foreach { requestMethod =>
+
+      s"return to Task List view  when registration is in progress for $requestMethod method" in {
+
+        val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.InProgress)
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(requestMethod, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+
+        application.stop()
+      }
+
+
+      s"return to trust registered online page when registration is not started for $requestMethod method" in {
+
+        val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.NotStarted)
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(requestMethod, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.register.routes.TrustRegisteredOnlineController.onPageLoad().url
+
+        application.stop()
+      }
+
+      s"return InternalServerError when TRN is not available for $requestMethod method" in {
+
+        val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        val request = FakeRequest(requestMethod, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+
+        application.stop()
+      }
+
+    }
   }
+
 }
