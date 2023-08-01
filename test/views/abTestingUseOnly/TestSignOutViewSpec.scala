@@ -34,6 +34,7 @@ class TestSignOutViewSpec extends ViewBehaviours {
     behave like normalPage(applyView(), None, messageKeyPrefix)
 
     behave like pageWithLink(applyView(), "manage-trust-guidance", guidanceURL)
+    behave like pageWithoutLanguageToggleLink(applyView())
 
     behave like pageWithText(applyView(), "You have signed out", "- heading")
     behave like pageWithText(applyView(), "You have signed out of the trust registration.", "- p1")

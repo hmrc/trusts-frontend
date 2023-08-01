@@ -98,7 +98,7 @@ lazy val root = (project in file("."))
   // Try to remove when sbt[ 1.8.0+ and scoverage is 2.0.7+
   .settings(libraryDependencySchemes ++= Seq("org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always))
 
-lazy val testSettings: Seq[Def.Setting[_]] = Seq(
+lazy val testSettings: Seq[Def.Setting[?]] = Seq(
   fork        := true,
   javaOptions ++= Seq(
     "-Dlogger.resource=logback-test.xml",
