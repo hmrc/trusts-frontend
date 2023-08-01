@@ -41,7 +41,8 @@
         scriptElem: Option[Html] = None,
         timeoutEnabled: Boolean = true,
         canSignOut: Boolean = true,
-        showBackLink: Boolean = false
+        showBackLink: Boolean = false,
+        isWelshTranslationAvailable: Boolean = true
 )(mainContent: Html)(implicit request: Request[_], messages: Messages)
 
 @headScripts = {
@@ -61,15 +62,17 @@
 }
 
 @beforeContentBlock = {
-@hmrcLanguageSelectHelper()
-@if(showBackLink) {
-    @govukBackLink(BackLink(
-        attributes = Map("id" -> "back-link"), classes="js-enabled", href="javascript:history.back()", content = HtmlContent(messages("site.back"))
-    ))
-}
+    @if(isWelshTranslationAvailable) {
+        @hmrcLanguageSelectHelper()
+    }
+    @if(showBackLink) {
+        @govukBackLink(BackLink(
+            attributes = Map("id" -> "back-link"), classes="js-enabled", href="javascript:history.back()", content = HtmlContent(messages("site.back"))
+        ))
+    }
 }
 
-    @mainContentWithGetHelp = {
+@mainContentWithGetHelp = {
     @mainContent
     @hmrcReportTechnicalIssueHelper()
 }

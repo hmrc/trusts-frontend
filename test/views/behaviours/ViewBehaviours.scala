@@ -65,7 +65,6 @@ trait ViewBehaviours extends ViewSpecBase {
     }
   }
 
-
   def normalPageTitleWithCaption(view: HtmlFormat.Appendable,
                                  messageKeyPrefix: String,
                                  captionParam: String,
@@ -270,6 +269,22 @@ trait ViewBehaviours extends ViewSpecBase {
 
         assertRenderedById(doc, id)
         assertAttributeValueForElement(element, "href", url)
+      }
+    }
+  }
+
+  def pageWithoutLanguageToggleLink(view: HtmlFormat.Appendable): Unit = {
+
+    "behave like a page without a welsh language toggle link" must {
+
+      "not have a welsh language toggle link" in {
+
+        val doc = asDocument(view)
+        val element = doc.getElementsByTag("a")
+
+        element.forEach { e =>
+          e.attr("href") must not equal "/trusts-registration/hmrc-frontend/language/cy"
+        }
       }
     }
   }

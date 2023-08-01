@@ -35,6 +35,7 @@ class TestIndividualViewSpec extends ViewBehaviours {
     behave like normalPage(applyView(), None, messageKeyPrefix)
 
     behave like pageWithLink(applyView(), "print-or-save", printOrSaveLink)
+    behave like pageWithoutLanguageToggleLink(applyView())
 
     behave like pageWithText(applyView(), "Registration submitted", "- heading")
     behave like pageWithText(applyView(), "Print or save a copy of your answers", "- link text")
