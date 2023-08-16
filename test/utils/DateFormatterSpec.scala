@@ -16,13 +16,12 @@
 
 package utils
 
-import java.time.{LocalDateTime, LocalDate => JavaDate}
-
 import base.RegistrationSpecBase
 import config.FrontendAppConfig
-import org.joda.time.{LocalDate => JodaDate}
 import play.api.i18n.{Lang, MessagesImpl}
 import uk.gov.hmrc.play.language.LanguageUtils
+
+import java.time.{LocalDateTime, LocalDate => JavaDate}
 
 class DateFormatterSpec extends RegistrationSpecBase {
 
@@ -44,7 +43,6 @@ class DateFormatterSpec extends RegistrationSpecBase {
 
   private val dateTime: LocalDateTime = LocalDateTime.of(year, month, day, 0, 0)
   private val javaDate: JavaDate = JavaDate.of(year, month, day)
-  private val jodaDate: JodaDate = JodaDate.parse(s"$year-$month-$day")
 
   "DateFormatter" when {
 
@@ -102,25 +100,5 @@ class DateFormatterSpec extends RegistrationSpecBase {
         }
       }
     }
-
-    ".formatDate (Joda)" when {
-
-      "in English mode" must {
-        "format date in English" in {
-
-          val result: String = formatter.formatDate(jodaDate)(messages("en"))
-          result mustBe "3 February 1996"
-        }
-      }
-
-      "in Welsh mode" must {
-        "format date in Welsh" in {
-
-          val result: String = formatter.formatDate(jodaDate)(messages("cy"))
-          result mustBe "3 Chwefror 1996"
-        }
-      }
-    }
   }
-
 }

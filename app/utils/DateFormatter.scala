@@ -16,13 +16,12 @@
 
 package utils
 
-import java.time.{LocalDateTime, LocalDate => JavaDate}
-
 import com.google.inject.Inject
 import config.FrontendAppConfig
-import org.joda.time.{LocalDate => JodaDate}
 import play.api.i18n.Messages
 import uk.gov.hmrc.play.language.LanguageUtils
+
+import java.time.{LocalDateTime, LocalDate}
 
 class DateFormatter @Inject()(config: FrontendAppConfig, languageUtils: LanguageUtils) {
 
@@ -34,11 +33,7 @@ class DateFormatter @Inject()(config: FrontendAppConfig, languageUtils: Language
     formatDate(dateTime.toLocalDate)
   }
 
-  def formatDate(date: JodaDate)(implicit messages: Messages): String = {
-    formatDate(JavaDate.of(date.getYear, date.getMonthOfYear, date.getDayOfMonth))
-  }
-
-  def formatDate(date: JavaDate)(implicit messages: Messages): String = {
+  def formatDate(date: LocalDate)(implicit messages: Messages): String = {
     languageUtils.Dates.formatDate(date)
   }
 
