@@ -9,32 +9,17 @@ lazy val appName: String = "trusts-frontend"
 
 val excludedPackages = Seq(
   "<empty>",
-  ".*Reverse.*",
+  "Reverse.*",
+  ".*assets.*",
   ".*Routes.*",
-  ".*standardError*.*",
-  ".*main_template*.*",
-  "uk.gov.hmrc.BuildInfo",
-  "app.*",
-  "prod.*",
-  "config.*",
-  "testOnlyDoNotUseInAppConf.*",
-  "views.html.*",
-  "testOnly.*",
-  "com.kenshoo.play.metrics*.*",
-  ".*repositories.*",
-  ".*LanguageSwitchController",
-  ".*GuiceInjector",
-  ".*models.Mode",
+  ".*standardError.*",
+  ".*BuildInfo",
+  ".*pages.Page",
+  ".*models.*",
+  ".*views.*",
   ".*filters.*",
-  ".*handlers.*",
-  ".*components.*",
-  ".*FrontendAuditConnector.*",
-  ".*javascript.*",
-  ".*ControllerConfiguration",
-  ".*mapping.Constants.*",
-  ".*pages.Page.*",
-  ".*viewmodels.*",
-  ".*Message.*"
+  ".*config*.*",
+  ".*testOnlyDoNotUseInAppConf.*"
 )
 
 lazy val root = (project in file("."))
