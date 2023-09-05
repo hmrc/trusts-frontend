@@ -103,11 +103,11 @@ class AnswerRowUtils @Inject()(languageUtils: LanguageUtils,
   private def parseAsCountry(answer: String)(implicit messages: Messages): Try[String] = {
     languages.foldLeft[Try[String]](Failure(new IllegalArgumentException()))((acc, language) => {
       val countryCode: Option[String] = getCountriesForLanguage(language)
-        .find(_.exists(_.contains(answer)))
-        .map(_.last.split("country:").last.trim)
+        .find(_.exists(_.equals(answer)))
+        .map(_.last.trim)
 
       countryCode match {
-        case Some(cc) => getCountriesForLanguage(messages.lang.code).find(_.last.contains(cc)) match {
+        case Some(cc) => getCountriesForLanguage(messages.lang.code).find(_.last.equals(cc)) match {
           case Some(country) => Success(country.head)
           case _ => acc
         }
