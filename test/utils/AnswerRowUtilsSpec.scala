@@ -278,6 +278,22 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
             result mustEqual inputAndOutput._2
           }
         }
+
+        "only return exact matches for countries" in {
+          val inputsAndOutputs = Seq(
+            ("Norfolk", "Norfolk"),
+            ("F", "F"),
+            ("Bos", "Bos")
+          )
+
+          val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
+
+          inputsAndOutputs.foreach { inputAndOutput =>
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            result mustEqual inputAndOutput._2
+          }
+
+        }
       }
 
       "answer is an international address" when {
