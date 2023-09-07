@@ -52,6 +52,6 @@ The past tense question should then be displayed correctly in the print draft of
 
 This service has Optimizely integration.
 
-Pages created for the purpose of A/B testing are under the package name `abTestingUseOnly`. Routes should be prepended with "/a-b/"
+Pages created for the purpose of A/B testing are under the package name `abTestingUseOnly`. Routes should be prepended with "/det/"
 
-Example: `/trusts-registration/a-b/sign-out`
+Example: `/trusts-registration/det/sign-out`

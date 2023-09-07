@@ -103,8 +103,8 @@ GET        /feature-not-available                       controllers.FeatureNotAv
 
 ## A/B Testing Routes
 
-GET        /a-b/:draftId/confirmation                   controllers.abTestingUseOnly.register.TestConfirmationController.onPageLoad(draftId: String)
+GET        /det/:draftId/confirmation                   controllers.abTestingUseOnly.register.TestConfirmationController.onPageLoad(draftId: String)
 
-POST       /a-b/:draftId/confirmation                   controllers.abTestingUseOnly.register.TestConfirmationController.onSubmit(draftId: String)
+POST       /det/:draftId/confirmation                   controllers.abTestingUseOnly.register.TestConfirmationController.onSubmit(draftId: String)
 
-GET        /a-b/sign-out                                controllers.abTestingUseOnly.TestSignOutController.onPageLoad()
+GET        /det/sign-out                                controllers.abTestingUseOnly.TestSignOutController.onPageLoad()
