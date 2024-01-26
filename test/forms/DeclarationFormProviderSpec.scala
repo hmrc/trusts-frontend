@@ -16,6 +16,7 @@
 
 package forms
 
+import forms.Validation.emailRegex
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 import wolfendale.scalacheck.regexp.RegexpGen
@@ -55,6 +56,11 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
+
+    "replace smart apostrophes" in {
+      val result = form.bind(Map("firstName" -> "‘apos’trophes‘", "middleName" -> "middle", "lastName" -> "lastName"))
+      result.value.value.name.firstName shouldBe "'apos'trophes'"
+    }
   }
 
   ".middleName" must {
@@ -90,6 +96,11 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
       val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "", "lastName" -> "lastName"))
       result.value.value.name.middleName shouldBe None
     }
+
+    "replace smart apostrophes" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "‘apos’trophes‘", "lastName" -> "lastName"))
+      result.value.value.name.middleName shouldBe Some("'apos'trophes'")
+    }
   }
 
   ".lastName" must {
@@ -123,11 +134,17 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
       fieldName,
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
+
+    "replace smart apostrophes" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "‘apos’trophes‘"))
+      result.value.value.name.lastName shouldBe "'apos'trophes'"
+    }
   }
 
   ".email" must {
 
     val fieldName = "email"
+    val requiredKey = "declaration.error.email.invalid"
 
     behave like optionalField(
       form,
@@ -143,6 +160,21 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
     "bind whitespace no values" in {
       val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middle", "lastName" -> "lastName", "email" -> ""))
       result.value.value.email shouldBe None
+    }
+
+    "replace smart apostrophes before the @ sign in an email" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName", "email" ->"‘a‘pos‘@trophes.com"))
+      result.value.value.email shouldBe Some("'a'pos'@trophes.com")
+    }
+
+    "throw an error if an email has a smart apostrophe after the @" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName", "email" ->"apos@t‘rophes.com"))
+      result.errors should contain(FormError(fieldName, requiredKey, Seq(emailRegex)))
+    }
+
+    "throw an error if an email ends with a smart apostrophe after the @" in {
+      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName", "email" ->"apos@trophes.com‘"))
+      result.errors should contain(FormError(fieldName, requiredKey, Seq(emailRegex)))
     }
   }
 
