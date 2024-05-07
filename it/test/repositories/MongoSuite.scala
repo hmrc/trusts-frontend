@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,10 @@ trait MongoSuite extends ScalaFutures {
     PatienceConfig(timeout = Span(30, Seconds), interval = Span(500, Millis))
 
   val application: Application = new GuiceApplicationBuilder()
-    .configure(Seq(
+    .configure(
       "metrics.enabled" -> false,
-      "auditing.enabled" -> false,
-      "mongo-async-driver.akka.log-dead-letters" -> 0
-    ): _*)
-    .build()
+      "auditing.enabled" -> false
+    ).build()
 
   val config: FrontendAppConfig = application.injector.instanceOf[FrontendAppConfig]
 
