@@ -612,7 +612,7 @@ employmentRelatedBeneficiary.5mld.countryOfResidenceYesNo.checkYourAnswersLabel 
 employmentRelatedBeneficiary.addressUkYesNo.checkYourAnswersLabel = A yw cyfeiriad {0} yn y DU?
 employmentRelatedBeneficiary.addressYesNo.checkYourAnswersLabel = A ydych yn gwybod cyfeiriad {0}?
 employmentRelatedBeneficiary.checkDetails.heading = Gwirio manylion y buddiolwr sy’n ymwneud â chyflogaeth
-employmentRelatedBeneficiary.description.checkYourAnswersLabel = Beth yw’r disgrifiad o’r buddiolwr?
+employmentRelatedBeneficiary.description.checkYourAnswersLabel = Rhoi disgrifiad ar gyfer pob grŵp buddiolwr
 employmentRelatedBeneficiary.name.checkYourAnswersLabel = Beth yw enw’r busnes?
 employmentRelatedBeneficiary.nonUkAddress.checkYourAnswersLabel = Beth yw cyfeiriad {0}?
 employmentRelatedBeneficiary.numberOfBeneficiaries.checkYourAnswersLabel = Beth yw’r brasamcan o nifer y buddiolwyr a ddelir yn yr ymddiriedolaeth?
