@@ -813,7 +813,7 @@ employmentRelatedBeneficiary.addressYesNo.checkYourAnswersLabel = Do you know {0
 employmentRelatedBeneficiary.addressUkYesNo.checkYourAnswersLabel = Is {0}’s address in the UK?
 employmentRelatedBeneficiary.ukAddress.checkYourAnswersLabel = What is {0}’s address?
 employmentRelatedBeneficiary.nonUkAddress.checkYourAnswersLabel = What is {0}’s address?
-employmentRelatedBeneficiary.description.checkYourAnswersLabel = What is the description of the beneficiary?
+employmentRelatedBeneficiary.description.checkYourAnswersLabel = Give a description of each beneficiary group
 employmentRelatedBeneficiary.numberOfBeneficiaries.checkYourAnswersLabel = What is the approximate number of beneficiaries held in the trust?
 employmentRelatedBeneficiary.checkDetails.heading = Check employment related beneficiary details
 

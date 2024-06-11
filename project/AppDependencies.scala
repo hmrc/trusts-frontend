@@ -2,7 +2,7 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "8.5.0"
+  private val bootstrapVersion = "8.6.0"
   private val mongoVersion = "1.9.0"
 
   private val compile: Seq[ModuleID] = Seq(
@@ -13,7 +13,7 @@ object AppDependencies {
     "uk.gov.hmrc"       %% "play-conditional-form-mapping-play-30"  % "2.0.0",
     "uk.gov.hmrc"       %% "domain-play-30"                         % "9.0.0",
     "uk.gov.hmrc"       %% "tax-year"                               % "4.0.0",
-    "org.typelevel"     %% "cats-core"                              % "2.10.0"
+    "org.typelevel"     %% "cats-core"                              % "2.12.0"
   )
 
   private val test: Seq[ModuleID] = Seq(
