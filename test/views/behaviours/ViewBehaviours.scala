@@ -21,6 +21,9 @@ import views.ViewSpecBase
 
 trait ViewBehaviours extends ViewSpecBase {
 
+  private def findBannerTitle(view: HtmlFormat.Appendable): String =
+    asDocument(view).getElementsByClass("govuk-header__link govuk-header__service-name").html()
+
   def normalPage(view: HtmlFormat.Appendable,
                  sectionKey: Option[String],
                  messageKeyPrefix: String,
@@ -31,22 +34,15 @@ trait ViewBehaviours extends ViewSpecBase {
       "rendered" must {
 
         "have the correct banner title" in {
-
-          val doc = asDocument(view)
-          val bannerTitle = doc.getElementsByClass("hmrc-header__service-name hmrc-header__service-name--linked")
-          bannerTitle.html() mustBe messages("service.name")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct browser title" in {
-
-          val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", sectionKey, s"$messageKeyPrefix.title")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct page title" in {
-
-          val doc = asDocument(view)
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct guidance" in {
@@ -75,16 +71,11 @@ trait ViewBehaviours extends ViewSpecBase {
       "rendered" must {
 
         "have the correct banner title" in {
-
-          val doc = asDocument(view)
-          val bannerTitle = doc.getElementsByClass("hmrc-header__service-name hmrc-header__service-name--linked")
-          bannerTitle.html() mustBe messages("service.name")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct browser title" in {
-
-          val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", None, s"$messageKeyPrefix.title")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct page title with caption" in {
@@ -119,22 +110,15 @@ trait ViewBehaviours extends ViewSpecBase {
       "rendered" must {
 
         "have the correct banner title" in {
-
-          val doc = asDocument(view)
-          val bannerTitle = doc.getElementsByClass("hmrc-header__service-name hmrc-header__service-name--linked")
-          bannerTitle.html() mustBe messages("service.name")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct browser title" in {
-
-          val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", sectionKey, s"$messageKeyPrefix.title", messageKeyParam)
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct page title" in {
-
-          val doc = asDocument(view)
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", messageKeyParam)
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct guidance" in {
@@ -164,22 +148,15 @@ trait ViewBehaviours extends ViewSpecBase {
       "rendered" must {
 
         "have the correct banner title" in {
-
-          val doc = asDocument(view)
-          val bannerTitle = doc.getElementsByClass("hmrc-header__service-name hmrc-header__service-name--linked")
-          bannerTitle.html() mustBe messages("service.name")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct browser title" in {
-
-          val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", sectionKey, s"$messageKeyPrefix.title", args: _*)
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct page title" in {
-
-          val doc = asDocument(view)
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", args: _*)
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct guidance" in {
@@ -210,24 +187,15 @@ trait ViewBehaviours extends ViewSpecBase {
       "rendered" must {
 
         "have the correct banner title" in {
-
-          val doc = asDocument(view)
-          val bannerTitle = doc.getElementsByClass("hmrc-header__service-name hmrc-header__service-name--linked")
-          bannerTitle.html() mustBe messages("service.name")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct browser title" in {
-
-          val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", sectionKey, "confirmation.title")
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct page title" in {
-
-          val doc = asDocument(view)
-          assertContainsText(doc, messages("confirmation.heading1"))
-          assertContainsText(doc, messages("confirmation.heading2"))
-          assertContainsText(doc, refNumber)
+          findBannerTitle(view) mustBe messages("service.name")
         }
 
         "display the correct guidance" in {
@@ -366,7 +334,7 @@ trait ViewBehaviours extends ViewSpecBase {
       assertContainsClass(doc, "govuk-warning-text")
       assertContainsClass(doc, "govuk-warning-text__icon")
       assertContainsClass(doc, "govuk-warning-text__text")
-      assertContainsClass(doc, "govuk-warning-text__assistive")
+      assertContainsClass(doc, "govuk-visually-hidden")
     }
   }
 

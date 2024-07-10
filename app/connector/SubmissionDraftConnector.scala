@@ -23,12 +23,13 @@ import models.{FirstTaxYearAvailable, SubmissionDraftData, SubmissionDraftId, Su
 import play.api.http.Status.NOT_FOUND
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.HttpReads.Implicits.{readFromJson, readRaw}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse, UpstreamErrorResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps, UpstreamErrorResponse}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
+class SubmissionDraftConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
 
   private val mainSection = "main"
   private val beneficiariesSection = "beneficiaries"
@@ -39,13 +40,15 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
   private val submissionsBaseUrl = s"${config.trustsUrl}/trusts/register/submission-drafts"
 
   private def getDraftSection(draftId: String, section: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[SubmissionDraftResponse] = {
-    http.GET[SubmissionDraftResponse](s"$submissionsBaseUrl/$draftId/$section")
+    http.get(url"$submissionsBaseUrl/$draftId/$section").execute[SubmissionDraftResponse]
   }
 
   def setDraftMain(draftId: String, draftData: JsValue, inProgress: Boolean, reference: Option[String])
                   (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     val submissionDraftData = SubmissionDraftData(draftData, reference, Some(inProgress))
-    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/$mainSection", Json.toJson(submissionDraftData))
+    http.post(url"$submissionsBaseUrl/$draftId/$mainSection")
+    .withBody(Json.toJson(submissionDraftData))
+      .execute[HttpResponse]
   }
 
   def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[SubmissionDraftResponse] =
@@ -59,10 +62,13 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
 
   def setDraftSettlors(draftId: String, data: JsValue)
                      (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] =
-    http.POST[JsValue, HttpResponse](s"$submissionsBaseUrl/$draftId/set/$settlorsSection", data)
+    http.post(url"$submissionsBaseUrl/$draftId/set/$settlorsSection")
+      .withBody(data)
+        .execute[HttpResponse]
 
   def getCurrentDraftIds()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[List[SubmissionDraftId]] = {
-    http.GET[List[SubmissionDraftId]](s"$submissionsBaseUrl")
+    http.get(url"$submissionsBaseUrl")
+      .execute[List[SubmissionDraftId]]
   }
 
   def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[JsObject] =
@@ -76,33 +82,41 @@ class SubmissionDraftConnector @Inject()(http: HttpClient, config: FrontendAppCo
     }
 
   def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[LeadTrusteeType] =
-    http.GET[LeadTrusteeType](s"$submissionsBaseUrl/$draftId/lead-trustee")
+    http.get(url"$submissionsBaseUrl/$draftId/lead-trustee")
+      .execute[LeadTrusteeType]
 
   def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressType] =
-    http.GET[AddressType](s"$submissionsBaseUrl/$draftId/correspondence-address")
+    http.get(url"$submissionsBaseUrl/$draftId/correspondence-address")
+      .execute[AddressType]
 
   def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AddressType] =
-    http.GET[AddressType](s"$submissionsBaseUrl/$draftId/agent-address")
+    http.get(url"$submissionsBaseUrl/$draftId/agent-address")
+      .execute[AddressType]
 
   def getClientReference(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[String] =
-    http.GET[String](s"$submissionsBaseUrl/$draftId/client-reference")
+    http.get(url"$submissionsBaseUrl/$draftId/client-reference")
+      .execute[String]
 
   def getTrustName(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[String] =
-    http.GET[HttpResponse](s"$submissionsBaseUrl/$draftId/trust-name").map {
+    http.get(url"$submissionsBaseUrl/$draftId/trust-name")
+      .execute[HttpResponse].map {
       response =>
         (response.json \ "trustName").as[String]
     }
 
   def updateTaxLiability(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    http.POSTEmpty[HttpResponse](s"$submissionsBaseUrl/$draftId/update/tax-liability")
+    http.post(url"$submissionsBaseUrl/$draftId/update/tax-liability")
+      .execute[HttpResponse]
   }
 
   def removeDraft(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    http.DELETE[HttpResponse](s"$submissionsBaseUrl/$draftId")
+    http.delete(url"$submissionsBaseUrl/$draftId")
+      .execute[HttpResponse]
   }
 
   def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[FirstTaxYearAvailable]] = {
-    http.GET[FirstTaxYearAvailable](s"$submissionsBaseUrl/$draftId/first-tax-year-available")
+    http.get(url"$submissionsBaseUrl/$draftId/first-tax-year-available")
+      .execute[FirstTaxYearAvailable]
       .map(Some(_))
       .recover {
         case e: UpstreamErrorResponse if e.statusCode == NOT_FOUND => None

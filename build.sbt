@@ -3,9 +3,11 @@ import sbt.Def
 import scoverage.ScoverageKeys
 import uk.gov.hmrc.DefaultBuildSettings
 
+resolvers += MavenRepository("HMRC-open-artefacts-maven2", "https://open.artefacts.tax.service.gov.uk/maven2")
+
 lazy val appName: String = "trusts-frontend"
 
-ThisBuild / scalaVersion := "2.13.13"
+ThisBuild / scalaVersion := "2.13.14"
 ThisBuild / majorVersion := 1
 
 val excludedPackages = Seq(
