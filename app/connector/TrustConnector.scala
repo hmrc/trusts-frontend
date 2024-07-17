@@ -21,12 +21,13 @@ import models.core.http.{MatchData, MatchedResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import play.api.http.HeaderNames
 import play.api.libs.json.{JsValue, Writes}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
+class TrustConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
 
   val registrationUrl = s"${config.trustsUrl}/trusts/register"
 
@@ -38,7 +39,8 @@ class TrustConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
       Headers.TrueUserAgent -> request.headers.get(HeaderNames.USER_AGENT).getOrElse("No user agent provided")
     )
 
-    http.POST[JsValue, TrustResponse](registrationUrl, registrationJson)(implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc, ec)
+    http.post(url"$registrationUrl").withBody(registrationJson)
+    .withProxy.execute[TrustResponse](implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc)
   }
 
   def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] = {
