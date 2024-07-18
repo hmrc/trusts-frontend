@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import models.core.http.{MatchData, MatchedResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import play.api.http.HeaderNames
-import play.api.libs.json.{JsValue, Writes}
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
@@ -34,18 +34,22 @@ class TrustConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
   def register(registrationJson: JsValue, draftId: String)
               (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
 
-    val newHc: HeaderCarrier = hc.withExtraHeaders(
+    implicit val newHc: HeaderCarrier = hc.withExtraHeaders(
       Headers.DraftRegistrationId -> draftId,
       Headers.TrueUserAgent -> request.headers.get(HeaderNames.USER_AGENT).getOrElse("No user agent provided")
     )
 
-    http.post(url"$registrationUrl").withBody(registrationJson)
-    .withProxy.execute[TrustResponse](implicitly[Writes[JsValue]], TrustResponse.httpReads, newHc)
+    http.post(url"$registrationUrl")(newHc)
+      .withBody(registrationJson)
+      .execute[TrustResponse]
   }
 
   def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] = {
     val matchingUrl = s"${config.trustsUrl}/trusts/check"
-    http.POST[MatchData, MatchedResponse](matchingUrl, matchData: MatchData)(MatchData.writes, MatchedResponse.httpReads, hc, ec)
+
+    http.post(url"$matchingUrl")
+      .withBody(matchData)
+      .execute[MatchedResponse]
   }
 
 }

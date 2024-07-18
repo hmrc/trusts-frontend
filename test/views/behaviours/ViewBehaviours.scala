@@ -38,11 +38,15 @@ trait ViewBehaviours extends ViewSpecBase {
         }
 
         "display the correct browser title" in {
-          findBannerTitle(view) mustBe messages("service.name")
+
+          val doc = asDocument(view)
+          assertEqualsMessage(doc, "title", sectionKey, s"$messageKeyPrefix.title")
         }
 
         "display the correct page title" in {
-          findBannerTitle(view) mustBe messages("service.name")
+
+          val doc = asDocument(view)
+          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading")
         }
 
         "display the correct guidance" in {
@@ -195,7 +199,11 @@ trait ViewBehaviours extends ViewSpecBase {
         }
 
         "display the correct page title" in {
-          findBannerTitle(view) mustBe messages("service.name")
+
+          val doc = asDocument(view)
+          assertContainsText(doc, messages("confirmation.heading1"))
+          assertContainsText(doc, messages("confirmation.heading2"))
+          assertContainsText(doc, refNumber)
         }
 
         "display the correct guidance" in {
