@@ -19,7 +19,6 @@ package models.core.http
 import models.core.pages.FullName
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.libs.ws.BodyWritable
 
 /**
   * Trust Registration API Schema - definitions models below
@@ -40,18 +39,17 @@ case class MatchData(utr: String,
                      postCode: Option[String])
 
 object MatchData {
-  implicit val matchDataFormat: Format[MatchData] = Json.format[MatchData]
 
-  val writes: Writes[MatchData] =
+  private val oWrites: OWrites[MatchData] =
     ((__ \ "utr").write[String] and
       (__ \ "name").write[String] and
       (__ \ "postcode").writeNullable[String]
       ).apply(unlift(MatchData.unapply))
 
-  implicit def jsonBodyWritable[T](implicit
-                                   writes: Writes[T],
-                                   jsValueBodyWritable: BodyWritable[JsValue]
-                                  ): BodyWritable[T] = jsValueBodyWritable.map(writes.writes)
+  private val oReads: Reads[MatchData] = Json.format[MatchData]
+
+  implicit val matchDataFormat: Format[MatchData] = OFormat(oReads, oWrites)
+
 }
 
 case class Correspondence(name: String)
