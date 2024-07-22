@@ -43,7 +43,7 @@ object MatchData {
   private val oWrites: OWrites[MatchData] =
     ((__ \ "utr").write[String] and
       (__ \ "name").write[String] and
-      (__ \ "postcode").writeNullable[String]
+      (__ \ "postCode").writeNullable[String]
       ).apply(unlift(MatchData.unapply))
 
   private val oReads: Reads[MatchData] = Json.format[MatchData]
