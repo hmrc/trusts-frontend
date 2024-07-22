@@ -18,11 +18,12 @@ package connector
 
 import base.SpecBaseHelpers
 import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import mapping.registration.RegistrationMapper
 import models.core.http._
+import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.OptionValues
 import play.api.Application
 import play.api.http.Status
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -49,25 +50,25 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
+  def wiremock(payload: String, expectedStatus: Int, expectedResponse: String, url: String): StubMapping =
+    server.stubFor(
+      post(urlEqualTo(url))
+        .withHeader(CONTENT_TYPE, containing("application/json"))
+        .withRequestBody(equalTo(payload))
+        .willReturn(
+          aResponse()
+            .withStatus(expectedStatus)
+            .withBody(expectedResponse)
+        )
+    )
+
   val trustName = "Trust Name"
 
   "TrustConnector" - {
 
     ".register" - {
 
-      val registerUrl : String = "/trusts/register"
-
-      def wiremock(payload: String, expectedStatus: Int, expectedResponse : String)=
-        server.stubFor(
-          post(urlEqualTo(registerUrl))
-            .withHeader(CONTENT_TYPE, containing("application/json"))
-            .withRequestBody(equalTo(payload))
-            .willReturn(
-              aResponse()
-                .withStatus(expectedStatus)
-                .withBody(expectedResponse)
-            )
-        )
+      val registerUrl: String = "/trusts/register"
 
       val newTrustUserAnswers = {
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
@@ -89,14 +90,16 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.OK,
-            expectedResponse = """
-                                 |{
-                                 | "trn": "XTRN1234567"
-                                 |}
-          """.stripMargin
+            expectedResponse =
+              """
+                |{
+                | "trn": "XTRN1234567"
+                |}
+          """.stripMargin,
+            url = registerUrl
           )
 
-          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
+          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe RegistrationTRNResponse("XTRN1234567")
         }
       }
@@ -112,15 +115,17 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.CONFLICT,
-            expectedResponse = """
-                                 |{
-                                 | "code": "ALREADY_REGISTERED",
-                                 |  "message": "Trusts already registered."
-                                 |}
-                             """.stripMargin
+            expectedResponse =
+              """
+                |{
+                | "code": "ALREADY_REGISTERED",
+                |  "message": "Trusts already registered."
+                |}
+                             """.stripMargin,
+            url = registerUrl
           )
 
-          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.AlreadyRegistered
         }
       }
@@ -135,15 +140,17 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.INTERNAL_SERVER_ERROR,
-            expectedResponse = """
-                                 |{
-                                 | "code": "INTERNAL_SERVER_ERROR",
-                                 |  "message": "Internal server error."
-                                 |}
-                             """.stripMargin
+            expectedResponse =
+              """
+                |{
+                | "code": "INTERNAL_SERVER_ERROR",
+                |  "message": "Internal server error."
+                |}
+                             """.stripMargin,
+            url = registerUrl
           )
 
-          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.InternalServerError
         }
       }
@@ -159,10 +166,11 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.BAD_REQUEST,
-            expectedResponse = ""
+            expectedResponse = "",
+            url = registerUrl
           )
 
-          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.InternalServerError
         }
       }
@@ -178,10 +186,11 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.SERVICE_UNAVAILABLE,
-            expectedResponse = ""
+            expectedResponse = "",
+            url = registerUrl
           )
 
-          val result  = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId),Duration.Inf)
+          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.InternalServerError
         }
       }
@@ -191,20 +200,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
 
       val matchingUrl: String = "/trusts/check"
 
-      def wiremock(payload: String, expectedStatus: Int, expectedResponse: String)=
-        server.stubFor(
-          post(urlEqualTo(matchingUrl))
-            .withHeader(CONTENT_TYPE, containing("application/json"))
-            .withRequestBody(equalTo(payload))
-            .willReturn(
-              aResponse()
-                .withStatus(expectedStatus)
-                .withBody(expectedResponse)
-            )
-        )
-
       val matchData: MatchData = MatchData("utr", "name", Some("postcode"))
-      val payload: String = Json.stringify(Json.toJson(matchData)(MatchData.writes))
+      val payload: String = Json.stringify(Json.toJson(matchData))
 
       "must return a Matched response" - {
         "when trust is successfully matched" in {
@@ -212,7 +209,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.OK,
-            expectedResponse = """{"match": true}""".stripMargin
+            expectedResponse = """{"match": true}""".stripMargin,
+            url = matchingUrl
           )
 
           val result = Await.result(connector.matching(matchData), Duration.Inf)
@@ -227,7 +225,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.OK,
-            expectedResponse = """{"match": false}""".stripMargin
+            expectedResponse = """{"match": false}""".stripMargin,
+            url = matchingUrl
           )
 
           val result = Await.result(connector.matching(matchData), Duration.Inf)
@@ -242,12 +241,14 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.CONFLICT,
-            expectedResponse = """
-                                 |{
-                                 | "code": "ALREADY_REGISTERED",
-                                 | "message": "The trust is already registered."
-                                 |}
-                             """.stripMargin
+            expectedResponse =
+              """
+                |{
+                | "code": "ALREADY_REGISTERED",
+                | "message": "The trust is already registered."
+                |}
+                             """.stripMargin,
+            url = matchingUrl
           )
 
           val result = Await.result(connector.matching(matchData), Duration.Inf)
@@ -261,12 +262,14 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.INTERNAL_SERVER_ERROR,
-            expectedResponse = """
-                                 |{
-                                 | "code": "INTERNAL_SERVER_ERROR",
-                                 | "message": "Internal server error."
-                                 |}
-                             """.stripMargin
+            expectedResponse =
+              """
+                |{
+                | "code": "INTERNAL_SERVER_ERROR",
+                | "message": "Internal server error."
+                |}
+                             """.stripMargin,
+            url = matchingUrl
           )
 
           val result = Await.result(connector.matching(matchData), Duration.Inf)

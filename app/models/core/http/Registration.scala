@@ -39,13 +39,17 @@ case class MatchData(utr: String,
                      postCode: Option[String])
 
 object MatchData {
-  implicit val matchDataFormat: Format[MatchData] = Json.format[MatchData]
 
-  val writes: Writes[MatchData] =
+  private val oWrites: OWrites[MatchData] =
     ((__ \ "utr").write[String] and
       (__ \ "name").write[String] and
-      (__ \ "postcode").writeNullable[String]
+      (__ \ "postCode").writeNullable[String]
       ).apply(unlift(MatchData.unapply))
+
+  private val oReads: Reads[MatchData] = Json.format[MatchData]
+
+  implicit val matchDataFormat: Format[MatchData] = OFormat(oReads, oWrites)
+
 }
 
 case class Correspondence(name: String)
