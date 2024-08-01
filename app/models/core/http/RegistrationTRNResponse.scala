@@ -18,7 +18,9 @@ package models.core.http
 
 import auditing.RegistrationErrorAuditEvent
 import play.api.Logging
+import play.api.http.Status._
 import play.api.libs.json._
+import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 trait TrustResponse
 
@@ -47,5 +49,20 @@ object TrustResponse extends Logging {
   case object InternalServerError extends TrustResponse
 
   final case class UnableToRegister() extends Exception with TrustResponse
+
+  implicit lazy val httpReads: HttpReads[TrustResponse] = new HttpReads[TrustResponse] {
+    override def read(method: String, url: String, response: HttpResponse): TrustResponse = {
+      logger.info(s"Response status received from trusts api: ${response.status}")
+
+      response.status match {
+        case OK =>
+          response.json.as[RegistrationTRNResponse]
+        case CONFLICT =>
+          AlreadyRegistered
+        case _ =>
+          InternalServerError
+      }
+    }
+  }
 
 }
