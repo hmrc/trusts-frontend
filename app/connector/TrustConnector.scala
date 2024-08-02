@@ -47,6 +47,6 @@ class TrustConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) ex
 
   def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] =
     http.post(url"$matchingUrl")
-      .withBody(Json.toJson(matchData))
+      .withBody(Json.toJson(matchData)(MatchData.writes))
       .execute[MatchedResponse](MatchedResponse.httpReads, ec)
 }
