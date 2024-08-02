@@ -21,11 +21,9 @@ import models.core.http._
 import models.requests.RegistrationDataRequest
 import play.api.Logging
 import play.api.http.HeaderNames
-import play.api.http.Status.{CONFLICT, OK}
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,35 +43,10 @@ class TrustConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) ex
     http.post(url"$registrationUrl")(newHc)
       .withBody(registrationJson)
       .execute[TrustResponse](TrustResponse.httpReads, ec)
-//      .map { response =>
-//        logger.info(s"Response status received from trusts api: ${response.status}")
-//
-//        response.status match {
-//          case OK =>
-//            response.json.as[RegistrationTRNResponse]
-//          case CONFLICT =>
-//            TrustResponse.AlreadyRegistered
-//          case _ =>
-//            TrustResponse.InternalServerError
-//        }
-//      }
   }
 
   def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] =
     http.post(url"$matchingUrl")
       .withBody(Json.toJson(matchData))
       .execute[MatchedResponse](MatchedResponse.httpReads, ec)
-//      .map { response =>
-//        logger.info(s"Response status received from trusts api: ${response.status}")
-//
-//        response.status match {
-//          case OK =>
-//            response.json.as[SuccessOrFailureResponse]
-//          case CONFLICT =>
-//            MatchedResponse.AlreadyRegistered
-//          case _ =>
-//            MatchedResponse.InternalServerError
-//        }
-//      }
-
 }
