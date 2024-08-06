@@ -17,7 +17,9 @@
 package models.core.http
 
 import play.api.Logging
+import play.api.http.Status._
 import play.api.libs.json._
+import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 trait MatchedResponse
 
@@ -32,4 +34,18 @@ object MatchedResponse extends Logging {
   case object AlreadyRegistered extends MatchedResponse
   case object InternalServerError extends MatchedResponse
 
+  implicit lazy val httpReads: HttpReads[MatchedResponse] = new HttpReads[MatchedResponse] {
+    override def read(method: String, url: String, response: HttpResponse): MatchedResponse = {
+      logger.info(s"response status received from trusts api: ${response.status}")
+
+      response.status match {
+        case OK =>
+          response.json.as[SuccessOrFailureResponse]
+        case CONFLICT =>
+          AlreadyRegistered
+        case _ =>
+          InternalServerError
+      }
+    }
+  }
 }

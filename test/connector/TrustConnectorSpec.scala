@@ -201,7 +201,7 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
       val matchingUrl: String = "/trusts/check"
 
       val matchData: MatchData = MatchData("utr", "name", Some("postcode"))
-      val payload: String = Json.stringify(Json.toJson(matchData))
+      val payload: String = Json.stringify(Json.toJson(matchData)(MatchData.writes))
 
       "must return a Matched response" - {
         "when trust is successfully matched" in {
