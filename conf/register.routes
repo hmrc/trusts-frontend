@@ -56,6 +56,8 @@ POST       /trust-name                                  controllers.register.Mat
 GET        /problem-with-service                        controllers.register.MatchingDownController.onPageLoad()
 POST       /problem-with-service                        controllers.register.MatchingDownController.onSubmit()
 
+GET        /problem/page-not-found                      controllers.register.PageNotFoundController.onPageLoad()
+
 GET        /cannot-change                               controllers.register.CannotMakeChangesController.onPageLoad()
 
 GET        /trust-utr-post                              controllers.register.UTRSentByPostController.onPageLoad()

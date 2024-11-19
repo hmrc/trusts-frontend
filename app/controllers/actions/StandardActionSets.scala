@@ -18,7 +18,7 @@ package controllers.actions
 
 import controllers.actions.register._
 import controllers.filters.IndexActionFilterProvider
-import models.requests.{MatchingAndSuitabilityDataRequest, RegistrationDataRequest}
+import models.requests.{IdentifierRequest, MatchingAndSuitabilityDataRequest, RegistrationDataRequest}
 import play.api.libs.json.Reads
 import play.api.mvc.{ActionBuilder, AnyContent}
 import queries.Gettable
@@ -33,6 +33,9 @@ class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
                                    requireRegistrationData: RegistrationDataRequiredAction,
                                    requiredAnswerAction: RequiredAnswerActionProvider,
                                    validateIndex: IndexActionFilterProvider) {
+
+  def identifiedUserOnly(): ActionBuilder[IdentifierRequest, AnyContent] =
+    identify
 
   def identifiedUserWithRegistrationData(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getRegistrationData(draftId) andThen requireRegistrationData
