@@ -122,9 +122,9 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
             )
         )
 
-        val result: SubmissionDraftResponse = Await.result(connector.getDraftMain(testDraftId), Duration.Inf)
-        result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
-        result.data mustBe draftData
+        val result: Option[SubmissionDraftResponse] = Await.result(connector.getDraftMain(testDraftId), Duration.Inf)
+        result.get.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
+        result.get.data mustBe draftData
       }
 
       "can be retrieved for beneficiaries" in {

@@ -246,7 +246,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.PageNotFoundController.onPageLoad().url
 
       application.stop()
     }
@@ -262,7 +262,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual routes.SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual routes.PageNotFoundController.onPageLoad().url
 
       application.stop()
     }

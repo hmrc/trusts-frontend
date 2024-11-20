@@ -170,7 +170,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual PageNotFoundController.onPageLoad().url
 
       application.stop()
     }
@@ -187,7 +187,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual SEE_OTHER
 
-      redirectLocation(result).value mustEqual SessionExpiredController.onPageLoad().url
+      redirectLocation(result).value mustEqual PageNotFoundController.onPageLoad().url
 
       application.stop()
     }
