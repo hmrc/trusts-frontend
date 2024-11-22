@@ -160,7 +160,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "redirect to Session Expired for a GET if no existing data is found" in {
+    "redirect to Page Not Found for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
@@ -175,7 +175,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "redirect to Session Expired for a POST if no existing data is found" in {
+    "redirect to Page Not Found for a POST if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
