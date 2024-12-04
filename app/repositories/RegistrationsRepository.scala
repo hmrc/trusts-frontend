@@ -42,7 +42,8 @@ class DefaultRegistrationsRepository @Inject()(
 
   override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
     submissionDraftConnector.getDraftMain(draftId).map {
-      response => Some(response.data.as[UserAnswers])
+      case Some(response) => Some(Json.toJson(response.data).as[UserAnswers])
+      case None => None
     }
   }
 

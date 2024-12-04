@@ -65,7 +65,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
         val response = SubmissionDraftResponse(LocalDateTime.now, Json.toJson(userAnswers), None)
 
-        when(mockConnector.getDraftMain(any())(any(), any())).thenReturn(Future.successful(response))
+        when(mockConnector.getDraftMain(any())(any(), any())).thenReturn(Future.successful(Some(response)))
 
         val result = Await.result(repository.get(fakeDraftId), Duration.Inf)
 

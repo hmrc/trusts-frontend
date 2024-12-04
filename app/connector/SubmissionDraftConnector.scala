@@ -51,8 +51,12 @@ class SubmissionDraftConnector @Inject()(http: HttpClientV2, config: FrontendApp
       .execute[HttpResponse]
   }
 
-  def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[SubmissionDraftResponse] =
+  def getDraftMain(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[SubmissionDraftResponse]] =
     getDraftSection(draftId, mainSection)
+      .map(Some(_))
+      .recover {
+        case e: UpstreamErrorResponse if e.statusCode == NOT_FOUND => None
+      }
 
   def getDraftBeneficiaries(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[SubmissionDraftResponse] =
     getDraftSection(draftId, beneficiariesSection)
