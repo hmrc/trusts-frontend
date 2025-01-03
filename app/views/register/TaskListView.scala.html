@@ -57,6 +57,9 @@
         <p>@messages("taskList.paragraph1")</p>
     }
 
+    <h2>@messages("taskList.incompleteSections.heading")</h2>
+    <p>@messages("taskList.incompleteSections.label")</p>
+
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
