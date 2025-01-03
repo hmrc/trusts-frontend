@@ -71,9 +71,10 @@ class TaskListController @Inject()(
           sections <- registrationProgress.items(draftId)
           additionalSections <- registrationProgress.additionalItems(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
           isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
+          (completedTasks, totalTasks) <- registrationProgress.taskCount(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
         } yield {
           logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
-          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup))
+          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup, completedTasks, totalTasks))
         }
       }
 

@@ -40,7 +40,9 @@
     sections: List[Task],
     additionalSections: List[Task],
     isTaskListComplete: Boolean,
-    affinityGroup: AffinityGroup
+    affinityGroup: AffinityGroup,
+    completedTasks: Int,
+    totalTasks: Int
 )(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
@@ -58,7 +60,7 @@
     }
 
     <h2>@messages("taskList.incompleteSections.heading")</h2>
-    <p>@messages("taskList.incompleteSections.label")</p>
+    <p id="task-progress">@messages("taskList.incompleteSections.label", completedTasks, totalTasks)</p>
 
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "saved-registrations", "taskList.agent.savedRegistrations")</p>

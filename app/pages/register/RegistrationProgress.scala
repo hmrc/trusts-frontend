@@ -83,6 +83,39 @@ class RegistrationProgress @Inject()(
     }
   }
 
+
+  def taskCount(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
+                        (implicit hc: HeaderCarrier): Future[(Int, Int)] = {
+    for {
+      statuses <- trustsStoreService.getTaskStatuses(draftId)
+      mainSections <- items(draftId)
+      additionalSections <- additionalItems(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
+    } yield {
+      val allTasks = mainSections ++ additionalSections
+      val totalTasks = allTasks.size
+      val taskStatuses = List(
+        statuses.beneficiaries,
+        statuses.other,
+        statuses.assets,
+        statuses.protectors,
+        statuses.settlors,
+        statuses.trustDetails,
+        statuses.trustees
+      )
+
+      val taxLiabilityStatus = if(taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled) {
+        List(statuses.taxLiability)
+      } else {
+        List.empty
+      }
+
+      val completedTasks = (taskStatuses ++ taxLiabilityStatus).count(_ == TagStatus.Completed)
+
+      (completedTasks, totalTasks)
+    }
+  }
+
+
 }
 
 object RegistrationProgress {

@@ -48,6 +48,8 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
   private val savedUntil = "21 April 2021"
   private val utr = "1234567890"
+  private val defaultCompletedTasks = 2
+  private val defualtTotalTasks = 7
 
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress)
@@ -60,6 +62,9 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
 
     when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
       .thenReturn(Future.successful(true))
+
+    when(mockRegistrationProgress.taskCount(any(), any(), any(), any())(any()))
+      .thenReturn(Future.successful((defaultCompletedTasks, defualtTotalTasks)))
 
     reset(mockDateFormatter)
 
@@ -149,7 +154,9 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
               sections = fakeItems,
               additionalSections = fakeAdditionalItems,
               isTaskListComplete = true,
-              affinityGroup = Organisation
+              affinityGroup = Organisation,
+              completedTasks = defaultCompletedTasks,
+              totalTasks = defualtTotalTasks
             )(request, messages).toString
 
           application.stop()
@@ -257,7 +264,9 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
                 sections = fakeItems,
                 additionalSections = fakeAdditionalItems,
                 isTaskListComplete = true,
-                affinityGroup = Organisation
+                affinityGroup = Organisation,
+                completedTasks = defaultCompletedTasks,
+                totalTasks = defualtTotalTasks
               )(request, messages).toString
 
             application.stop()

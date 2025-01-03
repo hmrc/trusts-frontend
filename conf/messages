@@ -290,10 +290,11 @@ taskList.title = Registration progress
 taskList.heading = Registration progress
 taskList.paragraph1 = You can save your registration and come back later. You have 28 days from the first time you save to complete this registration or your information will be deleted.
 taskList.incompleteSections.heading = Registration incomplete
-taskList.incompleteSections.label = You have completed 0 of 7 sections
+taskList.incompleteSections.label = You have completed {0} of {1} sections
 taskList.savedUntil.heading = Saved until
 taskList.sections.heading = Tell HMRC about the people involved in the trust
 taskList.additionalSections.heading = Tell HMRC about the trust
+taskList.paragraph2 = To submit the registration you must complete all sections.
 
 taskList.trustDetails.headingLabel = About the trust
 taskList.trustDetails.descriptionLabel = Add information about the trust such as the name and when it was set up.

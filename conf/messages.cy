@@ -428,7 +428,8 @@ taskList.no-action-needed = Dim angen gweithredu
 
 taskList.additionalSections.heading = Adrannau ychwanegol i’w cwblhau
 taskList.incompleteSections.heading = Heb gwblhau’r cofrestriad
-taskList.incompleteSections.label = Rydych wedi llenwi 0 allan o 7 adran
+taskList.incompleteSections.label = Rydych wedi llenwi {0} allan o {1} adran
+taskList.paragraph2 = I gyflwyno’r cofrestriad mae’n rhaid i chi lenwi’r holl adrannau.
 taskList.agent.agentDetails = Manylion yr asiant
 taskList.agent.savedRegistrations = Yn ôl i gofrestriadau sydd wedi’u cadw
 taskList.assets.headingLabel = Am yr asedau
