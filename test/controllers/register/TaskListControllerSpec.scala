@@ -52,10 +52,10 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress)
 
-    when(mockRegistrationProgress.items(any(), any(), any(), any())(any()))
+    when(mockRegistrationProgress.items(any())(any()))
       .thenReturn(Future.successful(fakeItems))
 
-    when(mockRegistrationProgress.additionalItems(any(), any())(any()))
+    when(mockRegistrationProgress.additionalItems(any(), any(), any(), any())(any()))
       .thenReturn(Future.successful(fakeAdditionalItems))
 
     when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))

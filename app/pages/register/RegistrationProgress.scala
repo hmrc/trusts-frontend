@@ -33,15 +33,22 @@ class RegistrationProgress @Inject()(
                                       trustsStoreService: TrustsStoreService
                                     )(implicit ec: ExecutionContext) {
 
-  def items(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
-           (implicit hc: HeaderCarrier): Future[List[Task]] = {
+  def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] = {
     trustsStoreService.getTaskStatuses(draftId) map { statuses =>
       val entityTasks: List[Task] = List(
-        Task(Link("trustDetails", navigator.trustDetailsJourney(draftId)), statuses.trustDetails),
-        Task(Link("settlors", navigator.settlorsJourney(draftId)), statuses.settlors),
         Task(Link("trustees", navigator.trusteesJourneyUrl(draftId)), statuses.trustees),
-        Task(Link("beneficiaries", navigator.beneficiariesJourneyUrl(draftId)), statuses.beneficiaries)
+        Task(Link("settlors", navigator.settlorsJourney(draftId)), statuses.settlors),
+        Task(Link("beneficiaries", navigator.beneficiariesJourneyUrl(draftId)), statuses.beneficiaries),
+        Task(Link("protectors", navigator.protectorsJourneyUrl(draftId)), statuses.protectors),
+        Task(Link("otherIndividuals", navigator.otherIndividualsJourneyUrl(draftId)), statuses.other)
       )
+      entityTasks
+    }
+  }
+
+  def additionalItems(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
+                     (implicit hc: HeaderCarrier): Future[List[Task]] = {
+    trustsStoreService.getTaskStatuses(draftId) map { statuses =>
 
       val taxableTasks: List[Task] = if (isTaxable) {
         val assetsTask = Task(Link("assets", navigator.assetsJourneyUrl(draftId)), statuses.assets)
@@ -58,27 +65,14 @@ class RegistrationProgress @Inject()(
 
         assetsTask +: taxLiabilityTask.toList
       } else {
-        Nil
-      }
-
-      entityTasks ::: taxableTasks
-    }
-  }
-
-  def additionalItems(draftId: String, isTaxable: Boolean)(implicit hc: HeaderCarrier): Future[List[Task]] = {
-    trustsStoreService.getTaskStatuses(draftId) map { statuses =>
-      val nonTaxableTask: Option[Task] = if (isTaxable) {
-        None
-      } else {
-        Some(Task(Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)), statuses.assets))
+        List(Task(Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)), statuses.assets))
       }
 
       val entityTasks: List[Task] = List(
-        Task(Link("protectors", navigator.protectorsJourneyUrl(draftId)), statuses.protectors),
-        Task(Link("otherIndividuals", navigator.otherIndividualsJourneyUrl(draftId)), statuses.other)
+        Task(Link("trustDetails", navigator.trustDetailsJourney(draftId)), statuses.trustDetails)
       )
 
-      nonTaxableTask.toList ::: entityTasks
+      entityTasks ::: taxableTasks
     }
   }
 
