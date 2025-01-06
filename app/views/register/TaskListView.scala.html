@@ -59,8 +59,10 @@
         <p>@messages("taskList.paragraph1")</p>
     }
 
-    <h2>@messages("taskList.incompleteSections.heading")</h2>
-    <p id="task-progress">@messages("taskList.incompleteSections.label", completedTasks, totalTasks)</p>
+    @if(!isTaskListComplete) {
+        <h2>@messages("taskList.incompleteSections.heading")</h2>
+        <p id="task-progress">@messages("taskList.incompleteSections.label", completedTasks, totalTasks)</p>
+    }
 
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
@@ -73,6 +75,10 @@
     }
 
     @taskList(sections, additionalSections)
+
+    @if(!isTaskListComplete) {
+        <p>@messages("taskList.paragraph2")</p>
+    }
 
     @if(isTaskListComplete) {
         <h2>@messages("taskList.summary.heading1")</h2>

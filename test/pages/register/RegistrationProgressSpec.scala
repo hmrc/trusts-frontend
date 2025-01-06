@@ -327,5 +327,143 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         }
       }
     }
+
+    ".taskCount" when {
+
+      "taxable" when {
+
+        "no tasks are completed" must {
+          "return (0,8) for tasks completed when tax liability is enabled" in {
+
+            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              .thenReturn(Future.successful(TaskStatuses()))
+
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+            val result = Await.result(registrationProgress.taskCount(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = true,
+              isExistingTrust = false
+            ), Duration.Inf)
+
+            result mustBe(0, 8)
+          }
+
+          "return (0,7) for tasks completed when tax liability is not enabled" in {
+
+            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              .thenReturn(Future.successful(TaskStatuses()))
+
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+            val result = Await.result(registrationProgress.taskCount(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(0)),
+              isTaxable = true,
+              isExistingTrust = false
+            ), Duration.Inf)
+
+            result mustBe(0, 8)
+          }
+        }
+
+        "some tasks are completed" must {
+          "return correct count of completed tasks" in {
+
+            val completedStatuses = TaskStatuses(
+              beneficiaries = Completed,
+              trustees = Completed,
+              taxLiability = NotStarted,
+              protectors = InProgress,
+              other = NotStarted,
+              trustDetails = Completed,
+              settlors = NotStarted,
+              assets = Completed
+            )
+
+            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              .thenReturn(Future.successful(completedStatuses))
+
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+            val result = Await.result(registrationProgress.taskCount(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = true,
+              isExistingTrust = false
+            ), Duration.Inf)
+
+            result mustBe(4, 8)
+          }
+        }
+
+        "all tasks are completed" must {
+          "return (8,8) for a fully completed registration" in {
+
+            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              .thenReturn(Future.successful(TaskStatuses.withAllComplete))
+
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+            val result = Await.result(registrationProgress.taskCount(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = true,
+              isExistingTrust = false
+            ), Duration.Inf)
+
+            result mustBe(8, 8)
+          }
+        }
+      }
+
+      "non-taxable" when {
+
+        "no tasks are completed" must {
+          "return (0,7) as tax liability not included" in {
+
+            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              .thenReturn(Future.successful(TaskStatuses()))
+
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+            val result = Await.result(registrationProgress.taskCount(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = false,
+              isExistingTrust = false
+            ), Duration.Inf)
+
+            result mustBe(0, 7)
+          }
+        }
+
+        "all tasks are complete" must {
+          "return (7,7) as tax liability is not included" in {
+
+            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              .thenReturn(Future.successful(TaskStatuses.withAllComplete))
+
+            val application = applicationBuilder().build()
+            val registrationProgress = application.injector.instanceOf[RegistrationProgress]
+
+            val result = Await.result(registrationProgress.taskCount(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = false,
+              isExistingTrust = false
+            ), Duration.Inf)
+
+            result mustBe(7, 7)
+          }
+        }
+      }
+    }
   }
 }
