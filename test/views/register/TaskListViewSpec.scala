@@ -29,6 +29,8 @@ import views.html.register.TaskListView
 class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
 
   private val savedUntil = "21 April 2021"
+  private val completedTasks = 2
+  private val totalTasks = 7
 
   private val fakeSections = List(
     Task(Link("link 1", "url 1"), NotStarted),
@@ -118,6 +120,11 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
     }
   }
 
+  private def assertTaskProgressMessage(doc: Document): Assertion = {
+    val expectedMessage = messages("taskList.incompleteSections.label", completedTasks, totalTasks)
+    assertContainsText(doc, expectedMessage)
+  }
+
   "TaskListView" when {
 
     "deployment notification is enabled" must {
@@ -137,7 +144,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           sections = Nil,
           additionalSections = Nil,
           isTaskListComplete = false,
-          affinityGroup = Organisation
+          affinityGroup = Organisation,
+          completedTasks = completedTasks,
+          totalTasks = totalTasks
         )(fakeRequest, messages)
 
         val doc = asDocument(applyView)
@@ -166,7 +175,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Organisation
+                affinityGroup = Organisation,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -197,7 +208,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Organisation
+                affinityGroup = Organisation,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -231,7 +244,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Organisation
+                affinityGroup = Organisation,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -262,7 +277,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Organisation
+                affinityGroup = Organisation,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -299,7 +316,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Agent
+                affinityGroup = Agent,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -331,7 +350,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = true,
-                affinityGroup = Agent
+                affinityGroup = Agent,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -366,7 +387,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Agent
+                affinityGroup = Agent,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")
@@ -398,7 +421,9 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
                 sections = fakeSections,
                 additionalSections = fakeAdditionalSections,
                 isTaskListComplete = false,
-                affinityGroup = Agent
+                affinityGroup = Agent,
+                completedTasks = completedTasks,
+                totalTasks = totalTasks
               )(fakeRequest, messages)
 
               behave like normalPage(applyView, None, "taskList", "paragraph1")

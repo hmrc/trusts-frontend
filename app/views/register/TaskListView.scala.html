@@ -40,7 +40,9 @@
     sections: List[Task],
     additionalSections: List[Task],
     isTaskListComplete: Boolean,
-    affinityGroup: AffinityGroup
+    affinityGroup: AffinityGroup,
+    completedTasks: Int,
+    totalTasks: Int
 )(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
@@ -57,6 +59,11 @@
         <p>@messages("taskList.paragraph1")</p>
     }
 
+    @if(!isTaskListComplete) {
+        <h2>@messages("taskList.incompleteSections.heading")</h2>
+        <p id="task-progress">@messages("taskList.incompleteSections.label", completedTasks, totalTasks)</p>
+    }
+
     @if(affinityGroup == AffinityGroup.Agent) {
         <p>@link(controllers.register.agents.routes.AgentOverviewController.onPageLoad().url, "saved-registrations", "taskList.agent.savedRegistrations")</p>
 
@@ -69,10 +76,14 @@
 
     @taskList(sections, additionalSections)
 
+    @if(!isTaskListComplete) {
+        <p>@messages("taskList.paragraph2")</p>
+    }
+
     @if(isTaskListComplete) {
         <h2>@messages("taskList.summary.heading1")</h2>
 
-        <p>@messages("taskList.summary.paragraph1.start") @link(SummaryAnswerPageController.onPageLoad(draftId).url, "print-and-save", "taskList.summary.link1", openInNewWindow = false)@messages("taskList.summary.paragraph1.end")</p>
+        <p>@messages("taskList.summary.paragraph1.start") <a id="print-and-save" href="@{SummaryAnswerPageController.onPageLoad(draftId).url}" rel="noopener noreferrer">@messages("taskList.summary.link1")</a>. @messages("taskList.summary.paragraph1.end")</p>
 
         @if(isTaxable) {
             <h2>@messages("taskList.summary.heading2")</h2>
