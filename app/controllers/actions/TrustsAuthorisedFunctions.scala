@@ -17,11 +17,12 @@
 package controllers.actions
 
 import config.FrontendAppConfig
-import javax.inject.Inject
 import play.api.Logging
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions, NoActiveSession}
+
+import javax.inject.Inject
 
 class TrustsAuthorisedFunctions @Inject()(override val authConnector: AuthConnector,
                                           val config: FrontendAppConfig) extends AuthorisedFunctions with Logging {
@@ -34,6 +35,7 @@ class TrustsAuthorisedFunctions @Inject()(override val authConnector: AuthConnec
   def redirectToLogin: Result = {
     logger.debug("Redirecting to Login")
     Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl),
-      "origin" -> Seq(config.appName)))
+      "origin" -> Seq(config.appName), "accountType" -> Seq("Organisation")
+    ))
   }
 }
