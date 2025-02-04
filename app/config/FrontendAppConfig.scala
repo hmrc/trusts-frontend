@@ -33,6 +33,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
 
   lazy val appName: String = configuration.get[String]("appName")
 
+  lazy val affinityGroup = configuration.get[String]("affinityGroup")
   val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
   val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
 
