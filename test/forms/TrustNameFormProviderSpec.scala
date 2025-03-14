@@ -23,7 +23,7 @@ class TrustNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "trustName.error.required"
   val lengthKey = "trustName.error.length"
-  val maxLength = 53
+  val maxLength = 56
   val regexp = "^[A-Za-z0-9 ,.()/&'-]*$"
   val invalidKey = "trustName.error.invalidCharacters"
 

@@ -5,7 +5,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 
 lazy val appName: String = "trusts-frontend"
 
-ThisBuild / scalaVersion := "2.13.14"
+ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / majorVersion := 1
 
 val excludedPackages = Seq(

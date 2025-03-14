@@ -120,9 +120,9 @@ createAgentServicesAccount.cta = Create an agent services account
 trustName.title = What is the trust’s name?
 trustName.heading = What is the trust’s name?
 trustName.hint.hasUtr = This must be entered exactly as it is on the trust’s most recent Self Assessment notice to file (SA316) or tax return.
-trustName.hint.noUtr = This must be 53 characters or fewer.
+trustName.hint.noUtr = This must be 56 characters or fewer.
 trustName.checkYourAnswersLabel = What is the trust’s name?
-trustName.error.length = The trust’s name must be 53 characters or less
+trustName.error.length = The trust’s name must be 56 characters or less
 trustName.error.invalidCharacters = The trust’s name must only include letters a to z, numbers, ampersands (&), apostrophes, commas, forward slashes, full stops, hyphens, round brackets and spaces
 trustName.error.required = Enter the trust’s name
 
