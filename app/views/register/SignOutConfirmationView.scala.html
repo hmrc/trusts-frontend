@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import views.html.components.{Heading, BulletList, SubmitButton}
+@import views.html.components.{Heading, Link, BulletList, SubmitButton}
 @import controllers.register.routes._
 
 @this(
@@ -28,25 +28,24 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("unauthorised.title"),
+    title = messages("sign_out.title"),
+    timeoutEnabled = false,
     canSignOut = false
 ) {
 
-    @heading("unauthorised.heading")
+    @heading("sign_out.heading")
 
-    <p>@messages("unauthorised.p1")</p>
-    <p>@messages("unauthorised.p2")</p>
-    <p>@messages("unauthorised.p3")</p>
+    <p>@messages("sign_out.p2")</p>
 
     @bulletList(
-       "unauthorised",
-       List(
-          "bullet1",
-          "bullet2"
-       )
+    "sign_out",
+        List(
+            "bullet1",
+            "bullet2"
+        )
     )
 
-    @formHelper(action = UnauthorisedController.onSubmit(), Symbol("autoComplete") -> "off") {
-      @submitButton(Some(messages("site.sign_out")))
+    @formHelper(action = SignOutConfirmationController.onSubmit(), Symbol("autoComplete") -> "off") {
+        @submitButton(Some(messages("site.continue")))
     }
 }
