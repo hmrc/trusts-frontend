@@ -34,7 +34,11 @@ class SignOutConfirmationController @Inject()(
     Ok(view())
   }
 
-  def onSubmit(): Action[AnyContent] = Action {
-    Redirect(appConfig.loginUrl).withNewSession
+  def onSubmit: Action[AnyContent] = Action {
+    Redirect(
+      appConfig.loginUrl,
+      Map("continue" -> Seq(appConfig.loginContinueUrl),
+        "origin" -> Seq(appConfig.appName))
+    )
   }
 }
