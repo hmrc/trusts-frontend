@@ -13,6 +13,10 @@ GET        /this-service-has-been-reset                 controllers.register.Ses
 POST       /this-service-has-been-reset                 controllers.register.SessionExpiredController.onSubmit()
 
 GET        /unauthorised                                controllers.register.UnauthorisedController.onPageLoad()
+POST       /unauthorised                                controllers.register.UnauthorisedController.onSubmit()
+
+GET        /sign-out-confirmed                          controllers.register.SignOutConfirmationController.onPageLoad()
+POST       /sign-out-confirmed                          controllers.register.SignOutConfirmationController.onSubmit()
 
 GET        /create-agent-services-account               controllers.register.CreateAgentServicesAccountController.onPageLoad()
 POST       /create-agent-services-account               controllers.register.CreateAgentServicesAccountController.onSubmit()

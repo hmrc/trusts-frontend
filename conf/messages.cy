@@ -518,13 +518,18 @@ trustRegisteredWithUkAddress.hint = Bydd i’w weld ar hysbysiad i gyflwyno Huna
 trustRegisteredWithUkAddress.title = A gofrestrwyd yr ymddiriedolaeth gyda chyfeiriad yn y DU?
 
 unauthorised.title = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
-unauthorised.heading = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
-unauthorised.p1 = Er mwyn defnyddio’r Gwasanaeth Cofrestru Ymddiriedolaethau, mae angen i chi fewngofnodi gyda chyfrif Porth y Llywodraeth ar gyfer sefydliad.
-unauthorised.p2 = Os nad oes gennych gyfrif Porth y Llywodraeth ar gyfer sefydliad,
-unauthorised.link = gallwch greu cyfrif ar-lein wrth gofrestru’r ymddiriedolaeth (yn agor tab neu ffenestr newydd)
-unauthorised.p3 = Er mwyn creu cyfrif, bydd angen arnoch:
-unauthorised.bullet1 = eich enw llawn
-unauthorised.bullet2 = cyfeiriad e-bost
+unauthorised.heading = Mae problem
+unauthorised.p1 = Gwnaethoch fewngofnodi gan ddefnyddio Dynodydd Defnyddiwr (ID) unigolyn ar gyfer Porth y Llywodraeth.
+unauthorised.p2 = I ddefnyddio’r gwasanaeth hwn, bydd angen ID Defnyddiwr yr ymddiriedolaeth arnoch ar gyfer Porth y Llywodraeth. Gallwch greu un wrth i chi gofrestru ymddiriedolaeth.
+unauthorised.p3 = Mae angen i chi allgofnodi a gwneud y naill neu’r llall o’r canlynol:
+unauthorised.bullet1 = creu ID Defnyddiwr ar gyfer Porth y Llywodraeth ar gyfer yr ymddiriedolaeth rydych am ei chofrestru
+unauthorised.bullet2 = mewngofnodi gan ddefnyddio ID Defnyddiwr yr ymddiriedolaeth ar gyfer Porth y Llywodraeth, os oes gan yr ymddiriedolaeth un yn barod
+
+sign_out.title = Rydych wedi allgofnodi
+sign_out.heading = Rydych wedi allgofnodi
+sign_out.p2 = I gofrestru ymddiriedolaeth, bydd angen i chi wneud y naill neu’r llall o’r canlynol:
+sign_out.bullet1 = creu ID Defnyddiwr newydd ar gyfer Porth y Llywodraeth ar gyfer yr ymddiriedolaeth rydych am ei chofrestru
+sign_out.bullet2 = mewngofnodi gan ddefnyddio ID Defnyddiwr yr ymddiriedolaeth ar gyfer Porth y Llywodraeth, os oes gan yr ymddiriedolaeth un yn barod
 
 UTRSentByPost.heading = Mae Cyfeirnod Unigryw y Trethdalwr (UTR) ar gyfer yr ymddiriedolaeth wedi’i anfon drwy’r post
 UTRSentByPost.link.contactHelpline = Cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg CThEF (yn agor ffenestr neu dab newydd)
