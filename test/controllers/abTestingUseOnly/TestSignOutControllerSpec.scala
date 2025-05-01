@@ -23,6 +23,7 @@ import play.api.test.Helpers._
 import play.api.inject.bind
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import views.html.abTestingUseOnly.TestSignOutView
+import org.mockito.Mockito.{never, verify}
 
 class TestSignOutControllerSpec extends RegistrationSpecBase {
 
@@ -46,7 +47,7 @@ class TestSignOutControllerSpec extends RegistrationSpecBase {
 
       contentAsString(result) mustEqual view()(request, messages).toString
 
-      verify(mockAuditConnector, never)
+      verify(mockAuditConnector, never())
         .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(any(), any())
 
       application.stop()

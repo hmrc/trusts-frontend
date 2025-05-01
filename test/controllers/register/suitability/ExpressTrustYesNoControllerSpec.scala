@@ -21,6 +21,7 @@ import forms.YesNoFormProvider
 import models.core.MatchingAndSuitabilityUserAnswers
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
@@ -101,7 +102,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+        val uaCaptor: ArgumentCaptor[MatchingAndSuitabilityUserAnswers] = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
         verify(cacheRepository).set(uaCaptor.capture)
         uaCaptor.getValue.get(TrustTaxableYesNoPage).get mustBe true
 
@@ -124,7 +125,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
 
         redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+        val uaCaptor: ArgumentCaptor[MatchingAndSuitabilityUserAnswers] = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
         verify(cacheRepository).set(uaCaptor.capture)
         uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
 

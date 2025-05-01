@@ -18,6 +18,7 @@ package utils
 
 import base.RegistrationSpecBase
 import config.FrontendAppConfig
+import org.mockito.Mockito.when
 import play.api.i18n.{Lang, MessagesImpl}
 import uk.gov.hmrc.play.language.LanguageUtils
 

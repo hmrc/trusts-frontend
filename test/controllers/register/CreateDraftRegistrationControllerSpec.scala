@@ -19,6 +19,7 @@ package controllers.register
 import base.RegistrationSpecBase
 import navigation.registration.TaskListNavigator
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

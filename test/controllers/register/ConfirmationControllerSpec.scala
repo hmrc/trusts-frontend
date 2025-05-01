@@ -27,6 +27,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.confirmation._
+import org.mockito.Mockito.when
 
 import java.time.LocalDate
 import scala.concurrent.Future

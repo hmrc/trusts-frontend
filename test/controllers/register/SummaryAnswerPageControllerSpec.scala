@@ -26,6 +26,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.SummaryAnswerPageView
+import org.mockito.Mockito.when
 
 import scala.concurrent.Future
 

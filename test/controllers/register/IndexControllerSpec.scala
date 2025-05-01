@@ -25,7 +25,7 @@ import pages.register.TrustRegisteredOnlinePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
-
+import org.mockito.Mockito.{reset, verify, when}
 import scala.concurrent.Future
 
 class IndexControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {

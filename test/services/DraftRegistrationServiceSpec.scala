@@ -21,6 +21,7 @@ import models.core.UserAnswers
 import models.requests.MatchingAndSuitabilityDataRequest
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.verify
 import org.scalatest.concurrent.ScalaFutures
 import pages.register.suitability.{ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage}
 import pages.register.{TrustHaveAUTRPage, TrustRegisteredOnlinePage}
@@ -53,7 +54,7 @@ class DraftRegistrationServiceSpec extends RegistrationSpecBase with ScalaFuture
 
         val draftId = Await.result(service.create(request), Duration.Inf)
 
-        val uaCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+        val uaCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
         verify(registrationsRepository).set(uaCaptor.capture, any())(any())
 
         uaCaptor.getValue.draftId mustEqual draftId

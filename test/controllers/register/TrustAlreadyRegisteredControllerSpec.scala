@@ -19,6 +19,7 @@ package controllers.register
 import base.RegistrationSpecBase
 import models.core.MatchingAndSuitabilityUserAnswers
 import org.mockito.ArgumentCaptor
+import org.mockito.Mockito.verify
 import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -109,7 +110,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
       redirectLocation(result).value mustEqual
         routes.WhatIsTheUTRController.onPageLoad().url
 
-      val uaCaptor = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+      val uaCaptor: ArgumentCaptor[MatchingAndSuitabilityUserAnswers] = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
       verify(cacheRepository).set(uaCaptor.capture)
       uaCaptor.getValue.get(WhatIsTheUTRPage) mustNot be(defined)
       uaCaptor.getValue.get(MatchingNamePage) mustNot be(defined)
