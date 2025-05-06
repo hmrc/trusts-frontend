@@ -17,7 +17,6 @@
 package repositories
 
 import java.time.LocalDateTime
-
 import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
 import models.RegistrationSubmission.AllAnswerSections
@@ -25,7 +24,8 @@ import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.{never, times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
@@ -444,7 +444,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
           result mustBe None
 
-          verify(mockConnector, never).getClientReference(any())(any(), any())
+          verify(mockConnector, never()).getClientReference(any())(any(), any())
         }
 
       }

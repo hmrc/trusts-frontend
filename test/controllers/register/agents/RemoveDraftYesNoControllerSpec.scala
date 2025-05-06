@@ -21,6 +21,7 @@ import controllers.register.routes._
 import forms.YesNoFormProvider
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, times, verify, when}
 import play.api.data.Form
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

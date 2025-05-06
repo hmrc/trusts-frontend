@@ -19,7 +19,8 @@ package controllers.actions
 import controllers.actions.register.{DraftIdDataRetrievalAction, DraftIdRetrievalActionProvider}
 import models.core.{TrustsFrontendUserAnswers, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import repositories.RegistrationsRepository
 
 import scala.concurrent.{ExecutionContext, Future}

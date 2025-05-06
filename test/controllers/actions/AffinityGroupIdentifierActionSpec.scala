@@ -23,6 +23,7 @@ import play.api.mvc.{Action, AnyContent, DefaultActionBuilder, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
+import org.mockito.Mockito.{reset, when}
 
 import scala.concurrent.Future
 

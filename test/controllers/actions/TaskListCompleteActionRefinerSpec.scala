@@ -31,6 +31,7 @@ import play.api.test.Helpers._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.Enrolments
+import org.mockito.Mockito.{when, mock}
 
 import scala.concurrent.Future
 
@@ -53,8 +54,8 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
         forAll(arbitrary[Option[FirstTaxYearAvailable]], arbitrary[Boolean], arbitrary[Boolean]) {
           (firstTaxYearAvailable, isTaxable, isExistingTrust) =>
 
-            val mockRegistrationProgress = mock[RegistrationProgress]
-            val mockRegistrationsRepository = mock[RegistrationsRepository]
+            val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
+            val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
             when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
               .thenReturn(Future.successful(firstTaxYearAvailable))
@@ -90,8 +91,8 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
         forAll(arbitrary[Option[FirstTaxYearAvailable]], arbitrary[Boolean], arbitrary[Boolean]) {
           (firstTaxYearAvailable, isTaxable, isExistingTrust) =>
 
-            val mockRegistrationProgress = mock[RegistrationProgress]
-            val mockRegistrationsRepository = mock[RegistrationsRepository]
+            val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
+            val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
             when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
               .thenReturn(Future.successful(firstTaxYearAvailable))

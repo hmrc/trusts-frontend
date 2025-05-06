@@ -19,7 +19,8 @@ package base
 import models.requests.MatchingAndSuitabilityDataRequest
 import models.{FirstTaxYearAvailable, RegistrationSubmission, TaskStatuses}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.when
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.AnyContent
 import play.api.test.Helpers.OK

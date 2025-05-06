@@ -26,6 +26,7 @@ import models.core.http._
 import models.requests.RegistrationDataRequest
 import models.{FirstTaxYearAvailable, RegistrationSubmission}
 import org.mockito.ArgumentMatchers.{eq => eqTo, _}
+import org.mockito.Mockito.{verify, when}
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers

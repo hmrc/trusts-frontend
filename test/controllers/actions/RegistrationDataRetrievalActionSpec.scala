@@ -21,7 +21,8 @@ import controllers.actions.register.RegistrationDataRetrievalActionImpl
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import org.mockito.ArgumentMatchers.{eq => eqTo, _}
 import org.scalatest.concurrent.ScalaFutures
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.Mockito.{verify, when}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 

@@ -21,6 +21,7 @@ import generators.Generators
 import models.core.http.{AddressType, Declaration}
 import models.core.pages.FullName
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.OptionValues

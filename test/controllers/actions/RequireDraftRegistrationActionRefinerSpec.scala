@@ -23,7 +23,7 @@ import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
-import org.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.HeaderNames
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}

@@ -21,6 +21,7 @@ import models.core.TrustsFrontendUserAnswers
 import models.registration.Matched
 import navigation.Navigator
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, when}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks

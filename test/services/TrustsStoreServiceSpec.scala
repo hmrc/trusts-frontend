@@ -21,6 +21,7 @@ import connector.TrustsStoreConnector
 import models.TaskStatuses
 import models.registration.pages.TagStatus.Completed
 import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures.whenReady
 import uk.gov.hmrc.http.HeaderCarrier
 
