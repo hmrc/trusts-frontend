@@ -42,7 +42,8 @@
         timeoutEnabled: Boolean = true,
         canSignOut: Boolean = true,
         showBackLink: Boolean = false,
-        isWelshTranslationAvailable: Boolean = true
+        isWelshTranslationAvailable: Boolean = true,
+        serviceName: Option[String] = None
 )(mainContent: Html)(implicit request: RequestHeader, messages: Messages)
 
 @headScripts = {
@@ -85,7 +86,8 @@
     headerBlock = Some(hmrcStandardHeader(
         serviceUrl = Some(appConfig.loginContinueUrl),
         signOutUrl = if(canSignOut) Some(controllers.register.routes.LogoutController.logout().url) else None,
-        phaseBanner = None
+        phaseBanner = None,
+        serviceName = serviceName
     )),
     beforeContentBlock = Some(beforeContentBlock),
     scriptsBlock = Some(hmrcScripts()),

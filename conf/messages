@@ -59,6 +59,7 @@ site.yes = Yes
 site.dontKnow = I don’t know
 site.save.continue = Save and continue
 service.name = Register a trust
+manage.service.name = Manage a trust
 site.textarea.char_limit = (Limit is {0} characters)
 site.inprogress = In Progress
 site.complete = Completed

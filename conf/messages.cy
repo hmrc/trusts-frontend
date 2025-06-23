@@ -309,6 +309,7 @@ site.print-or-save = Argraffu neu gadw’r dudalen hon
 site.return-to-top=Yn ôl i’r brig
 site.save.continue = Cadw ac yn eich blaen
 service.name = Cofrestru ymddiriedolaeth
+manage.service.name = Rheoli ymddiriedolaeth
 site.sign_in = Mewngofnodi
 site.sign_out = Allgofnodi
 site.textarea.char_limit = (Y terfyn yw {0} o gymeriadau)
