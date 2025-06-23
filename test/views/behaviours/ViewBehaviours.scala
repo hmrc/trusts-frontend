@@ -34,7 +34,7 @@ trait ViewBehaviours extends ViewSpecBase {
       "rendered" must {
 
         "have the correct banner title" in {
-          findBannerTitle(view) must  (be(messages("service.name")) or be(messages("manage.service.name")))
+          findBannerTitle(view) must (be(messages("service.name")) or be(messages("manage.service.name")))
         }
 
         "display the correct browser title" in {
