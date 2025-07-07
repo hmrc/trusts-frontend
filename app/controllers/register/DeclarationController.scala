@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package controllers.register
 
+import cats.syntax.all._
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
-import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.RegistrationSubmission
+import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
@@ -31,13 +32,14 @@ import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, Registra
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{JsObject, JsValue}
+import play.api.libs.json._
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.{SubmissionService, TrustsStoreService}
+import services.SubmissionService
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAliveAtRegistrationFromJson}
 import views.html.register.DeclarationView
 
 import java.time.temporal.ChronoUnit.DAYS
@@ -45,15 +47,11 @@ import java.time.{LocalDateTime, ZoneOffset}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
-import play.api.libs.json._
-import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAliveAtRegistrationFromJson}
-import cats.syntax.all._
 
 class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        formProvider: DeclarationFormProvider,
-                                       featureFlagService: TrustsStoreService,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,
@@ -68,11 +66,65 @@ class DeclarationController @Inject()(
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
-  private def updateSettlorRemoveAliveAtRegistrationField(draftId: String)(implicit request: RegistrationDataRequest[AnyContent]): Future[Status] =
-    for {
-      settlors: JsValue <- registrationsRepository
-        .getDraftSettlors(draftId)
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
+    implicit request =>
 
+      val preparedForm = request.userAnswers.get(DeclarationPage) match {
+        case None => form
+        case Some(value) => form.fill(value)
+      }
+
+      Ok(view(preparedForm, draftId, request.affinityGroup))
+  }
+
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
+    implicit request =>
+      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+
+      form.bindFromRequest().fold(
+        (formWithErrors: Form[_]) =>
+          Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
+
+        (declaration: Declaration) => {
+          (for {
+            draftSettlors <- getExpectedSettlorData(draftId, request.sessionId)
+            _ <- updateSettlorRemoveAliveAtRegistrationField(draftId, draftSettlors)
+            updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, declaration))
+            _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
+            response <- submissionService.submit(updatedAnswers)
+            result <- handleResponse(updatedAnswers, response, draftId)
+          } yield result)
+            .recover {
+              case _: UnableToRegister =>
+                logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
+                Redirect(routes.TaskListController.onPageLoad(draftId))
+              case NonFatal(e) =>
+                logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
+                throw e
+            }
+        }
+      )
+  }
+
+  // due to a trust being registered without settlor information we're now explicitly checking this data exists before sending the declaration
+  def getExpectedSettlorData(draftId: String, sessionId: String)(implicit hc: HeaderCarrier): Future[JsValue] = {
+    registrationsRepository.getDraftSettlors(draftId).flatMap { json =>
+      (json \ "data" \ "settlors").asOpt[JsObject] match {
+        case Some(_) => Future.successful(json)
+        case None =>
+          val errorMessage = "Attempt to register trust without mandatory settlor information"
+
+          logger.error(s"[$className][getExpectedSettlorData][Session ID: $sessionId] " +
+            s"$errorMessage")
+
+          Future.failed(UnableToRegister())
+      }
+    }
+  }
+
+  private def updateSettlorRemoveAliveAtRegistrationField(draftId: String, draftSettlors: JsValue)
+                                                         (implicit request: RegistrationDataRequest[AnyContent]): Future[Status] =
+    for {
       settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <- registrationsRepository
         .getSettlorsAnswerSections(draftId)
 
@@ -80,20 +132,20 @@ class DeclarationController @Inject()(
         .getRegistrationPieces(draftId)
 
       maybeUpdatedMappedPieces: Option[Seq[MappedPiece]] =
-        if (checkIfAliveAtRegistrationFieldPresent(registrationPieces))
+        if (checkIfAliveAtRegistrationFieldPresent(registrationPieces)) {
           removeAliveAtRegistrationFromJson(registrationPieces).map(piece => Seq(MappedPiece("trust/entities/settlors", piece)))
-        else None
+        } else {
+          None
+        }
 
       response: Option[HttpResponse] <- maybeUpdatedMappedPieces
         .map(
-          updatedMappedPieces =>
+          updatedMappedPieces => {
             registrationsRepository.setDraftSettlors(
               draftId,
-              Json.toJson(
-                DataSet(settlors, updatedMappedPieces, settlorsAnswersSection
-                )
-              )
+              Json.toJson(DataSet(draftSettlors, updatedMappedPieces, settlorsAnswersSection))
             )
+          }
         ).traverse(identity)
     } yield response match {
       case Some(httpResponse: HttpResponse) => Status(httpResponse.status) match {
@@ -115,46 +167,6 @@ class DeclarationController @Inject()(
         Ok
     }
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId) {
-    implicit request =>
-
-      val preparedForm = request.userAnswers.get(DeclarationPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, draftId,request.affinityGroup))
-  }
-
-  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
-    implicit request =>
-      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
-
-        value => {
-
-          val r = for {
-            _ <- updateSettlorRemoveAliveAtRegistrationField(draftId)
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
-            _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
-            response <- submissionService.submit(updatedAnswers)
-            result <- handleResponse(updatedAnswers, response, draftId)
-          } yield result
-
-          r.recover {
-            case _: UnableToRegister =>
-              logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
-              Redirect(routes.TaskListController.onPageLoad(draftId))
-            case NonFatal(e) =>
-              logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
-              throw e
-          }
-        }
-      )
-  }
 
   private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String)
                             (implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[Result] = {

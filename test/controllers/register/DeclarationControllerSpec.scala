@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,18 @@ import org.mockito.ArgumentMatchers.{eq => eqTo}
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
 import play.api.http.Status.OK
-import play.api.inject
-import play.api.libs.json.{JsObject, Json}
+import play.api.{Application, inject}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import views.html.register.DeclarationView
 import org.mockito.Mockito.{reset, times, verify, when}
+import play.api.mvc.{AnyContent, AnyContentAsFormUrlEncoded}
 
-import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
 
 class DeclarationControllerSpec extends RegistrationSpecBase {
 
@@ -78,6 +80,44 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       |}
       """.stripMargin
   ).as[JsObject]
+
+  val validGetDraftSettlorsJson: JsValue = Json.parse(
+    """
+      |{
+      |  "_id": "193af51f-a9b1-4aec-9932-a7a32c33dc77",
+      |  "data": {
+      |    "settlors": {
+      |      "setUpByLivingSettlorYesNo": false,
+      |      "deceased": {
+      |        "name": {
+      |          "firstName": "Will",
+      |          "middleName": "James",
+      |          "lastName": "Graham"
+      |        },
+      |        "dateOfDeathYesNo": true,
+      |        "dateOfDeath": "2017-03-13",
+      |        "dateOfBirthYesNo": true,
+      |        "settlorsDateOfBirth": "1957-03-13",
+      |        "countryOfNationalityYesNo": true,
+      |        "countryOfNationalityInTheUkYesNo": false,
+      |        "countryOfNationality": "JO",
+      |        "countryOfResidenceYesNo": true,
+      |        "countryOfResidenceInTheUkYesNo": false,
+      |        "countryOfResidence": "LV",
+      |        "status": "completed"
+      |      }
+      |    }
+      |  },
+      |  "internalId": "Int-2b56bf2a-0d8e-4aec-ba40-a1d88b66013f",
+      |  "isTaxable": false
+      |}
+      |""".stripMargin
+  )
+
+  implicit val hc: HeaderCarrier = HeaderCarrier()
+
+  when(registrationsRepository.getDraftSettlors(any())(any()))
+    .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
   "Declaration Controller" must {
 
@@ -268,46 +308,98 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    Seq(
-      ("not", BAD_REQUEST),
-      ("is", OK)
-    ).foreach {
-      case (outcome, setDraftSettlorsHttpResponse) =>
-        s"redirect to the confirmation page when valid data is submitted, aliveAtRegistration field $outcome removed successfully " +
-          "and registration submitted successfully " in
-      {
+    "redirect to the confirmation page when valid data is submitted, aliveAtRegistration field is removed successfully, " +
+      "and registration submitted successfully" in {
 
-        val draftId = s"${outcome}RemovedAliveAtRegistrationUnsuccessful"
+      val draftId = "123"
+      val (application, request) = setupAliveAtRegistrationTests(draftId, OK)
 
-        when (
-        registrationsRepository.getRegistrationPieces (eqTo (draftId) ) (any () )
-        ).thenReturn (Future.successful (jsonReturnedByGetRequestPieces) )
+      val result = route(application, request).value
 
-        when (
-        mockSubmissionService.submit (any[UserAnswers] ) (any (), any[HeaderCarrier], any () )
-        ).thenReturn (Future.successful (RegistrationTRNResponse ("xTRN12456") ) )
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(1)).setDraftSettlors(eqTo(draftId), any())(any())
+      application.stop()
+    }
 
-        when (
-        registrationsRepository.setDraftSettlors (eqTo (draftId), any () ) (any () )
-        ).thenReturn (Future.successful (HttpResponse (setDraftSettlorsHttpResponse, "") ) )
+    "redirect to the confirmation page when valid data is submitted, aliveAtRegistration field not removed successfully, " +
+      "and registration submitted successfully" in {
 
-        val application = applicationBuilder (userAnswers = Some (emptyUserAnswers), AffinityGroup.Agent).build ()
+      val draftId = "345"
+      val (application, request) = setupAliveAtRegistrationTests(draftId, BAD_REQUEST)
 
-        val removedAliveAtRegistrationDeclarationRoute: String =
-        routes.DeclarationController.onPageLoad (draftId).url
+      val result = route(application, request).value
 
-        val request = FakeRequest (POST, removedAliveAtRegistrationDeclarationRoute)
-        .withFormUrlEncodedBody (("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName) )
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(1)).setDraftSettlors(eqTo(draftId), any())(any())
+      application.stop()
+    }
 
-        val result = route (application, request).value
+    "throw an UnableToRegister exception when .getExpectedSettlorData called given registrationsRepository.getDraftSettlors returns no settlor data" in {
 
-        status (result) mustEqual SEE_OTHER
-        redirectLocation (result).value mustEqual routes.ConfirmationController.onPageLoad (fakeDraftId).url
-        verify (mockSubmissionService, times (1) ).submit (any[UserAnswers] ) (any (), any[HeaderCarrier], any () )
-        verify (registrationsRepository, times (1) ).setDraftSettlors (eqTo (draftId), any () ) (any () )
-        application.stop ()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val controller = application.injector.instanceOf[DeclarationController]
+
+      val jsonWithoutMandatorySettlorInfo: JsValue = Json.parse(
+        """
+          |{
+          |  "_id": "193af51f-a9b1-4aec-9932-a7a32c33dc77",
+          |  "data": {
+          |    "nothingToSeeHere": ""
+          |  },
+          |  "internalId": "Int-2b56bf2a-0d8e-4aec-ba40-a1d88b66013f",
+          |  "isTaxable": false
+          |}
+          |""".stripMargin
+      )
+
+      when(registrationsRepository.getDraftSettlors(any())(any()))
+        .thenReturn(Future.successful(jsonWithoutMandatorySettlorInfo))
+
+      //todo: test logging
+
+      intercept[UnableToRegister] {
+        Await.result(controller.getExpectedSettlorData("draftId", "1234"), Duration.Inf)
       }
     }
 
+    "return the expected data when .getExpectedSettlorData called given settlor data exists" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val controller = application.injector.instanceOf[DeclarationController]
+
+      when(registrationsRepository.getDraftSettlors(any())(any()))
+        .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+      Await.result(controller.getExpectedSettlorData("draftId", "1234"), Duration.Inf) mustEqual validGetDraftSettlorsJson
+    }
   }
+
+  def setupAliveAtRegistrationTests(draftId: String, setDraftSettlorsResponseStatusCode: Int)
+  : (Application, FakeRequest[AnyContentAsFormUrlEncoded]) = {
+    when(registrationsRepository.getDraftSettlors(eqTo(draftId))(any()))
+      .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+    when(registrationsRepository.getRegistrationPieces(eqTo(draftId))(any()))
+      .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
+
+    when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+
+    when(registrationsRepository.setDraftSettlors(eqTo(draftId), any())(any()))
+      .thenReturn(Future.successful(HttpResponse(setDraftSettlorsResponseStatusCode, "")))
+
+    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+    val removedAliveAtRegistrationDeclarationRoute: String =
+      routes.DeclarationController.onPageLoad(draftId).url
+
+    val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, removedAliveAtRegistrationDeclarationRoute)
+      .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+    (application, request)
+  }
+
 }
