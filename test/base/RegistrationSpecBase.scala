@@ -29,7 +29,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import repositories.{CacheRepository, RegistrationsRepository}
-import services.{DraftRegistrationService, SubmissionService, TrustsStoreService}
+import services.{AuditService, DraftRegistrationService, SubmissionService, TrustsStoreService}
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
@@ -88,7 +88,8 @@ trait SpecBaseHelpers extends GuiceOneAppPerSuite with TryValues with Mocked wit
         bind[AffinityGroup].toInstance(Organisation),
         bind[DraftRegistrationService].toInstance(mockCreateDraftRegistrationService),
         bind[Navigator].toInstance(navigator),
-        bind[FrontendAppConfig].to(fakeFrontendAppConfig)
+        bind[FrontendAppConfig].to(fakeFrontendAppConfig),
+        bind[AuditService].to(mockAuditService)
       )
       .configure(
         "microservice.services.features.deployment.notification.enabled" -> false,

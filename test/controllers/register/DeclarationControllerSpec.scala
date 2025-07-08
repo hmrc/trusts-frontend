@@ -22,6 +22,7 @@ import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
+import models.requests.RegistrationDataRequest
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.{eq => eqTo}
 import pages.register.{DeclarationPage, RegistrationProgress}
@@ -31,7 +32,7 @@ import play.api.{Application, inject}
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import views.html.register.DeclarationView
 import org.mockito.Mockito.{reset, times, verify, when}
@@ -339,8 +340,9 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
     }
 
     "throw an UnableToRegister exception when .getExpectedSettlorData called given registrationsRepository.getDraftSettlors returns no settlor data" in {
+      val userAnswers = emptyUserAnswers
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
       val controller = application.injector.instanceOf[DeclarationController]
 
       val jsonWithoutMandatorySettlorInfo: JsValue = Json.parse(
@@ -359,21 +361,29 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(registrationsRepository.getDraftSettlors(any())(any()))
         .thenReturn(Future.successful(jsonWithoutMandatorySettlorInfo))
 
-      //todo: test logging
+      implicit val request: RegistrationDataRequest[AnyContent] =
+        RegistrationDataRequest(fakeRequest, "internalId", "sessionId", userAnswers, AffinityGroup.Agent, Enrolments(Set()))
 
       intercept[UnableToRegister] {
-        Await.result(controller.getExpectedSettlorData("draftId", "1234"), Duration.Inf)
+        Await.result(controller.getExpectedSettlorData("draftId"), Duration.Inf)
       }
+
+      verify(mockAuditService, times(1))
+        .auditRegistrationPreparationFailed(userAnswers, "Error attempting to register trust without mandatory settlor information")
+
     }
 
     "return the expected data when .getExpectedSettlorData called given settlor data exists" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
       val controller = application.injector.instanceOf[DeclarationController]
 
+      implicit val request: RegistrationDataRequest[AnyContent] =
+        RegistrationDataRequest(fakeRequest, "internalId", "sessionId", emptyUserAnswers, AffinityGroup.Organisation, Enrolments(Set()))
+
       when(registrationsRepository.getDraftSettlors(any())(any()))
         .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
-      Await.result(controller.getExpectedSettlorData("draftId", "1234"), Duration.Inf) mustEqual validGetDraftSettlorsJson
+      Await.result(controller.getExpectedSettlorData("draftId"), Duration.Inf) mustEqual validGetDraftSettlorsJson
     }
   }
 

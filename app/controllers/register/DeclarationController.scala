@@ -35,7 +35,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.SubmissionService
+import services.{AuditService, SubmissionService}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -55,6 +55,7 @@ class DeclarationController @Inject()(
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
                                        submissionService: SubmissionService,
+                                       auditService: AuditService,
                                        registrationComplete: TaskListCompleteActionRefiner,
                                        requireDraft: RequireDraftRegistrationActionRefiner,
                                        standardAction: StandardActionSets
@@ -87,7 +88,7 @@ class DeclarationController @Inject()(
 
         (declaration: Declaration) => {
           (for {
-            draftSettlors <- getExpectedSettlorData(draftId, request.sessionId)
+            draftSettlors <- getExpectedSettlorData(draftId)
             _ <- updateSettlorRemoveAliveAtRegistrationField(draftId, draftSettlors)
             updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, declaration))
             _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
@@ -107,15 +108,16 @@ class DeclarationController @Inject()(
   }
 
   // due to a trust being registered without settlor information we're now explicitly checking this data exists before sending the declaration
-  def getExpectedSettlorData(draftId: String, sessionId: String)(implicit hc: HeaderCarrier): Future[JsValue] = {
+  def getExpectedSettlorData(draftId: String )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] = {
     registrationsRepository.getDraftSettlors(draftId).flatMap { json =>
       (json \ "data" \ "settlors").asOpt[JsObject] match {
         case Some(_) => Future.successful(json)
         case None =>
-          val errorMessage = "Attempt to register trust without mandatory settlor information"
+          val errorReason = "Error attempting to register trust without mandatory settlor information"
+          val errorMessage = s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] $errorReason"
 
-          logger.error(s"[$className][getExpectedSettlorData][Session ID: $sessionId] " +
-            s"$errorMessage")
+          logger.error(errorMessage)
+          auditService.auditRegistrationPreparationFailed(request.userAnswers, errorReason)
 
           Future.failed(UnableToRegister())
       }
