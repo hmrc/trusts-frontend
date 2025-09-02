@@ -186,7 +186,7 @@ class DeclarationController @Inject()(
     }
   }
 
-  def getExpectedSettlorData(draftId: String)(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] = {
+  private def getExpectedSettlorData(draftId: String)(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] = {
     registrationsRepository.getDraftSettlors(draftId).flatMap { json =>
       val settlorsData = (json \ "data" \ "settlors").asOpt[JsObject]
       val missingComponents = validateSettlorComponents(settlorsData)
