@@ -100,6 +100,19 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
     )
   }
 
+  def auditRegistrationWithMissingSettlorInfo(userAnswers: UserAnswers,
+                                              missingInfo: String)
+                                             (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
+
+    audit(
+      event = REGISTRATION_PREPARATION_FAILED,
+      payload = userAnswers.data,
+      draftId = userAnswers.draftId,
+      internalId = request.internalId,
+      response = RegistrationErrorAuditEvent(OK, "MISSING_SETTLOR_INFO", s"Registration proceeding with missing settlor information: $missingInfo")
+    )
+  }
+
   private def audit(event: String,
                     payload: JsValue,
                     draftId: String,
