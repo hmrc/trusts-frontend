@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -187,25 +187,31 @@ class DeclarationController @Inject()(
   }
 
   private def getExpectedSettlorData(draftId: String)(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] = {
-    registrationsRepository.getDraftSettlors(draftId).flatMap { json =>
-      val settlorsData = (json \ "data" \ "settlors").asOpt[JsObject]
-      val missingComponents = validateSettlorComponents(settlorsData)
+    for {
+      registrationSettlor <- registrationsRepository.getRegistrationPieces(draftId)
+      answerSectionSettlor <- registrationsRepository.getDraftSettlors(draftId)
 
-      if (missingComponents.nonEmpty) {
-        val missingInfo = missingComponents.mkString(", ")
+      registrationValidation = validateRegistrationSettlorComponent(Some(registrationSettlor))
+      answerSectionValidation = validateAnswerSectionSettlorComponent(Some(answerSectionSettlor.as[JsObject]))
+
+      allMissingComponents = registrationValidation ::: answerSectionValidation
+
+      _ = if (allMissingComponents.nonEmpty) {
+        val missingInfo = allMissingComponents.mkString(", ")
         val logMessage = s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] Trust registration proceeding with missing settlor information: $missingInfo"
-
         logger.warn(logMessage)
         auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
       } else {
-        logger.info(s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] All required settlor information is present")
+        logger.info(s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] All required settlor information is present in both structures")
       }
-
-      Future.successful(json)
-    }
+    } yield answerSectionSettlor
   }
 
-  private def validateSettlorComponents(settlorsData: Option[JsObject]): List[String] = {
-    settlorValidationService.validateSettlorComponents(settlorsData)
+  private def validateRegistrationSettlorComponent(registrationSettlorData: Option[JsObject]): List[String] = {
+    settlorValidationService.validateRegistrationSettlorComponent(registrationSettlorData)
+  }
+
+  private def validateAnswerSectionSettlorComponent(answerSectionSettlor: Option[JsObject]): List[String] = {
+    settlorValidationService.validateAnswerSectionSettlorComponent(answerSectionSettlor)
   }
 }
