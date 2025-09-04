@@ -22,290 +22,148 @@ import play.api.libs.json._
 class SettlorValidationServiceSpec extends RegistrationSpecBase {
 
   val service = new SettlorValidationService()
+  
+  private def deceasedSettlorJson(name: JsObject) = Json.obj("trust/entities/deceased" -> Json.obj("name" -> name))
+  private def individualSettlorsJson(settlors: JsArray) = Json.obj("trust/entities/settlors" -> Json.obj("settlor" -> settlors))
+  private def companySettlorsJson(companies: JsArray) = Json.obj("trust/entities/settlors" -> Json.obj("settlorCompany" -> companies))
+  private def mixedSettlorsJson(settlors: JsArray, companies: JsArray) = Json.obj("trust/entities/settlors" -> Json.obj("settlor" -> settlors, "settlorCompany" -> companies))
+  
+  private def answerDeceasedJson(name: JsObject) = Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> false, "deceased" -> Json.obj("name" -> name))))
+  private def answerLivingJson(living: JsArray) = Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> true, "living" -> living)))
+  private def answerCompanyJson(companies: JsArray) = Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> true, "settlorCompany" -> companies)))
+  private def answerEmptyLivingJson() = Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> true)))
+  private def answerEmptyDeceasedJson() = Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> false)))
 
-  "SettlorValidationService.validateSettlorComponents" must {
+  private val fullName = Json.obj("firstName" -> "John", "lastName" -> "Smith")
+  private val firstNameOnly = Json.obj("firstName" -> "John")
+
+  private val validCompany = Json.obj("name" -> "Test Company Ltd")
+  private val emptyObject = Json.obj()
+
+  "SettlorValidationService.validateRegistrationSettlorComponent" must {
 
     "return no validation errors when all required fields are present for deceased settlor" in {
-      val deceasedSettlor = Json.obj(
-        "deceased" -> Json.obj(
-          "name" -> Json.obj(
-            "firstName" -> "Will",
-            "lastName" -> "Graham"
-          ),
-          "dateOfBirth" -> "1957-03-13",
-          "dateOfDeath" -> "2017-03-13",
-          "identification" -> Json.obj(
-            "nino" -> "AA123456A"
-          ),
-          "countryOfResidence" -> "GB",
-          "nationality" -> "GB"
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(deceasedSettlor))
-
+      val result = service.validateRegistrationSettlorComponent(Some(deceasedSettlorJson(fullName)))
       result mustBe List.empty
     }
 
-    "return validation errors when fields are missing for deceased settlor" in {
-      val deceasedSettlor = Json.obj(
-        "deceased" -> Json.obj(
-          "name" -> Json.obj(
-            "firstName" -> "Will"
-          )
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(deceasedSettlor))
-
-      result must contain allOf(
-        "deceased.name.lastName missing",
-        "deceased.dateOfBirth missing",
-        "deceased.identification missing",
-        "deceased.countryOfResidence missing",
-        "deceased.nationality missing",
-        "deceased.dateOfDeath missing"
-      )
+    "return validation errors when deceased settlor last name missing" in {
+      val result = service.validateRegistrationSettlorComponent(Some(deceasedSettlorJson(firstNameOnly)))
+      result mustEqual List("registration: deceased.name.lastName missing")
     }
 
     "return no validation errors when all required fields are present for individual settlor" in {
-      val individualSettlors = Json.obj(
-        "settlor" -> Json.arr(
-          Json.obj(
-            "name" -> Json.obj(
-              "firstName" -> "John",
-              "lastName" -> "Smith"
-            ),
-            "dateOfBirth" -> "1980-01-01",
-            "identification" -> Json.obj(
-              "nino" -> "BB123456B"
-            ),
-            "countryOfResidence" -> "GB",
-            "nationality" -> "GB"
-          )
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(individualSettlors))
-
+      val result = service.validateRegistrationSettlorComponent(Some(individualSettlorsJson(Json.arr(Json.obj("name" -> fullName)))))
       result mustBe List.empty
     }
 
-    "return validation errors when individual settlor has missing fields" in {
-      val individualSettlors = Json.obj(
-        "settlor" -> Json.arr(
-          Json.obj(
-            "name" -> Json.obj(
-              "firstName" -> "John"
-            )
-          )
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(individualSettlors))
-
-      result must contain allOf(
-        "settlor[0].name.lastName missing",
-        "settlor[0].dateOfBirth missing",
-        "settlor[0].identification missing",
-        "settlor[0].countryOfResidence missing",
-        "settlor[0].nationality missing"
-      )
+    "return validation errors when individual settlor has last name missing" in {
+      val result = service.validateRegistrationSettlorComponent(Some(individualSettlorsJson(Json.arr(Json.obj("name" -> firstNameOnly)))))
+      result mustEqual List("registration: settlor[0].name.lastName missing")
     }
 
     "return validation errors for multiple individual settlors" in {
-      val individualSettlors = Json.obj(
-        "settlor" -> Json.arr(
-          Json.obj(
-            "name" -> Json.obj(
-              "firstName" -> "John"
-            )
-          ),
-          Json.obj(
-            "name" -> Json.obj(
-              "firstName" -> "Jane",
-              "lastName" -> "Smith"
-            )
-          )
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(individualSettlors))
-
-      result must contain allOf(
-        "settlor[0].name.lastName missing",
-        "settlor[0].dateOfBirth missing",
-        "settlor[1].dateOfBirth missing",
-        "settlor[1].identification missing"
-      )
+      val settlors = Json.arr(Json.obj("name" -> fullName), Json.obj("name" -> firstNameOnly))
+      val result = service.validateRegistrationSettlorComponent(Some(individualSettlorsJson(settlors)))
+      result mustEqual List("registration: settlor[1].name.lastName missing")
     }
 
     "return no validation errors when all required fields are present for company settlor" in {
-      val companySettlors = Json.obj(
-        "settlorCompany" -> Json.arr(
-          Json.obj(
-            "name" -> "Test Company Ltd",
-            "companyType" -> "Trading",
-            "identification" -> Json.obj(
-              "utr" -> "1234567890"
-            ),
-            "countryOfResidence" -> "GB"
-          )
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(companySettlors))
-
+      val result = service.validateRegistrationSettlorComponent(Some(companySettlorsJson(Json.arr(validCompany))))
       result mustBe List.empty
     }
 
-    "return validation errors when company settlor has missing fields" in {
-      val companySettlors = Json.obj(
-        "settlorCompany" -> Json.arr(
-          Json.obj(
-            "name" -> "Test Company Ltd"
-          )
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(companySettlors))
-
-      result must contain allOf(
-        "settlorCompany[0].companyType missing",
-        "settlorCompany[0].identification missing",
-        "settlorCompany[0].countryOfResidence missing"
-      )
+    "return validation errors when company settlor name is missing" in {
+      val result = service.validateRegistrationSettlorComponent(Some(companySettlorsJson(Json.arr(emptyObject))))
+      result mustEqual List("registration: settlorCompany[0].name missing")
     }
 
     "return validation errors for multiple company settlors" in {
-      val companySettlors = Json.obj(
-        "settlorCompany" -> Json.arr(
-          Json.obj(
-            "name" -> "Company One Ltd"
-          ),
-          Json.obj(
-            "name" -> "Company Two Ltd",
-            "companyType" -> "Investment"
-          )
-        )
-      )
-
-      val result = service.validateSettlorComponents(Some(companySettlors))
-
-      result must contain allOf(
-        "settlorCompany[0].companyType missing",
-        "settlorCompany[0].identification missing",
-        "settlorCompany[1].identification missing",
-        "settlorCompany[1].countryOfResidence missing"
-      )
+      val companies = Json.arr(validCompany, emptyObject)
+      val result = service.validateRegistrationSettlorComponent(Some(companySettlorsJson(companies)))
+      result mustEqual List("registration: settlorCompany[1].name missing")
     }
 
     "return no validation errors when both individual and company settlors are present and valid" in {
-      val mixedSettlors = Json.obj(
-        "settlor" -> Json.arr(
-          Json.obj(
-            "name" -> Json.obj(
-              "firstName" -> "John",
-              "lastName" -> "Smith"
-            ),
-            "dateOfBirth" -> "1980-01-01",
-            "identification" -> Json.obj(
-              "nino" -> "BB123456B"
-            ),
-            "countryOfResidence" -> "GB",
-            "nationality" -> "GB"
-          )
-        ),
-        "settlorCompany" -> Json.arr(
-          Json.obj(
-            "name" -> "Test Company Ltd",
-            "companyType" -> "Trading",
-            "identification" -> Json.obj(
-              "utr" -> "1234567890"
-            ),
-            "countryOfResidence" -> "GB"
-          )
-        )
+      val result = service.validateRegistrationSettlorComponent(
+        Some(mixedSettlorsJson(Json.arr(Json.obj("name" -> fullName)), Json.arr(validCompany)))
       )
-
-      val result = service.validateSettlorComponents(Some(mixedSettlors))
-
       result mustBe List.empty
     }
 
     "return validation errors for mixed individual and company settlors with missing fields" in {
-      val mixedInvalidSettlors = Json.obj(
-        "settlor" -> Json.arr(
-          Json.obj(
-            "name" -> Json.obj(
-              "firstName" -> "John"
-            )
-          )
-        ),
-        "settlorCompany" -> Json.arr(
-          Json.obj(
-            "name" -> "Test Company Ltd"
-          )
-        )
+      val result = service.validateRegistrationSettlorComponent(
+        Some(mixedSettlorsJson(Json.arr(Json.obj("name" -> firstNameOnly)), Json.arr(emptyObject)))
       )
-
-      val result = service.validateSettlorComponents(Some(mixedInvalidSettlors))
-
       result must contain allOf(
-        "settlor[0].name.lastName missing",
-        "settlor[0].dateOfBirth missing",
-        "settlor[0].identification missing",
-        "settlor[0].countryOfResidence missing",
-        "settlor[0].nationality missing",
-        "settlorCompany[0].companyType missing",
-        "settlorCompany[0].identification missing",
-        "settlorCompany[0].countryOfResidence missing"
+        "registration: settlor[0].name.lastName missing",
+        "registration: settlorCompany[0].name missing"
       )
     }
 
     "return error when deceased settlor exists alongside individual settlors" in {
-      val invalidSettlors = Json.obj(
-        "deceased" -> Json.obj(
-          "name" -> Json.obj(
-            "firstName" -> "Will",
-            "lastName" -> "Graham"
-          ),
-          "dateOfBirth" -> "1957-03-13",
-          "dateOfDeath" -> "2017-03-13",
-          "identification" -> Json.obj(
-            "nino" -> "AA123456A"
-          ),
-          "countryOfResidence" -> "GB",
-          "nationality" -> "GB"
-        ),
-        "settlor" -> Json.arr(
-          Json.obj(
-            "name" -> Json.obj(
-              "firstName" -> "John",
-              "lastName" -> "Smith"
-            ),
-            "dateOfBirth" -> "1980-01-01"
-          )
-        )
-      )
+      val combined = deceasedSettlorJson(fullName) ++ individualSettlorsJson(Json.arr(Json.obj("name" -> fullName)))
+      val result = service.validateRegistrationSettlorComponent(Some(combined))
+      result mustEqual List("registration: deceased settlor cannot coexist with other settlors")
+    }
 
-      val result = service.validateSettlorComponents(Some(invalidSettlors))
-
-      result mustEqual List("deceased settlor cannot coexist with other settlors")
+    "return error when deceased settlor exists alongside company settlors" in {
+      val combined = deceasedSettlorJson(fullName) ++ companySettlorsJson(Json.arr(validCompany))
+      val result = service.validateRegistrationSettlorComponent(Some(combined))
+      result mustEqual List("registration: deceased settlor cannot coexist with other settlors")
     }
 
     "return validation message when settlors data is None" in {
-      val result = service.validateSettlorComponents(None)
-
-      result mustEqual List("no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor")
+      val result = service.validateRegistrationSettlorComponent(None)
+      result mustEqual List("registration: no settlor information provided")
     }
 
     "return validation message when settlors object is empty" in {
-      val emptySettlors = Json.obj()
+      val result = service.validateRegistrationSettlorComponent(Some(emptyObject))
+      result mustEqual List("registration: no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor")
+    }
+  }
 
-      val result = service.validateSettlorComponents(Some(emptySettlors))
+  "SettlorValidationService.validateAnswerSectionSettlorComponent" must {
 
-      result mustEqual List("no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor")
+    "return no validation errors when deceased settlor is valid and setUpByLivingSettlorYesNo is false" in {
+      val result = service.validateAnswerSectionSettlorComponent(Some(answerDeceasedJson(fullName)))
+      result mustBe List.empty
+    }
+
+    "return validation errors when deceased settlor data is missing" in {
+      val result = service.validateAnswerSectionSettlorComponent(Some(answerEmptyDeceasedJson()))
+      result mustEqual List("answer section: deceased settlor data missing")
+    }
+
+    "return no validation errors when living settlors are valid" in {
+      val result = service.validateAnswerSectionSettlorComponent(Some(answerLivingJson(Json.arr(Json.obj("name" -> fullName)))))
+      result mustBe List.empty
+    }
+
+    "return no validation errors when company settlors are valid in answer section" in {
+      val result = service.validateAnswerSectionSettlorComponent(Some(answerCompanyJson(Json.arr(validCompany))))
+      result mustBe List.empty
+    }
+
+    "return validation error when no living settlor information provided" in {
+      val result = service.validateAnswerSectionSettlorComponent(Some(answerEmptyLivingJson()))
+      result mustEqual List("answer section: no living settlor information provided")
+    }
+
+    "return validation errors when living settlor has last name missing" in {
+      val result = service.validateAnswerSectionSettlorComponent(Some(answerLivingJson(Json.arr(Json.obj("name" -> firstNameOnly)))))
+      result mustEqual List("answer section: living[0].name.lastName missing")
+    }
+
+    "return validation message when answer section data is None" in {
+      val result = service.validateAnswerSectionSettlorComponent(None)
+      result mustEqual List("answer section: no data provided")
+    }
+
+    "return validation message when settlors section is missing" in {
+      val result = service.validateAnswerSectionSettlorComponent(Some(Json.obj("data" -> emptyObject)))
+      result mustEqual List("answer section: no settlors section found")
     }
   }
 }
