@@ -21,93 +21,125 @@ import javax.inject.Inject
 
 class SettlorValidationService @Inject() {
 
-  def validateSettlorComponents(settlorsData: Option[JsObject]): List[String] = {
+  private val registrationPrefix = "registration"
+  private val answerSectionPrefix = "answer section"
+
+  def validateRegistrationSettlorComponent(settlorsData: Option[JsObject]): List[String] = {
     settlorsData match {
       case Some(settlors) =>
-        val deceased = (settlors \ "deceased").asOpt[JsObject]
-        val individuals = (settlors \ "settlor").asOpt[JsArray]
-        val companies = (settlors \ "settlorCompany").asOpt[JsArray]
+        val deceased = (settlors \ "trust/entities/deceased").asOpt[JsObject]
+        val settlorsSection = (settlors \ "trust/entities/settlors").asOpt[JsObject]
+        val livingSettlors = settlorsSection.flatMap(s => (s \ "settlor").asOpt[JsArray])
+        val companySettlors = settlorsSection.flatMap(s => (s \ "settlorCompany").asOpt[JsArray])
 
         deceased match {
           case Some(deceasedData) =>
-            val hasOtherSettlors = individuals.exists(_.value.nonEmpty) || companies.exists(_.value.nonEmpty)
-            if (hasOtherSettlors) {
-              List("deceased settlor cannot coexist with other settlors")
+            val hasLivingSettlors = livingSettlors.exists(_.value.nonEmpty) || companySettlors.exists(_.value.nonEmpty)
+            if (hasLivingSettlors) {
+              List(s"$registrationPrefix: deceased settlor cannot coexist with other settlors")
             } else {
-              validateDeceasedSettlor(deceasedData)
+              validateDeceasedSettlor(deceasedData, registrationPrefix)
             }
 
           case None =>
-            val hasIndividuals = individuals.exists(_.value.nonEmpty)
-            val hasCompanies = companies.exists(_.value.nonEmpty)
+            val hasIndividualSettlors = livingSettlors.exists(_.value.nonEmpty)
+            val hasCompanySettlors = companySettlors.exists(_.value.nonEmpty)
 
-            if (!hasIndividuals && !hasCompanies) {
-              List("no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor")
+            if (!hasIndividualSettlors && !hasCompanySettlors) {
+              List(s"$registrationPrefix: no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor")
             } else {
-              val individualValidation = individuals.map(validateIndividualSettlors).getOrElse(List.empty)
-              val companyValidation = companies.map(validateCompanySettlors).getOrElse(List.empty)
+              val individualValidation = livingSettlors.map(validateLivingSettlors(_, registrationPrefix, "settlor")).getOrElse(List.empty)
+              val companyValidation = companySettlors.map(validateCompanySettlors(_, registrationPrefix)).getOrElse(List.empty)
               individualValidation ::: companyValidation
             }
         }
 
       case None =>
-        List("no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor")
+        List(s"$registrationPrefix: no settlor information provided")
     }
   }
 
-  private def validateDeceasedSettlor(deceased: JsObject): List[String] = {
-    validatePersonSettlor(deceased, "deceased", includeDeathDate = true)
+  def validateAnswerSectionSettlorComponent(answerSectionSettlors: Option[JsObject]): List[String] = {
+    answerSectionSettlors match {
+      case Some(settlorData) =>
+        val settlorsSection = (settlorData \ "data" \ "settlors").asOpt[JsObject]
+
+        settlorsSection match {
+          case Some(settlors) =>
+            val setUpByLiving = (settlors \ "setUpByLivingSettlorYesNo").asOpt[Boolean].getOrElse(true)
+
+            if (!setUpByLiving) {
+              val deceased = (settlors \ "deceased").asOpt[JsObject]
+              deceased match {
+                case Some(deceasedData) => validateDeceasedSettlor(deceasedData, answerSectionPrefix)
+                case None => List(s"$answerSectionPrefix: deceased settlor data missing")
+              }
+            } else {
+              val livingSettlors = (settlors \ "living").asOpt[JsArray]
+              val companySettlors = (settlors \ "settlorCompany").asOpt[JsArray]
+
+              val hasLivingSettlors = livingSettlors.exists(_.value.nonEmpty)
+              val hasCompanySettlors = companySettlors.exists(_.value.nonEmpty)
+
+              if (!hasLivingSettlors && !hasCompanySettlors) {
+                List(s"$answerSectionPrefix: no living settlor information provided")
+              } else {
+                val livingValidation = livingSettlors.map(validateLivingSettlors(_, answerSectionPrefix, "living")).getOrElse(List.empty)
+                val companyValidation = companySettlors.map(validateCompanySettlors(_, answerSectionPrefix)).getOrElse(List.empty)
+                livingValidation ::: companyValidation
+              }
+            }
+
+          case None =>
+            List(s"$answerSectionPrefix: no settlors section found")
+        }
+
+      case None =>
+        List(s"$answerSectionPrefix: no data provided")
+    }
   }
 
-  private def validateIndividualSettlor(settlor: JsObject, index: Int): List[String] = {
-    validatePersonSettlor(settlor, s"settlor[$index]", includeDeathDate = false)
-  }
-
-  private def validateIndividualSettlors(individuals: JsArray): List[String] = {
-    individuals.value.zipWithIndex.flatMap {
-      case (settlor, index) => validateIndividualSettlor(settlor.asOpt[JsObject].getOrElse(Json.obj()), index)
-    }.toList
-  }
-
-  private def validateCompanySettlors(companies: JsArray): List[String] = {
-    companies.value.zipWithIndex.flatMap {
-      case (company, index) => validateCompanySettlor(company.asOpt[JsObject].getOrElse(Json.obj()), index)
-    }.toList
-  }
-
-  private def validatePersonSettlor(person: JsObject, prefix: String, includeDeathDate: Boolean): List[String] = {
-    val nameValidation = (person \ "name").asOpt[JsObject] match {
+  private def validateDeceasedSettlor(deceased: JsObject, prefix: String): List[String] = {
+    (deceased \ "name").asOpt[JsObject] match {
       case Some(name) =>
         List(
-          if ((name \ "firstName").asOpt[String].isEmpty) Some(s"$prefix.name.firstName missing") else None,
-          if ((name \ "lastName").asOpt[String].isEmpty) Some(s"$prefix.name.lastName missing") else None
+          if ((name \ "firstName").asOpt[String].isEmpty) Some(s"$prefix: deceased.name.firstName missing") else None,
+          if ((name \ "lastName").asOpt[String].isEmpty) Some(s"$prefix: deceased.name.lastName missing") else None
         ).flatten
       case None =>
-        List(s"$prefix.name missing")
+        List(s"$prefix: deceased.name missing")
     }
-
-    val commonFields = List(
-      if ((person \ "dateOfBirth").asOpt[String].isEmpty) Some(s"$prefix.dateOfBirth missing") else None,
-      if ((person \ "identification").asOpt[JsObject].isEmpty) Some(s"$prefix.identification missing") else None,
-      if ((person \ "countryOfResidence").asOpt[String].isEmpty) Some(s"$prefix.countryOfResidence missing") else None,
-      if ((person \ "nationality").asOpt[String].isEmpty) Some(s"$prefix.nationality missing") else None
-    ).flatten
-
-    val deathDateValidation = if (includeDeathDate) {
-      List(if ((person \ "dateOfDeath").asOpt[String].isEmpty) Some(s"$prefix.dateOfDeath missing") else None).flatten
-    } else {
-      List.empty
-    }
-
-    nameValidation ::: commonFields ::: deathDateValidation
   }
 
-  private def validateCompanySettlor(company: JsObject, index: Int): List[String] = {
-    List(
-      if ((company \ "name").asOpt[String].isEmpty) Some(s"settlorCompany[$index].name missing") else None,
-      if ((company \ "companyType").asOpt[String].isEmpty) Some(s"settlorCompany[$index].companyType missing") else None,
-      if ((company \ "identification").asOpt[JsObject].isEmpty) Some(s"settlorCompany[$index].identification missing") else None,
-      if ((company \ "countryOfResidence").asOpt[String].isEmpty) Some(s"settlorCompany[$index].countryOfResidence missing") else None
-    ).flatten
+  private def validateLivingSettlors(settlors: JsArray, prefix: String, settlorType: String): List[String] = {
+    settlors.value.zipWithIndex.flatMap { case (settlorValue, index) =>
+      settlorValue.asOpt[JsObject] match {
+        case Some(settlor) =>
+          (settlor \ "name").asOpt[JsObject] match {
+            case Some(name) =>
+              List(
+                if ((name \ "firstName").asOpt[String].isEmpty) Some(s"$prefix: $settlorType[$index].name.firstName missing") else None,
+                if ((name \ "lastName").asOpt[String].isEmpty) Some(s"$prefix: $settlorType[$index].name.lastName missing") else None
+              ).flatten
+            case None =>
+              List(s"$prefix: $settlorType[$index].name missing")
+          }
+        case None =>
+          List(s"$prefix: $settlorType[$index] data missing")
+      }
+    }.toList
+  }
+
+  private def validateCompanySettlors(companies: JsArray, prefix: String): List[String] = {
+    companies.value.zipWithIndex.flatMap { case (companyValue, index) =>
+      companyValue.asOpt[JsObject] match {
+        case Some(company) =>
+          List(
+            if ((company \ "name").asOpt[String].isEmpty) Some(s"$prefix: settlorCompany[$index].name missing") else None,
+          ).flatten
+        case None =>
+          List(s"$prefix: settlorCompany[$index] data missing")
+      }
+    }.toList
   }
 }
