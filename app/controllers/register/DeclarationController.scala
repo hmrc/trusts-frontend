@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.{SubmissionService, TrustsStoreService}
+import services.{AuditService, SettlorValidationService, SubmissionService}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -53,9 +53,10 @@ class DeclarationController @Inject()(
                                        override val messagesApi: MessagesApi,
                                        registrationsRepository: RegistrationsRepository,
                                        formProvider: DeclarationFormProvider,
-                                       featureFlagService: TrustsStoreService,
                                        val controllerComponents: MessagesControllerComponents,
                                        view: DeclarationView,
+                                       settlorValidationService: SettlorValidationService,
+                                       auditService: AuditService,
                                        submissionService: SubmissionService,
                                        registrationComplete: TaskListCompleteActionRefiner,
                                        requireDraft: RequireDraftRegistrationActionRefiner,
@@ -68,11 +69,8 @@ class DeclarationController @Inject()(
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
-  private def updateSettlorRemoveAliveAtRegistrationField(draftId: String)(implicit request: RegistrationDataRequest[AnyContent]): Future[Status] =
+  private def updateSettlorRemoveAliveAtRegistrationField(draftId: String, draftSettlors: JsValue)(implicit request: RegistrationDataRequest[AnyContent]): Future[Status] =
     for {
-      settlors: JsValue <- registrationsRepository
-        .getDraftSettlors(draftId)
-
       settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <- registrationsRepository
         .getSettlorsAnswerSections(draftId)
 
@@ -89,10 +87,7 @@ class DeclarationController @Inject()(
           updatedMappedPieces =>
             registrationsRepository.setDraftSettlors(
               draftId,
-              Json.toJson(
-                DataSet(settlors, updatedMappedPieces, settlorsAnswersSection
-                )
-              )
+              Json.toJson(DataSet(draftSettlors, updatedMappedPieces, settlorsAnswersSection))
             )
         ).traverse(identity)
     } yield response match {
@@ -123,7 +118,7 @@ class DeclarationController @Inject()(
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, draftId,request.affinityGroup))
+      Ok(view(preparedForm, draftId, request.affinityGroup))
   }
 
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
@@ -134,24 +129,23 @@ class DeclarationController @Inject()(
         (formWithErrors: Form[_]) =>
           Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
 
-        value => {
-
-          val r = for {
-            _ <- updateSettlorRemoveAliveAtRegistrationField(draftId)
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, value))
+        (declaration: Declaration) => {
+          (for {
+            draftSettlors <- getExpectedSettlorData(draftId)
+            _ <- updateSettlorRemoveAliveAtRegistrationField(draftId, draftSettlors)
+            updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, declaration))
             _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
             response <- submissionService.submit(updatedAnswers)
             result <- handleResponse(updatedAnswers, response, draftId)
-          } yield result
-
-          r.recover {
-            case _: UnableToRegister =>
-              logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
-              Redirect(routes.TaskListController.onPageLoad(draftId))
-            case NonFatal(e) =>
-              logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
-              throw e
-          }
+          } yield result)
+            .recover {
+              case _: UnableToRegister =>
+                logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Not able to register, redirecting to registration in progress.")
+                Redirect(routes.TaskListController.onPageLoad(draftId))
+              case NonFatal(e) =>
+                logger.error(s"[$className][onSubmit][Session ID: ${request.sessionId}] Non fatal exception, throwing again. ${e.getMessage}")
+                throw e
+            }
         }
       )
   }
@@ -190,5 +184,34 @@ class DeclarationController @Inject()(
             }
         }
     }
+  }
+
+  private def getExpectedSettlorData(draftId: String)(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] = {
+    for {
+      registrationSettlor <- registrationsRepository.getRegistrationPieces(draftId)
+      answerSectionSettlor <- registrationsRepository.getDraftSettlors(draftId)
+
+      registrationValidation = validateRegistrationSettlorComponent(Some(registrationSettlor))
+      answerSectionValidation = validateAnswerSectionSettlorComponent(Some(answerSectionSettlor.as[JsObject]))
+
+      allMissingComponents = registrationValidation ::: answerSectionValidation
+
+      _ = if (allMissingComponents.nonEmpty) {
+        val missingInfo = allMissingComponents.mkString(", ")
+        val logMessage = s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] Trust registration proceeding with missing settlor information: $missingInfo"
+        logger.warn(logMessage)
+        auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
+      } else {
+        logger.info(s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] All required settlor information is present in both structures")
+      }
+    } yield answerSectionSettlor
+  }
+
+  private def validateRegistrationSettlorComponent(registrationSettlorData: Option[JsObject]): List[String] = {
+    settlorValidationService.validateRegistrationSettlorComponent(registrationSettlorData)
+  }
+
+  private def validateAnswerSectionSettlorComponent(answerSectionSettlor: Option[JsObject]): List[String] = {
+    settlorValidationService.validateAnswerSectionSettlorComponent(answerSectionSettlor)
   }
 }
