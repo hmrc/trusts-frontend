@@ -66,8 +66,8 @@ GET        /cannot-change                               controllers.register.Can
 
 GET        /trust-utr-post                              controllers.register.UTRSentByPostController.onPageLoad()
 
-GET        /:draftId/registration-progress              controllers.register.TaskListController.onPageLoad(draftId: String)
-POST       /:draftId/registration-progress              controllers.register.TaskListController.onSubmit(draftId: String)
+GET        /:draftId/task-list                          controllers.register.TaskListController.onPageLoad(draftId: String)
+POST       /:draftId/task-list                          controllers.register.TaskListController.onSubmit(draftId: String)
 
 GET        /:draftId/declaration                        controllers.register.DeclarationController.onPageLoad(draftId: String)
 POST       /:draftId/declaration                        controllers.register.DeclarationController.onSubmit(draftId: String)
