@@ -1,4 +1,8 @@
+digital-service: TRS / Trusts
+description: This service allows users to register or maintain a trust. It asks initial questions to determine if the user needs to register or maintain their trust and redirects them to maintain-a-trust-frontend if they wish to maintain, otherwise this service is the hub for registering a trust and the data from all other trust registration services is gathered here for declaration.
 repoVisibility: public_0C3F0CE3E6E6448FAD341E7BFA50FCD333E06A20CFF05FCACE61154DDBBADF71
+type: Service
+service-type: Frontend
 test-repositories:
   - maintain-a-trust-performance-tests
   - trusts-performance-tests
