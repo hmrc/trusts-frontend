@@ -7,3 +7,4 @@ test-repositories:
   - maintain-a-trust-performance-tests
   - trusts-performance-tests
   - trusts-acceptance-tests
+  - trusts-integration-tests
