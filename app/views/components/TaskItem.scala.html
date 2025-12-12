@@ -31,10 +31,11 @@
         <p>@messages(s"taskList.${task.link.text}.descriptionLabel")</p>
     }
 
-    <span class="app-task-link">
+    <span class="app-task-link" style="@task.appTaskStyles.getOrElse("")">
            @task.tag match {
             case CannotStartYet | NoActionNeeded => {
                 <span class="app-task-list__task-name"
+                      style="@task.taskTagTextStyles.getOrElse("")"
                       id="task-list__task--@{task.link.text}"
                       aria-describedby="task-list__task--@{task.link.text}__tag">
                     @messages(s"taskList.${task.link.text}.label")
@@ -42,6 +43,7 @@
             }
             case _ => {
                 <a class="app-task-list__task-name"
+                   style="@task.taskTagTextStyles.getOrElse("")"
                    id="task-list__task-link--@{task.link.text}"
                    href="@{task.link.url}"
                    aria-describedby="task-list__task--@{task.link.text}__tag">
