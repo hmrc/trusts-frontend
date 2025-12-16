@@ -65,7 +65,14 @@ class RegistrationProgress @Inject()(
 
         assetsTask +: taxLiabilityTask.toList
       } else {
-        List(Task(Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)), statuses.assets))
+        List(
+          Task(
+            link = Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)),
+            tag = statuses.assets,
+            appTaskStyles = Some(Width("80%").toString),
+            taskTagTextStyles =Some(Width("80%").toString)
+          )
+        )
       }
 
       val entityTasks: List[Task] = List(

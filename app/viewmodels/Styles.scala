@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,13 @@
 
 package viewmodels
 
-import models.registration.pages.TagStatus
+trait Styles {
+  val attr: String
+  val value: String
 
-case class Task(link: Link,
-                tag: TagStatus,
-                appTaskStyles: Option[String] = None,
-                taskTagTextStyles: Option[String] = None)
+  override def toString = s"$attr: $value"
+}
+
+case class Width(value: String) extends Styles {
+  val attr = "width"
+}

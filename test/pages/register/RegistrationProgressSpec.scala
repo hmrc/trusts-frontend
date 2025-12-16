@@ -323,7 +323,11 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
           result mustBe List(
             Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
-            Task(Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)), NotStarted)
+            Task(
+              link = Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)),
+              tag = NotStarted,
+              appTaskStyles = Some(Width("80%").toString),
+              taskTagTextStyles =Some(Width("80%").toString))
           )
         }
       }
