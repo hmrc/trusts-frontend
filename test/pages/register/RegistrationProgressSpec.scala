@@ -326,8 +326,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             Task(
               link = Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)),
               tag = NotStarted,
-              appTaskStyles = Some(Width("80%").toString),
-              taskTagTextStyles =Some(Width("80%").toString))
+              appTaskStyles = Some(Width("70%").toString),
+              taskTagTextStyles =Some(Width("70%").toString))
           )
         }
       }

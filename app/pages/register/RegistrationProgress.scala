@@ -69,8 +69,8 @@ class RegistrationProgress @Inject()(
           Task(
             link = Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)),
             tag = statuses.assets,
-            appTaskStyles = Some(Width("80%").toString),
-            taskTagTextStyles =Some(Width("80%").toString)
+            appTaskStyles = Some(Width("70%").toString),
+            taskTagTextStyles =Some(Width("70%").toString)
           )
         )
       }
