@@ -63,9 +63,6 @@
 }
 
 @beforeContentBlock = {
-    @if(isWelshTranslationAvailable) {
-        @hmrcLanguageSelectHelper()
-    }
     @if(showBackLink) {
         @govukBackLink(BackLink(
             attributes = Map("id" -> "back-link"), classes="js-enabled", href="javascript:history.back()", content = HtmlContent(messages("site.back"))
@@ -87,7 +84,7 @@
         serviceUrl = Some(appConfig.loginContinueUrl),
         signOutUrl = if(canSignOut) Some(controllers.register.routes.LogoutController.logout().url) else None,
         phaseBanner = None,
-        isWelshTranslationAvailable = true,
+        isWelshTranslationAvailable = isWelshTranslationAvailable,
         serviceName = serviceName
     )),
     beforeContentBlock = Some(beforeContentBlock),
