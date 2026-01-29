@@ -41,4 +41,5 @@ class PostcodeForTheTrustViewSpec extends StringViewBehaviours {
 
     behave like stringPage(form, applyView, None, messageKeyPrefix)
   }
+
 }

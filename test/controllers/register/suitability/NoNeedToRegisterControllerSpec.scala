@@ -32,7 +32,8 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
 
       "agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent).build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent).build()
 
         val request = FakeRequest(GET, noNeedToRegisterRoute)
 
@@ -50,7 +51,9 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
 
       "non-agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Organisation).build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Organisation)
+            .build()
 
         val request = FakeRequest(GET, noNeedToRegisterRoute)
 
@@ -67,4 +70,5 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

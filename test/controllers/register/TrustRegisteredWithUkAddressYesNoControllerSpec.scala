@@ -36,7 +36,8 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("trustRegisteredWithUkAddress")
 
-  private lazy val trustRegisteredWithUkAddressYesNoRoute: String = routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad().url
+  private lazy val trustRegisteredWithUkAddressYesNoRoute: String =
+    routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad().url
 
   "TrustRegisteredWithUkAddressYesNo Controller" must {
 
@@ -61,7 +62,9 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyMatchingAndSuitabilityUserAnswers
-        .set(TrustRegisteredWithUkAddressYesNoPage, true).success.value
+        .set(TrustRegisteredWithUkAddressYesNoPage, true)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -100,7 +103,8 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       val redirectUrl = "redirect-url"
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any())(any(), any())).thenReturn(Future.successful(Redirect(redirectUrl)))
+      when(mockMatchingService.matching(any(), any())(any(), any()))
+        .thenReturn(Future.successful(Redirect(redirectUrl)))
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
         .overrides(bind[MatchingService].toInstance(mockMatchingService))
@@ -170,4 +174,5 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       application.stop()
     }
   }
+
 }

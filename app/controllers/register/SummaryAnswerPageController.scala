@@ -17,7 +17,9 @@
 package controllers.register
 
 import controllers.actions._
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction}
+import controllers.actions.register.{
+  DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction
+}
 import models.requests.RegistrationDataRequest
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, ActionBuilder, AnyContent, MessagesControllerComponents}
@@ -29,38 +31,34 @@ import views.html.register.SummaryAnswerPageView
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class SummaryAnswerPageController @Inject()(
-                                             override val messagesApi: MessagesApi,
-                                             identify: RegistrationIdentifierAction,
-                                             getData: DraftIdRetrievalActionProvider,
-                                             requireData: RegistrationDataRequiredAction,
-                                             val controllerComponents: MessagesControllerComponents,
-                                             view: SummaryAnswerPageView,
-                                             registrationComplete : TaskListCompleteActionRefiner,
-                                             printUserAnswersHelper: PrintUserAnswersHelper,
-                                             registrationsRepository: RegistrationsRepository
-                                            )(implicit ec: ExecutionContext)
-  extends FrontendBaseController with I18nSupport {
+class SummaryAnswerPageController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: RegistrationIdentifierAction,
+  getData: DraftIdRetrievalActionProvider,
+  requireData: RegistrationDataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: SummaryAnswerPageView,
+  registrationComplete: TaskListCompleteActionRefiner,
+  printUserAnswersHelper: PrintUserAnswersHelper,
+  registrationsRepository: RegistrationsRepository
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  private def actions(draftId : String): ActionBuilder[RegistrationDataRequest, AnyContent] =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getData(draftId) andThen requireData andThen registrationComplete
 
-  def onPageLoad(draftId : String): Action[AnyContent] = actions(draftId).async {
-    implicit request =>
-
-      registrationsRepository.getClientReference(draftId, request.affinityGroup) flatMap {
-        reference =>
-          printUserAnswersHelper.summary(draftId).map {
-            sections =>
-              Ok(
-                view(
-                  answerSections = sections,
-                  isAgent = request.isAgent,
-                  agentClientRef = reference.getOrElse("")
-                )
-              )
-          }
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
+    registrationsRepository.getClientReference(draftId, request.affinityGroup) flatMap { reference =>
+      printUserAnswersHelper.summary(draftId).map { sections =>
+        Ok(
+          view(
+            answerSections = sections,
+            isAgent = request.isAgent,
+            agentClientRef = reference.getOrElse("")
+          )
+        )
       }
+    }
   }
 
 }

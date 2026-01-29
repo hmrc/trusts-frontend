@@ -26,7 +26,7 @@ import views.html.register.TrustRegisteredOnlineView
 
 class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new YesNoFormProvider()
+  val formProvider        = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
 
   lazy val trustRegisteredOnlineRoute: String = routes.TrustRegisteredOnlineController.onPageLoad().url
@@ -140,4 +140,5 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
     }
 
   }
+
 }

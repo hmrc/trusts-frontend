@@ -24,11 +24,11 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.SignOutConfirmationView
 
-class SignOutConfirmationController @Inject()(
-                                               val controllerComponents: MessagesControllerComponents,
-                                               view: SignOutConfirmationView,
-                                               appConfig: FrontendAppConfig
-                                             ) extends FrontendBaseController with I18nSupport {
+class SignOutConfirmationController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  view: SignOutConfirmationView,
+  appConfig: FrontendAppConfig
+) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = Action { implicit request =>
     Ok(view())
@@ -37,8 +37,8 @@ class SignOutConfirmationController @Inject()(
   def onSubmit: Action[AnyContent] = Action {
     Redirect(
       appConfig.loginUrl,
-      Map("continue" -> Seq(appConfig.loginContinueUrl),
-        "origin" -> Seq(appConfig.appName))
+      Map("continue" -> Seq(appConfig.loginContinueUrl), "origin" -> Seq(appConfig.appName))
     )
   }
+
 }

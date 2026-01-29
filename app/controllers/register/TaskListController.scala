@@ -34,64 +34,83 @@ import views.html.register.TaskListView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TaskListController @Inject()(
-                                    override val messagesApi: MessagesApi,
-                                    requiredAnswer: RequiredAnswerActionProvider,
-                                    val controllerComponents: MessagesControllerComponents,
-                                    view: TaskListView,
-                                    registrationProgress: RegistrationProgress,
-                                    registrationsRepository: RegistrationsRepository,
-                                    requireDraft: RequireDraftRegistrationActionRefiner,
-                                    dateFormatter: DateFormatter,
-                                    standardAction: StandardActionSets
-                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class TaskListController @Inject() (
+  override val messagesApi: MessagesApi,
+  requiredAnswer: RequiredAnswerActionProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: TaskListView,
+  registrationProgress: RegistrationProgress,
+  registrationsRepository: RegistrationsRepository,
+  requireDraft: RequireDraftRegistrationActionRefiner,
+  dateFormatter: DateFormatter,
+  standardAction: StandardActionSets
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardAction.identifiedUserWithRequiredAnswer(draftId,
-      RequiredAnswer(TrustRegisteredOnlinePage, controllers.register.routes.TrustRegisteredOnlineController.onPageLoad())) andThen
+    standardAction.identifiedUserWithRequiredAnswer(
+      draftId,
+      RequiredAnswer(
+        TrustRegisteredOnlinePage,
+        controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()
+      )
+    )   andThen
       requiredAnswer(
-        RequiredAnswer(
-          TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad())
+        RequiredAnswer(TrustHaveAUTRPage, controllers.register.routes.TrustHaveAUTRController.onPageLoad())
       ) andThen requireDraft
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
-    implicit request =>
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
+    val isExistingTrust = request.userAnswers.isExistingTrust
 
-      val isExistingTrust = request.userAnswers.isExistingTrust
+    def renderView(affinityGroup: AffinityGroup): Future[Result] = {
+      val savedUntil: String = dateFormatter.savedUntil(request.userAnswers.createdAt)
 
-      def renderView(affinityGroup: AffinityGroup): Future[Result] = {
-        val savedUntil: String = dateFormatter.savedUntil(request.userAnswers.createdAt)
+      val updatedAnswers = request.userAnswers.copy(progress = InProgress)
 
-        val updatedAnswers = request.userAnswers.copy(progress = InProgress)
-
-        for {
-          _ <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
-          firstTaxYearAvailable <- registrationsRepository.getFirstTaxYearAvailable(draftId)
-          isTaxable = updatedAnswers.isTaxable
-          sections <- registrationProgress.items(draftId)
-          additionalSections <- registrationProgress.additionalItems(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
-          isTaskListComplete <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
-          (completedTasks, totalTasks) <- registrationProgress.taskCount(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
-        } yield {
-          logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
-          Ok(view(isTaxable, draftId, savedUntil, sections, additionalSections, isTaskListComplete, affinityGroup, completedTasks, totalTasks))
-        }
+      for {
+        _                            <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
+        firstTaxYearAvailable        <- registrationsRepository.getFirstTaxYearAvailable(draftId)
+        isTaxable                     = updatedAnswers.isTaxable
+        sections                     <- registrationProgress.items(draftId)
+        additionalSections           <-
+          registrationProgress.additionalItems(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
+        isTaskListComplete           <-
+          registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
+        (completedTasks, totalTasks) <-
+          registrationProgress.taskCount(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
+      } yield {
+        logger.debug(s"[sections][Session ID: ${request.sessionId}] $sections")
+        Ok(
+          view(
+            isTaxable,
+            draftId,
+            savedUntil,
+            sections,
+            additionalSections,
+            isTaskListComplete,
+            affinityGroup,
+            completedTasks,
+            totalTasks
+          )
+        )
       }
+    }
 
-      (
-        isExistingTrust,
-        request.userAnswers.get(ExistingTrustMatched)
-      ) match {
-        case (true, Some(Success)) | (false, _) =>
-          renderView(request.affinityGroup)
-        case (_, Some(AlreadyRegistered)) | (_, Some(Failed)) =>
-          Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad().url))
-        case _ =>
-          Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad().url))
-      }
+    (
+      isExistingTrust,
+      request.userAnswers.get(ExistingTrustMatched)
+    ) match {
+      case (true, Some(Success)) | (false, _)               =>
+        renderView(request.affinityGroup)
+      case (_, Some(AlreadyRegistered)) | (_, Some(Failed)) =>
+        Future.successful(Redirect(controllers.register.routes.FailedMatchController.onPageLoad().url))
+      case _                                                =>
+        Future.successful(Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad().url))
+    }
   }
 
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId) { _ =>
     Redirect(controllers.register.routes.DeclarationController.onPageLoad(draftId))
   }
+
 }

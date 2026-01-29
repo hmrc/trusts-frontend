@@ -101,8 +101,12 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
     "return OK and the correct view for a GET when tasklist completed" in {
 
       val userAnswers = TestUserAnswers.emptyUserAnswers
-        .set(RegistrationTRNPage, "XNTRN000000001").success.value
-        .set(RegistrationSubmissionDatePage, LocalDateTime.now).success.value
+        .set(RegistrationTRNPage, "XNTRN000000001")
+        .success
+        .value
+        .set(RegistrationSubmissionDatePage, LocalDateTime.now)
+        .success
+        .value
 
       val expectedSections = Seq(
         trustDetailsSection.head,
@@ -126,7 +130,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-      val trnDateTime = LocalDateTime.now.format(dateFormatter)
+      val trnDateTime   = LocalDateTime.now.format(dateFormatter)
 
       contentAsString(result) mustEqual
         view(expectedSections, "XNTRN000000001", trnDateTime, isTaxable = true)(request, messages).toString
@@ -160,4 +164,5 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
 
     }
   }
+
 }

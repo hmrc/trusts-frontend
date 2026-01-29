@@ -44,4 +44,5 @@ class WhichIdentifierViewSpec extends OptionsViewBehaviours {
 
     behave like pageWithOptionsWithHints(form, applyView, WhichIdentifier.options)
   }
+
 }

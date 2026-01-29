@@ -19,8 +19,10 @@ package models.requests
 import play.api.mvc.Request
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
-case class IdentifierRequest[A](request: Request[A],
-                                internalId: String,
-                                affinityGroup: AffinityGroup,
-                                enrolments: Enrolments,
-                                agentARN: Option[String] = None) extends AffinityRequest[A](request)
+case class IdentifierRequest[A](
+  request: Request[A],
+  internalId: String,
+  affinityGroup: AffinityGroup,
+  enrolments: Enrolments,
+  agentARN: Option[String] = None
+) extends AffinityRequest[A](request)

@@ -43,4 +43,5 @@ class CannotMakeChangesControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

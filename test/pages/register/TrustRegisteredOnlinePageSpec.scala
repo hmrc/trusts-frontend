@@ -28,4 +28,5 @@ class TrustRegisteredOnlinePageSpec extends PageBehaviours {
 
     beRemovable[Boolean](TrustRegisteredOnlinePage)
   }
+
 }

@@ -33,14 +33,15 @@ import views.html.register.agents.RemoveDraftYesNoView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RemoveDraftYesNoController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            registrationsRepository: RegistrationsRepository,
-                                            standardActionSets: StandardActionSets,
-                                            yesNoFormProvider: YesNoFormProvider,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: RemoveDraftYesNoView
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class RemoveDraftYesNoController @Inject() (
+  override val messagesApi: MessagesApi,
+  registrationsRepository: RegistrationsRepository,
+  standardActionSets: StandardActionSets,
+  yesNoFormProvider: YesNoFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: RemoveDraftYesNoView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   private val prefix: String = "removeDraftYesNo"
 
@@ -51,46 +52,45 @@ class RemoveDraftYesNoController @Inject()(
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardActionSets.identifiedUserWithRegistrationData(draftId)
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
-    implicit request =>
-
-      clientReferenceNumber(draftId).map {
-        case Left(redirect) => redirect
-        case Right(crn) => Ok(view(form, draftId, crn))
-      }
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
+    clientReferenceNumber(draftId).map {
+      case Left(redirect) => redirect
+      case Right(crn)     => Ok(view(form, draftId, crn))
+    }
   }
 
-  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
         (formWithErrors: Form[_]) =>
           clientReferenceNumber(draftId).map {
             case Left(redirect) => redirect
-            case Right(crn) => BadRequest(view(formWithErrors, draftId, crn))
+            case Right(crn)     => BadRequest(view(formWithErrors, draftId, crn))
           },
-
-        value => {
+        value =>
           if (value) {
             registrationsRepository.removeDraft(draftId).map { _ =>
-              logger.info(s"[RemoveDraftYesNoController][onSubmit][Session ID: ${request.sessionId}] removing draft $draftId")
+              logger.info(
+                s"[RemoveDraftYesNoController][onSubmit][Session ID: ${request.sessionId}] removing draft $draftId"
+              )
               redirect
             }
           } else {
             Future.successful(redirect)
           }
-        }
       )
   }
 
-  private def clientReferenceNumber(draftId: String)
-                                   (implicit hc: HeaderCarrier): Future[Either[Result, String]] = {
+  private def clientReferenceNumber(draftId: String)(implicit hc: HeaderCarrier): Future[Either[Result, String]] =
     registrationsRepository.getClientReference(draftId, AffinityGroup.Agent).map {
       case Some(clientRef) =>
         Right(clientRef)
-      case _ =>
-        logger.warn(s"[RemoveDraftYesNoController][clientReferenceNumber][Session ID: ${id(hc)}] failed to find draft $draftId")
+      case _               =>
+        logger.warn(
+          s"[RemoveDraftYesNoController][clientReferenceNumber][Session ID: ${id(hc)}] failed to find draft $draftId"
+        )
         Left(redirect)
     }
-  }
+
 }

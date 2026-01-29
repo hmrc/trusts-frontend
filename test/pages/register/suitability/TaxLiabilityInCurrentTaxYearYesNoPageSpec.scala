@@ -32,15 +32,14 @@ class TaxLiabilityInCurrentTaxYearYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup logic" when {
 
-      "YES selected" in {
-        forAll(arbitrary[UserAnswers], arbitrary[Boolean]) {
-          (initial, bool) =>
-            val answers: UserAnswers = initial.set(UndeclaredTaxLiabilityYesNoPage, bool).success.value
-            val result = answers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
+      "YES selected" in
+        forAll(arbitrary[UserAnswers], arbitrary[Boolean]) { (initial, bool) =>
+          val answers: UserAnswers = initial.set(UndeclaredTaxLiabilityYesNoPage, bool).success.value
+          val result               = answers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
 
-            result.get(UndeclaredTaxLiabilityYesNoPage) mustNot be(defined)
+          result.get(UndeclaredTaxLiabilityYesNoPage) mustNot be(defined)
         }
-      }
     }
   }
+
 }

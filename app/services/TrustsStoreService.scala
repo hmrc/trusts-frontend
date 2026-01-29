@@ -23,10 +23,9 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustsStoreService @Inject()(trustsStoreConnector: TrustsStoreConnector) {
+class TrustsStoreService @Inject() (trustsStoreConnector: TrustsStoreConnector) {
 
-  def getTaskStatuses(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TaskStatuses] = {
+  def getTaskStatuses(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TaskStatuses] =
     trustsStoreConnector.getTaskStatuses(draftId)
-  }
 
 }

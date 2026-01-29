@@ -23,14 +23,14 @@ import navigation.navigators.registration._
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages._
 
-class NavigatorSpec extends RegistrationSpecBase
-  with ScalaCheckPropertyChecks
-  with Generators
-  with MatchingRoutes
-  with SuitabilityRoutes
-{
+class NavigatorSpec
+    extends RegistrationSpecBase
+    with ScalaCheckPropertyChecks
+    with Generators
+    with MatchingRoutes
+    with SuitabilityRoutes {
 
-  implicit val navigator : Navigator = injector.instanceOf[Navigator]
+  implicit val navigator: Navigator = injector.instanceOf[Navigator]
 
   "Navigator" when {
 
@@ -48,4 +48,5 @@ class NavigatorSpec extends RegistrationSpecBase
     }
 
   }
+
 }

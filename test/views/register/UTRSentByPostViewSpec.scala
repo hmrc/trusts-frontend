@@ -35,7 +35,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
   "when rendered for an Organisation" must {
 
     "not render Return to register paragraph" in {
-      val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
+      val view      = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
       val applyView = view.apply(isAgent = false)(fakeRequest, messages)
 
       val doc = asDocument(applyView)
@@ -47,11 +47,12 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
   "when rendered for an Agent" must {
 
     "render Return to register paragraph" in {
-      val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
+      val view      = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
       val applyView = view.apply(isAgent = true)(fakeRequest, messages)
 
       val doc = asDocument(applyView)
       assertRenderedById(doc, "saved-registrations")
     }
   }
+
 }

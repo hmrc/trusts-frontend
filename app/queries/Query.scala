@@ -32,4 +32,5 @@ trait Settable[A] extends Query {
 
   def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[A], userAnswers: U): Try[U] =
     Success(userAnswers)
+
 }

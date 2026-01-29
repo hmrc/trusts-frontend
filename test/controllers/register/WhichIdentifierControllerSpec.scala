@@ -29,7 +29,7 @@ import views.html.register.WhichIdentifierView
 
 class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
-  val formProvider = new WhichIdentifierFormProvider()
+  val formProvider                = new WhichIdentifierFormProvider()
   val form: Form[WhichIdentifier] = formProvider()
 
   lazy val onPageLoad: String = routes.WhichIdentifierController.onPageLoad().url
@@ -130,4 +130,5 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
       application.stop()
     }
   }
+
 }

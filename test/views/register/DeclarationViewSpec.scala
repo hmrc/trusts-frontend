@@ -59,10 +59,13 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
         view.apply(form, fakeDraftId, AffinityGroup.Organisation)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
-      assertContainsText(doc, "I confirm that I have taken all reasonable steps to obtain up to " +
-        "date and accurate information for all of the entities given in this registration. I understand " +
-        "that if I knowingly provide false information and I cannot demonstrate that I have taken all " +
-        "reasonable steps, I could be subject to penalties.")
+      assertContainsText(
+        doc,
+        "I confirm that I have taken all reasonable steps to obtain up to " +
+          "date and accurate information for all of the entities given in this registration. I understand " +
+          "that if I knowingly provide false information and I cannot demonstrate that I have taken all " +
+          "reasonable steps, I could be subject to penalties."
+      )
     }
 
   }
@@ -76,11 +79,15 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
         view.apply(form, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
-      assertContainsText(doc, "I confirm that my client has taken all reasonable steps to obtain up " +
-        "to date and accurate information for all of the entities given in this registration. " +
-        "I understand that if my client knowingly provides false information and cannot demonstrate " +
-        "that they have taken all reasonable steps, they could be subject to penalties.")
+      assertContainsText(
+        doc,
+        "I confirm that my client has taken all reasonable steps to obtain up " +
+          "to date and accurate information for all of the entities given in this registration. " +
+          "I understand that if my client knowingly provides false information and cannot demonstrate " +
+          "that they have taken all reasonable steps, they could be subject to penalties."
+      )
     }
 
   }
+
 }

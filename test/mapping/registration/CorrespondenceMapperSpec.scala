@@ -22,8 +22,8 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 
-class CorrespondenceMapperSpec extends AnyFreeSpec with Matchers
-  with OptionValues with Generators with SpecBaseHelpers {
+class CorrespondenceMapperSpec
+    extends AnyFreeSpec with Matchers with OptionValues with Generators with SpecBaseHelpers {
 
   private val correspondenceMapper: CorrespondenceMapper = injector.instanceOf[CorrespondenceMapper]
 
@@ -31,7 +31,8 @@ class CorrespondenceMapperSpec extends AnyFreeSpec with Matchers
 
     "must be able to create a correspondence with required answer" - {
 
-      correspondenceMapper.build( "Trust of a Will").name mustBe "Trust of a Will"
+      correspondenceMapper.build("Trust of a Will").name mustBe "Trust of a Will"
     }
   }
+
 }

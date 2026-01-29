@@ -21,27 +21,33 @@ import java.time.LocalDate
 import models.core.pages.FullName
 import play.api.libs.json.{Format, Json}
 
-case class LeadTrusteeType(leadTrusteeInd : Option[LeadTrusteeIndType] = None,
-                           leadTrusteeOrg : Option[LeadTrusteeOrgType] = None)
+case class LeadTrusteeType(
+  leadTrusteeInd: Option[LeadTrusteeIndType] = None,
+  leadTrusteeOrg: Option[LeadTrusteeOrgType] = None
+)
 
 object LeadTrusteeType {
-  implicit val leadTrusteeTypeReads:Format[LeadTrusteeType] = Json.format[LeadTrusteeType]
+  implicit val leadTrusteeTypeReads: Format[LeadTrusteeType] = Json.format[LeadTrusteeType]
 }
 
-case class LeadTrusteeIndType (name: FullName,
-                               dateOfBirth: LocalDate ,
-                               phoneNumber: String,
-                               email: Option[String] = None,
-                               identification: IdentificationType)
+case class LeadTrusteeIndType(
+  name: FullName,
+  dateOfBirth: LocalDate,
+  phoneNumber: String,
+  email: Option[String] = None,
+  identification: IdentificationType
+)
 
 object LeadTrusteeIndType {
   implicit val leadTrusteeIndTypeFormat: Format[LeadTrusteeIndType] = Json.format[LeadTrusteeIndType]
 }
 
-case class LeadTrusteeOrgType(name: String,
-                              phoneNumber: String,
-                              email: Option[String] = None,
-                              identification: IdentificationOrgType)
+case class LeadTrusteeOrgType(
+  name: String,
+  phoneNumber: String,
+  email: Option[String] = None,
+  identification: IdentificationOrgType
+)
 
 object LeadTrusteeOrgType {
   implicit val leadTrusteeOrgTypeFormat: Format[LeadTrusteeOrgType] = Json.format[LeadTrusteeOrgType]

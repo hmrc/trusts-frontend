@@ -27,4 +27,5 @@ class FakeNavigator(config: FrontendAppConfig) extends Navigator(config) {
 
   override def nextPage(page: Page): TrustsFrontendUserAnswers[_] => Call =
     _ => desiredRoute
+
 }

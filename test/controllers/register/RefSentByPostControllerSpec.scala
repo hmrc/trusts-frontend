@@ -71,4 +71,5 @@ class RefSentByPostControllerSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

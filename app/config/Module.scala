@@ -25,18 +25,27 @@ class Module extends AbstractModule {
 
   override def configure(): Unit = {
 
-    bind(classOf[MatchingAndSuitabilityDataRetrievalAction]).to(classOf[MatchingAndSuitabilityDataRetrievalActionImpl]).asEagerSingleton()
+    bind(classOf[MatchingAndSuitabilityDataRetrievalAction])
+      .to(classOf[MatchingAndSuitabilityDataRetrievalActionImpl])
+      .asEagerSingleton()
     bind(classOf[RegistrationDataRetrievalAction]).to(classOf[RegistrationDataRetrievalActionImpl]).asEagerSingleton()
-    bind(classOf[MatchingAndSuitabilityDataRequiredAction]).to(classOf[MatchingAndSuitabilityDataRequiredActionImpl]).asEagerSingleton()
+    bind(classOf[MatchingAndSuitabilityDataRequiredAction])
+      .to(classOf[MatchingAndSuitabilityDataRequiredActionImpl])
+      .asEagerSingleton()
     bind(classOf[RegistrationDataRequiredAction]).to(classOf[RegistrationDataRequiredActionImpl]).asEagerSingleton()
     bind(classOf[DraftIdRetrievalActionProvider]).to(classOf[DraftIdDataRetrievalActionProviderImpl]).asEagerSingleton()
-    bind(classOf[RequireDraftRegistrationActionRefiner]).to(classOf[RequireDraftRegistrationActionRefinerImpl]).asEagerSingleton()
+    bind(classOf[RequireDraftRegistrationActionRefiner])
+      .to(classOf[RequireDraftRegistrationActionRefinerImpl])
+      .asEagerSingleton()
 
     bind(classOf[TaskListCompleteActionRefiner]).to(classOf[TaskListCompleteActionRefinerImpl]).asEagerSingleton()
 
-    bind(classOf[RequiredAgentAffinityGroupActionProvider]).to(classOf[RequireStateActionProviderImpl]).asEagerSingleton()
+    bind(classOf[RequiredAgentAffinityGroupActionProvider])
+      .to(classOf[RequireStateActionProviderImpl])
+      .asEagerSingleton()
 
     bind(classOf[RegistrationsRepository]).to(classOf[DefaultRegistrationsRepository]).asEagerSingleton()
     bind(classOf[CacheRepository]).to(classOf[CacheRepositoryImpl]).asEagerSingleton()
   }
+
 }

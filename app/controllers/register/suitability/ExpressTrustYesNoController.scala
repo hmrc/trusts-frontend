@@ -32,51 +32,46 @@ import views.html.register.suitability.ExpressTrustYesNoView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ExpressTrustYesNoController @Inject()(
-                                             override val messagesApi: MessagesApi,
-                                             cacheRepository: CacheRepository,
-                                             navigator: Navigator,
-                                             actions: StandardActionSets,
-                                             formProvider: YesNoFormProvider,
-                                             featureFlagService: TrustsStoreService,
-                                             val controllerComponents: MessagesControllerComponents,
-                                             view: ExpressTrustYesNoView
-                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class ExpressTrustYesNoController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  navigator: Navigator,
+  actions: StandardActionSets,
+  formProvider: YesNoFormProvider,
+  featureFlagService: TrustsStoreService,
+  val controllerComponents: MessagesControllerComponents,
+  view: ExpressTrustYesNoView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val preparedForm = request.userAnswers.get(ExpressTrustYesNoPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(ExpressTrustYesNoPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
           for {
-            answers <- Future.fromTry(request.userAnswers.set(ExpressTrustYesNoPage, value))
+            answers        <- Future.fromTry(request.userAnswers.set(ExpressTrustYesNoPage, value))
             updatedAnswers <- {
               request.userAnswers.get(TrustHaveAUTRPage) match {
                 case Some(true) => Future.fromTry(answers.set(TrustTaxableYesNoPage, true))
-                case _ => Future(answers)
+                case _          => Future(answers)
               }
             }
-            _ <- cacheRepository.set(updatedAnswers)
-          } yield {
-            Redirect(navigator.nextPage(ExpressTrustYesNoPage)(updatedAnswers))
-          }
-        }
+            _              <- cacheRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(ExpressTrustYesNoPage)(updatedAnswers))
       )
   }
+
 }

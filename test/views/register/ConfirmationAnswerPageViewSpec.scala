@@ -27,9 +27,9 @@ import scala.concurrent.duration.Duration
 
 class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
-  private val prefix = "confirmationAnswerPage"
+  private val prefix                          = "confirmationAnswerPage"
   private val formattedSubmissionTime: String = "22 April 2021"
-  private val trn = "XNTRN000000001"
+  private val trn                             = "XNTRN000000001"
 
   "ConfirmationAnswerPageView" when {
 
@@ -43,7 +43,10 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       val viewFuture = helper.summary(fakeDraftId).map { sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
-        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = true)(fakeRequest, messages)
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = true)(
+          fakeRequest,
+          messages
+        )
       }
 
       val view = Await.result(viewFuture, Duration.Inf)
@@ -72,7 +75,10 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       val viewFuture = helper.summary(fakeDraftId).map { sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
-        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = false)(fakeRequest, messages)
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = false)(
+          fakeRequest,
+          messages
+        )
       }
 
       val view = Await.result(viewFuture, Duration.Inf)
@@ -89,4 +95,5 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
       }
     }
   }
+
 }

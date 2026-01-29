@@ -28,43 +28,46 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.Future
 
-  class RequiredAffinityGroupActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
+class RequiredAffinityGroupActionSpec
+    extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
-    class Harness[T]()
-      extends RequiredAgentAffinityGroupAction() {
-      def callFilter[A](request: IdentifierRequest[A]): Future[Option[Result]] = filter(request)
-    }
+  class Harness[T]() extends RequiredAgentAffinityGroupAction() {
+    def callFilter[A](request: IdentifierRequest[A]): Future[Option[Result]] = filter(request)
+  }
 
-    "Required Affinity Group Action" when {
+  "Required Affinity Group Action" when {
 
-      "Affinity Group is Agent" must {
+    "Affinity Group is Agent" must {
 
-        "continue with returning None" in {
+      "continue with returning None" in {
 
-          val action = new Harness()
-          val futureResult = action.callFilter(IdentifierRequest(fakeRequest,  "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
+        val action       = new Harness()
+        val futureResult =
+          action.callFilter(IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
 
-          whenReady(futureResult) { result =>
-            result mustBe None
-          }
+        whenReady(futureResult) { result =>
+          result mustBe None
         }
-
       }
 
-      "Affinity Group is not Agent" must {
+    }
 
-        "redirect to Unauthorised page" in {
+    "Affinity Group is not Agent" must {
 
-          val action = new Harness()
-          val futureResult = action.callFilter(IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+      "redirect to Unauthorised page" in {
 
-          whenReady(futureResult) { result =>
-            result.value.header.headers(HeaderNames.LOCATION) mustBe UnauthorisedController.onPageLoad().url
-          }
+        val action       = new Harness()
+        val futureResult = action.callFilter(
+          IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
+        )
+
+        whenReady(futureResult) { result =>
+          result.value.header.headers(HeaderNames.LOCATION) mustBe UnauthorisedController.onPageLoad().url
         }
-
       }
 
     }
 
   }
+
+}

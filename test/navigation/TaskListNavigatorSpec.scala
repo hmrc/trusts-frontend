@@ -88,4 +88,5 @@ class TaskListNavigatorSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

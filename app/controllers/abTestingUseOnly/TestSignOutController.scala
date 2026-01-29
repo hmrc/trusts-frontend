@@ -31,39 +31,42 @@ import views.html.abTestingUseOnly.TestSignOutView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TestSignOutController @Inject()(
-                                       val controllerComponents: MessagesControllerComponents,
-                                       identify: RegistrationIdentifierAction,
-                                       view: TestSignOutView,
-                                       appConfig: FrontendAppConfig,
-                                       auditConnector: AuditConnector
-                                     )(implicit val ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class TestSignOutController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  identify: RegistrationIdentifierAction,
+  view: TestSignOutView,
+  appConfig: FrontendAppConfig,
+  auditConnector: AuditConnector
+)(implicit val ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(): Action[AnyContent] = identify.async {
-    implicit request =>
-      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+  def onPageLoad(): Action[AnyContent] = identify.async { implicit request =>
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-      if (appConfig.logoutAudit) {
+    if (appConfig.logoutAudit) {
 
-        val auditData = Map(
-          "sessionId" -> Session.id(hc),
-          "event" -> "signout",
-          "service" -> "trusts-frontend",
-          "userGroup" -> request.affinityGroup.toString
-        )
+      val auditData = Map(
+        "sessionId" -> Session.id(hc),
+        "event"     -> "signout",
+        "service"   -> "trusts-frontend",
+        "userGroup" -> request.affinityGroup.toString
+      )
 
-        val auditWithAgent = request.agentARN.fold(auditData) { arn =>
-          auditData ++ Map("agentReferenceNumber" -> arn)
-        }
-
-        auditConnector.sendExplicitAudit(
-          "trusts",
-          auditWithAgent
-        )
-
+      val auditWithAgent = request.agentARN.fold(auditData) { arn =>
+        auditData ++ Map("agentReferenceNumber" -> arn)
       }
 
-      logger.info(s"[TestSignOutController][onPageLoad][Session ID: ${Session.id(hc)}] Displaying TestSignOutView for A/B Testing")
-      Future.successful(Ok(view()))
+      auditConnector.sendExplicitAudit(
+        "trusts",
+        auditWithAgent
+      )
+
+    }
+
+    logger.info(
+      s"[TestSignOutController][onPageLoad][Session ID: ${Session.id(hc)}] Displaying TestSignOutView for A/B Testing"
+    )
+    Future.successful(Ok(view()))
   }
+
 }

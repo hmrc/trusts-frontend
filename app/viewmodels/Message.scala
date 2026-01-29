@@ -38,6 +38,7 @@ object Message {
 
     override def withArgs(args: Any*): Message =
       copy(args = args)
+
   }
 
   case class Literal(value: String) extends Message {
@@ -56,4 +57,5 @@ object Message {
 
   implicit def resolveOption(message: Option[Message])(implicit messages: Messages): Option[String] =
     message.map(_.resolve)
+
 }

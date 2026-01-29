@@ -23,7 +23,9 @@ import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register.suitability.{ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage, TrustTaxableYesNoPage, UndeclaredTaxLiabilityYesNoPage}
+import pages.register.suitability.{
+  ExpressTrustYesNoPage, TaxLiabilityInCurrentTaxYearYesNoPage, TrustTaxableYesNoPage, UndeclaredTaxLiabilityYesNoPage
+}
 
 trait SuitabilityRoutes {
 
@@ -31,103 +33,132 @@ trait SuitabilityRoutes {
 
   def suitabilityRoutes()(implicit navigator: Navigator): Unit = {
 
-      "ExpressTrust Page" when {
-        "-> YES -> Any tax liability in current tax year?" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(ExpressTrustYesNoPage, true).success.value
-                .set(TrustTaxableYesNoPage, true).success.value
+    "ExpressTrust Page" when {
+      "-> YES -> Any tax liability in current tax year?" in
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val answers = userAnswers
+            .set(ExpressTrustYesNoPage, true)
+            .success
+            .value
+            .set(TrustTaxableYesNoPage, true)
+            .success
+            .value
 
-              navigator.nextPage(ExpressTrustYesNoPage)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad())
-          }
+          navigator
+            .nextPage(ExpressTrustYesNoPage)(answers)
+            .mustBe(routes.BeforeYouContinueController.onPageLoad())
         }
 
-        "-> No -> Any tax liability in current tax year?" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(ExpressTrustYesNoPage, false).success.value
-                .set(TrustTaxableYesNoPage, true).success.value
+      "-> No -> Any tax liability in current tax year?" in
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val answers = userAnswers
+            .set(ExpressTrustYesNoPage, false)
+            .success
+            .value
+            .set(TrustTaxableYesNoPage, true)
+            .success
+            .value
 
-              navigator.nextPage(ExpressTrustYesNoPage)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad())
-          }
+          navigator
+            .nextPage(ExpressTrustYesNoPage)(answers)
+            .mustBe(routes.BeforeYouContinueController.onPageLoad())
         }
+    }
+
+    "Any tax liability in current tax year?" when {
+      "-> YES -> Before you continue" in
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val answers = userAnswers
+            .set(TaxLiabilityInCurrentTaxYearYesNoPage, true)
+            .success
+            .value
+            .set(TrustTaxableYesNoPage, true)
+            .success
+            .value
+
+          navigator
+            .nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
+            .mustBe(routes.BeforeYouContinueController.onPageLoad())
+        }
+      "-> NO -> Any undeclared tax liability?" in
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val answers = userAnswers
+            .set(TaxLiabilityInCurrentTaxYearYesNoPage, false)
+            .success
+            .value
+            .set(TrustTaxableYesNoPage, true)
+            .success
+            .value
+
+          navigator
+            .nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
+            .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad())
+        }
+    }
+
+    "Any undeclared tax liability?" when {
+      "not an Express Trust" must {
+        "-> YES -> Before you continue" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            val answers = userAnswers
+              .set(ExpressTrustYesNoPage, false)
+              .success
+              .value
+              .set(UndeclaredTaxLiabilityYesNoPage, true)
+              .success
+              .value
+
+            navigator
+              .nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
+              .mustBe(routes.BeforeYouContinueController.onPageLoad())
+          }
+        "-> NO -> You do not need to register" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            val answers = userAnswers
+              .set(ExpressTrustYesNoPage, false)
+              .success
+              .value
+              .set(UndeclaredTaxLiabilityYesNoPage, false)
+              .success
+              .value
+
+            navigator
+              .nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
+              .mustBe(routes.NoNeedToRegisterController.onPageLoad())
+          }
       }
 
-      "Any tax liability in current tax year?" when {
-        "-> YES -> Before you continue" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
-                .set(TrustTaxableYesNoPage, true).success.value
+      "an Express Trust" must {
+        "-> YES -> Before you continue" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            val answers = userAnswers
+              .set(ExpressTrustYesNoPage, true)
+              .success
+              .value
+              .set(UndeclaredTaxLiabilityYesNoPage, true)
+              .success
+              .value
 
-              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
-                .mustBe(routes.BeforeYouContinueController.onPageLoad())
+            navigator
+              .nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
+              .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
-        }
-        "-> NO -> Any undeclared tax liability?" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-              val answers = userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, false).success.value
-                .set(TrustTaxableYesNoPage, true).success.value
+        "-> No -> Before you continue" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            val answers = userAnswers
+              .set(ExpressTrustYesNoPage, true)
+              .success
+              .value
+              .set(UndeclaredTaxLiabilityYesNoPage, false)
+              .success
+              .value
 
-              navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(answers)
-                .mustBe(routes.UndeclaredTaxLiabilityYesNoController.onPageLoad())
+            navigator
+              .nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
+              .mustBe(routes.BeforeYouContinueController.onPageLoad())
           }
-        }
       }
-
-      "Any undeclared tax liability?" when {
-        "not an Express Trust" must {
-          "-> YES -> Before you continue" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-                val answers = userAnswers
-                  .set(ExpressTrustYesNoPage, false).success.value
-                  .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
-
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
-                  .mustBe(routes.BeforeYouContinueController.onPageLoad())
-            }
-          }
-          "-> NO -> You do not need to register" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-                val answers = userAnswers
-                  .set(ExpressTrustYesNoPage, false).success.value
-                  .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
-
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
-                  .mustBe(routes.NoNeedToRegisterController.onPageLoad())
-            }
-          }
-        }
-
-        "an Express Trust" must {
-          "-> YES -> Before you continue" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-                val answers = userAnswers
-                  .set(ExpressTrustYesNoPage, true).success.value
-                  .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
-
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
-                  .mustBe(routes.BeforeYouContinueController.onPageLoad())
-            }
-          }
-          "-> No -> Before you continue" in {
-            forAll(arbitrary[UserAnswers]) {
-              userAnswers =>
-                val answers = userAnswers
-                  .set(ExpressTrustYesNoPage, true).success.value
-                  .set(UndeclaredTaxLiabilityYesNoPage, false).success.value
-
-                navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(answers)
-                  .mustBe(routes.BeforeYouContinueController.onPageLoad())
-            }
-          }
-        }
-      }
+    }
   }
+
 }

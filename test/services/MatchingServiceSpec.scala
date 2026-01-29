@@ -38,7 +38,6 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
   private val mockConnector: TrustConnector = mock[TrustConnector]
 
-
   override def beforeEach(): Unit = {
     reset(mockConnector)
 
@@ -51,9 +50,15 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     val service = new MatchingService(mockConnector, cacheRepository)
 
     val userAnswers: MatchingAndSuitabilityUserAnswers = emptyMatchingAndSuitabilityUserAnswers
-      .set(WhatIsTheUTRPage, "utr").success.value
-      .set(MatchingNamePage, "name").success.value
-      .set(PostcodeForTheTrustPage, "postcode").success.value
+      .set(WhatIsTheUTRPage, "utr")
+      .success
+      .value
+      .set(MatchingNamePage, "name")
+      .success
+      .value
+      .set(PostcodeForTheTrustPage, "postcode")
+      .success
+      .value
 
     "Success response" when {
 
@@ -61,11 +66,14 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
         "redirect to ExpressTrust page" in {
 
-          when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
+          when(mockConnector.matching(any())(any(), any()))
+            .thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
           val result = service.matching(userAnswers, isAgent = true)
 
-          redirectLocation(result).value mustBe controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad().url
+          redirectLocation(result).value mustBe controllers.register.suitability.routes.ExpressTrustYesNoController
+            .onPageLoad()
+            .url
 
           verify(mockConnector).matching(any())(any(), any())
 
@@ -79,11 +87,14 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
         "redirect to Express trust" in {
 
-          when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(true)))
+          when(mockConnector.matching(any())(any(), any()))
+            .thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
           val result = service.matching(userAnswers, isAgent = false)
 
-          redirectLocation(result).value mustBe controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad().url
+          redirectLocation(result).value mustBe controllers.register.suitability.routes.ExpressTrustYesNoController
+            .onPageLoad()
+            .url
 
           verify(mockConnector).matching(any())(any(), any())
 
@@ -112,7 +123,9 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
         val result = service.matching(userAnswers, isAgent = false)
 
-        redirectLocation(result).value mustBe controllers.register.routes.TrustAlreadyRegisteredController.onPageLoad().url
+        redirectLocation(result).value mustBe controllers.register.routes.TrustAlreadyRegisteredController
+          .onPageLoad()
+          .url
       }
     }
 
@@ -137,4 +150,5 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       }
     }
   }
+
 }

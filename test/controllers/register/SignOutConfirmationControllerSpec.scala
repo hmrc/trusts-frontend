@@ -43,4 +43,5 @@ class SignOutConfirmationControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

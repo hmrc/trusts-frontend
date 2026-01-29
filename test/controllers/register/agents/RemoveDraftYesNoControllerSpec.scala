@@ -35,7 +35,7 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("removeDraftYesNo")
 
   private lazy val removeDraftYesNoRoute: String = routes.RemoveDraftYesNoController.onPageLoad(fakeDraftId).url
-  private lazy val agentOverviewRoute: String = routes.AgentOverviewController.onPageLoad().url
+  private lazy val agentOverviewRoute: String    = routes.AgentOverviewController.onPageLoad().url
 
   private val clientReferenceNumber: String = "crn"
 
@@ -45,7 +45,8 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(Some(clientReferenceNumber)))
+      when(registrationsRepository.getClientReference(any(), any())(any()))
+        .thenReturn(Future.successful(Some(clientReferenceNumber)))
 
       val request = FakeRequest(GET, removeDraftYesNoRoute)
 
@@ -107,7 +108,8 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(Some(clientReferenceNumber)))
+      when(registrationsRepository.getClientReference(any(), any())(any()))
+        .thenReturn(Future.successful(Some(clientReferenceNumber)))
 
       val request = FakeRequest(POST, removeDraftYesNoRoute)
         .withFormUrlEncodedBody(("value", ""))
@@ -193,4 +195,5 @@ class RemoveDraftYesNoControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

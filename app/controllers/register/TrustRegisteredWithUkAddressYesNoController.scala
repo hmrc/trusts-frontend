@@ -30,41 +30,38 @@ import views.html.register.TrustRegisteredWithUkAddressYesNoView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustRegisteredWithUkAddressYesNoController @Inject()(
-                                                             override val messagesApi: MessagesApi,
-                                                             cacheRepository: CacheRepository,
-                                                             matchingService: MatchingService,
-                                                             actions: StandardActionSets,
-                                                             yesNoFormProvider: YesNoFormProvider,
-                                                             val controllerComponents: MessagesControllerComponents,
-                                                             view: TrustRegisteredWithUkAddressYesNoView
-                                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrustRegisteredWithUkAddressYesNoController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  matchingService: MatchingService,
+  actions: StandardActionSets,
+  yesNoFormProvider: YesNoFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: TrustRegisteredWithUkAddressYesNoView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix("trustRegisteredWithUkAddress")
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val preparedForm = request.userAnswers.get(TrustRegisteredWithUkAddressYesNoPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(TrustRegisteredWithUkAddressYesNoPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredWithUkAddressYesNoPage, value))
-            _ <- cacheRepository.set(updatedAnswers)
-            redirect <- {
+            _              <- cacheRepository.set(updatedAnswers)
+            redirect       <- {
               if (value) {
                 Future.successful(Redirect(routes.PostcodeForTheTrustController.onPageLoad()))
               } else {
@@ -72,7 +69,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject()(
               }
             }
           } yield redirect
-        }
       )
   }
+
 }

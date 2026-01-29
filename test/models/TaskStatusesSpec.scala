@@ -109,4 +109,5 @@ class TaskStatusesSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

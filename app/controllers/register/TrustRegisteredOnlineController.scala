@@ -16,7 +16,9 @@
 
 package controllers.register
 
-import controllers.actions.register.{MatchingAndSuitabilityDataRequiredAction, MatchingAndSuitabilityDataRetrievalAction, RegistrationIdentifierAction}
+import controllers.actions.register.{
+  MatchingAndSuitabilityDataRequiredAction, MatchingAndSuitabilityDataRetrievalAction, RegistrationIdentifierAction
+}
 import forms.YesNoFormProvider
 import models.requests.MatchingAndSuitabilityDataRequest
 import navigation.Navigator
@@ -31,46 +33,44 @@ import views.html.register.TrustRegisteredOnlineView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustRegisteredOnlineController @Inject()(
-                                                 override val messagesApi: MessagesApi,
-                                                 cacheRepository: CacheRepository,
-                                                 navigator: Navigator,
-                                                 identify: RegistrationIdentifierAction,
-                                                 getData: MatchingAndSuitabilityDataRetrievalAction,
-                                                 requireData: MatchingAndSuitabilityDataRequiredAction,
-                                                 formProvider: YesNoFormProvider,
-                                                 val controllerComponents: MessagesControllerComponents,
-                                                 view: TrustRegisteredOnlineView
-                                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrustRegisteredOnlineController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  navigator: Navigator,
+  identify: RegistrationIdentifierAction,
+  getData: MatchingAndSuitabilityDataRetrievalAction,
+  requireData: MatchingAndSuitabilityDataRequiredAction,
+  formProvider: YesNoFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: TrustRegisteredOnlineView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  private def actions: ActionBuilder[MatchingAndSuitabilityDataRequest, AnyContent] = identify andThen getData andThen requireData
+  private def actions: ActionBuilder[MatchingAndSuitabilityDataRequest, AnyContent] =
+    identify andThen getData andThen requireData
 
   private val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
 
-  def onPageLoad(): Action[AnyContent] = actions {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions { implicit request =>
+    val preparedForm = request.userAnswers.get(TrustRegisteredOnlinePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(TrustRegisteredOnlinePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredOnlinePage, value))
-            _ <- cacheRepository.set(updatedAnswers)
+            _              <- cacheRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TrustRegisteredOnlinePage)(updatedAnswers))
-        }
       )
   }
+
 }

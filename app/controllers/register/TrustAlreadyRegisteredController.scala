@@ -17,7 +17,9 @@
 package controllers.register
 
 import controllers.actions.StandardActionSets
-import pages.register.{MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage}
+import pages.register.{
+  MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage
+}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.CacheRepository
@@ -27,36 +29,35 @@ import views.html.register.TrustAlreadyRegisteredView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustAlreadyRegisteredController @Inject()(
-                                                  override val messagesApi: MessagesApi,
-                                                  cacheRepository: CacheRepository,
-                                                  actions: StandardActionSets,
-                                                  val controllerComponents: MessagesControllerComponents,
-                                                  view: TrustAlreadyRegisteredView
-                                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrustAlreadyRegisteredController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  actions: StandardActionSets,
+  val controllerComponents: MessagesControllerComponents,
+  view: TrustAlreadyRegisteredView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private def redirect(): Result = Redirect(routes.WhatIsTheUTRController.onPageLoad())
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
-
-      request.userAnswers.get(WhatIsTheUTRPage) match {
-        case Some(utr) => Ok(view(utr, request.isAgent))
-        case _ => redirect()
-      }
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    request.userAnswers.get(WhatIsTheUTRPage) match {
+      case Some(utr) => Ok(view(utr, request.isAgent))
+      case _         => redirect()
+    }
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      for {
-        updatedAnswers <- Future.fromTry(request.userAnswers
-          .remove(WhatIsTheUTRPage)
-          .flatMap(_.remove(MatchingNamePage))
-          .flatMap(_.remove(TrustRegisteredWithUkAddressYesNoPage))
-          .flatMap(_.remove(PostcodeForTheTrustPage))
-        )
-        _ <- cacheRepository.set(updatedAnswers)
-      } yield redirect()
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    for {
+      updatedAnswers <- Future.fromTry(
+                          request.userAnswers
+                            .remove(WhatIsTheUTRPage)
+                            .flatMap(_.remove(MatchingNamePage))
+                            .flatMap(_.remove(TrustRegisteredWithUkAddressYesNoPage))
+                            .flatMap(_.remove(PostcodeForTheTrustPage))
+                        )
+      _              <- cacheRepository.set(updatedAnswers)
+    } yield redirect()
   }
+
 }

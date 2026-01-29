@@ -32,35 +32,36 @@ class TrustHaveAUTRPageSpec extends PageBehaviours {
     beRemovable[Boolean](TrustHaveAUTRPage)
   }
 
-  "remove relevant data when TrustHaveAUTRPage is set to false" in {
+  "remove relevant data when TrustHaveAUTRPage is set to false" in
+    forAll(arbitrary[UserAnswers], arbitrary[String]) { (initial, str) =>
+      val answers = initial
+        .set(WhatIsTheUTRPage, str)
+        .success
+        .value
+        .set(PostcodeForTheTrustPage, str)
+        .success
+        .value
 
-    forAll(arbitrary[UserAnswers], arbitrary[String]) {
-      (initial, str) =>
+      val result = answers.set(TrustHaveAUTRPage, false).success.value
 
-        val answers = initial.set(WhatIsTheUTRPage, str).success.value
-          .set(PostcodeForTheTrustPage, str).success.value
-
-        val result = answers.set(TrustHaveAUTRPage, false).success.value
-
-        result.get(WhatIsTheUTRPage) mustNot be (defined)
-        result.get(PostcodeForTheTrustPage) mustNot be (defined)
+      result.get(WhatIsTheUTRPage) mustNot be(defined)
+      result.get(PostcodeForTheTrustPage) mustNot be(defined)
     }
 
-  }
+  "remove relevant data when TrustHaveAUTRPage is set to true" in
+    forAll(arbitrary[UserAnswers], arbitrary[Boolean]) { (initial, bool) =>
+      val answers = initial
+        .set(TaxLiabilityInCurrentTaxYearYesNoPage, bool)
+        .success
+        .value
+        .set(UndeclaredTaxLiabilityYesNoPage, bool)
+        .success
+        .value
 
-  "remove relevant data when TrustHaveAUTRPage is set to true" in {
+      val result = answers.set(TrustHaveAUTRPage, true).success.value
 
-    forAll(arbitrary[UserAnswers], arbitrary[Boolean]) {
-      (initial, bool) =>
-
-        val answers = initial
-          .set(TaxLiabilityInCurrentTaxYearYesNoPage, bool).success.value
-          .set(UndeclaredTaxLiabilityYesNoPage, bool).success.value
-
-        val result = answers.set(TrustHaveAUTRPage, true).success.value
-
-        result.get(TaxLiabilityInCurrentTaxYearYesNoPage) mustNot be (defined)
-        result.get(UndeclaredTaxLiabilityYesNoPage) mustNot be (defined)
+      result.get(TaxLiabilityInCurrentTaxYearYesNoPage) mustNot be(defined)
+      result.get(UndeclaredTaxLiabilityYesNoPage) mustNot be(defined)
     }
-  }
+
 }

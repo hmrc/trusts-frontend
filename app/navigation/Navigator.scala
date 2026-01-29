@@ -25,10 +25,10 @@ import play.api.mvc.Call
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class Navigator @Inject()(config: FrontendAppConfig) {
+class Navigator @Inject() (config: FrontendAppConfig) {
 
-  private def defaultRoute: PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
-    case _ => _ => controllers.register.routes.IndexController.onPageLoad()
+  private def defaultRoute: PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = { case _ =>
+    _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
   protected def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] =

@@ -32,12 +32,11 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class DeclarationMapperSpec extends AnyFreeSpec with Matchers
-  with OptionValues with Generators with SpecBaseHelpers {
+class DeclarationMapperSpec extends AnyFreeSpec with Matchers with OptionValues with Generators with SpecBaseHelpers {
 
-  private implicit val hc: HeaderCarrier = HeaderCarrier()
+  implicit private val hc: HeaderCarrier = HeaderCarrier()
 
-  private val leadTrusteeAddress = AddressType("Line 1", "Line 2", None, None, None, "FR")
+  private val leadTrusteeAddress        = AddressType("Line 1", "Line 2", None, None, None, "FR")
   private val agentAddress: AddressType = AddressType("Line 1", "Line 2", None, None, Some("AB1 1AB"), "GB")
 
   "DeclarationMapper" - {
@@ -49,8 +48,9 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers
         val userAnswers = emptyUserAnswers
 
         val mockRegistrationsRepository: DefaultRegistrationsRepository = mock[DefaultRegistrationsRepository]
-        when(mockRegistrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(agentAddress)))
-        val declarationMapper: DeclarationMapper = new DeclarationMapper(mockRegistrationsRepository)
+        when(mockRegistrationsRepository.getAgentAddress(any())(any()))
+          .thenReturn(Future.successful(Some(agentAddress)))
+        val declarationMapper: DeclarationMapper                        = new DeclarationMapper(mockRegistrationsRepository)
 
         val result = Await.result(declarationMapper.build(userAnswers, leadTrusteeAddress), Duration.Inf)
 
@@ -61,7 +61,9 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers
     "when DeclarationPage not empty" - {
 
       val userAnswers = emptyUserAnswers
-        .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
+        .set(DeclarationPage, models.core.pages.Declaration(FullName("First", None, "Last"), Some("test@test.comn")))
+        .success
+        .value
 
       "for an Agent" - {
 
@@ -85,7 +87,7 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers
 
           when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
           val declarationMapper: DeclarationMapper = new DeclarationMapper(registrationsRepository)
-          val result = Await.result(declarationMapper.build(userAnswers, leadTrusteeAddress), Duration.Inf).value
+          val result                               = Await.result(declarationMapper.build(userAnswers, leadTrusteeAddress), Duration.Inf).value
 
           result mustBe Declaration(
             name = FullName("First", None, "Last"),
@@ -95,4 +97,5 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers
       }
     }
   }
+
 }

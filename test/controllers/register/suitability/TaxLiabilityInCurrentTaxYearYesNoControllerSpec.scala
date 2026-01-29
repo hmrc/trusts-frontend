@@ -16,7 +16,6 @@
 
 package controllers.register.suitability
 
-
 import base.RegistrationSpecBase
 import controllers.register.routes._
 import forms.YesNoFormProvider
@@ -34,7 +33,8 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("suitability.taxLiabilityInCurrentTaxYear")
 
-  private lazy val taxLiabilityInCurrentTaxYearYesNoRoute: String = routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad().url
+  private lazy val taxLiabilityInCurrentTaxYearYesNoRoute: String =
+    routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad().url
 
   private val mockLocalDateService = mock[LocalDateService]
   when(mockLocalDateService.now()).thenReturn(LocalDate.parse("2018-08-18"))
@@ -66,7 +66,9 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyMatchingAndSuitabilityUserAnswers
-        .set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
+        .set(TaxLiabilityInCurrentTaxYearYesNoPage, true)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(bind[LocalDateService].toInstance(mockLocalDateService))
@@ -159,4 +161,5 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       application.stop()
     }
   }
+
 }

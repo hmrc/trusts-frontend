@@ -24,28 +24,39 @@ import pages.register._
 
 object TestUserAnswers extends TryValues {
 
-  lazy val draftId = "id"
+  lazy val draftId        = "id"
   lazy val userInternalId = "internalId"
 
   def emptyUserAnswers: UserAnswers = UserAnswers(draftId = draftId, internalAuthId = userInternalId)
 
-  def emptyMatchingAndSuitabilityUserAnswers: MatchingAndSuitabilityUserAnswers = MatchingAndSuitabilityUserAnswers(internalId = userInternalId)
+  def emptyMatchingAndSuitabilityUserAnswers: MatchingAndSuitabilityUserAnswers =
+    MatchingAndSuitabilityUserAnswers(internalId = userInternalId)
 
-  def withDeclaration(userAnswers: UserAnswers): UserAnswers = {
+  def withDeclaration(userAnswers: UserAnswers): UserAnswers =
     userAnswers
-      .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn"))).success.value
-  }
+      .set(DeclarationPage, Declaration(FullName("First", None, "Last"), Some("test@test.comn")))
+      .success
+      .value
 
-  def withMatchingSuccess(userAnswers: UserAnswers): UserAnswers = {
+  def withMatchingSuccess(userAnswers: UserAnswers): UserAnswers =
     userAnswers
-      .set(TrustHaveAUTRPage, true).success.value
-      .set(WhatIsTheUTRPage, "123456789").success.value
-      .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
-      .set(ExistingTrustMatched, Success).success.value
-  }
+      .set(TrustHaveAUTRPage, true)
+      .success
+      .value
+      .set(WhatIsTheUTRPage, "123456789")
+      .success
+      .value
+      .set(PostcodeForTheTrustPage, "NE981ZZ")
+      .success
+      .value
+      .set(ExistingTrustMatched, Success)
+      .success
+      .value
 
-  def withMatchingFailed(userAnswers: UserAnswers): UserAnswers = {
+  def withMatchingFailed(userAnswers: UserAnswers): UserAnswers =
     userAnswers
-      .set(ExistingTrustMatched, Failed).success.value
-  }
+      .set(ExistingTrustMatched, Failed)
+      .success
+      .value
+
 }

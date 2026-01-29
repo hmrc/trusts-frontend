@@ -24,19 +24,19 @@ import views.html.register.MatchingDownView
 
 import javax.inject.Inject
 
-class MatchingDownController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        identify: RegistrationIdentifierAction,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: MatchingDownView
-                                      ) extends FrontendBaseController with I18nSupport {
+class MatchingDownController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: RegistrationIdentifierAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: MatchingDownView
+) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = identify {
-    implicit request =>
-      Ok(view(request.isAgent))
+  def onPageLoad(): Action[AnyContent] = identify { implicit request =>
+    Ok(view(request.isAgent))
   }
 
   def onSubmit: Action[AnyContent] = identify { _ =>
     Redirect(controllers.register.routes.LogoutController.logout())
   }
+
 }

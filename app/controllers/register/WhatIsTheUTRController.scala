@@ -30,42 +30,39 @@ import views.html.register.WhatIsTheUTRView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhatIsTheUTRController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        cacheRepository: CacheRepository,
-                                        navigator: Navigator,
-                                        actions: StandardActionSets,
-                                        formProvider: WhatIsTheUTRFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: WhatIsTheUTRView
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class WhatIsTheUTRController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  navigator: Navigator,
+  actions: StandardActionSets,
+  formProvider: WhatIsTheUTRFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: WhatIsTheUTRView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private val form: Form[String] = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val preparedForm = request.userAnswers.get(WhatIsTheUTRPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(WhatIsTheUTRPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatIsTheUTRPage, value))
-            _ <- cacheRepository.set(updatedAnswers)
+            _              <- cacheRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(WhatIsTheUTRPage)(updatedAnswers))
-        }
       )
   }
+
 }

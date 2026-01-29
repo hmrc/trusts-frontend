@@ -23,19 +23,19 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.FailedMatchView
 
-class FailedMatchController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       identify: RegistrationIdentifierAction,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: FailedMatchView
-                                     ) extends FrontendBaseController with I18nSupport {
+class FailedMatchController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: RegistrationIdentifierAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: FailedMatchView
+) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = identify {
-    implicit request =>
-      Ok(view())
+  def onPageLoad(): Action[AnyContent] = identify { implicit request =>
+    Ok(view())
   }
 
   def onSubmit(): Action[AnyContent] = identify { _ =>
     Redirect(controllers.register.routes.WhatIsTheUTRController.onPageLoad())
   }
+
 }

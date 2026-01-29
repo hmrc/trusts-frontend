@@ -29,9 +29,9 @@ class IndividualViewSpec extends ViewBehaviours {
 
   private val prefix: String = "confirmation.nonTaxable.individual"
 
-  private val fakeRef: String = "XC TRN 00 00 00 49 11"
+  private val fakeRef: String          = "XC TRN 00 00 00 49 11"
   private val formattedFakeRef: String = formatReferenceNumber(fakeRef)
-  private val fakeName: String = "name"
+  private val fakeName: String         = "name"
 
   "non taxable new Trust Individual View" must {
 
@@ -44,10 +44,21 @@ class IndividualViewSpec extends ViewBehaviours {
       fakeName,
       None,
       "p1",
-      "subheading1", "p1", "p2", "p3", "p4",
-      "subheading2", "p6", "p7", "p8", "p9",
-      "subheading3", "p10", "p11",
+      "subheading1",
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "subheading2",
+      "p6",
+      "p7",
+      "p8",
+      "p9",
+      "subheading3",
+      "p10",
+      "p11",
       "link1"
     )
   }
+
 }

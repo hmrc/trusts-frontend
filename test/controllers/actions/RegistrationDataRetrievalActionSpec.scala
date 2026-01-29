@@ -30,7 +30,8 @@ import scala.concurrent.Future
 
 class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures {
 
-  class Harness(registrationsRepository: RegistrationsRepository) extends RegistrationDataRetrievalActionImpl(registrationsRepository) {
+  class Harness(registrationsRepository: RegistrationsRepository)
+      extends RegistrationDataRetrievalActionImpl(registrationsRepository) {
     def callTransform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = transform(request)
   }
 
@@ -46,7 +47,9 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
         val action = new Harness(registrationsRepository)
 
-        val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment])))
+        val futureResult = action.callTransform(
+          IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Individual, Enrolments(Set.empty[Enrolment]))
+        )
 
         whenReady(futureResult) { result =>
           result.userAnswers.isEmpty mustBe true
@@ -67,7 +70,9 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
           val action = new Harness(registrationsRepository)
 
-          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callTransform(
+            IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
+          )
 
           whenReady(futureResult) { result =>
             result.userAnswers.isDefined mustBe true
@@ -85,7 +90,9 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
           val action = new Harness(registrationsRepository)
 
-          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callTransform(
+            IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
+          )
 
           whenReady(futureResult) { result =>
             result.userAnswers.isDefined mustBe true
@@ -106,7 +113,9 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
           val action = new Harness(registrationsRepository)
 
-          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callTransform(
+            IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
+          )
 
           whenReady(futureResult) { result =>
             result.userAnswers.isEmpty mustBe true
@@ -124,7 +133,9 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
           val action = new Harness(registrationsRepository)
 
-          val futureResult = action.callTransform(IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+          val futureResult = action.callTransform(
+            IdentifierRequest(fakeRequest, "internalId", AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
+          )
 
           whenReady(futureResult) { result =>
             result.userAnswers.isEmpty mustBe true
@@ -135,4 +146,5 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
       }
     }
   }
+
 }

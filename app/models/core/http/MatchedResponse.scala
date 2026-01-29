@@ -39,13 +39,14 @@ object MatchedResponse extends Logging {
       logger.info(s"response status received from trusts api: ${response.status}")
 
       response.status match {
-        case OK =>
+        case OK       =>
           response.json.as[SuccessOrFailureResponse]
         case CONFLICT =>
           AlreadyRegistered
-        case _ =>
+        case _        =>
           InternalServerError
       }
     }
   }
+
 }

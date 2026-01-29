@@ -33,7 +33,7 @@ import scala.concurrent.Future
 
 class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new PostcodeForTheTrustFormProvider()
+  val formProvider       = new PostcodeForTheTrustFormProvider()
   val form: Form[String] = formProvider()
 
   lazy val postcodeForTheTrustRoute: String = routes.PostcodeForTheTrustController.onPageLoad().url
@@ -85,7 +85,8 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       val redirectUrl = "redirect-url"
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any())(any(), any())).thenReturn(Future.successful(Redirect(redirectUrl)))
+      when(mockMatchingService.matching(any(), any())(any(), any()))
+        .thenReturn(Future.successful(Redirect(redirectUrl)))
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
         .overrides(bind[MatchingService].toInstance(mockMatchingService))
@@ -156,4 +157,5 @@ class PostcodeForTheTrustControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

@@ -18,7 +18,7 @@ package pages.register
 
 import base.RegistrationSpecBase
 import models.registration.pages.TagStatus._
-import models.{TaskStatuses, FirstTaxYearAvailable}
+import models.{FirstTaxYearAvailable, TaskStatuses}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
@@ -33,7 +33,8 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  def mockFirstTaxYearAvailable(yearsAgo: Int = 4): FirstTaxYearAvailable = FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare = false)
+  def mockFirstTaxYearAvailable(yearsAgo: Int = 4): FirstTaxYearAvailable =
+    FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare = false)
 
   "RegistrationProgress" when {
 
@@ -45,15 +46,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
             .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
-          val application = applicationBuilder().build()
+          val application          = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          val result = Await.result(registrationProgress.isTaskListComplete(
-            draftId = fakeDraftId,
-            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-            isTaxable = true,
-            isExistingTrust = false
-          ), Duration.Inf)
+          val result = Await.result(
+            registrationProgress.isTaskListComplete(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = true,
+              isExistingTrust = false
+            ),
+            Duration.Inf
+          )
 
           result mustBe true
         }
@@ -65,15 +69,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
             .thenReturn(Future.successful(TaskStatuses()))
 
-          val application = applicationBuilder().build()
+          val application          = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          val result = Await.result(registrationProgress.isTaskListComplete(
-            draftId = fakeDraftId,
-            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-            isTaxable = true,
-            isExistingTrust = false
-          ), Duration.Inf)
+          val result = Await.result(
+            registrationProgress.isTaskListComplete(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = true,
+              isExistingTrust = false
+            ),
+            Duration.Inf
+          )
 
           result mustBe false
         }
@@ -83,8 +90,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
     ".taxLiabilityLinkDisplay" must {
 
       "enable tax liability" when {
-        "trust is taxable, non-existing, and first tax year is more than 0 years ago" in {
-
+        "trust is taxable, non-existing, and first tax year is more than 0 years ago" in
           forAll(arbitrary[Int].suchThat(_ > 0), arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare) =>
             val result = RegistrationProgress.taxLiabilityLinkDisplay(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
@@ -93,13 +99,11 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             )
             result mustBe EnableTask
           }
-        }
       }
 
       "disable tax liability" when {
 
-        "trust is taxable, non-existing, but first tax year is 0 years ago" in {
-
+        "trust is taxable, non-existing, but first tax year is 0 years ago" in
           forAll(arbitrary[Boolean]) { earlierYearsToDeclare =>
             val result = RegistrationProgress.taxLiabilityLinkDisplay(
               firstTaxYearAvailable = Some(FirstTaxYearAvailable(0, earlierYearsToDeclare)),
@@ -108,7 +112,6 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             )
             result mustBe DisableTask
           }
-        }
 
         "trust start date not found" in {
 
@@ -123,29 +126,27 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
       "hide tax liability" when {
 
-        "non-taxable" in {
-
-          forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare, isExistingTrust) =>
-            val result = RegistrationProgress.taxLiabilityLinkDisplay(
-              firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
-              isTaxable = false,
-              isExistingTrust = isExistingTrust
-            )
-            result mustBe HideTask
+        "non-taxable" in
+          forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) {
+            (yearsAgo, earlierYearsToDeclare, isExistingTrust) =>
+              val result = RegistrationProgress.taxLiabilityLinkDisplay(
+                firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
+                isTaxable = false,
+                isExistingTrust = isExistingTrust
+              )
+              result mustBe HideTask
           }
-        }
 
-        "an existing trust" in {
-
-          forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) { (yearsAgo, earlierYearsToDeclare, isTaxable) =>
-            val result = RegistrationProgress.taxLiabilityLinkDisplay(
-              firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
-              isTaxable = isTaxable,
-              isExistingTrust = true
-            )
-            result mustBe HideTask
+        "an existing trust" in
+          forAll(arbitrary[Int], arbitrary[Boolean], arbitrary[Boolean]) {
+            (yearsAgo, earlierYearsToDeclare, isTaxable) =>
+              val result = RegistrationProgress.taxLiabilityLinkDisplay(
+                firstTaxYearAvailable = Some(FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)),
+                isTaxable = isTaxable,
+                isExistingTrust = true
+              )
+              result mustBe HideTask
           }
-        }
       }
     }
 
@@ -156,12 +157,15 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
           .thenReturn(Future.successful(TaskStatuses()))
 
-        val application = applicationBuilder().build()
+        val application          = applicationBuilder().build()
         val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-        val result = Await.result(registrationProgress.items(
-          draftId = fakeDraftId
-        ), Duration.Inf)
+        val result = Await.result(
+          registrationProgress.items(
+            draftId = fakeDraftId
+          ),
+          Duration.Inf
+        )
 
         result mustBe List(
           Task(Link("trustees", fakeFrontendAppConfig.trusteesFrontendUrl(fakeDraftId)), NotStarted),
@@ -185,15 +189,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
               when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
                 .thenReturn(Future.successful(TaskStatuses()))
 
-              val application = applicationBuilder().build()
+              val application          = applicationBuilder().build()
               val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-              val result = Await.result(registrationProgress.additionalItems(
-                draftId = fakeDraftId,
-                firstTaxYearAvailable = None,
-                isTaxable = true,
-                isExistingTrust = false
-              ), Duration.Inf)
+              val result = Await.result(
+                registrationProgress.additionalItems(
+                  draftId = fakeDraftId,
+                  firstTaxYearAvailable = None,
+                  isTaxable = true,
+                  isExistingTrust = false
+                ),
+                Duration.Inf
+              )
 
               result mustBe List(
                 Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
@@ -213,15 +220,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
                   when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
                     .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed)))
 
-                  val application = applicationBuilder().build()
+                  val application          = applicationBuilder().build()
                   val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-                  val result = Await.result(registrationProgress.additionalItems(
-                    draftId = fakeDraftId,
-                    firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-                    isTaxable = true,
-                    isExistingTrust = false
-                  ), Duration.Inf)
+                  val result = Await.result(
+                    registrationProgress.additionalItems(
+                      draftId = fakeDraftId,
+                      firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                      isTaxable = true,
+                      isExistingTrust = false
+                    ),
+                    Duration.Inf
+                  )
 
                   result mustBe List(
                     Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), Completed),
@@ -237,15 +247,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
                   when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
                     .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed, taxLiability = InProgress)))
 
-                  val application = applicationBuilder().build()
+                  val application          = applicationBuilder().build()
                   val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-                  val result = Await.result(registrationProgress.additionalItems(
-                    draftId = fakeDraftId,
-                    firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-                    isTaxable = true,
-                    isExistingTrust = false
-                  ), Duration.Inf)
+                  val result = Await.result(
+                    registrationProgress.additionalItems(
+                      draftId = fakeDraftId,
+                      firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                      isTaxable = true,
+                      isExistingTrust = false
+                    ),
+                    Duration.Inf
+                  )
 
                   result mustBe List(
                     Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), Completed),
@@ -262,15 +275,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
                 when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
                   .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed)))
 
-                val application = applicationBuilder().build()
+                val application          = applicationBuilder().build()
                 val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-                val result = Await.result(registrationProgress.additionalItems(
-                  draftId = fakeDraftId,
-                  firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(yearsAgo = 0)),
-                  isTaxable = true,
-                  isExistingTrust = false
-                ), Duration.Inf)
+                val result = Await.result(
+                  registrationProgress.additionalItems(
+                    draftId = fakeDraftId,
+                    firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(yearsAgo = 0)),
+                    isTaxable = true,
+                    isExistingTrust = false
+                  ),
+                  Duration.Inf
+                )
 
                 result mustBe List(
                   Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), Completed),
@@ -287,15 +303,18 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
-            val application = applicationBuilder().build()
+            val application          = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            val result = Await.result(registrationProgress.additionalItems(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-              isTaxable = true,
-              isExistingTrust = true
-            ), Duration.Inf)
+            val result = Await.result(
+              registrationProgress.additionalItems(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = true,
+                isExistingTrust = true
+              ),
+              Duration.Inf
+            )
 
             result mustBe List(
               Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
@@ -311,23 +330,28 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
             .thenReturn(Future.successful(TaskStatuses()))
 
-          val application = applicationBuilder().build()
+          val application          = applicationBuilder().build()
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-          val result = Await.result(registrationProgress.additionalItems(
-            draftId = fakeDraftId,
-            firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-            isTaxable = false,
-            isExistingTrust = false
-          ), Duration.Inf)
+          val result = Await.result(
+            registrationProgress.additionalItems(
+              draftId = fakeDraftId,
+              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+              isTaxable = false,
+              isExistingTrust = false
+            ),
+            Duration.Inf
+          )
 
           result mustBe List(
             Task(Link("trustDetails", fakeFrontendAppConfig.trustDetailsFrontendUrl(fakeDraftId)), NotStarted),
             Task(
-              link = Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)),
+              link =
+                Link("companyOwnershipOrControllingInterest", fakeFrontendAppConfig.assetsFrontendUrl(fakeDraftId)),
               tag = NotStarted,
               appTaskStyles = Some(Width("70%").toString),
-              taskTagTextStyles =Some(Width("70%").toString))
+              taskTagTextStyles = Some(Width("70%").toString)
+            )
           )
         }
       }
@@ -343,17 +367,20 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
-            val application = applicationBuilder().build()
+            val application          = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            val result = Await.result(registrationProgress.taskCount(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-              isTaxable = true,
-              isExistingTrust = false
-            ), Duration.Inf)
+            val result = Await.result(
+              registrationProgress.taskCount(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = true,
+                isExistingTrust = false
+              ),
+              Duration.Inf
+            )
 
-            result mustBe(0, 8)
+            result mustBe (0, 8)
           }
 
           "return (0,7) for tasks completed when tax liability is not enabled" in {
@@ -361,17 +388,20 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
-            val application = applicationBuilder().build()
+            val application          = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            val result = Await.result(registrationProgress.taskCount(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(0)),
-              isTaxable = true,
-              isExistingTrust = false
-            ), Duration.Inf)
+            val result = Await.result(
+              registrationProgress.taskCount(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable(0)),
+                isTaxable = true,
+                isExistingTrust = false
+              ),
+              Duration.Inf
+            )
 
-            result mustBe(0, 8)
+            result mustBe (0, 8)
           }
         }
 
@@ -392,17 +422,20 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
               .thenReturn(Future.successful(completedStatuses))
 
-            val application = applicationBuilder().build()
+            val application          = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            val result = Await.result(registrationProgress.taskCount(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-              isTaxable = true,
-              isExistingTrust = false
-            ), Duration.Inf)
+            val result = Await.result(
+              registrationProgress.taskCount(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = true,
+                isExistingTrust = false
+              ),
+              Duration.Inf
+            )
 
-            result mustBe(4, 8)
+            result mustBe (4, 8)
           }
         }
 
@@ -412,17 +445,20 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
               .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
-            val application = applicationBuilder().build()
+            val application          = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            val result = Await.result(registrationProgress.taskCount(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-              isTaxable = true,
-              isExistingTrust = false
-            ), Duration.Inf)
+            val result = Await.result(
+              registrationProgress.taskCount(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = true,
+                isExistingTrust = false
+              ),
+              Duration.Inf
+            )
 
-            result mustBe(8, 8)
+            result mustBe (8, 8)
           }
         }
       }
@@ -435,17 +471,20 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
-            val application = applicationBuilder().build()
+            val application          = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            val result = Await.result(registrationProgress.taskCount(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-              isTaxable = false,
-              isExistingTrust = false
-            ), Duration.Inf)
+            val result = Await.result(
+              registrationProgress.taskCount(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = false,
+                isExistingTrust = false
+              ),
+              Duration.Inf
+            )
 
-            result mustBe(0, 7)
+            result mustBe (0, 7)
           }
         }
 
@@ -455,20 +494,24 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
               .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
-            val application = applicationBuilder().build()
+            val application          = applicationBuilder().build()
             val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
-            val result = Await.result(registrationProgress.taskCount(
-              draftId = fakeDraftId,
-              firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
-              isTaxable = false,
-              isExistingTrust = false
-            ), Duration.Inf)
+            val result = Await.result(
+              registrationProgress.taskCount(
+                draftId = fakeDraftId,
+                firstTaxYearAvailable = Some(mockFirstTaxYearAvailable()),
+                isTaxable = false,
+                isExistingTrust = false
+              ),
+              Duration.Inf
+            )
 
-            result mustBe(7, 7)
+            result mustBe (7, 7)
           }
         }
       }
     }
   }
+
 }

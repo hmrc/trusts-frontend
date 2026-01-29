@@ -28,9 +28,10 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.register.MatchingNameView
 
-class MatchingNameControllerSpec extends RegistrationSpecBase with MockitoSugar with Generators with ScalaCheckPropertyChecks {
+class MatchingNameControllerSpec
+    extends RegistrationSpecBase with MockitoSugar with Generators with ScalaCheckPropertyChecks {
 
-  val formProvider = new TrustNameFormProvider()
+  val formProvider       = new TrustNameFormProvider()
   val form: Form[String] = formProvider()
 
   lazy val matchingNameRoute: String = routes.MatchingNameController.onPageLoad().url
@@ -60,7 +61,9 @@ class MatchingNameControllerSpec extends RegistrationSpecBase with MockitoSugar 
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val answers = emptyMatchingAndSuitabilityUserAnswers
-        .set(MatchingNamePage, validAnswer).success.value
+        .set(MatchingNamePage, validAnswer)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -146,4 +149,5 @@ class MatchingNameControllerSpec extends RegistrationSpecBase with MockitoSugar 
     }
 
   }
+
 }

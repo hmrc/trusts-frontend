@@ -142,7 +142,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
       "redirect to agent details" when {
 
         val mockTaskListNavigator = mock[TaskListNavigator]
-        val onwardRoute: String = fakeNavigator.desiredRoute.url
+        val onwardRoute: String   = fakeNavigator.desiredRoute.url
 
         "draft has incomplete agent details" in {
 
@@ -181,4 +181,5 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
       }
     }
   }
+
 }

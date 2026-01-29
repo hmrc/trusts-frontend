@@ -43,8 +43,7 @@ import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class SubmissionServiceSpec extends AnyFreeSpec with Matchers
-  with OptionValues with Generators with SpecBaseHelpers {
+class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues with Generators with SpecBaseHelpers {
 
   private lazy val registrationMapper: RegistrationMapper = injector.instanceOf[RegistrationMapper]
 
@@ -53,39 +52,37 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
   private val stubbedRegistrationsRepository: RegistrationsRepository = new RegistrationsRepository {
     private val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
-    override def get(draftId: String)
-                    (implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
+    override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
       Future.successful(None)
 
-    override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)
-                    (implicit hc: HeaderCarrier): Future[Boolean] =
+    override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)(implicit
+      hc: HeaderCarrier
+    ): Future[Boolean] =
       Future.successful(true)
 
     override def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]] =
       Future.successful(None)
 
-    override def listDrafts()
-                           (implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] =
+    override def listDrafts()(implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] =
       Future.successful(List.empty)
 
-    override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)
-                                             (implicit hc: HeaderCarrier): Future[JsValue] =
+    override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit
+      hc: HeaderCarrier
+    ): Future[JsValue] =
       Future.successful(registrationJson)
 
-    override def getAnswerSections(draftId: String)
-                                  (implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
+    override def getAnswerSections(
+      draftId: String
+    )(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
       Future.successful(RegistrationAnswerSections())
 
-    override def getLeadTrustee(draftId: String)
-                               (implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
+    override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
       Future.successful(testLeadTrusteeOrg)
 
-    override def getCorrespondenceAddress(draftId: String)
-                                         (implicit hc: HeaderCarrier): Future[AddressType] =
+    override def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier): Future[AddressType] =
       Future.successful(correspondenceAddress)
 
-    override def getTrustName(draftId: String)
-                             (implicit hc: HeaderCarrier): Future[String] =
+    override def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String] =
       Future.successful("Name")
 
     override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
@@ -94,10 +91,14 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
     override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] =
       Future.successful(None)
 
-    override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]] =
+    override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit
+      hc: HeaderCarrier
+    ): Future[Option[String]] =
       Future.successful(None)
 
-    override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] =
+    override def getFirstTaxYearAvailable(draftId: String)(implicit
+      hc: HeaderCarrier
+    ): Future[Option[FirstTaxYearAvailable]] =
       Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false)))
 
     override def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier): Future[JsObject] =
@@ -109,7 +110,9 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
     override def setDraftSettlors(draftId: String, data: JsValue)(implicit hc: HeaderCarrier): Future[HttpResponse] =
       Future.successful(HttpResponse(OK, ""))
 
-    override def getSettlorsAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
+    override def getSettlorsAnswerSections(
+      draftId: String
+    )(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
       Future.successful(
         RegistrationSubmission.AllAnswerSections().settlors.getOrElse(Seq.empty[RegistrationSubmission.AnswerSection])
       )
@@ -124,19 +127,26 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
     stubbedRegistrationsRepository
   )
 
-  private implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  private implicit lazy val request: RegistrationDataRequest[_] =
-    RegistrationDataRequest(fakeRequest, "internalId", "sessionId", emptyUserAnswers, AffinityGroup.Organisation, Enrolments(Set()))
+  implicit private lazy val request: RegistrationDataRequest[_] =
+    RegistrationDataRequest(
+      fakeRequest,
+      "internalId",
+      "sessionId",
+      emptyUserAnswers,
+      AffinityGroup.Organisation,
+      Enrolments(Set())
+    )
 
   private val newTrustUserAnswers = {
     val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-    val userAnswers = TestUserAnswers.withDeclaration(emptyUserAnswers)
+    val userAnswers      = TestUserAnswers.withDeclaration(emptyUserAnswers)
 
     userAnswers
   }
 
-  "SubmissionService" -  {
+  "SubmissionService" - {
 
     "for an empty user answers" - {
 
@@ -144,7 +154,7 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val userAnswers = emptyUserAnswers
 
-        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        val result = Await.result(submissionService.submit(userAnswers), Duration.Inf)
         result mustBe UnableToRegister()
       }
     }
@@ -155,10 +165,10 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any())).
-          thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
+        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any()))
+          .thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
-        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        val result = Await.result(submissionService.submit(userAnswers), Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
 
@@ -166,10 +176,10 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any())).
-          thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
+        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any()))
+          .thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
-        val result  = Await.result(submissionService.submit(userAnswers),Duration.Inf)
+        val result = Await.result(submissionService.submit(userAnswers), Duration.Inf)
         result mustBe RegistrationTRNResponse("XTRN1234567")
       }
 
@@ -177,15 +187,15 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
 
-        val result  = Await.result(submissionService.submit(emptyUserAnswers),Duration.Inf)
+        val result = Await.result(submissionService.submit(emptyUserAnswers), Duration.Inf)
         result mustBe UnableToRegister()
       }
     }
 
     "must audit events" - {
 
-      val mockRegistrationMapper: RegistrationMapper = mock[RegistrationMapper]
-      val mockAuditService: AuditService = mock[AuditService]
+      val mockRegistrationMapper: RegistrationMapper           = mock[RegistrationMapper]
+      val mockAuditService: AuditService                       = mock[AuditService]
       val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
       val submissionService = new DefaultSubmissionService(
@@ -195,16 +205,18 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
         mockRegistrationsRepository
       )
 
-      val userAnswers: UserAnswers = newTrustUserAnswers
-      val correspondenceAddress: AddressType = AddressType("Line 1", "Line 2", None, None, None, "GB")
-      val trustName: String = "Name"
-      val registration: Future[Option[Registration]] = registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation)
+      val userAnswers: UserAnswers                   = newTrustUserAnswers
+      val correspondenceAddress: AddressType         = AddressType("Line 1", "Line 2", None, None, None, "GB")
+      val trustName: String                          = "Name"
+      val registration: Future[Option[Registration]] =
+        registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation)
 
       "when error retrieving correspondence address transformation" in {
 
         val errorReason: String = "Error retrieving correspondence address transformation."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.failed(new Throwable("")))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+          .thenReturn(Future.failed(new Throwable("")))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
@@ -214,7 +226,8 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val errorReason: String = "Error retrieving trust name transformation."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+          .thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.failed(new Throwable("")))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
@@ -225,7 +238,8 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val errorReason: String = "Error mapping UserAnswers to Registration."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+          .thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(None))
 
@@ -237,10 +251,12 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val errorReason: String = "Error adding draft registration sections."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+          .thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.failed(new Throwable("")))
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+          .thenReturn(Future.failed(new Throwable("")))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
@@ -248,11 +264,14 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
       "when registration submission fails" in {
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+          .thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any(), any())).thenReturn(Future.successful(TrustResponse.InternalServerError))
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+          .thenReturn(Future.successful(Json.obj()))
+        when(mockConnector.register(any(), any())(any(), any(), any()))
+          .thenReturn(Future.successful(TrustResponse.InternalServerError))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationSubmissionFailed(any(), any())(any(), any())
@@ -260,11 +279,14 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
       "when registration already submitted" in {
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+          .thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any(), any())).thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+          .thenReturn(Future.successful(Json.obj()))
+        when(mockConnector.register(any(), any())(any(), any(), any()))
+          .thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
         verify(mockAuditService).auditRegistrationAlreadySubmitted(any(), any())(any(), any())
@@ -274,10 +296,12 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
 
         val response: RegistrationTRNResponse = RegistrationTRNResponse("trn")
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any())).thenReturn(Future.successful(correspondenceAddress))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+          .thenReturn(Future.successful(correspondenceAddress))
         when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
         when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any())).thenReturn(Future.successful(Json.obj()))
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+          .thenReturn(Future.successful(Json.obj()))
         when(mockConnector.register(any(), any())(any(), any(), any())).thenReturn(Future.successful(response))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
@@ -285,4 +309,5 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers
       }
     }
   }
+
 }

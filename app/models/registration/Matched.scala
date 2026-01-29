@@ -27,9 +27,12 @@ object Matched extends Enumerable.Implicits {
   case object Failed extends WithName("failed") with Matched
 
   val values: Set[Matched] = Set(
-    Success, AlreadyRegistered, Failed
+    Success,
+    AlreadyRegistered,
+    Failed
   )
 
   implicit val enumerable: Enumerable[Matched] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+
 }

@@ -28,7 +28,7 @@ final case class RegistrationTRNResponse(trn: String) extends TrustResponse
 
 object RegistrationTRNResponse {
 
-  implicit val formats : OFormat[RegistrationTRNResponse] = Json.format[RegistrationTRNResponse]
+  implicit val formats: OFormat[RegistrationTRNResponse] = Json.format[RegistrationTRNResponse]
 
 }
 
@@ -39,8 +39,8 @@ object TrustResponse extends Logging {
     override def reads(json: JsValue): JsResult[TrustResponse] = json.validate[RegistrationTRNResponse]
 
     override def writes(o: TrustResponse): JsValue = o match {
-      case x : RegistrationTRNResponse => Json.toJson(x)(RegistrationTRNResponse.formats)
-      case x : RegistrationErrorAuditEvent => Json.toJson(x)(RegistrationErrorAuditEvent.formats)
+      case x: RegistrationTRNResponse     => Json.toJson(x)(RegistrationTRNResponse.formats)
+      case x: RegistrationErrorAuditEvent => Json.toJson(x)(RegistrationErrorAuditEvent.formats)
     }
 
   }
@@ -55,11 +55,11 @@ object TrustResponse extends Logging {
       logger.info(s"Response status received from trusts api: ${response.status}")
 
       response.status match {
-        case OK =>
+        case OK       =>
           response.json.as[RegistrationTRNResponse]
         case CONFLICT =>
           AlreadyRegistered
-        case _ =>
+        case _        =>
           InternalServerError
       }
     }

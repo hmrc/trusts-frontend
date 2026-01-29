@@ -429,7 +429,10 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
             ("Google", "Google"),
             ("John Smith", "John Smith"),
             ("£1000", "£1000"),
-            ("Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB", "Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB")
+            (
+              "Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB",
+              "Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB"
+            )
           )
 
           Seq(ENGLISH, WELSH).foreach { language =>
@@ -516,7 +519,10 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
             ("Google", "Google"),
             ("John Smith", "John Smith"),
             ("£1000", "£1000"),
-            ("Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB", "Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB")
+            (
+              "Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB",
+              "Line 1<br />Line 2<br />Line 3<br />Line 4<br />AB1 1AB"
+            )
           )
 
           Seq(ENGLISH, WELSH).foreach { language =>
@@ -536,22 +542,22 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
       val messagesApiWithPastTense = new DefaultMessagesApi(
         messages = Map(
           ENGLISH -> Map(
-            "test.checkYourAnswersLabel" -> "",
+            "test.checkYourAnswersLabel"          -> "",
             "testPastTense.checkYourAnswersLabel" -> "",
-            "settlor1.checkYourAnswersLabel" -> "",
-            "settlor2.checkYourAnswersLabel" -> "",
-            "settlor3.checkYourAnswersLabel" -> "",
-            "settlor4.checkYourAnswersLabel" -> "",
-            "settlor5.checkYourAnswersLabel" -> ""
+            "settlor1.checkYourAnswersLabel"      -> "",
+            "settlor2.checkYourAnswersLabel"      -> "",
+            "settlor3.checkYourAnswersLabel"      -> "",
+            "settlor4.checkYourAnswersLabel"      -> "",
+            "settlor5.checkYourAnswersLabel"      -> ""
           ),
-          WELSH -> Map(
-            "test.checkYourAnswersLabel" -> "",
+          WELSH   -> Map(
+            "test.checkYourAnswersLabel"          -> "",
             "testPastTense.checkYourAnswersLabel" -> "",
-            "settlor1.checkYourAnswersLabel" -> "",
-            "settlor2.checkYourAnswersLabel" -> "",
-            "settlor3.checkYourAnswersLabel" -> "",
-            "settlor4.checkYourAnswersLabel" -> "",
-            "settlor5.checkYourAnswersLabel" -> ""
+            "settlor1.checkYourAnswersLabel"      -> "",
+            "settlor2.checkYourAnswersLabel"      -> "",
+            "settlor3.checkYourAnswersLabel"      -> "",
+            "settlor4.checkYourAnswersLabel"      -> "",
+            "settlor5.checkYourAnswersLabel"      -> ""
           )
         )
       )
@@ -595,4 +601,5 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
 
     }
   }
+
 }

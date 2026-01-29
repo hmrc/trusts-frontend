@@ -29,9 +29,10 @@ trait MongoSuite extends ScalaFutures {
 
   val application: Application = new GuiceApplicationBuilder()
     .configure(
-      "metrics.enabled" -> false,
+      "metrics.enabled"  -> false,
       "auditing.enabled" -> false
-    ).build()
+    )
+    .build()
 
   val config: FrontendAppConfig = application.injector.instanceOf[FrontendAppConfig]
 

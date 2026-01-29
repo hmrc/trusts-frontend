@@ -23,17 +23,33 @@ import play.api.mvc.{ActionRefiner, Result}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class MatchingAndSuitabilityDataRequiredActionImpl @Inject()(implicit val executionContext: ExecutionContext) extends MatchingAndSuitabilityDataRequiredAction {
+class MatchingAndSuitabilityDataRequiredActionImpl @Inject() (implicit val executionContext: ExecutionContext)
+    extends MatchingAndSuitabilityDataRequiredAction {
 
-  override protected def refine[A](request: OptionalMatchingAndSuitabilityDataRequest[A]): Future[Either[Result, MatchingAndSuitabilityDataRequest[A]]] = {
+  override protected def refine[A](
+    request: OptionalMatchingAndSuitabilityDataRequest[A]
+  ): Future[Either[Result, MatchingAndSuitabilityDataRequest[A]]] =
 
     request.userAnswers match {
-      case None =>
+      case None       =>
         Future.successful(Left(Redirect(controllers.register.routes.SessionExpiredController.onPageLoad())))
       case Some(data) =>
-        Future.successful(Right(MatchingAndSuitabilityDataRequest(request.request, request.internalId, request.sessionId, data, request.affinityGroup, request.enrolments, request.agentARN)))
+        Future.successful(
+          Right(
+            MatchingAndSuitabilityDataRequest(
+              request.request,
+              request.internalId,
+              request.sessionId,
+              data,
+              request.affinityGroup,
+              request.enrolments,
+              request.agentARN
+            )
+          )
+        )
     }
-  }
+
 }
 
-trait MatchingAndSuitabilityDataRequiredAction extends ActionRefiner[OptionalMatchingAndSuitabilityDataRequest, MatchingAndSuitabilityDataRequest]
+trait MatchingAndSuitabilityDataRequiredAction
+    extends ActionRefiner[OptionalMatchingAndSuitabilityDataRequest, MatchingAndSuitabilityDataRequest]

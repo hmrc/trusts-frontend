@@ -27,9 +27,11 @@ class TrustNameFormProvider @Inject() extends Mappings {
       "value" -> text("trustName.error.required")
         .verifying(
           firstError(
-          maxLength(53, "trustName.error.length"),
-          regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trustName.error.invalidCharacters"),
-          isNotEmpty("value", "trustName.error.required")
-        ))
+            maxLength(53, "trustName.error.length"),
+            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trustName.error.invalidCharacters"),
+            isNotEmpty("value", "trustName.error.required")
+          )
+        )
     )
+
 }

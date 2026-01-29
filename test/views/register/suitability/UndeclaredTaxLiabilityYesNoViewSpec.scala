@@ -43,4 +43,5 @@ class UndeclaredTaxLiabilityYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

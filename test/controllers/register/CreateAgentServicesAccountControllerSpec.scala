@@ -43,4 +43,5 @@ class CreateAgentServicesAccountControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

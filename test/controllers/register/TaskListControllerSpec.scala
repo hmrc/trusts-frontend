@@ -42,15 +42,15 @@ import scala.concurrent.Future
 class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks with BeforeAndAfterEach {
 
   private val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
-  private val mockDateFormatter: DateFormatter = mock[DateFormatter]
+  private val mockDateFormatter: DateFormatter               = mock[DateFormatter]
 
-  private val fakeItems: List[Task] = Nil
+  private val fakeItems: List[Task]           = Nil
   private val fakeAdditionalItems: List[Task] = Nil
 
-  private val savedUntil = "21 April 2021"
-  private val utr = "1234567890"
+  private val savedUntil            = "21 April 2021"
+  private val utr                   = "1234567890"
   private val defaultCompletedTasks = 2
-  private val defualtTotalTasks = 7
+  private val defualtTotalTasks     = 7
 
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress)
@@ -73,18 +73,20 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
       .thenReturn(savedUntil)
   }
 
-  override protected def applicationBuilder(userAnswers: Option[TrustsFrontendUserAnswers[_]],
-                                            affinityGroup: AffinityGroup,
-                                            enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
-                                            navigator: Navigator = fakeNavigator): GuiceApplicationBuilder = {
+  override protected def applicationBuilder(
+    userAnswers: Option[TrustsFrontendUserAnswers[_]],
+    affinityGroup: AffinityGroup,
+    enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
+    navigator: Navigator = fakeNavigator
+  ): GuiceApplicationBuilder =
 
-    super.applicationBuilder(userAnswers, affinityGroup)
+    super
+      .applicationBuilder(userAnswers, affinityGroup)
       .configure(("microservice.services.features.removeTaxLiabilityOnTaskList", false))
       .overrides(
         bind[RegistrationProgress].toInstance(mockRegistrationProgress),
         bind[DateFormatter].toInstance(mockDateFormatter)
       )
-  }
 
   "TaskListController" when {
 
@@ -132,10 +134,18 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
         "return OK and the correct view for a GET" in {
 
           val answers = emptyUserAnswers
-            .set(TrustRegisteredOnlinePage, false).success.value
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, utr).success.value
-            .set(ExistingTrustMatched, Matched.Success).success.value
+            .set(TrustRegisteredOnlinePage, false)
+            .success
+            .value
+            .set(TrustHaveAUTRPage, true)
+            .success
+            .value
+            .set(WhatIsTheUTRPage, utr)
+            .success
+            .value
+            .set(ExistingTrustMatched, Matched.Success)
+            .success
+            .value
 
           val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
@@ -170,10 +180,18 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
           "redirect to AlreadyRegistered" in {
 
             val answers = emptyUserAnswers
-              .set(TrustRegisteredOnlinePage, false).success.value
-              .set(TrustHaveAUTRPage, true).success.value
-              .set(WhatIsTheUTRPage, utr).success.value
-              .set(ExistingTrustMatched, Matched.AlreadyRegistered).success.value
+              .set(TrustRegisteredOnlinePage, false)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, true)
+              .success
+              .value
+              .set(WhatIsTheUTRPage, utr)
+              .success
+              .value
+              .set(ExistingTrustMatched, Matched.AlreadyRegistered)
+              .success
+              .value
 
             val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -193,10 +211,18 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
           "redirect to FailedMatching" in {
 
             val answers = emptyUserAnswers
-              .set(TrustRegisteredOnlinePage, false).success.value
-              .set(TrustHaveAUTRPage, true).success.value
-              .set(WhatIsTheUTRPage, utr).success.value
-              .set(ExistingTrustMatched, Matched.Failed).success.value
+              .set(TrustRegisteredOnlinePage, false)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, true)
+              .success
+              .value
+              .set(WhatIsTheUTRPage, utr)
+              .success
+              .value
+              .set(ExistingTrustMatched, Matched.Failed)
+              .success
+              .value
 
             val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -217,9 +243,15 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
         "redirect to WhatIsTrustUTR" in {
 
           val answers = emptyUserAnswers
-            .set(TrustRegisteredOnlinePage, false).success.value
-            .set(TrustHaveAUTRPage, true).success.value
-            .set(WhatIsTheUTRPage, utr).success.value
+            .set(TrustRegisteredOnlinePage, false)
+            .success
+            .value
+            .set(TrustHaveAUTRPage, true)
+            .success
+            .value
+            .set(WhatIsTheUTRPage, utr)
+            .success
+            .value
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -237,42 +269,45 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
     }
 
     "a new trust" must {
-      "return OK and the correct view for a GET" in {
+      "return OK and the correct view for a GET" in
+        forAll(arbitrary[Boolean]) { isTaxable =>
+          val answers = emptyUserAnswers
+            .set(TrustRegisteredOnlinePage, false)
+            .success
+            .value
+            .set(TrustHaveAUTRPage, false)
+            .success
+            .value
+            .set(TrustTaxableYesNoPage, isTaxable)
+            .success
+            .value
 
-        forAll(arbitrary[Boolean]) {
-          (isTaxable) =>
+          val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
 
-            val answers = emptyUserAnswers
-              .set(TrustRegisteredOnlinePage, false).success.value
-              .set(TrustHaveAUTRPage, false).success.value
-              .set(TrustTaxableYesNoPage, isTaxable).success.value
+          val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
 
-            val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = Organisation).build()
+          val result = route(application, request).value
 
-            val request = FakeRequest(GET, routes.TaskListController.onPageLoad(fakeDraftId).url)
+          status(result) mustEqual OK
 
-            val result = route(application, request).value
+          val view = application.injector.instanceOf[TaskListView]
 
-            status(result) mustEqual OK
+          contentAsString(result) mustEqual
+            view(
+              isTaxable = isTaxable,
+              draftId = fakeDraftId,
+              savedUntil = savedUntil,
+              sections = fakeItems,
+              additionalSections = fakeAdditionalItems,
+              isTaskListComplete = true,
+              affinityGroup = Organisation,
+              completedTasks = defaultCompletedTasks,
+              totalTasks = defualtTotalTasks
+            )(request, messages).toString
 
-            val view = application.injector.instanceOf[TaskListView]
-
-            contentAsString(result) mustEqual
-              view(
-                isTaxable = isTaxable,
-                draftId = fakeDraftId,
-                savedUntil = savedUntil,
-                sections = fakeItems,
-                additionalSections = fakeAdditionalItems,
-                isTaskListComplete = true,
-                affinityGroup = Organisation,
-                completedTasks = defaultCompletedTasks,
-                totalTasks = defualtTotalTasks
-              )(request, messages).toString
-
-            application.stop()
+          application.stop()
         }
-      }
     }
   }
+
 }

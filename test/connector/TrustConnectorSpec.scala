@@ -41,10 +41,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(Seq(
-      "microservice.services.trusts.port" -> server.port(),
-      "auditing.enabled" -> false): _*
-    ).build()
+    .configure(Seq("microservice.services.trusts.port" -> server.port(), "auditing.enabled" -> false): _*)
+    .build()
 
   private lazy val connector = injector.instanceOf[TrustConnector]
 
@@ -72,7 +70,7 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
 
       val newTrustUserAnswers = {
         val emptyUserAnswers = TestUserAnswers.emptyUserAnswers
-        val userAnswers = TestUserAnswers.withDeclaration(emptyUserAnswers)
+        val userAnswers      = TestUserAnswers.withDeclaration(emptyUserAnswers)
 
         userAnswers
       }
@@ -83,15 +81,19 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
 
         "valid payload to trusts is sent" in {
 
-          val registration = Await.result(registrationMapper.build(newTrustUserAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf).value
+          val registration = Await
+            .result(
+              registrationMapper.build(newTrustUserAnswers, correspondenceAddress, trustName, Organisation),
+              Duration.Inf
+            )
+            .value
 
           val payload = Json.stringify(Json.toJson(registration))
 
           wiremock(
             payload = payload,
             expectedStatus = Status.OK,
-            expectedResponse =
-              """
+            expectedResponse = """
                 |{
                 | "trn": "XTRN1234567"
                 |}
@@ -99,7 +101,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
             url = registerUrl
           )
 
-          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
+          val result =
+            Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe RegistrationTRNResponse("XTRN1234567")
         }
       }
@@ -107,16 +110,17 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
       "return AlreadyRegistered response " - {
 
         "already registered trusts is sent " in {
-          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = Await.result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf).value
+          val userAnswers  = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = Await
+            .result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf)
+            .value
 
           val payload = Json.stringify(Json.toJson(registration))
 
           wiremock(
             payload = payload,
             expectedStatus = Status.CONFLICT,
-            expectedResponse =
-              """
+            expectedResponse = """
                 |{
                 | "code": "ALREADY_REGISTERED",
                 |  "message": "Trusts already registered."
@@ -125,23 +129,25 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
             url = registerUrl
           )
 
-          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
+          val result =
+            Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.AlreadyRegistered
         }
       }
 
       "return InternalServerError response " - {
         "api returns internal server error response " in {
-          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = Await.result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf).value
+          val userAnswers  = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = Await
+            .result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf)
+            .value
 
           val payload = Json.stringify(Json.toJson(registration))
 
           wiremock(
             payload = payload,
             expectedStatus = Status.INTERNAL_SERVER_ERROR,
-            expectedResponse =
-              """
+            expectedResponse = """
                 |{
                 | "code": "INTERNAL_SERVER_ERROR",
                 |  "message": "Internal server error."
@@ -150,7 +156,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
             url = registerUrl
           )
 
-          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
+          val result =
+            Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.InternalServerError
         }
       }
@@ -158,8 +165,10 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
       "return InternalServerError response " - {
 
         "api returns bad request response " in {
-          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = Await.result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf).value
+          val userAnswers  = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = Await
+            .result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf)
+            .value
 
           val payload = Json.stringify(Json.toJson(registration))
 
@@ -170,7 +179,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
             url = registerUrl
           )
 
-          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
+          val result =
+            Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.InternalServerError
         }
       }
@@ -178,8 +188,10 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
       "return InternalServerError response " - {
 
         "api returns service unavailable response " in {
-          val userAnswers = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
-          val registration = Await.result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf).value
+          val userAnswers  = TestUserAnswers.withMatchingSuccess(newTrustUserAnswers)
+          val registration = Await
+            .result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf)
+            .value
 
           val payload = Json.stringify(Json.toJson(registration))
 
@@ -190,7 +202,8 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
             url = registerUrl
           )
 
-          val result = Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
+          val result =
+            Await.result(connector.register(Json.toJson(registration), TestUserAnswers.draftId), Duration.Inf)
           result mustBe TrustResponse.InternalServerError
         }
       }
@@ -201,7 +214,7 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
       val matchingUrl: String = "/trusts/check"
 
       val matchData: MatchData = MatchData("utr", "name", Some("postcode"))
-      val payload: String = Json.stringify(Json.toJson(matchData)(MatchData.writes))
+      val payload: String      = Json.stringify(Json.toJson(matchData)(MatchData.writes))
 
       "must return a Matched response" - {
         "when trust is successfully matched" in {
@@ -241,8 +254,7 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.CONFLICT,
-            expectedResponse =
-              """
+            expectedResponse = """
                 |{
                 | "code": "ALREADY_REGISTERED",
                 | "message": "The trust is already registered."
@@ -262,8 +274,7 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
           wiremock(
             payload = payload,
             expectedStatus = Status.INTERNAL_SERVER_ERROR,
-            expectedResponse =
-              """
+            expectedResponse = """
                 |{
                 | "code": "INTERNAL_SERVER_ERROR",
                 | "message": "Internal server error."
@@ -278,4 +289,5 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
       }
     }
   }
+
 }

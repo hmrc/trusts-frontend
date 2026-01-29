@@ -30,15 +30,15 @@ class MessagesSpec extends RegistrationSpecBase {
     )
     .build()
 
-  override implicit lazy val messages: Messages = messagesApi.preferred(Seq(Lang("en"), Lang("cy")))
+  implicit override lazy val messages: Messages = messagesApi.preferred(Seq(Lang("en"), Lang("cy")))
 
-  val MatchSingleQuoteOnly: Regex = """\w+'{1}\w+""".r
+  val MatchSingleQuoteOnly: Regex   = """\w+'{1}\w+""".r
   val MatchBacktickQuoteOnly: Regex = """`+""".r
 
   "Application" should {
     "have the correct message configs" in {
       messagesApi.messages.size mustBe 4
-      messagesApi.messages.keys must contain theSameElementsAs Vector("en", "cy", "default", "default.play")
+      messagesApi.messages.keys   must contain theSameElementsAs Vector("en", "cy", "default", "default.play")
     }
 
     "have messages for default and cy only" in {
@@ -50,16 +50,15 @@ class MessagesSpec extends RegistrationSpecBase {
   }
 
   "All message files" should {
-    "have the same set of keys" in {
+    "have the same set of keys" in
       withClue(mismatchingKeys(defaultMessages.keySet, welshMessages.keySet)) {
         assert(welshMessages.keySet equals defaultMessages.keySet)
       }
-    }
     "not have the same messages" in {
-      val same = defaultMessages.keys.collect({
+      val same = defaultMessages.keys.collect {
         case key if defaultMessages.get(key) == welshMessages.get(key) && !key.contains(".url") =>
           (key, defaultMessages.get(key))
-      })
+      }
 
       // 94% of app needs to be translated into Welsh. 94% allows for:
       //   - Messages which just can't be different from English
@@ -77,9 +76,9 @@ class MessagesSpec extends RegistrationSpecBase {
     }
     "have a resolvable message for keys which take args" in {
       val englishWithArgsMsgKeys = defaultMessages collect { case (key, value) if countArgs(value) > 0 => key }
-      val welshWithArgsMsgKeys = welshMessages collect { case (key, value) if countArgs(value) > 0     => key }
-      val missingFromEnglish = englishWithArgsMsgKeys.toList diff welshWithArgsMsgKeys.toList
-      val missingFromWelsh = welshWithArgsMsgKeys.toList diff englishWithArgsMsgKeys.toList
+      val welshWithArgsMsgKeys   = welshMessages collect { case (key, value) if countArgs(value) > 0 => key }
+      val missingFromEnglish     = englishWithArgsMsgKeys.toList diff welshWithArgsMsgKeys.toList
+      val missingFromWelsh       = welshWithArgsMsgKeys.toList diff englishWithArgsMsgKeys.toList
       missingFromEnglish foreach { key =>
         println(s"Key which has arguments in English but not in Welsh: $key")
       }
@@ -92,17 +91,17 @@ class MessagesSpec extends RegistrationSpecBase {
       val englishWithArgsMsgKeysAndArgList = defaultMessages collect {
         case (key, value) if countArgs(value) > 0 => (key, listArgs(value))
       }
-      val welshWithArgsMsgKeysAndArgList = welshMessages collect {
+      val welshWithArgsMsgKeysAndArgList   = welshMessages collect {
         case (key, value) if countArgs(value) > 0 => (key, listArgs(value))
       }
-      val mismatchedArgSequences = englishWithArgsMsgKeysAndArgList collect {
+      val mismatchedArgSequences           = englishWithArgsMsgKeysAndArgList collect {
         case (key, engArgSeq) if engArgSeq != welshWithArgsMsgKeysAndArgList(key) =>
           (key, engArgSeq, welshWithArgsMsgKeysAndArgList(key))
       }
-      mismatchedArgSequences foreach {
-        case (key, engArgSeq, welshArgSeq) =>
-          println(
-            s"key which has different arguments or order of arguments between English and Welsh: $key -- English arg seq=$engArgSeq and Welsh arg seq=$welshArgSeq")
+      mismatchedArgSequences foreach { case (key, engArgSeq, welshArgSeq) =>
+        println(
+          s"key which has different arguments or order of arguments between English and Welsh: $key -- English arg seq=$engArgSeq and Welsh arg seq=$welshArgSeq"
+        )
       }
       mismatchedArgSequences.size mustBe 0
     }
@@ -134,7 +133,7 @@ class MessagesSpec extends RegistrationSpecBase {
   private def assertCorrectUseOfQuotes(label: String, messages: Map[String, String]) = messages.foreach {
     case (key: String, value: String) =>
       withClue(s"In $label, there is an unescaped or invalid quote:[$key][$value]") {
-        MatchSingleQuoteOnly.findFirstIn(value).isDefined mustBe false
+        MatchSingleQuoteOnly.findFirstIn(value).isDefined   mustBe false
         MatchBacktickQuoteOnly.findFirstIn(value).isDefined mustBe false
       }
   }
@@ -156,7 +155,8 @@ class MessagesSpec extends RegistrationSpecBase {
       listMissingMessageKeys("The following message keys are missing from Welsh Set:", defaultKeySet.diff(welshKeySet))
     val test2 = listMissingMessageKeys(
       "The following message keys are missing from English Set:",
-      welshKeySet.diff(defaultKeySet))
+      welshKeySet.diff(defaultKeySet)
+    )
 
     test1 ++ test2
   }

@@ -21,20 +21,17 @@ import config.FrontendAppConfig
 import play.api.i18n.Messages
 import uk.gov.hmrc.play.language.LanguageUtils
 
-import java.time.{LocalDateTime, LocalDate}
+import java.time.{LocalDate, LocalDateTime}
 
-class DateFormatter @Inject()(config: FrontendAppConfig, languageUtils: LanguageUtils) {
+class DateFormatter @Inject() (config: FrontendAppConfig, languageUtils: LanguageUtils) {
 
-  def savedUntil(date: LocalDateTime)(implicit messages: Messages): String = {
+  def savedUntil(date: LocalDateTime)(implicit messages: Messages): String =
     formatDateTime(date.plusSeconds(config.ttlInSeconds))
-  }
 
-  def formatDateTime(dateTime: LocalDateTime)(implicit messages: Messages): String = {
+  def formatDateTime(dateTime: LocalDateTime)(implicit messages: Messages): String =
     formatDate(dateTime.toLocalDate)
-  }
 
-  def formatDate(date: LocalDate)(implicit messages: Messages): String = {
+  def formatDate(date: LocalDate)(implicit messages: Messages): String =
     languageUtils.Dates.formatDate(date)
-  }
 
 }

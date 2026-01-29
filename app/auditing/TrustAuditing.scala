@@ -19,9 +19,9 @@ package auditing
 object TrustAuditing {
 
   val REGISTRATION_SUBMITTED_BY_ORGANISATION = "RegistrationSubmittedByOrganisation"
-  val REGISTRATION_SUBMITTED_BY_AGENT = "RegistrationSubmittedByAgent"
-  val REGISTRATION_SUBMISSION_FAILED = "RegistrationSubmissionFailed"
-  val REGISTRATION_PREPARATION_FAILED = "RegistrationPreparationFailed"
+  val REGISTRATION_SUBMITTED_BY_AGENT        = "RegistrationSubmittedByAgent"
+  val REGISTRATION_SUBMISSION_FAILED         = "RegistrationSubmissionFailed"
+  val REGISTRATION_PREPARATION_FAILED        = "RegistrationPreparationFailed"
 
   val USER_ANSWERS = "UserAnswers"
 

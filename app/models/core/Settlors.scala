@@ -28,13 +28,15 @@ object Settlors {
   implicit val settlorsFormat: Format[Settlors] = Json.format[Settlors]
 }
 
-case class Settlor(aliveAtRegistration: Option[Boolean],
-                   name: FullName,
-                   dateOfBirth: Option[LocalDate],
-                   identification: Option[IdentificationType],
-                   countryOfResidence: Option[String],
-                   nationality: Option[String],
-                   legallyIncapable: Option[Boolean])
+case class Settlor(
+  aliveAtRegistration: Option[Boolean],
+  name: FullName,
+  dateOfBirth: Option[LocalDate],
+  identification: Option[IdentificationType],
+  countryOfResidence: Option[String],
+  nationality: Option[String],
+  legallyIncapable: Option[Boolean]
+)
 
 object Settlor {
   implicit val settlorFormat: Format[Settlor] = Json.format[Settlor]

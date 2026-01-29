@@ -24,19 +24,18 @@ import views.html.register.{RefSentByPostAgentView, RefSentByPostView}
 
 import javax.inject.Inject
 
-class RefSentByPostController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         actions: StandardActionSets,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: RefSentByPostView,
-                                         agentView: RefSentByPostAgentView
-                                       ) extends FrontendBaseController with I18nSupport {
+class RefSentByPostController @Inject() (
+  override val messagesApi: MessagesApi,
+  actions: StandardActionSets,
+  val controllerComponents: MessagesControllerComponents,
+  view: RefSentByPostView,
+  agentView: RefSentByPostAgentView
+) extends FrontendBaseController with I18nSupport {
 
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val isAgent = request.isAgent
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
-      val isAgent = request.isAgent
-
-      if (isAgent) Ok(agentView()) else Ok(view())
+    if (isAgent) Ok(agentView()) else Ok(view())
   }
+
 }

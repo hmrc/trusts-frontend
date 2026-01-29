@@ -290,24 +290,32 @@ class JsonTransformersSpec extends PlaySpec {
     "there is a single settlor in the registration Json" must {
       "return the expected Json when the aliveAtRegistration field is present" in {
         val registrationPiecesJson: JsObject = Json.parse(singleSettlorsWithAliveAtRegField).as[JsObject]
-        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedSingleSettlors))
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(
+          Json.parse(transformedSingleSettlors)
+        )
       }
 
       "return the expected Json when the the aliveAtRegistration field is not present" in {
         val registrationPiecesJson: JsObject = Json.parse(singleSettlorsWithoutAliveAtRegField).as[JsObject]
-        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedSingleSettlors))
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(
+          Json.parse(transformedSingleSettlors)
+        )
       }
     }
 
     "there are multiple settlors in the registration Json" must {
       "return the expected Json when the aliveAtRegistration field is present" in {
         val registrationPiecesJson: JsObject = Json.parse(multipleSettlorsWithAliveAtRegField).as[JsObject]
-        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedRegistrationPiecesMultipleSettlor))
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(
+          Json.parse(transformedRegistrationPiecesMultipleSettlor)
+        )
       }
 
       "return the expected Json when the aliveAtRegistration field is not present" in {
         val registrationPiecesJson: JsObject = Json.parse(multipleSettlorsWithoutAliveAtRegField).as[JsObject]
-        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(Json.parse(transformedRegistrationPiecesMultipleSettlor))
+        JsonTransformers.removeAliveAtRegistrationFromJson(registrationPiecesJson) mustBe Some(
+          Json.parse(transformedRegistrationPiecesMultipleSettlor)
+        )
       }
     }
 
@@ -358,4 +366,5 @@ class JsonTransformersSpec extends PlaySpec {
       JsonTransformers.checkIfAliveAtRegistrationFieldPresent(registrationPiecesJson) mustBe false
     }
   }
+
 }

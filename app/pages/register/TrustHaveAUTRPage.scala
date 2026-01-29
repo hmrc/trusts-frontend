@@ -29,17 +29,19 @@ case object TrustHaveAUTRPage extends QuestionPage[Boolean] {
 
   override def toString: String = "trustHaveAUTR"
 
-  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] = {
+  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] =
     value match {
       case Some(false) =>
-        userAnswers.remove(WhatIsTheUTRPage)
+        userAnswers
+          .remove(WhatIsTheUTRPage)
           .flatMap(_.remove(MatchingNamePage))
           .flatMap(_.remove(PostcodeForTheTrustPage))
-      case Some(true) =>
-        userAnswers.remove(TaxLiabilityInCurrentTaxYearYesNoPage)
+      case Some(true)  =>
+        userAnswers
+          .remove(TaxLiabilityInCurrentTaxYearYesNoPage)
           .flatMap(_.remove(UndeclaredTaxLiabilityYesNoPage))
-      case _ =>
+      case _           =>
         super.cleanup(value, userAnswers)
     }
-  }
+
 }

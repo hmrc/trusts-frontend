@@ -45,4 +45,5 @@ class RemoveDraftYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

@@ -25,18 +25,22 @@ import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationIdentifierAction @Inject()(val parser: BodyParsers.Default,
-                                             trustsAuth: TrustsAuthorisedFunctions,
-                                             config: FrontendAppConfig)
-                                            (override implicit val executionContext: ExecutionContext) extends ActionBuilder[IdentifierRequest, AnyContent] with Logging {
+class RegistrationIdentifierAction @Inject() (
+  val parser: BodyParsers.Default,
+  trustsAuth: TrustsAuthorisedFunctions,
+  config: FrontendAppConfig
+)(implicit override val executionContext: ExecutionContext)
+    extends ActionBuilder[IdentifierRequest, AnyContent] with Logging {
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = request match {
-    case req: IdentifierRequest[A] =>
-      block(req)
-    case _ =>
-      Future.successful(trustsAuth.redirectToLogin)
-  }
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
+    request match {
+      case req: IdentifierRequest[A] =>
+        block(req)
+      case _                         =>
+        Future.successful(trustsAuth.redirectToLogin)
+    }
 
   override def composeAction[A](action: Action[A]): Action[A] =
     new AffinityGroupIdentifierAction(action, trustsAuth, config, checkForTrustIdentifier = true)
+
 }

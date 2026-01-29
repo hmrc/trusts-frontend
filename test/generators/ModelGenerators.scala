@@ -25,40 +25,31 @@ import java.time.LocalDate
 
 trait ModelGenerators {
 
-  implicit lazy val arbitraryFullName: Arbitrary[FullName] = {
+  implicit lazy val arbitraryFullName: Arbitrary[FullName] =
     Arbitrary {
       for {
         str <- arbitrary[String]
-      } yield {
-        FullName(str, Some(str), str)
-      }
+      } yield FullName(str, Some(str), str)
     }
-  }
 
-  implicit lazy val arbitraryDeclaration: Arbitrary[Declaration] = {
+  implicit lazy val arbitraryDeclaration: Arbitrary[Declaration] =
     Arbitrary {
       for {
         str <- arbitrary[String]
-      } yield {
-        models.core.pages.Declaration(FullName(str, Some(str), str), Some(str))
-      }
+      } yield models.core.pages.Declaration(FullName(str, Some(str), str), Some(str))
     }
-  }
 
   implicit lazy val arbitraryLocalDate: Arbitrary[LocalDate] =
     Arbitrary {
       Gen.const(LocalDate.of(2010, 10, 10))
     }
-    
-  implicit lazy val arbitraryFirstTaxYearAvailable: Arbitrary[FirstTaxYearAvailable] = {
+
+  implicit lazy val arbitraryFirstTaxYearAvailable: Arbitrary[FirstTaxYearAvailable] =
     Arbitrary {
       for {
-        yearsAgo <- arbitrary[Int]
+        yearsAgo              <- arbitrary[Int]
         earlierYearsToDeclare <- arbitrary[Boolean]
-      } yield {
-        FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)
-      }
+      } yield FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare)
     }
-  }
 
 }

@@ -27,32 +27,31 @@ object MatchingRoutes extends Routes {
 
   def route(config: FrontendAppConfig): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
     case TrustRegisteredOnlinePage => ua => redirectToIdentifierQuestion(ua)
-    case TrustHaveAUTRPage => userAnswers => trustHaveAUTRRoute(userAnswers, config)
-    case WhatIsTheUTRPage => _ => controllers.register.routes.MatchingNameController.onPageLoad()
-    case MatchingNamePage => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
+    case TrustHaveAUTRPage         => userAnswers => trustHaveAUTRRoute(userAnswers, config)
+    case WhatIsTheUTRPage          => _ => controllers.register.routes.MatchingNameController.onPageLoad()
+    case MatchingNamePage          => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
   }
 
-  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_]): Call = {
+  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_]): Call =
     answers.get(TrustRegisteredOnlinePage) match {
       case Some(true) => routes.WhichIdentifierController.onPageLoad()
-      case _ => routes.TrustHaveAUTRController.onPageLoad()
+      case _          => routes.TrustHaveAUTRController.onPageLoad()
     }
-  }
 
   private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[_], config: FrontendAppConfig): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {
-      case (Some(false), Some(true)) => routes.WhatIsTheUTRController.onPageLoad()
-      case (Some(false), Some(false)) => controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
-      case (Some(true), Some(false)) => routes.UTRSentByPostController.onPageLoad()
-      case (Some(true), Some(true)) => routeToMaintain(config)
-      case _ => routes.SessionExpiredController.onPageLoad()
+      case (Some(false), Some(true))  => routes.WhatIsTheUTRController.onPageLoad()
+      case (Some(false), Some(false)) =>
+        controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
+      case (Some(true), Some(false))  => routes.UTRSentByPostController.onPageLoad()
+      case (Some(true), Some(true))   => routeToMaintain(config)
+      case _                          => routes.SessionExpiredController.onPageLoad()
     }
   }
 
-  private def routeToMaintain(config: FrontendAppConfig) : Call = {
+  private def routeToMaintain(config: FrontendAppConfig): Call =
     Call("GET", config.maintainATrustFrontendUrl)
-  }
 
 }

@@ -29,8 +29,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class CacheRepositorySpec extends AnyWordSpec with Matchers
-  with ScalaFutures with OptionValues with MongoSupport with MongoSuite with BeforeAndAfterEach {
+class CacheRepositorySpec
+    extends AnyWordSpec
+    with Matchers
+    with ScalaFutures
+    with OptionValues
+    with MongoSupport
+    with MongoSuite
+    with BeforeAndAfterEach {
 
   override def beforeEach(): Unit =
     Await.result(repository.collection.deleteMany(BsonDocument()).toFuture(), Duration.Inf)
@@ -41,47 +47,48 @@ class CacheRepositorySpec extends AnyWordSpec with Matchers
 
     "must return true when creating document for given internal id" in {
 
-        val internalId = "internalId1"
+      val internalId = "internalId1"
 
-        val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
+      val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
 
-        val initial = repository.set(userAnswers).futureValue
+      val initial = repository.set(userAnswers).futureValue
 
-        initial shouldBe true
+      initial shouldBe true
     }
 
     "must return true when updating document for given internal id" in {
 
-        val internalId = "internalId2"
+      val internalId = "internalId2"
 
-        val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
+      val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
 
-        repository.set(userAnswers).futureValue
+      repository.set(userAnswers).futureValue
 
-        val updated = repository.set(userAnswers).futureValue
+      val updated = repository.set(userAnswers).futureValue
 
-        updated shouldBe true
+      updated shouldBe true
     }
 
     "must return None when no cache exists" in {
 
-        val internalId = "internalId3"
+      val internalId = "internalId3"
 
-        repository.get(internalId).futureValue shouldBe None
+      repository.get(internalId).futureValue shouldBe None
     }
 
     "must return Some user answers when document exists for given internal id" in {
 
-        val internalId = "internalId4"
+      val internalId = "internalId4"
 
-        val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
+      val userAnswers = MatchingAndSuitabilityUserAnswers(internalId)
 
-        val initial = repository.set(userAnswers).futureValue
+      val initial = repository.set(userAnswers).futureValue
 
-        initial shouldBe true
+      initial shouldBe true
 
-        repository.get(internalId).futureValue.value.internalId shouldBe userAnswers.internalId
-        repository.get(internalId).futureValue.value.data shouldBe userAnswers.data
+      repository.get(internalId).futureValue.value.internalId shouldBe userAnswers.internalId
+      repository.get(internalId).futureValue.value.data       shouldBe userAnswers.data
     }
   }
+
 }

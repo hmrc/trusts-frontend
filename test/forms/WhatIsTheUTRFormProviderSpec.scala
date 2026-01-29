@@ -22,8 +22,8 @@ import play.api.data.FormError
 class WhatIsTheUTRFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "whatIsTheUTR.error.required"
-  val lengthKey = "whatIsTheUTR.error.length"
-  val maxLength = 10
+  val lengthKey   = "whatIsTheUTR.error.length"
+  val maxLength   = 10
 
   val form = new WhatIsTheUTRFormProvider()()
 
@@ -57,4 +57,5 @@ class WhatIsTheUTRFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
 }

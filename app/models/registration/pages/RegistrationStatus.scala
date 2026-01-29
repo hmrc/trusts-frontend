@@ -27,9 +27,12 @@ object RegistrationStatus extends Enumerable.Implicits {
   case object Complete extends WithName("Complete") with RegistrationStatus
 
   val values: List[RegistrationStatus] = List(
-    NotStarted,InProgress,Complete
+    NotStarted,
+    InProgress,
+    Complete
   )
 
   implicit val enumerable: Enumerable[RegistrationStatus] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

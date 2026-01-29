@@ -51,4 +51,5 @@ class TrustsStoreServiceSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

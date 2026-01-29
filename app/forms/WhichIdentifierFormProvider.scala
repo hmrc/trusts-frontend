@@ -28,4 +28,5 @@ class WhichIdentifierFormProvider @Inject() extends Mappings {
     Form(
       "value" -> enumerable[WhichIdentifier]("whichIdentifier.error.required")
     )
+
 }

@@ -25,4 +25,3 @@ case object UndeclaredTaxLiabilityYesNoPage extends QuestionPage[Boolean] {
 
   override def toString: String = "hasUndeclaredTaxLiability"
 }
-
