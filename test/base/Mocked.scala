@@ -34,14 +34,14 @@ import scala.concurrent.Future
 
 trait Mocked extends MockitoSugar {
 
-  val cacheRepository: CacheRepository                             = mock[CacheRepository]
-  val registrationsRepository: RegistrationsRepository             = mock[RegistrationsRepository]
-  val mockSubmissionService: SubmissionService                     = mock[SubmissionService]
+  val cacheRepository: CacheRepository                 = mock[CacheRepository]
+  val registrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
+  val mockSubmissionService: SubmissionService         = mock[SubmissionService]
 
   val mockCreateDraftRegistrationService: DraftRegistrationService =
     mock[DraftRegistrationService]
 
-  val mockTrustsStoreService: TrustsStoreService                   = mock[TrustsStoreService]
+  val mockTrustsStoreService: TrustsStoreService = mock[TrustsStoreService]
 
   when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))

@@ -43,7 +43,7 @@ trait SpecBaseHelpers
 
   val fakeDraftId: String = TestUserAnswers.draftId
 
-  def emptyUserAnswers: UserAnswers                                             = TestUserAnswers.emptyUserAnswers
+  def emptyUserAnswers: UserAnswers = TestUserAnswers.emptyUserAnswers
 
   def emptyMatchingAndSuitabilityUserAnswers: MatchingAndSuitabilityUserAnswers =
     TestUserAnswers.emptyMatchingAndSuitabilityUserAnswers

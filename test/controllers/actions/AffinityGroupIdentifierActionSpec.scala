@@ -47,19 +47,19 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
   ): Future[Some[String] ~ Some[AffinityGroup] ~ Enrolments] =
     Future.successful(new ~(new ~(Some("id"), Some(affinityGroup)), enrolment))
 
-  private val agentEnrolment            = Enrolments(
+  private val agentEnrolment = Enrolments(
     Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("AgentReferenceNumber", "SomeVal")), "Activated", None))
   )
 
-  private val emptyAgentEnrolment       = Enrolments(
+  private val emptyAgentEnrolment = Enrolments(
     Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("AgentReferenceNumber", "")), "Activated", None))
   )
 
-  private val trustsTaxableEnrolment    = Enrolments(
+  private val trustsTaxableEnrolment = Enrolments(
     Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", utr)), "Activated", None))
   )
 
-  private val emptyTaxableEnrolment     = Enrolments(
+  private val emptyTaxableEnrolment = Enrolments(
     Set(Enrolment("HMRC-TERS-ORG", List(EnrolmentIdentifier("SAUTR", "")), "Activated", None))
   )
 
@@ -67,7 +67,7 @@ class AffinityGroupIdentifierActionSpec extends RegistrationSpecBase {
     Set(Enrolment("HMRC-TERSNT-ORG", List(EnrolmentIdentifier("URN", utr)), "Activated", None))
   )
 
-  private val emptyNonTaxableEnrolment  = Enrolments(
+  private val emptyNonTaxableEnrolment = Enrolments(
     Set(Enrolment("HMRC-TERSNT-ORG", List(EnrolmentIdentifier("URN", "")), "Activated", None))
   )
 

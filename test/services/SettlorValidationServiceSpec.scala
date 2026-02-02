@@ -23,12 +23,12 @@ class SettlorValidationServiceSpec extends RegistrationSpecBase {
 
   val service = new SettlorValidationService()
 
-  private def deceasedSettlorJson(name: JsObject)                      = Json.obj("trust/entities/deceased" -> Json.obj("name" -> name))
+  private def deceasedSettlorJson(name: JsObject) = Json.obj("trust/entities/deceased" -> Json.obj("name" -> name))
 
-  private def individualSettlorsJson(settlors: JsArray)                =
+  private def individualSettlorsJson(settlors: JsArray) =
     Json.obj("trust/entities/settlors" -> Json.obj("settlor" -> settlors))
 
-  private def companySettlorsJson(companies: JsArray)                  =
+  private def companySettlorsJson(companies: JsArray) =
     Json.obj("trust/entities/settlors" -> Json.obj("settlorCompany" -> companies))
 
   private def mixedSettlorsJson(settlors: JsArray, companies: JsArray) =
@@ -40,13 +40,13 @@ class SettlorValidationServiceSpec extends RegistrationSpecBase {
     )
   )
 
-  private def answerLivingJson(living: JsArray)  =
+  private def answerLivingJson(living: JsArray) =
     Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> true, "living" -> living)))
 
-  private def answerEmptyLivingJson()            =
+  private def answerEmptyLivingJson() =
     Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> true)))
 
-  private def answerEmptyDeceasedJson()          =
+  private def answerEmptyDeceasedJson() =
     Json.obj("data" -> Json.obj("settlors" -> Json.obj("setUpByLivingSettlorYesNo" -> false)))
 
   private val fullName        = Json.obj("firstName" -> "John", "lastName" -> "Smith")
