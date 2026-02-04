@@ -43,4 +43,5 @@ class SessionExpiredControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

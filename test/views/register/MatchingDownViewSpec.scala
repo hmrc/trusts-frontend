@@ -36,7 +36,12 @@ class MatchingDownViewSpec extends ViewBehaviours {
         applyView,
         None,
         "matchingDown",
-        "p1", "p2.beforeLink", "p2.link", "p2.afterLink", "p3", "p3.link"
+        "p1",
+        "p2.beforeLink",
+        "p2.link",
+        "p2.afterLink",
+        "p3",
+        "p3.link"
       )
 
       behave like pageWithASignOutButton(applyView)
@@ -50,10 +55,14 @@ class MatchingDownViewSpec extends ViewBehaviours {
         applyView,
         None,
         "matchingDown",
-        "p1", "p2.beforeLink", "p2.link", "p2.afterLink"
+        "p1",
+        "p2.beforeLink",
+        "p2.link",
+        "p2.afterLink"
       )
 
       behave like pageWithASignOutButton(applyView)
     }
   }
+
 }

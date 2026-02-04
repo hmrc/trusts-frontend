@@ -19,7 +19,6 @@ package models
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-
 class WithNameSpec extends AnyWordSpec with Matchers {
 
   object Foo extends WithName("bar")
@@ -29,4 +28,5 @@ class WithNameSpec extends AnyWordSpec with Matchers {
       Foo.toString mustEqual "bar"
     }
   }
+
 }

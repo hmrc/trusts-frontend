@@ -29,40 +29,44 @@ class DeclarationFormProvider @Inject() extends Mappings {
   def apply(): Form[Declaration] =
     Form(
       mapping(
-        "" -> fullName,
-        "email" -> optional(text()
-          .transform(trimWhitespace, identity[String])
-          .verifying(
-            firstError(
-              regexp(Validation.emailRegex, "declaration.error.email.invalid"))
-          )
+        ""      -> fullName,
+        "email" -> optional(
+          text()
+            .transform(trimWhitespace, identity[String])
+            .verifying(
+              firstError(regexp(Validation.emailRegex, "declaration.error.email.invalid"))
+            )
         ).transform(emptyToNone, identity[Option[String]])
       )(Declaration.apply)(Declaration.unapply)
     )
 
   val fullName = mapping(
-
-    "firstName" -> text("declaration.error.firstName.required")
+    "firstName"  -> text("declaration.error.firstName.required")
       .verifying(
         firstError(
           maxLength(35, "declaration.error.firstName.length"),
           isNotEmpty("firstName", "declaration.error.firstName.required"),
           regexp(Validation.nameRegex, "declaration.error.firstName.invalid")
-        )),
-    "middleName" -> optional(text()
-      .transform(trimWhitespace, identity[String])
-      .verifying(
-        firstError(
-          maxLength(35, "declaration.error.middleName.length"),
-          regexp(Validation.nameRegex, "declaration.error.middleName.invalid"))
-      )).transform(emptyToNone, identity[Option[String]]),
-    "lastName" -> text("declaration.error.lastName.required")
+        )
+      ),
+    "middleName" -> optional(
+      text()
+        .transform(trimWhitespace, identity[String])
+        .verifying(
+          firstError(
+            maxLength(35, "declaration.error.middleName.length"),
+            regexp(Validation.nameRegex, "declaration.error.middleName.invalid")
+          )
+        )
+    ).transform(emptyToNone, identity[Option[String]]),
+    "lastName"   -> text("declaration.error.lastName.required")
       .verifying(
         firstError(
           maxLength(35, "declaration.error.lastName.length"),
           isNotEmpty("lastName", "declaration.error.lastName.required"),
           regexp(Validation.nameRegex, "declaration.error.lastName.invalid")
-        ))
+        )
+      )
   )(FullName.apply)(FullName.unapply)
 
 }

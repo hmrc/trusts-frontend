@@ -22,8 +22,7 @@ import views.ViewSpecBase
 
 trait TaskListViewBehaviours extends ViewSpecBase {
 
-  def taskList(view: HtmlFormat.Appendable,
-               expectedSections : List[Task]) : Unit = {
+  def taskList(view: HtmlFormat.Appendable, expectedSections: List[Task]): Unit =
 
     "behave list a page with a task list" when {
 
@@ -39,30 +38,29 @@ trait TaskListViewBehaviours extends ViewSpecBase {
           assertContainsMessages(doc, "taskList.additionalSections.heading")
         }
 
-        expectedSections.foreach {
-          section =>
-            s"${section.link.text}" must {
+        expectedSections.foreach { section =>
+          s"${section.link.text}" must {
 
-              s"render a list item" in {
-                val doc = asDocument(view)
-                assertRenderedById(doc, s"task-list__item--${section.link.text}")
-              }
-
-              s"render a link" in {
-                val id = s"task-list__task-link--${section.link.text}"
-
-                val doc = asDocument(view)
-                doc.getElementById(id).hasAttr("href")
-              }
-
-              s"render a tag" in {
-                val doc = asDocument(view)
-                assertRenderedById(doc, s"task-list__task--${section.link.text}__tag")
-              }
-
+            s"render a list item" in {
+              val doc = asDocument(view)
+              assertRenderedById(doc, s"task-list__item--${section.link.text}")
             }
+
+            s"render a link" in {
+              val id = s"task-list__task-link--${section.link.text}"
+
+              val doc = asDocument(view)
+              doc.getElementById(id).hasAttr("href")
+            }
+
+            s"render a tag" in {
+              val doc = asDocument(view)
+              assertRenderedById(doc, s"task-list__task--${section.link.text}__tag")
+            }
+
+          }
         }
       }
     }
-  }
+
 }

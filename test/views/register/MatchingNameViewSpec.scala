@@ -25,7 +25,7 @@ import views.html.register.MatchingNameView
 class MatchingNameViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "trustName"
-  val hintKey = "trustName.hint.hasUtr"
+  val hintKey          = "trustName.hint.hasUtr"
 
   val form = new TrustNameFormProvider()()
 
@@ -50,4 +50,5 @@ class MatchingNameViewSpec extends StringViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

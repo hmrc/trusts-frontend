@@ -29,34 +29,37 @@ import queries.Settable
 import java.time.LocalDateTime
 import scala.util.{Success, Try}
 
-final case class UserAnswers(draftId: String,
-                             override val data: JsObject = Json.obj(),
-                             progress: RegistrationStatus = NotStarted,
-                             createdAt: LocalDateTime = LocalDateTime.now,
-                             internalAuthId: String) extends TrustsFrontendUserAnswers[UserAnswers] {
+final case class UserAnswers(
+  draftId: String,
+  override val data: JsObject = Json.obj(),
+  progress: RegistrationStatus = NotStarted,
+  createdAt: LocalDateTime = LocalDateTime.now,
+  internalAuthId: String
+) extends TrustsFrontendUserAnswers[UserAnswers] {
 
   def isTaxable: Boolean = !this.get(TrustTaxableYesNoPage).contains(false)
 
   def isExistingTrust: Boolean = this.get(TrustHaveAUTRPage).contains(true)
 
-  override def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] = {
+  override def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] =
     updatedDataForSet(page, value).flatMap { d =>
       page.cleanup(Some(value), this.copy(data = d))
     }
-  }
 
-  override def remove[A](page: Settable[A]): Try[UserAnswers] = {
+  override def remove[A](page: Settable[A]): Try[UserAnswers] =
     updatedDataForRemove(page).flatMap { d =>
       page.cleanup(None, this.copy(data = d))
     }
-  }
 
-  def deleteAtPath(path: JsPath): Try[UserAnswers] = {
-    data.removeObject(path).map(obj => copy(data = obj)).fold(
-      _ => Success(this),
-      result => Success(result)
-    )
-  }
+  def deleteAtPath(path: JsPath): Try[UserAnswers] =
+    data
+      .removeObject(path)
+      .map(obj => copy(data = obj))
+      .fold(
+        _ => Success(this),
+        result => Success(result)
+      )
+
 }
 
 object UserAnswers {
@@ -67,7 +70,7 @@ object UserAnswers {
       (__ \ "progress").read[RegistrationStatus] and
       (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
       (__ \ "internalId").read[String]
-    )(UserAnswers.apply _)
+  )(UserAnswers.apply _)
 
   implicit lazy val writes: Writes[UserAnswers] = (
     (__ \ "_id").write[String] and
@@ -75,5 +78,6 @@ object UserAnswers {
       (__ \ "progress").write[RegistrationStatus] and
       (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
       (__ \ "internalId").write[String]
-    )(unlift(UserAnswers.unapply))
+  )(unlift(UserAnswers.unapply))
+
 }

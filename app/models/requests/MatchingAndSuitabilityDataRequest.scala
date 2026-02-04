@@ -20,10 +20,12 @@ import models.core.MatchingAndSuitabilityUserAnswers
 import play.api.mvc.Request
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
 
-case class MatchingAndSuitabilityDataRequest[A](request: Request[A],
-                                                internalId: String,
-                                                sessionId: String,
-                                                userAnswers: MatchingAndSuitabilityUserAnswers,
-                                                affinityGroup: AffinityGroup,
-                                                enrolments: Enrolments,
-                                                agentARN: Option[String] = None) extends DataRequest[A](request)
+case class MatchingAndSuitabilityDataRequest[A](
+  request: Request[A],
+  internalId: String,
+  sessionId: String,
+  userAnswers: MatchingAndSuitabilityUserAnswers,
+  affinityGroup: AffinityGroup,
+  enrolments: Enrolments,
+  agentARN: Option[String] = None
+) extends DataRequest[A](request)

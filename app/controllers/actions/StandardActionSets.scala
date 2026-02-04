@@ -25,14 +25,16 @@ import queries.Gettable
 
 import javax.inject.Inject
 
-class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
-                                   identifyConfirmation: ConfirmationIdentifierAction,
-                                   getMatchingAndSuitabilityData: MatchingAndSuitabilityDataRetrievalAction,
-                                   requireMatchingAndSuitabilityData: MatchingAndSuitabilityDataRequiredAction,
-                                   getRegistrationData: DraftIdRetrievalActionProvider,
-                                   requireRegistrationData: RegistrationDataRequiredAction,
-                                   requiredAnswerAction: RequiredAnswerActionProvider,
-                                   validateIndex: IndexActionFilterProvider) {
+class StandardActionSets @Inject() (
+  identify: RegistrationIdentifierAction,
+  identifyConfirmation: ConfirmationIdentifierAction,
+  getMatchingAndSuitabilityData: MatchingAndSuitabilityDataRetrievalAction,
+  requireMatchingAndSuitabilityData: MatchingAndSuitabilityDataRequiredAction,
+  getRegistrationData: DraftIdRetrievalActionProvider,
+  requireRegistrationData: RegistrationDataRequiredAction,
+  requiredAnswerAction: RequiredAnswerActionProvider,
+  validateIndex: IndexActionFilterProvider
+) {
 
   def identifiedUserOnly(): ActionBuilder[IdentifierRequest, AnyContent] =
     identify
@@ -46,11 +48,20 @@ class StandardActionSets @Inject()(identify: RegistrationIdentifierAction,
   def identifiedUserMatchingAndSuitabilityData(): ActionBuilder[MatchingAndSuitabilityDataRequest, AnyContent] =
     identify andThen getMatchingAndSuitabilityData andThen requireMatchingAndSuitabilityData
 
-  def identifiedUserWithRequiredAnswer[T](draftId: String, requiredAnswer: RequiredAnswer[T])
-                                         (implicit reads: Reads[T]) :ActionBuilder[RegistrationDataRequest, AnyContent] =
+  def identifiedUserWithRequiredAnswer[T](draftId: String, requiredAnswer: RequiredAnswer[T])(implicit
+    reads: Reads[T]
+  ): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identifiedUserWithRegistrationData(draftId) andThen requiredAnswerAction(requiredAnswer)
 
-  def identifiedUserWithDataAnswerAndIndex[T,U](draftId: String, requiredAnswer: RequiredAnswer[T], index: Int, entity: Gettable[List[U]])
-                                               (implicit rAReads: Reads[T], eReads: Reads[U]): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    identify andThen getRegistrationData(draftId) andThen requireRegistrationData andThen validateIndex(index, entity) andThen requiredAnswerAction(requiredAnswer)
+  def identifiedUserWithDataAnswerAndIndex[T, U](
+    draftId: String,
+    requiredAnswer: RequiredAnswer[T],
+    index: Int,
+    entity: Gettable[List[U]]
+  )(implicit rAReads: Reads[T], eReads: Reads[U]): ActionBuilder[RegistrationDataRequest, AnyContent] =
+    identify andThen getRegistrationData(draftId) andThen requireRegistrationData andThen validateIndex(
+      index,
+      entity
+    )        andThen requiredAnswerAction(requiredAnswer)
+
 }

@@ -48,59 +48,54 @@ import views.html.ErrorTemplate
 trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks with MockitoSugar with Generators {
 
   def validateIndex[A, B](
-                                generator: Gen[A],
-                                createPage: Int => QuestionPage[A],
-                                requestForIndex: Int => Request[B]
-                              )(implicit writes: Writes[A], writeable: Writeable[B]): Unit = {
+    generator: Gen[A],
+    createPage: Int => QuestionPage[A],
+    requestForIndex: Int => Request[B]
+  )(implicit writes: Writes[A], writeable: Writeable[B]): Unit =
 
     "return not found if a given index is out of bounds" in {
       implicit val generatorDrivenConfig: PropertyCheckConfiguration = PropertyCheckConfiguration(
-        minSuccessful=2
+        minSuccessful = 2
       )
 
       val answers = Gen.listOf(generator).map(_.zipWithIndex)
 
-      forAll(answers) {
-        answers =>
-          val userAnswers = answers.foldLeft(emptyUserAnswers) {
-            case (uA, (answer, i)) =>
-              uA.set(createPage(i), answer).success.value
-          }
+      forAll(answers) { answers =>
+        val userAnswers = answers.foldLeft(emptyUserAnswers) { case (uA, (answer, i)) =>
+          uA.set(createPage(i), answer).success.value
+        }
 
-          val application =
-            applicationBuilder(Some(userAnswers))
-              .build()
+        val application =
+          applicationBuilder(Some(userAnswers))
+            .build()
 
-          testRandomIndices(answers, application, requestForIndex)
-          application.stop()
+        testRandomIndices(answers, application, requestForIndex)
+        application.stop()
       }
     }
-  }
 
   private def testRandomIndices[A, B](
-                                       answers: List[(A, Int)],
-                                       application: Application,
-                                       requestForIndex: Int => Request[B]
-                                     )(implicit writeable: Writeable[B]) = {
+    answers: List[(A, Int)],
+    application: Application,
+    requestForIndex: Int => Request[B]
+  )(implicit writeable: Writeable[B]) = {
     val gen = for {
-      index <- Gen.oneOf(
-        Gen.chooseNum(answers.size + 1, answers.size + 100),
-        Gen.chooseNum(-100, -1))
-    } yield (index)
+      index <- Gen.oneOf(Gen.chooseNum(answers.size + 1, answers.size + 100), Gen.chooseNum(-100, -1))
+    } yield index
 
-    forAll(gen) {
-      index =>
-        val result = route(application, requestForIndex(index)).value
+    forAll(gen) { index =>
+      val result = route(application, requestForIndex(index)).value
 
-        val view = application.injector.instanceOf[ErrorTemplate]
+      val view = application.injector.instanceOf[ErrorTemplate]
 
-        val applyView = view.apply(
-          messages("global.error.pageNotFound404.title"),
-          messages("global.error.pageNotFound404.heading"),
-          messages("global.error.pageNotFound404.message")
-        )(fakeRequest, messages)
-        status(result) mustEqual NOT_FOUND
-        contentAsString(result) mustEqual applyView.toString
+      val applyView = view.apply(
+        messages("global.error.pageNotFound404.title"),
+        messages("global.error.pageNotFound404.heading"),
+        messages("global.error.pageNotFound404.message")
+      )(fakeRequest, messages)
+      status(result) mustEqual NOT_FOUND
+      contentAsString(result) mustEqual applyView.toString
     }
   }
+
 }

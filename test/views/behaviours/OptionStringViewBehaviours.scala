@@ -22,14 +22,16 @@ import views.ViewUtils
 
 trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] {
 
-  val valueDefined : Option[String] = Some("answer")
+  val valueDefined: Option[String]    = Some("answer")
   val valueNotDefined: Option[String] = None
 
-  def optionalStringPage(form: Form[Option[String]],
-                        createView: Form[Option[String]] => HtmlFormat.Appendable,
-                        sectionKey: Option[String],
-                        messageKeyPrefix: String,
-                        expectedHintKey: Option[String] = None) = {
+  def optionalStringPage(
+    form: Form[Option[String]],
+    createView: Form[Option[String]] => HtmlFormat.Appendable,
+    sectionKey: Option[String],
+    messageKeyPrefix: String,
+    expectedHintKey: Option[String] = None
+  ) =
 
     "behave like a page with an optional string value field" when {
 
@@ -37,7 +39,7 @@ trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] 
 
         "contain a label for the value" in {
 
-          val doc = asDocument(createView(form))
+          val doc              = asDocument(createView(form))
           val expectedHintText = expectedHintKey map (k => messages(k))
           assertContainsLabel(doc, "value", messages(s"$messageKeyPrefix.heading"), expectedHintText)
         }
@@ -74,7 +76,7 @@ trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] 
 
         "show an error in the value field's label" in {
 
-          val doc = asDocument(createView(form.withError(error)))
+          val doc       = asDocument(createView(form.withError(error)))
           val errorSpan = doc.getElementsByClass("govuk-error-message").first
           errorSpan.text mustBe s"""${messages(errorPrefix)} ${messages(errorMessage)}"""
         }
@@ -82,9 +84,16 @@ trait OptionStringViewBehaviours extends QuestionViewBehaviours[Option[String]] 
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", ViewUtils.breadcrumbTitle(s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""", sectionKey.map(messages(_))))
+          assertEqualsValue(
+            doc,
+            "title",
+            ViewUtils.breadcrumbTitle(
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title")}""",
+              sectionKey.map(messages(_))
+            )
+          )
         }
       }
     }
-  }
+
 }

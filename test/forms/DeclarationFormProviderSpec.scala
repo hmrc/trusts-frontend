@@ -27,10 +27,10 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
 
   ".firstName" must {
 
-    val fieldName = "firstName"
+    val fieldName   = "firstName"
     val requiredKey = "declaration.error.firstName.required"
-    val lengthKey = "declaration.error.firstName.length"
-    val maxLength = 35
+    val lengthKey   = "declaration.error.firstName.length"
+    val maxLength   = 35
 
     behave like fieldThatBindsValidData(
       form,
@@ -98,17 +98,18 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
     }
 
     "replace smart apostrophes" in {
-      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "‘apos’trophes‘", "lastName" -> "lastName"))
+      val result =
+        form.bind(Map("firstName" -> "firstName", "middleName" -> "‘apos’trophes‘", "lastName" -> "lastName"))
       result.value.value.name.middleName shouldBe Some("'apos'trophes'")
     }
   }
 
   ".lastName" must {
 
-    val fieldName = "lastName"
+    val fieldName   = "lastName"
     val requiredKey = "declaration.error.lastName.required"
-    val lengthKey = "declaration.error.lastName.length"
-    val maxLength = 35
+    val lengthKey   = "declaration.error.lastName.length"
+    val maxLength   = 35
 
     behave like fieldThatBindsValidData(
       form,
@@ -136,14 +137,15 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
     )
 
     "replace smart apostrophes" in {
-      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "‘apos’trophes‘"))
+      val result =
+        form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "‘apos’trophes‘"))
       result.value.value.name.lastName shouldBe "'apos'trophes'"
     }
   }
 
   ".email" must {
 
-    val fieldName = "email"
+    val fieldName   = "email"
     val requiredKey = "declaration.error.email.invalid"
 
     behave like optionalField(
@@ -153,27 +155,56 @@ class DeclarationFormProviderSpec extends StringFieldBehaviours {
     )
 
     "bind whitespace trim values" in {
-      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middle", "lastName" -> "lastName", "email" -> "  test@test.com  "))
+      val result = form.bind(
+        Map(
+          "firstName"  -> "firstName",
+          "middleName" -> "middle",
+          "lastName"   -> "lastName",
+          "email"      -> "  test@test.com  "
+        )
+      )
       result.value.value.email shouldBe Some("test@test.com")
     }
 
     "bind whitespace no values" in {
-      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middle", "lastName" -> "lastName", "email" -> ""))
+      val result =
+        form.bind(Map("firstName" -> "firstName", "middleName" -> "middle", "lastName" -> "lastName", "email" -> ""))
       result.value.value.email shouldBe None
     }
 
     "replace smart apostrophes before the @ sign in an email" in {
-      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName", "email" ->"‘a‘pos‘@trophes.com"))
+      val result = form.bind(
+        Map(
+          "firstName"  -> "firstName",
+          "middleName" -> "middleName",
+          "lastName"   -> "lastName",
+          "email"      -> "‘a‘pos‘@trophes.com"
+        )
+      )
       result.value.value.email shouldBe Some("'a'pos'@trophes.com")
     }
 
     "throw an error if an email has a smart apostrophe after the @" in {
-      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName", "email" ->"apos@t‘rophes.com"))
+      val result = form.bind(
+        Map(
+          "firstName"  -> "firstName",
+          "middleName" -> "middleName",
+          "lastName"   -> "lastName",
+          "email"      -> "apos@t‘rophes.com"
+        )
+      )
       result.errors should contain(FormError(fieldName, requiredKey, Seq(emailRegex)))
     }
 
     "throw an error if an email ends with a smart apostrophe after the @" in {
-      val result = form.bind(Map("firstName" -> "firstName", "middleName" -> "middleName", "lastName" -> "lastName", "email" ->"apos@trophes.com‘"))
+      val result = form.bind(
+        Map(
+          "firstName"  -> "firstName",
+          "middleName" -> "middleName",
+          "lastName"   -> "lastName",
+          "email"      -> "apos@trophes.com‘"
+        )
+      )
       result.errors should contain(FormError(fieldName, requiredKey, Seq(emailRegex)))
     }
   }

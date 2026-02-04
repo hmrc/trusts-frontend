@@ -22,12 +22,14 @@ import views.ViewUtils
 
 trait IsExpressYesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
-  def yesNoPage(form: Form[Boolean],
-                createView: Form[Boolean] => HtmlFormat.Appendable,
-                sectionKey: Option[String],
-                messageKeyPrefix: String,
-                hintTextPrefix : Option[String] = None,
-                args : Seq[String] = Nil) : Unit = {
+  def yesNoPage(
+    form: Form[Boolean],
+    createView: Form[Boolean] => HtmlFormat.Appendable,
+    sectionKey: Option[String],
+    messageKeyPrefix: String,
+    hintTextPrefix: Option[String] = None,
+    args: Seq[String] = Nil
+  ): Unit =
 
     "behave like a page with a Yes/No question" when {
 
@@ -35,14 +37,13 @@ trait IsExpressYesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
         "contain a legend for the question" in {
 
-          val doc = asDocument(createView(form))
+          val doc     = asDocument(createView(form))
           val legends = doc.getElementsByTag("legend")
-          legends.size mustBe 1
+          legends.size     mustBe 1
           legends.first.text must include(messages(s"$messageKeyPrefix.subheading3", args: _*))
 
-          hintTextPrefix.map {
-            pref =>
-              doc.getElementsByClass("govuk-hint").first.text must include(messages(s"$pref.hint"))
+          hintTextPrefix.map { pref =>
+            doc.getElementsByClass("govuk-hint").first.text must include(messages(s"$pref.hint"))
           }
         }
 
@@ -87,20 +88,25 @@ trait IsExpressYesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
         "show an error in the value field's label" in {
 
-          val doc = asDocument(createView(form.withError(error)))
+          val doc       = asDocument(createView(form.withError(error)))
           val errorSpan = doc.getElementsByClass("govuk-error-message").first
-          errorSpan.text mustBe (s"""${messages(errorPrefix)} ${messages(errorMessage)}""")
+          errorSpan.text mustBe s"""${messages(errorPrefix)} ${messages(errorMessage)}"""
         }
 
         "show an error prefix in the browser title" in {
 
           val doc = asDocument(createView(form.withError(error)))
-          assertEqualsValue(doc, "title", ViewUtils.breadcrumbTitle(s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""", sectionKey.map(messages(_))))
+          assertEqualsValue(
+            doc,
+            "title",
+            ViewUtils.breadcrumbTitle(
+              s"""${messages("error.browser.title.prefix")} ${messages(s"$messageKeyPrefix.title", args: _*)}""",
+              sectionKey.map(messages(_))
+            )
+          )
         }
       }
     }
-  }
-
 
   def answeredYesNoPage(createView: Form[Boolean] => HtmlFormat.Appendable, answer: Boolean): Unit = {
 
@@ -117,4 +123,5 @@ trait IsExpressYesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
       assertNotRenderedById(doc, "error-summary_header")
     }
   }
+
 }

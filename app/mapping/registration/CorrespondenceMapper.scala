@@ -19,7 +19,8 @@ package mapping.registration
 import models.core.http.Correspondence
 
 class CorrespondenceMapper {
-  def build(trustName: String): Correspondence = {
+
+  def build(trustName: String): Correspondence =
     Correspondence(name = trustName)
-  }
+
 }

@@ -22,18 +22,15 @@ import pages.register.{PostcodeForTheTrustPage, WhatIsTheUTRPage}
 
 class MatchingMapper {
 
-  def build(userAnswers: UserAnswers, trustName: String): Option[MatchData] = {
+  def build(userAnswers: UserAnswers, trustName: String): Option[MatchData] =
 
     for {
-      utr <- userAnswers.get(WhatIsTheUTRPage)
+      utr     <- userAnswers.get(WhatIsTheUTRPage)
       postcode = userAnswers.get(PostcodeForTheTrustPage)
-    } yield {
-      MatchData(
-        utr = utr,
-        name = trustName,
-        postCode = postcode
-      )
-    }
-  }
+    } yield MatchData(
+      utr = utr,
+      name = trustName,
+      postCode = postcode
+    )
 
 }

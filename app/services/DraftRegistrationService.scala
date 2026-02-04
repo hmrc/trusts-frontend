@@ -27,12 +27,13 @@ import java.util.UUID
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsRepository)
-                                        (implicit ec: ExecutionContext) {
+class DraftRegistrationService @Inject() (registrationsRepository: RegistrationsRepository)(implicit
+  ec: ExecutionContext
+) {
 
   def create[A](request: MatchingAndSuitabilityDataRequest[A])(implicit hc: HeaderCarrier): Future[String] = {
 
-    val draftId = UUID.randomUUID().toString
+    val draftId     = UUID.randomUUID().toString
     val userAnswers = UserAnswers(
       draftId = draftId,
       data = request.userAnswers.data,
@@ -44,8 +45,9 @@ class DraftRegistrationService @Inject()(registrationsRepository: RegistrationsR
     }
   }
 
-  def getAnswerSections(draftId: String)
-                       (implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
+  def getAnswerSections(
+    draftId: String
+  )(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
     registrationsRepository.getAnswerSections(draftId)
 
 }

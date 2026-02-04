@@ -31,136 +31,156 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
 
   "BeforeYouContinue Controller" must {
 
-      "return OK and the correct view for a taxable journey GET" in {
+    "return OK and the correct view for a taxable journey GET" in {
 
+      val answers = emptyMatchingAndSuitabilityUserAnswers
+        .set(TrustTaxableYesNoPage, true)
+        .success
+        .value
+        .set(TrustHaveAUTRPage, false)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(answers))
+        .build()
+
+      val request = FakeRequest(GET, beforeYouContinueRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BeforeYouContinueTaxableView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view()(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a taxable agent journey GET" in {
+
+      val answers = emptyMatchingAndSuitabilityUserAnswers
+        .set(TrustTaxableYesNoPage, true)
+        .success
+        .value
+        .set(TrustHaveAUTRPage, false)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+        .build()
+
+      val request = FakeRequest(GET, beforeYouContinueRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BeforeYouContinueTaxableAgentView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view()(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for an existing taxable journey GET" in {
+
+      val answers = emptyMatchingAndSuitabilityUserAnswers
+        .set(TrustTaxableYesNoPage, true)
+        .success
+        .value
+        .set(TrustHaveAUTRPage, true)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(answers))
+        .build()
+
+      val request = FakeRequest(GET, beforeYouContinueRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BeforeYouContinueExistingTaxableView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view()(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a non taxable journey GET" in {
+
+      val answers = emptyMatchingAndSuitabilityUserAnswers
+        .set(TrustTaxableYesNoPage, false)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
+        .build()
+
+      val request = FakeRequest(GET, beforeYouContinueRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BeforeYouContinueNonTaxableView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view()(request, messages).toString
+
+      application.stop()
+    }
+
+    "return OK and the correct view for a non taxable agent journey GET" in {
+
+      val answers = emptyMatchingAndSuitabilityUserAnswers
+        .set(TrustTaxableYesNoPage, false)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
+        .build()
+
+      val request = FakeRequest(GET, beforeYouContinueRoute)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
+
+      status(result) mustEqual OK
+
+      contentAsString(result) mustEqual
+        view()(request, messages).toString
+
+      application.stop()
+    }
+
+    "redirect to the next page when valid data is submitted" must {
+
+      "create the draft registration" in {
         val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, true).success.value
-          .set(TrustHaveAUTRPage, false).success.value
 
-        val application = applicationBuilder(userAnswers = Some(answers))
-          .build()
+        val application =
+          applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation).build()
 
-        val request = FakeRequest(GET, beforeYouContinueRoute)
+        val request = FakeRequest(POST, beforeYouContinueRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[BeforeYouContinueTaxableView]
+        status(result) mustEqual SEE_OTHER
 
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view()(request, messages).toString
-
-        application.stop()
-      }
-
-      "return OK and the correct view for a taxable agent journey GET" in {
-
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, true).success.value
-          .set(TrustHaveAUTRPage, false).success.value
-
-        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-          .build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[BeforeYouContinueTaxableAgentView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view()(request, messages).toString
+        redirectLocation(result).value mustEqual controllers.register.routes.CreateDraftRegistrationController
+          .create()
+          .url
 
         application.stop()
       }
-
-      "return OK and the correct view for an existing taxable journey GET" in {
-
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, true).success.value
-          .set(TrustHaveAUTRPage, true).success.value
-
-        val application = applicationBuilder(userAnswers = Some(answers))
-          .build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[BeforeYouContinueExistingTaxableView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view()(request, messages).toString
-
-        application.stop()
-      }
-
-      "return OK and the correct view for a non taxable journey GET" in {
-
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, false).success.value
-
-        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation)
-          .build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[BeforeYouContinueNonTaxableView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view()(request, messages).toString
-
-        application.stop()
-      }
-
-      "return OK and the correct view for a non taxable agent journey GET" in {
-
-        val answers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustTaxableYesNoPage, false).success.value
-
-        val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Agent)
-          .build()
-
-        val request = FakeRequest(GET, beforeYouContinueRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[BeforeYouContinueNonTaxAgentView]
-
-        status(result) mustEqual OK
-
-        contentAsString(result) mustEqual
-          view()(request, messages).toString
-
-        application.stop()
-      }
-
-      "redirect to the next page when valid data is submitted" must {
-
-        "create the draft registration" in {
-          val answers = emptyMatchingAndSuitabilityUserAnswers
-
-          val application = applicationBuilder(userAnswers = Some(answers), affinityGroup = AffinityGroup.Organisation).build()
-
-          val request = FakeRequest(POST, beforeYouContinueRoute)
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-
-          redirectLocation(result).value mustEqual controllers.register.routes.CreateDraftRegistrationController.create().url
-
-          application.stop()
-        }
-      }
+    }
   }
+
 }

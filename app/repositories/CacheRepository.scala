@@ -32,36 +32,37 @@ import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CacheRepositoryImpl @Inject()(
-                                     val mongo: MongoComponent,
-                                     val config: FrontendAppConfig
-                                   )(implicit val ec: ExecutionContext)
+class CacheRepositoryImpl @Inject() (
+  val mongo: MongoComponent,
+  val config: FrontendAppConfig
+)(implicit val ec: ExecutionContext)
+    extends PlayMongoRepository[MatchingAndSuitabilityUserAnswers](
+      collectionName = "user-answers",
+      mongoComponent = mongo,
+      domainFormat = Format(MatchingAndSuitabilityUserAnswers.reads, MatchingAndSuitabilityUserAnswers.writes),
+      indexes = Seq(
+        IndexModel(
+          ascending("updatedAt"),
+          IndexOptions()
+            .unique(false)
+            .name("user-answers-updated-at-index")
+            .expireAfter(config.cachettllocalInSeconds, TimeUnit.SECONDS)
+        ),
+        IndexModel(
+          ascending("internalId"),
+          IndexOptions()
+            .unique(false)
+            .name("internal-auth-id-index")
+        )
+      ),
+      replaceIndexes = config.dropIndexes
+    )
+    with CacheRepository {
 
-  extends PlayMongoRepository[MatchingAndSuitabilityUserAnswers](
-    collectionName = "user-answers",
-    mongoComponent = mongo,
-    domainFormat = Format(MatchingAndSuitabilityUserAnswers.reads, MatchingAndSuitabilityUserAnswers.writes),
-    indexes = Seq(
-      IndexModel(
-        ascending("updatedAt"),
-        IndexOptions()
-          .unique(false)
-          .name("user-answers-updated-at-index")
-          .expireAfter(config.cachettllocalInSeconds, TimeUnit.SECONDS)),
-       IndexModel(
-        ascending("internalId"),
-        IndexOptions()
-          .unique(false)
-          .name("internal-auth-id-index"))
-
-    ), replaceIndexes = config.dropIndexes
-
-  ) with CacheRepository {
-
-  private def selector(internalId: String): Bson = equal("internalId" , internalId)
+  private def selector(internalId: String): Bson = equal("internalId", internalId)
 
   override def get(internalId: String): Future[Option[MatchingAndSuitabilityUserAnswers]] = {
-    val modifier = Updates.set("updatedAt", LocalDateTime.now())
+    val modifier     = Updates.set("updatedAt", LocalDateTime.now())
     val updateOption = new FindOneAndUpdateOptions()
       .upsert(false)
 
@@ -70,12 +71,13 @@ class CacheRepositoryImpl @Inject()(
 
   override def set(userAnswers: MatchingAndSuitabilityUserAnswers): Future[Boolean] = {
 
-    val find = selector(userAnswers.internalId)
+    val find          = selector(userAnswers.internalId)
     val updatedObject = userAnswers.copy(updatedAt = LocalDateTime.now)
-    val options = ReplaceOptions().upsert(true)
+    val options       = ReplaceOptions().upsert(true)
 
     collection.replaceOne(find, updatedObject, options).headOption().map(_.exists(_.wasAcknowledged()))
   }
+
 }
 
 trait CacheRepository {

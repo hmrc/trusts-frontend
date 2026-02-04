@@ -43,4 +43,5 @@ class UnauthorisedControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

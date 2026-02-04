@@ -21,106 +21,74 @@ import play.api.data.{Form, FormError}
 
 trait IntFieldBehaviours extends FieldBehaviours {
 
-  def nonDecimalField(form: Form[_],
-               fieldName: String,
-               wholeNumberError: FormError,
-               maxLength: Option[Int] = None): Unit = {
+  def nonDecimalField(
+    form: Form[_],
+    fieldName: String,
+    wholeNumberError: FormError,
+    maxLength: Option[Int] = None
+  ): Unit =
 
-    "not bind decimals" in {
-      forAll(decimals(maxLength) -> "decimal") {
-        decimal =>
-          val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
-          result.errors shouldEqual Seq(wholeNumberError)
+    "not bind decimals" in
+      forAll(decimals(maxLength) -> "decimal") { decimal =>
+        val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
+        result.errors shouldEqual Seq(wholeNumberError)
       }
-    }
+
+  def intField(form: Form[_], fieldName: String, nonNumericError: FormError, wholeNumberError: FormError): Unit = {
+
+    "not bind non-numeric numbers" in
+      forAll(nonNumerics -> "nonNumeric") { nonNumeric =>
+        val result = form.bind(Map(fieldName -> nonNumeric)).apply(fieldName)
+        result.errors shouldEqual Seq(nonNumericError)
+      }
+
+    "not bind decimals" in
+      forAll(decimals(None) -> "decimal") { decimal =>
+        val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
+        result.errors shouldEqual Seq(wholeNumberError)
+      }
+
+    "not bind integers larger than Int.MaxValue" in
+      forAll(intsLargerThanMaxValue -> "massiveInt") { num: BigInt =>
+        val result = form.bind(Map(fieldName -> num.toString)).apply(fieldName)
+        result.errors shouldEqual Seq(nonNumericError)
+      }
+
+    "not bind integers smaller than Int.MinValue" in
+      forAll(intsSmallerThanMinValue -> "massivelySmallInt") { num: BigInt =>
+        val result = form.bind(Map(fieldName -> num.toString)).apply(fieldName)
+        result.errors shouldEqual Seq(nonNumericError)
+      }
   }
 
-  def intField(form: Form[_],
-               fieldName: String,
-               nonNumericError: FormError,
-               wholeNumberError: FormError): Unit = {
+  def intFieldWithMinimum(form: Form[_], fieldName: String, minimum: Int, expectedError: FormError): Unit =
 
-    "not bind non-numeric numbers" in {
-
-      forAll(nonNumerics -> "nonNumeric") {
-        nonNumeric =>
-          val result = form.bind(Map(fieldName -> nonNumeric)).apply(fieldName)
-          result.errors shouldEqual Seq(nonNumericError)
+    s"not bind integers below $minimum" in
+      forAll(intsBelowValue(minimum) -> "intBelowMin") { number: Int =>
+        val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+        result.errors shouldEqual Seq(expectedError)
       }
-    }
 
-    "not bind decimals" in {
+  def intFieldWithMinimumWithGenerator(
+    form: Form[_],
+    fieldName: String,
+    minimum: Int,
+    generator: Gen[Int],
+    expectedError: FormError
+  ): Unit =
 
-      forAll(decimals(None) -> "decimal") {
-        decimal =>
-          val result = form.bind(Map(fieldName -> decimal)).apply(fieldName)
-          result.errors shouldEqual Seq(wholeNumberError)
+    s"not bind integers below $minimum" in
+      forAll(generator -> "intBelowMin") { number: Int =>
+        val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+        result.errors shouldEqual Seq(expectedError)
       }
-    }
 
-    "not bind integers larger than Int.MaxValue" in {
+  def intFieldWithRange(form: Form[_], fieldName: String, minimum: Int, maximum: Int, expectedError: FormError): Unit =
 
-      forAll(intsLargerThanMaxValue -> "massiveInt") {
-        num: BigInt =>
-          val result = form.bind(Map(fieldName -> num.toString)).apply(fieldName)
-          result.errors shouldEqual Seq(nonNumericError)
+    s"not bind integers outside the range $minimum to $maximum" in
+      forAll(intsOutsideRange(minimum, maximum) -> "intOutsideRange") { number =>
+        val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
+        result.errors shouldEqual Seq(expectedError)
       }
-    }
 
-    "not bind integers smaller than Int.MinValue" in {
-
-      forAll(intsSmallerThanMinValue -> "massivelySmallInt") {
-        num: BigInt =>
-          val result = form.bind(Map(fieldName -> num.toString)).apply(fieldName)
-          result.errors shouldEqual Seq(nonNumericError)
-      }
-    }
-  }
-
-  def intFieldWithMinimum(form: Form[_],
-                          fieldName: String,
-                          minimum: Int,
-                          expectedError: FormError): Unit = {
-
-    s"not bind integers below $minimum" in {
-
-      forAll(intsBelowValue(minimum) -> "intBelowMin") {
-        number: Int =>
-          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
-          result.errors shouldEqual Seq(expectedError)
-      }
-    }
-  }
-
-  def intFieldWithMinimumWithGenerator(form: Form[_],
-                          fieldName: String,
-                          minimum: Int,
-                          generator : Gen[Int],
-                          expectedError: FormError): Unit = {
-
-    s"not bind integers below $minimum" in {
-
-      forAll(generator -> "intBelowMin") {
-        number: Int =>
-          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
-          result.errors shouldEqual Seq(expectedError)
-      }
-    }
-  }
-
-  def intFieldWithRange(form: Form[_],
-                        fieldName: String,
-                        minimum: Int,
-                        maximum: Int,
-                        expectedError: FormError): Unit = {
-
-    s"not bind integers outside the range $minimum to $maximum" in {
-
-      forAll(intsOutsideRange(minimum, maximum) -> "intOutsideRange") {
-        number =>
-          val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
-          result.errors shouldEqual Seq(expectedError)
-      }
-    }
-  }
 }

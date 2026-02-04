@@ -24,26 +24,26 @@ import play.api.mvc.Call
 import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 
 @Singleton
-class FrontendAppConfig @Inject() (val configuration: Configuration,
-                                   contactFrontendConfig: ContactFrontendConfig) {
+class FrontendAppConfig @Inject() (val configuration: Configuration, contactFrontendConfig: ContactFrontendConfig) {
 
   private def loadConfig(key: String): String = configuration.get[String](key)
 
-  val betaFeedbackUrl = s"${contactFrontendConfig.baseUrl.get}/contact/beta-feedback?service=${contactFrontendConfig.serviceId.get}"
+  val betaFeedbackUrl =
+    s"${contactFrontendConfig.baseUrl.get}/contact/beta-feedback?service=${contactFrontendConfig.serviceId.get}"
 
   lazy val appName: String = configuration.get[String]("appName")
 
-  lazy val affinityGroup = configuration.get[String]("affinityGroup")
+  lazy val affinityGroup           = configuration.get[String]("affinityGroup")
   val whoShouldRegisterUrl: String = configuration.get[String]("urls.whoShouldRegister")
-  val trustsAndTaxesUrl: String = configuration.get[String]("urls.trustsAndTaxes")
+  val trustsAndTaxesUrl: String    = configuration.get[String]("urls.trustsAndTaxes")
 
-  lazy val loginUrl: String = configuration.get[String]("urls.login")
+  lazy val loginUrl: String         = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
-  lazy val login: String = s"$loginUrl?continue=$loginContinueUrl"
+  lazy val login: String            = s"$loginUrl?continue=$loginContinueUrl"
 
   lazy val logoutUrl: String = loadConfig("urls.logout")
 
-  lazy val lostUtrUrl : String = configuration.get[String]("urls.lostUtr")
+  lazy val lostUtrUrl: String = configuration.get[String]("urls.lostUtr")
 
   def beneficiariesFrontendUrl(draftId: String): String = frontendUrl(draftId, "beneficiaries")
 
@@ -69,11 +69,11 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
   }
 
   lazy val agentServiceRegistrationUrl: String = {
-    lazy val agentsSubscriptionsUrl : String = configuration.get[String]("urls.agentSubscriptions")
+    lazy val agentsSubscriptionsUrl: String = configuration.get[String]("urls.agentSubscriptions")
     s"$agentsSubscriptionsUrl?continue=$loginContinueUrl"
   }
 
-  lazy val locationCanonicalList: String = configuration.get[String]("location.canonical.list.all")
+  lazy val locationCanonicalList: String   = configuration.get[String]("location.canonical.list.all")
   lazy val locationCanonicalListCY: String = configuration.get[String]("location.canonical.list.allCY")
 
   lazy val languageTranslationEnabled: Boolean =
@@ -101,31 +101,31 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
   def routeToSwitchLanguage: String => Call =
     (lang: String) => controllers.register.routes.LanguageSwitchController.switchToLanguage(lang)
 
-  lazy val auditSubmissions : Boolean =
+  lazy val auditSubmissions: Boolean =
     configuration.get[Boolean]("microservice.services.features.auditing.submissions.enabled")
 
-  lazy val deploymentNotification : Boolean =
+  lazy val deploymentNotification: Boolean =
     configuration.get[Boolean]("microservice.services.features.deployment.notification.enabled")
 
   lazy val declarationEmailEnabled: Boolean =
     configuration.get[Boolean]("microservice.services.features.declaration.email.enabled")
 
-  lazy val maintainATrustFrontendUrl : String =
+  lazy val maintainATrustFrontendUrl: String =
     configuration.get[String]("urls.maintainATrust")
 
-  lazy val maintainATrustWithUTR : String =
+  lazy val maintainATrustWithUTR: String =
     configuration.get[String]("urls.maintainATrustWithUTR")
 
-  lazy val maintainATrustWithURN : String =
+  lazy val maintainATrustWithURN: String =
     configuration.get[String]("urls.maintainATrustWithURN")
 
   lazy val countdownLength: Int = configuration.get[Int]("timeout.countdown")
-  lazy val timeoutLength: Int = configuration.get[Int]("timeout.length")
+  lazy val timeoutLength: Int   = configuration.get[Int]("timeout.length")
 
   def helplineUrl(implicit messages: Messages): String = {
     val path = messages.lang.code match {
       case WELSH => "urls.welshHelpline"
-      case _ => "urls.trustsHelpline"
+      case _     => "urls.trustsHelpline"
     }
     configuration.get[String](path)
   }
@@ -138,6 +138,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration,
 
   val cachettllocalInSeconds: Long = configuration.get[Long]("mongodb.local.ttlSeconds")
 
-  val dropIndexes: Boolean = configuration.getOptional[Boolean]("microservice.services.features.mongo.dropIndexes").getOrElse(false)
+  val dropIndexes: Boolean =
+    configuration.getOptional[Boolean]("microservice.services.features.mongo.dropIndexes").getOrElse(false)
 
 }

@@ -28,16 +28,18 @@ import utils.Session
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: RegistrationsRepository)
-                                                   (implicit val executionContext: ExecutionContext)
-  extends RegistrationDataRetrievalAction with Logging {
+class RegistrationDataRetrievalActionImpl @Inject() (registrationsRepository: RegistrationsRepository)(implicit
+  val executionContext: ExecutionContext
+) extends RegistrationDataRetrievalAction with Logging {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    def createdOptionalDataRequest(request: IdentifierRequest[A],
-                                   userAnswers: Option[UserAnswers]): OptionalRegistrationDataRequest[A] = {
+    def createdOptionalDataRequest(
+      request: IdentifierRequest[A],
+      userAnswers: Option[UserAnswers]
+    ): OptionalRegistrationDataRequest[A] =
       OptionalRegistrationDataRequest(
         request = request.request,
         internalId = request.internalId,
@@ -47,16 +49,17 @@ class RegistrationDataRetrievalActionImpl @Inject()(registrationsRepository: Reg
         enrolments = request.enrolments,
         agentARN = request.agentARN
       )
-    }
 
     registrationsRepository.getMostRecentDraftId().flatMap {
-        case None =>
-          Future.successful(createdOptionalDataRequest(request, None))
-        case Some(draftId) =>
-          registrationsRepository.get(draftId)
-            .map(createdOptionalDataRequest(request, _))
+      case None          =>
+        Future.successful(createdOptionalDataRequest(request, None))
+      case Some(draftId) =>
+        registrationsRepository
+          .get(draftId)
+          .map(createdOptionalDataRequest(request, _))
     }
   }
+
 }
 
 trait RegistrationDataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalRegistrationDataRequest]

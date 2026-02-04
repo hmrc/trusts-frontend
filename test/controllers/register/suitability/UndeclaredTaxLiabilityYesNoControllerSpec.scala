@@ -29,7 +29,8 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
 
   private val form: Form[Boolean] = new YesNoFormProvider().withPrefix("suitability.undeclaredTaxLiability")
 
-  private lazy val undeclaredTaxLiabilityYesNoRoute: String = routes.UndeclaredTaxLiabilityYesNoController.onPageLoad().url
+  private lazy val undeclaredTaxLiabilityYesNoRoute: String =
+    routes.UndeclaredTaxLiabilityYesNoController.onPageLoad().url
 
   "UndeclaredTaxLiabilityYesNo Controller" must {
 
@@ -54,7 +55,9 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyMatchingAndSuitabilityUserAnswers
-        .set(UndeclaredTaxLiabilityYesNoPage, true).success.value
+        .set(UndeclaredTaxLiabilityYesNoPage, true)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -141,4 +144,5 @@ class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

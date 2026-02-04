@@ -30,11 +30,14 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig)(implicit ec: ExecutionContext) {
+class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAppConfig)(implicit
+  ec: ExecutionContext
+) {
 
-  def auditRegistrationSubmitted(payload: JsValue,
-                                 draftId: String,
-                                 response: RegistrationTRNResponse)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
+  def auditRegistrationSubmitted(payload: JsValue, draftId: String, response: RegistrationTRNResponse)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit = {
 
     val event = if (request.isAgent) {
       REGISTRATION_SUBMITTED_BY_AGENT
@@ -51,8 +54,10 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
     )
   }
 
-  def auditRegistrationAlreadySubmitted(payload: JsValue,
-                                        draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
+  def auditRegistrationAlreadySubmitted(payload: JsValue, draftId: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit =
 
     audit(
       event = REGISTRATION_SUBMISSION_FAILED,
@@ -61,10 +66,11 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
       internalId = request.internalId,
       response = RegistrationErrorAuditEvent(FORBIDDEN, "ALREADY_REGISTERED", "Trust is already registered.")
     )
-  }
 
-  def auditRegistrationSubmissionFailed(payload: JsValue,
-                                        draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
+  def auditRegistrationSubmissionFailed(payload: JsValue, draftId: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit =
 
     audit(
       event = REGISTRATION_SUBMISSION_FAILED,
@@ -73,10 +79,11 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
       internalId = request.internalId,
       response = RegistrationErrorAuditEvent(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
     )
-  }
 
-  def auditRegistrationPreparationFailed(userAnswers: UserAnswers,
-                                         errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
+  def auditRegistrationPreparationFailed(userAnswers: UserAnswers, errorReason: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit =
 
     audit(
       event = REGISTRATION_PREPARATION_FAILED,
@@ -85,7 +92,6 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
       internalId = request.internalId,
       RegistrationErrorAuditEvent(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", errorReason)
     )
-  }
 
   def auditUserAnswers(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Unit = {
     val auditPayload = AuditEvent(
@@ -100,24 +106,26 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
     )
   }
 
-  def auditRegistrationWithMissingSettlorInfo(userAnswers: UserAnswers,
-                                              missingInfo: String)
-                                             (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = {
+  def auditRegistrationWithMissingSettlorInfo(userAnswers: UserAnswers, missingInfo: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit =
 
     audit(
       event = REGISTRATION_PREPARATION_FAILED,
       payload = userAnswers.data,
       draftId = userAnswers.draftId,
       internalId = request.internalId,
-      response = RegistrationErrorAuditEvent(OK, "MISSING_SETTLOR_INFO", s"Registration proceeding with missing settlor information: $missingInfo")
+      response = RegistrationErrorAuditEvent(
+        OK,
+        "MISSING_SETTLOR_INFO",
+        s"Registration proceeding with missing settlor information: $missingInfo"
+      )
     )
-  }
 
-  private def audit(event: String,
-                    payload: JsValue,
-                    draftId: String,
-                    internalId: String,
-                    response: TrustResponse)(implicit hc: HeaderCarrier): Unit = {
+  private def audit(event: String, payload: JsValue, draftId: String, internalId: String, response: TrustResponse)(
+    implicit hc: HeaderCarrier
+  ): Unit =
 
     if (config.auditSubmissions) {
 
@@ -135,6 +143,5 @@ class AuditService @Inject()(auditConnector: AuditConnector, config: FrontendApp
     } else {
       ()
     }
-  }
 
 }

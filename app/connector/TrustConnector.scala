@@ -28,25 +28,31 @@ import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) extends Logging {
+class TrustConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig) extends Logging {
 
   val registrationUrl = s"${config.trustsUrl}/trusts/register"
-  val matchingUrl = s"${config.trustsUrl}/trusts/check"
+  val matchingUrl     = s"${config.trustsUrl}/trusts/check"
 
-  def register(registrationJson: JsValue, draftId: String)
-              (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+  def register(registrationJson: JsValue, draftId: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[TrustResponse] = {
     implicit val newHc: HeaderCarrier = hc.withExtraHeaders(
       Headers.DraftRegistrationId -> draftId,
-      Headers.TrueUserAgent -> request.headers.get(HeaderNames.USER_AGENT).getOrElse("No user agent provided")
+      Headers.TrueUserAgent       -> request.headers.get(HeaderNames.USER_AGENT).getOrElse("No user agent provided")
     )
 
-    http.post(url"$registrationUrl")(newHc)
+    http
+      .post(url"$registrationUrl")(newHc)
       .withBody(registrationJson)
       .execute[TrustResponse](TrustResponse.httpReads, ec)
   }
 
   def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] =
-    http.post(url"$matchingUrl")
+    http
+      .post(url"$matchingUrl")
       .withBody(Json.toJson(matchData)(MatchData.writes))
       .execute[MatchedResponse](MatchedResponse.httpReads, ec)
+
 }

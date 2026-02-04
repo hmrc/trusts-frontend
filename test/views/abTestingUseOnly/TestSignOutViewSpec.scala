@@ -23,7 +23,7 @@ import views.html.abTestingUseOnly.TestSignOutView
 class TestSignOutViewSpec extends ViewBehaviours {
 
   private val messageKeyPrefix = "abTestingUseOnly.signOutPage"
-  private val guidanceURL = "https://www.gov.uk/guidance/manage-your-trusts-registration-service"
+  private val guidanceURL      = "https://www.gov.uk/guidance/manage-your-trusts-registration-service"
 
   "TestSignOutView" must {
 
@@ -39,8 +39,12 @@ class TestSignOutViewSpec extends ViewBehaviours {
     behave like pageWithText(applyView(), "You have signed out", "- heading")
     behave like pageWithText(applyView(), "You have signed out of the trust registration.", "- p1")
     behave like pageWithText(applyView(), "Get the URN for the trust", "- heading2")
-    behave like pageWithText(applyView(), "You need to sign in to manage the trust using the Government Gateway user " +
-      "ID and password that you set up to register this trust.", "- p2")
+    behave like pageWithText(
+      applyView(),
+      "You need to sign in to manage the trust using the Government Gateway user " +
+        "ID and password that you set up to register this trust.",
+      "- p2"
+    )
     behave like pageWithText(applyView(), "Sign in to manage a trust", "- link text")
   }
 

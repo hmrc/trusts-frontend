@@ -29,4 +29,5 @@ class SessionExpiredViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, None, "session_expired", "guidance")
   }
+
 }

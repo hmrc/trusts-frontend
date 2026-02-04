@@ -32,113 +32,114 @@ trait MatchingRoutes {
 
   def matchingRoutes()(implicit navigator: Navigator): Unit = {
 
-      "TrustRegisteredOnline page -> Yes -> TrustHaveAUTR page" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+    "TrustRegisteredOnline page -> Yes -> TrustHaveAUTR page" in
+      forAll(arbitrary[UserAnswers]) { userAnswers =>
+        val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
 
-            val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-
-            navigator.nextPage(TrustRegisteredOnlinePage)(answers)
-              .mustBe(routes.TrustHaveAUTRController.onPageLoad())
-        }
+        navigator
+          .nextPage(TrustRegisteredOnlinePage)(answers)
+          .mustBe(routes.TrustHaveAUTRController.onPageLoad())
       }
 
-      "TrustRegisteredOnline page -> no -> TrustHaveAUTR page" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+    "TrustRegisteredOnline page -> no -> TrustHaveAUTR page" in
+      forAll(arbitrary[UserAnswers]) { userAnswers =>
+        val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
 
-            val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
-
-            navigator.nextPage(TrustRegisteredOnlinePage)(answers)
-              .mustBe(routes.WhichIdentifierController.onPageLoad())
-        }
+        navigator
+          .nextPage(TrustRegisteredOnlinePage)(answers)
+          .mustBe(routes.WhichIdentifierController.onPageLoad())
       }
 
     "navigate when trust is not registered online" when {
 
       "the user has a UTR for the trust" when {
 
-        "go to WhatIsTrustsUTR from TrustHaveAUTR when user answers yes" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
+        "go to WhatIsTrustsUTR from TrustHaveAUTR when user answers yes" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            val answers = userAnswers
+              .set(TrustRegisteredOnlinePage, false)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, true)
+              .success
+              .value
 
-              val answers = userAnswers.set(TrustRegisteredOnlinePage, false).success.value
-                .set(TrustHaveAUTRPage, true).success.value
-
-              navigator.nextPage(TrustHaveAUTRPage)(answers)
-                .mustBe(routes.WhatIsTheUTRController.onPageLoad())
+            navigator
+              .nextPage(TrustHaveAUTRPage)(answers)
+              .mustBe(routes.WhatIsTheUTRController.onPageLoad())
           }
-        }
 
-        "go to TrustName from WhatIsTheUTR" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
-
-              navigator.nextPage(WhatIsTheUTRPage)(userAnswers)
-                .mustBe(controllers.register.routes.MatchingNameController.onPageLoad())
+        "go to TrustName from WhatIsTheUTR" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            navigator
+              .nextPage(WhatIsTheUTRPage)(userAnswers)
+              .mustBe(controllers.register.routes.MatchingNameController.onPageLoad())
           }
-        }
 
-        "go to TrustRegisteredWithUkAddressYesNo from TrustName" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
+        "go to TrustRegisteredWithUkAddressYesNo from TrustName" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
 
-              val answers = userAnswers.set(TrustHaveAUTRPage, true).success.value
-
-              navigator.nextPage(MatchingNamePage)(answers)
-                .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad())
+            navigator
+              .nextPage(MatchingNamePage)(answers)
+              .mustBe(routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad())
           }
-        }
       }
 
       "the user does not have a UTR for the trust" must {
 
-        "go to ExpressTrustYesNo Controller" in {
-          forAll(arbitrary[UserAnswers]) {
-            userAnswers =>
+        "go to ExpressTrustYesNo Controller" in
+          forAll(arbitrary[UserAnswers]) { userAnswers =>
+            val answers = userAnswers
+              .set(TrustRegisteredOnlinePage, false)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, false)
+              .success
+              .value
 
-              val answers = userAnswers
-                .set(TrustRegisteredOnlinePage, false).success.value
-                .set(TrustHaveAUTRPage, false).success.value
-
-              navigator.nextPage(TrustHaveAUTRPage)(answers)
-                .mustBe(controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad())
+            navigator
+              .nextPage(TrustHaveAUTRPage)(answers)
+              .mustBe(controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad())
           }
-        }
       }
     }
 
     "navigate when trust is registered online" when {
 
-      "go to UTRSentByPost from TrustHaveAUTR when user answers no" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+      "go to UTRSentByPost from TrustHaveAUTR when user answers no" in
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val answers = userAnswers
+            .set(TrustRegisteredOnlinePage, true)
+            .success
+            .value
+            .set(TrustHaveAUTRPage, false)
+            .success
+            .value
 
-            val answers = userAnswers.set(TrustRegisteredOnlinePage, true).success.value
-              .set(TrustHaveAUTRPage, false).success.value
-
-            navigator.nextPage(TrustHaveAUTRPage)(answers)
-              .mustBe(routes.UTRSentByPostController.onPageLoad())
+          navigator
+            .nextPage(TrustHaveAUTRPage)(answers)
+            .mustBe(routes.UTRSentByPostController.onPageLoad())
         }
-      }
 
-      "go to Maintain a trust service from TrustHaveAUTR when user answers yes" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
+      "go to Maintain a trust service from TrustHaveAUTR when user answers yes" in
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val answers = userAnswers
+            .set(TrustRegisteredOnlinePage, true)
+            .success
+            .value
+            .set(TrustHaveAUTRPage, true)
+            .success
+            .value
 
-            val answers = userAnswers
-              .set(TrustRegisteredOnlinePage,true).success.value
-              .set(TrustHaveAUTRPage,true).success.value
+          val feAppConfig = mock[FrontendAppConfig]
 
-            val feAppConfig = mock[FrontendAppConfig]
+          val nav = new Navigator(feAppConfig)
 
-            val nav = new Navigator(feAppConfig)
+          val url = nav.nextPage(TrustHaveAUTRPage)(answers).url
 
-            val url = nav.nextPage(TrustHaveAUTRPage)(answers).url
-
-            url mustBe feAppConfig.maintainATrustFrontendUrl
+          url mustBe feAppConfig.maintainATrustFrontendUrl
         }
-      }
     }
   }
 

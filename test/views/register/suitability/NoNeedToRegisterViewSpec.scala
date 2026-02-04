@@ -36,7 +36,13 @@ class NoNeedToRegisterViewSpec extends ViewBehaviours {
         applyView,
         None,
         "suitability.noNeedToRegister",
-        "p1", "p2", "p2.link", "p3", "p3.link", "p4", "p4.link"
+        "p1",
+        "p2",
+        "p2.link",
+        "p3",
+        "p3.link",
+        "p4",
+        "p4.link"
       )
     }
 
@@ -48,8 +54,13 @@ class NoNeedToRegisterViewSpec extends ViewBehaviours {
         applyView,
         None,
         "suitability.noNeedToRegister",
-        "p1", "p2", "p2.link", "p3", "p3.link"
+        "p1",
+        "p2",
+        "p2.link",
+        "p3",
+        "p3.link"
       )
     }
   }
+
 }

@@ -22,17 +22,20 @@ import models.requests.RegistrationDataRequest
 import play.api.libs.json.Reads
 import play.api.mvc.{ActionBuilder, AnyContent}
 
-class AgentActionSets @Inject()(identify: RegistrationIdentifierAction,
-                                getData: DraftIdRetrievalActionProvider,
-                                requireData: RegistrationDataRequiredAction,
-                                hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                requiredAnswerAction: RequiredAnswerActionProvider) {
+class AgentActionSets @Inject() (
+  identify: RegistrationIdentifierAction,
+  getData: DraftIdRetrievalActionProvider,
+  requireData: RegistrationDataRequiredAction,
+  hasAgentAffinityGroup: RequireStateActionProviderImpl,
+  requiredAnswerAction: RequiredAnswerActionProvider
+) {
 
   def identifiedUserWithData(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
 
+  def requiredAnswerWithAgent[T](draftId: String, requiredAnswer: RequiredAnswer[T])(implicit
+    reads: Reads[T]
+  ): ActionBuilder[RegistrationDataRequest, AnyContent] =
+    identifiedUserWithData(draftId) andThen requiredAnswerAction(requiredAnswer)
 
-  def requiredAnswerWithAgent[T](draftId: String, requiredAnswer: RequiredAnswer[T])
-                                    (implicit reads: Reads[T]): ActionBuilder[RegistrationDataRequest, AnyContent] =
-   identifiedUserWithData(draftId) andThen requiredAnswerAction(requiredAnswer)
 }

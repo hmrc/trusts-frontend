@@ -22,8 +22,8 @@ import play.api.data.FormError
 
 class PostcodeForTheTrustFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "postcodeForTheTrust.error.required"
-  val invalidKey : String = "error.postcodeInvalid"
+  val requiredKey        = "postcodeForTheTrust.error.required"
+  val invalidKey: String = "error.postcodeInvalid"
 
   val form = new PostcodeForTheTrustFormProvider()()
 
@@ -52,4 +52,5 @@ class PostcodeForTheTrustFormProviderSpec extends StringFieldBehaviours {
     )
 
   }
+
 }

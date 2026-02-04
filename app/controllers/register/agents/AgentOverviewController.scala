@@ -31,52 +31,49 @@ import views.html.register.agents.AgentOverviewView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgentOverviewController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         standardActionSets: StandardActionSets,
-                                         identify: RegistrationIdentifierAction,
-                                         hasAgentAffinityGroup: RequireStateActionProviderImpl,
-                                         registrationsRepository: RegistrationsRepository,
-                                         cacheRepository: CacheRepository,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: AgentOverviewView,
-                                         taskListNavigator: TaskListNavigator
-                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class AgentOverviewController @Inject() (
+  override val messagesApi: MessagesApi,
+  standardActionSets: StandardActionSets,
+  identify: RegistrationIdentifierAction,
+  hasAgentAffinityGroup: RequireStateActionProviderImpl,
+  registrationsRepository: RegistrationsRepository,
+  cacheRepository: CacheRepository,
+  val controllerComponents: MessagesControllerComponents,
+  view: AgentOverviewView,
+  taskListNavigator: TaskListNavigator
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions: ActionBuilder[IdentifierRequest, AnyContent] = identify andThen hasAgentAffinityGroup()
 
-  def onPageLoad(): Action[AnyContent] = actions.async {
-    implicit request =>
-      registrationsRepository.listDrafts().map {
-        drafts =>
-          Ok(view(drafts))
-      }
+  def onPageLoad(): Action[AnyContent] = actions.async { implicit request =>
+    registrationsRepository.listDrafts().map { drafts =>
+      Ok(view(drafts))
+    }
   }
 
-  def onSubmit(): Action[AnyContent] = actions.async {
-    implicit request =>
-      cacheRepository.set(MatchingAndSuitabilityUserAnswers(request.internalId)) flatMap { _ =>
-        Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
-      }
+  def onSubmit(): Action[AnyContent] = actions.async { implicit request =>
+    cacheRepository.set(MatchingAndSuitabilityUserAnswers(request.internalId)) flatMap { _ =>
+      Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+    }
   }
 
-  def continue(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithRegistrationData(draftId).async {
-    implicit request =>
-
+  def continue(draftId: String): Action[AnyContent] =
+    standardActionSets.identifiedUserWithRegistrationData(draftId).async { implicit request =>
       (for {
         address <- registrationsRepository.getAgentAddress(draftId)
-      } yield {
+      } yield
         if (address.isEmpty) {
           Redirect(taskListNavigator.agentDetailsJourneyUrl(draftId))
         } else {
           Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId))
-        }
-      }) recover {
-        case e =>
-          logger.error(s"[Draft ID: $draftId][Session ID: ${request.sessionId}] failed to continue with draft: ${e.getMessage}")
-          Redirect(routes.AgentOverviewController.onPageLoad())
+        }) recover { case e =>
+        logger.error(
+          s"[Draft ID: $draftId][Session ID: ${request.sessionId}] failed to continue with draft: ${e.getMessage}"
+        )
+        Redirect(routes.AgentOverviewController.onPageLoad())
       }
-  }
+    }
 
   def remove(draftId: String): Action[AnyContent] = standardActionSets.identifiedUserWithRegistrationData(draftId) {
     Redirect(routes.RemoveDraftYesNoController.onPageLoad(draftId))

@@ -18,7 +18,6 @@ package pages.register
 
 import pages.behaviours.PageBehaviours
 
-
 class WhatIsTheUTRPageSpec extends PageBehaviours {
 
   "WhatIsTheUTRPage" must {
@@ -29,4 +28,5 @@ class WhatIsTheUTRPageSpec extends PageBehaviours {
 
     beRemovable[String](WhatIsTheUTRPage)
   }
+
 }

@@ -34,10 +34,10 @@ import scala.concurrent.Future
 
 class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
-  val formProvider = new YesNoFormProvider()
+  val formProvider        = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("suitability.expressTrust")
-  val index: Int = 0
-  val businessName = "Test"
+  val index: Int          = 0
+  val businessName        = "Test"
 
   lazy val expressTrustYesNo: String = routes.ExpressTrustYesNoController.onPageLoad().url
 
@@ -86,51 +86,53 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       application.stop()
     }
 
-      "redirect to the next page when valid data is submitted and the trust has a UTR" in {
+    "redirect to the next page when valid data is submitted and the trust has a UTR" in {
 
-        val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, true).success.value
+      val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, true).success.value
 
-        val application = applicationBuilder(userAnswers = Some(answers))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(answers))
+        .build()
 
-        val request = FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, expressTrustYesNo)
+        .withFormUrlEncodedBody(("value", "true"))
 
-        val result = route(application, request).value
+      val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
+      status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-        val uaCaptor: ArgumentCaptor[MatchingAndSuitabilityUserAnswers] = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
-        verify(cacheRepository).set(uaCaptor.capture)
-        uaCaptor.getValue.get(TrustTaxableYesNoPage).get mustBe true
+      val uaCaptor: ArgumentCaptor[MatchingAndSuitabilityUserAnswers] =
+        ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+      verify(cacheRepository).set(uaCaptor.capture)
+      uaCaptor.getValue.get(TrustTaxableYesNoPage).get mustBe true
 
-        application.stop()
-      }
+      application.stop()
+    }
 
-      "redirect to the next page when valid data is submitted and the trust doesn't have a UTR" in {
+    "redirect to the next page when valid data is submitted and the trust doesn't have a UTR" in {
 
-        val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, false).success.value
+      val answers = emptyMatchingAndSuitabilityUserAnswers.set(TrustHaveAUTRPage, false).success.value
 
-        val application = applicationBuilder(userAnswers = Some(answers))
-          .build()
+      val application = applicationBuilder(userAnswers = Some(answers))
+        .build()
 
-        val request = FakeRequest(POST, expressTrustYesNo)
-          .withFormUrlEncodedBody(("value", "true"))
+      val request = FakeRequest(POST, expressTrustYesNo)
+        .withFormUrlEncodedBody(("value", "true"))
 
-        val result = route(application, request).value
+      val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
+      status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
+      redirectLocation(result).value mustEqual fakeNavigator.desiredRoute.url
 
-        val uaCaptor: ArgumentCaptor[MatchingAndSuitabilityUserAnswers] = ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
-        verify(cacheRepository).set(uaCaptor.capture)
-        uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
+      val uaCaptor: ArgumentCaptor[MatchingAndSuitabilityUserAnswers] =
+        ArgumentCaptor.forClass(classOf[MatchingAndSuitabilityUserAnswers])
+      verify(cacheRepository).set(uaCaptor.capture)
+      uaCaptor.getValue.get(TrustTaxableYesNoPage) mustNot be(defined)
 
-        application.stop()
-      }
+      application.stop()
+    }
 
     "return a Bad Request and errors when invalid data is submitted" in {
 
@@ -184,4 +186,5 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       application.stop()
     }
   }
+
 }

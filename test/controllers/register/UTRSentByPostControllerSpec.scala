@@ -43,4 +43,5 @@ class UTRSentByPostControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

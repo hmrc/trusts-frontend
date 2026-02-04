@@ -33,45 +33,41 @@ import views.html.register.suitability.TaxLiabilityInCurrentTaxYearYesNoView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
-                                                             override val messagesApi: MessagesApi,
-                                                             cacheRepository: CacheRepository,
-                                                             actions: StandardActionSets,
-                                                             navigator: Navigator,
-                                                             yesNoFormProvider: YesNoFormProvider,
-                                                             val controllerComponents: MessagesControllerComponents,
-                                                             view: TaxLiabilityInCurrentTaxYearYesNoView,
-                                                             dateFormatter: DateFormatter,
-                                                             localDateService: LocalDateService
-                                                           )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TaxLiabilityInCurrentTaxYearYesNoController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  actions: StandardActionSets,
+  navigator: Navigator,
+  yesNoFormProvider: YesNoFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: TaxLiabilityInCurrentTaxYearYesNoView,
+  dateFormatter: DateFormatter,
+  localDateService: LocalDateService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.taxLiabilityInCurrentTaxYear")
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val preparedForm = request.userAnswers.get(TaxLiabilityInCurrentTaxYearYesNoPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(TaxLiabilityInCurrentTaxYearYesNoPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm, currentTaxYearStartAndEnd))
+    Ok(view(preparedForm, currentTaxYearStartAndEnd))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors, currentTaxYearStartAndEnd))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, currentTaxYearStartAndEnd))),
+        value =>
           for {
-            answers <- Future.fromTry(request.userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, value))
+            answers        <- Future.fromTry(request.userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, value))
             updatedAnswers <- Future.fromTry(answers.set(TrustTaxableYesNoPage, value))
-            _ <- cacheRepository.set(updatedAnswers)
+            _              <- cacheRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(TaxLiabilityInCurrentTaxYearYesNoPage)(updatedAnswers))
-        }
       )
   }
 
@@ -79,4 +75,5 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject()(
     val currentTaxYear = TaxYear.taxYearFor(localDateService.now())
     (dateFormatter.formatDate(currentTaxYear.starts), dateFormatter.formatDate(currentTaxYear.finishes))
   }
+
 }

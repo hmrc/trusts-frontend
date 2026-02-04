@@ -16,7 +16,9 @@
 
 package controllers.register
 
-import controllers.actions.register.{DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, ConfirmationIdentifierAction}
+import controllers.actions.register.{
+  ConfirmationIdentifierAction, DraftIdRetrievalActionProvider, RegistrationDataRequiredAction
+}
 import handlers.ErrorHandler
 import models.core.UserAnswers
 import models.core.http.LeadTrusteeType
@@ -33,56 +35,55 @@ import views.html.register.confirmation._
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ConfirmationController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        identify: ConfirmationIdentifierAction,
-                                        getData: DraftIdRetrievalActionProvider,
-                                        requireData: RegistrationDataRequiredAction,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        newTaxableIndividualView: newTrust.taxable.IndividualView,
-                                        newTaxableAgentView: newTrust.taxable.AgentView,
-                                        nonTaxableIndividualView: newTrust.nonTaxable.IndividualView,
-                                        nonTaxableAgentView: newTrust.nonTaxable.AgentView,
-                                        existingTaxableIndividualView: existingTrust.IndividualView,
-                                        existingTaxableAgentView: existingTrust.AgentView,
-                                        errorHandler: ErrorHandler,
-                                        registrationsRepository: RegistrationsRepository
-                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class ConfirmationController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: ConfirmationIdentifierAction,
+  getData: DraftIdRetrievalActionProvider,
+  requireData: RegistrationDataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  newTaxableIndividualView: newTrust.taxable.IndividualView,
+  newTaxableAgentView: newTrust.taxable.AgentView,
+  nonTaxableIndividualView: newTrust.nonTaxable.IndividualView,
+  nonTaxableAgentView: newTrust.nonTaxable.AgentView,
+  existingTaxableIndividualView: existingTrust.IndividualView,
+  existingTaxableAgentView: existingTrust.AgentView,
+  errorHandler: ErrorHandler,
+  registrationsRepository: RegistrationsRepository
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
-  private def renderView(trn : String, userAnswers: UserAnswers, draftId: String)
-                        (implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
+  private def renderView(trn: String, userAnswers: UserAnswers, draftId: String)(implicit
+    request: RegistrationDataRequest[AnyContent]
+  ): Future[Result] = {
     val isAgent = request.isAgent
     registrationsRepository.getLeadTrustee(draftId) flatMap {
       case LeadTrusteeType(Some(ltInd), None) => render(userAnswers, draftId, isAgent, trn, ltInd.name.toString)
       case LeadTrusteeType(None, Some(ltOrg)) => render(userAnswers, draftId, isAgent, trn, ltOrg.name)
-      case _ => errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
+      case _                                  => errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
     }
   }
 
-  private def render(userAnswers: UserAnswers,
-                     draftId: String,
-                     isAgent: Boolean,
-                     trn: String,
-                     name: String)
-                    (implicit request: RegistrationDataRequest[AnyContent]): Future[Result] = {
+  private def render(userAnswers: UserAnswers, draftId: String, isAgent: Boolean, trn: String, name: String)(implicit
+    request: RegistrationDataRequest[AnyContent]
+  ): Future[Result] = {
 
-    val utr = userAnswers.get(TrustHaveAUTRPage)
+    val utr     = userAnswers.get(TrustHaveAUTRPage)
     val taxable = userAnswers.isTaxable
 
     (utr, taxable) match {
-      case (Some(true), true) if isAgent =>
+      case (Some(true), true) if isAgent   =>
         Future.successful(Ok(existingTaxableAgentView(draftId, trn, name)))
-      case (Some(true), true) =>
+      case (Some(true), true)              =>
         Future.successful(Ok(existingTaxableIndividualView(draftId, trn, name)))
-      case (Some(false), true) if isAgent =>
+      case (Some(false), true) if isAgent  =>
         Future.successful(Ok(newTaxableAgentView(draftId, trn, name)))
-      case (Some(false), true) =>
+      case (Some(false), true)             =>
         Future.successful(Ok(newTaxableIndividualView(draftId, trn, name)))
       case (Some(false), false) if isAgent =>
         Future.successful(Ok(nonTaxableAgentView(draftId, trn, name)))
-      case (Some(false), false) =>
+      case (Some(false), false)            =>
         Future.successful(Ok(nonTaxableIndividualView(draftId, trn, name)))
-      case _ =>
+      case _                               =>
         errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }
 
@@ -93,20 +94,27 @@ class ConfirmationController @Inject()(
       val userAnswers = request.userAnswers
 
       userAnswers.progress match {
-        case RegistrationStatus.Complete =>
+        case RegistrationStatus.Complete   =>
           userAnswers.get(RegistrationTRNPage) match {
-            case None =>
-              logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] No TRN available for completed trusts. Throwing exception.")
+            case None      =>
+              logger.info(
+                s"[onPageLoad][Session ID: ${request.sessionId}] No TRN available for completed trusts. Throwing exception."
+              )
               errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
             case Some(trn) =>
               renderView(trn, userAnswers, draftId)
           }
         case RegistrationStatus.InProgress =>
-          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration inProgress status, redirecting to task list.")
+          logger.info(
+            s"[onPageLoad][Session ID: ${request.sessionId}] Registration inProgress status, redirecting to task list."
+          )
           Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
         case RegistrationStatus.NotStarted =>
-          logger.info(s"[onPageLoad][Session ID: ${request.sessionId}] Registration NotStarted status, redirecting to trust registered page online.")
+          logger.info(
+            s"[onPageLoad][Session ID: ${request.sessionId}] Registration NotStarted status, redirecting to trust registered page online."
+          )
           Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad()))
       }
   }
+
 }

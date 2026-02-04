@@ -18,7 +18,6 @@ package pages.register
 
 import pages.behaviours.PageBehaviours
 
-
 class PostcodeForTheTrustPageSpec extends PageBehaviours {
 
   "PostcodeForTheTrustPage" must {
@@ -29,4 +28,5 @@ class PostcodeForTheTrustPageSpec extends PageBehaviours {
 
     beRemovable[String](PostcodeForTheTrustPage)
   }
+
 }

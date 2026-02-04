@@ -26,23 +26,22 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class CreateDraftRegistrationController @Inject()(
-                                                   val controllerComponents: MessagesControllerComponents,
-                                                   navigator: TaskListNavigator,
-                                                   draftService: DraftRegistrationService,
-                                                   actions: StandardActionSets
-                                                 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class CreateDraftRegistrationController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  navigator: TaskListNavigator,
+  draftService: DraftRegistrationService,
+  actions: StandardActionSets
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-  def create: Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-      draftService.create(request).map {
-        draftId =>
-          if (request.isAgent) {
-            Redirect(navigator.agentDetailsJourneyUrl(draftId))
-          } else {
-            Redirect(routes.TaskListController.onPageLoad(draftId))
-          }
+  def create: Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    draftService.create(request).map { draftId =>
+      if (request.isAgent) {
+        Redirect(navigator.agentDetailsJourneyUrl(draftId))
+      } else {
+        Redirect(routes.TaskListController.onPageLoad(draftId))
       }
+    }
   }
 
 }

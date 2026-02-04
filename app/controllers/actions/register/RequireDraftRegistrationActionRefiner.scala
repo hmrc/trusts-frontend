@@ -24,16 +24,21 @@ import play.api.mvc.{ActionRefiner, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RequireDraftRegistrationActionRefinerImpl @Inject()(implicit val executionContext: ExecutionContext) extends RequireDraftRegistrationActionRefiner {
+class RequireDraftRegistrationActionRefinerImpl @Inject() (implicit val executionContext: ExecutionContext)
+    extends RequireDraftRegistrationActionRefiner {
 
-  override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
+  override protected def refine[A](
+    request: RegistrationDataRequest[A]
+  ): Future[Either[Result, RegistrationDataRequest[A]]] =
     request.userAnswers.progress match {
       case Complete =>
-        Future.successful(Left(Redirect(controllers.register.routes.ConfirmationController.onPageLoad(request.userAnswers.draftId))))
-      case _ =>
+        Future.successful(
+          Left(Redirect(controllers.register.routes.ConfirmationController.onPageLoad(request.userAnswers.draftId)))
+        )
+      case _        =>
         Future.successful(Right(request))
     }
-  }
+
 }
 
 trait RequireDraftRegistrationActionRefiner extends ActionRefiner[RegistrationDataRequest, RegistrationDataRequest]

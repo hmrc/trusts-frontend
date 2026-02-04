@@ -22,9 +22,9 @@ import views.html.abTestingUseOnly.register.confirmation.nonTaxable.TestIndividu
 
 class TestIndividualViewSpec extends ViewBehaviours {
 
-  private val refNumber = "X1234567890YZ"
+  private val refNumber        = "X1234567890YZ"
   private val messageKeyPrefix = "abTestingUseOnly.confirmationPage"
-  private val printOrSaveLink = s"/trusts-registration/$fakeDraftId/your-draft-registration"
+  private val printOrSaveLink  = s"/trusts-registration/$fakeDraftId/your-draft-registration"
 
   "TestIndividualView" must {
 
@@ -41,18 +41,31 @@ class TestIndividualViewSpec extends ViewBehaviours {
     behave like pageWithText(applyView(), "Print or save a copy of your answers", "- link text")
     behave like pageWithText(applyView(), "What you must do next", "- heading 2")
     behave like pageWithText(applyView(), "You need to get the Unique Reference Number (URN) for the trust.", "- p1")
-    behave like pageWithText(applyView(), "The URN is how HMRC will identify this trust. You can give the URN to people who " +
-      "are authorised to be involved with managing the trust such as agents, financial advisors and other trustees.", "- p2")
+    behave like pageWithText(
+      applyView(),
+      "The URN is how HMRC will identify this trust. You can give the URN to people who " +
+        "are authorised to be involved with managing the trust such as agents, financial advisors and other trustees.",
+      "- p2"
+    )
     behave like pageWithText(applyView(), "How to get the URN for the trust", "- heading 3")
-    behave like pageWithText(applyView(), "You will need to sign out of this service and sign in to manage the trust using the " +
-      "same Government Gateway user ID and password that you set up to register this trust.", "- p3")
+    behave like pageWithText(
+      applyView(),
+      "You will need to sign out of this service and sign in to manage the trust using the " +
+        "same Government Gateway user ID and password that you set up to register this trust.",
+      "- p3"
+    )
     behave like pageWithText(applyView(), "If you need to contact HMRC", "- heading 4")
     behave like pageWithText(applyView(), "The reference number for this registration is:", "- p4")
     behave like pageWithText(applyView(), refNumber, "ref number")
-    behave like pageWithText(applyView(), "Keep a note of this reference number in case you need to contact HMRC. It is not the " +
-      "URN for the trust.", "- p5")
+    behave like pageWithText(
+      applyView(),
+      "Keep a note of this reference number in case you need to contact HMRC. It is not the " +
+        "URN for the trust.",
+      "- p5"
+    )
     behave like pageWithText(applyView(), "Sign out", "- button text")
 
     behave like pageWithASubmitButton(applyView())
   }
+
 }

@@ -22,17 +22,38 @@ import models.requests.{IdentifierRequest, OptionalMatchingAndSuitabilityDataReq
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeMatchingAndSuitabilityDataRetrievalAction(dataToReturn: Option[TrustsFrontendUserAnswers[_]]) extends MatchingAndSuitabilityDataRetrievalAction {
+class FakeMatchingAndSuitabilityDataRetrievalAction(dataToReturn: Option[TrustsFrontendUserAnswers[_]])
+    extends MatchingAndSuitabilityDataRetrievalAction {
 
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalMatchingAndSuitabilityDataRequest[A]] = {
+  override protected def transform[A](
+    request: IdentifierRequest[A]
+  ): Future[OptionalMatchingAndSuitabilityDataRequest[A]] =
     dataToReturn match {
       case Some(x: MatchingAndSuitabilityUserAnswers) =>
-        Future(OptionalMatchingAndSuitabilityDataRequest(request.request, request.internalId, "Fake Session ID", Some(x), request.affinityGroup, request.enrolments))
-      case _ =>
-        Future(OptionalMatchingAndSuitabilityDataRequest(request.request, request.internalId, "Fake Session ID", None, request.affinityGroup, request.enrolments))
+        Future(
+          OptionalMatchingAndSuitabilityDataRequest(
+            request.request,
+            request.internalId,
+            "Fake Session ID",
+            Some(x),
+            request.affinityGroup,
+            request.enrolments
+          )
+        )
+      case _                                          =>
+        Future(
+          OptionalMatchingAndSuitabilityDataRequest(
+            request.request,
+            request.internalId,
+            "Fake Session ID",
+            None,
+            request.affinityGroup,
+            request.enrolments
+          )
+        )
     }
-  }
 
-  override protected implicit val executionContext: ExecutionContext =
+  implicit override protected val executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global
+
 }

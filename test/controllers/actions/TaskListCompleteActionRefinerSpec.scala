@@ -31,30 +31,33 @@ import play.api.test.Helpers._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.Enrolments
-import org.mockito.Mockito.{when, mock}
+import org.mockito.Mockito.{mock, when}
 
 import scala.concurrent.Future
 
-class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks with ModelGenerators {
+class TaskListCompleteActionRefinerSpec
+    extends RegistrationSpecBase with ScalaCheckPropertyChecks with ModelGenerators {
 
-  class Harness(mockRegistrationProgress: RegistrationProgress,
-                mockRegistrationsRepository: RegistrationsRepository) extends TaskListCompleteActionRefinerImpl(
-    mockRegistrationProgress,
-    mockRegistrationsRepository,
-    executionContext
-  ) {
-    def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(request)
+  class Harness(mockRegistrationProgress: RegistrationProgress, mockRegistrationsRepository: RegistrationsRepository)
+      extends TaskListCompleteActionRefinerImpl(
+        mockRegistrationProgress,
+        mockRegistrationsRepository,
+        executionContext
+      ) {
+
+    def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(
+      request
+    )
+
   }
 
   "TaskListCompleteActionRefiner" when {
 
     "task list complete" must {
-      "return request" in {
-
+      "return request" in
         forAll(arbitrary[Option[FirstTaxYearAvailable]], arbitrary[Boolean], arbitrary[Boolean]) {
           (firstTaxYearAvailable, isTaxable, isExistingTrust) =>
-
-            val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
+            val mockRegistrationProgress: RegistrationProgress       = mock[RegistrationProgress]
             val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
             when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
@@ -64,8 +67,12 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
               .thenReturn(Future.successful(true))
 
             val userAnswers = emptyUserAnswers
-              .set(TrustTaxableYesNoPage, isTaxable).success.value
-              .set(TrustHaveAUTRPage, isExistingTrust).success.value
+              .set(TrustTaxableYesNoPage, isTaxable)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, isExistingTrust)
+              .success
+              .value
 
             val request = RegistrationDataRequest(
               request = fakeRequest,
@@ -82,16 +89,13 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
               r.value mustEqual request
             }
         }
-      }
     }
 
     "task list incomplete" must {
-      "redirect to task list" in {
-
+      "redirect to task list" in
         forAll(arbitrary[Option[FirstTaxYearAvailable]], arbitrary[Boolean], arbitrary[Boolean]) {
           (firstTaxYearAvailable, isTaxable, isExistingTrust) =>
-
-            val mockRegistrationProgress: RegistrationProgress = mock[RegistrationProgress]
+            val mockRegistrationProgress: RegistrationProgress       = mock[RegistrationProgress]
             val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
             when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
@@ -101,8 +105,12 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
               .thenReturn(Future.successful(false))
 
             val userAnswers = emptyUserAnswers
-              .set(TrustTaxableYesNoPage, isTaxable).success.value
-              .set(TrustHaveAUTRPage, isExistingTrust).success.value
+              .set(TrustTaxableYesNoPage, isTaxable)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, isExistingTrust)
+              .success
+              .value
 
             val request = RegistrationDataRequest(
               request = fakeRequest,
@@ -118,10 +126,12 @@ class TaskListCompleteActionRefinerSpec extends RegistrationSpecBase with ScalaC
             whenReady(action.callRefine(request)) { r =>
               val result = Future.successful(r.left.value)
               status(result) mustEqual SEE_OTHER
-              redirectLocation(result).value mustBe controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+              redirectLocation(result).value mustBe controllers.register.routes.TaskListController
+                .onPageLoad(fakeDraftId)
+                .url
             }
         }
-      }
     }
   }
+
 }

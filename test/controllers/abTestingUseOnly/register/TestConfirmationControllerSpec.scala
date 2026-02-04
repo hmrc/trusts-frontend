@@ -39,17 +39,19 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
   private def agentUrl: String = controllers.register.agents.routes.AgentOverviewController.onPageLoad().url
 
   private val leadTrusteeInd = LeadTrusteeType(
-    Some(LeadTrusteeIndType(
-      FullName("first name", Some("middle name"), "Last Name"),
-      LocalDate.of(1500, 10, 10),
-      "0191 1111111",
-      None,
-      IdentificationType(
-        Some("AB123456C"),
+    Some(
+      LeadTrusteeIndType(
+        FullName("first name", Some("middle name"), "Last Name"),
+        LocalDate.of(1500, 10, 10),
+        "0191 1111111",
         None,
-        None
+        IdentificationType(
+          Some("AB123456C"),
+          None,
+          None
+        )
       )
-    )),
+    ),
     None
   )
 
@@ -62,14 +64,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
         "agent" when {
 
           "lead trustee individual" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, false).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, false)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -90,14 +100,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
           }
 
           "lead trustee organisation" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, false).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, false)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -122,14 +140,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
         "org" when {
 
           "lead trustee individual" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, false).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, false)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -150,14 +176,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
           }
 
           "lead trustee organisation" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, false).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, false)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -181,14 +215,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
 
         "render TestIndividualView (non-taxable organisation user type)" in {
 
-          val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-            .set(RegistrationTRNPage, "xTRN1234678").success.value
-            .set(TrustTaxableYesNoPage, false).success.value
-            .set(TrustHaveAUTRPage, false).success.value
+          val userAnswers = emptyUserAnswers
+            .copy(progress = RegistrationStatus.Complete)
+            .set(RegistrationTRNPage, "xTRN1234678")
+            .success
+            .value
+            .set(TrustTaxableYesNoPage, false)
+            .success
+            .value
+            .set(TrustHaveAUTRPage, false)
+            .success
+            .value
 
           when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-          val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+          val application =
+            applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
           val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -210,14 +252,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
 
         "render nonTaxableAgentView" in {
 
-          val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-            .set(RegistrationTRNPage, "xTRN1234678").success.value
-            .set(TrustTaxableYesNoPage, false).success.value
-            .set(TrustHaveAUTRPage, false).success.value
+          val userAnswers = emptyUserAnswers
+            .copy(progress = RegistrationStatus.Complete)
+            .set(RegistrationTRNPage, "xTRN1234678")
+            .success
+            .value
+            .set(TrustTaxableYesNoPage, false)
+            .success
+            .value
+            .set(TrustHaveAUTRPage, false)
+            .success
+            .value
 
           when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-          val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
+          val application =
+            applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
           val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -243,14 +293,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
         "agent" when {
 
           "lead trustee individual" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, true).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, true)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -267,14 +325,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
           }
 
           "lead trustee organisation" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, true).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, true)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -294,14 +360,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
         "org" when {
 
           "lead trustee individual" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, true).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, true)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -318,14 +392,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
           }
 
           "lead trustee organisation" in {
-            val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-              .set(RegistrationTRNPage, "xTRN1234678").success.value
-              .set(TrustTaxableYesNoPage, true).success.value
-              .set(TrustHaveAUTRPage, true).success.value
+            val userAnswers = emptyUserAnswers
+              .copy(progress = RegistrationStatus.Complete)
+              .set(RegistrationTRNPage, "xTRN1234678")
+              .success
+              .value
+              .set(TrustTaxableYesNoPage, true)
+              .success
+              .value
+              .set(TrustHaveAUTRPage, true)
+              .success
+              .value
 
             when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+            val application =
+              applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
             val request = FakeRequest(GET, routes.TestConfirmationController.onPageLoad(fakeDraftId).url)
 
@@ -347,14 +429,22 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
 
     "redirect to TestSignOutController for POST when TRN is available (non-taxable organisation user type)" in {
 
-      val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.Complete)
-        .set(RegistrationTRNPage, "xTRN1234678").success.value
-        .set(TrustTaxableYesNoPage, false).success.value
-        .set(TrustHaveAUTRPage, false).success.value
+      val userAnswers = emptyUserAnswers
+        .copy(progress = RegistrationStatus.Complete)
+        .set(RegistrationTRNPage, "xTRN1234678")
+        .success
+        .value
+        .set(TrustTaxableYesNoPage, false)
+        .success
+        .value
+        .set(TrustHaveAUTRPage, false)
+        .success
+        .value
 
       when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
 
       val request = FakeRequest(POST, routes.TestConfirmationController.onSubmit(fakeDraftId).url)
 
@@ -372,7 +462,6 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
     }
 
     Seq(GET, POST).foreach { requestMethod =>
-
       s"return to Task List view  when registration is in progress for $requestMethod method" in {
 
         val userAnswers = emptyUserAnswers.copy(progress = RegistrationStatus.InProgress)
@@ -384,11 +473,12 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.register.routes.TaskListController.onPageLoad(fakeDraftId).url
+        redirectLocation(result).value mustEqual controllers.register.routes.TaskListController
+          .onPageLoad(fakeDraftId)
+          .url
 
         application.stop()
       }
-
 
       s"return to trust registered online page when registration is not started for $requestMethod method" in {
 
@@ -401,7 +491,9 @@ class TestConfirmationControllerSpec extends RegistrationSpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.register.routes.TrustRegisteredOnlineController.onPageLoad().url
+        redirectLocation(result).value mustEqual controllers.register.routes.TrustRegisteredOnlineController
+          .onPageLoad()
+          .url
 
         application.stop()
       }

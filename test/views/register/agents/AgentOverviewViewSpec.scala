@@ -29,22 +29,19 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now.toString)))(fakeRequest, messages)
+    val applyView =
+      view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now.toString)))(fakeRequest, messages)
 
-    behave like normalPage(applyView, None, "agentOverview",
-      "paragraph2",
-      "paragraph3",
-      "paragraph4"
-    )
+    behave like normalPage(applyView, None, "agentOverview", "paragraph2", "paragraph3", "paragraph4")
 
     behave like pageWithBackLink(applyView)
   }
 
   "not render 'Saved registrations' h2 when no draft registrations present" in {
 
-    val view = viewFor[AgentOverviewView](None)
+    val view      = viewFor[AgentOverviewView](None)
     val applyView = view.apply(Nil)(fakeRequest, messages)
-    val doc = asDocument(applyView)
+    val doc       = asDocument(applyView)
 
     assertNotRenderedByClass(doc, "saved-registration")
   }
@@ -73,7 +70,8 @@ class AgentOverviewViewSpec extends ViewBehaviours {
     val application = new GuiceApplicationBuilder()
       .configure(
         "microservice.services.features.deployment.notification.enabled" -> true
-      ).build()
+      )
+      .build()
 
     val view = application.injector.instanceOf[AgentOverviewView]
 
@@ -81,10 +79,17 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val doc = asDocument(appliedView)
 
-    assertContainsText(doc, "The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service.")
-    assertContainsText(doc, "You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time.")
+    assertContainsText(
+      doc,
+      "The Trust Registration Service will not be available from 29 April to 4 May. This is to allow HMRC to make essential changes to the service."
+    )
+    assertContainsText(
+      doc,
+      "You need to complete any partially completed trust registrations by 28 April, 4:30PM. Any incomplete registrations will be deleted after this time."
+    )
 
     application.stop()
 
   }
+
 }

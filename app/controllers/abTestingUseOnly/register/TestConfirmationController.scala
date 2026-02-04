@@ -17,7 +17,9 @@
 package controllers.abTestingUseOnly.register
 
 import controllers.abTestingUseOnly.routes.TestSignOutController
-import controllers.actions.register.{ConfirmationIdentifierAction, DraftIdRetrievalActionProvider, RegistrationDataRequiredAction}
+import controllers.actions.register.{
+  ConfirmationIdentifierAction, DraftIdRetrievalActionProvider, RegistrationDataRequiredAction
+}
 import controllers.register.routes
 import handlers.ErrorHandler
 import models.core.UserAnswers
@@ -37,21 +39,22 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TestConfirmationController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            identify: ConfirmationIdentifierAction,
-                                            getData: DraftIdRetrievalActionProvider,
-                                            requireData: RegistrationDataRequiredAction,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            newTaxableIndividualView: newTrust.taxable.IndividualView,
-                                            newTaxableAgentView: newTrust.taxable.AgentView,
-                                            testNonTaxableIndividualView: nonTaxable.TestIndividualView,
-                                            nonTaxableAgentView: newTrust.nonTaxable.AgentView,
-                                            existingTaxableIndividualView: existingTrust.IndividualView,
-                                            existingTaxableAgentView: existingTrust.AgentView,
-                                            errorHandler: ErrorHandler,
-                                            registrationsRepository: RegistrationsRepository
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class TestConfirmationController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: ConfirmationIdentifierAction,
+  getData: DraftIdRetrievalActionProvider,
+  requireData: RegistrationDataRequiredAction,
+  val controllerComponents: MessagesControllerComponents,
+  newTaxableIndividualView: newTrust.taxable.IndividualView,
+  newTaxableAgentView: newTrust.taxable.AgentView,
+  testNonTaxableIndividualView: nonTaxable.TestIndividualView,
+  nonTaxableAgentView: newTrust.nonTaxable.AgentView,
+  existingTaxableIndividualView: existingTrust.IndividualView,
+  existingTaxableAgentView: existingTrust.AgentView,
+  errorHandler: ErrorHandler,
+  registrationsRepository: RegistrationsRepository
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
     implicit request =>
@@ -65,12 +68,16 @@ class TestConfirmationController @Inject()(
       handleOutcome(draftId = draftId, userAnswers = userAnswers, methodName = "onSubmit", isGetRequest = false)
   }
 
-  private def handleOutcome(draftId: String, userAnswers: UserAnswers, methodName: String, isGetRequest: Boolean = true)
-                           (implicit request: RegistrationDataRequest[AnyContent]): Future[Result] = {
+  private def handleOutcome(
+    draftId: String,
+    userAnswers: UserAnswers,
+    methodName: String,
+    isGetRequest: Boolean = true
+  )(implicit request: RegistrationDataRequest[AnyContent]): Future[Result] =
     userAnswers.progress match {
-      case RegistrationStatus.Complete =>
+      case RegistrationStatus.Complete   =>
         userAnswers.get(RegistrationTRNPage) match {
-          case None =>
+          case None      =>
             infoLogger(methodName, message = "No TRN available for completed trusts. Throwing exception.")
             errorHandler.onServerError(request, new Exception("TRN is not available for completed trust."))
           case Some(trn) =>
@@ -83,54 +90,70 @@ class TestConfirmationController @Inject()(
         infoLogger(methodName, message = "Registration NotStarted status, redirecting to trust registered page online.")
         Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad()))
     }
-  }
 
-  private def renderViewOrRedirect(trn : String, userAnswers: UserAnswers, draftId: String, isGetRequest: Boolean)
-                        (implicit request : RegistrationDataRequest[AnyContent]) : Future[Result] = {
+  private def renderViewOrRedirect(trn: String, userAnswers: UserAnswers, draftId: String, isGetRequest: Boolean)(
+    implicit request: RegistrationDataRequest[AnyContent]
+  ): Future[Result] = {
     val isAgent = request.isAgent
     registrationsRepository.getLeadTrustee(draftId) flatMap {
-      case LeadTrusteeType(Some(ltInd), None) => renderOrRedirect(userAnswers, draftId, isAgent, trn, ltInd.name.toString, isGetRequest)
-      case LeadTrusteeType(None, Some(ltOrg)) => renderOrRedirect(userAnswers, draftId, isAgent, trn, ltOrg.name, isGetRequest)
-      case _ => errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
+      case LeadTrusteeType(Some(ltInd), None) =>
+        renderOrRedirect(userAnswers, draftId, isAgent, trn, ltInd.name.toString, isGetRequest)
+      case LeadTrusteeType(None, Some(ltOrg)) =>
+        renderOrRedirect(userAnswers, draftId, isAgent, trn, ltOrg.name, isGetRequest)
+      case _                                  => errorHandler.onServerError(request, new Exception("Could not retrieve lead trustee from user answers."))
     }
   }
 
-  private def renderOrRedirect(userAnswers: UserAnswers, draftId: String, isAgent: Boolean, trn: String, name: String, isGetRequest: Boolean)
-                    (implicit request: RegistrationDataRequest[AnyContent]): Future[Result] = {
+  private def renderOrRedirect(
+    userAnswers: UserAnswers,
+    draftId: String,
+    isAgent: Boolean,
+    trn: String,
+    name: String,
+    isGetRequest: Boolean
+  )(implicit request: RegistrationDataRequest[AnyContent]): Future[Result] = {
 
-    val utr = userAnswers.get(TrustHaveAUTRPage)
+    val utr     = userAnswers.get(TrustHaveAUTRPage)
     val taxable = userAnswers.isTaxable
 
     (utr, taxable) match {
-      case (Some(true), true) if isAgent =>
+      case (Some(true), true) if isAgent   =>
         Future.successful(Ok(existingTaxableAgentView(draftId, trn, name)))
-      case (Some(true), true) =>
+      case (Some(true), true)              =>
         Future.successful(Ok(existingTaxableIndividualView(draftId, trn, name)))
-      case (Some(false), true) if isAgent =>
+      case (Some(false), true) if isAgent  =>
         Future.successful(Ok(newTaxableAgentView(draftId, trn, name)))
-      case (Some(false), true) =>
+      case (Some(false), true)             =>
         Future.successful(Ok(newTaxableIndividualView(draftId, trn, name)))
       case (Some(false), false) if isAgent =>
         Future.successful(Ok(nonTaxableAgentView(draftId, trn, name)))
-      case (Some(false), false) =>
+      case (Some(false), false)            =>
         nonTaxableIndividualResult(draftId, trn, isGetRequest)
-      case _ =>
+      case _                               =>
         errorHandler.onServerError(request, new Exception("Could not determine if trust was new or existing."))
     }
   }
 
-  private def nonTaxableIndividualResult(draftId: String, trn: String, isGetRequest: Boolean)
-                                                (implicit request: RegistrationDataRequest[AnyContent]): Future[Result] = {
-    if(isGetRequest) {
-      infoLogger(methodName = "nonTaxableIndividualResult", message = "TRN available, displaying confirmation page for A/B testing")
+  private def nonTaxableIndividualResult(draftId: String, trn: String, isGetRequest: Boolean)(implicit
+    request: RegistrationDataRequest[AnyContent]
+  ): Future[Result] =
+    if (isGetRequest) {
+      infoLogger(
+        methodName = "nonTaxableIndividualResult",
+        message = "TRN available, displaying confirmation page for A/B testing"
+      )
       Future.successful(Ok(testNonTaxableIndividualView(draftId, trn)))
     } else {
-      infoLogger(methodName = "nonTaxableIndividualResult", message = "Redirecting to TestSignOutController for A/B testing")
+      infoLogger(
+        methodName = "nonTaxableIndividualResult",
+        message = "Redirecting to TestSignOutController for A/B testing"
+      )
       Future.successful(Redirect(TestSignOutController.onPageLoad()))
     }
-  }
 
-  private def infoLogger(methodName: String, message: String)(implicit request: RegistrationDataRequest[AnyContent]): Unit = {
+  private def infoLogger(methodName: String, message: String)(implicit
+    request: RegistrationDataRequest[AnyContent]
+  ): Unit = {
     val className = "TestConfirmationController"
     logger.info(s"[$className][$methodName][Session ID: ${request.sessionId}] $message")
   }

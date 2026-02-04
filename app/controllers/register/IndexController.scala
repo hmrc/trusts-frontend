@@ -30,45 +30,49 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndexController @Inject()(
-                                 cacheRepository: CacheRepository,
-                                 identify: RegistrationIdentifierAction,
-                                 getRegistrationData: RegistrationDataRetrievalAction,
-                                 config: FrontendAppConfig,
-                                 val controllerComponents: MessagesControllerComponents
-                               )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class IndexController @Inject() (
+  cacheRepository: CacheRepository,
+  identify: RegistrationIdentifierAction,
+  getRegistrationData: RegistrationDataRetrievalAction,
+  config: FrontendAppConfig,
+  val controllerComponents: MessagesControllerComponents
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getRegistrationData).async {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = (identify andThen getRegistrationData).async { implicit request =>
+    request.affinityGroup match {
+      case AffinityGroup.Agent =>
+        logger.info(s"[Session ID: ${request.sessionId}] user is an agent, redirect to overview")
+        Future.successful(Redirect(controllers.register.agents.routes.AgentOverviewController.onPageLoad()))
+      case _                   =>
 
-      request.affinityGroup match {
-        case AffinityGroup.Agent =>
-          logger.info(s"[Session ID: ${request.sessionId}] user is an agent, redirect to overview")
-          Future.successful(Redirect(controllers.register.agents.routes.AgentOverviewController.onPageLoad()))
-        case _ =>
+        def startRegistrationJourney(): Future[Result] = {
+          logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
+          cacheRepository.set(MatchingAndSuitabilityUserAnswers(request.internalId)) flatMap { _ =>
+            Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+          }
+        }
 
-          def startRegistrationJourney(): Future[Result] = {
-            logger.info(s"[Session ID: ${request.sessionId}] user is new, starting registration journey")
-            cacheRepository.set(MatchingAndSuitabilityUserAnswers(request.internalId)) flatMap { _ =>
-              Future.successful(Redirect(controllers.register.routes.TrustRegisteredOnlineController.onPageLoad()))
+        request.userAnswers match {
+          case Some(userAnswers) =>
+            userAnswers.get(TrustRegisteredOnlinePage) match {
+              case Some(false) =>
+                logger.info(
+                  s"[Session ID: ${request.sessionId}] user previously indicated trust is not registered online, redirecting to register task list"
+                )
+                Future.successful(Redirect(routes.TaskListController.onPageLoad(userAnswers.draftId)))
+              case Some(true)  =>
+                logger.info(
+                  s"[Session ID: ${request.sessionId}] user previously indicated trust is registered online, redirecting to maintain"
+                )
+                Future.successful(Redirect(config.maintainATrustFrontendUrl))
+              case None        =>
+                startRegistrationJourney()
             }
-          }
-
-          request.userAnswers match {
-            case Some(userAnswers) =>
-              userAnswers.get(TrustRegisteredOnlinePage) match {
-                case Some(false) =>
-                  logger.info(s"[Session ID: ${request.sessionId}] user previously indicated trust is not registered online, redirecting to register task list")
-                  Future.successful(Redirect(routes.TaskListController.onPageLoad(userAnswers.draftId)))
-                case Some(true) =>
-                  logger.info(s"[Session ID: ${request.sessionId}] user previously indicated trust is registered online, redirecting to maintain")
-                  Future.successful(Redirect(config.maintainATrustFrontendUrl))
-                case None =>
-                  startRegistrationJourney()
-              }
-            case None =>
-              startRegistrationJourney()
-          }
-      }
+          case None              =>
+            startRegistrationJourney()
+        }
+    }
   }
+
 }

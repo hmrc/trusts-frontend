@@ -29,9 +29,9 @@ class IndividualViewSpec extends ViewBehaviours {
 
   private val prefix: String = "confirmation.existing.individual"
 
-  private val fakeRef: String = "XC TRN 00 00 00 49 11"
+  private val fakeRef: String          = "XC TRN 00 00 00 49 11"
   private val formattedFakeRef: String = formatReferenceNumber(fakeRef)
-  private val fakeName: String = "name"
+  private val fakeName: String         = "name"
 
   "Existing Trust Individual View" must {
 
@@ -43,10 +43,18 @@ class IndividualViewSpec extends ViewBehaviours {
       formattedFakeRef,
       fakeName,
       None,
-      "subheading1", "p1",
-      "subheading2", "p2", "p3",
-      "subheading3", "p4", "p5", "p6", "p6.a",
+      "subheading1",
+      "p1",
+      "subheading2",
+      "p2",
+      "p3",
+      "subheading3",
+      "p4",
+      "p5",
+      "p6",
+      "p6.a",
       "warning"
     )
   }
+
 }

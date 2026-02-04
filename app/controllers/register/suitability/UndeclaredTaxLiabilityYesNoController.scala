@@ -30,43 +30,40 @@ import views.html.register.suitability.UndeclaredTaxLiabilityYesNoView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UndeclaredTaxLiabilityYesNoController @Inject()(
-                                                       override val messagesApi: MessagesApi,
-                                                       cacheRepository: CacheRepository,
-                                                       actions: StandardActionSets,
-                                                       navigator: Navigator,
-                                                       yesNoFormProvider: YesNoFormProvider,
-                                                       val controllerComponents: MessagesControllerComponents,
-                                                       view: UndeclaredTaxLiabilityYesNoView
-                                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class UndeclaredTaxLiabilityYesNoController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  actions: StandardActionSets,
+  navigator: Navigator,
+  yesNoFormProvider: YesNoFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: UndeclaredTaxLiabilityYesNoView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.undeclaredTaxLiability")
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val preparedForm = request.userAnswers.get(UndeclaredTaxLiabilityYesNoPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(UndeclaredTaxLiabilityYesNoPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
           for {
-            answers <- Future.fromTry(request.userAnswers.set(UndeclaredTaxLiabilityYesNoPage, value))
+            answers        <- Future.fromTry(request.userAnswers.set(UndeclaredTaxLiabilityYesNoPage, value))
             updatedAnswers <- Future.fromTry(answers.set(TrustTaxableYesNoPage, value))
-            _ <- cacheRepository.set(updatedAnswers)
+            _              <- cacheRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(UndeclaredTaxLiabilityYesNoPage)(updatedAnswers))
-        }
       )
   }
+
 }

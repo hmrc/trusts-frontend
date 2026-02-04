@@ -28,8 +28,12 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
   "SummaryAnswerPage view" must {
 
     val userAnswers = TestUserAnswers.emptyUserAnswers
-      .set(RegistrationTRNPage, "XNTRN000000001").success.value
-      .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10)).success.value
+      .set(RegistrationTRNPage, "XNTRN000000001")
+      .success
+      .value
+      .set(RegistrationSubmissionDatePage, LocalDateTime.of(2010, 10, 10, 13, 10, 10))
+      .success
+      .value
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))
 
@@ -43,9 +47,8 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyOrganisationView, None, "summaryAnswerPage", "paragraph1", "paragraph2")
 
-    "assert header content for Agent user" in {
+    "assert header content for Agent user" in
       assertContainsText(agentDoc, messages("answerPage.agentClientRef", "agentClientReference"))
-    }
 
     "assert agent header present for Agent user" in {
       val headers = agentDoc.getElementsByClass("agentClientRef")
@@ -59,14 +62,12 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
       headers.size mustBe 0
     }
 
-    "assert back to top link present for Agent user" in {
+    "assert back to top link present for Agent user" in
       assertRenderedById(agentDoc, "return-to-top")
-    }
 
-    "assert back to top link present for Organisation user" in {
+    "assert back to top link present for Organisation user" in
       assertRenderedById(orgDoc, "return-to-top")
-    }
-
 
   }
+
 }

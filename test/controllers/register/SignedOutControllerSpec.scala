@@ -25,11 +25,12 @@ class SignedOutControllerSpec extends RegistrationSpecBase {
   "SignedOutController" must {
     "redirect to logout" in {
       val application = applicationBuilder(userAnswers = None).build()
-      val request = FakeRequest(GET, routes.SignedOutController.onPageLoad().url)
-      val result = route(application, request).value
+      val request     = FakeRequest(GET, routes.SignedOutController.onPageLoad().url)
+      val result      = route(application, request).value
 
-      status(result) mustBe SEE_OTHER
+      status(result)           mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(fakeFrontendAppConfig.logoutUrl)
     }
   }
+
 }

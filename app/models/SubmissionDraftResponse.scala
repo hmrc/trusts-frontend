@@ -26,6 +26,7 @@ case class SubmissionDraftData(data: JsValue, reference: Option[String], inProgr
 object SubmissionDraftData {
   implicit lazy val format: OFormat[SubmissionDraftData] = Json.format[SubmissionDraftData]
 }
+
 case class SubmissionDraftResponse(createdAt: LocalDateTime, data: JsValue, reference: Option[String])
 
 object SubmissionDraftResponse {
@@ -47,7 +48,7 @@ object RegistrationSubmission {
     lazy val labelArgReads: Reads[Seq[String]] =
       (JsPath \ "labelArg").read[String].map[Seq[String]] {
         case x if x.isEmpty => Nil
-        case x => x :: Nil
+        case x              => x :: Nil
       } orElse
         (JsPath \ "labelArgs").readWithDefault[Seq[String]](Nil)
 
@@ -55,17 +56,19 @@ object RegistrationSubmission {
       (JsPath \ "label").read[String] and
         (JsPath \ "answer").read[String] and
         labelArgReads
-      )(AnswerRow.apply _)
+    )(AnswerRow.apply _)
 
     implicit lazy val writes: Writes[AnswerRow] = Json.writes[AnswerRow]
 
     implicit lazy val format: Format[AnswerRow] = Format(reads, writes)
   }
 
-  case class AnswerSection(headingKey: Option[String],
-                           rows: Seq[AnswerRow],
-                           sectionKey: Option[String],
-                           headingArgs: Seq[String])
+  case class AnswerSection(
+    headingKey: Option[String],
+    rows: Seq[AnswerRow],
+    sectionKey: Option[String],
+    headingArgs: Seq[String]
+  )
 
   object AnswerSection {
 
@@ -74,18 +77,20 @@ object RegistrationSubmission {
         (JsPath \ "rows").read[Seq[AnswerRow]] and
         (JsPath \ "sectionKey").readNullable[String] and
         (JsPath \ "headingArgs").readWithDefault[Seq[String]](Nil)
-      )(AnswerSection.apply _)
+    )(AnswerSection.apply _)
 
     implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
   }
 
-  case class AllAnswerSections(beneficiaries: Option[List[AnswerSection]] = None,
-                               trustees: Option[List[AnswerSection]] = None,
-                               protectors: Option[List[AnswerSection]] = None,
-                               otherIndividuals: Option[List[AnswerSection]] = None,
-                               trustDetails: Option[List[AnswerSection]] = None,
-                               settlors: Option[List[AnswerSection]] = None,
-                               assets: Option[List[AnswerSection]] = None)
+  case class AllAnswerSections(
+    beneficiaries: Option[List[AnswerSection]] = None,
+    trustees: Option[List[AnswerSection]] = None,
+    protectors: Option[List[AnswerSection]] = None,
+    otherIndividuals: Option[List[AnswerSection]] = None,
+    trustDetails: Option[List[AnswerSection]] = None,
+    settlors: Option[List[AnswerSection]] = None,
+    assets: Option[List[AnswerSection]] = None
+  )
 
   object AllAnswerSections {
     implicit lazy val format: OFormat[AllAnswerSections] = Json.format[AllAnswerSections]
@@ -100,14 +105,11 @@ object RegistrationSubmission {
     implicit lazy val format: Format[MappedPiece] = Json.format[MappedPiece]
   }
 
- // Set of data sent by sub-frontend, with user answers, status, any mapped pieces and answer sections.
- case class DataSet(data: JsValue,
-                    registrationPieces: Seq[MappedPiece],
-                    answerSections: Seq[AnswerSection]
-                   )
+  // Set of data sent by sub-frontend, with user answers, status, any mapped pieces and answer sections.
+  case class DataSet(data: JsValue, registrationPieces: Seq[MappedPiece], answerSections: Seq[AnswerSection])
 
- object DataSet {
-   implicit lazy val format: OFormat[DataSet] = Json.format[DataSet]
- }
+  object DataSet {
+    implicit lazy val format: OFormat[DataSet] = Json.format[DataSet]
+  }
 
 }

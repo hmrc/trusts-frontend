@@ -22,12 +22,12 @@ import org.mockito.Mockito.when
 import play.api.i18n.{Lang, MessagesImpl}
 import uk.gov.hmrc.play.language.LanguageUtils
 
-import java.time.{LocalDateTime, LocalDate => JavaDate}
+import java.time.{LocalDate => JavaDate, LocalDateTime}
 
 class DateFormatterSpec extends RegistrationSpecBase {
 
   private val mockConfig: FrontendAppConfig = mock[FrontendAppConfig]
-  when(mockConfig.ttlInSeconds).thenReturn(60*60*24*28)
+  when(mockConfig.ttlInSeconds).thenReturn(60 * 60 * 24 * 28)
 
   private val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
 
@@ -38,12 +38,12 @@ class DateFormatterSpec extends RegistrationSpecBase {
     MessagesImpl(lang, messagesApi)
   }
 
-  private val day: Int = 3
+  private val day: Int   = 3
   private val month: Int = 2
-  private val year: Int = 1996
+  private val year: Int  = 1996
 
   private val dateTime: LocalDateTime = LocalDateTime.of(year, month, day, 0, 0)
-  private val javaDate: JavaDate = JavaDate.of(year, month, day)
+  private val javaDate: JavaDate      = JavaDate.of(year, month, day)
 
   "DateFormatter" when {
 
@@ -102,4 +102,5 @@ class DateFormatterSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

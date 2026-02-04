@@ -32,84 +32,88 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
-class MatchingService @Inject()(trustConnector: TrustConnector,
-                                cacheRepository: CacheRepository) {
+class MatchingService @Inject() (trustConnector: TrustConnector, cacheRepository: CacheRepository) {
 
   private case class MatchingContext(isAgent: Boolean, userAnswers: MatchingAndSuitabilityUserAnswers)
 
-  def matching(userAnswers: MatchingAndSuitabilityUserAnswers, isAgent: Boolean)
-              (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = {
+  def matching(userAnswers: MatchingAndSuitabilityUserAnswers, isAgent: Boolean)(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Result] = {
     val matchResult = for {
       result <- {
         val context = MatchingContext(isAgent, userAnswers)
-        val data = payload(userAnswers)
+        val data    = payload(userAnswers)
         attemptMatch(context, data)
       }
     } yield result
 
-    matchResult recoverWith {
-      case NonFatal(_) =>
-        Future.successful(Redirect(MatchingDownController.onPageLoad()))
+    matchResult recoverWith { case NonFatal(_) =>
+      Future.successful(Redirect(MatchingDownController.onPageLoad()))
     }
   }
 
   private def payload(userAnswers: MatchingAndSuitabilityUserAnswers): Option[MatchData] = for {
-    utr: String <- userAnswers.get(WhatIsTheUTRPage)
-    name: String <- userAnswers.get(MatchingNamePage)
+    utr: String             <- userAnswers.get(WhatIsTheUTRPage)
+    name: String            <- userAnswers.get(MatchingNamePage)
     postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
-  } yield {
-    MatchData(utr, name, postcode)
-  }
+  } yield MatchData(utr, name, postcode)
 
-  private def attemptMatch(context: MatchingContext, matchData: Option[MatchData])
-                          (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Result] = matchData match {
+  private def attemptMatch(context: MatchingContext, matchData: Option[MatchData])(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Result] = matchData match {
     case Some(data) =>
-      trustConnector.matching(data) flatMap {
-        r =>
-          (
-            successful(context) orElse
-              unsuccessful(context) orElse
-              alreadyRegistered(context) orElse
-              recover()
-            ).apply(r)
+      trustConnector.matching(data) flatMap { r =>
+        (
+          successful(context) orElse
+            unsuccessful(context) orElse
+            alreadyRegistered(context) orElse
+            recover()
+        ).apply(r)
       }
-    case None =>
+    case None       =>
       Future.successful(Redirect(MatchingDownController.onPageLoad()))
   }
 
-  private def successful(context: MatchingContext)
-                        (implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
-    case SuccessOrFailureResponse(true) =>
-        saveTrustMatchedStatusAndRedirect(
-          context.userAnswers,
-          Matched.Success,
-          controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
-        )
+  private def successful(context: MatchingContext)(implicit
+    ec: ExecutionContext
+  ): PartialFunction[MatchedResponse, Future[Result]] = { case SuccessOrFailureResponse(true) =>
+    saveTrustMatchedStatusAndRedirect(
+      context.userAnswers,
+      Matched.Success,
+      controllers.register.suitability.routes.ExpressTrustYesNoController.onPageLoad()
+    )
   }
 
-  private def unsuccessful(context: MatchingContext)
-                          (implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
-    case SuccessOrFailureResponse(false) =>
-      saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Failed, FailedMatchController.onPageLoad())
+  private def unsuccessful(context: MatchingContext)(implicit
+    ec: ExecutionContext
+  ): PartialFunction[MatchedResponse, Future[Result]] = { case SuccessOrFailureResponse(false) =>
+    saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Failed, FailedMatchController.onPageLoad())
   }
 
-  private def alreadyRegistered(context: MatchingContext)
-                               (implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = {
-    case AlreadyRegistered =>
-      saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.AlreadyRegistered, TrustAlreadyRegisteredController.onPageLoad())
+  private def alreadyRegistered(
+    context: MatchingContext
+  )(implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = { case AlreadyRegistered =>
+    saveTrustMatchedStatusAndRedirect(
+      context.userAnswers,
+      Matched.AlreadyRegistered,
+      TrustAlreadyRegisteredController.onPageLoad()
+    )
   }
 
-  private def recover(): PartialFunction[MatchedResponse, Future[Result]] = {
-    case _ =>
-      Future.successful(Redirect(controllers.register.routes.MatchingDownController.onPageLoad()))
+  private def recover(): PartialFunction[MatchedResponse, Future[Result]] = { case _ =>
+    Future.successful(Redirect(controllers.register.routes.MatchingDownController.onPageLoad()))
   }
 
-  private def saveTrustMatchedStatusAndRedirect(userAnswers: MatchingAndSuitabilityUserAnswers, trustMatchedStatus: Matched, redirect: Call)
-                                               (implicit ec: ExecutionContext): Future[Result] = {
+  private def saveTrustMatchedStatusAndRedirect(
+    userAnswers: MatchingAndSuitabilityUserAnswers,
+    trustMatchedStatus: Matched,
+    redirect: Call
+  )(implicit ec: ExecutionContext): Future[Result] =
     for {
       updatedAnswers <- Future.fromTry(userAnswers.set(ExistingTrustMatched, trustMatchedStatus))
-      _ <- cacheRepository.set(updatedAnswers)
+      _              <- cacheRepository.set(updatedAnswers)
     } yield Redirect(redirect)
-  }
 
 }

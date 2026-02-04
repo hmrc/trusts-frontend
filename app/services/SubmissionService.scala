@@ -33,105 +33,131 @@ import utils.Session
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultSubmissionService @Inject()(
-                                          registrationMapper: RegistrationMapper,
-                                          trustConnector: TrustConnector,
-                                          auditService: AuditService,
-                                          registrationsRepository: RegistrationsRepository
-                                        ) extends SubmissionService with Logging {
+class DefaultSubmissionService @Inject() (
+  registrationMapper: RegistrationMapper,
+  trustConnector: TrustConnector,
+  auditService: AuditService,
+  registrationsRepository: RegistrationsRepository
+) extends SubmissionService with Logging {
 
-  override def submit(userAnswers: UserAnswers)
-                     (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+  override def submit(
+    userAnswers: UserAnswers
+  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
     logger.info(s"[submit][Session ID: ${request.sessionId}] submitting registration")
     getCorrespondenceAddress(userAnswers)
   }
 
-  private def getCorrespondenceAddress(userAnswers: UserAnswers)
-                                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
-    registrationsRepository.getCorrespondenceAddress(userAnswers.draftId).flatMap {
-      correspondenceAddress =>
+  private def getCorrespondenceAddress(
+    userAnswers: UserAnswers
+  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] =
+    registrationsRepository
+      .getCorrespondenceAddress(userAnswers.draftId)
+      .flatMap { correspondenceAddress =>
         getTrustName(userAnswers, correspondenceAddress)
-    }.recover {
-      case e =>
-        logger.error(s"[getCorrespondenceAddress][Session ID: ${Session.id(hc)}] Unable to get correspondence address: ${e.getMessage}")
-        auditService.auditRegistrationPreparationFailed(userAnswers, "Error retrieving correspondence address transformation.")
+      }
+      .recover { case e =>
+        logger.error(
+          s"[getCorrespondenceAddress][Session ID: ${Session.id(hc)}] Unable to get correspondence address: ${e.getMessage}"
+        )
+        auditService.auditRegistrationPreparationFailed(
+          userAnswers,
+          "Error retrieving correspondence address transformation."
+        )
         UnableToRegister()
-    }
-  }
+      }
 
-  private def getTrustName(userAnswers: UserAnswers, correspondenceAddress: AddressType)
-                          (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
-    registrationsRepository.getTrustName(userAnswers.draftId).flatMap {
-      trustName =>
+  private def getTrustName(userAnswers: UserAnswers, correspondenceAddress: AddressType)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[TrustResponse] =
+    registrationsRepository
+      .getTrustName(userAnswers.draftId)
+      .flatMap { trustName =>
         buildRegistration(userAnswers, correspondenceAddress, trustName)
-    }.recover {
-      case e =>
+      }
+      .recover { case e =>
         logger.error(s"[getTrustName][Session ID: ${Session.id(hc)}] Unable to get trust name: ${e.getMessage}")
         auditService.auditRegistrationPreparationFailed(userAnswers, "Error retrieving trust name transformation.")
         UnableToRegister()
-    }
-  }
+      }
 
-  private def buildRegistration(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String)
-                               (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+  private def buildRegistration(
+    userAnswers: UserAnswers,
+    correspondenceAddress: AddressType,
+    trustName: String
+  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] =
     registrationMapper.build(userAnswers, correspondenceAddress, trustName, request.affinityGroup).flatMap {
       case Some(registration) =>
         addDraftRegistrationSections(userAnswers, registration)
-      case _ =>
+      case _                  =>
         logger.error(s"[buildRegistration][Session ID: ${Session.id(hc)}] Unable to generate registration to submit.")
         auditService.auditRegistrationPreparationFailed(userAnswers, "Error mapping UserAnswers to Registration.")
         Future.failed(UnableToRegister())
     }
-  }
 
-  private def addDraftRegistrationSections(userAnswers: UserAnswers, registration: Registration)
-                                          (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
-    registrationsRepository.addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration)).flatMap {
-      registrationJson =>
+  private def addDraftRegistrationSections(userAnswers: UserAnswers, registration: Registration)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[TrustResponse] =
+    registrationsRepository
+      .addDraftRegistrationSections(userAnswers.draftId, Json.toJson(registration))
+      .flatMap { registrationJson =>
         val fullRegistrationJson = add5mldData(registrationJson, userAnswers)
         register(userAnswers.draftId, fullRegistrationJson)
-    }.recover {
-      case e =>
-        logger.error(s"[addDraftRegistrationSections][Session ID: ${Session.id(hc)}] Unable to add draft registration sections: ${e.getMessage}")
+      }
+      .recover { case e =>
+        logger.error(
+          s"[addDraftRegistrationSections][Session ID: ${Session.id(hc)}] Unable to add draft registration sections: ${e.getMessage}"
+        )
         auditService.auditRegistrationPreparationFailed(userAnswers, "Error adding draft registration sections.")
         UnableToRegister()
-    }
-  }
+      }
 
-  private def register(draftId: String, fullRegistrationJson: JsValue)
-                      (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+  private def register(draftId: String, fullRegistrationJson: JsValue)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[TrustResponse] =
 
     trustConnector.register(fullRegistrationJson, draftId) map {
-      case response@RegistrationTRNResponse(_) =>
+      case response @ RegistrationTRNResponse(_) =>
         logger.info(s"[register][Session ID: ${Session.id(hc)}] Registration successfully submitted.")
         auditService.auditRegistrationSubmitted(fullRegistrationJson, draftId, response)
         response
-      case AlreadyRegistered =>
+      case AlreadyRegistered                     =>
         logger.warn(s"[register][Session ID: ${Session.id(hc)}] Registration already submitted.")
         auditService.auditRegistrationAlreadySubmitted(fullRegistrationJson, draftId)
         AlreadyRegistered
-      case other =>
+      case other                                 =>
         logger.warn(s"[register][Session ID: ${Session.id(hc)}] Registration submission failed.")
         auditService.auditRegistrationSubmissionFailed(fullRegistrationJson, draftId)
         other
     }
-  }
 
   private def add5mldData(registrationJson: JsValue, userAnswers: UserAnswers): JsValue = {
-      def putNewValue[T](path: JsPath, value: Option[T])(implicit wts: Writes[T]): Reads[JsObject] = {
-        value match {
-          case Some(v) =>
-            __.json.update(path.json.put(Json.toJson(v)))
-          case _ =>
-            logger.warn(s"[add5mldData][putNewValue] value not found at $path")
-            __.json.pick[JsObject]
-        }
+    def putNewValue[T](path: JsPath, value: Option[T])(implicit wts: Writes[T]): Reads[JsObject] =
+      value match {
+        case Some(v) =>
+          __.json.update(path.json.put(Json.toJson(v)))
+        case _       =>
+          logger.warn(s"[add5mldData][putNewValue] value not found at $path")
+          __.json.pick[JsObject]
       }
 
-      registrationJson.transform(
-        putNewValue(__ \ Symbol("trust") \ Symbol("details") \ Symbol("expressTrust"), userAnswers.get(ExpressTrustYesNoPage)) andThen
-          putNewValue(__ \ Symbol("trust") \ Symbol("details") \ Symbol("trustTaxable"), userAnswers.get(TrustTaxableYesNoPage))
-      ).fold(
+    registrationJson
+      .transform(
+        putNewValue(
+          __ \ Symbol("trust") \ Symbol("details") \ Symbol("expressTrust"),
+          userAnswers.get(ExpressTrustYesNoPage)
+        ) andThen
+          putNewValue(
+            __ \ Symbol("trust") \ Symbol("details") \ Symbol("trustTaxable"),
+            userAnswers.get(TrustTaxableYesNoPage)
+          )
+      )
+      .fold(
         _ => {
           logger.error("[add5mldData] Could not add expressTrust and trustTaxable data to registration JSON")
           registrationJson
@@ -139,14 +165,14 @@ class DefaultSubmissionService @Inject()(
         value => value
       )
   }
+
 }
 
 @ImplementedBy(classOf[DefaultSubmissionService])
 trait SubmissionService {
 
-  def submit(userAnswers: UserAnswers)
-            (implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
+  def submit(
+    userAnswers: UserAnswers
+  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
 
 }
-
-

@@ -26,7 +26,7 @@ import views.html.register.TrustHaveAUTRView
 
 class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new YesNoFormProvider()
+  val formProvider        = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
   lazy val trustHaveAUTRRoute: String = routes.TrustHaveAUTRController.onPageLoad().url
@@ -123,4 +123,5 @@ class TrustHaveAUTRControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

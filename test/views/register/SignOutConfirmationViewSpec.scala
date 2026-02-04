@@ -29,4 +29,5 @@ class SignOutConfirmationViewSpec extends ViewBehaviours {
 
     behave like normalPage(applyView, None, "sign_out")
   }
+
 }

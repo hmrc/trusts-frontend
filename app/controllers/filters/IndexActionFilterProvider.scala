@@ -27,9 +27,10 @@ import queries.Gettable
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndexActionFilter[T](index : Int, entity : Gettable[List[T]], errorHandler : ErrorHandler)
-                          (implicit val reads : Reads[T], val executionContext: ExecutionContext)
-  extends ActionFilter[RegistrationDataRequest] with Logging {
+class IndexActionFilter[T](index: Int, entity: Gettable[List[T]], errorHandler: ErrorHandler)(implicit
+  val reads: Reads[T],
+  val executionContext: ExecutionContext
+) extends ActionFilter[RegistrationDataRequest] with Logging {
 
   override protected def filter[A](request: RegistrationDataRequest[A]): Future[Option[Result]] = {
 
@@ -48,11 +49,9 @@ class IndexActionFilter[T](index : Int, entity : Gettable[List[T]], errorHandler
 
 }
 
-class IndexActionFilterProvider @Inject()(executionContext: ExecutionContext,
-                                          errorHandler: ErrorHandler)
-{
+class IndexActionFilterProvider @Inject() (executionContext: ExecutionContext, errorHandler: ErrorHandler) {
 
-  def apply[T](index: Int, entity : Gettable[List[T]])(implicit reads: Reads[T]) =
+  def apply[T](index: Int, entity: Gettable[List[T]])(implicit reads: Reads[T]) =
     new IndexActionFilter[T](index, entity, errorHandler)(reads, executionContext)
 
 }

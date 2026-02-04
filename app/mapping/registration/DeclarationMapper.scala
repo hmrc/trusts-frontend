@@ -25,22 +25,23 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DeclarationMapper @Inject()(registrationsRepository: RegistrationsRepository) {
+class DeclarationMapper @Inject() (registrationsRepository: RegistrationsRepository) {
 
-  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType)
-           (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Declaration]] = {
+  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType)(implicit
+    ec: ExecutionContext,
+    hc: HeaderCarrier
+  ): Future[Option[Declaration]] = {
 
     val declaration: Option[pages.Declaration] = userAnswers.get(DeclarationPage)
 
     for {
       agentAddress <- registrationsRepository.getAgentAddress(userAnswers.draftId)
-    } yield {
-      declaration map { dec =>
-        Declaration(
-          name = dec.name,
-          address = agentAddress.getOrElse(leadTrusteeAddress)
-        )
-      }
+    } yield declaration map { dec =>
+      Declaration(
+        name = dec.name,
+        address = agentAddress.getOrElse(leadTrusteeAddress)
+      )
     }
   }
+
 }

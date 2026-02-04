@@ -37,29 +37,28 @@ import java.time.LocalDateTime
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with OptionValues with SpecBaseHelpers with WireMockHelper {
+class SubmissionDraftConnectorSpec
+    extends AnyFreeSpec with Matchers with OptionValues with SpecBaseHelpers with WireMockHelper {
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(Seq(
-      "microservice.services.trusts.port" -> server.port(),
-      "auditing.enabled" -> false): _*
-    ).build()
+    .configure(Seq("microservice.services.trusts.port" -> server.port(), "auditing.enabled" -> false): _*)
+    .build()
 
   private lazy val connector = injector.instanceOf[SubmissionDraftConnector]
 
-  private val testDraftId = "draftId"
-  private val submissionsUrl = s"/trusts/register/submission-drafts"
-  private val mainUrl = s"$submissionsUrl/$testDraftId/main"
-  private val beneficiariesUrl = s"$submissionsUrl/$testDraftId/beneficiaries"
-  private val registrationUrl = s"$submissionsUrl/$testDraftId/registration"
-  private val answerSectionsUrl = s"$submissionsUrl/$testDraftId/answerSections"
-  private val leadTrusteeUrl = s"$submissionsUrl/$testDraftId/lead-trustee"
+  private val testDraftId              = "draftId"
+  private val submissionsUrl           = s"/trusts/register/submission-drafts"
+  private val mainUrl                  = s"$submissionsUrl/$testDraftId/main"
+  private val beneficiariesUrl         = s"$submissionsUrl/$testDraftId/beneficiaries"
+  private val registrationUrl          = s"$submissionsUrl/$testDraftId/registration"
+  private val answerSectionsUrl        = s"$submissionsUrl/$testDraftId/answerSections"
+  private val leadTrusteeUrl           = s"$submissionsUrl/$testDraftId/lead-trustee"
   private val correspondenceAddressUrl = s"$submissionsUrl/$testDraftId/correspondence-address"
-  private val agentAddressUrl = s"$submissionsUrl/$testDraftId/agent-address"
-  private val clientReferenceUrl = s"$submissionsUrl/$testDraftId/client-reference"
-  private val trustNameUrl = s"$submissionsUrl/$testDraftId/trust-name"
-  private val updateTaxLiabilityUrl = s"$submissionsUrl/$testDraftId/update/tax-liability"
+  private val agentAddressUrl          = s"$submissionsUrl/$testDraftId/agent-address"
+  private val clientReferenceUrl       = s"$submissionsUrl/$testDraftId/client-reference"
+  private val trustNameUrl             = s"$submissionsUrl/$testDraftId/trust-name"
+  private val updateTaxLiabilityUrl    = s"$submissionsUrl/$testDraftId/update/tax-liability"
   private val firstTaxYearAvailableUrl = s"$submissionsUrl/$testDraftId/first-tax-year-available"
 
   "SubmissionDraftConnector" - {
@@ -68,8 +67,7 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
       "can be set for main" in {
 
-        val sectionData = Json.parse(
-          """
+        val sectionData = Json.parse("""
             |{
             | "field1": "value1",
             | "field2": "value2"
@@ -88,14 +86,14 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
             )
         )
 
-        val result = Await.result(connector.setDraftMain(testDraftId, sectionData, inProgress = true, Some("ref")), Duration.Inf)
+        val result =
+          Await.result(connector.setDraftMain(testDraftId, sectionData, inProgress = true, Some("ref")), Duration.Inf)
         result.status mustBe Status.OK
       }
 
       "can be retrieved for main" in {
 
-        val draftData = Json.parse(
-          """
+        val draftData = Json.parse("""
             |{
             | "field1": "value1",
             | "field2": "value2"
@@ -124,13 +122,12 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
         val result: Option[SubmissionDraftResponse] = Await.result(connector.getDraftMain(testDraftId), Duration.Inf)
         result.get.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
-        result.get.data mustBe draftData
+        result.get.data      mustBe draftData
       }
 
       "can be retrieved for beneficiaries" in {
 
-        val draftData = Json.parse(
-          """
+        val draftData = Json.parse("""
             |{
             | "field1": "value1",
             | "field2": "value2"
@@ -159,7 +156,7 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
         val result: SubmissionDraftResponse = Await.result(connector.getDraftBeneficiaries(testDraftId), Duration.Inf)
         result.createdAt mustBe LocalDateTime.of(2012, 2, 3, 9, 30)
-        result.data mustBe draftData
+        result.data      mustBe draftData
       }
 
       "can have list of ids retrieved" in {
@@ -205,7 +202,6 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
         val response = SubmissionDraftResponse(LocalDateTime.now(), resultJson, None)
 
-
         server.stubFor(
           get(urlEqualTo(registrationUrl))
             .willReturn(
@@ -230,14 +226,16 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
                 rows = List(
                   AnswerRow("label1", "answer1", Seq("labelArg1"))
                 ),
-                sectionKey = Some("sectionKey1")),
+                sectionKey = Some("sectionKey1")
+              ),
               AnswerSection(
                 headingKey = Some("headingKey2"),
                 headingArgs = Nil,
                 rows = List(
                   AnswerRow("label2", "answer2", Seq("labelArg2"))
                 ),
-                sectionKey = Some("sectionKey2"))
+                sectionKey = Some("sectionKey2")
+              )
             )
           ),
           trustees = Some(
@@ -248,14 +246,16 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
                 rows = List(
                   AnswerRow("label1", "answer1", Seq("labelArg1"))
                 ),
-                sectionKey = Some("trusteeSectionKey1")),
+                sectionKey = Some("trusteeSectionKey1")
+              ),
               AnswerSection(
                 headingKey = Some("trusteeHeadingKey2"),
                 headingArgs = Nil,
                 rows = List(
                   AnswerRow("label2", "answer2", Seq("labelArg2"))
                 ),
-                sectionKey = Some("trusteeSectionKey2"))
+                sectionKey = Some("trusteeSectionKey2")
+              )
             )
           ),
           protectors = None,
@@ -282,8 +282,7 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
       "can retrieve lead trustee for a draft" in {
 
-        val response = Json.parse(
-          """
+        val response = Json.parse("""
             |{
             |  "leadTrusteeOrg": {
             |    "name": "Lead Org",
@@ -311,11 +310,14 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
         val expectedLeadTrustee = LeadTrusteeType(
           None,
-          Some(LeadTrusteeOrgType(
-            "Lead Org",
-            "07911234567",
-            None,
-            IdentificationOrgType(None, Some(AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")))))
+          Some(
+            LeadTrusteeOrgType(
+              "Lead Org",
+              "07911234567",
+              None,
+              IdentificationOrgType(None, Some(AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")))
+            )
+          )
         )
 
         val result = Await.result(connector.getLeadTrustee(testDraftId), Duration.Inf)
@@ -324,8 +326,7 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
       "can retrieve correspondence address for a draft" in {
 
-        val response = Json.parse(
-          """
+        val response = Json.parse("""
             |{
             | "line1": "Address line1",
             | "line2": "Address line2",
@@ -351,8 +352,7 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
       "can retrieve agent address for a draft" in {
 
-        val response = Json.parse(
-          """
+        val response = Json.parse("""
             |{
             | "line1": "Address line1",
             | "line2": "Address line2",
@@ -378,8 +378,7 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
 
       "can retrieve client reference for a draft" in {
 
-        val response = Json.parse(
-          """
+        val response = Json.parse("""
             |"client-ref"
             |""".stripMargin)
 
@@ -518,4 +517,5 @@ class SubmissionDraftConnectorSpec extends AnyFreeSpec with Matchers with Option
     }
 
   }
+
 }

@@ -20,14 +20,15 @@ import models.core.http.TrustResponse
 import play.api.libs.json.{Format, JsValue, Json}
 
 case class TrustRegistrationSubmissionAuditEvent(
-                                                  registration: JsValue,
-                                                  draftId : String,
-                                                  internalAuthId : String,
-                                                  response: TrustResponse
-                                                )
+  registration: JsValue,
+  draftId: String,
+  internalAuthId: String,
+  response: TrustResponse
+)
 
 object TrustRegistrationSubmissionAuditEvent {
 
-  implicit val formats: Format[TrustRegistrationSubmissionAuditEvent] = Json.format[TrustRegistrationSubmissionAuditEvent]
+  implicit val formats: Format[TrustRegistrationSubmissionAuditEvent] =
+    Json.format[TrustRegistrationSubmissionAuditEvent]
 
 }

@@ -27,13 +27,15 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TaskListCompleteActionRefinerImpl @Inject()(
-                                                   registrationProgress: RegistrationProgress,
-                                                   registrationsRepository: RegistrationsRepository,
-                                                   implicit val executionContext: ExecutionContext
-                                                 ) extends TaskListCompleteActionRefiner {
+class TaskListCompleteActionRefinerImpl @Inject() (
+  registrationProgress: RegistrationProgress,
+  registrationsRepository: RegistrationsRepository,
+  implicit val executionContext: ExecutionContext
+) extends TaskListCompleteActionRefiner {
 
-  override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
+  override protected def refine[A](
+    request: RegistrationDataRequest[A]
+  ): Future[Either[Result, RegistrationDataRequest[A]]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
@@ -41,17 +43,17 @@ class TaskListCompleteActionRefinerImpl @Inject()(
 
     for {
       firstTaxYearAvailable <- registrationsRepository.getFirstTaxYearAvailable(draftId)
-      isTaxable = request.userAnswers.isTaxable
-      isExistingTrust = request.userAnswers.isExistingTrust
-      result <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
-    } yield {
+      isTaxable              = request.userAnswers.isTaxable
+      isExistingTrust        = request.userAnswers.isExistingTrust
+      result                <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
+    } yield
       if (result) {
         Right(request)
       } else {
         Left(Redirect(controllers.register.routes.TaskListController.onPageLoad(request.userAnswers.draftId)))
       }
-    }
   }
+
 }
 
 trait TaskListCompleteActionRefiner extends ActionRefiner[RegistrationDataRequest, RegistrationDataRequest]

@@ -26,22 +26,23 @@ import scala.concurrent.{ExecutionContext, Future}
 
 sealed trait RequiredAgentAction extends ActionFilter[IdentifierRequest]
 
-class RequiredAgentAffinityGroupAction @Inject()(implicit val executionContext: ExecutionContext) extends RequiredAgentAction {
-  override protected def filter[A](request: IdentifierRequest[A]): Future[Option[Result]] = {
+class RequiredAgentAffinityGroupAction @Inject() (implicit val executionContext: ExecutionContext)
+    extends RequiredAgentAction {
+
+  override protected def filter[A](request: IdentifierRequest[A]): Future[Option[Result]] =
     request.affinityGroup match {
       case AffinityGroup.Agent =>
         Future.successful(None)
-      case _ =>
+      case _                   =>
         Future.successful(Some(Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())))
     }
-  }
+
 }
 
-class RequireStateActionProviderImpl @Inject()(ec: ExecutionContext) extends RequiredAgentAffinityGroupActionProvider {
+class RequireStateActionProviderImpl @Inject() (ec: ExecutionContext) extends RequiredAgentAffinityGroupActionProvider {
   override def apply() = new RequiredAgentAffinityGroupAction()(ec)
 }
 
 trait RequiredAgentAffinityGroupActionProvider {
   def apply(): RequiredAgentAction
 }
-

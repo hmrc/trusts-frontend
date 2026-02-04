@@ -32,87 +32,82 @@ import viewmodels.{DraftRegistration, RegistrationAnswerSections}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DefaultRegistrationsRepository @Inject()(
-                                                dateFormatter: DateFormatter,
-                                                submissionDraftConnector: SubmissionDraftConnector
-                                              )(
-                                                implicit ec: ExecutionContext,
-                                                answerRowUtils: AnswerRowUtils
-                                              ) extends RegistrationsRepository {
+class DefaultRegistrationsRepository @Inject() (
+  dateFormatter: DateFormatter,
+  submissionDraftConnector: SubmissionDraftConnector
+)(implicit
+  ec: ExecutionContext,
+  answerRowUtils: AnswerRowUtils
+) extends RegistrationsRepository {
 
-  override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] = {
+  override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
     submissionDraftConnector.getDraftMain(draftId).map {
       case Some(response) => Some(Json.toJson(response.data).as[UserAnswers])
-      case None => None
+      case None           => None
     }
-  }
 
-  override def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]] = {
+  override def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]] =
     submissionDraftConnector.getCurrentDraftIds().map(_.headOption.map(_.draftId))
-  }
 
-  override def listDrafts()(implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] = {
-    submissionDraftConnector.getCurrentDraftIds().map {
-      draftIds =>
-        draftIds.flatMap {
-          x => x.reference.map {
-            reference => DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
-          }
+  override def listDrafts()(implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] =
+    submissionDraftConnector.getCurrentDraftIds().map { draftIds =>
+      draftIds.flatMap { x =>
+        x.reference.map { reference =>
+          DraftRegistration(x.draftId, reference, dateFormatter.savedUntil(x.createdAt))
         }
+      }
     }
-  }
 
-  override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Boolean] = {
+  override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)(implicit
+    hc: HeaderCarrier
+  ): Future[Boolean] =
     for {
       reference <- getClientReference(userAnswers.draftId, affinityGroup)
-      response <- submissionDraftConnector.setDraftMain(
-        draftId = userAnswers.draftId,
-        draftData = Json.toJson(userAnswers),
-        inProgress = userAnswers.progress == InProgress,
-        reference = reference
-      )
-    } yield {
-      response.status == http.Status.OK
-    }
-  }
+      response  <- submissionDraftConnector.setDraftMain(
+                     draftId = userAnswers.draftId,
+                     draftData = Json.toJson(userAnswers),
+                     inProgress = userAnswers.progress == InProgress,
+                     reference = reference
+                   )
+    } yield response.status == http.Status.OK
 
   private def decodePath(encodedPath: String): JsPath =
-    encodedPath.split('/').foldLeft[JsPath](
-      JsPath
-    )(
-      (cur: JsPath, component: String) => cur \ component
-    )
+    encodedPath
+      .split('/')
+      .foldLeft[JsPath](
+        JsPath
+      )((cur: JsPath, component: String) => cur \ component)
 
   private def addSection(key: String, section: JsValue, data: JsValue): JsResult[JsValue] = {
-    val path = decodePath(key).json
+    val path      = decodePath(key).json
     val transform = __.json.update(path.put(section))
 
     data.transform(transform)
   }
 
-  override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier): Future[JsValue] = {
-    submissionDraftConnector.getRegistrationPieces(draftId).map {
-      pieces =>
-        val added: JsResult[JsValue] = pieces.keys.foldLeft[JsResult[JsValue]](
-          JsSuccess(registrationJson)
-        )(
-          (cur, key) => cur.flatMap(addSection(key, pieces(key), _))
-        )
+  override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit
+    hc: HeaderCarrier
+  ): Future[JsValue] =
+    submissionDraftConnector.getRegistrationPieces(draftId).map { pieces =>
+      val added: JsResult[JsValue] = pieces.keys.foldLeft[JsResult[JsValue]](
+        JsSuccess(registrationJson)
+      )((cur, key) => cur.flatMap(addSection(key, pieces(key), _)))
 
-        added match {
-          case JsSuccess(value, _) => value
-          case _ => registrationJson
-        }
+      added match {
+        case JsSuccess(value, _) => value
+        case _                   => registrationJson
+      }
     }
-  }
 
   override def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier): Future[JsObject] =
     submissionDraftConnector.getRegistrationPieces(draftId)
 
-  override def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] = {
-    submissionDraftConnector.getAnswerSections(draftId)
+  override def getAnswerSections(
+    draftId: String
+  )(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
+    submissionDraftConnector
+      .getAnswerSections(draftId)
       .map(RegistrationAnswerSections.fromAllAnswerSections(_))
-  }
 
   override def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier): Future[JsValue] =
     submissionDraftConnector
@@ -122,8 +117,11 @@ class DefaultRegistrationsRepository @Inject()(
   override def setDraftSettlors(draftId: String, data: JsValue)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     submissionDraftConnector.setDraftSettlors(draftId, data)
 
-  override def getSettlorsAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
-    submissionDraftConnector.getAnswerSections(draftId)
+  override def getSettlorsAnswerSections(
+    draftId: String
+  )(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
+    submissionDraftConnector
+      .getAnswerSections(draftId)
       .map(_.settlors.getOrElse(Seq.empty[RegistrationSubmission.AnswerSection]))
 
   override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
@@ -132,25 +130,25 @@ class DefaultRegistrationsRepository @Inject()(
   override def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier): Future[AddressType] =
     submissionDraftConnector.getCorrespondenceAddress(draftId)
 
-  override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] = {
-    submissionDraftConnector.getAgentAddress(draftId).map(Some(_)).recover {
-      case _ => None
+  override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] =
+    submissionDraftConnector.getAgentAddress(draftId).map(Some(_)).recover { case _ =>
+      None
     }
-  }
 
-  override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]] = {
+  override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit
+    hc: HeaderCarrier
+  ): Future[Option[String]] =
     affinityGroup match {
       case AffinityGroup.Agent =>
         submissionDraftConnector
-          .getClientReference(draftId).map(Some(_))
-          .recover {
-            case _ => None
+          .getClientReference(draftId)
+          .map(Some(_))
+          .recover { case _ =>
+            None
           }
-      case _ =>
+      case _                   =>
         Future.successful(None)
     }
-
-  }
 
   override def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String] =
     submissionDraftConnector.getTrustName(draftId)
@@ -158,9 +156,11 @@ class DefaultRegistrationsRepository @Inject()(
   override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     submissionDraftConnector.removeDraft(draftId)
 
-  override def getFirstTaxYearAvailable(draftId: String)(implicit hc: HeaderCarrier): Future[Option[FirstTaxYearAvailable]] = {
+  override def getFirstTaxYearAvailable(draftId: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Option[FirstTaxYearAvailable]] =
     submissionDraftConnector.getFirstTaxYearAvailable(draftId)
-  }
+
 }
 
 trait RegistrationsRepository {
@@ -173,17 +173,23 @@ trait RegistrationsRepository {
 
   def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]]
 
-  def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit hc: HeaderCarrier): Future[JsValue]
+  def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit
+    hc: HeaderCarrier
+  ): Future[JsValue]
 
   def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier): Future[JsObject]
 
-  def getAnswerSections(draftId: String)(implicit hc: HeaderCarrier, messages: Messages):Future[RegistrationAnswerSections]
+  def getAnswerSections(
+    draftId: String
+  )(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections]
 
   def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier): Future[JsValue]
 
   def setDraftSettlors(draftId: String, data: JsValue)(implicit hc: HeaderCarrier): Future[HttpResponse]
 
-  def getSettlorsAnswerSections(draftId: String)(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]]
+  def getSettlorsAnswerSections(draftId: String)(implicit
+    hc: HeaderCarrier
+  ): Future[Seq[RegistrationSubmission.AnswerSection]]
 
   def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType]
 
@@ -191,7 +197,9 @@ trait RegistrationsRepository {
 
   def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]]
 
-  def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit hc: HeaderCarrier): Future[Option[String]]
+  def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit
+    hc: HeaderCarrier
+  ): Future[Option[String]]
 
   def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String]
 

@@ -28,13 +28,12 @@ case object TaxLiabilityInCurrentTaxYearYesNoPage extends QuestionPage[Boolean] 
 
   override def toString: String = "hasTaxLiabilityInCurrentTaxYear"
 
-  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] = {
+  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] =
     value match {
       case Some(true) =>
         userAnswers.remove(UndeclaredTaxLiabilityYesNoPage)
-      case _ =>
+      case _          =>
         super.cleanup(value, userAnswers)
     }
-  }
-}
 
+}

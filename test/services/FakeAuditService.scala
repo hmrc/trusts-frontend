@@ -28,21 +28,27 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 import scala.concurrent.ExecutionContext
 
+class FakeAuditService @Inject() (auditConnector: AuditConnector, config: FrontendAppConfig)(ec: ExecutionContext)
+    extends AuditService(auditConnector, config)(ec) {
 
-class FakeAuditService @Inject()(auditConnector: AuditConnector, config: FrontendAppConfig)(ec: ExecutionContext)
-  extends AuditService(auditConnector, config)(ec) {
+  override def auditRegistrationSubmitted(payload: JsValue, draftId: String, response: RegistrationTRNResponse)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit = ()
 
-  override def auditRegistrationSubmitted(payload: JsValue,
-                                          draftId: String,
-                                          response: RegistrationTRNResponse)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
+  override def auditRegistrationAlreadySubmitted(payload: JsValue, draftId: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit = ()
 
-  override def auditRegistrationAlreadySubmitted(payload: JsValue,
-                                                 draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
+  override def auditRegistrationSubmissionFailed(payload: JsValue, draftId: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit = ()
 
-  override def auditRegistrationSubmissionFailed(payload: JsValue,
-                                                 draftId: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
-
-  override def auditRegistrationPreparationFailed(userAnswers: UserAnswers,
-                                                  errorReason: String)(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier): Unit = ()
+  override def auditRegistrationPreparationFailed(userAnswers: UserAnswers, errorReason: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit = ()
 
 }

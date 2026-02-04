@@ -19,7 +19,6 @@ package pages.register
 import models.core.pages.Declaration
 import pages.behaviours.PageBehaviours
 
-
 class DeclarationPageSpec extends PageBehaviours {
 
   "DeclarationPage" must {
@@ -30,4 +29,5 @@ class DeclarationPageSpec extends PageBehaviours {
 
     beRemovable[Declaration](DeclarationPage)
   }
+
 }

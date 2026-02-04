@@ -29,9 +29,9 @@ class AgentViewSpec extends ViewBehaviours {
 
   private val prefix: String = "confirmation.new.agent"
 
-  private val fakeRef: String = "XC TRN 00 00 00 49 11"
+  private val fakeRef: String          = "XC TRN 00 00 00 49 11"
   private val formattedFakeRef: String = formatReferenceNumber(fakeRef)
-  private val fakeName: String = "name"
+  private val fakeName: String         = "name"
 
   "taxable New Trust Agent View" must {
 
@@ -43,11 +43,26 @@ class AgentViewSpec extends ViewBehaviours {
       formattedFakeRef,
       fakeName,
       None,
-      "subheading1", "p1",
-      "subheading2", "p2", "p3",
-      "bullet1", "bullet1.p1", "bullet1.p2", "bullet1.p2.a", "bullet1.p3", "bullet1.p4",
-      "bullet2", "bullet2.p1", "bullet2.p2", "bullet2.p3", "bullet2.p3.a", "bullet2.p4", "bullet2.p4.a",
+      "subheading1",
+      "p1",
+      "subheading2",
+      "p2",
+      "p3",
+      "bullet1",
+      "bullet1.p1",
+      "bullet1.p2",
+      "bullet1.p2.a",
+      "bullet1.p3",
+      "bullet1.p4",
+      "bullet2",
+      "bullet2.p1",
+      "bullet2.p2",
+      "bullet2.p3",
+      "bullet2.p3.a",
+      "bullet2.p4",
+      "bullet2.p4.a",
       "warning"
     )
   }
+
 }

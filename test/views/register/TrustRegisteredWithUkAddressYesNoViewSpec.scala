@@ -43,4 +43,5 @@ class TrustRegisteredWithUkAddressYesNoViewSpec extends YesNoViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

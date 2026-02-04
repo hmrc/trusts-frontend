@@ -28,12 +28,12 @@ case object TrustRegisteredWithUkAddressYesNoPage extends QuestionPage[Boolean] 
 
   override def toString: String = "trustRegisteredWithUkAddressYesNo"
 
-  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] = {
+  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] =
     value match {
       case Some(false) =>
         userAnswers.remove(PostcodeForTheTrustPage)
-      case _ =>
+      case _           =>
         super.cleanup(value, userAnswers)
     }
-  }
+
 }

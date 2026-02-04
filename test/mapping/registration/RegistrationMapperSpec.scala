@@ -31,11 +31,11 @@ import scala.concurrent.{Await, Future}
 
 class RegistrationMapperSpec extends RegistrationSpecBase {
 
-  private val name = FullName("Joe", None, "Blogss")
-  private val trustName = "Trust Name"
-  private val postcode = "AB1 1AB"
+  private val name                  = FullName("Joe", None, "Blogss")
+  private val trustName             = "Trust Name"
+  private val postcode              = "AB1 1AB"
   private val correspondenceAddress = AddressType("line1", "line2", None, None, Some(postcode), "GB")
-  private val utr = "1234567890"
+  private val utr                   = "1234567890"
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
@@ -49,20 +49,23 @@ class RegistrationMapperSpec extends RegistrationSpecBase {
 
         val userAnswers = TestUserAnswers.emptyUserAnswers
 
-        Await.result(registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf) mustNot be(defined)
+        Await.result(
+          registrationMapper.build(userAnswers, correspondenceAddress, trustName, Organisation),
+          Duration.Inf
+        ) mustNot be(defined)
       }
     }
 
     "user answers is not empty" when {
 
-      val declarationMapper = mock[DeclarationMapper]
+      val declarationMapper    = mock[DeclarationMapper]
       val correspondenceMapper = mock[CorrespondenceMapper]
-      val matchingMapper = mock[MatchingMapper]
+      val matchingMapper       = mock[MatchingMapper]
 
       val registrationMapper = new RegistrationMapper(declarationMapper, correspondenceMapper, matchingMapper)
 
-      val declaration = Declaration(name, correspondenceAddress)
-      val matchData = MatchData(utr, trustName, Some(postcode))
+      val declaration    = Declaration(name, correspondenceAddress)
+      val matchData      = MatchData(utr, trustName, Some(postcode))
       val correspondence = Correspondence(trustName)
 
       "agent" must {
@@ -72,7 +75,9 @@ class RegistrationMapperSpec extends RegistrationSpecBase {
           when(correspondenceMapper.build(any())).thenReturn(correspondence)
           when(matchingMapper.build(any(), any())).thenReturn(Some(matchData))
 
-          val result = Await.result(registrationMapper.build(emptyUserAnswers, correspondenceAddress, trustName, Agent), Duration.Inf).get
+          val result = Await
+            .result(registrationMapper.build(emptyUserAnswers, correspondenceAddress, trustName, Agent), Duration.Inf)
+            .get
 
           result mustBe Registration(
             matchData = Some(matchData),
@@ -91,7 +96,12 @@ class RegistrationMapperSpec extends RegistrationSpecBase {
           when(correspondenceMapper.build(any())).thenReturn(correspondence)
           when(matchingMapper.build(any(), any())).thenReturn(Some(matchData))
 
-          val result = Await.result(registrationMapper.build(emptyUserAnswers, correspondenceAddress, trustName, Organisation), Duration.Inf).get
+          val result = Await
+            .result(
+              registrationMapper.build(emptyUserAnswers, correspondenceAddress, trustName, Organisation),
+              Duration.Inf
+            )
+            .get
 
           result mustBe Registration(
             matchData = Some(matchData),
@@ -104,4 +114,5 @@ class RegistrationMapperSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

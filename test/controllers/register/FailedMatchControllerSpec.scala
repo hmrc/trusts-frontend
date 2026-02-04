@@ -43,4 +43,5 @@ class FailedMatchControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
   }
+
 }

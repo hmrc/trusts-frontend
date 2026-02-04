@@ -27,17 +27,19 @@ object WhichIdentifier extends Enumerable.Implicits {
   case object NoIdentifier extends WithName("none") with WhichIdentifier
 
   val values: List[WhichIdentifier] = List(
-    UTRIdentifier, URNIdentifier, NoIdentifier
+    UTRIdentifier,
+    URNIdentifier,
+    NoIdentifier
   )
 
-  val options: List[(RadioOption, String)] = values.map {
-    value =>
-      (
-        RadioOption("whichIdentifier", value.toString),
-        if (value != NoIdentifier) s"whichIdentifier.$value.hint" else ""
-      )
+  val options: List[(RadioOption, String)] = values.map { value =>
+    (
+      RadioOption("whichIdentifier", value.toString),
+      if (value != NoIdentifier) s"whichIdentifier.$value.hint" else ""
+    )
   }
 
   implicit val enumerable: Enumerable[WhichIdentifier] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

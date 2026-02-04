@@ -18,7 +18,9 @@ package viewmodels
 
 import models.registration.pages.TagStatus
 
-case class Task(link: Link,
-                tag: TagStatus,
-                appTaskStyles: Option[String] = None,
-                taskTagTextStyles: Option[String] = None)
+case class Task(
+  link: Link,
+  tag: TagStatus,
+  appTaskStyles: Option[String] = None,
+  taskTagTextStyles: Option[String] = None
+)

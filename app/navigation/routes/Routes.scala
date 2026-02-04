@@ -22,10 +22,14 @@ import play.api.mvc.Call
 
 trait Routes {
 
-  def yesNoNav(ua: TrustsFrontendUserAnswers[_], fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
+  def yesNoNav(
+    ua: TrustsFrontendUserAnswers[_],
+    fromPage: QuestionPage[Boolean],
+    yesCall: => Call,
+    noCall: => Call
+  ): Call =
     ua.get(fromPage)
       .map(if (_) yesCall else noCall)
       .getOrElse(controllers.register.routes.SessionExpiredController.onPageLoad())
-  }
-}
 
+}

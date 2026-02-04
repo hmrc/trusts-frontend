@@ -22,18 +22,21 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import utils.AnswerRowUtils
 
-case class RegistrationAnswerSections(beneficiaries: Option[List[AnswerSection]] = None,
-                                      trustees: Option[List[AnswerSection]] = None,
-                                      protectors: Option[List[AnswerSection]] = None,
-                                      otherIndividuals: Option[List[AnswerSection]] = None,
-                                      trustDetails: Option[List[AnswerSection]] = None,
-                                      settlors: Option[List[AnswerSection]] = None,
-                                      assets: Option[List[AnswerSection]] = None)
+case class RegistrationAnswerSections(
+  beneficiaries: Option[List[AnswerSection]] = None,
+  trustees: Option[List[AnswerSection]] = None,
+  protectors: Option[List[AnswerSection]] = None,
+  otherIndividuals: Option[List[AnswerSection]] = None,
+  trustDetails: Option[List[AnswerSection]] = None,
+  settlors: Option[List[AnswerSection]] = None,
+  assets: Option[List[AnswerSection]] = None
+)
 
 object RegistrationAnswerSections {
 
-  def fromAllAnswerSections(sections: AllAnswerSections)
-                           (implicit messages: Messages, answerRowUtils: AnswerRowUtils): RegistrationAnswerSections = {
+  def fromAllAnswerSections(
+    sections: AllAnswerSections
+  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): RegistrationAnswerSections =
     RegistrationAnswerSections(
       beneficiaries = convert(sections.beneficiaries),
       trustees = convert(sections.trustees),
@@ -43,17 +46,17 @@ object RegistrationAnswerSections {
       settlors = convert(sections.settlors),
       assets = convert(sections.assets)
     )
-  }
 
-  private def convert(section: Option[List[RegistrationSubmission.AnswerSection]])
-                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): Option[List[AnswerSection]] = {
+  private def convert(
+    section: Option[List[RegistrationSubmission.AnswerSection]]
+  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): Option[List[AnswerSection]] =
     section map {
       _.map(convert(_))
     }
-  }
 
-  private def convert(section: RegistrationSubmission.AnswerSection)
-                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = {
+  private def convert(
+    section: RegistrationSubmission.AnswerSection
+  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = {
 
     val checkSettlorAlive: Boolean =
       section.rows.exists(row =>
@@ -64,15 +67,17 @@ object RegistrationAnswerSections {
     val rowsInCorrectTense =
       if (checkSettlorAlive) answerRowUtils.rowsWithCorrectTense(section) else section.rows
 
-      AnswerSection(
-        headingKey = section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg): _*)),
-        rows = rowsInCorrectTense.map(convert(_)),
-        sectionKey = section.sectionKey.map(messages(_))
-      )
+    AnswerSection(
+      headingKey =
+        section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg): _*)),
+      rows = rowsInCorrectTense.map(convert(_)),
+      sectionKey = section.sectionKey.map(messages(_))
+    )
   }
 
-  private def convert(row: RegistrationSubmission.AnswerRow)
-                     (implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerRow = AnswerRow(
+  private def convert(
+    row: RegistrationSubmission.AnswerRow
+  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerRow = AnswerRow(
     label = row.label,
     answer = HtmlFormat.raw(answerRowUtils.reverseEngineerAnswer(row.answer)),
     changeUrl = None,

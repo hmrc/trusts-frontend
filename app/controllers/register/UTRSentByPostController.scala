@@ -24,17 +24,16 @@ import views.html.register.UTRSentByPostView
 
 import javax.inject.Inject
 
-class UTRSentByPostController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         identify: RegistrationIdentifierAction,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: UTRSentByPostView
-                                       ) extends FrontendBaseController with I18nSupport {
+class UTRSentByPostController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: RegistrationIdentifierAction,
+  val controllerComponents: MessagesControllerComponents,
+  view: UTRSentByPostView
+) extends FrontendBaseController with I18nSupport {
 
-
-  def onPageLoad: Action[AnyContent] = identify {
-    implicit request =>
-      val isAgent = request.isAgent
-      Ok(view(isAgent))
+  def onPageLoad: Action[AnyContent] = identify { implicit request =>
+    val isAgent = request.isAgent
+    Ok(view(isAgent))
   }
+
 }

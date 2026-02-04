@@ -34,7 +34,9 @@ object MappingsSpec {
 
     implicit val fooEnumerable: Enumerable[Foo] =
       Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+
   }
+
 }
 
 class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mappings {
@@ -74,7 +76,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
     }
 
     "return a custom error message" in {
-      val form = Form("value" -> text("custom.error"))
+      val form   = Form("value" -> text("custom.error"))
       val result = form.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "custom.error"))
     }
@@ -101,13 +103,11 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
       "AA99 9AA"
     )
 
-    validPostcodes.foreach {
-      p =>
-
-        s"bind a valid postcode $p" in {
-          val result = testForm.bind(Map("value" -> p))
-          result.get mustEqual p
-        }
+    validPostcodes.foreach { p =>
+      s"bind a valid postcode $p" in {
+        val result = testForm.bind(Map("value" -> p))
+        result.get mustEqual p
+      }
 
     }
 
@@ -124,7 +124,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
 
   "currency" must {
 
-    val testForm : Form[String] =
+    val testForm: Form[String] =
       Form(
         "value" -> currency()
       )
@@ -137,12 +137,11 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
       "999999999999"
     )
 
-    validCurency.foreach {
-      p =>
-        s"bind a valid currency $p" in {
-          val result = testForm.bind(Map("value" -> p))
-          result.get mustEqual p
-        }
+    validCurency.foreach { p =>
+      s"bind a valid currency $p" in {
+        val result = testForm.bind(Map("value" -> p))
+        result.get mustEqual p
+      }
     }
 
     "not bind an empty map" in {
@@ -151,7 +150,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
     }
 
     "return a custom error message" in {
-      val form = Form("value" -> postcode("custom.error"))
+      val form   = Form("value" -> postcode("custom.error"))
       val result = form.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "custom.error"))
     }
@@ -261,7 +260,7 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
 
     val testForm: Form[String] =
       Form(
-        "value" -> utr("error.required", "error.invalid", "error.length" )
+        "value" -> utr("error.required", "error.invalid", "error.length")
       )
 
     "bind a valid utr" in {
@@ -273,7 +272,6 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
       val result = testForm.bind(Map("value" -> " 123  4567  890 "))
       result.get mustEqual "1234567890"
     }
-
 
     "not bind an empty string" in {
       val result = testForm.bind(Map("value" -> ""))

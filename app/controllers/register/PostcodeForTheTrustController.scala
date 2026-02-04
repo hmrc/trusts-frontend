@@ -30,43 +30,40 @@ import views.html.register.PostcodeForTheTrustView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PostcodeForTheTrustController @Inject()(
-                                               override val messagesApi: MessagesApi,
-                                               cacheRepository: CacheRepository,
-                                               actions: StandardActionSets,
-                                               formProvider: PostcodeForTheTrustFormProvider,
-                                               matchingService: MatchingService,
-                                               val controllerComponents: MessagesControllerComponents,
-                                               view: PostcodeForTheTrustView
-                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class PostcodeForTheTrustController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  actions: StandardActionSets,
+  formProvider: PostcodeForTheTrustFormProvider,
+  matchingService: MatchingService,
+  val controllerComponents: MessagesControllerComponents,
+  view: PostcodeForTheTrustView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private val form: Form[String] = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val preparedForm = request.userAnswers.get(PostcodeForTheTrustPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(PostcodeForTheTrustPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PostcodeForTheTrustPage, value))
-            _ <- cacheRepository.set(updatedAnswers)
-            redirect <- matchingService.matching(updatedAnswers, request.isAgent)
+            _              <- cacheRepository.set(updatedAnswers)
+            redirect       <- matchingService.matching(updatedAnswers, request.isAgent)
           } yield redirect
-        }
       )
   }
+
 }

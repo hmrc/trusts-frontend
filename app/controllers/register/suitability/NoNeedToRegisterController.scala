@@ -24,16 +24,16 @@ import views.html.register.suitability.NoNeedToRegisterView
 
 import javax.inject.Inject
 
-class NoNeedToRegisterController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            standardActionSets: StandardActionSets,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: NoNeedToRegisterView
-                                          ) extends FrontendBaseController with I18nSupport {
+class NoNeedToRegisterController @Inject() (
+  override val messagesApi: MessagesApi,
+  standardActionSets: StandardActionSets,
+  val controllerComponents: MessagesControllerComponents,
+  view: NoNeedToRegisterView
+) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = standardActionSets.identifiedUserMatchingAndSuitabilityData() {
     implicit request =>
-
       Ok(view(request.isAgent))
   }
+
 }
