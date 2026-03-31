@@ -1,27 +1,11 @@
 import play.sbt.routes.RoutesKeys
 import sbt.Def
-import scoverage.ScoverageKeys
 import uk.gov.hmrc.DefaultBuildSettings
 
 lazy val appName: String = "trusts-frontend"
 
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "2.13.18"
 ThisBuild / majorVersion := 1
-
-val excludedPackages = Seq(
-  "<empty>",
-  "Reverse.*",
-  ".*assets.*",
-  ".*Routes.*",
-  ".*standardError.*",
-  ".*BuildInfo",
-  ".*pages.Page",
-  ".*models.*",
-  ".*views.*",
-  ".*filters.*",
-  ".*config*.*",
-  ".*testOnlyDoNotUseInAppConf.*"
-)
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
@@ -42,10 +26,7 @@ lazy val microservice = (project in file("."))
       "controllers.routes._"
     ),
     PlayKeys.playDefaultPort := 9781,
-    ScoverageKeys.coverageExcludedFiles := excludedPackages.mkString(";"),
-    ScoverageKeys.coverageMinimumStmtTotal := 80,
-    ScoverageKeys.coverageFailOnMinimum := true,
-    ScoverageKeys.coverageHighlighting := true,
+    CodeCoverageSettings(),
     scalacOptions ++= Seq(
       "-feature",
       "-Wconf:src=routes/.*:s",
