@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,10 @@ trait MongoSuite extends ScalaFutures {
 
   val application: Application = new GuiceApplicationBuilder()
     .configure(
-      "metrics.enabled" -> false,
+      "metrics.enabled"  -> false,
       "auditing.enabled" -> false
-    ).build()
+    )
+    .build()
 
   val config: FrontendAppConfig = application.injector.instanceOf[FrontendAppConfig]
 

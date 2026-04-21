@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package auditing
 object TrustAuditing {
 
   val REGISTRATION_SUBMITTED_BY_ORGANISATION = "RegistrationSubmittedByOrganisation"
-  val REGISTRATION_SUBMITTED_BY_AGENT = "RegistrationSubmittedByAgent"
-  val REGISTRATION_SUBMISSION_FAILED = "RegistrationSubmissionFailed"
-  val REGISTRATION_PREPARATION_FAILED = "RegistrationPreparationFailed"
+  val REGISTRATION_SUBMITTED_BY_AGENT        = "RegistrationSubmittedByAgent"
+  val REGISTRATION_SUBMISSION_FAILED         = "RegistrationSubmissionFailed"
+  val REGISTRATION_PREPARATION_FAILED        = "RegistrationPreparationFailed"
 
   val USER_ANSWERS = "UserAnswers"
 

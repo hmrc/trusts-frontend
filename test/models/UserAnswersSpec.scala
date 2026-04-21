@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,9 @@ class UserAnswersSpec extends RegistrationSpecBase {
 
         "TrustTaxableYesNoPage is true" in {
           val userAnswers = emptyUserAnswers
-            .set(TrustTaxableYesNoPage, true).success.value
+            .set(TrustTaxableYesNoPage, true)
+            .success
+            .value
 
           userAnswers.isTaxable mustEqual true
         }
@@ -45,7 +47,9 @@ class UserAnswersSpec extends RegistrationSpecBase {
       "return false" when {
         "TrustTaxableYesNoPage is false" in {
           val userAnswers = emptyUserAnswers
-            .set(TrustTaxableYesNoPage, false).success.value
+            .set(TrustTaxableYesNoPage, false)
+            .success
+            .value
 
           userAnswers.isTaxable mustEqual false
         }
@@ -57,7 +61,9 @@ class UserAnswersSpec extends RegistrationSpecBase {
       "return true" when {
         "TrustHaveAUTRPage is true" in {
           val userAnswers = emptyUserAnswers
-            .set(TrustHaveAUTRPage, true).success.value
+            .set(TrustHaveAUTRPage, true)
+            .success
+            .value
 
           userAnswers.isExistingTrust mustEqual true
         }
@@ -67,7 +73,9 @@ class UserAnswersSpec extends RegistrationSpecBase {
 
         "TrustHaveAUTRPage is false" in {
           val userAnswers = emptyUserAnswers
-            .set(TrustHaveAUTRPage, false).success.value
+            .set(TrustHaveAUTRPage, false)
+            .success
+            .value
 
           userAnswers.isExistingTrust mustEqual false
         }
@@ -80,4 +88,5 @@ class UserAnswersSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

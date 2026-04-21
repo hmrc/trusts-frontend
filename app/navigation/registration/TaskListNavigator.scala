@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,42 +21,33 @@ import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class TaskListNavigator @Inject()(frontendAppConfig: FrontendAppConfig) {
+class TaskListNavigator @Inject() (frontendAppConfig: FrontendAppConfig) {
 
-  def settlorsJourney(draftId: String): String = {
+  def settlorsJourney(draftId: String): String =
     frontendAppConfig.settlorsFrontendUrl(draftId)
-  }
 
-  def trustDetailsJourney(draftId: String): String = {
+  def trustDetailsJourney(draftId: String): String =
     frontendAppConfig.trustDetailsFrontendUrl(draftId)
-  }
 
-  def trusteesJourneyUrl(draftId: String): String = {
+  def trusteesJourneyUrl(draftId: String): String =
     frontendAppConfig.trusteesFrontendUrl(draftId)
-  }
 
-  def beneficiariesJourneyUrl(draftId: String): String = {
+  def beneficiariesJourneyUrl(draftId: String): String =
     frontendAppConfig.beneficiariesFrontendUrl(draftId)
-  }
 
-  def taxLiabilityJourney(draftId: String): String = {
+  def taxLiabilityJourney(draftId: String): String =
     frontendAppConfig.taxLiabilityFrontendUrl(draftId)
-  }
 
-  def protectorsJourneyUrl(draftId: String): String = {
+  def protectorsJourneyUrl(draftId: String): String =
     frontendAppConfig.protectorsFrontendUrl(draftId)
-  }
 
-  def otherIndividualsJourneyUrl(draftId: String): String = {
+  def otherIndividualsJourneyUrl(draftId: String): String =
     frontendAppConfig.otherIndividualsFrontendUrl(draftId)
-  }
 
-  def assetsJourneyUrl(draftId: String): String = {
+  def assetsJourneyUrl(draftId: String): String =
     frontendAppConfig.assetsFrontendUrl(draftId)
-  }
 
-  def agentDetailsJourneyUrl(draftId: String): String = {
+  def agentDetailsJourneyUrl(draftId: String): String =
     frontendAppConfig.agentDetailsFrontendUrl(draftId)
-  }
 
 }

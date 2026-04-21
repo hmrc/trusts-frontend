@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ object TypeOfTrust extends Enumerable.Implicits {
 
   case object IntervivosSettlementTrust extends WithName("Inter vivos Settlement") with TypeOfTrust
 
-  case object FlatManagementTrust extends  WithName("Flat Management Company or Sinking Fund") with TypeOfTrust
+  case object FlatManagementTrust extends WithName("Flat Management Company or Sinking Fund") with TypeOfTrust
 
   case object HeritageTrust extends WithName("Heritage Maintenance Fund") with TypeOfTrust
 
@@ -45,7 +45,5 @@ object TypeOfTrust extends Enumerable.Implicits {
 
   implicit val enumerable: Enumerable[TypeOfTrust] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+
 }
-
-
-

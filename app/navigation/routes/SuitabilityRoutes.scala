@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,12 @@ import play.api.mvc.Call
 object SuitabilityRoutes extends Routes {
 
   def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
-    case ExpressTrustYesNoPage => ua =>
-      ua.get(TrustTaxableYesNoPage) match {
-        case Some(true) => routes.BeforeYouContinueController.onPageLoad()
-        case _ => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
-      }
+    case ExpressTrustYesNoPage                 =>
+      ua =>
+        ua.get(TrustTaxableYesNoPage) match {
+          case Some(true) => routes.BeforeYouContinueController.onPageLoad()
+          case _          => routes.TaxLiabilityInCurrentTaxYearYesNoController.onPageLoad()
+        }
     case TaxLiabilityInCurrentTaxYearYesNoPage =>
       yesNoNav(
         _,
@@ -37,22 +38,22 @@ object SuitabilityRoutes extends Routes {
         routes.BeforeYouContinueController.onPageLoad(),
         routes.UndeclaredTaxLiabilityYesNoController.onPageLoad()
       )
-    case UndeclaredTaxLiabilityYesNoPage => ua =>
-      yesNoNav(
-        ua,
-        UndeclaredTaxLiabilityYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(),
-        nonTaxableRoute(ua)
-      )
+    case UndeclaredTaxLiabilityYesNoPage       =>
+      ua =>
+        yesNoNav(
+          ua,
+          UndeclaredTaxLiabilityYesNoPage,
+          routes.BeforeYouContinueController.onPageLoad(),
+          nonTaxableRoute(ua)
+        )
   }
 
-  private def nonTaxableRoute(answers: TrustsFrontendUserAnswers[_]): Call = {
-      yesNoNav(
-        answers,
-        ExpressTrustYesNoPage,
-        routes.BeforeYouContinueController.onPageLoad(),
-        routes.NoNeedToRegisterController.onPageLoad()
-      )
-  }
+  private def nonTaxableRoute(answers: TrustsFrontendUserAnswers[_]): Call =
+    yesNoNav(
+      answers,
+      ExpressTrustYesNoPage,
+      routes.BeforeYouContinueController.onPageLoad(),
+      routes.NoNeedToRegisterController.onPageLoad()
+    )
 
 }

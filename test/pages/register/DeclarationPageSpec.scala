@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package pages.register
 import models.core.pages.Declaration
 import pages.behaviours.PageBehaviours
 
-
 class DeclarationPageSpec extends PageBehaviours {
 
   "DeclarationPage" must {
@@ -30,4 +29,5 @@ class DeclarationPageSpec extends PageBehaviours {
 
     beRemovable[Declaration](DeclarationPage)
   }
+
 }

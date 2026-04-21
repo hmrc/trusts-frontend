@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,13 @@ import viewmodels.AnswerSection
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PrintUserAnswersHelper @Inject()(draftRegistrationService: DraftRegistrationService)
-                                      (implicit ec: ExecutionContext) {
+class PrintUserAnswersHelper @Inject() (draftRegistrationService: DraftRegistrationService)(implicit
+  ec: ExecutionContext
+) {
 
-  def summary(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[List[AnswerSection]] = {
+  def summary(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[List[AnswerSection]] =
 
-    draftRegistrationService.getAnswerSections(draftId).map {
-      registrationAnswerSections =>
-
+    draftRegistrationService.getAnswerSections(draftId).map { registrationAnswerSections =>
       val entitySectionsHead = List(
         registrationAnswerSections.trustDetails,
         registrationAnswerSections.trustees,
@@ -45,11 +44,11 @@ class PrintUserAnswersHelper @Inject()(draftRegistrationService: DraftRegistrati
         registrationAnswerSections.otherIndividuals
       ).flatten.flatten
 
-        List(
+      List(
         entitySectionsHead,
         entitySectionsTail
       ).flatten
 
     }
-  }
+
 }

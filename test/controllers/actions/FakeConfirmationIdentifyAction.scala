@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,18 +25,18 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeIdentifyForConfirmation @Inject()(affinityGroup: AffinityGroup,
-                                            config: FrontendAppConfig)
-                                           (override val parser: BodyParsers.Default,
-                                            trustsAuth: TrustsAuthorisedFunctions,
-                                            enrolments: Enrolments = Enrolments(Set.empty[Enrolment]))
-                                           (override implicit val executionContext: ExecutionContext)
-  extends ConfirmationIdentifierAction(parser, trustsAuth, config) {
+class FakeIdentifyForConfirmation @Inject() (affinityGroup: AffinityGroup, config: FrontendAppConfig)(
+  override val parser: BodyParsers.Default,
+  trustsAuth: TrustsAuthorisedFunctions,
+  enrolments: Enrolments = Enrolments(Set.empty[Enrolment])
+)(implicit override val executionContext: ExecutionContext)
+    extends ConfirmationIdentifierAction(parser, trustsAuth, config) {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
     block(IdentifierRequest(request, "id", affinityGroup, enrolments))
 
-  override def composeAction[A](action: Action[A]): Action[A] = new FakeActionWithoutIdentityCheck(action, trustsAuth, config)
+  override def composeAction[A](action: Action[A]): Action[A] =
+    new FakeActionWithoutIdentityCheck(action, trustsAuth, config)
 
 }
 
@@ -44,13 +44,14 @@ class FakeActionWithoutIdentityCheck[A](
   action: Action[A],
   trustsAuth: TrustsAuthorisedFunctions,
   config: FrontendAppConfig
-  ) extends AffinityGroupIdentifierAction(
-    action,
-    trustsAuth,
-    config,
-    checkForTrustIdentifier = false
-  ) {
-  override def apply(request: Request[A]): Future[Result] = {
+) extends AffinityGroupIdentifierAction(
+      action,
+      trustsAuth,
+      config,
+      checkForTrustIdentifier = false
+    ) {
+
+  override def apply(request: Request[A]): Future[Result] =
     action(request)
-  }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,12 @@ class MatchingDownViewSpec extends ViewBehaviours {
         applyView,
         None,
         "matchingDown",
-        "p1", "p2.beforeLink", "p2.link", "p2.afterLink", "p3", "p3.link"
+        "p1",
+        "p2.beforeLink",
+        "p2.link",
+        "p2.afterLink",
+        "p3",
+        "p3.link"
       )
 
       behave like pageWithASignOutButton(applyView)
@@ -50,10 +55,14 @@ class MatchingDownViewSpec extends ViewBehaviours {
         applyView,
         None,
         "matchingDown",
-        "p1", "p2.beforeLink", "p2.link", "p2.afterLink"
+        "p1",
+        "p2.beforeLink",
+        "p2.link",
+        "p2.afterLink"
       )
 
       behave like pageWithASignOutButton(applyView)
     }
   }
+
 }

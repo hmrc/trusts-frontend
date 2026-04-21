@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,12 @@ import viewmodels._
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationProgress @Inject()(
-                                      navigator: TaskListNavigator,
-                                      trustsStoreService: TrustsStoreService
-                                    )(implicit ec: ExecutionContext) {
+class RegistrationProgress @Inject() (
+  navigator: TaskListNavigator,
+  trustsStoreService: TrustsStoreService
+)(implicit ec: ExecutionContext) {
 
-  def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] = {
+  def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
     trustsStoreService.getTaskStatuses(draftId) map { statuses =>
       val entityTasks: List[Task] = List(
         Task(Link("trustees", navigator.trusteesJourneyUrl(draftId)), statuses.trustees),
@@ -44,20 +44,24 @@ class RegistrationProgress @Inject()(
       )
       entityTasks
     }
-  }
 
-  def additionalItems(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
-                     (implicit hc: HeaderCarrier): Future[List[Task]] = {
+  def additionalItems(
+    draftId: String,
+    firstTaxYearAvailable: Option[FirstTaxYearAvailable],
+    isTaxable: Boolean,
+    isExistingTrust: Boolean
+  )(implicit hc: HeaderCarrier): Future[List[Task]] =
     trustsStoreService.getTaskStatuses(draftId) map { statuses =>
-
       val taxableTasks: List[Task] = if (isTaxable) {
         val assetsTask = Task(Link("assets", navigator.assetsJourneyUrl(draftId)), statuses.assets)
 
-        val taxLiabilityStatus: Option[TagStatus] = taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust) match {
-          case HideTask => None
-          case x if statuses.trustDetails.isCompleted => Some(if (x.isEnabled) statuses.taxLiability else NoActionNeeded)
-          case _ => Some(CannotStartYet)
-        }
+        val taxLiabilityStatus: Option[TagStatus] =
+          taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust) match {
+            case HideTask                               => None
+            case x if statuses.trustDetails.isCompleted =>
+              Some(if (x.isEnabled) statuses.taxLiability else NoActionNeeded)
+            case _                                      => Some(CannotStartYet)
+          }
 
         val taxLiabilityTask: Option[Task] = taxLiabilityStatus map { value =>
           Task(Link("taxLiability", navigator.taxLiabilityJourney(draftId)), value)
@@ -65,7 +69,14 @@ class RegistrationProgress @Inject()(
 
         assetsTask +: taxLiabilityTask.toList
       } else {
-        List(Task(Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)), statuses.assets))
+        List(
+          Task(
+            link = Link("companyOwnershipOrControllingInterest", navigator.assetsJourneyUrl(draftId)),
+            tag = statuses.assets,
+            appTaskStyles = Some(Width("70%").toString),
+            taskTagTextStyles = Some(Width("70%").toString)
+          )
+        )
       }
 
       val entityTasks: List[Task] = List(
@@ -74,25 +85,30 @@ class RegistrationProgress @Inject()(
 
       entityTasks ::: taxableTasks
     }
-  }
 
-  def isTaskListComplete(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
-                        (implicit hc: HeaderCarrier): Future[Boolean] = {
+  def isTaskListComplete(
+    draftId: String,
+    firstTaxYearAvailable: Option[FirstTaxYearAvailable],
+    isTaxable: Boolean,
+    isExistingTrust: Boolean
+  )(implicit hc: HeaderCarrier): Future[Boolean] =
     trustsStoreService.getTaskStatuses(draftId).map { statuses =>
       statuses.allComplete(taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled)
     }
-  }
 
-
-  def taskCount(draftId: String, firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean)
-                        (implicit hc: HeaderCarrier): Future[(Int, Int)] = {
+  def taskCount(
+    draftId: String,
+    firstTaxYearAvailable: Option[FirstTaxYearAvailable],
+    isTaxable: Boolean,
+    isExistingTrust: Boolean
+  )(implicit hc: HeaderCarrier): Future[(Int, Int)] =
     for {
-      statuses <- trustsStoreService.getTaskStatuses(draftId)
-      mainSections <- items(draftId)
+      statuses           <- trustsStoreService.getTaskStatuses(draftId)
+      mainSections       <- items(draftId)
       additionalSections <- additionalItems(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
     } yield {
-      val allTasks = mainSections ++ additionalSections
-      val totalTasks = allTasks.size
+      val allTasks     = mainSections ++ additionalSections
+      val totalTasks   = allTasks.size
       val taskStatuses = List(
         statuses.beneficiaries,
         statuses.other,
@@ -103,27 +119,31 @@ class RegistrationProgress @Inject()(
         statuses.trustees
       )
 
-      val taxLiabilityStatus = if(taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled) {
-        List(statuses.taxLiability)
-      } else {
-        List.empty
-      }
+      val taxLiabilityStatus =
+        if (taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled) {
+          List(statuses.taxLiability)
+        } else {
+          List.empty
+        }
 
       val completedTasks = (taskStatuses ++ taxLiabilityStatus).count(_ == TagStatus.Completed)
 
       (completedTasks, totalTasks)
     }
-  }
-
 
 }
 
 object RegistrationProgress {
-  def taxLiabilityLinkDisplay(firstTaxYearAvailable: Option[FirstTaxYearAvailable], isTaxable: Boolean, isExistingTrust: Boolean): TaskDisplay = {
+
+  def taxLiabilityLinkDisplay(
+    firstTaxYearAvailable: Option[FirstTaxYearAvailable],
+    isTaxable: Boolean,
+    isExistingTrust: Boolean
+  ): TaskDisplay =
     if (isTaxable && !isExistingTrust) {
       if (firstTaxYearAvailable.fold(false)(_.yearsAgo > 0)) EnableTask else DisableTask
     } else {
       HideTask
     }
-  }
+
 }

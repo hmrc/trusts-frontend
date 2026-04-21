@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,17 +25,19 @@ import play.api.test.Helpers._
 
 class SessionTimeoutControllerSpec extends RegistrationSpecBase {
 
-  object TestSessionTimeoutController extends SessionTimeoutController(
-    app.injector.instanceOf[FrontendAppConfig],
-    app.injector.instanceOf[Configuration],
-    app.injector.instanceOf[MessagesControllerComponents])
+  object TestSessionTimeoutController
+      extends SessionTimeoutController(
+        app.injector.instanceOf[FrontendAppConfig],
+        app.injector.instanceOf[Configuration],
+        app.injector.instanceOf[MessagesControllerComponents]
+      )
 
   "timeout" should {
 
     "stay on current page with current session" when {
       "the keep alive method is used" in {
         val fakeRequest: Request[AnyContent] = FakeRequest().withSession()
-        val res = TestSessionTimeoutController.keepAlive(fakeRequest)
+        val res                              = TestSessionTimeoutController.keepAlive(fakeRequest)
         status(res) mustEqual OK
       }
     }
@@ -43,7 +45,7 @@ class SessionTimeoutControllerSpec extends RegistrationSpecBase {
     "redirect to session expired page new session " when {
       "the timeout method is" in {
         val fakeRequest: Request[AnyContent] = FakeRequest().withSession()
-        val res = TestSessionTimeoutController.timeout(fakeRequest)
+        val res                              = TestSessionTimeoutController.timeout(fakeRequest)
         status(res) mustEqual SEE_OTHER
         redirectLocation(res).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
       }

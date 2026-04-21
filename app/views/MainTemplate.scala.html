@@ -1,5 +1,5 @@
 @*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,9 +63,6 @@
 }
 
 @beforeContentBlock = {
-    @if(isWelshTranslationAvailable) {
-        @hmrcLanguageSelectHelper()
-    }
     @if(showBackLink) {
         @govukBackLink(BackLink(
             attributes = Map("id" -> "back-link"), classes="js-enabled", href="javascript:history.back()", content = HtmlContent(messages("site.back"))
@@ -87,6 +84,7 @@
         serviceUrl = Some(appConfig.loginContinueUrl),
         signOutUrl = if(canSignOut) Some(controllers.register.routes.LogoutController.logout().url) else None,
         phaseBanner = None,
+        isWelshTranslationAvailable = isWelshTranslationAvailable,
         serviceName = serviceName
     )),
     beforeContentBlock = Some(beforeContentBlock),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
   "when rendered for an Organisation" must {
 
     "not render Return to register paragraph" in {
-      val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
+      val view      = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
       val applyView = view.apply(isAgent = false)(fakeRequest, messages)
 
       val doc = asDocument(applyView)
@@ -47,11 +47,12 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
   "when rendered for an Agent" must {
 
     "render Return to register paragraph" in {
-      val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
+      val view      = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
       val applyView = view.apply(isAgent = true)(fakeRequest, messages)
 
       val doc = asDocument(applyView)
       assertRenderedById(doc, "saved-registrations")
     }
   }
+
 }

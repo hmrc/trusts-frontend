@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,14 +35,12 @@ import scala.concurrent.duration.Duration
 
 class TrustsStoreConnectorSpec extends PlaySpec with Matchers with OptionValues with WireMockHelper {
 
-  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  implicit lazy val hc: HeaderCarrier                     = HeaderCarrier()
   implicit lazy val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
   lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(Seq(
-      "microservice.services.trusts-store.port" -> server.port(),
-      "auditing.enabled" -> false): _*
-    ).build()
+    .configure(Seq("microservice.services.trusts-store.port" -> server.port(), "auditing.enabled" -> false): _*)
+    .build()
 
   private lazy val connector = app.injector.instanceOf[TrustsStoreConnector]
 
@@ -70,4 +68,5 @@ class TrustsStoreConnectorSpec extends PlaySpec with Matchers with OptionValues 
       }
     }
   }
+
 }

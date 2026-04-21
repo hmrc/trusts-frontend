@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,27 +23,25 @@ import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
 import models.requests.RegistrationDataRequest
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.{eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.Mockito.{reset, times, verify, when}
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
 import play.api.http.Status.OK
-import play.api.{Application, inject}
+import play.api.inject
 import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.mvc.AnyContentAsFormUrlEncoded
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolments}
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import views.html.register.DeclarationView
-import org.mockito.Mockito.{reset, times, verify, when}
-import play.api.mvc.{AnyContent, AnyContentAsFormUrlEncoded}
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 class DeclarationControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new DeclarationFormProvider()
+  val formProvider            = new DeclarationFormProvider()
   val form: Form[Declaration] = formProvider()
 
   lazy val declarationRoute: String = routes.DeclarationController.onPageLoad(fakeDraftId).url
@@ -54,8 +52,9 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
   val validAnswer: Declaration = Declaration(FullName("First", None, "Last"), Some("email@email.com"))
 
-  val jsonReturnedByGetRequestPieces: JsObject = Json.parse(
-    """
+  val jsonReturnedByGetRequestPieces: JsObject = Json
+    .parse(
+      """
       |{
       |  "trust/entities/settlors": {
       |    "settlor": [
@@ -80,7 +79,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       |  }
       |}
       """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
 
   val validGetDraftSettlorsJson: JsValue = Json.parse(
     """
@@ -182,7 +182,9 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
     "populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(DeclarationPage, validAnswer).success.value
+        .set(DeclarationPage, validAnswer)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -202,10 +204,14 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "redirect to the confirmation page when valid data is submitted and registration submitted successfully " in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
-        thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+      when(
+        registrationsRepository.getRegistrationPieces(eqTo("id"))(any())
+      ).thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
       val request = FakeRequest(POST, declarationRoute)
         .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
@@ -221,8 +227,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "redirect to the task list page when valid data is submitted and submission service can not register successfully" in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
-        thenReturn(Future.failed(UnableToRegister()))
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.failed(UnableToRegister()))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
@@ -240,8 +246,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
     "redirect to the already registered page when valid data is submitted and trust is already registered" in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())).
-        thenReturn(Future.successful(AlreadyRegistered))
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.successful(AlreadyRegistered))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
@@ -309,41 +315,50 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
-    "redirect to the confirmation page when valid data is submitted, aliveAtRegistration field is removed successfully, " +
-      "and registration submitted successfully" in {
+    Seq(
+      ("not", BAD_REQUEST),
+      ("is", OK)
+    ).foreach { case (outcome, setDraftSettlorsHttpResponse) =>
+      s"redirect to the confirmation page when valid data is submitted, aliveAtRegistration field $outcome removed successfully " +
+        "and registration submitted successfully " in
+        {
 
-      val draftId = "123"
-      val (application, request) = setupAliveAtRegistrationTests(draftId, OK)
+          val draftId = s"${outcome}RemovedAliveAtRegistrationUnsuccessful"
 
-      val result = route(application, request).value
+          when(
+            registrationsRepository.getRegistrationPieces(eqTo(draftId))(any())
+          ).thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-      verify(registrationsRepository, times(1)).setDraftSettlors(eqTo(draftId), any())(any())
-      application.stop()
-    }
+          when(
+            mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+          ).thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
-    "redirect to the confirmation page when valid data is submitted, aliveAtRegistration field not removed successfully, " +
-      "and registration submitted successfully" in {
+          when(
+            registrationsRepository.setDraftSettlors(eqTo(draftId), any())(any())
+          ).thenReturn(Future.successful(HttpResponse(setDraftSettlorsHttpResponse, "")))
 
-      val draftId = "345"
-      val (application, request) = setupAliveAtRegistrationTests(draftId, BAD_REQUEST)
+          val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
-      val result = route(application, request).value
+          val removedAliveAtRegistrationDeclarationRoute: String =
+            routes.DeclarationController.onPageLoad(draftId).url
 
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-      verify(registrationsRepository, times(1)).setDraftSettlors(eqTo(draftId), any())(any())
-      application.stop()
+          val request = FakeRequest(POST, removedAliveAtRegistrationDeclarationRoute)
+            .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
+          verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+          verify(registrationsRepository, times(1)).setDraftSettlors(eqTo(draftId), any())(any())
+          application.stop()
+        }
     }
 
     "throw an UnableToRegister exception when .getExpectedSettlorData called given registrationsRepository.getDraftSettlors returns no settlor data" in {
       val userAnswers = emptyUserAnswers
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
-      val controller = application.injector.instanceOf[DeclarationController]
 
       val jsonWithoutMandatorySettlorInfo: JsValue = Json.parse(
         """
@@ -361,55 +376,31 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(registrationsRepository.getDraftSettlors(any())(any()))
         .thenReturn(Future.successful(jsonWithoutMandatorySettlorInfo))
 
-      implicit val request: RegistrationDataRequest[AnyContent] =
-        RegistrationDataRequest(fakeRequest, "internalId", "sessionId", userAnswers, AffinityGroup.Agent, Enrolments(Set()))
+      when(registrationsRepository.getRegistrationPieces(any())(any()))
+        .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
 
-      intercept[UnableToRegister] {
-        Await.result(controller.getExpectedSettlorData("draftId"), Duration.Inf)
-      }
-
-      verify(mockAuditService, times(1))
-        .auditRegistrationPreparationFailed(userAnswers, "Error attempting to register trust without mandatory settlor information")
-
-    }
-
-    "return the expected data when .getExpectedSettlorData called given settlor data exists" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
       val controller = application.injector.instanceOf[DeclarationController]
 
-      implicit val request: RegistrationDataRequest[AnyContent] =
-        RegistrationDataRequest(fakeRequest, "internalId", "sessionId", emptyUserAnswers, AffinityGroup.Organisation, Enrolments(Set()))
+      val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+        FakeRequest(POST, routes.DeclarationController.onPageLoad("draftId").url)
+          .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
-      when(registrationsRepository.getDraftSettlors(any())(any()))
-        .thenReturn(Future.successful(validGetDraftSettlorsJson))
+      val result = controller.onSubmit("draftId")(request)
 
-      Await.result(controller.getExpectedSettlorData("draftId"), Duration.Inf) mustEqual validGetDraftSettlorsJson
+      status(result) mustEqual SEE_OTHER
+
+      verify(mockAuditService, times(1))
+        .auditRegistrationWithMissingSettlorInfo(
+          eqTo(userAnswers),
+          eqTo(
+            "registration: no settlor information provided. " +
+              "Trust should have either a deceased settlor, an individual settlor or a company settlor, " +
+              "answer section: no settlors section found"
+          )
+        )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+
     }
-  }
 
-  def setupAliveAtRegistrationTests(draftId: String, setDraftSettlorsResponseStatusCode: Int)
-  : (Application, FakeRequest[AnyContentAsFormUrlEncoded]) = {
-    when(registrationsRepository.getDraftSettlors(eqTo(draftId))(any()))
-      .thenReturn(Future.successful(validGetDraftSettlorsJson))
-
-    when(registrationsRepository.getRegistrationPieces(eqTo(draftId))(any()))
-      .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
-
-    when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
-      .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
-
-    when(registrationsRepository.setDraftSettlors(eqTo(draftId), any())(any()))
-      .thenReturn(Future.successful(HttpResponse(setDraftSettlorsResponseStatusCode, "")))
-
-    val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
-
-    val removedAliveAtRegistrationDeclarationRoute: String =
-      routes.DeclarationController.onPageLoad(draftId).url
-
-    val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, removedAliveAtRegistrationDeclarationRoute)
-      .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
-
-    (application, request)
   }
 
 }

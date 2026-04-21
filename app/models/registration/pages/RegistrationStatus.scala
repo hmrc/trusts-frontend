@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,12 @@ object RegistrationStatus extends Enumerable.Implicits {
   case object Complete extends WithName("Complete") with RegistrationStatus
 
   val values: List[RegistrationStatus] = List(
-    NotStarted,InProgress,Complete
+    NotStarted,
+    InProgress,
+    Complete
   )
 
   implicit val enumerable: Enumerable[RegistrationStatus] =
     Enumerable(values.map(v => v.toString -> v): _*)
+
 }

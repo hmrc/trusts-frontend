@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,38 +29,38 @@ import utils.Session
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class LogoutController @Inject()(
-                                  appConfig: FrontendAppConfig,
-                                  auditConnector: AuditConnector,
-                                  identify: RegistrationIdentifierAction,
-                                  val controllerComponents: MessagesControllerComponents)
-                                (implicit val ec: ExecutionContext) extends FrontendBaseController {
+class LogoutController @Inject() (
+  appConfig: FrontendAppConfig,
+  auditConnector: AuditConnector,
+  identify: RegistrationIdentifierAction,
+  val controllerComponents: MessagesControllerComponents
+)(implicit val ec: ExecutionContext)
+    extends FrontendBaseController {
 
-  def logout: Action[AnyContent] = identify {
-    request =>
+  def logout: Action[AnyContent] = identify { request =>
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-      implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    if (appConfig.logoutAudit) {
 
-      if(appConfig.logoutAudit) {
+      val auditData = Map(
+        "sessionId" -> Session.id(hc),
+        "event"     -> "signout",
+        "service"   -> "trusts-frontend",
+        "userGroup" -> request.affinityGroup.toString
+      )
 
-        val auditData = Map(
-          "sessionId" -> Session.id(hc),
-          "event" -> "signout",
-          "service" -> "trusts-frontend",
-          "userGroup" -> request.affinityGroup.toString
-        )
-
-        val auditWithAgent = request.agentARN.fold(auditData) { arn =>
-          auditData ++ Map("agentReferenceNumber" -> arn)
-        }
-
-        auditConnector.sendExplicitAudit(
-          "trusts",
-          auditWithAgent
-        )
-
+      val auditWithAgent = request.agentARN.fold(auditData) { arn =>
+        auditData ++ Map("agentReferenceNumber" -> arn)
       }
 
-      Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
+      auditConnector.sendExplicitAudit(
+        "trusts",
+        auditWithAgent
+      )
+
+    }
+
+    Redirect(appConfig.logoutUrl).withSession(session = ("feedbackId", Session.id(hc)))
   }
+
 }

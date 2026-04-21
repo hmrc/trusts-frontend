@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,12 +45,27 @@ class DraftRegistrationServiceSpec extends RegistrationSpecBase with ScalaFuture
         implicit val hc: HeaderCarrier = HeaderCarrier()
 
         val userAnswers = emptyMatchingAndSuitabilityUserAnswers
-          .set(TrustRegisteredOnlinePage, false).success.value
-          .set(TrustHaveAUTRPage, false).success.value
-          .set(ExpressTrustYesNoPage, true).success.value
-          .set(TaxLiabilityInCurrentTaxYearYesNoPage, true).success.value
+          .set(TrustRegisteredOnlinePage, false)
+          .success
+          .value
+          .set(TrustHaveAUTRPage, false)
+          .success
+          .value
+          .set(ExpressTrustYesNoPage, true)
+          .success
+          .value
+          .set(TaxLiabilityInCurrentTaxYearYesNoPage, true)
+          .success
+          .value
 
-        val request = MatchingAndSuitabilityDataRequest(FakeRequest(), userAnswers.internalId, "sessionId", userAnswers, Organisation, Enrolments(Set()))
+        val request = MatchingAndSuitabilityDataRequest(
+          FakeRequest(),
+          userAnswers.internalId,
+          "sessionId",
+          userAnswers,
+          Organisation,
+          Enrolments(Set())
+        )
 
         val draftId = Await.result(service.create(request), Duration.Inf)
 

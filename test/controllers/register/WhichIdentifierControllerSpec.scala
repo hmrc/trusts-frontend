@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import views.html.register.WhichIdentifierView
 
 class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSugar {
 
-  val formProvider = new WhichIdentifierFormProvider()
+  val formProvider                = new WhichIdentifierFormProvider()
   val form: Form[WhichIdentifier] = formProvider()
 
   lazy val onPageLoad: String = routes.WhichIdentifierController.onPageLoad().url
@@ -130,4 +130,5 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
       application.stop()
     }
   }
+
 }

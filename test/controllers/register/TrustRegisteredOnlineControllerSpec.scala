@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import views.html.register.TrustRegisteredOnlineView
 
 class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
 
-  val formProvider = new YesNoFormProvider()
+  val formProvider        = new YesNoFormProvider()
   val form: Form[Boolean] = formProvider.withPrefix("trustRegisteredOnline")
 
   lazy val trustRegisteredOnlineRoute: String = routes.TrustRegisteredOnlineController.onPageLoad().url
@@ -140,4 +140,5 @@ class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {
     }
 
   }
+
 }

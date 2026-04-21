@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,7 @@ package auditing
 
 import play.api.libs.json.{Format, JsValue, Json}
 
-case class AuditEvent(registration: JsValue,
-                      draftId : String,
-                      internalAuthId : String)
+case class AuditEvent(registration: JsValue, draftId: String, internalAuthId: String)
 
 object AuditEvent {
   implicit val formats: Format[AuditEvent] = Json.format[AuditEvent]

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,16 @@ import models.registration.pages.TagStatus
 import models.registration.pages.TagStatus.{Completed, NotStarted}
 import play.api.libs.json.{Format, Json}
 
-case class TaskStatuses(beneficiaries: TagStatus = NotStarted,
-                        trustees: TagStatus = NotStarted,
-                        taxLiability: TagStatus = NotStarted,
-                        protectors: TagStatus = NotStarted,
-                        other: TagStatus = NotStarted,
-                        trustDetails: TagStatus = NotStarted,
-                        settlors: TagStatus = NotStarted,
-                        assets: TagStatus = NotStarted) {
+case class TaskStatuses(
+  beneficiaries: TagStatus = NotStarted,
+  trustees: TagStatus = NotStarted,
+  taxLiability: TagStatus = NotStarted,
+  protectors: TagStatus = NotStarted,
+  other: TagStatus = NotStarted,
+  trustDetails: TagStatus = NotStarted,
+  settlors: TagStatus = NotStarted,
+  assets: TagStatus = NotStarted
+) {
 
   /**
    *
@@ -43,6 +45,7 @@ case class TaskStatuses(beneficiaries: TagStatus = NotStarted,
       settlors.equals(Completed) &&
       assets.equals(Completed) &&
       (taxLiability.equals(Completed) || !taxLiabilityEnabled)
+
 }
 
 object TaskStatuses {
@@ -59,4 +62,5 @@ object TaskStatuses {
     settlors = Completed,
     assets = Completed
   )
+
 }

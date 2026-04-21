@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,9 @@ class FrontendAppConfigSpec extends RegistrationSpecBase {
         "return trusts helpline URL" in {
           val messages = MessagesImpl(Lang("en"), messagesApi)
 
-          config.helplineUrl(messages) mustBe "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
+          config.helplineUrl(
+            messages
+          ) mustBe "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/trusts"
         }
       }
 
@@ -38,9 +40,12 @@ class FrontendAppConfigSpec extends RegistrationSpecBase {
         "return Welsh language helpline URL" in {
           val messages = MessagesImpl(Lang("cy"), messagesApi)
 
-          config.helplineUrl(messages) mustBe "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/welsh-language-helplines"
+          config.helplineUrl(
+            messages
+          ) mustBe "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/welsh-language-helplines"
         }
       }
     }
   }
+
 }

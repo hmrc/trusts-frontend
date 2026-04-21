@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +142,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
       "redirect to agent details" when {
 
         val mockTaskListNavigator = mock[TaskListNavigator]
-        val onwardRoute: String = fakeNavigator.desiredRoute.url
+        val onwardRoute: String   = fakeNavigator.desiredRoute.url
 
         "draft has incomplete agent details" in {
 
@@ -181,4 +181,5 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
       }
     }
   }
+
 }

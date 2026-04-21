@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,10 @@ class AccessibilityHelperSpec extends RegistrationSpecBase with MockitoSugar {
 
     "build an accessible formated string" in {
       val referenceNumber = "XTRN1234567890"
-      val response = AccessibilityHelper.formatReferenceNumber(referenceNumber)
+      val response        = AccessibilityHelper.formatReferenceNumber(referenceNumber)
       response mustBe "X T R N 1 2 3 4 5 6 7 8 9 0"
     }
 
   }
+
 }

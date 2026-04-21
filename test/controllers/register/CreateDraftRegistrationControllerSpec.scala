@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
       "agent user" in {
 
         val navigator: TaskListNavigator = mock[TaskListNavigator]
-        val redirectUrl = "redirect-url"
+        val redirectUrl                  = "redirect-url"
         when(navigator.agentDetailsJourneyUrl(any())).thenReturn(redirectUrl)
 
-        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent)
-          .overrides(bind[TaskListNavigator].toInstance(navigator))
-          .build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent)
+            .overrides(bind[TaskListNavigator].toInstance(navigator))
+            .build()
 
         val request = FakeRequest(GET, routes.CreateDraftRegistrationController.create().url)
 
@@ -67,4 +68,5 @@ class CreateDraftRegistrationControllerSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

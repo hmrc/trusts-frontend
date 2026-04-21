@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,19 @@ class FailedMatchViewSpec extends ViewBehaviours {
       view = applyView,
       sectionKey = None,
       messageKeyPrefix = "failedMatch",
-      expectedGuidanceKeys = "paragraph1", "paragraph2","paragraph3", "paragraph4", "paragraph5",
-      "bulletpoint1", "bulletpoint2","bulletpoint3" ,"bulletpoint4" ,"bulletpoint5", "bulletpoint6"
+      expectedGuidanceKeys = "paragraph1",
+      "paragraph2",
+      "paragraph3",
+      "paragraph4",
+      "paragraph5",
+      "bulletpoint1",
+      "bulletpoint2",
+      "bulletpoint3",
+      "bulletpoint4",
+      "bulletpoint5",
+      "bulletpoint6"
     )
 
   }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,19 +24,18 @@ import views.html.register.{RefSentByPostAgentView, RefSentByPostView}
 
 import javax.inject.Inject
 
-class RefSentByPostController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         actions: StandardActionSets,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: RefSentByPostView,
-                                         agentView: RefSentByPostAgentView
-                                       ) extends FrontendBaseController with I18nSupport {
+class RefSentByPostController @Inject() (
+  override val messagesApi: MessagesApi,
+  actions: StandardActionSets,
+  val controllerComponents: MessagesControllerComponents,
+  view: RefSentByPostView,
+  agentView: RefSentByPostAgentView
+) extends FrontendBaseController with I18nSupport {
 
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val isAgent = request.isAgent
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
-      val isAgent = request.isAgent
-
-      if (isAgent) Ok(agentView()) else Ok(view())
+    if (isAgent) Ok(agentView()) else Ok(view())
   }
+
 }

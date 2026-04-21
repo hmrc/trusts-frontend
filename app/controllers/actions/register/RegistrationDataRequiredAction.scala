@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,18 +23,32 @@ import play.api.mvc.{ActionRefiner, Result}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationDataRequiredActionImpl @Inject()(implicit val executionContext: ExecutionContext) extends RegistrationDataRequiredAction {
+class RegistrationDataRequiredActionImpl @Inject() (implicit val executionContext: ExecutionContext)
+    extends RegistrationDataRequiredAction {
 
-  override protected def refine[A](request: OptionalRegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
+  override protected def refine[A](
+    request: OptionalRegistrationDataRequest[A]
+  ): Future[Either[Result, RegistrationDataRequest[A]]] =
 
     request.userAnswers match {
-      case None =>
+      case None       =>
         Future.successful(Left(Redirect(controllers.register.routes.PageNotFoundController.onPageLoad())))
       case Some(data) =>
-        Future.successful(Right(RegistrationDataRequest(request.request, request.internalId, request.sessionId, data, request.affinityGroup, request.enrolments, request.agentARN)))
+        Future.successful(
+          Right(
+            RegistrationDataRequest(
+              request.request,
+              request.internalId,
+              request.sessionId,
+              data,
+              request.affinityGroup,
+              request.enrolments,
+              request.agentARN
+            )
+          )
+        )
     }
-  }
-}
 
+}
 
 trait RegistrationDataRequiredAction extends ActionRefiner[OptionalRegistrationDataRequest, RegistrationDataRequest]

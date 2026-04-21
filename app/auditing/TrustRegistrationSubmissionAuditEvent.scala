@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,15 @@ import models.core.http.TrustResponse
 import play.api.libs.json.{Format, JsValue, Json}
 
 case class TrustRegistrationSubmissionAuditEvent(
-                                                  registration: JsValue,
-                                                  draftId : String,
-                                                  internalAuthId : String,
-                                                  response: TrustResponse
-                                                )
+  registration: JsValue,
+  draftId: String,
+  internalAuthId: String,
+  response: TrustResponse
+)
 
 object TrustRegistrationSubmissionAuditEvent {
 
-  implicit val formats: Format[TrustRegistrationSubmissionAuditEvent] = Json.format[TrustRegistrationSubmissionAuditEvent]
+  implicit val formats: Format[TrustRegistrationSubmissionAuditEvent] =
+    Json.format[TrustRegistrationSubmissionAuditEvent]
 
 }

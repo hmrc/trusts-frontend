@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,12 @@ class SignedOutControllerSpec extends RegistrationSpecBase {
   "SignedOutController" must {
     "redirect to logout" in {
       val application = applicationBuilder(userAnswers = None).build()
-      val request = FakeRequest(GET, routes.SignedOutController.onPageLoad().url)
-      val result = route(application, request).value
+      val request     = FakeRequest(GET, routes.SignedOutController.onPageLoad().url)
+      val result      = route(application, request).value
 
-      status(result) mustBe SEE_OTHER
+      status(result)           mustBe SEE_OTHER
       redirectLocation(result) mustBe Some(fakeFrontendAppConfig.logoutUrl)
     }
   }
+
 }

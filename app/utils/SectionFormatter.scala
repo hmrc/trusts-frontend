@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import viewmodels.AnswerSection
 
 object SectionFormatter {
 
-  def formatAnswerSection(answerSection: AnswerSection)(implicit messages: Messages): Seq[SummaryListRow] = {
+  def formatAnswerSection(answerSection: AnswerSection)(implicit messages: Messages): Seq[SummaryListRow] =
     answerSection.rows.map { row =>
       SummaryListRow(
         key = Key(classes = "govuk-!-width-two-thirds", content = Text(messages(row.label, row.labelArgs: _*))),
@@ -31,6 +31,5 @@ object SectionFormatter {
         actions = None
       )
     }
-  }
 
 }

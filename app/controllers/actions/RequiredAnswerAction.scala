@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,26 +25,32 @@ import queries.Gettable
 
 import scala.concurrent.{ExecutionContext, Future}
 
-final case class RequiredAnswer[T](answer : Gettable[T],
-                                   redirect : Call = controllers.register.routes.SessionExpiredController.onPageLoad())
+final case class RequiredAnswer[T](
+  answer: Gettable[T],
+  redirect: Call = controllers.register.routes.SessionExpiredController.onPageLoad()
+)
 
-class RequiredAnswerAction[T] @Inject()(required : RequiredAnswer[T])
-                                       (implicit val executionContext: ExecutionContext,
-                                       val reads: Reads[T]) extends ActionRefiner[RegistrationDataRequest, RegistrationDataRequest] {
+class RequiredAnswerAction[T] @Inject() (required: RequiredAnswer[T])(implicit
+  val executionContext: ExecutionContext,
+  val reads: Reads[T]
+) extends ActionRefiner[RegistrationDataRequest, RegistrationDataRequest] {
 
-  override protected def refine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = {
+  override protected def refine[A](
+    request: RegistrationDataRequest[A]
+  ): Future[Either[Result, RegistrationDataRequest[A]]] =
 
     request.userAnswers.get(required.answer) match {
-      case None =>
+      case None    =>
         Future.successful(Left(Redirect(required.redirect)))
       case Some(_) =>
         Future.successful(Right(request))
     }
-  }
+
 }
 
-class RequiredAnswerActionProvider @Inject()(implicit ec: ExecutionContext) {
+class RequiredAnswerActionProvider @Inject() (implicit ec: ExecutionContext) {
 
-  def apply[T](required : RequiredAnswer[T])(implicit reads : Reads[T]) =
+  def apply[T](required: RequiredAnswer[T])(implicit reads: Reads[T]) =
     new RequiredAnswerAction(required)
+
 }

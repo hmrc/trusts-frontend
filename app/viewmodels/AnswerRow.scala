@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,4 +18,10 @@ package viewmodels
 
 import play.twirl.api.Html
 
-case class AnswerRow(label: String, answer: Html, changeUrl: Option[String] = None, labelArgs: Seq[String] = Nil, canEdit: Boolean)
+case class AnswerRow(
+  label: String,
+  answer: Html,
+  changeUrl: Option[String] = None,
+  labelArgs: Seq[String] = Nil,
+  canEdit: Boolean
+)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,44 +30,39 @@ import views.html.register.TrustHaveAUTRView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class TrustHaveAUTRController @Inject()(
-                                         override val messagesApi: MessagesApi,
-                                         cacheRepository: CacheRepository,
-                                         navigator: Navigator,
-                                         actions: StandardActionSets,
-                                         formProvider: YesNoFormProvider,
-                                         val controllerComponents: MessagesControllerComponents,
-                                         view: TrustHaveAUTRView
-                                       )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class TrustHaveAUTRController @Inject() (
+  override val messagesApi: MessagesApi,
+  cacheRepository: CacheRepository,
+  navigator: Navigator,
+  actions: StandardActionSets,
+  formProvider: YesNoFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: TrustHaveAUTRView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   private val form: Form[Boolean] = formProvider.withPrefix("trustHaveAUTR")
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    val preparedForm = request.userAnswers.get(TrustHaveAUTRPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(TrustHaveAUTRPage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
-
-      Ok(view(preparedForm))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async {
-    implicit request =>
-
-      form.bindFromRequest().fold(
-        (formWithErrors: Form[_]) =>
-          Future.successful(BadRequest(view(formWithErrors))),
-
-        value => {
+  def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustHaveAUTRPage, value))
-            _ <- cacheRepository.set(updatedAnswers)
-          } yield {
-            Redirect(navigator.nextPage(TrustHaveAUTRPage)(updatedAnswers))
-          }
-        }
+            _              <- cacheRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(TrustHaveAUTRPage)(updatedAnswers))
       )
   }
+
 }

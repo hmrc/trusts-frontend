@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import play.api.data.FormError
 class YesNoFormProviderSpec extends BooleanFieldBehaviours {
 
   val messagePrefix = "yesNo"
-  val requiredKey = s"$messagePrefix.error.required"
-  val invalidKey = "error.boolean"
+  val requiredKey   = s"$messagePrefix.error.required"
+  val invalidKey    = "error.boolean"
 
   val form = new YesNoFormProvider().withPrefix(messagePrefix)
 
@@ -45,4 +45,3 @@ class YesNoFormProviderSpec extends BooleanFieldBehaviours {
   }
 
 }
-

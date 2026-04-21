@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ object Message {
 
     override def withArgs(args: Any*): Message =
       copy(args = args)
+
   }
 
   case class Literal(value: String) extends Message {
@@ -56,4 +57,5 @@ object Message {
 
   implicit def resolveOption(message: Option[Message])(implicit messages: Messages): Option[String] =
     message.map(_.resolve)
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import views.html.register.MatchingNameView
 class MatchingNameViewSpec extends StringViewBehaviours {
 
   val messageKeyPrefix = "trustName"
-  val hintKey = "trustName.hint.hasUtr"
+  val hintKey          = "trustName.hint.hasUtr"
 
   val form = new TrustNameFormProvider()()
 
@@ -50,4 +50,5 @@ class MatchingNameViewSpec extends StringViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

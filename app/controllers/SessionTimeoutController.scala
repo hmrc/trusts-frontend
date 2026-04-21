@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,11 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class SessionTimeoutController @Inject()(val appConfig: FrontendAppConfig,
-                                         val config: Configuration,
-                                         mcc: MessagesControllerComponents) extends FrontendController(mcc) {
-
+class SessionTimeoutController @Inject() (
+  val appConfig: FrontendAppConfig,
+  val config: Configuration,
+  mcc: MessagesControllerComponents
+) extends FrontendController(mcc) {
 
   val keepAlive: Action[AnyContent] = Action.async { implicit request =>
     Future.successful(Ok.withSession(request.session))

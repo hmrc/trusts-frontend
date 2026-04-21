@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import play.api.data.FormError
 class WhatIsTheUTRFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "whatIsTheUTR.error.required"
-  val lengthKey = "whatIsTheUTR.error.length"
-  val maxLength = 10
+  val lengthKey   = "whatIsTheUTR.error.length"
+  val maxLength   = 10
 
   val form = new WhatIsTheUTRFormProvider()()
 
@@ -57,4 +57,5 @@ class WhatIsTheUTRFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey)
     )
   }
+
 }

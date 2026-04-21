@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,18 @@ class BeforeYouContinueTaxableViewSpec extends ViewBehaviours {
       applyView,
       None,
       "suitability.beforeYouContinue.taxable",
-      "p1", "p2", "bullet1", "bullet2", "bullet3", "p3", "p4", "link1", "link2"
+      "p1",
+      "p2",
+      "bullet1",
+      "bullet2",
+      "bullet3",
+      "p3",
+      "p4",
+      "link1",
+      "link2"
     )
 
     behave like pageWithASubmitButton(applyView)
   }
+
 }

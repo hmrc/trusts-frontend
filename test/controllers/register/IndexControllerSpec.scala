@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,8 +97,11 @@ class IndexControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       "for a playback" should {
         "redirect to maintain a trust with Non-Agent affinityGroup" in {
 
-          val answers = emptyUserAnswers.copy(progress = InProgress)
-            .set(TrustRegisteredOnlinePage, true).success.value
+          val answers = emptyUserAnswers
+            .copy(progress = InProgress)
+            .set(TrustRegisteredOnlinePage, true)
+            .success
+            .value
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -118,8 +121,11 @@ class IndexControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
         "redirect to RegistrationProgress with Non-Agent affinityGroup" in {
 
-          val answers = emptyUserAnswers.copy(progress = InProgress)
-            .set(TrustRegisteredOnlinePage, false).success.value
+          val answers = emptyUserAnswers
+            .copy(progress = InProgress)
+            .set(TrustRegisteredOnlinePage, false)
+            .success
+            .value
 
           val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -136,8 +142,11 @@ class IndexControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
         "redirect to AgentOverview with Agent affinityGroup" in {
 
-          val answers = emptyUserAnswers.copy(progress = InProgress)
-            .set(TrustRegisteredOnlinePage, false).success.value
+          val answers = emptyUserAnswers
+            .copy(progress = InProgress)
+            .set(TrustRegisteredOnlinePage, false)
+            .success
+            .value
 
           val application = applicationBuilder(userAnswers = Some(answers), AffinityGroup.Agent).build()
 
@@ -155,4 +164,5 @@ class IndexControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
       }
     }
   }
+
 }

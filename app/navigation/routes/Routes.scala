@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,14 @@ import play.api.mvc.Call
 
 trait Routes {
 
-  def yesNoNav(ua: TrustsFrontendUserAnswers[_], fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call = {
+  def yesNoNav(
+    ua: TrustsFrontendUserAnswers[_],
+    fromPage: QuestionPage[Boolean],
+    yesCall: => Call,
+    noCall: => Call
+  ): Call =
     ua.get(fromPage)
       .map(if (_) yesCall else noCall)
       .getOrElse(controllers.register.routes.SessionExpiredController.onPageLoad())
-  }
-}
 
+}

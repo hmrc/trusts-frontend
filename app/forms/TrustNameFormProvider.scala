@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,11 @@ class TrustNameFormProvider @Inject() extends Mappings {
       "value" -> text("trustName.error.required")
         .verifying(
           firstError(
-          maxLength(53, "trustName.error.length"),
-          regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trustName.error.invalidCharacters"),
-          isNotEmpty("value", "trustName.error.required")
-        ))
+            maxLength(53, "trustName.error.length"),
+            regexp("^[A-Za-z0-9 ,.()/&'-]*$", "trustName.error.invalidCharacters"),
+            isNotEmpty("value", "trustName.error.required")
+          )
+        )
     )
+
 }

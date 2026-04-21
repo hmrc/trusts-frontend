@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ import play.api.data.FormError
 class TrustNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "trustName.error.required"
-  val lengthKey = "trustName.error.length"
-  val maxLength = 53
-  val regexp = "^[A-Za-z0-9 ,.()/&'-]*$"
-  val invalidKey = "trustName.error.invalidCharacters"
+  val lengthKey   = "trustName.error.length"
+  val maxLength   = 53
+  val regexp      = "^[A-Za-z0-9 ,.()/&'-]*$"
+  val invalidKey  = "trustName.error.invalidCharacters"
 
   val form = new TrustNameFormProvider()()
 
@@ -66,4 +66,5 @@ class TrustNameFormProviderSpec extends StringFieldBehaviours {
       requiredError = FormError(fieldName, requiredKey, Seq(fieldName))
     )
   }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ object DateErrorFormatter {
     args.map(arg => if (dateArgs.contains(arg)) messages(s"date.$arg").toLowerCase else arg.toString)
   }
 
-  def addErrorClass(error: Option[FormError], dateArg: String): String = {
-    if(error.isDefined){
-      if(error.get.args.contains(dateArg) || error.get.args.isEmpty) {
+  def addErrorClass(error: Option[FormError], dateArg: String): String =
+    if (error.isDefined) {
+      if (error.get.args.contains(dateArg) || error.get.args.isEmpty) {
         s"govuk-input--error"
       } else {
         ""
@@ -36,6 +36,5 @@ object DateErrorFormatter {
     } else {
       ""
     }
-  }
 
 }

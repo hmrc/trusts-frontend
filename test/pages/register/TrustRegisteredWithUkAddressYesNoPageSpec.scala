@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,18 +32,15 @@ class TrustRegisteredWithUkAddressYesNoPageSpec extends PageBehaviours {
 
     "implement cleanup" when {
 
-      "NO selected" in {
+      "NO selected" in
+        forAll(arbitrary[UserAnswers], arbitrary[String]) { (initial, str) =>
+          val answers = initial.set(PostcodeForTheTrustPage, str).success.value
 
-        forAll(arbitrary[UserAnswers], arbitrary[String]) {
-          (initial, str) =>
+          val result = answers.set(TrustRegisteredWithUkAddressYesNoPage, false).success.value
 
-            val answers = initial.set(PostcodeForTheTrustPage, str).success.value
-
-            val result = answers.set(TrustRegisteredWithUkAddressYesNoPage, false).success.value
-
-            result.get(PostcodeForTheTrustPage) mustNot be (defined)
+          result.get(PostcodeForTheTrustPage) mustNot be(defined)
         }
-      }
     }
   }
+
 }

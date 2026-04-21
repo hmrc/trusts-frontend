@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,16 +28,16 @@ import views.html.register.suitability._
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class BeforeYouContinueController @Inject()(
-                                             override val messagesApi: MessagesApi,
-                                             actions: StandardActionSets,
-                                             val controllerComponents: MessagesControllerComponents,
-                                             taxableView: BeforeYouContinueTaxableView,
-                                             taxableAgentView: BeforeYouContinueTaxableAgentView,
-                                             existingTaxableView: BeforeYouContinueExistingTaxableView,
-                                             nonTaxableView: BeforeYouContinueNonTaxableView,
-                                             nonTaxableAgentView: BeforeYouContinueNonTaxAgentView
-                                           ) extends FrontendBaseController with I18nSupport {
+class BeforeYouContinueController @Inject() (
+  override val messagesApi: MessagesApi,
+  actions: StandardActionSets,
+  val controllerComponents: MessagesControllerComponents,
+  taxableView: BeforeYouContinueTaxableView,
+  taxableAgentView: BeforeYouContinueTaxableAgentView,
+  existingTaxableView: BeforeYouContinueExistingTaxableView,
+  nonTaxableView: BeforeYouContinueNonTaxableView,
+  nonTaxableAgentView: BeforeYouContinueNonTaxAgentView
+) extends FrontendBaseController with I18nSupport {
 
   private def routeNonTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (isAgentUser) {
     Ok(nonTaxableAgentView())
@@ -51,21 +51,20 @@ class BeforeYouContinueController @Inject()(
     Ok(taxableView())
   }
 
-  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() {
-    implicit request =>
-      if (isExistingTrust) {
-        Ok(existingTaxableView())
+  def onPageLoad(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData() { implicit request =>
+    if (isExistingTrust) {
+      Ok(existingTaxableView())
+    } else {
+      if (isTrustTaxable) {
+        routeTaxable()
       } else {
-        if (isTrustTaxable) {
-          routeTaxable()
-        } else {
-          routeNonTaxable()
-        }
+        routeNonTaxable()
       }
+    }
   }
 
   def onSubmit(): Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { _ =>
-      Future.successful(Redirect(controllers.register.routes.CreateDraftRegistrationController.create().url))
+    Future.successful(Redirect(controllers.register.routes.CreateDraftRegistrationController.create().url))
   }
 
   private def isTrustTaxable(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
@@ -76,4 +75,5 @@ class BeforeYouContinueController @Inject()(
 
   private def isAgentUser(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
     request.isAgent
+
 }

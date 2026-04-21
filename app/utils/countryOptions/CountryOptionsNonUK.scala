@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,12 @@ import utils.InputOption
 import javax.inject.Singleton
 
 @Singleton
-class CountryOptionsNonUK @Inject()(
-                                     environment: Environment,
-                                     config: FrontendAppConfig
-                                   ) extends CountryOptions(environment, config) {
-  override def options()(implicit messages: Messages): Seq[InputOption] = {
+class CountryOptionsNonUK @Inject() (
+  environment: Environment,
+  config: FrontendAppConfig
+) extends CountryOptions(environment, config) {
+
+  override def options()(implicit messages: Messages): Seq[InputOption] =
     CountryOptions.getCountries(environment, getFileName()).filterNot(x => x.value == UK_COUNTRY_CODE)
-  }
+
 }

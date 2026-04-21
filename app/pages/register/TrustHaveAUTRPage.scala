@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,17 +29,19 @@ case object TrustHaveAUTRPage extends QuestionPage[Boolean] {
 
   override def toString: String = "trustHaveAUTR"
 
-  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] = {
+  override def cleanup[U <: TrustsFrontendUserAnswers[U]](value: Option[Boolean], userAnswers: U): Try[U] =
     value match {
       case Some(false) =>
-        userAnswers.remove(WhatIsTheUTRPage)
+        userAnswers
+          .remove(WhatIsTheUTRPage)
           .flatMap(_.remove(MatchingNamePage))
           .flatMap(_.remove(PostcodeForTheTrustPage))
-      case Some(true) =>
-        userAnswers.remove(TaxLiabilityInCurrentTaxYearYesNoPage)
+      case Some(true)  =>
+        userAnswers
+          .remove(TaxLiabilityInCurrentTaxYearYesNoPage)
           .flatMap(_.remove(UndeclaredTaxLiabilityYesNoPage))
-      case _ =>
+      case _           =>
         super.cleanup(value, userAnswers)
     }
-  }
+
 }

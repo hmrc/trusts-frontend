@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,7 +157,8 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
     "return OK and the correct view for a GET when tasklist completed for Agent user" in {
 
-      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(Some("agentClientReference")))
+      when(registrationsRepository.getClientReference(any(), any())(any()))
+        .thenReturn(Future.successful(Some("agentClientReference")))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
@@ -202,4 +203,5 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
     }
 
   }
+
 }

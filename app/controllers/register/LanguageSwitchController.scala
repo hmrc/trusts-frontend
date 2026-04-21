@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@ import play.api.i18n.{Lang, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
 
-class LanguageSwitchController @Inject()(
-                                          appConfig: FrontendAppConfig,
-                                          override implicit val messagesApi: MessagesApi,
-                                          languageUtils: LanguageUtils,
-                                          cc: MessagesControllerComponents
-                                        ) extends LanguageController(languageUtils, cc) {
+class LanguageSwitchController @Inject() (
+  appConfig: FrontendAppConfig,
+  implicit override val messagesApi: MessagesApi,
+  languageUtils: LanguageUtils,
+  cc: MessagesControllerComponents
+) extends LanguageController(languageUtils, cc) {
 
   override def fallbackURL: String = appConfig.loginContinueUrl
 

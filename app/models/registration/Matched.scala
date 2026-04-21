@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,12 @@ object Matched extends Enumerable.Implicits {
   case object Failed extends WithName("failed") with Matched
 
   val values: Set[Matched] = Set(
-    Success, AlreadyRegistered, Failed
+    Success,
+    AlreadyRegistered,
+    Failed
   )
 
   implicit val enumerable: Enumerable[Matched] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+
 }

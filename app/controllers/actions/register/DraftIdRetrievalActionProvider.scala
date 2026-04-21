@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,10 @@ import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DraftIdDataRetrievalActionProviderImpl @Inject()(registrationsRepository: RegistrationsRepository,
-                                                       executionContext: ExecutionContext)
-  extends DraftIdRetrievalActionProvider {
+class DraftIdDataRetrievalActionProviderImpl @Inject() (
+  registrationsRepository: RegistrationsRepository,
+  executionContext: ExecutionContext
+) extends DraftIdRetrievalActionProvider {
 
   def apply(draftId: String): DraftIdDataRetrievalAction =
     new DraftIdDataRetrievalAction(draftId, registrationsRepository, executionContext)
@@ -41,25 +42,25 @@ trait DraftIdRetrievalActionProvider {
 
 }
 
-class DraftIdDataRetrievalAction(draftId: String,
-                                 registrationsRepository: RegistrationsRepository,
-                                 implicit protected val executionContext: ExecutionContext)
-  extends ActionTransformer[IdentifierRequest, OptionalRegistrationDataRequest] {
+class DraftIdDataRetrievalAction(
+  draftId: String,
+  registrationsRepository: RegistrationsRepository,
+  implicit protected val executionContext: ExecutionContext
+) extends ActionTransformer[IdentifierRequest, OptionalRegistrationDataRequest] {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    registrationsRepository.get(draftId).map {
-      userAnswers =>
-        OptionalRegistrationDataRequest(
-          request = request.request,
-          internalId = request.internalId,
-          sessionId = Session.id(hc),
-          userAnswers = userAnswers,
-          affinityGroup = request.affinityGroup,
-          enrolments = request.enrolments,
-          agentARN = request.agentARN
-        )
+    registrationsRepository.get(draftId).map { userAnswers =>
+      OptionalRegistrationDataRequest(
+        request = request.request,
+        internalId = request.internalId,
+        sessionId = Session.id(hc),
+        userAnswers = userAnswers,
+        affinityGroup = request.affinityGroup,
+        enrolments = request.enrolments,
+        agentARN = request.agentARN
+      )
     }
   }
 

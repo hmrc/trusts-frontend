@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@ import play.api.mvc.Call
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class Navigator @Inject()(config: FrontendAppConfig) {
+class Navigator @Inject() (config: FrontendAppConfig) {
 
-  private def defaultRoute: PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
-    case _ => _ => controllers.register.routes.IndexController.onPageLoad()
+  private def defaultRoute: PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = { case _ =>
+    _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
   protected def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] =

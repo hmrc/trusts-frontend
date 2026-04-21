@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
           "labelArg empty" in {
 
-            val json = Json.parse(
-              """
+            val json = Json.parse("""
                 |{
                 |  "label": "Label",
                 |  "answer": "Answer",
@@ -51,8 +50,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
           "labelArg not empty" in {
 
-            val json = Json.parse(
-              """
+            val json = Json.parse("""
                 |{
                 |  "label": "Label",
                 |  "answer": "Answer",
@@ -74,8 +72,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
           "labelArgs empty" in {
 
-            val json = Json.parse(
-              """
+            val json = Json.parse("""
                 |{
                 |  "label": "Label",
                 |  "answer": "Answer",
@@ -94,8 +91,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
 
           "labelArgs not empty" in {
 
-            val json = Json.parse(
-              """
+            val json = Json.parse("""
                 |{
                 |  "label": "Label",
                 |  "answer": "Answer",
@@ -121,8 +117,7 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
     "AnswerSection" must {
       "read headingArgs with default empty list" in {
 
-        val json = Json.parse(
-          """
+        val json = Json.parse("""
             |{
             |  "headingKey": "Heading Key",
             |  "rows": [
@@ -147,4 +142,5 @@ class SubmissionDraftResponseSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

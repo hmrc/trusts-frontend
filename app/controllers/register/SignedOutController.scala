@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,13 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
-class SignedOutController @Inject()(
-                                 val controllerComponents: MessagesControllerComponents,
-                                 frontendAppConfig: FrontendAppConfig
-                               ) extends FrontendBaseController with I18nSupport {
+class SignedOutController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  frontendAppConfig: FrontendAppConfig
+) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = Action {
-      Redirect(frontendAppConfig.logoutUrl).withNewSession
+    Redirect(frontendAppConfig.logoutUrl).withNewSession
   }
+
 }

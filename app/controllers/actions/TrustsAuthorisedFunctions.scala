@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,24 @@ import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedF
 
 import javax.inject.Inject
 
-class TrustsAuthorisedFunctions @Inject()(override val authConnector: AuthConnector,
-                                          val config: FrontendAppConfig) extends AuthorisedFunctions with Logging {
+class TrustsAuthorisedFunctions @Inject() (override val authConnector: AuthConnector, val config: FrontendAppConfig)
+    extends AuthorisedFunctions with Logging {
 
-  def recoverFromAuthorisation : PartialFunction[Throwable, Result] = {
-    case _: NoActiveSession => redirectToLogin
+  def recoverFromAuthorisation: PartialFunction[Throwable, Result] = {
+    case _: NoActiveSession        => redirectToLogin
     case _: AuthorisationException => Redirect(controllers.register.routes.UnauthorisedController.onPageLoad())
   }
 
   def redirectToLogin: Result = {
     logger.debug("Redirecting to Login")
-    Redirect(config.loginUrl, Map("continue_url" -> Seq(config.loginContinueUrl),
-      "origin" -> Seq(config.appName), "accountType" -> Seq(config.affinityGroup)
-    ))
+    Redirect(
+      config.loginUrl,
+      Map(
+        "continue_url" -> Seq(config.loginContinueUrl),
+        "origin"       -> Seq(config.appName),
+        "accountType"  -> Seq(config.affinityGroup)
+      )
+    )
   }
+
 }

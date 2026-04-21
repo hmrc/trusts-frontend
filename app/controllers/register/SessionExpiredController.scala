@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,11 @@ import views.html.register.SessionExpiredView
 
 import javax.inject.Inject
 
-class SessionExpiredController @Inject()(
-                                          val controllerComponents: MessagesControllerComponents,
-                                          appConfig: FrontendAppConfig,
-                                          view: SessionExpiredView
-                                        ) extends FrontendBaseController with I18nSupport {
+class SessionExpiredController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  appConfig: FrontendAppConfig,
+  view: SessionExpiredView
+) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = Action { implicit request =>
     Ok(view())
@@ -37,8 +37,8 @@ class SessionExpiredController @Inject()(
   def onSubmit: Action[AnyContent] = Action {
     Redirect(
       appConfig.loginUrl,
-      Map("continue" -> Seq(appConfig.loginContinueUrl),
-        "origin" -> Seq(appConfig.appName))
+      Map("continue" -> Seq(appConfig.loginContinueUrl), "origin" -> Seq(appConfig.appName))
     )
   }
+
 }

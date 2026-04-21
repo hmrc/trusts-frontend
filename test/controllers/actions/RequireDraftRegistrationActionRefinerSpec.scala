@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,39 +31,59 @@ import utils.TestUserAnswers
 
 import scala.concurrent.Future
 
-class RequireDraftRegistrationActionRefinerSpec extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
+class RequireDraftRegistrationActionRefinerSpec
+    extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
-  class Harness()
-    extends RequireDraftRegistrationActionRefinerImpl {
+  class Harness() extends RequireDraftRegistrationActionRefinerImpl {
 
-    def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(request)
+    def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(
+      request
+    )
+
   }
 
   "require draft registration action" when {
 
-      "there is a complete registration" must {
+    "there is a complete registration" must {
 
-        "redirect to Confirmation by default" in {
-          val answers = TestUserAnswers.emptyUserAnswers.copy(progress = Complete)
+      "redirect to Confirmation by default" in {
+        val answers = TestUserAnswers.emptyUserAnswers.copy(progress = Complete)
 
-          val action = new Harness()
-          val futureResult = action.callRefine(new RegistrationDataRequest(fakeRequest, "id", "sessionId", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment])))
+        val action       = new Harness()
+        val futureResult = action.callRefine(
+          new RegistrationDataRequest(
+            fakeRequest,
+            "id",
+            "sessionId",
+            answers,
+            AffinityGroup.Organisation,
+            Enrolments(Set.empty[Enrolment])
+          )
+        )
 
-          whenReady(futureResult) { result =>
-            result.left.value.header.headers(HeaderNames.LOCATION) mustBe ConfirmationController.onPageLoad(answers.draftId).url
-          }
+        whenReady(futureResult) { result =>
+          result.left.value.header
+            .headers(HeaderNames.LOCATION) mustBe ConfirmationController.onPageLoad(answers.draftId).url
         }
-
       }
+
+    }
 
     "there is a non-complete registration" must {
 
       "continue with refining the request" in {
         val answers = TestUserAnswers.emptyUserAnswers.copy(progress = InProgress)
 
-        val dataRequest = new RegistrationDataRequest(fakeRequest, "id", "sessionId", answers, AffinityGroup.Organisation, Enrolments(Set.empty[Enrolment]))
+        val dataRequest = new RegistrationDataRequest(
+          fakeRequest,
+          "id",
+          "sessionId",
+          answers,
+          AffinityGroup.Organisation,
+          Enrolments(Set.empty[Enrolment])
+        )
 
-        val action = new Harness()
+        val action       = new Harness()
         val futureResult = action.callRefine(dataRequest)
 
         whenReady(futureResult) { result =>

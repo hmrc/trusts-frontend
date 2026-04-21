@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,13 @@ class NoNeedToRegisterViewSpec extends ViewBehaviours {
         applyView,
         None,
         "suitability.noNeedToRegister",
-        "p1", "p2", "p2.link", "p3", "p3.link", "p4", "p4.link"
+        "p1",
+        "p2",
+        "p2.link",
+        "p3",
+        "p3.link",
+        "p4",
+        "p4.link"
       )
     }
 
@@ -48,8 +54,13 @@ class NoNeedToRegisterViewSpec extends ViewBehaviours {
         applyView,
         None,
         "suitability.noNeedToRegister",
-        "p1", "p2", "p2.link", "p3", "p3.link"
+        "p1",
+        "p2",
+        "p2.link",
+        "p3",
+        "p3.link"
       )
     }
   }
+
 }

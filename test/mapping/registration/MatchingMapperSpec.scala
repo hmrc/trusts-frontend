@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,11 @@ import pages.register.{PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRP
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
-class MatchingMapperSpec extends AnyFreeSpec with Matchers
-  with OptionValues with Generators with SpecBaseHelpers {
+class MatchingMapperSpec extends AnyFreeSpec with Matchers with OptionValues with Generators with SpecBaseHelpers {
 
   val matchingMapper: MatchingMapper = injector.instanceOf[MatchingMapper]
 
-  val trustName = "Trust Name"
+  val trustName                  = "Trust Name"
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
   "MatchingMapper" - {
@@ -53,7 +52,9 @@ class MatchingMapperSpec extends AnyFreeSpec with Matchers
         "must not create Matching" in {
 
           val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(TrustHaveAUTRPage, false).success.value
+            .set(TrustHaveAUTRPage, false)
+            .success
+            .value
 
           matchingMapper.build(userAnswers, trustName) mustNot be(defined)
 
@@ -65,8 +66,12 @@ class MatchingMapperSpec extends AnyFreeSpec with Matchers
 
         "must create matching for a successful matching trust" in {
           val userAnswers = TestUserAnswers.emptyUserAnswers
-            .set(WhatIsTheUTRPage, "1234567890").success.value
-            .set(PostcodeForTheTrustPage, "NE981ZZ").success.value
+            .set(WhatIsTheUTRPage, "1234567890")
+            .success
+            .value
+            .set(PostcodeForTheTrustPage, "NE981ZZ")
+            .success
+            .value
 
           val result = matchingMapper.build(userAnswers, trustName).value
 

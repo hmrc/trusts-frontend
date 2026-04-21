@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,20 @@ class ExpressTrustYesNoViewSpec extends IsExpressYesNoViewBehaviours {
     def applyView(form: Form[_]): HtmlFormat.Appendable =
       view.apply(form)(fakeRequest, messages)
 
-    behave like normalPage(applyView(form), None, prefix,
-      "subheading1", "p1", "p2", "p3", "bullet1", "bullet2", "subheading2", "p4", "subheading3")
+    behave like normalPage(
+      applyView(form),
+      None,
+      prefix,
+      "subheading1",
+      "p1",
+      "p2",
+      "p3",
+      "bullet1",
+      "bullet2",
+      "subheading2",
+      "p4",
+      "subheading3"
+    )
 
     behave like pageWithBackLink(applyView(form))
 
@@ -44,4 +56,5 @@ class ExpressTrustYesNoViewSpec extends IsExpressYesNoViewBehaviours {
 
     behave like pageWithASubmitButton(applyView(form))
   }
+
 }

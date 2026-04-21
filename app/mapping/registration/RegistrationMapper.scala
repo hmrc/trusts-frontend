@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,21 +26,30 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationMapper @Inject()(declarationMapper: DeclarationMapper,
-                                   correspondenceMapper: CorrespondenceMapper,
-                                   matchingMapper: MatchingMapper) {
+class RegistrationMapper @Inject() (
+  declarationMapper: DeclarationMapper,
+  correspondenceMapper: CorrespondenceMapper,
+  matchingMapper: MatchingMapper
+) {
 
-  def build(userAnswers: UserAnswers, correspondenceAddress: AddressType, trustName: String, affinityGroup: AffinityGroup)
-           (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Registration]] = {
+  def build(
+    userAnswers: UserAnswers,
+    correspondenceAddress: AddressType,
+    trustName: String,
+    affinityGroup: AffinityGroup
+  )(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Registration]] =
 
-    declarationMapper.build(userAnswers, correspondenceAddress).map(_.map(
-      declaration =>
-        Registration(
-          matchData = matchingMapper.build(userAnswers, trustName),
-          declaration = declaration,
-          correspondence = correspondenceMapper.build(trustName),
-          agentDetails = if (affinityGroup == Agent) Some(Json.obj()) else None
+    declarationMapper
+      .build(userAnswers, correspondenceAddress)
+      .map(
+        _.map(declaration =>
+          Registration(
+            matchData = matchingMapper.build(userAnswers, trustName),
+            declaration = declaration,
+            correspondence = correspondenceMapper.build(trustName),
+            agentDetails = if (affinityGroup == Agent) Some(Json.obj()) else None
+          )
         )
-    ))
-  }
+      )
+
 }

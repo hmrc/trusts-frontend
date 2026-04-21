@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,14 @@ import navigation.navigators.registration._
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages._
 
-class NavigatorSpec extends RegistrationSpecBase
-  with ScalaCheckPropertyChecks
-  with Generators
-  with MatchingRoutes
-  with SuitabilityRoutes
-{
+class NavigatorSpec
+    extends RegistrationSpecBase
+    with ScalaCheckPropertyChecks
+    with Generators
+    with MatchingRoutes
+    with SuitabilityRoutes {
 
-  implicit val navigator : Navigator = injector.instanceOf[Navigator]
+  implicit val navigator: Navigator = injector.instanceOf[Navigator]
 
   "Navigator" when {
 
@@ -48,4 +48,5 @@ class NavigatorSpec extends RegistrationSpecBase
     }
 
   }
+
 }

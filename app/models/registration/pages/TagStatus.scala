@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,9 +32,14 @@ object TagStatus extends Enumerable.Implicits {
   case object NoActionNeeded extends WithName("no-action-needed") with TagStatus
 
   val values: Set[TagStatus] = Set(
-    Completed, InProgress, NotStarted, CannotStartYet, NoActionNeeded
+    Completed,
+    InProgress,
+    NotStarted,
+    CannotStartYet,
+    NoActionNeeded
   )
 
   implicit val enumerable: Enumerable[TagStatus] =
     Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+
 }

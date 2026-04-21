@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,8 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
 
       "agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent).build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Agent).build()
 
         val request = FakeRequest(GET, noNeedToRegisterRoute)
 
@@ -50,7 +51,9 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
 
       "non-agent user" in {
 
-        val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Organisation).build()
+        val application =
+          applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers), affinityGroup = Organisation)
+            .build()
 
         val request = FakeRequest(GET, noNeedToRegisterRoute)
 
@@ -67,4 +70,5 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
       }
     }
   }
+
 }

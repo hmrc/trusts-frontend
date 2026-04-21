@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,13 @@ import utils.Session
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class MatchingAndSuitabilityDataRetrievalActionImpl @Inject()(cacheRepository: CacheRepository)
-                                                             (implicit val executionContext: ExecutionContext)
-  extends MatchingAndSuitabilityDataRetrievalAction {
+class MatchingAndSuitabilityDataRetrievalActionImpl @Inject() (cacheRepository: CacheRepository)(implicit
+  val executionContext: ExecutionContext
+) extends MatchingAndSuitabilityDataRetrievalAction {
 
-  override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalMatchingAndSuitabilityDataRequest[A]] = {
+  override protected def transform[A](
+    request: IdentifierRequest[A]
+  ): Future[OptionalMatchingAndSuitabilityDataRequest[A]] = {
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
@@ -48,6 +50,8 @@ class MatchingAndSuitabilityDataRetrievalActionImpl @Inject()(cacheRepository: C
       Future.successful(dataRequest)
     }
   }
+
 }
 
-trait MatchingAndSuitabilityDataRetrievalAction extends ActionTransformer[IdentifierRequest, OptionalMatchingAndSuitabilityDataRequest]
+trait MatchingAndSuitabilityDataRetrievalAction
+    extends ActionTransformer[IdentifierRequest, OptionalMatchingAndSuitabilityDataRequest]

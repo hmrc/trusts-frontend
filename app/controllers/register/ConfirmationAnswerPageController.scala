@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,33 +31,30 @@ import views.html.register.ConfirmationAnswerPageView
 
 import scala.concurrent.ExecutionContext
 
+class ConfirmationAnswerPageController @Inject() (
+  override val messagesApi: MessagesApi,
+  val controllerComponents: MessagesControllerComponents,
+  view: ConfirmationAnswerPageView,
+  registrationComplete: TaskListCompleteActionRefiner,
+  printUserAnswersHelper: PrintUserAnswersHelper,
+  dateFormatter: DateFormatter,
+  actionSet: StandardActionSets
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
-class ConfirmationAnswerPageController @Inject()(
-                                                  override val messagesApi: MessagesApi,
-                                                  val controllerComponents: MessagesControllerComponents,
-                                                  view: ConfirmationAnswerPageView,
-                                                  registrationComplete : TaskListCompleteActionRefiner,
-                                                  printUserAnswersHelper: PrintUserAnswersHelper,
-                                                  dateFormatter: DateFormatter,
-                                                  actionSet: StandardActionSets
-                                                )(implicit ec: ExecutionContext)
-  extends FrontendBaseController with I18nSupport {
-
-  private def actions(draftId : String): ActionBuilder[RegistrationDataRequest, AnyContent] =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     actionSet.identifyAtConfirmation(draftId) andThen registrationComplete
 
-  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async {
-    implicit request =>
+  def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
+    printUserAnswersHelper.summary(draftId).map { sections =>
+      val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
 
-      printUserAnswersHelper.summary(draftId).map {
-        sections =>
-          val trn = request.userAnswers.get(RegistrationTRNPage).getOrElse("")
+      val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
 
-          val trnDateTime = request.userAnswers.get(RegistrationSubmissionDatePage).getOrElse(LocalDateTime.now)
+      val declarationSent: String = dateFormatter.formatDateTime(trnDateTime)
 
-          val declarationSent : String = dateFormatter.formatDateTime(trnDateTime)
-
-          Ok(view(sections, trn, declarationSent, request.userAnswers.isTaxable))
-      }
+      Ok(view(sections, trn, declarationSent, request.userAnswers.isTaxable))
+    }
   }
+
 }

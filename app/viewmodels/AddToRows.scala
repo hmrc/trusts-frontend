@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package viewmodels
 
-case class AddToRows(inProgress : List[AddRow], complete: List[AddRow]) {
+case class AddToRows(inProgress: List[AddRow], complete: List[AddRow]) {
 
-  def count : Int = inProgress.size + complete.size
+  def count: Int = inProgress.size + complete.size
 
 }
