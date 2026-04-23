@@ -50,19 +50,19 @@ import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAli
 import cats.syntax.all._
 
 class DeclarationController @Inject() (
-                                        override val messagesApi: MessagesApi,
-                                        registrationsRepository: RegistrationsRepository,
-                                        formProvider: DeclarationFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: DeclarationView,
-                                        settlorValidationService: SettlorValidationService,
-                                        auditService: AuditService,
-                                        submissionService: SubmissionService,
-                                        registrationComplete: TaskListCompleteActionRefiner,
-                                        requireDraft: RequireDraftRegistrationActionRefiner,
-                                        standardAction: StandardActionSets
-                                      )(implicit ec: ExecutionContext)
-  extends FrontendBaseController with I18nSupport with Logging {
+  override val messagesApi: MessagesApi,
+  registrationsRepository: RegistrationsRepository,
+  formProvider: DeclarationFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: DeclarationView,
+  settlorValidationService: SettlorValidationService,
+  auditService: AuditService,
+  submissionService: SubmissionService,
+  registrationComplete: TaskListCompleteActionRefiner,
+  requireDraft: RequireDraftRegistrationActionRefiner,
+  standardAction: StandardActionSets
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
   private val className               = getClass.getSimpleName
   private val form: Form[Declaration] = formProvider()
@@ -71,14 +71,14 @@ class DeclarationController @Inject() (
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
   private def updateSettlorRemoveAliveAtRegistrationField(draftId: String, draftSettlors: JsValue)(implicit
-                                                                                                   request: RegistrationDataRequest[AnyContent]
+    request: RegistrationDataRequest[AnyContent]
   ): Future[Status] =
     for {
       settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <- registrationsRepository
-        .getSettlorsAnswerSections(draftId)
+                                                                             .getSettlorsAnswerSections(draftId)
 
       registrationPieces: JsObject                                      <- registrationsRepository
-        .getRegistrationPieces(draftId)
+                                                                             .getRegistrationPieces(draftId)
 
       maybeUpdatedMappedPieces: Option[Seq[MappedPiece]]                 =
         if (checkIfAliveAtRegistrationFieldPresent(registrationPieces))
@@ -161,8 +161,8 @@ class DeclarationController @Inject() (
   }
 
   private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String)(implicit
-                                                                                                    hc: HeaderCarrier,
-                                                                                                    request: RegistrationDataRequest[AnyContent]
+    hc: HeaderCarrier,
+    request: RegistrationDataRequest[AnyContent]
   ): Future[Result] =
     response match {
       case trn: RegistrationTRNResponse =>
@@ -179,8 +179,8 @@ class DeclarationController @Inject() (
     }
 
   private def saveTRNAndCompleteRegistration(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse)(implicit
-                                                                                                        hc: HeaderCarrier,
-                                                                                                        request: RegistrationDataRequest[AnyContent]
+    hc: HeaderCarrier,
+    request: RegistrationDataRequest[AnyContent]
   ): Future[Result] =
     Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn)).flatMap { trnSaved =>
       val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
@@ -203,8 +203,8 @@ class DeclarationController @Inject() (
     }
 
   private def getExpectedSettlorData(
-                                      draftId: String
-                                    )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] =
+    draftId: String
+  )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] =
     for {
       registrationSettlor  <- registrationsRepository.getRegistrationPieces(draftId)
       answerSectionSettlor <- registrationsRepository.getDraftSettlors(draftId)
@@ -214,22 +214,23 @@ class DeclarationController @Inject() (
 
       allMissingComponents = registrationValidation ::: answerSectionValidation
 
-      result <- if (allMissingComponents.nonEmpty) {
-        val missingInfo = allMissingComponents.mkString(", ")
-        val logMessage  =
-          s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] Trust registration stopping due to missing settlor information: $missingInfo"
-          
-        logger.error(logMessage)
-        auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
+      result <-
+        if (allMissingComponents.nonEmpty) {
+          val missingInfo = allMissingComponents.mkString(", ")
+          val logMessage  =
+            s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] Trust registration stopping due to missing settlor information: $missingInfo"
 
-        Future.failed(UnableToRegister())
-      } else {
-        logger.info(
-          s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] All required settlor information is present in both structures"
-        )
+          logger.error(logMessage)
+          auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
 
-        Future.successful(answerSectionSettlor)
-      }
+          Future.failed(UnableToRegister())
+        } else {
+          logger.info(
+            s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] All required settlor information is present in both structures"
+          )
+
+          Future.successful(answerSectionSettlor)
+        }
     } yield result
 
   private def validateRegistrationSettlorComponent(registrationSettlorData: Option[JsObject]): List[String] =

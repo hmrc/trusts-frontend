@@ -355,7 +355,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
         }
     }
 
-    "throw an UnableToRegister exception when .getExpectedSettlorData called given registrationsRepository.getDraftSettlors returns no settlor data" in {
+    "redirect to the task list if mandatory settlor information is not present at declaration" in {
       val userAnswers = emptyUserAnswers
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -388,6 +388,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       val result = controller.onSubmit("draftId")(request)
 
       status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad("draftId").url
 
       verify(mockAuditService, times(1))
         .auditRegistrationWithMissingSettlorInfo(
