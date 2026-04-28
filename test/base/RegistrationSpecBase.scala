@@ -101,7 +101,8 @@ trait SpecBaseHelpers
       )
       .configure(
         "microservice.services.features.deployment.notification.enabled" -> false,
-        "play.filters.disabled" -> List("play.filters.csrf.CSRFFilter", "play.filters.csp.CSPFilter")
+        "play.filters.disabled"                                          ->
+          List("play.filters.csrf.CSRFFilter", "play.filters.csp.CSPFilter")
       )
 
 }
