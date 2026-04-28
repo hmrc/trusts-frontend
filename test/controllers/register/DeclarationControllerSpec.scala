@@ -385,7 +385,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
         FakeRequest(POST, routes.DeclarationController.onPageLoad("draftId").url)
           .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
-      val result = controller.onSubmit("draftId")(request)
+      val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad("draftId").url
