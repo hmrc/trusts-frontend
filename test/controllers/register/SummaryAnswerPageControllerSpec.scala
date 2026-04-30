@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.RegistrationSpecBase
+import base.{Fixtures, RegistrationSpecBase}
 import org.mockito.ArgumentMatchers.any
 import pages.register.RegistrationProgress
 import play.api.inject
@@ -30,7 +30,7 @@ import org.mockito.Mockito.when
 
 import scala.concurrent.Future
 
-class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
+class SummaryAnswerPageControllerSpec extends RegistrationSpecBase with Fixtures {
 
   val trustDetailsSection: Seq[AnswerSection] = Seq(
     AnswerSection(
@@ -117,6 +117,12 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
   when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
     .thenReturn(Future.successful(registrationSections))
 
+  when(registrationsRepository.getDraftSettlors(any())(any()))
+    .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+  when(registrationsRepository.getRegistrationPieces(any())(any()))
+    .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
+
   "SummaryAnswersController" must {
 
     val userAnswers = TestUserAnswers.emptyUserAnswers
@@ -183,7 +189,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))

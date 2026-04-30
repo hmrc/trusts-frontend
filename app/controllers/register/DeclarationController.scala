@@ -56,7 +56,6 @@ class DeclarationController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: DeclarationView,
   settlorValidationService: SettlorValidationService,
-  auditService: AuditService,
   submissionService: SubmissionService,
   registrationComplete: TaskListCompleteActionRefiner,
   requireDraft: RequireDraftRegistrationActionRefiner,
@@ -74,17 +73,19 @@ class DeclarationController @Inject() (
     request: RegistrationDataRequest[AnyContent]
   ): Future[Status] =
     for {
-      settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <- registrationsRepository
-                                                                             .getSettlorsAnswerSections(draftId)
+      settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <-
+        registrationsRepository.getSettlorsAnswerSections(draftId)
 
-      registrationPieces: JsObject                                      <- registrationsRepository
-                                                                             .getRegistrationPieces(draftId)
+      registrationPieces: JsObject                                      <-
+        registrationsRepository.getRegistrationPieces(draftId)
 
       maybeUpdatedMappedPieces: Option[Seq[MappedPiece]]                 =
-        if (checkIfAliveAtRegistrationFieldPresent(registrationPieces))
+        if (checkIfAliveAtRegistrationFieldPresent(registrationPieces)) {
           removeAliveAtRegistrationFromJson(registrationPieces)
             .map(piece => Seq(MappedPiece("trust/entities/settlors", piece)))
-        else None
+        } else {
+          None
+        }
 
       response: Option[HttpResponse]                                    <-
         maybeUpdatedMappedPieces
@@ -138,7 +139,7 @@ class DeclarationController @Inject() (
           Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
         (declaration: Declaration) =>
           (for {
-            draftSettlors               <- getExpectedSettlorData(draftId)
+            draftSettlors               <- registrationsRepository.getDraftSettlors(draftId)
             _                           <- updateSettlorRemoveAliveAtRegistrationField(draftId, draftSettlors)
             updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, declaration))
             _                           <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
@@ -201,42 +202,5 @@ class DeclarationController @Inject() (
           }
       }
     }
-
-  private def getExpectedSettlorData(
-    draftId: String
-  )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] =
-    for {
-      registrationSettlor  <- registrationsRepository.getRegistrationPieces(draftId)
-      answerSectionSettlor <- registrationsRepository.getDraftSettlors(draftId)
-
-      registrationValidation  = validateRegistrationSettlorComponent(Some(registrationSettlor))
-      answerSectionValidation = validateAnswerSectionSettlorComponent(Some(answerSectionSettlor.as[JsObject]))
-
-      allMissingComponents = registrationValidation ::: answerSectionValidation
-
-      result <-
-        if (allMissingComponents.nonEmpty) {
-          val missingInfo = allMissingComponents.mkString(", ")
-          val logMessage  =
-            s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] Trust registration stopping due to missing settlor information: $missingInfo"
-
-          logger.error(logMessage)
-          auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
-
-          Future.failed(UnableToRegister())
-        } else {
-          logger.info(
-            s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] All required settlor information is present in both structures"
-          )
-
-          Future.successful(answerSectionSettlor)
-        }
-    } yield result
-
-  private def validateRegistrationSettlorComponent(registrationSettlorData: Option[JsObject]): List[String] =
-    settlorValidationService.validateRegistrationSettlorComponent(registrationSettlorData)
-
-  private def validateAnswerSectionSettlorComponent(answerSectionSettlor: Option[JsObject]): List[String] =
-    settlorValidationService.validateAnswerSectionSettlorComponent(answerSectionSettlor)
 
 }

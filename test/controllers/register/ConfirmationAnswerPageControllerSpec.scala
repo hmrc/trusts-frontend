@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.RegistrationSpecBase
+import base.{Fixtures, RegistrationSpecBase}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import pages.register.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
@@ -31,7 +31,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import scala.concurrent.Future
 
-class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
+class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase with Fixtures {
 
   val index = 0
 
@@ -118,6 +118,12 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
         assetsSection.head
       )
 
+      when(registrationsRepository.getDraftSettlors(any())(any()))
+        .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+      when(registrationsRepository.getRegistrationPieces(any())(any()))
+        .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
+
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .build()
 
@@ -145,7 +151,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase {
 
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))

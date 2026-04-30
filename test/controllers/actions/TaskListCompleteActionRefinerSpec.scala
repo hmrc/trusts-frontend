@@ -63,7 +63,7 @@ class TaskListCompleteActionRefinerSpec
             when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
               .thenReturn(Future.successful(firstTaxYearAvailable))
 
-            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
               .thenReturn(Future.successful(true))
 
             val userAnswers = emptyUserAnswers
@@ -101,7 +101,7 @@ class TaskListCompleteActionRefinerSpec
             when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
               .thenReturn(Future.successful(firstTaxYearAvailable))
 
-            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
               .thenReturn(Future.successful(false))
 
             val userAnswers = emptyUserAnswers

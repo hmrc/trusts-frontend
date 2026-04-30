@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import base.RegistrationSpecBase
+import base.{Fixtures, RegistrationSpecBase}
 import forms.DeclarationFormProvider
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
@@ -39,7 +39,7 @@ import views.html.register.DeclarationView
 
 import scala.concurrent.Future
 
-class DeclarationControllerSpec extends RegistrationSpecBase {
+class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
 
   val formProvider            = new DeclarationFormProvider()
   val form: Form[Declaration] = formProvider()
@@ -52,80 +52,23 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
   val validAnswer: Declaration = Declaration(FullName("First", None, "Last"), Some("email@email.com"))
 
-  val jsonReturnedByGetRequestPieces: JsObject = Json
-    .parse(
-      """
-      |{
-      |  "trust/entities/settlors": {
-      |    "settlor": [
-      |      {
-      |        "aliveAtRegistration": false,
-      |        "name": {
-      |          "firstName": "Mark",
-      |          "lastName": "B"
-      |        },
-      |        "identification": {
-      |          "address": {
-      |            "line1": "123",
-      |            "line2": "Test address",
-      |            "postCode": "AB1 1AB",
-      |            "country": "GB"
-      |          }
-      |        },
-      |        "countryOfResidence": "GB",
-      |        "nationality": "GB"
-      |      }
-      |    ]
-      |  }
-      |}
-      """.stripMargin
-    )
-    .as[JsObject]
-
-  val validGetDraftSettlorsJson: JsValue = Json.parse(
-    """
-      |{
-      |  "_id": "193af51f-a9b1-4aec-9932-a7a32c33dc77",
-      |  "data": {
-      |    "settlors": {
-      |      "setUpByLivingSettlorYesNo": false,
-      |      "deceased": {
-      |        "name": {
-      |          "firstName": "Will",
-      |          "middleName": "James",
-      |          "lastName": "Graham"
-      |        },
-      |        "dateOfDeathYesNo": true,
-      |        "dateOfDeath": "2017-03-13",
-      |        "dateOfBirthYesNo": true,
-      |        "settlorsDateOfBirth": "1957-03-13",
-      |        "countryOfNationalityYesNo": true,
-      |        "countryOfNationalityInTheUkYesNo": false,
-      |        "countryOfNationality": "JO",
-      |        "countryOfResidenceYesNo": true,
-      |        "countryOfResidenceInTheUkYesNo": false,
-      |        "countryOfResidence": "LV",
-      |        "status": "completed"
-      |      }
-      |    }
-      |  },
-      |  "internalId": "Int-2b56bf2a-0d8e-4aec-ba40-a1d88b66013f",
-      |  "isTaxable": false
-      |}
-      |""".stripMargin
-  )
-
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
   when(registrationsRepository.getDraftSettlors(any())(any()))
     .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+  when(registrationsRepository.getDraftSettlors(any())(any()))
+    .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+  when(registrationsRepository.getRegistrationPieces(any())(any()))
+    .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
   "Declaration Controller" must {
 
     "redirect when registration is not complete" in {
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
@@ -379,16 +322,14 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       when(registrationsRepository.getRegistrationPieces(any())(any()))
         .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
 
-      val controller = application.injector.instanceOf[DeclarationController]
-
       val request: FakeRequest[AnyContentAsFormUrlEncoded] =
-        FakeRequest(POST, routes.DeclarationController.onPageLoad("draftId").url)
+        FakeRequest(POST, routes.DeclarationController.onPageLoad("id").url)
           .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad("draftId").url
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad("id").url
 
       verify(mockAuditService, times(1))
         .auditRegistrationWithMissingSettlorInfo(
