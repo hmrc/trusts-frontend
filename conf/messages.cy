@@ -980,6 +980,23 @@ answerPage.section.businessProtector.subheading = Amddiffynnydd sy’n fusnes {0
 answerPage.section.otherIndividuals.heading = Unigolion Eraill
 answerPage.section.otherIndividual.subheading = Unigolyn Arall {0}
 
+
+# Missing Settlor Page
+
+missingSettlorView.title=Mae problem
+missingSettlorView.heading=Mae problem
+
+missingSettlorView.p1=Mae rhywfaint o wybodaeth orfodol ar goll o’ch cofrestriad. Mae’n rhaid i chi ffonio llinell gymorth yr ymddiriedolaethau er mwyn i’ch ymddiriedolaeth gael ei chofrestru.
+missingSettlorView.p2=Cyfeirnod y cofrestriad hwn yw:
+
+missingSettlorView.h2=Cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg CThEF
+
+missingSettlorView.p3=Ffôn: 0300 200 1900
+missingSettlorView.p4=O’r tu allan i’r DU: +44 300 200 1900
+missingSettlorView.p5=Oriau agor:
+missingSettlorView.p6=Dydd Llun i ddydd Gwener: 08:30 - 17:00
+missingSettlorView.p7=Ar gau ar benwythnosau a gwyliau banc.
+
 # A/B Testing
 
 abTestingUseOnly.confirmationPage.title = Registration submitted

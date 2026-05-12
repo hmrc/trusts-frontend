@@ -18,14 +18,12 @@ package pages.register
 
 import models.FirstTaxYearAvailable
 import models.registration.pages.TagStatus
-import models.registration.pages.TagStatus.{CannotStartYet, Completed, NoActionNeeded}
-import navigation.registration.TaskListNavigator
-import org.apache.pekko.event.Logging
+import models.registration.pages.TagStatus.{CannotStartYet, NoActionNeeded}
 import models.requests.RegistrationDataRequest
+import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress.taxLiabilityLinkDisplay
 import play.api.Logging
 import play.api.libs.json.JsObject
-import play.api.mvc.AnyContent
 import repositories.RegistrationsRepository
 import services.{AuditService, SettlorValidationService, TrustsStoreService}
 import uk.gov.hmrc.http.HeaderCarrier

@@ -31,7 +31,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.DateFormatter
-import views.html.register.TaskListView
+import views.html.register.{MissingSettlorView, TaskListView}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,6 +41,7 @@ class TaskListController @Inject() (
   requiredAnswer: RequiredAnswerActionProvider,
   val controllerComponents: MessagesControllerComponents,
   view: TaskListView,
+  missingSettlorView: MissingSettlorView,
   registrationProgress: RegistrationProgress,
   registrationsRepository: RegistrationsRepository,
   requireDraft: RequireDraftRegistrationActionRefiner,
@@ -117,10 +118,10 @@ class TaskListController @Inject() (
     registrationProgress
       .isSettlorDataComplete(draftId, calledFrom = "TaskListController.onSubmit")(hc, request)
       .map {
-        case true  => Redirect(controllers.register.routes.DeclarationController.onPageLoad(draftId))
+        case true  =>
+          Redirect(controllers.register.routes.DeclarationController.onPageLoad(draftId))
         case false =>
-          // TODO new page
-          Redirect(controllers.register.routes.TaskListController.onPageLoad(draftId))
+          Ok(missingSettlorView()(request, messagesApi.preferred(request)))
       }
 
   }

@@ -1045,6 +1045,24 @@ answerPage.section.businessProtector.subheading = Business protector {0}
 answerPage.section.otherIndividuals.heading = Other individuals
 answerPage.section.otherIndividual.subheading = Other individual {0}
 
+
+# Missing Settlor Page
+
+missingSettlorView.title=There is a problem
+missingSettlorView.heading=There is a problem
+
+missingSettlorView.p1=Your registration is missing some mandatory information. You must call the trusts helpline so that your trust can be registered.
+missingSettlorView.p2=The reference number for this registration is:
+
+missingSettlorView.h2=Contact the trusts helpline
+
+missingSettlorView.p3=Telephone: 0300 123 1072
+missingSettlorView.p4=Outside UK: +44 300 123 1072
+missingSettlorView.p5=Opening times:
+missingSettlorView.p6=Monday to Friday: 9am to 5 pm
+missingSettlorView.p7=Closed weekends and bank holidays.
+
+
 # A/B Testing
 
 abTestingUseOnly.confirmationPage.title = Registration submitted
