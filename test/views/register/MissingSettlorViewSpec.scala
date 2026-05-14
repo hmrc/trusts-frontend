@@ -35,7 +35,14 @@ class MissingSettlorViewSpec extends ViewBehaviours {
       applyView,
       None,
       "missingSettlorView",
-      "p1", "p2", "h2", "p3", "p4", "p5", "p6", "p7"
+      "p1",
+      "p2",
+      "h2",
+      "p3",
+      "p4",
+      "p5",
+      "p6",
+      "p7"
     )
 
     behave like pageWithBackLink(applyView)
@@ -45,4 +52,5 @@ class MissingSettlorViewSpec extends ViewBehaviours {
       assertContainsText(doc, trn)
     }
   }
+
 }
