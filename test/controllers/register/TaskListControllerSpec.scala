@@ -61,7 +61,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
     when(mockRegistrationProgress.additionalItems(any(), any(), any(), any())(any()))
       .thenReturn(Future.successful(fakeAdditionalItems))
 
-    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
+    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
       .thenReturn(Future.successful(true))
 
     when(mockRegistrationProgress.taskCount(any(), any(), any(), any())(any()))

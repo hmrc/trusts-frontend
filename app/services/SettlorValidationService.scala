@@ -39,12 +39,11 @@ class SettlorValidationService @Inject() {
             val hasOtherSettlors =
               individualSettlors.exists(_.value.nonEmpty) || companySettlors.exists(_.value.nonEmpty)
 
-
-            //if (hasOtherSettlors) {
-              //List(s"$registrationPrefix: deceased settlor cannot coexist with other settlors") // todo: remove this is fine, but the UI doesn't allow it?
-            //} else {
-              //validateDeceasedSettlor(deceasedData, registrationPrefix)
-            //}
+            // if (hasOtherSettlors) {
+            // List(s"$registrationPrefix: deceased settlor cannot coexist with other settlors") // todo: remove this is fine, but the UI doesn't allow it?
+            // } else {
+            // validateDeceasedSettlor(deceasedData, registrationPrefix)
+            // }
 
             validateDeceasedSettlor(deceasedData, registrationPrefix)
 
@@ -60,7 +59,7 @@ class SettlorValidationService @Inject() {
               val individualValidation =
                 individualSettlors.map(validateSeparateIndividualArray(_, registrationPrefix)).getOrElse(List.empty)
 
-              val companyValidation    =
+              val companyValidation =
                 companySettlors.map(validateSeparateCompanyArray(_, registrationPrefix)).getOrElse(List.empty)
 
               individualValidation ::: companyValidation

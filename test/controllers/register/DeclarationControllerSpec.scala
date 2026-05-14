@@ -68,7 +68,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
     "redirect when registration is not complete" in {
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
@@ -298,7 +298,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
         }
     }
 
-    "redirect to the task list if mandatory settlor information is not present at declaration" in {
+    "redirect to the missing mandatory settlor information page if settlor data is not present at declaration" in {
       val userAnswers = emptyUserAnswers
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -322,6 +322,10 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
       when(registrationsRepository.getRegistrationPieces(any())(any()))
         .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
 
+      when(
+        mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      ).thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+
       val request: FakeRequest[AnyContentAsFormUrlEncoded] =
         FakeRequest(POST, routes.DeclarationController.onPageLoad("id").url)
           .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
@@ -329,7 +333,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad("id").url
+      redirectLocation(result).value mustEqual routes.MissingSettlorController.onPageLoad("id").url
 
       verify(mockAuditService, times(1))
         .auditRegistrationWithMissingSettlorInfo(

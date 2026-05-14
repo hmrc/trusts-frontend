@@ -45,8 +45,7 @@ class TaskListCompleteActionRefinerImpl @Inject() (
       firstTaxYearAvailable <- registrationsRepository.getFirstTaxYearAvailable(draftId)
       isTaxable              = request.userAnswers.isTaxable
       isExistingTrust        = request.userAnswers.isExistingTrust
-      result                <-
-        registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)(hc, request)
+      result                <- registrationProgress.isTaskListComplete(draftId, firstTaxYearAvailable, isTaxable, isExistingTrust)
     } yield
       if (result) {
         Right(request)

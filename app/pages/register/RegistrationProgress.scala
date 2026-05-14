@@ -19,13 +19,9 @@ package pages.register
 import models.FirstTaxYearAvailable
 import models.registration.pages.TagStatus
 import models.registration.pages.TagStatus.{CannotStartYet, NoActionNeeded}
-import models.requests.RegistrationDataRequest
 import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress.taxLiabilityLinkDisplay
-import play.api.Logging
-import play.api.libs.json.JsObject
-import repositories.RegistrationsRepository
-import services.{AuditService, SettlorValidationService, TrustsStoreService}
+import services.TrustsStoreService
 import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels._
 
@@ -34,14 +30,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class RegistrationProgress @Inject() (
   navigator: TaskListNavigator,
-  trustsStoreService: TrustsStoreService,
-  registrationsRepository: RegistrationsRepository,
-  settlorValidationService: SettlorValidationService,
-  auditService: AuditService
-)(implicit ec: ExecutionContext)
-    extends Logging {
-
-  private val className = getClass.getSimpleName
+  trustsStoreService: TrustsStoreService
+)(implicit ec: ExecutionContext) {
 
   def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
     trustsStoreService.getTaskStatuses(draftId) map { statuses =>
@@ -96,53 +86,15 @@ class RegistrationProgress @Inject() (
       entityTasks ::: taxableTasks
     }
 
-  def isTaskListComplete[A](
+  def isTaskListComplete(
     draftId: String,
     firstTaxYearAvailable: Option[FirstTaxYearAvailable],
     isTaxable: Boolean,
     isExistingTrust: Boolean
-  )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[A]): Future[Boolean] = {
-
-    val taxLiabilityEnabled = taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled
-
-    for {
-      statuses         <- trustsStoreService.getTaskStatuses(draftId)
-      tasksComplete     = statuses.allComplete(taxLiabilityEnabled)
-      settlorDataValid <-
-        if (tasksComplete) {
-          isSettlorDataComplete(draftId, calledFrom = "RegistrationProgress.isTaskListComplete")
-        } else {
-          Future.successful(false)
-        }
-    } yield tasksComplete && settlorDataValid
-  }
-
-  // due to issues with trusts being registered without settlor information we are not solely relying on the task list statuses
-  // in addition we directly check the required settlor data is present
-  def isSettlorDataComplete[A](
-    draftId: String,
-    calledFrom: String
-  )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[A]): Future[Boolean] =
-    for {
-      registrationPieces     <- registrationsRepository.getRegistrationPieces(draftId)
-      draftSettlors          <- registrationsRepository.getDraftSettlors(draftId)
-      registrationValidation  =
-        settlorValidationService.validateRegistrationSettlorComponent(Some(registrationPieces))
-      answerSectionValidation =
-        settlorValidationService.validateAnswerSectionSettlorComponent(Some(draftSettlors.as[JsObject]))
-
-      allMissingComponents = registrationValidation ::: answerSectionValidation
-
-      _ = if (allMissingComponents.nonEmpty) {
-            val missingInfo = allMissingComponents.mkString(", ")
-            val logMessage  =
-              s"[$className][isSettlorDataComplete][Session ID: ${hc.sessionId}][calledFrom: $calledFrom] Trust registration stopping due to missing settlor information: $missingInfo"
-
-            logger.error(logMessage)
-            auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
-          }
-
-    } yield allMissingComponents.isEmpty
+  )(implicit hc: HeaderCarrier): Future[Boolean] =
+    trustsStoreService.getTaskStatuses(draftId).map { statuses =>
+      statuses.allComplete(taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled)
+    }
 
   def taskCount(
     draftId: String,

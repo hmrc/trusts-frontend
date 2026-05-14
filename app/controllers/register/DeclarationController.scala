@@ -16,11 +16,12 @@
 
 package controllers.register
 
+import cats.syntax.all._
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
-import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.RegistrationSubmission
+import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
@@ -31,13 +32,14 @@ import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, Registra
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{JsObject, JsValue}
+import play.api.libs.json._
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import services.{AuditService, SettlorValidationService, SubmissionService}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAliveAtRegistrationFromJson}
 import views.html.register.DeclarationView
 
 import java.time.temporal.ChronoUnit.DAYS
@@ -45,9 +47,6 @@ import java.time.{LocalDateTime, ZoneOffset}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
-import play.api.libs.json._
-import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAliveAtRegistrationFromJson}
-import cats.syntax.all._
 
 class DeclarationController @Inject() (
   override val messagesApi: MessagesApi,
@@ -56,6 +55,7 @@ class DeclarationController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: DeclarationView,
   settlorValidationService: SettlorValidationService,
+  auditService: AuditService,
   submissionService: SubmissionService,
   registrationComplete: TaskListCompleteActionRefiner,
   requireDraft: RequireDraftRegistrationActionRefiner,
@@ -168,7 +168,7 @@ class DeclarationController @Inject() (
     response match {
       case trn: RegistrationTRNResponse =>
         logger.info(s"[$className][handleResponse][Session ID: ${request.sessionId}] Saving trust registration trn.")
-        saveTRNAndCompleteRegistration(updatedAnswers, trn)
+        saveTRNAndCompleteRegistration(updatedAnswers, trn, draftId)
       case AlreadyRegistered            =>
         logger.info(
           s"[$className][handleResponse][Session ID: ${request.sessionId}] unable to submit as trust is already registered"
@@ -179,28 +179,58 @@ class DeclarationController @Inject() (
         Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
     }
 
-  private def saveTRNAndCompleteRegistration(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse)(implicit
+  private def saveTRNAndCompleteRegistration(
+    updatedAnswers: UserAnswers,
+    trn: RegistrationTRNResponse,
+    draftId: String
+  )(implicit
     hc: HeaderCarrier,
     request: RegistrationDataRequest[AnyContent]
-  ): Future[Result] =
-    Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn)).flatMap { trnSaved =>
-      val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
-      Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate)).flatMap { dateSaved =>
+  ): Future[Result] = {
+    val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
+
+    for {
+      trnSaved            <- Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn))
+      dateSaved           <- Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate))
+      _                    = {
         val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
 
         logger.info(
           s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days"
         )
-
-        registrationsRepository
-          .set(
-            dateSaved.copy(progress = RegistrationStatus.Complete),
-            request.affinityGroup
-          )
-          .map { _ =>
-            Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
-          }
       }
-    }
+      _                   <- registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete), request.affinityGroup)
+      settlorDataComplete <- isSettlorDataComplete(draftId)
+    } yield
+      if (settlorDataComplete) {
+        Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
+      } else {
+        Redirect(routes.MissingSettlorController.onPageLoad(updatedAnswers.draftId))
+      }
+  }
+
+  private def isSettlorDataComplete[A](
+    draftId: String
+  )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[A]): Future[Boolean] =
+    for {
+      registrationPieces     <- registrationsRepository.getRegistrationPieces(draftId)
+      draftSettlors          <- registrationsRepository.getDraftSettlors(draftId)
+      registrationValidation  =
+        settlorValidationService.validateRegistrationSettlorComponent(Some(registrationPieces))
+      answerSectionValidation =
+        settlorValidationService.validateAnswerSectionSettlorComponent(Some(draftSettlors.as[JsObject]))
+
+      allMissingComponents = registrationValidation ::: answerSectionValidation
+
+      _ = if (allMissingComponents.nonEmpty) {
+            val missingInfo = allMissingComponents.mkString(", ")
+            val logMessage  =
+              s"[$className][isSettlorDataComplete][Session ID: ${hc.sessionId}] Allowing trust registration with missing settlor information: $missingInfo"
+
+            logger.error(logMessage)
+            auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
+          }
+
+    } yield allMissingComponents.isEmpty
 
 }

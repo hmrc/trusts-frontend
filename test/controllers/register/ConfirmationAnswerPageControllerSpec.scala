@@ -151,7 +151,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase with Fix
 
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any(), any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))

@@ -23,7 +23,7 @@
     heading: Heading
 )
 
-@()(implicit request: RequestHeader, messages: Messages)
+@(trn: String)(implicit request: RequestHeader, messages: Messages)
 
 @mainTemplate(
 title = messages("missingSettlorView.title"),
@@ -34,6 +34,8 @@ showBackLink = true
 
     <p>@messages("missingSettlorView.p1")</p>
     <p>@messages("missingSettlorView.p2")</p>
+
+    @heading(trn, headingSize = "govuk-heading-m")
 
     @heading("missingSettlorView.heading")
     @heading("missingSettlorView.h2", headingSize = "govuk-heading-l")

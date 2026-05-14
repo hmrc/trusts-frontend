@@ -27,11 +27,9 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.DateFormatter
-import views.html.register.{MissingSettlorView, TaskListView}
+import views.html.register.TaskListView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,7 +39,6 @@ class TaskListController @Inject() (
   requiredAnswer: RequiredAnswerActionProvider,
   val controllerComponents: MessagesControllerComponents,
   view: TaskListView,
-  missingSettlorView: MissingSettlorView,
   registrationProgress: RegistrationProgress,
   registrationsRepository: RegistrationsRepository,
   requireDraft: RequireDraftRegistrationActionRefiner,
@@ -112,18 +109,8 @@ class TaskListController @Inject() (
     }
   }
 
-  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async { request =>
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
-    registrationProgress
-      .isSettlorDataComplete(draftId, calledFrom = "TaskListController.onSubmit")(hc, request)
-      .map {
-        case true  =>
-          Redirect(controllers.register.routes.DeclarationController.onPageLoad(draftId))
-        case false =>
-          Ok(missingSettlorView()(request, messagesApi.preferred(request)))
-      }
-
+  def onSubmit(draftId: String): Action[AnyContent] = actions(draftId) { _ =>
+    Redirect(controllers.register.routes.DeclarationController.onPageLoad(draftId))
   }
 
 }
