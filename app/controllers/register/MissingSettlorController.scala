@@ -18,6 +18,7 @@ package controllers.register
 
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import controllers.actions.{StandardActionSets, TaskListCompleteActionRefiner}
+import handlers.ErrorHandler
 import models.requests.RegistrationDataRequest
 import pages.register.RegistrationTRNPage
 import play.api.Logging
@@ -27,24 +28,35 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.MissingSettlorView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class MissingSettlorController @Inject() (
   override val messagesApi: MessagesApi,
   val controllerComponents: MessagesControllerComponents,
-  missingSettlorView: MissingSettlorView,
+  standardAction: StandardActionSets,
   registrationComplete: TaskListCompleteActionRefiner,
   requireDraft: RequireDraftRegistrationActionRefiner,
-  standardAction: StandardActionSets
+  errorHandler: ErrorHandler,
+  missingSettlorView: MissingSettlorView
 ) extends FrontendBaseController with I18nSupport with Logging {
 
-  def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
+  private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
     request.userAnswers.get(RegistrationTRNPage) match {
-      case Some(trn) => Future.successful(Ok(missingSettlorView(trn)))
-      case None      => Future.successful(Redirect(routes.SessionExpiredController.onPageLoad()))
+      case Some(trn) =>
+        Future.successful(Ok(missingSettlorView(trn)))
+      case None      =>
+        logger.error(
+          s"[MissingSettlorController][onPageLoad][Session ID: ${request.sessionId}] " +
+            s"no TRN found in user answers for draft $draftId despite task list being complete"
+        )
+
+        errorHandler.onServerError(
+          request,
+          new Exception(s"TRN is not available for completed trust on draft $draftId.")
+        )
     }
   }
 
