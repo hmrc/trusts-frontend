@@ -39,13 +39,11 @@ class SettlorValidationService @Inject() {
             val hasOtherSettlors =
               individualSettlors.exists(_.value.nonEmpty) || companySettlors.exists(_.value.nonEmpty)
 
-            // if (hasOtherSettlors) {
-            // List(s"$registrationPrefix: deceased settlor cannot coexist with other settlors") // todo: remove this is fine, but the UI doesn't allow it?
-            // } else {
-            // validateDeceasedSettlor(deceasedData, registrationPrefix)
-            // }
-
-            validateDeceasedSettlor(deceasedData, registrationPrefix)
+            if (hasOtherSettlors) {
+              List(s"$registrationPrefix: deceased settlor cannot coexist with other settlors")
+            } else {
+              validateDeceasedSettlor(deceasedData, registrationPrefix)
+            }
 
           case None =>
             val hasIndividualSettlors = individualSettlors.exists(_.value.nonEmpty)
