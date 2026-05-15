@@ -41,7 +41,7 @@ class MissingSettlorController @Inject() (
 ) extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
-    standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
+    standardAction.identifiedUserWithRegistrationData(draftId)
 
   def onPageLoad(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
     request.userAnswers.get(RegistrationTRNPage) match {

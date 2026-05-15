@@ -101,45 +101,6 @@ class MissingSettlorControllerSpec extends RegistrationSpecBase with BeforeAndAf
       application.stop()
     }
 
-    "redirect to the task list when the task list is not complete" in {
-
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
-        .thenReturn(Future.successful(false))
-
-      val userAnswers = emptyUserAnswers
-        .set(RegistrationTRNPage, trn)
-        .success
-        .value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, missingSettlorRoute)
-      val result  = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
-
-      application.stop()
-    }
-
-    "redirect to the Confirmation page when the registration is already complete" in {
-
-      val userAnswers = emptyUserAnswers
-        .copy(progress = RegistrationStatus.Complete)
-        .set(RegistrationTRNPage, trn)
-        .success
-        .value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      val request = FakeRequest(GET, missingSettlorRoute)
-      val result  = route(application, request).value
-
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
-
-      application.stop()
-    }
   }
 
 }
