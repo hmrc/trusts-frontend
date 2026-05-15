@@ -277,6 +277,31 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
       application.stop()
     }
 
+    "re-throw the exception when a non fatal exception is thrown during submission" in {
+
+      val nonFatalException = new RuntimeException("Error")
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.failed(nonFatalException))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+      val result = route(application, request).value
+
+      val thrown = intercept[RuntimeException] {
+        await(result)
+      }
+
+      thrown.getMessage mustEqual "Error"
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+
+      application.stop()
+    }
+
     Seq(
       ("not", BAD_REQUEST),
       ("is", OK)
