@@ -991,11 +991,13 @@ missingSettlorView.p2=Cyfeirnod y cofrestriad hwn yw:
 
 missingSettlorView.h2=Cysylltwch â Gwasanaeth Cwsmeriaid Cymraeg CThEF
 
-missingSettlorView.p3=Ffôn: 0300 200 1900
-missingSettlorView.p4=O’r tu allan i’r DU: +44 300 200 1900
-missingSettlorView.p5=Oriau agor:
-missingSettlorView.p6=Dydd Llun i ddydd Gwener: 08:30 - 17:00
-missingSettlorView.p7=Ar gau ar benwythnosau a gwyliau banc.
+missingSettlorView.p3=Ffôn:
+missingSettlorView.p4=0300 200 1900
+missingSettlorView.p5=O’r tu allan i’r DU:
+missingSettlorView.p6=+44 300 200 1900
+missingSettlorView.p7=Oriau agor:
+missingSettlorView.p8=Dydd Llun i ddydd Gwener: 08:30 - 17:00
+missingSettlorView.p9=Ar gau ar benwythnosau a gwyliau banc.
 
 # A/B Testing
 

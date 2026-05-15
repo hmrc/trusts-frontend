@@ -42,7 +42,9 @@ class MissingSettlorViewSpec extends ViewBehaviours {
       "p4",
       "p5",
       "p6",
-      "p7"
+      "p7",
+      "p8",
+      "p9"
     )
 
     behave like pageWithBackLink(applyView)
