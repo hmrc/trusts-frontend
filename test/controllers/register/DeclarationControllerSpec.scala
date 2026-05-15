@@ -187,6 +187,25 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
       application.stop()
     }
 
+    "redirect to the task list page when valid data is submitted and submission service returns an unexpected response" in {
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.successful(InternalServerError))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+      application.stop()
+    }
+
     "redirect to the already registered page when valid data is submitted and trust is already registered" in {
 
       when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
