@@ -33,13 +33,17 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.AnyContentAsFormUrlEncoded
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+
+import ch.qos.logback.classic.Level
+import play.api.Logger
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 import views.html.register.DeclarationView
 
 import scala.concurrent.Future
 
-class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
+class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with LogCapturing {
 
   val formProvider            = new DeclarationFormProvider()
   val form: Form[Declaration] = formProvider()
@@ -370,26 +374,36 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures {
         mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
       ).thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
-      val request: FakeRequest[AnyContentAsFormUrlEncoded] =
-        FakeRequest(POST, routes.DeclarationController.onPageLoad("id").url)
-          .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+      val expectedMissingSettlorInfo =
+        "registration: no settlor information provided. " +
+          "Trust should have either a deceased settlor, an individual settlor or a company settlor, " +
+          "answer section: no settlors section found"
 
-      val result = route(application, request).value
+      withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          FakeRequest(POST, routes.DeclarationController.onPageLoad("id").url)
+            .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
-      status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.MissingSettlorController.onPageLoad("id").url
+        val result = route(application, request).value
 
-      verify(mockAuditService, times(1))
-        .auditRegistrationWithMissingSettlorInfo(
-          eqTo(userAnswers),
-          eqTo(
-            "registration: no settlor information provided. " +
-              "Trust should have either a deceased settlor, an individual settlor or a company settlor, " +
-              "answer section: no settlors section found"
-          )
-        )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.MissingSettlorController.onPageLoad("id").url
 
+        verify(mockAuditService, times(1))
+          .auditRegistrationWithMissingSettlorInfo(
+            eqTo(userAnswers),
+            eqTo(expectedMissingSettlorInfo)
+          )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+
+        logEvents.filter(_.getLevel == Level.ERROR).exists { event =>
+            event.getFormattedMessage.contains(
+              s"Trust registration proceeding with missing settlor information: $expectedMissingSettlorInfo"
+            )
+        } mustBe true
+      }
     }
+
+
 
   }
 

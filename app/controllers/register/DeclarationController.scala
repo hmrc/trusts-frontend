@@ -225,7 +225,7 @@ class DeclarationController @Inject() (
       _ = if (allMissingComponents.nonEmpty) {
             val missingInfo = allMissingComponents.mkString(", ")
             val logMessage  =
-              s"[$className][isSettlorDataComplete][Session ID: ${hc.sessionId}] Allowing trust registration with missing settlor information: $missingInfo"
+              s"[$className][isSettlorDataComplete][Session ID: ${hc.sessionId}] Trust registration proceeding with missing settlor information: $missingInfo"
 
             logger.error(logMessage)
             auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)

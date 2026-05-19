@@ -119,7 +119,7 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
       response = RegistrationErrorAuditEvent(
         OK,
         "MISSING_SETTLOR_INFO",
-        s"Allowing trust registration with missing settlor information: $missingInfo"
+        s"Registration proceeding with missing settlor information: $missingInfo"
       )
     )
 
