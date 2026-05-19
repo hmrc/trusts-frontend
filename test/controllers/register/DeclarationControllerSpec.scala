@@ -396,14 +396,12 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
           )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
 
         logEvents.filter(_.getLevel == Level.ERROR).exists { event =>
-            event.getFormattedMessage.contains(
-              s"Trust registration proceeding with missing settlor information: $expectedMissingSettlorInfo"
-            )
+          event.getFormattedMessage.contains(
+            s"Trust registration proceeding with missing settlor information: $expectedMissingSettlorInfo"
+          )
         } mustBe true
       }
     }
-
-
 
   }
 
