@@ -17,8 +17,6 @@
 @import config.FrontendAppConfig
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
 @import resources._
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteCss
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteJavascript
 
 @this(
         appConfig: FrontendAppConfig,
@@ -64,7 +62,6 @@
 }
 
 @stylesheets()
-@autocompleteCss()
 }
 
 @beforeContentBlock = {
@@ -93,6 +90,6 @@
         serviceName = serviceName
     )),
     beforeContentBlock = Some(beforeContentBlock),
-    scriptsBlock = Some(hmrcScripts(Some(autocompleteJavascript()))),
+    scriptsBlock = Some(hmrcScripts()),
     footerBlock = Some(hmrcStandardFooter())
 )(mainContentWithGetHelp)
