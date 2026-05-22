@@ -33,7 +33,7 @@ class AnswerSectionSettlorValidationService @Inject() {
         (settlors \ "setUpByLivingSettlorYesNo").asOpt[Boolean] match {
           case Some(false) => validateDeceasedFlow(settlors)
           case Some(true)  => validateLivingFlow(settlors)
-          case None        => List(InvalidSettlorData(s"$prefix: setUpByLivingSettlorYesNo missing"))
+          case None        => List(IncompleteSettlorData(s"$prefix: setUpByLivingSettlorYesNo missing"))
         }
       case None           =>
         List(MissingSettlorData(s"$prefix: no settlors section found"))

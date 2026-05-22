@@ -99,7 +99,7 @@ class AnswerSectionSettlorValidationServiceSpec extends RegistrationSpecBase {
     "return invalid error when setUpByLivingSettlorYesNo flag is missing" in {
       val noFlag = Json.obj("data" -> Json.obj("settlors" -> emptyObject))
       val result = service.validate(noFlag)
-      result mustEqual List(InvalidSettlorData("answer section: setUpByLivingSettlorYesNo missing"))
+      result mustEqual List(IncompleteSettlorData("answer section: setUpByLivingSettlorYesNo missing"))
     }
 
     "return incomplete error when individual settlor in living array has no name" in {
