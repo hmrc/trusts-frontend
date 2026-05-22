@@ -16,7 +16,7 @@
 
 package services.settlors
 
-import models.{IncompleteSettlorData, SettlorDataError}
+import models.settlor.{IncompleteSettlorData, SettlorDataError}
 import play.api.libs.json._
 
 private[services] object SettlorValidationHelpers {

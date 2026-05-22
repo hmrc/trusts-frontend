@@ -16,7 +16,7 @@
 
 package services.settlors
 
-import models.{IncompleteSettlorData, InvalidSettlorData, MissingSettlorData, SettlorDataError}
+import models.settlor.{IncompleteSettlorData, InvalidSettlorData, MissingSettlorData, SettlorDataError}
 import play.api.libs.json._
 
 import javax.inject.Inject

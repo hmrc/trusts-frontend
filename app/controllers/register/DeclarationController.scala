@@ -20,6 +20,7 @@ import cats.syntax.all._
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
+import models.RegistrationSubmission
 import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
@@ -27,7 +28,7 @@ import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.core.pages.Declaration
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
-import models.{MissingSettlorData, RegistrationSubmission, SettlorDataError}
+import models.settlor.SettlorErrors
 import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logging
 import play.api.data.Form
@@ -204,47 +205,46 @@ class DeclarationController @Inject() (
   }
 
   private def redirectBySettlorDataErrors(
-    errors: List[SettlorDataError],
+    errors: SettlorErrors,
     draftId: String
-  )(implicit request: RegistrationDataRequest[AnyContent]): Result =
-    errors match {
-      case Nil =>
-        Redirect(routes.ConfirmationController.onPageLoad(draftId))
+  )(implicit request: RegistrationDataRequest[AnyContent]): Result = {
+    val allErrors = errors.all
 
-      case errors if errors.forall(_.isInstanceOf[MissingSettlorData]) =>
+    if (errors.bothSourcesContainMissingOrIncomplete) {
+      val missingInfo = allErrors.map(_.detail).mkString(", ")
 
-        val missingInfo = errors.map(_.detail).mkString(", ")
+      logger.error(
+        s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
+          s"Trust registered with missing or incomplete settlor information in registration and draft: $missingInfo, " +
+          s"redirecting to missing-mandatory-information page"
+      )
+
+      auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
+
+      Redirect(routes.MissingSettlorController.onPageLoad(draftId))
+
+    } else {
+
+      if (allErrors.nonEmpty) {
+        val incorrectInfo = allErrors.map(_.detail).mkString(", ")
         logger.error(
           s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
-            s"Trust registered with missing settlor information: $missingInfo, redirecting to missing-mandatory-information page"
+            s"Trust registered with incorrect settlor information - $incorrectInfo. Redirecting to confirmation page"
         )
+      }
 
-        auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
-        Redirect(routes.MissingSettlorController.onPageLoad(draftId))
-
-      case errors =>
-        val incorrectInfo = errors.map(_.detail).mkString(", ")
-        logger.error(
-          s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
-            s"Trust registered with incorrect settlor information: $incorrectInfo, redirecting to confirmation page"
-        )
-
-        Redirect(routes.ConfirmationController.onPageLoad(draftId))
+      Redirect(routes.ConfirmationController.onPageLoad(draftId))
     }
+  }
 
   private def findIncorrectSettlorData(
     draftId: String
-  )(implicit hc: HeaderCarrier): Future[List[SettlorDataError]] =
+  )(implicit hc: HeaderCarrier): Future[SettlorErrors] =
     for {
       registrationPieces     <- registrationsRepository.getRegistrationPieces(draftId)
       draftSettlors          <- registrationsRepository.getDraftSettlors(draftId)
-      registrationValidation  =
-        registrationSettlorValidator.validate(registrationPieces)
-      answerSectionValidation =
-        answerSectionSettlorValidator.validate(draftSettlors)
-
-      allMissingComponents = registrationValidation ::: answerSectionValidation
-
-    } yield allMissingComponents
+      registrationValidation  = registrationSettlorValidator.validate(registrationPieces)
+      answerSectionValidation = answerSectionSettlorValidator.validate(draftSettlors)
+    } yield SettlorErrors(registrationValidation, answerSectionValidation)
 
 }

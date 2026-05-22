@@ -17,7 +17,7 @@
 package services.settlors
 
 import base.RegistrationSpecBase
-import models.{IncompleteSettlorData, InvalidSettlorData, MissingSettlorData}
+import models.settlor.{IncompleteSettlorData, InvalidSettlorData, MissingSettlorData}
 import play.api.libs.json._
 
 class AnswerSectionSettlorValidationServiceSpec extends RegistrationSpecBase {

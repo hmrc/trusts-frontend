@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package models
+package models.settlor
 
 sealed trait SettlorDataError {
   val detail: String
