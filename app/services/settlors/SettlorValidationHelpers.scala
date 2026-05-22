@@ -80,7 +80,6 @@ private[services] object SettlorValidationHelpers {
       }
     }
 
-
   def keyMissingOrValueBlank(jsObject: JsObject, key: String): Boolean =
     (jsObject \ key).asOpt[String].forall(_.isBlank)
 

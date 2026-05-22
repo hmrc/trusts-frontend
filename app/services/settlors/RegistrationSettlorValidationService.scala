@@ -21,7 +21,6 @@ import play.api.libs.json._
 
 import javax.inject.Inject
 
-
 /** Validates settlor data from registration payload
  * Settlors are saved under `trust/entities/deceased` and `trust/entities/settlors`
  */
