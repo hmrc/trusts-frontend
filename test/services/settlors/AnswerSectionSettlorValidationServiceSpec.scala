@@ -41,7 +41,6 @@ class AnswerSectionSettlorValidationServiceSpec extends RegistrationSpecBase {
 
   private val fullName        = Json.obj("firstName" -> "John", "lastName" -> "Smith")
   private val firstNameOnly   = Json.obj("firstName" -> "John")
-  private val validCompany    = Json.obj("name" -> "Test Company Ltd")
   private val validIndividual = Json.obj("individualOrBusiness" -> "individual", "name" -> fullName)
   private val validBusiness   = Json.obj("individualOrBusiness" -> "business", "businessName" -> "Test Company Ltd")
   private val emptyObject     = Json.obj()

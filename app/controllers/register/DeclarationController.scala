@@ -215,7 +215,7 @@ class DeclarationController @Inject() (
 
         val missingInfo = errors.map(_.detail).mkString(", ")
         logger.error(
-          s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] " +
+          s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
             s"Trust registered with missing settlor information: $missingInfo, redirecting to missing-mandatory-information page"
         )
 
@@ -225,7 +225,7 @@ class DeclarationController @Inject() (
       case errors =>
         val incorrectInfo = errors.map(_.detail).mkString(", ")
         logger.error(
-          s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] " +
+          s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
             s"Trust registered with incorrect settlor information: $incorrectInfo, redirecting to confirmation page"
         )
 

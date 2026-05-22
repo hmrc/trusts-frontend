@@ -35,12 +35,10 @@ class RegistrationSettlorValidationServiceSpec extends RegistrationSpecBase {
   private def mixedSettlorsJson(settlors: JsArray, companies: JsArray) =
     Json.obj("trust/entities/settlors" -> Json.obj("settlor" -> settlors, "settlorCompany" -> companies))
 
-  private val fullName        = Json.obj("firstName" -> "John", "lastName" -> "Smith")
-  private val firstNameOnly   = Json.obj("firstName" -> "John")
-  private val validCompany    = Json.obj("name" -> "Test Company Ltd")
-  private val validIndividual = Json.obj("individualOrBusiness" -> "individual", "name" -> fullName)
-  private val validBusiness   = Json.obj("individualOrBusiness" -> "business", "businessName" -> "Test Company Ltd")
-  private val emptyObject     = Json.obj()
+  private val fullName      = Json.obj("firstName" -> "John", "lastName" -> "Smith")
+  private val firstNameOnly = Json.obj("firstName" -> "John")
+  private val validCompany  = Json.obj("name" -> "Test Company Ltd")
+  private val emptyObject   = Json.obj()
 
   "RegistrationSettlorValidationService.validate" must {
 
