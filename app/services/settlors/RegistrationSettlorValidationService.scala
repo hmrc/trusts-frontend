@@ -30,9 +30,9 @@ class RegistrationSettlorValidationService @Inject() {
 
   private val prefix = "registration"
 
-  def validate(settlorsData: JsObject): List[SettlorDataError] = {
-    val deceased           = (settlorsData \ "trust/entities/deceased").asOpt[JsObject]
-    val settlorsSection    = (settlorsData \ "trust/entities/settlors").asOpt[JsObject]
+  def validate(registrationSettlorsData: JsObject): List[SettlorDataError] = {
+    val deceased           = (registrationSettlorsData \ "trust/entities/deceased").asOpt[JsObject]
+    val settlorsSection    = (registrationSettlorsData \ "trust/entities/settlors").asOpt[JsObject]
     val individualSettlors = settlorsSection.flatMap(s => (s \ "settlor").asOpt[JsArray])
     val companySettlors    = settlorsSection.flatMap(s => (s \ "settlorCompany").asOpt[JsArray])
 
