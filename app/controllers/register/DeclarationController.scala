@@ -222,8 +222,8 @@ class DeclarationController @Inject() (
         auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
         Redirect(routes.MissingSettlorController.onPageLoad(draftId))
 
-      case some =>
-        val incorrectInfo = some.map(_.detail).mkString(", ")
+      case errors =>
+        val incorrectInfo = errors.map(_.detail).mkString(", ")
         logger.error(
           s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] " +
             s"Trust registered with incorrect settlor information: $incorrectInfo, redirecting to confirmation page"
