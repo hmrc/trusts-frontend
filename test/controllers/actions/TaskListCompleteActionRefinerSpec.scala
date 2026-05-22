@@ -31,7 +31,7 @@ import play.api.test.Helpers._
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.Enrolments
-import org.mockito.Mockito.{mock, when}
+import org.mockito.Mockito.when
 
 import scala.concurrent.Future
 
