@@ -20,7 +20,6 @@ import cats.syntax.all._
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
-import models.RegistrationSubmission
 import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
@@ -28,6 +27,7 @@ import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.core.pages.Declaration
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
+import models.{MissingSettlorData, RegistrationSubmission, SettlorDataError}
 import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logging
 import play.api.data.Form
@@ -35,7 +35,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.{AuditService, SettlorValidationService, SubmissionService}
+import services.settlors.{AnswerSectionSettlorValidationService, RegistrationSettlorValidationService}
+import services.{AuditService, SubmissionService}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -54,7 +55,8 @@ class DeclarationController @Inject() (
   formProvider: DeclarationFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: DeclarationView,
-  settlorValidationService: SettlorValidationService,
+  registrationSettlorValidator: RegistrationSettlorValidationService,
+  answerSectionSettlorValidator: AnswerSectionSettlorValidationService,
   auditService: AuditService,
   submissionService: SubmissionService,
   registrationComplete: TaskListCompleteActionRefiner,
@@ -190,47 +192,59 @@ class DeclarationController @Inject() (
     val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
 
     for {
-      trnSaved            <- Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn))
-      dateSaved           <- Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate))
-      _                    = {
-        val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
-
-        logger.info(
-          s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days"
-        )
-      }
-      _                   <- registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete), request.affinityGroup)
-      settlorDataComplete <- isSettlorDataComplete(draftId)
-    } yield
-      if (settlorDataComplete) {
-        Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
-      } else {
-        Redirect(routes.MissingSettlorController.onPageLoad(updatedAnswers.draftId))
-      }
+      trnSaved             <- Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn))
+      dateSaved            <- Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate))
+      _                     = logger.info(
+                                s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] " +
+                                  s"Days between creation and submission: ${DAYS.between(updatedAnswers.createdAt, submissionDate)}"
+                              )
+      _                    <- registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete), request.affinityGroup)
+      incorrectSettlorData <- findIncorrectSettlorData(draftId)
+    } yield redirectBySettlorDataErrors(incorrectSettlorData, updatedAnswers.draftId)
   }
 
-  private def isSettlorDataComplete[A](
+  private def redirectBySettlorDataErrors(
+    errors: List[SettlorDataError],
     draftId: String
-  )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[A]): Future[Boolean] =
+  )(implicit request: RegistrationDataRequest[AnyContent]): Result =
+    errors match {
+      case Nil =>
+        Redirect(routes.ConfirmationController.onPageLoad(draftId))
+
+      case errors if errors.forall(_.isInstanceOf[MissingSettlorData]) =>
+
+        val missingInfo = errors.map(_.detail).mkString(", ")
+        logger.error(
+          s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] " +
+            s"Trust registered with missing settlor information: $missingInfo, redirecting to missing-mandatory-information page"
+        )
+
+        auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
+        Redirect(routes.MissingSettlorController.onPageLoad(draftId))
+
+      case some =>
+        val incorrectInfo = some.map(_.detail).mkString(", ")
+        logger.error(
+          s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] " +
+            s"Trust registered with incorrect settlor information: $incorrectInfo, redirecting to confirmation page"
+        )
+
+        Redirect(routes.ConfirmationController.onPageLoad(draftId))
+    }
+
+  private def findIncorrectSettlorData(
+    draftId: String
+  )(implicit hc: HeaderCarrier): Future[List[SettlorDataError]] =
     for {
       registrationPieces     <- registrationsRepository.getRegistrationPieces(draftId)
       draftSettlors          <- registrationsRepository.getDraftSettlors(draftId)
       registrationValidation  =
-        settlorValidationService.validateRegistrationSettlorComponent(Some(registrationPieces))
+        registrationSettlorValidator.validate(registrationPieces)
       answerSectionValidation =
-        settlorValidationService.validateAnswerSectionSettlorComponent(Some(draftSettlors.as[JsObject]))
+        answerSectionSettlorValidator.validate(draftSettlors)
 
       allMissingComponents = registrationValidation ::: answerSectionValidation
 
-      _ = if (allMissingComponents.nonEmpty) {
-            val missingInfo = allMissingComponents.mkString(", ")
-            val logMessage  =
-              s"[$className][isSettlorDataComplete][Session ID: ${hc.sessionId}] Trust registration proceeding with missing settlor information: $missingInfo"
-
-            logger.error(logMessage)
-            auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
-          }
-
-    } yield allMissingComponents.isEmpty
+    } yield allMissingComponents
 
 }

@@ -17,6 +17,7 @@
 package controllers.register
 
 import base.{Fixtures, RegistrationSpecBase}
+import ch.qos.logback.classic.Level
 import forms.DeclarationFormProvider
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
@@ -28,14 +29,11 @@ import org.mockito.Mockito.{reset, times, verify, when}
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
 import play.api.http.Status.OK
-import play.api.inject
+import play.api.{Logger, inject}
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.AnyContentAsFormUrlEncoded
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-
-import ch.qos.logback.classic.Level
-import play.api.Logger
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
@@ -397,7 +395,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
         logEvents.filter(_.getLevel == Level.ERROR).exists { event =>
           event.getFormattedMessage.contains(
-            s"Trust registration proceeding with missing settlor information: $expectedMissingSettlorInfo"
+            s"Trust registered with missing settlor information: $expectedMissingSettlorInfo"
           )
         } mustBe true
       }
