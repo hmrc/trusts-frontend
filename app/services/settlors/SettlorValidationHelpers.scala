@@ -25,24 +25,21 @@ private[services] object SettlorValidationHelpers {
   val CompanySettlor    = "companySettlor"
 
   /** 
-   * Validate the deceased settlor name, 
-   * returning errors if the data is missing, or either the first or last name are missing or blank strings 
-   *
-   * @param deceased the deceased settlor JSON object
-   * @param prefix   source-context prefix prepended to each error message (e.g. `"registration"` or `"answer section"`)
+   * @param deceased  the deceased settlor JSON object
+   * @param prefix     source-context prefix prepended to each error message (e.g. `"registration"` or `"answer section"`)
+   * @return          an error if the data is missing, or either the first or last name are missing or blank strings.
    */
   def validateDeceasedSettlor(deceased: JsObject, prefix: String): List[SettlorDataError] =
     (deceased \ "name").asOpt[JsObject] match {
-      case Some(name) => validateFirstAndLastName(name, prefix, "deceased")
+      case Some(name) => validateFirstAndLastName(name, prefix, settlorType = "deceased")
       case None       => List(IncompleteSettlorData(s"$prefix: deceased.name missing"))
     }
 
   /** 
-   * Validate a person's first name and last name
-   *
-   * @param prefix   source-context prefix prepended to each error message (e.g. `"registration"` or `"answer section"`)
-   * @param settlorType entity label used in the error path (e.g. `"deceased"`, `"individualSettlor"`)
-   * @param index      when defined, format error message as `settlorType[index]` instead of `settlorType`
+   * @param prefix        source-context prefix prepended to each error message (e.g. `"registration"` or `"answer section"`)
+   * @param settlorType  entity label used in the error path (e.g. `"deceased"`, `"individualSettlor"`)
+   * @param index        when defined, format error message as `settlorType[index]` instead of `settlorType`
+   * @return             an error if either the first or last name keys are missing, or blank strings
    */
   def validateFirstAndLastName(
     name: JsObject,
@@ -59,13 +56,12 @@ private[services] object SettlorValidationHelpers {
     }
 
   /**
-   * Iterate over a list of entries, if the entry is defined, run the `onEntryDefinedFn` against it.
-   * Else return a List[IncompleteSettlorData] with relevant error detail
+   * Iterate over a list of entries, if the entry is defined, run the `onEntryDefinedFn` against it,
+   * else return a List[IncompleteSettlorData] with relevant error detail
    * 
-   * @param prefix        source-context prefix prepended to "data missing" errors
-   * @param entityRef     entity label used in error paths (e.g. `"individualSettlor"`, `"companySettlor"`, `"settlor"`)
-   * @param onEntryDefinedFn runs once per entry that resolves to a JsObject; receives
-   *                      the object and its index in `entries`
+   * @param prefix           source-context prefix prepended to "data missing" errors
+   * @param entityRef       entity label used in error paths (e.g. `"individualSettlor"`, `"companySettlor"`, `"settlor"`)
+   * @param onEntryDefinedFn runs once per entry that resolves to a JsObject
    */
   def validateEntries(
     arrayEntries: List[JsValue],

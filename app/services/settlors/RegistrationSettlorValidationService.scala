@@ -41,10 +41,11 @@ class RegistrationSettlorValidationService @Inject() {
         val hasOtherSettlors =
           individualSettlors.exists(_.value.nonEmpty) || companySettlors.exists(_.value.nonEmpty)
 
-        if (hasOtherSettlors)
+        if (hasOtherSettlors) {
           List(InvalidSettlorData(s"$prefix: deceased settlor cannot coexist with other settlors"))
-        else
+        } else {
           validateDeceasedSettlor(deceasedData, prefix)
+        }
 
       case None =>
         validateIndividualAndCompanySettlors(individualSettlors, companySettlors)
@@ -54,23 +55,24 @@ class RegistrationSettlorValidationService @Inject() {
   private def validateIndividualAndCompanySettlors(
     individualSettlors: Option[JsArray],
     companySettlors: Option[JsArray]
-  ) = {
+  ): List[SettlorDataError] = {
     val hasIndividualSettlors = individualSettlors.exists(_.value.nonEmpty)
     val hasCompanySettlors    = companySettlors.exists(_.value.nonEmpty)
 
-    if (!hasIndividualSettlors && !hasCompanySettlors)
+    if (!hasIndividualSettlors && !hasCompanySettlors) {
       List(
         MissingSettlorData(
           s"$prefix: no settlor information provided. " +
             s"Trust should have either a deceased settlor, an individual settlor or a company settlor"
         )
       )
-    else
+    } else {
       individualSettlors.map(validateIndividualArray).getOrElse(Nil) :::
         companySettlors.map(validateCompanyArray).getOrElse(Nil)
+    }
   }
 
-  private def validateIndividualArray(settlors: JsArray) =
+  private def validateIndividualArray(settlors: JsArray): List[SettlorDataError] =
     validateEntries(settlors.value.toList, prefix, IndividualSettlor) { (settlor, index) =>
       (settlor \ "name").asOpt[JsObject] match {
         case Some(name) => validateFirstAndLastName(name, prefix, IndividualSettlor, Some(index))
@@ -78,11 +80,13 @@ class RegistrationSettlorValidationService @Inject() {
       }
     }
 
-  private def validateCompanyArray(companies: JsArray) =
+  private def validateCompanyArray(companies: JsArray): List[SettlorDataError] =
     validateEntries(companies.value.toList, prefix, CompanySettlor) { (company, index) =>
-      if (keyMissingOrValueBlank(company, "name"))
+      if (keyMissingOrValueBlank(company, "name")) {
         List(IncompleteSettlorData(s"$prefix: $CompanySettlor[$index].name missing"))
-      else Nil
+      } else {
+        Nil
+      }
     }
 
 }
