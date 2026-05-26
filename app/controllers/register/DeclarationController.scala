@@ -262,7 +262,7 @@ class DeclarationController @Inject() (
   private def findIncorrectSettlorData(
     registrationPieces: JsObject,
     draftSettlors: JsValue
-  )(implicit hc: HeaderCarrier): Future[SettlorErrors] = {
+  ): Future[SettlorErrors] = {
     val registrationValidation  = registrationSettlorValidator.validate(registrationPieces)
     val answerSectionValidation = answerSectionSettlorValidator.validate(draftSettlors)
 
