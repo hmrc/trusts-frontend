@@ -22,6 +22,7 @@ object TrustAuditing {
   val REGISTRATION_SUBMITTED_BY_AGENT        = "RegistrationSubmittedByAgent"
   val REGISTRATION_SUBMISSION_FAILED         = "RegistrationSubmissionFailed"
   val REGISTRATION_PREPARATION_FAILED        = "RegistrationPreparationFailed"
+  val REGISTRATION_SETTLOR_DATA_INCORRECT    = "RegistrationSettlorDataIncorrect"
 
   val USER_ANSWERS = "UserAnswers"
 

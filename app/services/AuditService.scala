@@ -136,7 +136,7 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
   ): Unit =
 
     audit(
-      event = REGISTRATION_PREPARATION_FAILED,
+      event = REGISTRATION_SETTLOR_DATA_INCORRECT,
       payload = payload,
       draftId = draftId,
       internalId = request.internalId,
