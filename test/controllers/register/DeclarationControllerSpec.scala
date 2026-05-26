@@ -344,6 +344,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
     }
 
     "redirect to the missing settlor page when both registration and draft data have missing settlor information" in {
+
+      reset(mockAuditService)
       val userAnswers = emptyUserAnswers
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -368,11 +370,6 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
         .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
-      val expectedMissingSettlorInfo =
-        "registration: no settlor information provided. " +
-          "Trust should have either a deceased settlor, an individual settlor or a company settlor, " +
-          "answer section: no settlors section found"
-
       withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
         val request: FakeRequest[AnyContentAsFormUrlEncoded] =
           FakeRequest(POST, routes.DeclarationController.onPageLoad("id").url)
@@ -383,15 +380,19 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.MissingSettlorController.onPageLoad("id").url
 
-        verify(mockAuditService, times(1))
-          .auditRegistrationWithMissingSettlorInfo(
-            eqTo(userAnswers),
-            eqTo(expectedMissingSettlorInfo)
-          )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+        val expectedAuditText =
+          "registration: no settlor information provided. " +
+            "Trust should have either a deceased settlor, an individual settlor or a company settlor, " +
+            "answer section: no settlors section found"
 
-        logEvents.filter(_.getLevel == Level.ERROR).exists { message =>
-          val formattedMessage = message.getFormattedMessage
-          formattedMessage.contains(settlorAlertLogStartText) && formattedMessage.contains(expectedMissingSettlorInfo)
+        verifyMissingSettlorAudits(expectedAuditText)
+
+        val expectedMissingSettlorInfo =
+          s"$settlorAlertLogStartText (missing or incomplete) in registration and draft: $expectedAuditText." +
+            s" Redirecting to missing-mandatory-information page"
+
+        logEvents.filter(_.getLevel == Level.ERROR).exists {
+          _.getFormattedMessage.contains(expectedMissingSettlorInfo)
         } mustBe true
 
         application.stop()
@@ -399,7 +400,10 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
     }
 
     "redirect to confirmation when only the registration data has missing settlor information" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      reset(mockAuditService)
+
+      val userAnswers = emptyUserAnswers
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       when(registrationsRepository.getRegistrationPieces(any())(any()))
         .thenReturn(Future.successful(Json.obj()))
@@ -419,9 +423,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
 
+        val expectedAuditText =
+          "registration: no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor"
+
+        verifyMissingSettlorAudits(expectedAuditText)
+
         val expectedMissingSettlorInfo =
-          s"$settlorAlertLogStartText - registration: no settlor information provided. " +
-            "Trust should have either a deceased settlor, an individual settlor or a company settlor. Redirecting to confirmation page"
+          s"$settlorAlertLogStartText - $expectedAuditText. Redirecting to confirmation page"
 
         logEvents.filter(_.getLevel == Level.ERROR).exists {
           _.getFormattedMessage.contains(expectedMissingSettlorInfo)
@@ -433,8 +441,11 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
     }
 
     "redirect to confirmation when only the draft data has missing settlor information" in {
+      reset(mockAuditService)
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+      val userAnswers = emptyUserAnswers
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
       val validRegistration = Json.obj(
         "trust/entities/settlors" -> Json.obj(
@@ -460,9 +471,12 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
 
+        val expectedAuditText = "answer section: no settlors section found"
+
+        verifyMissingSettlorAudits(expectedAuditText)
+
         val expectedMissingSettlorInfo =
-          s"$settlorAlertLogStartText - answer section: no settlors section found. " +
-            "Redirecting to confirmation page"
+          s"$settlorAlertLogStartText - $expectedAuditText. Redirecting to confirmation page"
 
         logEvents.filter(_.getLevel == Level.ERROR).exists {
           _.getFormattedMessage.contains(expectedMissingSettlorInfo)
@@ -473,6 +487,28 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       application.stop()
     }
 
+  }
+
+  private def verifyMissingSettlorAudits(expectedAuditText: String): Unit = {
+    verify(mockAuditService, times(1))
+      .auditUserAnswersOnMissingSettlorInfo(
+        any[UserAnswers],
+        eqTo(expectedAuditText)
+      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+
+    verify(mockAuditService, times(1))
+      .auditDraftWithMissingSettlorInfo(
+        any[String],
+        any[JsValue],
+        eqTo(expectedAuditText)
+      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+
+    verify(mockAuditService, times(1))
+      .auditRegistrationWithMissingSettlorInfo(
+        any[String],
+        any[JsObject],
+        eqTo(expectedAuditText)
+      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
   }
 
 }

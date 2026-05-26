@@ -201,13 +201,17 @@ class DeclarationController @Inject() (
                                   s"Days between creation and submission: ${DAYS.between(updatedAnswers.createdAt, submissionDate)}"
                               )
       _                    <- registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete), request.affinityGroup)
-      incorrectSettlorData <- findIncorrectSettlorData(draftId)
-    } yield redirectBySettlorDataErrors(incorrectSettlorData, updatedAnswers.draftId)
+      registrationPieces   <- registrationsRepository.getRegistrationPieces(draftId)
+      draftSettlors        <- registrationsRepository.getDraftSettlors(draftId)
+      incorrectSettlorData <- findIncorrectSettlorData(registrationPieces, draftSettlors)
+    } yield redirectBySettlorDataErrors(incorrectSettlorData, updatedAnswers.draftId, registrationPieces, draftSettlors)
   }
 
   private def redirectBySettlorDataErrors(
     errors: SettlorErrors,
-    draftId: String
+    draftId: String,
+    registrationPieces: JsObject,
+    draftSettlors: JsValue
   )(implicit request: RegistrationDataRequest[AnyContent]): Result = {
     val allErrors = errors.all
 
@@ -216,11 +220,11 @@ class DeclarationController @Inject() (
 
       logger.error(
         s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
-          s"$settlorAlertLogStartText (missing or incomplete) in registration and draft: $missingInfo, " +
-          s"redirecting to missing-mandatory-information page"
+          s"$settlorAlertLogStartText (missing or incomplete) in registration and draft: $missingInfo. " +
+          s"Redirecting to missing-mandatory-information page"
       )
 
-      auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
+      auditIncorrectSettlorInfo(draftId, missingInfo, registrationPieces, draftSettlors)
 
       Redirect(routes.MissingSettlorController.onPageLoad(draftId))
 
@@ -232,20 +236,37 @@ class DeclarationController @Inject() (
           s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
             s"$settlorAlertLogStartText - $incorrectInfo. Redirecting to confirmation page"
         )
+
+        auditIncorrectSettlorInfo(draftId, incorrectInfo, registrationPieces, draftSettlors)
       }
 
       Redirect(routes.ConfirmationController.onPageLoad(draftId))
     }
   }
 
+  // audit as much as we can on any issue with settlor data to narrow down issue
+  private def auditIncorrectSettlorInfo(
+    draftId: String,
+    incorrectInfo: String,
+    registrationPieces: JsObject,
+    draftSettlors: JsValue
+  )(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit = {
+    auditService.auditUserAnswersOnMissingSettlorInfo(request.userAnswers, incorrectInfo)
+    auditService.auditDraftWithMissingSettlorInfo(draftId, draftSettlors, incorrectInfo)
+    auditService.auditRegistrationWithMissingSettlorInfo(draftId, registrationPieces, incorrectInfo)
+  }
+
   private def findIncorrectSettlorData(
-    draftId: String
-  )(implicit hc: HeaderCarrier): Future[SettlorErrors] =
-    for {
-      registrationPieces     <- registrationsRepository.getRegistrationPieces(draftId)
-      draftSettlors          <- registrationsRepository.getDraftSettlors(draftId)
-      registrationValidation  = registrationSettlorValidator.validate(registrationPieces)
-      answerSectionValidation = answerSectionSettlorValidator.validate(draftSettlors)
-    } yield SettlorErrors(registrationValidation, answerSectionValidation)
+    registrationPieces: JsObject,
+    draftSettlors: JsValue
+  )(implicit hc: HeaderCarrier): Future[SettlorErrors] = {
+    val registrationValidation  = registrationSettlorValidator.validate(registrationPieces)
+    val answerSectionValidation = answerSectionSettlorValidator.validate(draftSettlors)
+
+    Future.successful(SettlorErrors(registrationValidation, answerSectionValidation))
+  }
 
 }
