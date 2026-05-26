@@ -66,8 +66,9 @@ class DeclarationController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  private val className               = getClass.getSimpleName
-  private val form: Form[Declaration] = formProvider()
+  private val className                = getClass.getSimpleName
+  private val form: Form[Declaration]  = formProvider()
+  private val settlorAlertLogStartText = "Trust registered with incorrect settlor information"
 
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
@@ -215,7 +216,7 @@ class DeclarationController @Inject() (
 
       logger.error(
         s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
-          s"Trust registered with missing or incomplete settlor information in registration and draft: $missingInfo, " +
+          s"$settlorAlertLogStartText (missing or incomplete) in registration and draft: $missingInfo, " +
           s"redirecting to missing-mandatory-information page"
       )
 
@@ -229,7 +230,7 @@ class DeclarationController @Inject() (
         val incorrectInfo = allErrors.map(_.detail).mkString(", ")
         logger.error(
           s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
-            s"Trust registered with incorrect settlor information - $incorrectInfo. Redirecting to confirmation page"
+            s"$settlorAlertLogStartText - $incorrectInfo. Redirecting to confirmation page"
         )
       }
 

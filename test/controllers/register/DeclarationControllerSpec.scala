@@ -56,6 +56,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
+  val settlorAlertLogStartText = "Trust registered with incorrect settlor information"
+
   when(registrationsRepository.getDraftSettlors(any())(any()))
     .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
@@ -387,8 +389,9 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
             eqTo(expectedMissingSettlorInfo)
           )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
 
-        logEvents.filter(_.getLevel == Level.ERROR).exists {
-          _.getFormattedMessage.contains(expectedMissingSettlorInfo)
+        logEvents.filter(_.getLevel == Level.ERROR).exists { message =>
+          val formattedMessage = message.getFormattedMessage
+          formattedMessage.contains(settlorAlertLogStartText) && formattedMessage.contains(expectedMissingSettlorInfo)
         } mustBe true
 
         application.stop()
@@ -417,7 +420,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
         redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
 
         val expectedMissingSettlorInfo =
-          "Trust registered with incorrect settlor information - registration: no settlor information provided. " +
+          s"$settlorAlertLogStartText - registration: no settlor information provided. " +
             "Trust should have either a deceased settlor, an individual settlor or a company settlor. Redirecting to confirmation page"
 
         logEvents.filter(_.getLevel == Level.ERROR).exists {
@@ -458,7 +461,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
         redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
 
         val expectedMissingSettlorInfo =
-          "Trust registered with incorrect settlor information - answer section: no settlors section found. " +
+          s"$settlorAlertLogStartText - answer section: no settlors section found. " +
             "Redirecting to confirmation page"
 
         logEvents.filter(_.getLevel == Level.ERROR).exists {
