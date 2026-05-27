@@ -215,12 +215,19 @@ class DeclarationController @Inject() (
   )(implicit request: RegistrationDataRequest[AnyContent]): Result = {
     val allErrors = errors.all
 
-    if (errors.bothSourcesContainMissingOrIncomplete) {
+    if (SettlorErrors.hasMissingOrIncomplete(errors.registrationErrors)) {
       val missingInfo = allErrors.map(_.detail).mkString(", ")
+
+      val logDraftText =
+        if (SettlorErrors.hasMissingOrIncomplete(errors.draftErrors)) {
+          "and draft"
+        } else {
+          ""
+        }
 
       logger.error(
         s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
-          s"$settlorAlertLogStartText (missing or incomplete) in registration and draft: $missingInfo. " +
+          s"$settlorAlertLogStartText (missing or incomplete) in registration $logDraftText: $missingInfo. " +
           s"Redirecting to missing-mandatory-information page"
       )
 

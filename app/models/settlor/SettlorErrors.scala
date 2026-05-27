@@ -20,13 +20,12 @@ case class SettlorErrors(
   registrationErrors: List[SettlorDataError],
   draftErrors: List[SettlorDataError]
 ) {
-
   def all: List[SettlorDataError] = registrationErrors ::: draftErrors
+}
 
-  def bothSourcesContainMissingOrIncomplete: Boolean =
-    hasMissingOrIncomplete(registrationErrors) && hasMissingOrIncomplete(draftErrors)
+object SettlorErrors {
 
-  private def hasMissingOrIncomplete(errors: List[SettlorDataError]): Boolean =
+  def hasMissingOrIncomplete(errors: List[SettlorDataError]): Boolean =
     errors.exists {
       case _: MissingSettlorData | _: IncompleteSettlorData => true
       case _                                                => false

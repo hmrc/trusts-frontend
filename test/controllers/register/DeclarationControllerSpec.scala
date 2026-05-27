@@ -343,26 +343,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
         }
     }
 
-    "redirect to the missing settlor page when both registration and draft data have missing settlor information" in {
+    "redirect to the missing settlor page when registration has missing settlor info, but draft data is defined" in {
 
       reset(mockAuditService)
       val userAnswers = emptyUserAnswers
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
-      val jsonWithoutMandatorySettlorInfo: JsValue = Json.parse(
-        """
-          |{
-          |  "_id": "193af51f-a9b1-4aec-9932-a7a32c33dc77",
-          |  "data": { "nothingToSeeHere": "" },
-          |  "internalId": "Int-2b56bf2a-0d8e-4aec-ba40-a1d88b66013f",
-          |  "isTaxable": false
-          |}
-          |""".stripMargin
-      )
-
       when(registrationsRepository.getDraftSettlors(any())(any()))
-        .thenReturn(Future.successful(jsonWithoutMandatorySettlorInfo))
+        .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
       when(registrationsRepository.getRegistrationPieces(any())(any()))
         .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
@@ -382,13 +371,12 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
         val expectedAuditText =
           "registration: no settlor information provided. " +
-            "Trust should have either a deceased settlor, an individual settlor or a company settlor, " +
-            "answer section: no settlors section found"
+            "Trust should have either a deceased settlor, an individual settlor or a company settlor"
 
         verifyMissingSettlorAudits(expectedAuditText)
 
         val expectedMissingSettlorInfo =
-          s"$settlorAlertLogStartText (missing or incomplete) in registration and draft: $expectedAuditText." +
+          s"$settlorAlertLogStartText (missing or incomplete) in registration : $expectedAuditText." +
             s" Redirecting to missing-mandatory-information page"
 
         logEvents.filter(_.getLevel == Level.ERROR).exists {
@@ -397,47 +385,6 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
         application.stop()
       }
-    }
-
-    "redirect to confirmation when only the registration data has missing settlor information" in {
-      reset(mockAuditService)
-
-      val userAnswers = emptyUserAnswers
-      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
-
-      when(registrationsRepository.getRegistrationPieces(any())(any()))
-        .thenReturn(Future.successful(Json.obj()))
-
-      when(registrationsRepository.getDraftSettlors(any())(any()))
-        .thenReturn(Future.successful(validGetDraftSettlorsJson))
-
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
-        .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
-
-      withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
-        val request = FakeRequest(POST, declarationRoute)
-          .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
-
-        val expectedAuditText =
-          "registration: no settlor information provided. Trust should have either a deceased settlor, an individual settlor or a company settlor"
-
-        verifyMissingSettlorAudits(expectedAuditText)
-
-        val expectedMissingSettlorInfo =
-          s"$settlorAlertLogStartText - $expectedAuditText. Redirecting to confirmation page"
-
-        logEvents.filter(_.getLevel == Level.ERROR).exists {
-          _.getFormattedMessage.contains(expectedMissingSettlorInfo)
-        } mustBe true
-
-      }
-
-      application.stop()
     }
 
     "redirect to confirmation when only the draft data has missing settlor information" in {
