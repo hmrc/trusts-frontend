@@ -436,6 +436,56 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
   }
 
+  "redirect to confirmation when registration has invalid settlor information (deceased coexisting with other settlors)" in {
+
+    reset(mockAuditService)
+
+    val userAnswers = emptyUserAnswers
+
+    val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+    val invalidRegistration = Json.obj(
+      "trust/entities/deceased" -> Json.obj(
+        "name" -> Json.obj("firstName" -> "Will", "lastName" -> "Smith")
+      ),
+      "trust/entities/settlors" -> Json.obj(
+        "settlor" -> Json.arr(Json.obj("name" -> Json.obj("firstName" -> "Mark", "lastName" -> "B")))
+      )
+    )
+
+    when(registrationsRepository.getRegistrationPieces(any())(any()))
+      .thenReturn(Future.successful(invalidRegistration))
+
+    when(registrationsRepository.getDraftSettlors(any())(any()))
+      .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+    when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+
+    withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
+
+      val expectedAuditText = "registration: deceased settlor cannot coexist with other settlors"
+
+      verifyMissingSettlorAudits(expectedAuditText)
+
+      val expectedMissingSettlorInfo =
+        s"$settlorAlertLogStartText - $expectedAuditText. Redirecting to confirmation page"
+
+      logEvents.filter(_.getLevel == Level.ERROR).exists {
+        _.getFormattedMessage.contains(expectedMissingSettlorInfo)
+      } mustBe true
+    }
+
+    application.stop()
+  }
+
   private def verifyMissingSettlorAudits(expectedAuditText: String): Unit = {
     verify(mockAuditService, times(1))
       .auditUserAnswersOnMissingSettlorInfo(

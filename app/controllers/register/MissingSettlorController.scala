@@ -16,8 +16,7 @@
 
 package controllers.register
 
-import controllers.actions.register.RequireDraftRegistrationActionRefiner
-import controllers.actions.{StandardActionSets, TaskListCompleteActionRefiner}
+import controllers.actions.StandardActionSets
 import handlers.ErrorHandler
 import models.requests.RegistrationDataRequest
 import pages.register.RegistrationTRNPage
@@ -34,8 +33,6 @@ class MissingSettlorController @Inject() (
   override val messagesApi: MessagesApi,
   val controllerComponents: MessagesControllerComponents,
   standardAction: StandardActionSets,
-  registrationComplete: TaskListCompleteActionRefiner,
-  requireDraft: RequireDraftRegistrationActionRefiner,
   errorHandler: ErrorHandler,
   missingSettlorView: MissingSettlorView
 ) extends FrontendBaseController with I18nSupport with Logging {

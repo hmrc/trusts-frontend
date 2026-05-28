@@ -16,11 +16,14 @@
 
 package services.settlors
 
-import models.settlor.{IncompleteSettlorData, InvalidSettlorData, MissingSettlorData, SettlorDataError}
+import models.settlor.{IncompleteSettlorData, MissingSettlorData, SettlorDataError}
 import play.api.libs.json._
 
 import javax.inject.Inject
 
+// Validates settlor data from the user's answer sections, or draft.
+// Settlors are saved under `data.settlors`, with a deceased settlor under `deceased`,
+// or living individual/business settlors under `living`
 class AnswerSectionSettlorValidationService @Inject() {
 
   import SettlorValidationHelpers._
