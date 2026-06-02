@@ -23,7 +23,7 @@ import models.core.UserAnswers
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
@@ -106,20 +106,44 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
     )
   }
 
-  def auditRegistrationWithMissingSettlorInfo(userAnswers: UserAnswers, missingInfo: String)(implicit
+  def auditUserAnswersOnMissingSettlorInfo(userAnswers: UserAnswers, incorrectInfo: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit =
+    auditMissingSettlorInfo(userAnswers.data, userAnswers.draftId, incorrectInfo)
+
+  def auditRegistrationWithMissingSettlorInfo(draftId: String, registrationPieces: JsObject, incorrectInfo: String)(
+    implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit =
+    auditMissingSettlorInfo(registrationPieces, draftId, incorrectInfo, "registration")
+
+  def auditDraftWithMissingSettlorInfo(draftId: String, draftSettlors: JsValue, incorrectInfo: String)(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit =
+    auditMissingSettlorInfo(draftSettlors, draftId, incorrectInfo, "draft")
+
+  private def auditMissingSettlorInfo(
+    payload: JsValue,
+    draftId: String,
+    incorrectInfo: String,
+    descriptor: String = ""
+  )(implicit
     request: RegistrationDataRequest[_],
     hc: HeaderCarrier
   ): Unit =
 
     audit(
-      event = REGISTRATION_PREPARATION_FAILED,
-      payload = userAnswers.data,
-      draftId = userAnswers.draftId,
+      event = REGISTRATION_SETTLOR_DATA_INCORRECT,
+      payload = payload,
+      draftId = draftId,
       internalId = request.internalId,
       response = RegistrationErrorAuditEvent(
         OK,
         "MISSING_SETTLOR_INFO",
-        s"Registration proceeding with missing settlor information: $missingInfo"
+        s"Trust registration completed with missing $descriptor settlor information: $incorrectInfo"
       )
     )
 

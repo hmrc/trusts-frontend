@@ -16,29 +16,32 @@
 
 package controllers.register
 
-import base.RegistrationSpecBase
+import base.{Fixtures, RegistrationSpecBase}
+import ch.qos.logback.classic.Level
 import forms.DeclarationFormProvider
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.core.http.TrustResponse._
 import models.core.pages.{Declaration, FullName}
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.{eq => eqTo}
+import models.requests.RegistrationDataRequest
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.Mockito.{reset, times, verify, when}
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
 import play.api.http.Status.OK
-import play.api.inject
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.mvc.AnyContentAsFormUrlEncoded
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.{Logger, inject}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.play.bootstrap.tools.LogCapturing
 import views.html.register.DeclarationView
-import org.mockito.Mockito.{reset, times, verify, when}
 
 import scala.concurrent.Future
 
-class DeclarationControllerSpec extends RegistrationSpecBase {
+class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with LogCapturing {
 
   val formProvider            = new DeclarationFormProvider()
   val form: Form[Declaration] = formProvider()
@@ -51,35 +54,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
   val validAnswer: Declaration = Declaration(FullName("First", None, "Last"), Some("email@email.com"))
 
-  val jsonReturnedByGetRequestPieces: JsObject = Json
-    .parse(
-      """
-      |{
-      |  "trust/entities/settlors": {
-      |    "settlor": [
-      |      {
-      |        "aliveAtRegistration": false,
-      |        "name": {
-      |          "firstName": "Mark",
-      |          "lastName": "B"
-      |        },
-      |        "identification": {
-      |          "address": {
-      |            "line1": "123",
-      |            "line2": "Test address",
-      |            "postCode": "AB1 1AB",
-      |            "country": "GB"
-      |          }
-      |        },
-      |        "countryOfResidence": "GB",
-      |        "nationality": "GB"
-      |      }
-      |    ]
-      |  }
-      |}
-      """.stripMargin
-    )
-    .as[JsObject]
+  implicit val hc: HeaderCarrier = HeaderCarrier()
+
+  val settlorAlertLogStartText = "Trust registered with incorrect settlor information"
+
+  when(registrationsRepository.getDraftSettlors(any())(any()))
+    .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+  when(registrationsRepository.getRegistrationPieces(any())(any()))
+    .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
   "Declaration Controller" must {
 
@@ -170,6 +153,10 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
+      when(
+        registrationsRepository.getRegistrationPieces(eqTo("id"))(any())
+      ).thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
+
       val request = FakeRequest(POST, declarationRoute)
         .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
 
@@ -186,6 +173,25 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
 
       when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
         .thenReturn(Future.failed(UnableToRegister()))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+      application.stop()
+    }
+
+    "redirect to the task list page when valid data is submitted and submission service returns an unexpected response" in {
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.successful(InternalServerError))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
@@ -272,6 +278,31 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
       application.stop()
     }
 
+    "re-throw the exception when a non fatal exception is thrown during submission" in {
+
+      val nonFatalException = new RuntimeException("Error")
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.failed(nonFatalException))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
+
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+      val result = route(application, request).value
+
+      val thrown = intercept[RuntimeException] {
+        await(result)
+      }
+
+      thrown.getMessage mustEqual "Error"
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+
+      application.stop()
+    }
+
     Seq(
       ("not", BAD_REQUEST),
       ("is", OK)
@@ -312,6 +343,169 @@ class DeclarationControllerSpec extends RegistrationSpecBase {
         }
     }
 
+    "redirect to the missing settlor page when registration has missing settlor info, but draft data is defined" in {
+
+      reset(mockAuditService)
+      val userAnswers = emptyUserAnswers
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+      when(registrationsRepository.getDraftSettlors(any())(any()))
+        .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+      when(registrationsRepository.getRegistrationPieces(any())(any()))
+        .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+
+      withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          FakeRequest(POST, routes.DeclarationController.onPageLoad("id").url)
+            .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.MissingSettlorController.onPageLoad("id").url
+
+        val expectedAuditText =
+          "registration: no settlor information provided. " +
+            "Trust should have either a deceased settlor, an individual settlor or a company settlor"
+
+        verifyMissingSettlorAudits(expectedAuditText)
+
+        val expectedMissingSettlorInfo =
+          s"$settlorAlertLogStartText (missing or incomplete) in registration : $expectedAuditText." +
+            s" Redirecting to missing-mandatory-information page"
+
+        logEvents.filter(_.getLevel == Level.ERROR).exists {
+          _.getFormattedMessage.contains(expectedMissingSettlorInfo)
+        } mustBe true
+
+        application.stop()
+      }
+    }
+
+    "redirect to confirmation when only the draft data has missing settlor information" in {
+      reset(mockAuditService)
+
+      val userAnswers = emptyUserAnswers
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+      val validRegistration = Json.obj(
+        "trust/entities/settlors" -> Json.obj(
+          "settlor" -> Json.arr(Json.obj("name" -> Json.obj("firstName" -> "Mark", "lastName" -> "B")))
+        )
+      )
+
+      when(registrationsRepository.getRegistrationPieces(any())(any()))
+        .thenReturn(Future.successful(validRegistration))
+
+      when(registrationsRepository.getDraftSettlors(any())(any()))
+        .thenReturn(Future.successful(Json.obj()))
+
+      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+        .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+
+      withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
+        val request = FakeRequest(POST, declarationRoute)
+          .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
+
+        val expectedAuditText = "answer section: no settlors section found"
+
+        verifyMissingSettlorAudits(expectedAuditText)
+
+        val expectedMissingSettlorInfo =
+          s"$settlorAlertLogStartText - $expectedAuditText. Redirecting to confirmation page"
+
+        logEvents.filter(_.getLevel == Level.ERROR).exists {
+          _.getFormattedMessage.contains(expectedMissingSettlorInfo)
+        } mustBe true
+
+      }
+
+      application.stop()
+    }
+
+  }
+
+  "redirect to confirmation when registration has invalid settlor information (deceased coexisting with other settlors)" in {
+
+    reset(mockAuditService)
+
+    val userAnswers = emptyUserAnswers
+
+    val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
+
+    val invalidRegistration = Json.obj(
+      "trust/entities/deceased" -> Json.obj(
+        "name" -> Json.obj("firstName" -> "Will", "lastName" -> "Smith")
+      ),
+      "trust/entities/settlors" -> Json.obj(
+        "settlor" -> Json.arr(Json.obj("name" -> Json.obj("firstName" -> "Mark", "lastName" -> "B")))
+      )
+    )
+
+    when(registrationsRepository.getRegistrationPieces(any())(any()))
+      .thenReturn(Future.successful(invalidRegistration))
+
+    when(registrationsRepository.getDraftSettlors(any())(any()))
+      .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+    when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
+
+    withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
+      val request = FakeRequest(POST, declarationRoute)
+        .withFormUrlEncodedBody(("firstName", validAnswer.name.firstName), ("lastName", validAnswer.name.lastName))
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
+
+      val expectedAuditText = "registration: deceased settlor cannot coexist with other settlors"
+
+      verifyMissingSettlorAudits(expectedAuditText)
+
+      val expectedMissingSettlorInfo =
+        s"$settlorAlertLogStartText - $expectedAuditText. Redirecting to confirmation page"
+
+      logEvents.filter(_.getLevel == Level.ERROR).exists {
+        _.getFormattedMessage.contains(expectedMissingSettlorInfo)
+      } mustBe true
+    }
+
+    application.stop()
+  }
+
+  private def verifyMissingSettlorAudits(expectedAuditText: String): Unit = {
+    verify(mockAuditService, times(1))
+      .auditUserAnswersOnMissingSettlorInfo(
+        any[UserAnswers],
+        eqTo(expectedAuditText)
+      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+
+    verify(mockAuditService, times(1))
+      .auditDraftWithMissingSettlorInfo(
+        any[String],
+        any[JsValue],
+        eqTo(expectedAuditText)
+      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+
+    verify(mockAuditService, times(1))
+      .auditRegistrationWithMissingSettlorInfo(
+        any[String],
+        any[JsObject],
+        eqTo(expectedAuditText)
+      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
   }
 
 }

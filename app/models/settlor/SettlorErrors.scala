@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package auditing
+package models.settlor
 
-object TrustAuditing {
+case class SettlorErrors(
+  registrationErrors: List[SettlorDataError],
+  draftErrors: List[SettlorDataError]
+) {
+  def all: List[SettlorDataError] = registrationErrors ::: draftErrors
+}
 
-  val REGISTRATION_SUBMITTED_BY_ORGANISATION = "RegistrationSubmittedByOrganisation"
-  val REGISTRATION_SUBMITTED_BY_AGENT        = "RegistrationSubmittedByAgent"
-  val REGISTRATION_SUBMISSION_FAILED         = "RegistrationSubmissionFailed"
-  val REGISTRATION_PREPARATION_FAILED        = "RegistrationPreparationFailed"
-  val REGISTRATION_SETTLOR_DATA_INCORRECT    = "RegistrationSettlorDataIncorrect"
+object SettlorErrors {
 
-  val USER_ANSWERS = "UserAnswers"
+  def hasMissingOrIncomplete(errors: List[SettlorDataError]): Boolean =
+    errors.exists {
+      case _: MissingSettlorData | _: IncompleteSettlorData => true
+      case _                                                => false
+    }
 
 }

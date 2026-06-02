@@ -16,20 +16,23 @@
 
 package pages.register
 
+import base.Fixtures
 import base.RegistrationSpecBase
 import models.registration.pages.TagStatus._
 import models.{FirstTaxYearAvailable, TaskStatuses}
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, eq => eqTo}
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.test.Helpers.OK
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import viewmodels._
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
+class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks with Fixtures {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -46,7 +49,14 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
             .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
-          val application          = applicationBuilder().build()
+          when(registrationsRepository.getDraftSettlors(any())(any()))
+            .thenReturn(Future.successful(validGetDraftSettlorsJson))
+
+          when(registrationsRepository.getRegistrationPieces(any())(any()))
+            .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
+
+          val application = applicationBuilder().build()
+
           val registrationProgress = application.injector.instanceOf[RegistrationProgress]
 
           val result = Await.result(

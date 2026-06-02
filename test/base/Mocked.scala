@@ -25,7 +25,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.AnyContent
 import play.api.test.Helpers.OK
 import repositories.{CacheRepository, RegistrationsRepository}
-import services.{DraftRegistrationService, SubmissionService, TrustsStoreService}
+import services.{AuditService, DraftRegistrationService, SubmissionService, TrustsStoreService}
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUserAnswers
 import viewmodels.RegistrationAnswerSections
@@ -42,6 +42,8 @@ trait Mocked extends MockitoSugar {
     mock[DraftRegistrationService]
 
   val mockTrustsStoreService: TrustsStoreService = mock[TrustsStoreService]
+
+  val mockAuditService: AuditService = mock[AuditService]
 
   when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))

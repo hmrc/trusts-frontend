@@ -1,0 +1,52 @@
+@*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+@import views.html.components.Heading
+
+@this(
+    mainTemplate: MainTemplate,
+    config: FrontendAppConfig,
+    heading: Heading
+)
+
+@(trn: String)(implicit request: RequestHeader, messages: Messages)
+
+@mainTemplate(
+title = messages("missingSettlorView.title"),
+showBackLink = true
+) {
+
+    @heading("missingSettlorView.heading")
+
+    <p>@messages("missingSettlorView.p1")</p>
+    <p>@messages("missingSettlorView.p2")</p>
+
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-8" id="trn">@trn</h3>
+
+    <h2 class="govuk-heading-m">@messages("missingSettlorView.h2")</h2>
+
+    <p class="govuk-!-margin-bottom-0">@messages("missingSettlorView.p3")</p>
+    <p>@messages("missingSettlorView.p4")</p>
+
+    <p class="govuk-!-margin-bottom-0">@messages("missingSettlorView.p5")</p>
+    <p>@messages("missingSettlorView.p6")</p>
+
+    <p class="govuk-!-margin-bottom-0">@messages("missingSettlorView.p7")</p>
+    <p class="govuk-!-margin-bottom-0">@messages("missingSettlorView.p8")</p>
+    <p>@messages("missingSettlorView.p9")</p>
+
+}

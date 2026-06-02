@@ -16,28 +16,32 @@
 
 package controllers.register
 
+import cats.syntax.all._
 import controllers.actions._
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
-import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.RegistrationSubmission
+import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.core.UserAnswers
 import models.core.http.TrustResponse._
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.core.pages.Declaration
 import models.registration.pages.RegistrationStatus
 import models.requests.RegistrationDataRequest
+import models.settlor.SettlorErrors
 import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{JsObject, JsValue}
+import play.api.libs.json._
 import play.api.mvc._
 import repositories.RegistrationsRepository
-import services.{AuditService, SettlorValidationService, SubmissionService}
+import services.settlors.{AnswerSectionSettlorValidationService, RegistrationSettlorValidationService}
+import services.{AuditService, SubmissionService}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAliveAtRegistrationFromJson}
 import views.html.register.DeclarationView
 
 import java.time.temporal.ChronoUnit.DAYS
@@ -45,9 +49,6 @@ import java.time.{LocalDateTime, ZoneOffset}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
-import play.api.libs.json._
-import utils.JsonTransformers.{checkIfAliveAtRegistrationFieldPresent, removeAliveAtRegistrationFromJson}
-import cats.syntax.all._
 
 class DeclarationController @Inject() (
   override val messagesApi: MessagesApi,
@@ -55,7 +56,8 @@ class DeclarationController @Inject() (
   formProvider: DeclarationFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: DeclarationView,
-  settlorValidationService: SettlorValidationService,
+  registrationSettlorValidator: RegistrationSettlorValidationService,
+  answerSectionSettlorValidator: AnswerSectionSettlorValidationService,
   auditService: AuditService,
   submissionService: SubmissionService,
   registrationComplete: TaskListCompleteActionRefiner,
@@ -64,8 +66,9 @@ class DeclarationController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  private val className               = getClass.getSimpleName
-  private val form: Form[Declaration] = formProvider()
+  private val className                = getClass.getSimpleName
+  private val form: Form[Declaration]  = formProvider()
+  private val settlorAlertLogStartText = "Trust registered with incorrect settlor information"
 
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
@@ -74,17 +77,19 @@ class DeclarationController @Inject() (
     request: RegistrationDataRequest[AnyContent]
   ): Future[Status] =
     for {
-      settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <- registrationsRepository
-                                                                             .getSettlorsAnswerSections(draftId)
+      settlorsAnswersSection: Seq[RegistrationSubmission.AnswerSection] <-
+        registrationsRepository.getSettlorsAnswerSections(draftId)
 
-      registrationPieces: JsObject                                      <- registrationsRepository
-                                                                             .getRegistrationPieces(draftId)
+      registrationPieces: JsObject                                      <-
+        registrationsRepository.getRegistrationPieces(draftId)
 
       maybeUpdatedMappedPieces: Option[Seq[MappedPiece]]                 =
-        if (checkIfAliveAtRegistrationFieldPresent(registrationPieces))
+        if (checkIfAliveAtRegistrationFieldPresent(registrationPieces)) {
           removeAliveAtRegistrationFromJson(registrationPieces)
             .map(piece => Seq(MappedPiece("trust/entities/settlors", piece)))
-        else None
+        } else {
+          None
+        }
 
       response: Option[HttpResponse]                                    <-
         maybeUpdatedMappedPieces
@@ -138,7 +143,7 @@ class DeclarationController @Inject() (
           Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
         (declaration: Declaration) =>
           (for {
-            draftSettlors               <- getExpectedSettlorData(draftId)
+            draftSettlors               <- registrationsRepository.getDraftSettlors(draftId)
             _                           <- updateSettlorRemoveAliveAtRegistrationField(draftId, draftSettlors)
             updatedAnswers: UserAnswers <- Future.fromTry(request.userAnswers.set(DeclarationPage, declaration))
             _                           <- registrationsRepository.set(updatedAnswers, request.affinityGroup)
@@ -167,7 +172,7 @@ class DeclarationController @Inject() (
     response match {
       case trn: RegistrationTRNResponse =>
         logger.info(s"[$className][handleResponse][Session ID: ${request.sessionId}] Saving trust registration trn.")
-        saveTRNAndCompleteRegistration(updatedAnswers, trn)
+        saveTRNAndCompleteRegistration(updatedAnswers, trn, draftId)
       case AlreadyRegistered            =>
         logger.info(
           s"[$className][handleResponse][Session ID: ${request.sessionId}] unable to submit as trust is already registered"
@@ -178,59 +183,97 @@ class DeclarationController @Inject() (
         Future.successful(Redirect(routes.TaskListController.onPageLoad(draftId)))
     }
 
-  private def saveTRNAndCompleteRegistration(updatedAnswers: UserAnswers, trn: RegistrationTRNResponse)(implicit
+  private def saveTRNAndCompleteRegistration(
+    updatedAnswers: UserAnswers,
+    trn: RegistrationTRNResponse,
+    draftId: String
+  )(implicit
     hc: HeaderCarrier,
     request: RegistrationDataRequest[AnyContent]
-  ): Future[Result] =
-    Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn)).flatMap { trnSaved =>
-      val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
-      Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate)).flatMap { dateSaved =>
-        val days = DAYS.between(updatedAnswers.createdAt, submissionDate)
+  ): Future[Result] = {
+    val submissionDate = LocalDateTime.now(ZoneOffset.UTC)
 
-        logger.info(
-          s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] Days between creation and submission: $days"
+    for {
+      trnSaved             <- Future.fromTry(updatedAnswers.set(RegistrationTRNPage, trn.trn))
+      dateSaved            <- Future.fromTry(trnSaved.set(RegistrationSubmissionDatePage, submissionDate))
+      _                     = logger.info(
+                                s"[$className][saveTRNAndCompleteRegistration][Session ID: ${request.sessionId}] " +
+                                  s"Days between creation and submission: ${DAYS.between(updatedAnswers.createdAt, submissionDate)}"
+                              )
+      _                    <- registrationsRepository.set(dateSaved.copy(progress = RegistrationStatus.Complete), request.affinityGroup)
+      registrationPieces   <- registrationsRepository.getRegistrationPieces(draftId)
+      draftSettlors        <- registrationsRepository.getDraftSettlors(draftId)
+      incorrectSettlorData <- findIncorrectSettlorData(registrationPieces, draftSettlors)
+    } yield redirectBySettlorDataErrors(incorrectSettlorData, updatedAnswers.draftId, registrationPieces, draftSettlors)
+  }
+
+  private def redirectBySettlorDataErrors(
+    errors: SettlorErrors,
+    draftId: String,
+    registrationPieces: JsObject,
+    draftSettlors: JsValue
+  )(implicit request: RegistrationDataRequest[AnyContent]): Result = {
+    val allErrors = errors.all
+
+    if (SettlorErrors.hasMissingOrIncomplete(errors.registrationErrors)) {
+      val missingInfo = allErrors.map(_.detail).mkString(", ")
+
+      val logDraftText =
+        if (SettlorErrors.hasMissingOrIncomplete(errors.draftErrors)) {
+          "and draft"
+        } else {
+          ""
+        }
+
+      logger.error(
+        s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
+          s"$settlorAlertLogStartText (missing or incomplete) in registration $logDraftText: $missingInfo. " +
+          s"Redirecting to missing-mandatory-information page"
+      )
+
+      auditIncorrectSettlorInfo(draftId, missingInfo, registrationPieces, draftSettlors)
+
+      Redirect(routes.MissingSettlorController.onPageLoad(draftId))
+
+    } else {
+
+      if (allErrors.nonEmpty) {
+        val incorrectInfo = allErrors.map(_.detail).mkString(", ")
+        logger.error(
+          s"[$className][redirectBySettlorDataErrors][Session ID: ${request.sessionId}] " +
+            s"$settlorAlertLogStartText - $incorrectInfo. Redirecting to confirmation page"
         )
 
-        registrationsRepository
-          .set(
-            dateSaved.copy(progress = RegistrationStatus.Complete),
-            request.affinityGroup
-          )
-          .map { _ =>
-            Redirect(routes.ConfirmationController.onPageLoad(updatedAnswers.draftId))
-          }
+        auditIncorrectSettlorInfo(draftId, incorrectInfo, registrationPieces, draftSettlors)
       }
+
+      Redirect(routes.ConfirmationController.onPageLoad(draftId))
     }
+  }
 
-  private def getExpectedSettlorData(
-    draftId: String
-  )(implicit hc: HeaderCarrier, request: RegistrationDataRequest[AnyContent]): Future[JsValue] =
-    for {
-      registrationSettlor  <- registrationsRepository.getRegistrationPieces(draftId)
-      answerSectionSettlor <- registrationsRepository.getDraftSettlors(draftId)
+  // audit as much as we can on any issue with settlor data to narrow down issue
+  private def auditIncorrectSettlorInfo(
+    draftId: String,
+    incorrectInfo: String,
+    registrationPieces: JsObject,
+    draftSettlors: JsValue
+  )(implicit
+    request: RegistrationDataRequest[_],
+    hc: HeaderCarrier
+  ): Unit = {
+    auditService.auditUserAnswersOnMissingSettlorInfo(request.userAnswers, incorrectInfo)
+    auditService.auditDraftWithMissingSettlorInfo(draftId, draftSettlors, incorrectInfo)
+    auditService.auditRegistrationWithMissingSettlorInfo(draftId, registrationPieces, incorrectInfo)
+  }
 
-      registrationValidation  = validateRegistrationSettlorComponent(Some(registrationSettlor))
-      answerSectionValidation = validateAnswerSectionSettlorComponent(Some(answerSectionSettlor.as[JsObject]))
+  private def findIncorrectSettlorData(
+    registrationPieces: JsObject,
+    draftSettlors: JsValue
+  ): Future[SettlorErrors] = {
+    val registrationValidation  = registrationSettlorValidator.validate(registrationPieces)
+    val answerSectionValidation = answerSectionSettlorValidator.validate(draftSettlors)
 
-      allMissingComponents = registrationValidation ::: answerSectionValidation
-
-      _ = if (allMissingComponents.nonEmpty) {
-            val missingInfo = allMissingComponents.mkString(", ")
-            val logMessage  =
-              s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] Trust registration proceeding with missing settlor information: $missingInfo"
-            logger.warn(logMessage)
-            auditService.auditRegistrationWithMissingSettlorInfo(request.userAnswers, missingInfo)
-          } else {
-            logger.info(
-              s"[$className][getExpectedSettlorData][Session ID: ${request.sessionId}] All required settlor information is present in both structures"
-            )
-          }
-    } yield answerSectionSettlor
-
-  private def validateRegistrationSettlorComponent(registrationSettlorData: Option[JsObject]): List[String] =
-    settlorValidationService.validateRegistrationSettlorComponent(registrationSettlorData)
-
-  private def validateAnswerSectionSettlorComponent(answerSectionSettlor: Option[JsObject]): List[String] =
-    settlorValidationService.validateAnswerSectionSettlorComponent(answerSectionSettlor)
+    Future.successful(SettlorErrors(registrationValidation, answerSectionValidation))
+  }
 
 }

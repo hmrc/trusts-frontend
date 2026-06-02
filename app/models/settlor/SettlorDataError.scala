@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package auditing
+package models.settlor
 
-object TrustAuditing {
-
-  val REGISTRATION_SUBMITTED_BY_ORGANISATION = "RegistrationSubmittedByOrganisation"
-  val REGISTRATION_SUBMITTED_BY_AGENT        = "RegistrationSubmittedByAgent"
-  val REGISTRATION_SUBMISSION_FAILED         = "RegistrationSubmissionFailed"
-  val REGISTRATION_PREPARATION_FAILED        = "RegistrationPreparationFailed"
-  val REGISTRATION_SETTLOR_DATA_INCORRECT    = "RegistrationSettlorDataIncorrect"
-
-  val USER_ANSWERS = "UserAnswers"
-
+sealed trait SettlorDataError {
+  val detail: String
 }
+
+// an outer level section of the data is missing
+final case class MissingSettlorData(detail: String) extends SettlorDataError
+
+// data within a defined section is missing or incomplete
+final case class IncompleteSettlorData(detail: String) extends SettlorDataError
+
+// data is defined, but in an invalid state (e.g. Will Trust with living settlor)
+final case class InvalidSettlorData(detail: String) extends SettlorDataError

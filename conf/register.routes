@@ -78,6 +78,8 @@ GET        /:draftId/your-draft-registration            controllers.register.Sum
 
 GET        /:draftId/your-declared-registration         controllers.register.ConfirmationAnswerPageController.onPageLoad(draftId: String)
 
+GET        /missing-mandatory-information               controllers.register.MissingSettlorController.onPageLoad(draftId: String)
+
 ## Suitability
 
 GET        /is-express-trust                            controllers.register.suitability.ExpressTrustYesNoController.onPageLoad()
