@@ -39,8 +39,8 @@ trait IsExpressYesNoViewBehaviours extends QuestionViewBehaviours[Boolean] {
 
           val doc     = asDocument(createView(form))
           val legends = doc.getElementsByTag("legend")
-          legends.size     mustBe 1
-          legends.first.text must include(messages(s"$messageKeyPrefix.subheading3", args: _*))
+          legends.size                        mustBe 1
+          legends.first.text                    must include(messages(s"$messageKeyPrefix.subheading3", args: _*))
           legends.hasClass("govuk-heading-m") mustBe true
           hintTextPrefix.map { pref =>
             doc.getElementsByClass("govuk-hint").first.text must include(messages(s"$pref.hint"))
