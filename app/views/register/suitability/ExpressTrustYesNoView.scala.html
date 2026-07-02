@@ -56,13 +56,11 @@
 
         <p>@messages("suitability.expressTrust.p4")</p>
 
-        <h2>@messages("suitability.expressTrust.subheading3")</h2>
-
         @inputYesNo(
             field = form("value"),
             label = messages("suitability.expressTrust.subheading3"),
             legendAsHeading = false,
-            legendClass = Some("govuk-visually-hidden")
+            legendClass = Some("govuk-heading-m")
         )
 
         @submitButton()
