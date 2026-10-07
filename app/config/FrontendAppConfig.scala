@@ -68,10 +68,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration, contactFron
     url.replace(":draftId", draftId)
   }
 
-  lazy val agentServiceRegistrationUrl: String = {
-    lazy val agentsSubscriptionsUrl: String = configuration.get[String]("urls.agentSubscriptions")
-    s"$agentsSubscriptionsUrl?continue=$loginContinueUrl"
-  }
+  lazy val agentServiceRegistrationUrl: String = configuration.get[String]("urls.agentRegistration")
 
   lazy val locationCanonicalList: String   = configuration.get[String]("location.canonical.list.all")
   lazy val locationCanonicalListCY: String = configuration.get[String]("location.canonical.list.allCY")
