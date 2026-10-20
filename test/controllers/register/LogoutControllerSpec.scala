@@ -46,7 +46,11 @@ class LogoutControllerSpec extends RegistrationSpecBase {
 
     status(result) mustEqual SEE_OTHER
 
-    redirectLocation(result).value mustBe expectedUrl
+    val value = redirectLocation(result).value
+
+    value mustBe expectedUrl
+
+    value must include("useServiceNavigation")
 
     verify(mockAuditConnector, never())
       .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(any(), any())
