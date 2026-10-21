@@ -118,7 +118,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration, contactFron
 
   lazy val countdownLength: Int = configuration.get[Int]("timeout.countdown")
   lazy val timeoutLength: Int   = configuration.get[Int]("timeout.length")
-
+  lazy val urBannerURL: String = configuration.get[String]("urls.urBannerURL")
   def helplineUrl(implicit messages: Messages): String = {
     val path = messages.lang.code match {
       case WELSH => "urls.welshHelpline"

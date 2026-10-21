@@ -29,7 +29,8 @@
 @(draftId: String, refNumber: String, leadTrusteeName: String)(implicit request: Request[_], messages: Messages)
 
 @mainTemplate(
-    title = messages("confirmation.title")
+    title = messages("confirmation.title"),
+    showBanner = true
 ) {
 
     @registrationReceived(refNumber)
