@@ -24,6 +24,9 @@ trait ViewBehaviours extends ViewSpecBase {
   private def findBannerTitle(view: HtmlFormat.Appendable): String =
     asDocument(view).getElementsByClass("govuk-service-navigation__service-name").text().trim
 
+  private def findUserResearchBannerTitle(view: HtmlFormat.Appendable): String =
+    asDocument(view).getElementsByClass("hmrc-user-research-banner__title").text().trim
+
   def normalPage(
     view: HtmlFormat.Appendable,
     sectionKey: Option[String],
@@ -228,6 +231,10 @@ trait ViewBehaviours extends ViewSpecBase {
 
           val doc = asDocument(view)
           assertRenderedByCssSelector(doc, "a[lang=cy]")
+        }
+
+        "have the correct user research banner title" in {
+          findUserResearchBannerTitle(view) mustBe "You may receive a voucher for feedback"
         }
 
       }

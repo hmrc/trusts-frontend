@@ -116,9 +116,10 @@ class FrontendAppConfig @Inject() (val configuration: Configuration, contactFron
   lazy val maintainATrustWithURN: String =
     configuration.get[String]("urls.maintainATrustWithURN")
 
-  lazy val countdownLength: Int = configuration.get[Int]("timeout.countdown")
-  lazy val timeoutLength: Int   = configuration.get[Int]("timeout.length")
-  lazy val urBannerURL: String = configuration.get[String]("urls.urBannerURL")
+  lazy val countdownLength: Int                        = configuration.get[Int]("timeout.countdown")
+  lazy val timeoutLength: Int                          = configuration.get[Int]("timeout.length")
+  lazy val urBannerURL: String                         = configuration.get[String]("urls.urBannerURL")
+
   def helplineUrl(implicit messages: Messages): String = {
     val path = messages.lang.code match {
       case WELSH => "urls.welshHelpline"
