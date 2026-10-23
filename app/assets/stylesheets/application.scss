@@ -68,6 +68,18 @@ h2 {
   font-weight: bold;
 }
 
+.hmrc-user-research-banner {
+ &__title {
+     @include govuk-responsive-margin(1, "bottom");
+     color: govuk-colour("white");
+   }
+
+  &__link {
+    @include govuk-link-common;
+    @include govuk-link-style-inverse;
+  }
+}
+
 @media print {
   .print-hidden, .header-wrapper, .service-info, .report-error  {
     display: none !important;
