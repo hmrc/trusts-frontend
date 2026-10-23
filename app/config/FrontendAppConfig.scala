@@ -28,9 +28,6 @@ class FrontendAppConfig @Inject() (val configuration: Configuration, contactFron
 
   private def loadConfig(key: String): String = configuration.get[String](key)
 
-  val betaFeedbackUrl =
-    s"${contactFrontendConfig.baseUrl.get}/contact/beta-feedback?service=${contactFrontendConfig.serviceId.get}"
-
   lazy val appName: String = configuration.get[String]("appName")
 
   lazy val affinityGroup           = configuration.get[String]("affinityGroup")
@@ -119,6 +116,11 @@ class FrontendAppConfig @Inject() (val configuration: Configuration, contactFron
   lazy val countdownLength: Int = configuration.get[Int]("timeout.countdown")
   lazy val timeoutLength: Int   = configuration.get[Int]("timeout.length")
   lazy val urBannerURL: String  = configuration.get[String]("urls.urBannerURL")
+
+  lazy val basGatewayBaseUrl: String       = configuration.get[String]("bas-gateway.host")
+  lazy val feedbackFrontendUrl: String     = s"${configuration.get[String]("feedback-frontend.url")}?useServiceNavigation"
+  lazy val timeOutUrl: String              = configuration.get[String]("urls.timeOut")
+  lazy val logoutWithBasGatewayUrl: String = s"$basGatewayBaseUrl$logoutUrl"
 
   def helplineUrl(implicit messages: Messages): String = {
     val path = messages.lang.code match {

@@ -23,6 +23,8 @@ import play.api.mvc.{AnyContent, MessagesControllerComponents, Request}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
+import java.net.URLEncoder
+
 class SessionTimeoutControllerSpec extends RegistrationSpecBase {
 
   object TestSessionTimeoutController
@@ -46,8 +48,11 @@ class SessionTimeoutControllerSpec extends RegistrationSpecBase {
       "the timeout method is" in {
         val fakeRequest: Request[AnyContent] = FakeRequest().withSession()
         val res                              = TestSessionTimeoutController.timeout(fakeRequest)
+        val continueUrl                      = URLEncoder.encode(s"${fakeFrontendAppConfig.timeOutUrl}", "UTF-8")
+        val expectedUrl                      = s"${fakeFrontendAppConfig.logoutWithBasGatewayUrl}?continue=$continueUrl"
+
         status(res) mustEqual SEE_OTHER
-        redirectLocation(res).value mustEqual controllers.register.routes.SessionExpiredController.onPageLoad().url
+        redirectLocation(res).value mustEqual expectedUrl
       }
     }
     "redirect to next page for a POST" in {
