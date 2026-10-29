@@ -115,6 +115,7 @@ class FrontendAppConfig @Inject() (val configuration: Configuration, contactFron
 
   lazy val countdownLength: Int = configuration.get[Int]("timeout.countdown")
   lazy val timeoutLength: Int   = configuration.get[Int]("timeout.length")
+  lazy val urBannerURL: String  = configuration.get[String]("urls.urBannerURL")
 
   lazy val basGatewayBaseUrl: String       = configuration.get[String]("bas-gateway.host")
   lazy val feedbackFrontendUrl: String     = s"${configuration.get[String]("feedback-frontend.url")}?useServiceNavigation"
