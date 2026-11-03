@@ -24,7 +24,7 @@ import play.api.mvc.Call
 
 object SuitabilityRoutes extends Routes {
 
-  def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+  def route(): PartialFunction[Page, TrustsFrontendUserAnswers[?] => Call] = {
     case ExpressTrustYesNoPage                 =>
       ua =>
         ua.get(TrustTaxableYesNoPage) match {
@@ -48,7 +48,7 @@ object SuitabilityRoutes extends Routes {
         )
   }
 
-  private def nonTaxableRoute(answers: TrustsFrontendUserAnswers[_]): Call =
+  private def nonTaxableRoute(answers: TrustsFrontendUserAnswers[?]): Call =
     yesNoNav(
       answers,
       ExpressTrustYesNoPage,

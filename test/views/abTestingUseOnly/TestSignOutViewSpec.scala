@@ -29,7 +29,7 @@ class TestSignOutViewSpec extends ViewBehaviours {
 
     val view = viewFor[TestSignOutView](None)
 
-    def applyView(): HtmlFormat.Appendable = view.apply()(fakeRequest, messages)
+    def applyView(): HtmlFormat.Appendable = view.apply()(using fakeRequest, messages)
 
     behave like normalPage(applyView(), None, messageKeyPrefix)
 

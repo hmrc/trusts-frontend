@@ -28,7 +28,7 @@ import pages.register.*
 
 trait MatchingRoutes {
 
-  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks & Generators & RegistrationSpecBase =>
 
   def matchingRoutes()(implicit navigator: Navigator): Unit = {
 

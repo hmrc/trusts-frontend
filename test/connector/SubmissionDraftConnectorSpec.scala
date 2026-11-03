@@ -42,7 +42,7 @@ class SubmissionDraftConnectorSpec
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(Seq("microservice.services.trusts.port" -> server.port(), "auditing.enabled" -> false): _*)
+    .configure(Seq("microservice.services.trusts.port" -> server.port(), "auditing.enabled" -> false)*)
     .build()
 
   private lazy val connector = injector.instanceOf[SubmissionDraftConnector]

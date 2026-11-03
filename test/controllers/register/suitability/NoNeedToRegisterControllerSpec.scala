@@ -44,7 +44,7 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(isAgent = true)(request, messages).toString
+          view(isAgent = true)(using request, messages).toString
 
         application.stop()
       }
@@ -64,7 +64,7 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(isAgent = false)(request, messages).toString
+          view(isAgent = false)(using request, messages).toString
 
         application.stop()
       }

@@ -44,7 +44,7 @@ class RefSentByPostControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view()(request, messages).toString
+          view()(using request, messages).toString
 
         application.stop()
       }
@@ -65,7 +65,7 @@ class RefSentByPostControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view()(request, messages).toString
+          view()(using request, messages).toString
 
         application.stop()
       }

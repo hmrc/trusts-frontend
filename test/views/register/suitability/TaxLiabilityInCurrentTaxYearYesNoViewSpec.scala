@@ -34,12 +34,11 @@ class TaxLiabilityInCurrentTaxYearYesNoViewSpec extends YesNoViewBehaviours {
 
     val view = viewFor[TaxLiabilityInCurrentTaxYearYesNoView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, currentTaxYearStartAndEnd)(fakeRequest, messages)
+    def applyView(form: Form[?]): HtmlFormat.Appendable =
+      view.apply(form, currentTaxYearStartAndEnd)(using fakeRequest, messages)
 
     behave like dynamicTitlePage(
       applyView(form),
-      None,
       messageKeyPrefix,
       Seq(currentTaxYearStartAndEnd._1, currentTaxYearStartAndEnd._2)
     )

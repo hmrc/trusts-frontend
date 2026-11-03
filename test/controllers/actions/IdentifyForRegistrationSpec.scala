@@ -54,7 +54,7 @@ class IdentifyForRegistrationSpec extends RegistrationSpecBase {
 
         def fakeAction: Action[AnyContent] = identify(_ => Results.Ok)
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any()))
           .thenReturn(Future failed BearerTokenExpired())
 
         val result = fakeAction.apply(fakeRequest)
@@ -77,7 +77,7 @@ class IdentifyForRegistrationSpec extends RegistrationSpecBase {
 
         val idRequest = IdentifierRequest(fakeRequest, "id", AffinityGroup.Agent, Enrolments(Set.empty[Enrolment]))
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(any(), any()))
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]]())(using any(), any()))
           .thenReturn(authRetrievals(AffinityGroup.Agent, agentEnrolment))
 
         val result = fakeAction.apply(idRequest)

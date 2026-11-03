@@ -29,7 +29,7 @@ import pages.register.suitability.{
 
 trait SuitabilityRoutes {
 
-  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks & Generators & RegistrationSpecBase =>
 
   def suitabilityRoutes()(using navigator: Navigator): Unit = {
 

@@ -29,8 +29,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class RequireDraftRegistrationActionRefinerSpec
     extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {

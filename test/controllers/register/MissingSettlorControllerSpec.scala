@@ -19,7 +19,6 @@ package controllers.register
 import base.RegistrationSpecBase
 import handlers.ErrorHandler
 import models.core.TrustsFrontendUserAnswers
-import models.registration.pages.RegistrationStatus
 import navigation.Navigator
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, when}
@@ -53,7 +52,7 @@ class MissingSettlorControllerSpec extends RegistrationSpecBase with BeforeAndAf
   }
 
   override protected def applicationBuilder(
-    userAnswers: Option[TrustsFrontendUserAnswers[_]],
+    userAnswers: Option[TrustsFrontendUserAnswers[?]],
     affinityGroup: AffinityGroup = AffinityGroup.Organisation,
     enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
     navigator: Navigator = fakeNavigator
@@ -81,7 +80,7 @@ class MissingSettlorControllerSpec extends RegistrationSpecBase with BeforeAndAf
       val view    = application.injector.instanceOf[MissingSettlorView]
 
       status(result) mustEqual OK
-      contentAsString(result) mustEqual view(trn)(request, messages).toString
+      contentAsString(result) mustEqual view(trn)(using request, messages).toString
 
       application.stop()
     }

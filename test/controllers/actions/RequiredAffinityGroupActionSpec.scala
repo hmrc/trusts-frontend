@@ -26,8 +26,7 @@ import play.api.http.HeaderNames
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class RequiredAffinityGroupActionSpec
     extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {

@@ -151,7 +151,6 @@ trait ViewBehaviours extends ViewSpecBase {
 
   def dynamicTitlePage(
     view: HtmlFormat.Appendable,
-    sectionKey: Option[String],
     messageKeyPrefix: String,
     args: Seq[String],
     expectedGuidanceKeys: String*
@@ -193,7 +192,6 @@ trait ViewBehaviours extends ViewSpecBase {
     messageKeyPrefix: String,
     refNumber: String,
     leadTrusteeName: String,
-    sectionKey: Option[String],
     expectedGuidanceKeys: String*
   ): Unit =
 

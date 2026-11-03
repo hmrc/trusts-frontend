@@ -41,7 +41,7 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(Seq("microservice.services.trusts.port" -> server.port(), "auditing.enabled" -> false): _*)
+    .configure(Seq("microservice.services.trusts.port" -> server.port(), "auditing.enabled" -> false)*)
     .build()
 
   private lazy val connector = injector.instanceOf[TrustConnector]
@@ -214,7 +214,7 @@ class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues wit
       val matchingUrl: String = "/trusts/check"
 
       val matchData: MatchData = MatchData("utr", "name", Some("postcode"))
-      val payload: String      = Json.stringify(Json.toJson(matchData)(MatchData.writes))
+      val payload: String      = Json.stringify(Json.toJson(matchData)(using MatchData.writes))
 
       "must return a Matched response" - {
         "when trust is successfully matched" in {

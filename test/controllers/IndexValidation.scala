@@ -76,7 +76,7 @@ trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks
         messages("global.error.pageNotFound404.title"),
         messages("global.error.pageNotFound404.heading"),
         messages("global.error.pageNotFound404.message")
-      )(fakeRequest, messages)
+      )(using fakeRequest, messages)
       status(result) mustEqual NOT_FOUND
       contentAsString(result) mustEqual applyView.toString
     }

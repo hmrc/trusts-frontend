@@ -30,7 +30,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
     val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
 
     val applyView =
-      view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now.toString)))(fakeRequest, messages)
+      view.apply(List(DraftRegistration("Fake", "Fake2", LocalDateTime.now.toString)))(using fakeRequest, messages)
 
     behave like normalPage(applyView, None, "agentOverview", "paragraph2", "paragraph3", "paragraph4")
 
@@ -40,7 +40,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
   "not render 'Saved registrations' h2 when no draft registrations present" in {
 
     val view      = viewFor[AgentOverviewView](None)
-    val applyView = view.apply(Nil)(fakeRequest, messages)
+    val applyView = view.apply(Nil)(using fakeRequest, messages)
     val doc       = asDocument(applyView)
 
     assertNotRenderedByClass(doc, "saved-registration")
@@ -56,7 +56,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val view = viewFor[AgentOverviewView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(drafts)(fakeRequest, messages)
+    val applyView = view.apply(drafts)(using fakeRequest, messages)
 
     val doc = asDocument(applyView)
 
@@ -75,7 +75,7 @@ class AgentOverviewViewSpec extends ViewBehaviours {
 
     val view = application.injector.instanceOf[AgentOverviewView]
 
-    val appliedView = view.apply(Nil)(fakeRequest, messages)
+    val appliedView = view.apply(Nil)(using fakeRequest, messages)
 
     val doc = asDocument(appliedView)
 

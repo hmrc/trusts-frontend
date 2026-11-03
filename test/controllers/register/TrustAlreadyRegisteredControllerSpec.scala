@@ -53,7 +53,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeUtr, isAgent = true)(request, messages).toString
+          view(fakeUtr, isAgent = true)(using request, messages).toString
 
         application.stop()
       }
@@ -71,7 +71,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeUtr, isAgent = false)(request, messages).toString
+          view(fakeUtr, isAgent = false)(using request, messages).toString
 
         application.stop()
       }

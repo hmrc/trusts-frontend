@@ -19,13 +19,11 @@ package pages.register
 import base.{Fixtures, RegistrationSpecBase}
 import models.registration.pages.TagStatus.*
 import models.{FirstTaxYearAvailable, TaskStatuses}
-import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.{JsObject, JsValue, Json}
-import play.api.test.Helpers.OK
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.http.HeaderCarrier
 import viewmodels.*
 
 import scala.concurrent.duration.Duration

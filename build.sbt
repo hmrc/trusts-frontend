@@ -32,7 +32,8 @@ lazy val microservice = (project in file("."))
       "-feature",
       "-Wconf:src=routes/.*:s",
       "-Wconf:msg=unused import&src=html/.*:s",
-      "-Wconf:msg=Flag.*repeatedly:s"
+      "-Wconf:msg=Flag.*repeatedly:s",
+      "-Wconf:msg=is deprecated for wildcard arguments of types:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true

@@ -53,7 +53,7 @@ class LogoutControllerSpec extends RegistrationSpecBase {
     value must include("useServiceNavigation")
 
     verify(mockAuditConnector, never())
-      .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(any(), any())
+      .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(using any(), any())
 
     application.stop()
 

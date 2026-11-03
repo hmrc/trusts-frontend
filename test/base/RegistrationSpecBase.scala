@@ -17,8 +17,8 @@
 package base
 
 import config.FrontendAppConfig
-import controllers.actions.register.*
 import controllers.actions.*
+import controllers.actions.register.*
 import models.core.http.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.core.{MatchingAndSuitabilityUserAnswers, TrustsFrontendUserAnswers, UserAnswers}
 import models.requests.RegistrationDataRequest

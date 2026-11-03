@@ -32,13 +32,13 @@ object MatchingRoutes extends Routes {
     case MatchingNamePage          => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
   }
 
-  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_]): Call =
+  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[?]): Call =
     answers.get(TrustRegisteredOnlinePage) match {
       case Some(true) => routes.WhichIdentifierController.onPageLoad()
       case _          => routes.TrustHaveAUTRController.onPageLoad()
     }
 
-  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[_], config: FrontendAppConfig): Call = {
+  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[?], config: FrontendAppConfig): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {

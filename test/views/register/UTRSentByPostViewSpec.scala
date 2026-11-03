@@ -25,7 +25,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     val view = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
 
-    val applyView = view.apply(isAgent = false)(fakeRequest, messages)
+    val applyView = view.apply(isAgent = false)(using fakeRequest, messages)
 
     behave like normalPage(applyView, None, "UTRSentByPost", "paragraph1", "paragraph2")
 
@@ -36,7 +36,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     "not render Return to register paragraph" in {
       val view      = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
-      val applyView = view.apply(isAgent = false)(fakeRequest, messages)
+      val applyView = view.apply(isAgent = false)(using fakeRequest, messages)
 
       val doc = asDocument(applyView)
       assertNotRenderedById(doc, "saved-registrations")
@@ -48,7 +48,7 @@ class UTRSentByPostViewSpec extends ViewBehaviours {
 
     "render Return to register paragraph" in {
       val view      = viewFor[UTRSentByPostView](Some(emptyUserAnswers))
-      val applyView = view.apply(isAgent = true)(fakeRequest, messages)
+      val applyView = view.apply(isAgent = true)(using fakeRequest, messages)
 
       val doc = asDocument(applyView)
       assertRenderedById(doc, "saved-registrations")

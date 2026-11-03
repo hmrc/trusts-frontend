@@ -49,7 +49,7 @@ trait ViewSpecBase extends RegistrationSpecBase {
     assertEqualsValue(
       doc,
       cssSelector,
-      ViewUtils.breadcrumbTitle(messages(expectedMessageKey, args: _*), sectionKey.map(messages(_)))
+      ViewUtils.breadcrumbTitle(messages(expectedMessageKey, args*), sectionKey.map(messages(_)))
     )
 
   def assertEqualsValue(doc: Document, cssSelector: String, expectedValue: String): Assertion = {
@@ -64,7 +64,7 @@ trait ViewSpecBase extends RegistrationSpecBase {
   def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*): Assertion = {
     val headers = doc.getElementsByTag("h1")
     headers.size                                 mustBe 1
-    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")
+    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args*).replaceAll("&nbsp;", " ")
   }
 
   def assertPageTitleWithCaptionEqualsMessages(

@@ -59,7 +59,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, currentTaxYearStartAndEnd)(request, messages).toString
+        view(form, currentTaxYearStartAndEnd)(using request, messages).toString
 
       application.stop()
     }
@@ -84,7 +84,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), currentTaxYearStartAndEnd)(request, messages).toString
+        view(form.fill(true), currentTaxYearStartAndEnd)(using request, messages).toString
 
       application.stop()
     }
@@ -125,7 +125,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, currentTaxYearStartAndEnd)(request, messages).toString
+        view(boundForm, currentTaxYearStartAndEnd)(using request, messages).toString
 
       application.stop()
     }

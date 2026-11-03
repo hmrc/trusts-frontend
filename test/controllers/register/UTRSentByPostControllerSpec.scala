@@ -38,7 +38,7 @@ class UTRSentByPostControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(isAgent = false)(request, messages).toString
+        view(isAgent = false)(using request, messages).toString
 
       application.stop()
     }

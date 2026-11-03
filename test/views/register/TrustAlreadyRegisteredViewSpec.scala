@@ -32,7 +32,7 @@ class TrustAlreadyRegisteredViewSpec extends ViewBehaviours {
 
     "agent user" must {
 
-      val applyView = view.apply(fakeUtr, isAgent = true)(fakeRequest, messages)
+      val applyView = view.apply(fakeUtr, isAgent = true)(using fakeRequest, messages)
 
       behave like pageWithSubHeading(applyView, s"This trust’s UTR: $fakeUtr")
 
@@ -49,7 +49,7 @@ class TrustAlreadyRegisteredViewSpec extends ViewBehaviours {
 
     "non-agent user" must {
 
-      val applyView = view.apply(fakeUtr, isAgent = false)(fakeRequest, messages)
+      val applyView = view.apply(fakeUtr, isAgent = false)(using fakeRequest, messages)
 
       behave like pageWithSubHeading(applyView, s"This trust’s UTR: $fakeUtr")
 

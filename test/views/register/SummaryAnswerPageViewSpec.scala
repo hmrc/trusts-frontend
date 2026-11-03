@@ -38,9 +38,9 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))
 
-    val applyAgentView = view.apply(Nil, isAgent = true, "agentClientReference")(fakeRequest, messages)
+    val applyAgentView = view.apply(Nil, isAgent = true, "agentClientReference")(using fakeRequest, messages)
 
-    val applyOrganisationView = view.apply(Nil, isAgent = false, "")(fakeRequest, messages)
+    val applyOrganisationView = view.apply(Nil, isAgent = false, "")(using fakeRequest, messages)
 
     val agentDoc = asDocument(applyAgentView)
 

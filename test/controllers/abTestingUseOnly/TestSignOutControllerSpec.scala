@@ -45,10 +45,10 @@ class TestSignOutControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual OK
 
-      contentAsString(result) mustEqual view()(request, messages).toString
+      contentAsString(result) mustEqual view()(using request, messages).toString
 
       verify(mockAuditConnector, never())
-        .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(any(), any())
+        .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(using any(), any())
 
       application.stop()
     }

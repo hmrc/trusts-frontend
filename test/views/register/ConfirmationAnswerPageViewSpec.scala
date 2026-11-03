@@ -43,7 +43,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       val viewFuture = helper.summary(fakeDraftId).map { sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
-        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = true)(
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = true)(using
           fakeRequest,
           messages
         )
@@ -75,7 +75,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       val viewFuture = helper.summary(fakeDraftId).map { sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
-        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = false)(
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = false)(using
           fakeRequest,
           messages
         )

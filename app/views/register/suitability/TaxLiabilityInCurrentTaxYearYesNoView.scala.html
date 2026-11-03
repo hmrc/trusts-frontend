@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.suitability.routes._
+@import controllers.register.suitability.routes.*
 @import views.html.components.{ErrorSummary, InputYesNo, SubmitButton}
 
 @this(
@@ -25,7 +25,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[_], currentTaxYearStartAndEnd: (String, String))(implicit request: Request[_], messages: Messages)
+@(form: Form[?], currentTaxYearStartAndEnd: (String, String))(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("suitability.taxLiabilityInCurrentTaxYear.title")}",

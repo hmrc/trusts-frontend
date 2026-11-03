@@ -120,11 +120,6 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
       makeAssertion(assertNotRenderedById)
     }
 
-  private def assertTaskProgressMessage(doc: Document): Assertion = {
-    val expectedMessage = messages("taskList.incompleteSections.label", completedTasks, totalTasks)
-    assertContainsText(doc, expectedMessage)
-  }
-
   "TaskListView" when {
 
     "deployment notification is enabled" must {
@@ -148,7 +143,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
           affinityGroup = Organisation,
           completedTasks = completedTasks,
           totalTasks = totalTasks
-        )(fakeRequest, messages)
+        )(using fakeRequest, messages)
 
         val doc = asDocument(applyView)
 
@@ -179,7 +174,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Organisation,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 
@@ -212,7 +207,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Organisation,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 
@@ -248,7 +243,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Organisation,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 
@@ -281,7 +276,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Organisation,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 
@@ -320,7 +315,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Agent,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 
@@ -354,7 +349,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Agent,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 
@@ -391,7 +386,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Agent,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 
@@ -425,7 +420,7 @@ class TaskListViewSpec extends ViewBehaviours with TaskListViewBehaviours {
               affinityGroup = Agent,
               completedTasks = completedTasks,
               totalTasks = totalTasks
-            )(fakeRequest, messages)
+            )(using fakeRequest, messages)
 
             behave like normalPage(applyView, None, "taskList", "paragraph1")
 

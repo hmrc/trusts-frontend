@@ -39,7 +39,7 @@ class TrustsStoreConnectorSpec extends PlaySpec with Matchers with OptionValues 
   implicit lazy val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
   lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(Seq("microservice.services.trusts-store.port" -> server.port(), "auditing.enabled" -> false): _*)
+    .configure(Seq("microservice.services.trusts-store.port" -> server.port(), "auditing.enabled" -> false)*)
     .build()
 
   private lazy val connector = app.injector.instanceOf[TrustsStoreConnector]
