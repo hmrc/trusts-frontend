@@ -18,7 +18,7 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup
 import views.html.register.{RefSentByPostAgentView, RefSentByPostView}
 

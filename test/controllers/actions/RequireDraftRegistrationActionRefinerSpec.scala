@@ -18,7 +18,7 @@ package controllers.actions
 
 import base.RegistrationSpecBase
 import controllers.actions.register.RequireDraftRegistrationActionRefinerImpl
-import controllers.register.routes._
+import controllers.register.routes.*
 import models.registration.pages.RegistrationStatus.{Complete, InProgress}
 import models.requests.RegistrationDataRequest
 import org.scalatest.EitherValues
@@ -30,11 +30,12 @@ import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.TestUserAnswers
 
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
 
 class RequireDraftRegistrationActionRefinerSpec
     extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
-  class Harness() extends RequireDraftRegistrationActionRefinerImpl {
+  class Harness() extends RequireDraftRegistrationActionRefinerImpl(ExecutionContext.global) {
 
     def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(
       request

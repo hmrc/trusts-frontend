@@ -17,11 +17,12 @@
 package connector
 
 import config.FrontendAppConfig
-import models.core.http._
+import models.core.http.*
 import models.requests.RegistrationDataRequest
 import play.api.Logging
 import play.api.http.HeaderNames
 import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
@@ -33,26 +34,26 @@ class TrustConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig) e
   val registrationUrl = s"${config.trustsUrl}/trusts/register"
   val matchingUrl     = s"${config.trustsUrl}/trusts/check"
 
-  def register(registrationJson: JsValue, draftId: String)(implicit
-    request: RegistrationDataRequest[_],
+  def register(registrationJson: JsValue, draftId: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[TrustResponse] = {
-    implicit val newHc: HeaderCarrier = hc.withExtraHeaders(
+    given newHc: HeaderCarrier = hc.withExtraHeaders(
       Headers.DraftRegistrationId -> draftId,
       Headers.TrueUserAgent       -> request.headers.get(HeaderNames.USER_AGENT).getOrElse("No user agent provided")
     )
 
     http
-      .post(url"$registrationUrl")(newHc)
+      .post(url"$registrationUrl")(using newHc)
       .withBody(registrationJson)
-      .execute[TrustResponse](TrustResponse.httpReads, ec)
+      .execute[TrustResponse](using TrustResponse.httpReads, ec)
   }
 
-  def matching(matchData: MatchData)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] =
+  def matching(matchData: MatchData)(using hc: HeaderCarrier, ec: ExecutionContext): Future[MatchedResponse] =
     http
       .post(url"$matchingUrl")
-      .withBody(Json.toJson(matchData)(MatchData.writes))
-      .execute[MatchedResponse](MatchedResponse.httpReads, ec)
+      .withBody(Json.toJson(matchData)(using MatchData.writes))
+      .execute[MatchedResponse](using MatchedResponse.httpReads, ec)
 
 }

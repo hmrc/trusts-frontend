@@ -17,7 +17,7 @@
 package services.settlors
 
 import models.settlor.{IncompleteSettlorData, InvalidSettlorData, MissingSettlorData, SettlorDataError}
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ import javax.inject.Inject
  */
 class RegistrationSettlorValidationService @Inject() {
 
-  import SettlorValidationHelpers._
+  import SettlorValidationHelpers.*
 
   private val prefix = "registration"
 

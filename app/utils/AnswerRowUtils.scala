@@ -18,7 +18,7 @@ package utils
 
 import com.ibm.icu.text.SimpleDateFormat
 import com.ibm.icu.util.ULocale
-import mapping.Constants._
+import mapping.Constants.*
 import models.RegistrationSubmission
 import play.api.Environment
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
@@ -35,7 +35,7 @@ class AnswerRowUtils @Inject() (languageUtils: LanguageUtils, messagesApi: Messa
   private val languages = Seq(ENGLISH, WELSH)
   private val lineBreak = "<br />"
 
-  def reverseEngineerAnswer(answer: String)(implicit messages: Messages): String =
+  def reverseEngineerAnswer(answer: String)(using messages: Messages): String =
     answer
       .split(lineBreak)
       .map(line =>
@@ -47,13 +47,13 @@ class AnswerRowUtils @Inject() (languageUtils: LanguageUtils, messagesApi: Messa
       )
       .mkString(lineBreak)
 
-  def reverseEngineerArg(arg: String)(implicit messages: Messages): String =
+  def reverseEngineerArg(arg: String)(using messages: Messages): String =
     parseAsDate(arg) getOrElse
       arg
 
   def rowsWithCorrectTense(
     section: RegistrationSubmission.AnswerSection
-  )(implicit messages: Messages): Seq[RegistrationSubmission.AnswerRow] =
+  )(using messages: Messages): Seq[RegistrationSubmission.AnswerRow] =
     section.rows.map { row =>
       val rowLabelPrefix: String = row.label.split("""\.""").head
       val pastTenseQuestion      = s"${rowLabelPrefix}PastTense.checkYourAnswersLabel"
@@ -66,15 +66,15 @@ class AnswerRowUtils @Inject() (languageUtils: LanguageUtils, messagesApi: Messa
       }
     }
 
-  private def parseAsYesOrNo(answer: String)(implicit messages: Messages): Try[String] = {
+  private def parseAsYesOrNo(answer: String)(using messages: Messages): Try[String] = {
     val keys = Seq("site.yes", "site.no")
     findAnswerInMessages(answer, Some(keys))
   }
 
-  private def parseAsEnumerable(answer: String)(implicit messages: Messages): Try[String] =
+  private def parseAsEnumerable(answer: String)(using messages: Messages): Try[String] =
     findAnswerInMessages(answer)
 
-  private def findAnswerInMessages(answer: String, messageKeys: Option[Seq[String]] = None)(implicit
+  private def findAnswerInMessages(answer: String, messageKeys: Option[Seq[String]] = None)(using
     messages: Messages
   ): Try[String] =
     languages.foldLeft[Try[String]](Failure(new IllegalArgumentException())) { (acc1, language) =>
@@ -91,7 +91,7 @@ class AnswerRowUtils @Inject() (languageUtils: LanguageUtils, messagesApi: Messa
         )
     }
 
-  private def parseAsDate(answer: String)(implicit messages: Messages): Try[String] =
+  private def parseAsDate(answer: String)(using messages: Messages): Try[String] =
     languages.foldLeft[Try[String]](Failure(new IllegalArgumentException())) { (acc, language) =>
       val format = new SimpleDateFormat("d MMMM y", new ULocale(language))
 
@@ -101,7 +101,7 @@ class AnswerRowUtils @Inject() (languageUtils: LanguageUtils, messagesApi: Messa
         .orElse(acc)
     }
 
-  private def parseAsCountry(answer: String)(implicit messages: Messages): Try[String] =
+  private def parseAsCountry(answer: String)(using messages: Messages): Try[String] =
     languages.foldLeft[Try[String]](Failure(new IllegalArgumentException())) { (acc, language) =>
       val countryCode: Option[String] = getCountriesForLanguage(language)
         .find(_.exists(_.equals(answer)))

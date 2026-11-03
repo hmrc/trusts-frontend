@@ -21,5 +21,5 @@ import play.api.libs.json.{Format, JsValue, Json}
 case class AuditEvent(registration: JsValue, draftId: String, internalAuthId: String)
 
 object AuditEvent {
-  implicit val formats: Format[AuditEvent] = Json.format[AuditEvent]
+  given formats: Format[AuditEvent] = Json.format[AuditEvent]
 }

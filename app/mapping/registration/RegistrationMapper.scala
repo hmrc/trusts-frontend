@@ -37,7 +37,7 @@ class RegistrationMapper @Inject() (
     correspondenceAddress: AddressType,
     trustName: String,
     affinityGroup: AffinityGroup
-  )(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Registration]] =
+  )(using ec: ExecutionContext, hc: HeaderCarrier): Future[Option[Registration]] =
 
     declarationMapper
       .build(userAnswers, correspondenceAddress)

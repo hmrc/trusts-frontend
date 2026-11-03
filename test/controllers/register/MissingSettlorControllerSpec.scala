@@ -29,7 +29,7 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{RequestHeader, Results}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import views.html.register.MissingSettlorView
 
@@ -48,7 +48,7 @@ class MissingSettlorControllerSpec extends RegistrationSpecBase with BeforeAndAf
 
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress, mockErrorHandler)
-    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
       .thenReturn(Future.successful(true))
   }
 

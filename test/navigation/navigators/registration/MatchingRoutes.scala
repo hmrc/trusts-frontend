@@ -24,7 +24,7 @@ import models.core.UserAnswers
 import navigation.Navigator
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register._
+import pages.register.*
 
 trait MatchingRoutes {
 

@@ -32,7 +32,7 @@ object Matched extends Enumerable.Implicits {
     Failed
   )
 
-  implicit val enumerable: Enumerable[Matched] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[Matched] =
+    Enumerable(values.toSeq.map(v => v.toString -> v)*)
 
 }

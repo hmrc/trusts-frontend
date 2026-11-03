@@ -20,7 +20,7 @@ import models.core.pages.{Declaration, FullName}
 import models.core.{MatchingAndSuitabilityUserAnswers, UserAnswers}
 import models.registration.Matched.{Failed, Success}
 import org.scalatest.TryValues
-import pages.register._
+import pages.register.*
 
 object TestUserAnswers extends TryValues {
 

@@ -32,7 +32,7 @@ object RegistrationStatus extends Enumerable.Implicits {
     Complete
   )
 
-  implicit val enumerable: Enumerable[RegistrationStatus] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[RegistrationStatus] =
+    Enumerable(values.map(v => v.toString -> v)*)
 
 }

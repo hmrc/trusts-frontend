@@ -29,7 +29,7 @@ class TrustsStoreConnector @Inject() (http: HttpClientV2, config: FrontendAppCon
 
   private val baseUrl: String = s"${config.trustsStoreUrl}/trusts-store"
 
-  def getTaskStatuses(draftId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[TaskStatuses] = {
+  def getTaskStatuses(draftId: String)(using hc: HeaderCarrier, ec: ExecutionContext): Future[TaskStatuses] = {
     val url: String = s"$baseUrl/register/tasks/$draftId"
     http
       .get(url"$url")

@@ -36,7 +36,7 @@ object RegistrationAnswerSections {
 
   def fromAllAnswerSections(
     sections: AllAnswerSections
-  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): RegistrationAnswerSections =
+  )(using messages: Messages, answerRowUtils: AnswerRowUtils): RegistrationAnswerSections =
     RegistrationAnswerSections(
       beneficiaries = convert(sections.beneficiaries),
       trustees = convert(sections.trustees),
@@ -49,14 +49,14 @@ object RegistrationAnswerSections {
 
   private def convert(
     section: Option[List[RegistrationSubmission.AnswerSection]]
-  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): Option[List[AnswerSection]] =
+  )(using messages: Messages, answerRowUtils: AnswerRowUtils): Option[List[AnswerSection]] =
     section map {
       _.map(convert(_))
     }
 
   private def convert(
     section: RegistrationSubmission.AnswerSection
-  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = {
+  )(using messages: Messages, answerRowUtils: AnswerRowUtils): AnswerSection = {
 
     val checkSettlorAlive: Boolean =
       section.rows.exists(row =>
@@ -69,7 +69,7 @@ object RegistrationAnswerSections {
 
     AnswerSection(
       headingKey =
-        section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg): _*)),
+        section.headingKey.map(x => messages(x, section.headingArgs.map(answerRowUtils.reverseEngineerArg)*)),
       rows = rowsInCorrectTense.map(convert(_)),
       sectionKey = section.sectionKey.map(messages(_))
     )
@@ -77,7 +77,7 @@ object RegistrationAnswerSections {
 
   private def convert(
     row: RegistrationSubmission.AnswerRow
-  )(implicit messages: Messages, answerRowUtils: AnswerRowUtils): AnswerRow = AnswerRow(
+  )(using messages: Messages, answerRowUtils: AnswerRowUtils): AnswerRow = AnswerRow(
     label = row.label,
     answer = HtmlFormat.raw(answerRowUtils.reverseEngineerAnswer(row.answer)),
     changeUrl = None,

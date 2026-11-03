@@ -21,11 +21,11 @@ import connector.TrustConnector
 import generators.Generators
 import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
+import models.core.http.*
 import models.core.http.TrustResponse.UnableToRegister
-import models.core.http._
 import models.requests.RegistrationDataRequest
 import models.{FirstTaxYearAvailable, RegistrationSubmission}
-import org.mockito.ArgumentMatchers.{eq => eqTo, _}
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
@@ -52,67 +52,67 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues 
   private val stubbedRegistrationsRepository: RegistrationsRepository = new RegistrationsRepository {
     private val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
-    override def get(draftId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
+    override def get(draftId: String)(using hc: HeaderCarrier): Future[Option[UserAnswers]] =
       Future.successful(None)
 
-    override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)(implicit
+    override def set(userAnswers: UserAnswers, affinityGroup: AffinityGroup)(using
       hc: HeaderCarrier
     ): Future[Boolean] =
       Future.successful(true)
 
-    override def getMostRecentDraftId()(implicit hc: HeaderCarrier): Future[Option[String]] =
+    override def getMostRecentDraftId()(using hc: HeaderCarrier): Future[Option[String]] =
       Future.successful(None)
 
-    override def listDrafts()(implicit hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] =
+    override def listDrafts()(using hc: HeaderCarrier, messages: Messages): Future[List[DraftRegistration]] =
       Future.successful(List.empty)
 
-    override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(implicit
+    override def addDraftRegistrationSections(draftId: String, registrationJson: JsValue)(using
       hc: HeaderCarrier
     ): Future[JsValue] =
       Future.successful(registrationJson)
 
     override def getAnswerSections(
       draftId: String
-    )(implicit hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
+    )(using hc: HeaderCarrier, messages: Messages): Future[RegistrationAnswerSections] =
       Future.successful(RegistrationAnswerSections())
 
-    override def getLeadTrustee(draftId: String)(implicit hc: HeaderCarrier): Future[LeadTrusteeType] =
+    override def getLeadTrustee(draftId: String)(using hc: HeaderCarrier): Future[LeadTrusteeType] =
       Future.successful(testLeadTrusteeOrg)
 
-    override def getCorrespondenceAddress(draftId: String)(implicit hc: HeaderCarrier): Future[AddressType] =
+    override def getCorrespondenceAddress(draftId: String)(using hc: HeaderCarrier): Future[AddressType] =
       Future.successful(correspondenceAddress)
 
-    override def getTrustName(draftId: String)(implicit hc: HeaderCarrier): Future[String] =
+    override def getTrustName(draftId: String)(using hc: HeaderCarrier): Future[String] =
       Future.successful("Name")
 
-    override def removeDraft(draftId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+    override def removeDraft(draftId: String)(using hc: HeaderCarrier): Future[HttpResponse] =
       Future.successful(HttpResponse(OK, ""))
 
-    override def getAgentAddress(draftId: String)(implicit hc: HeaderCarrier): Future[Option[AddressType]] =
+    override def getAgentAddress(draftId: String)(using hc: HeaderCarrier): Future[Option[AddressType]] =
       Future.successful(None)
 
-    override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(implicit
+    override def getClientReference(draftId: String, affinityGroup: AffinityGroup)(using
       hc: HeaderCarrier
     ): Future[Option[String]] =
       Future.successful(None)
 
-    override def getFirstTaxYearAvailable(draftId: String)(implicit
+    override def getFirstTaxYearAvailable(draftId: String)(using
       hc: HeaderCarrier
     ): Future[Option[FirstTaxYearAvailable]] =
       Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false)))
 
-    override def getRegistrationPieces(draftId: String)(implicit hc: HeaderCarrier): Future[JsObject] =
+    override def getRegistrationPieces(draftId: String)(using hc: HeaderCarrier): Future[JsObject] =
       Future.successful(Json.parse("{}").as[JsObject])
 
     override def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier): Future[JsValue] =
       Future.successful(Json.parse("{}"))
 
-    override def setDraftSettlors(draftId: String, data: JsValue)(implicit hc: HeaderCarrier): Future[HttpResponse] =
+    override def setDraftSettlors(draftId: String, data: JsValue)(using hc: HeaderCarrier): Future[HttpResponse] =
       Future.successful(HttpResponse(OK, ""))
 
     override def getSettlorsAnswerSections(
       draftId: String
-    )(implicit hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
+    )(using hc: HeaderCarrier): Future[Seq[RegistrationSubmission.AnswerSection]] =
       Future.successful(
         RegistrationSubmission.AllAnswerSections().settlors.getOrElse(Seq.empty[RegistrationSubmission.AnswerSection])
       )
@@ -129,7 +129,7 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues 
 
   implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  implicit private lazy val request: RegistrationDataRequest[_] =
+  implicit private lazy val request: RegistrationDataRequest[?] =
     RegistrationDataRequest(
       fakeRequest,
       "internalId",
@@ -165,7 +165,7 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues 
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any()))
+        when(mockConnector.register(any[JsValue], any())(using any(), any[HeaderCarrier], any()))
           .thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result = Await.result(submissionService.submit(userAnswers), Duration.Inf)
@@ -176,7 +176,7 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues 
 
         val userAnswers = newTrustUserAnswers
 
-        when(mockConnector.register(any[JsValue], any())(any(), any[HeaderCarrier], any()))
+        when(mockConnector.register(any[JsValue], any())(using any(), any[HeaderCarrier], any()))
           .thenReturn(Future.successful(RegistrationTRNResponse("XTRN1234567")))
 
         val result = Await.result(submissionService.submit(userAnswers), Duration.Inf)
@@ -215,97 +215,98 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues 
 
         val errorReason: String = "Error retrieving correspondence address transformation."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(using any()))
           .thenReturn(Future.failed(new Throwable("")))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
-        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(using any(), any())
       }
 
       "when error retrieving trust name transformation" in {
 
         val errorReason: String = "Error retrieving trust name transformation."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(using any()))
           .thenReturn(Future.successful(correspondenceAddress))
-        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.failed(new Throwable("")))
+        when(mockRegistrationsRepository.getTrustName(any())(using any())).thenReturn(Future.failed(new Throwable("")))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
-        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(using any(), any())
       }
 
       "when error mapping user answers to Registration" in {
 
         val errorReason: String = "Error mapping UserAnswers to Registration."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(using any()))
           .thenReturn(Future.successful(correspondenceAddress))
-        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(Future.successful(None))
+        when(mockRegistrationsRepository.getTrustName(any())(using any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any(), any())(using any(), any()))
+          .thenReturn(Future.successful(None))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
-        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(using any(), any())
       }
 
       "when error adding draft registration sections" in {
 
         val errorReason: String = "Error adding draft registration sections."
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(using any()))
           .thenReturn(Future.successful(correspondenceAddress))
-        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+        when(mockRegistrationsRepository.getTrustName(any())(using any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any(), any())(using any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(using any()))
           .thenReturn(Future.failed(new Throwable("")))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
-        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(any(), any())
+        verify(mockAuditService).auditRegistrationPreparationFailed(any(), eqTo(errorReason))(using any(), any())
       }
 
       "when registration submission fails" in {
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(using any()))
           .thenReturn(Future.successful(correspondenceAddress))
-        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+        when(mockRegistrationsRepository.getTrustName(any())(using any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any(), any())(using any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(using any()))
           .thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any(), any()))
+        when(mockConnector.register(any(), any())(using any(), any(), any()))
           .thenReturn(Future.successful(TrustResponse.InternalServerError))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
-        verify(mockAuditService).auditRegistrationSubmissionFailed(any(), any())(any(), any())
+        verify(mockAuditService).auditRegistrationSubmissionFailed(any(), any())(using any(), any())
       }
 
       "when registration already submitted" in {
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(using any()))
           .thenReturn(Future.successful(correspondenceAddress))
-        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+        when(mockRegistrationsRepository.getTrustName(any())(using any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any(), any())(using any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(using any()))
           .thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any(), any()))
+        when(mockConnector.register(any(), any())(using any(), any(), any()))
           .thenReturn(Future.successful(TrustResponse.AlreadyRegistered))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
-        verify(mockAuditService).auditRegistrationAlreadySubmitted(any(), any())(any(), any())
+        verify(mockAuditService).auditRegistrationAlreadySubmitted(any(), any())(using any(), any())
       }
 
       "when registration successfully submitted" in {
 
         val response: RegistrationTRNResponse = RegistrationTRNResponse("trn")
 
-        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(any()))
+        when(mockRegistrationsRepository.getCorrespondenceAddress(any())(using any()))
           .thenReturn(Future.successful(correspondenceAddress))
-        when(mockRegistrationsRepository.getTrustName(any())(any())).thenReturn(Future.successful(trustName))
-        when(mockRegistrationMapper.build(any(), any(), any(), any())(any(), any())).thenReturn(registration)
-        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(any()))
+        when(mockRegistrationsRepository.getTrustName(any())(using any())).thenReturn(Future.successful(trustName))
+        when(mockRegistrationMapper.build(any(), any(), any(), any())(using any(), any())).thenReturn(registration)
+        when(mockRegistrationsRepository.addDraftRegistrationSections(any(), any())(using any()))
           .thenReturn(Future.successful(Json.obj()))
-        when(mockConnector.register(any(), any())(any(), any(), any())).thenReturn(Future.successful(response))
+        when(mockConnector.register(any(), any())(using any(), any(), any())).thenReturn(Future.successful(response))
 
         Await.result(submissionService.submit(userAnswers), Duration.Inf)
-        verify(mockAuditService).auditRegistrationSubmitted(any(), any(), eqTo(response))(any(), any())
+        verify(mockAuditService).auditRegistrationSubmitted(any(), any(), eqTo(response))(using any(), any())
       }
     }
   }

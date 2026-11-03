@@ -17,13 +17,13 @@
 package controllers.abTestingUseOnly
 
 import base.RegistrationSpecBase
-import org.mockito.ArgumentMatchers.{eq => eqTo, _}
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
+import org.mockito.Mockito.{never, verify}
 import play.api.inject.bind
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import views.html.abTestingUseOnly.TestSignOutView
-import org.mockito.Mockito.{never, verify}
 
 class TestSignOutControllerSpec extends RegistrationSpecBase {
 

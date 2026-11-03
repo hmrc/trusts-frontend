@@ -22,9 +22,9 @@ import models.core.http.{AddressType, Declaration}
 import models.core.pages.FullName
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.scalatest.matchers.must.Matchers
-import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.OptionValues
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.must.Matchers
 import pages.register.DeclarationPage
 import repositories.DefaultRegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -34,7 +34,7 @@ import scala.concurrent.{Await, Future}
 
 class DeclarationMapperSpec extends AnyFreeSpec with Matchers with OptionValues with Generators with SpecBaseHelpers {
 
-  implicit private val hc: HeaderCarrier = HeaderCarrier()
+  private given hc: HeaderCarrier = HeaderCarrier()
 
   private val leadTrusteeAddress        = AddressType("Line 1", "Line 2", None, None, None, "FR")
   private val agentAddress: AddressType = AddressType("Line 1", "Line 2", None, None, Some("AB1 1AB"), "GB")
@@ -48,7 +48,7 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers with OptionValues 
         val userAnswers = emptyUserAnswers
 
         val mockRegistrationsRepository: DefaultRegistrationsRepository = mock[DefaultRegistrationsRepository]
-        when(mockRegistrationsRepository.getAgentAddress(any())(any()))
+        when(mockRegistrationsRepository.getAgentAddress(any())(using any()))
           .thenReturn(Future.successful(Some(agentAddress)))
         val declarationMapper: DeclarationMapper                        = new DeclarationMapper(mockRegistrationsRepository)
 
@@ -69,7 +69,8 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers with OptionValues 
 
         "must be able to create declaration" in {
 
-          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(agentAddress)))
+          when(registrationsRepository.getAgentAddress(any())(using any()))
+            .thenReturn(Future.successful(Some(agentAddress)))
           val declarationMapper: DeclarationMapper = new DeclarationMapper(registrationsRepository)
 
           val result = Await.result(declarationMapper.build(userAnswers, leadTrusteeAddress), Duration.Inf).value
@@ -85,7 +86,7 @@ class DeclarationMapperSpec extends AnyFreeSpec with Matchers with OptionValues 
 
         "must be able to create declaration" in {
 
-          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
+          when(registrationsRepository.getAgentAddress(any())(using any())).thenReturn(Future.successful(None))
           val declarationMapper: DeclarationMapper = new DeclarationMapper(registrationsRepository)
           val result                               = Await.result(declarationMapper.build(userAnswers, leadTrusteeAddress), Duration.Inf).value
 

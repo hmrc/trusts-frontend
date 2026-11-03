@@ -21,10 +21,10 @@ import ch.qos.logback.classic.Level
 import forms.DeclarationFormProvider
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
-import models.core.http.TrustResponse._
+import models.core.http.TrustResponse.*
 import models.core.pages.{Declaration, FullName}
 import models.requests.RegistrationDataRequest
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.{reset, times, verify, when}
 import pages.register.{DeclarationPage, RegistrationProgress}
 import play.api.data.Form
@@ -32,7 +32,7 @@ import play.api.http.Status.OK
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.AnyContentAsFormUrlEncoded
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import play.api.{Logger, inject}
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -58,10 +58,10 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
   val settlorAlertLogStartText = "Trust registered with incorrect settlor information"
 
-  when(registrationsRepository.getDraftSettlors(any())(any()))
+  when(registrationsRepository.getDraftSettlors(any())(using any()))
     .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
-  when(registrationsRepository.getRegistrationPieces(any())(any()))
+  when(registrationsRepository.getRegistrationPieces(any())(using any()))
     .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
   "Declaration Controller" must {
@@ -69,7 +69,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
     "redirect when registration is not complete" in {
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
@@ -100,7 +100,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, fakeDraftId, AffinityGroup.Organisation)(request, messages).toString
+        view(form, fakeDraftId, AffinityGroup.Organisation)(using request, messages).toString
 
       application.stop()
     }
@@ -118,7 +118,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, fakeDraftId, AffinityGroup.Agent)(request, messages).toString
+        view(form, fakeDraftId, AffinityGroup.Agent)(using request, messages).toString
 
       application.stop()
     }
@@ -141,20 +141,20 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer), fakeDraftId, AffinityGroup.Agent)(request, messages).toString
+        view(form.fill(validAnswer), fakeDraftId, AffinityGroup.Agent)(using request, messages).toString
 
       application.stop()
     }
 
     "redirect to the confirmation page when valid data is submitted and registration submitted successfully " in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
         .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
 
       when(
-        registrationsRepository.getRegistrationPieces(eqTo("id"))(any())
+        registrationsRepository.getRegistrationPieces(eqTo("id"))(using any())
       ).thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
       val request = FakeRequest(POST, declarationRoute)
@@ -164,14 +164,14 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(using any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(using any())
       application.stop()
     }
 
     "redirect to the task list page when valid data is submitted and submission service can not register successfully" in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
         .thenReturn(Future.failed(UnableToRegister()))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
@@ -183,14 +183,14 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(using any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(using any())
       application.stop()
     }
 
     "redirect to the task list page when valid data is submitted and submission service returns an unexpected response" in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
         .thenReturn(Future.successful(InternalServerError))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
@@ -202,14 +202,14 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.TaskListController.onPageLoad(fakeDraftId).url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(using any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(using any())
       application.stop()
     }
 
     "redirect to the already registered page when valid data is submitted and trust is already registered" in {
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
         .thenReturn(Future.successful(AlreadyRegistered))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
@@ -221,8 +221,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.UTRSentByPostController.onPageLoad().url
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(using any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(using any())
       application.stop()
     }
 
@@ -242,7 +242,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, fakeDraftId, AffinityGroup.Agent)(request, messages).toString
+        view(boundForm, fakeDraftId, AffinityGroup.Agent)(using request, messages).toString
 
       application.stop()
     }
@@ -282,7 +282,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
       val nonFatalException = new RuntimeException("Error")
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
         .thenReturn(Future.failed(nonFatalException))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
@@ -297,8 +297,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       }
 
       thrown.getMessage mustEqual "Error"
-      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(any())
+      verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(using any(), any[HeaderCarrier], any())
+      verify(registrationsRepository, times(0)).setDraftSettlors(eqTo("removedAliveAtRegistration"), any())(using any())
 
       application.stop()
     }
@@ -314,15 +314,15 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
           val draftId = s"${outcome}RemovedAliveAtRegistrationUnsuccessful"
 
           when(
-            registrationsRepository.getRegistrationPieces(eqTo(draftId))(any())
+            registrationsRepository.getRegistrationPieces(eqTo(draftId))(using any())
           ).thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
           when(
-            mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
+            mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any())
           ).thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
           when(
-            registrationsRepository.setDraftSettlors(eqTo(draftId), any())(any())
+            registrationsRepository.setDraftSettlors(eqTo(draftId), any())(using any())
           ).thenReturn(Future.successful(HttpResponse(setDraftSettlorsHttpResponse, "")))
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent).build()
@@ -337,8 +337,8 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).value mustEqual routes.ConfirmationController.onPageLoad(fakeDraftId).url
-          verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(any(), any[HeaderCarrier], any())
-          verify(registrationsRepository, times(1)).setDraftSettlors(eqTo(draftId), any())(any())
+          verify(mockSubmissionService, times(1)).submit(any[UserAnswers])(using any(), any[HeaderCarrier], any())
+          verify(registrationsRepository, times(1)).setDraftSettlors(eqTo(draftId), any())(using any())
           application.stop()
         }
     }
@@ -350,13 +350,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
 
-      when(registrationsRepository.getDraftSettlors(any())(any()))
+      when(registrationsRepository.getDraftSettlors(any())(using any()))
         .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
-      when(registrationsRepository.getRegistrationPieces(any())(any()))
+      when(registrationsRepository.getRegistrationPieces(any())(using any()))
         .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
         .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
       withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
@@ -400,13 +400,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
         )
       )
 
-      when(registrationsRepository.getRegistrationPieces(any())(any()))
+      when(registrationsRepository.getRegistrationPieces(any())(using any()))
         .thenReturn(Future.successful(validRegistration))
 
-      when(registrationsRepository.getDraftSettlors(any())(any()))
+      when(registrationsRepository.getDraftSettlors(any())(using any()))
         .thenReturn(Future.successful(Json.obj()))
 
-      when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+      when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
         .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
       withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
@@ -453,13 +453,13 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       )
     )
 
-    when(registrationsRepository.getRegistrationPieces(any())(any()))
+    when(registrationsRepository.getRegistrationPieces(any())(using any()))
       .thenReturn(Future.successful(invalidRegistration))
 
-    when(registrationsRepository.getDraftSettlors(any())(any()))
+    when(registrationsRepository.getDraftSettlors(any())(using any()))
       .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
-    when(mockSubmissionService.submit(any[UserAnswers])(any(), any[HeaderCarrier], any()))
+    when(mockSubmissionService.submit(any[UserAnswers])(using any(), any[HeaderCarrier], any()))
       .thenReturn(Future.successful(RegistrationTRNResponse("xTRN12456")))
 
     withCaptureOfLoggingFrom(Logger(classOf[DeclarationController])) { logEvents =>
@@ -491,21 +491,21 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
       .auditUserAnswersOnMissingSettlorInfo(
         any[UserAnswers],
         eqTo(expectedAuditText)
-      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+      )(using any[RegistrationDataRequest[?]], any[HeaderCarrier])
 
     verify(mockAuditService, times(1))
       .auditDraftWithMissingSettlorInfo(
         any[String],
         any[JsValue],
         eqTo(expectedAuditText)
-      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+      )(using any[RegistrationDataRequest[?]], any[HeaderCarrier])
 
     verify(mockAuditService, times(1))
       .auditRegistrationWithMissingSettlorInfo(
         any[String],
         any[JsObject],
         eqTo(expectedAuditText)
-      )(any[RegistrationDataRequest[_]], any[HeaderCarrier])
+      )(using any[RegistrationDataRequest[?]], any[HeaderCarrier])
   }
 
 }

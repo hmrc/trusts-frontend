@@ -21,9 +21,9 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.suitability._
+import views.html.register.suitability.*
 
 class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 

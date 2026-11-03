@@ -17,12 +17,12 @@
 package controllers.register.suitability
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
+import controllers.register.routes.*
 import forms.YesNoFormProvider
 import pages.register.suitability.UndeclaredTaxLiabilityYesNoPage
 import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.suitability.UndeclaredTaxLiabilityYesNoView
 
 class UndeclaredTaxLiabilityYesNoControllerSpec extends RegistrationSpecBase {

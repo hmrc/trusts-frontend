@@ -17,11 +17,11 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import org.mockito.ArgumentMatchers.{eq => eqTo, _}
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
 import org.mockito.Mockito.{never, verify}
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
 import play.api.inject.bind
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 import java.net.URLEncoder

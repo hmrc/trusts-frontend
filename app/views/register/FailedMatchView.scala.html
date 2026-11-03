@@ -15,7 +15,7 @@
  *@
 
 @import config.FrontendAppConfig
-@import controllers.register.routes._
+@import controllers.register.routes.*
 @import views.html.components.{Heading, BulletList, SubmitButton}
 
 @this(
@@ -27,7 +27,7 @@
     config: FrontendAppConfig
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("failedMatch.title")

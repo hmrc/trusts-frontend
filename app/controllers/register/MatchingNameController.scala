@@ -38,7 +38,7 @@ class MatchingNameController @Inject() (
   actions: StandardActionSets,
   val controllerComponents: MessagesControllerComponents,
   view: MatchingNameView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private val form: Form[String] = formProvider()
@@ -56,7 +56,7 @@ class MatchingNameController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(MatchingNamePage, value))

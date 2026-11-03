@@ -14,20 +14,18 @@
  * limitations under the License.
  *@
 
-@import config.FrontendAppConfig
-@import controllers.register.routes._
+@import controllers.register.routes.*
 @import views.html.components.SubmitButton
 @import views.html.components.Heading
 
 @this(
         mainTemplate: MainTemplate,
-        appConfig: FrontendAppConfig,
         submitButton: SubmitButton,
         formHelper: FormWithCSRF,
         heading: Heading
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("session_expired.title"),

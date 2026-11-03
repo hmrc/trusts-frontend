@@ -17,11 +17,12 @@
 package controllers.register
 
 import controllers.actions.register.RegistrationIdentifierAction
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.FailedMatchView
+
+import javax.inject.Inject
 
 class FailedMatchController @Inject() (
   override val messagesApi: MessagesApi,

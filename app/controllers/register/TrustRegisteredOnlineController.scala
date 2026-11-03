@@ -43,7 +43,7 @@ class TrustRegisteredOnlineController @Inject() (
   formProvider: YesNoFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: TrustRegisteredOnlineView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private def actions: ActionBuilder[MatchingAndSuitabilityDataRequest, AnyContent] =
@@ -64,7 +64,7 @@ class TrustRegisteredOnlineController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredOnlinePage, value))

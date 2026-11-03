@@ -21,5 +21,5 @@ import play.api.libs.json.{Format, Json}
 case class FeatureResponse(name: String, isEnabled: Boolean)
 
 object FeatureResponse {
-  implicit val format: Format[FeatureResponse] = Json.format[FeatureResponse]
+  given format: Format[FeatureResponse] = Json.format[FeatureResponse]
 }

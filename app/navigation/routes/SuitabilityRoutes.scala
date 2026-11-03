@@ -19,7 +19,7 @@ package navigation.routes
 import controllers.register.suitability.routes
 import models.core.TrustsFrontendUserAnswers
 import pages.Page
-import pages.register.suitability._
+import pages.register.suitability.*
 import play.api.mvc.Call
 
 object SuitabilityRoutes extends Routes {

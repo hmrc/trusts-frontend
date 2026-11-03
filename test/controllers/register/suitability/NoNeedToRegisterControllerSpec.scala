@@ -18,8 +18,8 @@ package controllers.register.suitability
 
 import base.RegistrationSpecBase
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.AffinityGroup.*
 import views.html.register.suitability.NoNeedToRegisterView
 
 class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {

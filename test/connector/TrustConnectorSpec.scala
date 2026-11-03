@@ -17,10 +17,10 @@
 package connector
 
 import base.SpecBaseHelpers
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import mapping.registration.RegistrationMapper
-import models.core.http._
+import models.core.http.*
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers

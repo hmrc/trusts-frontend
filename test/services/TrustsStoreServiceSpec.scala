@@ -20,7 +20,7 @@ import base.RegistrationSpecBase
 import connector.TrustsStoreConnector
 import models.TaskStatuses
 import models.registration.pages.TagStatus.Completed
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures.whenReady
 import uk.gov.hmrc.http.HeaderCarrier
@@ -33,21 +33,21 @@ class TrustsStoreServiceSpec extends RegistrationSpecBase {
 
   val trustsStoreService = new TrustsStoreService(mockConnector)
 
-  implicit val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
 
   "getTaskStatuses" must {
     "call trusts store connector" in {
 
       val taskStatuses = TaskStatuses(beneficiaries = Completed)
 
-      when(mockConnector.getTaskStatuses(any())(any(), any()))
+      when(mockConnector.getTaskStatuses(any())(using any(), any()))
         .thenReturn(Future.successful(taskStatuses))
 
       val result = trustsStoreService.getTaskStatuses(fakeDraftId)
 
       whenReady(result) { res =>
         res mustEqual taskStatuses
-        verify(mockConnector).getTaskStatuses(eqTo(fakeDraftId))(any(), any())
+        verify(mockConnector).getTaskStatuses(eqTo(fakeDraftId))(using any(), any())
       }
     }
   }

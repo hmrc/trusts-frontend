@@ -26,7 +26,7 @@ import play.api.Application
 import play.api.http.Writeable
 import play.api.libs.json.Writes
 import play.api.mvc.Request
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.ErrorTemplate
 
 trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks with MockitoSugar with Generators {

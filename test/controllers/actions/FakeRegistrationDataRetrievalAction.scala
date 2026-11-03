@@ -22,13 +22,13 @@ import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeRegistrationDataRetrievalAction(dataToReturn: Option[TrustsFrontendUserAnswers[_]])
+class FakeRegistrationDataRetrievalAction(dataToReturn: Option[TrustsFrontendUserAnswers[?]])
     extends RegistrationDataRetrievalAction {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] =
     dataToReturn match {
       case Some(x: UserAnswers) =>
-        Future(
+        Future.successful(
           OptionalRegistrationDataRequest(
             request.request,
             request.internalId,
@@ -39,7 +39,7 @@ class FakeRegistrationDataRetrievalAction(dataToReturn: Option[TrustsFrontendUse
           )
         )
       case _                    =>
-        Future(
+        Future.successful(
           OptionalRegistrationDataRequest(
             request.request,
             request.internalId,
@@ -51,7 +51,7 @@ class FakeRegistrationDataRetrievalAction(dataToReturn: Option[TrustsFrontendUse
         )
     }
 
-  implicit override protected val executionContext: ExecutionContext =
+  override protected val executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global
 
 }

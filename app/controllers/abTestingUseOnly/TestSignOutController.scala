@@ -37,11 +37,11 @@ class TestSignOutController @Inject() (
   view: TestSignOutView,
   appConfig: FrontendAppConfig,
   auditConnector: AuditConnector
-)(implicit val ec: ExecutionContext)
+)(using val ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(): Action[AnyContent] = identify.async { implicit request =>
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     if (appConfig.logoutAudit) {
 

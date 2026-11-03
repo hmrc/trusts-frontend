@@ -16,11 +16,11 @@
 
 package connector
 
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import models.TaskStatuses
 import models.registration.pages.TagStatus.Completed
-import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
 import play.api.http.Status

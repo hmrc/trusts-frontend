@@ -16,11 +16,12 @@
 
 package views.register
 
-import java.time.LocalDateTime
-import pages.register._
+import pages.register.*
 import utils.TestUserAnswers
 import views.behaviours.ViewBehaviours
 import views.html.register.SummaryAnswerPageView
+
+import java.time.LocalDateTime
 
 class SummaryAnswerPageViewSpec extends ViewBehaviours {
   val index = 0

@@ -20,12 +20,12 @@ import config.FrontendAppConfig
 import controllers.register.routes
 import models.core.TrustsFrontendUserAnswers
 import pages.Page
-import pages.register._
+import pages.register.*
 import play.api.mvc.Call
 
 object MatchingRoutes extends Routes {
 
-  def route(config: FrontendAppConfig): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+  def route(config: FrontendAppConfig): PartialFunction[Page, TrustsFrontendUserAnswers[?] => Call] = {
     case TrustRegisteredOnlinePage => ua => redirectToIdentifierQuestion(ua)
     case TrustHaveAUTRPage         => userAnswers => trustHaveAUTRRoute(userAnswers, config)
     case WhatIsTheUTRPage          => _ => controllers.register.routes.MatchingNameController.onPageLoad()

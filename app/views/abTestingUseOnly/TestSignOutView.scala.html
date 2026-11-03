@@ -14,19 +14,15 @@
  * limitations under the License.
  *@
 
-@import config.FrontendAppConfig
-@import views.html.components.{Heading, SubmitButton, Link}
+@import views.html.components.{Heading, Link}
 
 @this(
     mainTemplate: MainTemplate,
-    config: FrontendAppConfig,
     link: Link,
-    heading: Heading,
-    formHelper: FormWithCSRF,
-    submitButton: SubmitButton
+    heading: Heading
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("abTestingUseOnly.signOutPage.title"),

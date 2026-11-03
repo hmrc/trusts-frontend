@@ -16,10 +16,10 @@
 
 package generators
 
-import models.core.pages._
+import models.core.pages.*
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
-import pages.register._
+import pages.register.*
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {

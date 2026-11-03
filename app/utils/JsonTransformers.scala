@@ -18,7 +18,7 @@ package utils
 
 import models.core.{Settlor, Settlors}
 import play.api.Logging
-import play.api.libs.json.{JsArray, JsObject, JsSuccess, JsValue, __}
+import play.api.libs.json.*
 
 object JsonTransformers extends Logging {
 

@@ -18,15 +18,15 @@ package utils
 
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
 import viewmodels.AnswerSection
 
 object SectionFormatter {
 
-  def formatAnswerSection(answerSection: AnswerSection)(implicit messages: Messages): Seq[SummaryListRow] =
+  def formatAnswerSection(answerSection: AnswerSection)(using messages: Messages): Seq[SummaryListRow] =
     answerSection.rows.map { row =>
       SummaryListRow(
-        key = Key(classes = "govuk-!-width-two-thirds", content = Text(messages(row.label, row.labelArgs: _*))),
+        key = Key(classes = "govuk-!-width-two-thirds", content = Text(messages(row.label, row.labelArgs*))),
         value = Value(HtmlContent(row.answer)),
         actions = None
       )

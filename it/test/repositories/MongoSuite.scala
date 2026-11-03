@@ -24,7 +24,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 
 trait MongoSuite extends ScalaFutures {
 
-  implicit val defaultPatience: PatienceConfig =
+  given defaultPatience: PatienceConfig =
     PatienceConfig(timeout = Span(30, Seconds), interval = Span(500, Millis))
 
   val application: Application = new GuiceApplicationBuilder()

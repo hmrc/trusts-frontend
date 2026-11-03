@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.agents.routes._
+@import controllers.register.agents.routes.*
 @import views.html.components.{ErrorSummary, InputYesNo, SubmitButton}
 
 @this(
@@ -25,7 +25,7 @@
     submitButton: SubmitButton,
 )
 
-@(form: Form[_], draftId: String, crn: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[?], draftId: String, crn: String)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("removeDraftYesNo.title")}",

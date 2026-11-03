@@ -16,7 +16,7 @@
 
 package controllers.actions
 
-import controllers.actions.register._
+import controllers.actions.register.*
 import controllers.filters.IndexActionFilterProvider
 import models.requests.{IdentifierRequest, MatchingAndSuitabilityDataRequest, RegistrationDataRequest}
 import play.api.libs.json.Reads
@@ -48,7 +48,7 @@ class StandardActionSets @Inject() (
   def identifiedUserMatchingAndSuitabilityData(): ActionBuilder[MatchingAndSuitabilityDataRequest, AnyContent] =
     identify andThen getMatchingAndSuitabilityData andThen requireMatchingAndSuitabilityData
 
-  def identifiedUserWithRequiredAnswer[T](draftId: String, requiredAnswer: RequiredAnswer[T])(implicit
+  def identifiedUserWithRequiredAnswer[T](draftId: String, requiredAnswer: RequiredAnswer[T])(using
     reads: Reads[T]
   ): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identifiedUserWithRegistrationData(draftId) andThen requiredAnswerAction(requiredAnswer)
@@ -58,7 +58,7 @@ class StandardActionSets @Inject() (
     requiredAnswer: RequiredAnswer[T],
     index: Int,
     entity: Gettable[List[U]]
-  )(implicit rAReads: Reads[T], eReads: Reads[U]): ActionBuilder[RegistrationDataRequest, AnyContent] =
+  )(using rAReads: Reads[T], eReads: Reads[U]): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen getRegistrationData(draftId) andThen requireRegistrationData andThen validateIndex(
       index,
       entity

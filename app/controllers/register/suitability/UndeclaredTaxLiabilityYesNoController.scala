@@ -38,7 +38,7 @@ class UndeclaredTaxLiabilityYesNoController @Inject() (
   yesNoFormProvider: YesNoFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: UndeclaredTaxLiabilityYesNoView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.undeclaredTaxLiability")
@@ -56,7 +56,7 @@ class UndeclaredTaxLiabilityYesNoController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
             answers        <- Future.fromTry(request.userAnswers.set(UndeclaredTaxLiabilityYesNoPage, value))

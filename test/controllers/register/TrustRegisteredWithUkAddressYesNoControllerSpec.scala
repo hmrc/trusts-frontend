@@ -17,16 +17,16 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import play.api.mvc.Results.Redirect
-import controllers.register.routes._
+import controllers.register.routes.*
 import forms.YesNoFormProvider
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
 import play.api.data.Form
 import play.api.inject.bind
+import play.api.mvc.Results.Redirect
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.MatchingService
 import views.html.register.TrustRegisteredWithUkAddressYesNoView
 
@@ -54,7 +54,7 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form)(request, messages).toString
+        view(form)(using request, messages).toString
 
       application.stop()
     }
@@ -77,7 +77,7 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true))(request, messages).toString
+        view(form.fill(true))(using request, messages).toString
 
       application.stop()
     }
@@ -103,7 +103,7 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       val redirectUrl = "redirect-url"
 
       val mockMatchingService: MatchingService = mock[MatchingService]
-      when(mockMatchingService.matching(any(), any())(any(), any()))
+      when(mockMatchingService.matching(any(), any())(using any(), any()))
         .thenReturn(Future.successful(Redirect(redirectUrl)))
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers))
@@ -138,7 +138,7 @@ class TrustRegisteredWithUkAddressYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm)(request, messages).toString
+        view(boundForm)(using request, messages).toString
 
       application.stop()
     }

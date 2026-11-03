@@ -21,9 +21,9 @@ import config.FrontendAppConfig
 import controllers.actions.register.RegistrationIdentifierAction
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.Session
 
 import scala.concurrent.ExecutionContext
@@ -34,11 +34,11 @@ class LogoutController @Inject() (
   auditConnector: AuditConnector,
   identify: RegistrationIdentifierAction,
   val controllerComponents: MessagesControllerComponents
-)(implicit val ec: ExecutionContext)
+)(using val ec: ExecutionContext)
     extends FrontendBaseController {
 
   def logout: Action[AnyContent] = identify { request =>
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     if (appConfig.logoutAudit) {
 

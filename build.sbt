@@ -1,11 +1,12 @@
 import play.sbt.routes.RoutesKeys
 import sbt.Def
-import uk.gov.hmrc.DefaultBuildSettings
+import uk.gov.hmrc.DefaultBuildSettings.*
 
 lazy val appName: String = "trusts-frontend"
 
-ThisBuild / scalaVersion := "2.13.18"
-ThisBuild / majorVersion := 1
+ThisBuild / scalaVersion := "3.9.0"
+ThisBuild / majorVersion := 2
+ThisBuild / targetJvm := "jvm-21"
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
@@ -30,7 +31,8 @@ lazy val microservice = (project in file("."))
     scalacOptions ++= Seq(
       "-feature",
       "-Wconf:src=routes/.*:s",
-      "-Wconf:cat=unused-imports&src=views/.*:s"
+      "-Wconf:msg=unused import&src=html/.*:s",
+      "-Wconf:msg=Flag.*repeatedly:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true
@@ -47,6 +49,6 @@ lazy val testSettings: Seq[Def.Setting[?]] = Seq(
 lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(microservice % "test->test")
-  .settings(DefaultBuildSettings.itSettings())
+  .settings(itSettings())
 
 addCommandAlias("scalafmtAll", "all scalafmtSbt scalafmt Test/scalafmt it/Test/scalafmt")

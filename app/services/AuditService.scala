@@ -16,13 +16,13 @@
 
 package services
 
-import auditing.TrustAuditing._
+import auditing.TrustAuditing.*
 import auditing.{AuditEvent, RegistrationErrorAuditEvent, TrustRegistrationSubmissionAuditEvent}
 import config.FrontendAppConfig
 import models.core.UserAnswers
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.{JsObject, JsValue, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -30,12 +30,12 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAppConfig)(implicit
+class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAppConfig)(using
   ec: ExecutionContext
 ) {
 
-  def auditRegistrationSubmitted(payload: JsValue, draftId: String, response: RegistrationTRNResponse)(implicit
-    request: RegistrationDataRequest[_],
+  def auditRegistrationSubmitted(payload: JsValue, draftId: String, response: RegistrationTRNResponse)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit = {
 
@@ -54,8 +54,8 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
     )
   }
 
-  def auditRegistrationAlreadySubmitted(payload: JsValue, draftId: String)(implicit
-    request: RegistrationDataRequest[_],
+  def auditRegistrationAlreadySubmitted(payload: JsValue, draftId: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit =
 
@@ -67,8 +67,8 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
       response = RegistrationErrorAuditEvent(FORBIDDEN, "ALREADY_REGISTERED", "Trust is already registered.")
     )
 
-  def auditRegistrationSubmissionFailed(payload: JsValue, draftId: String)(implicit
-    request: RegistrationDataRequest[_],
+  def auditRegistrationSubmissionFailed(payload: JsValue, draftId: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit =
 
@@ -80,8 +80,8 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
       response = RegistrationErrorAuditEvent(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", "Internal Server Error.")
     )
 
-  def auditRegistrationPreparationFailed(userAnswers: UserAnswers, errorReason: String)(implicit
-    request: RegistrationDataRequest[_],
+  def auditRegistrationPreparationFailed(userAnswers: UserAnswers, errorReason: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit =
 
@@ -93,7 +93,7 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
       RegistrationErrorAuditEvent(INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", errorReason)
     )
 
-  def auditUserAnswers(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Unit = {
+  def auditUserAnswers(userAnswers: UserAnswers)(using hc: HeaderCarrier): Unit = {
     val auditPayload = AuditEvent(
       registration = userAnswers.data,
       draftId = userAnswers.draftId,
@@ -106,21 +106,21 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
     )
   }
 
-  def auditUserAnswersOnMissingSettlorInfo(userAnswers: UserAnswers, incorrectInfo: String)(implicit
-    request: RegistrationDataRequest[_],
+  def auditUserAnswersOnMissingSettlorInfo(userAnswers: UserAnswers, incorrectInfo: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit =
     auditMissingSettlorInfo(userAnswers.data, userAnswers.draftId, incorrectInfo)
 
   def auditRegistrationWithMissingSettlorInfo(draftId: String, registrationPieces: JsObject, incorrectInfo: String)(
-    implicit
-    request: RegistrationDataRequest[_],
+    using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit =
     auditMissingSettlorInfo(registrationPieces, draftId, incorrectInfo, "registration")
 
-  def auditDraftWithMissingSettlorInfo(draftId: String, draftSettlors: JsValue, incorrectInfo: String)(implicit
-    request: RegistrationDataRequest[_],
+  def auditDraftWithMissingSettlorInfo(draftId: String, draftSettlors: JsValue, incorrectInfo: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit =
     auditMissingSettlorInfo(draftSettlors, draftId, incorrectInfo, "draft")
@@ -130,8 +130,8 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
     draftId: String,
     incorrectInfo: String,
     descriptor: String = ""
-  )(implicit
-    request: RegistrationDataRequest[_],
+  )(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit =
 
@@ -147,8 +147,8 @@ class AuditService @Inject() (auditConnector: AuditConnector, config: FrontendAp
       )
     )
 
-  private def audit(event: String, payload: JsValue, draftId: String, internalId: String, response: TrustResponse)(
-    implicit hc: HeaderCarrier
+  private def audit(event: String, payload: JsValue, draftId: String, internalId: String, response: TrustResponse)(using
+    hc: HeaderCarrier
   ): Unit =
 
     if (config.auditSubmissions) {

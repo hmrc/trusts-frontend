@@ -21,7 +21,7 @@ import forms.YesNoFormProvider
 import pages.register.TrustRegisteredOnlinePage
 import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.TrustRegisteredOnlineView
 
 class TrustRegisteredOnlineControllerSpec extends RegistrationSpecBase {

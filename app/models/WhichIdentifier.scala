@@ -39,7 +39,7 @@ object WhichIdentifier extends Enumerable.Implicits {
     )
   }
 
-  implicit val enumerable: Enumerable[WhichIdentifier] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[WhichIdentifier] =
+    Enumerable(values.map(v => v.toString -> v)*)
 
 }

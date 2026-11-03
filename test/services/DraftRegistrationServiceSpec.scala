@@ -42,7 +42,7 @@ class DraftRegistrationServiceSpec extends RegistrationSpecBase with ScalaFuture
     ".create" must {
       "take matching and suitability answers and set them in the registrations repository" in {
 
-        implicit val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val userAnswers = emptyMatchingAndSuitabilityUserAnswers
           .set(TrustRegisteredOnlinePage, false)
@@ -70,7 +70,7 @@ class DraftRegistrationServiceSpec extends RegistrationSpecBase with ScalaFuture
         val draftId = Await.result(service.create(request), Duration.Inf)
 
         val uaCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-        verify(registrationsRepository).set(uaCaptor.capture, any())(any())
+        verify(registrationsRepository).set(uaCaptor.capture, any())(using any())
 
         uaCaptor.getValue.draftId mustEqual draftId
         uaCaptor.getValue.data mustEqual request.userAnswers.data

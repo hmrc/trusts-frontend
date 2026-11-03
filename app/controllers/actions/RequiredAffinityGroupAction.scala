@@ -16,18 +16,19 @@
 
 package controllers.actions
 
-import javax.inject.Inject
 import models.requests.IdentifierRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionFilter, Result}
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 sealed trait RequiredAgentAction extends ActionFilter[IdentifierRequest]
 
-class RequiredAgentAffinityGroupAction @Inject() (implicit val executionContext: ExecutionContext)
-    extends RequiredAgentAction {
+class RequiredAgentAffinityGroupAction @Inject() (ec: ExecutionContext) extends RequiredAgentAction {
+
+  override protected val executionContext: ExecutionContext = ec
 
   override protected def filter[A](request: IdentifierRequest[A]): Future[Option[Result]] =
     request.affinityGroup match {
@@ -40,7 +41,7 @@ class RequiredAgentAffinityGroupAction @Inject() (implicit val executionContext:
 }
 
 class RequireStateActionProviderImpl @Inject() (ec: ExecutionContext) extends RequiredAgentAffinityGroupActionProvider {
-  override def apply() = new RequiredAgentAffinityGroupAction()(ec)
+  override def apply() = new RequiredAgentAffinityGroupAction(ec)
 }
 
 trait RequiredAgentAffinityGroupActionProvider {

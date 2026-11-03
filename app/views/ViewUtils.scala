@@ -23,10 +23,10 @@ import viewmodels.RadioOption
 
 object ViewUtils {
 
-  def errorPrefix(form: Form[_])(implicit messages: Messages): String =
+  def errorPrefix(form: Form[?])(using messages: Messages): String =
     if (form.hasErrors || form.hasGlobalErrors) s"${messages("error.browser.title.prefix")} " else ""
 
-  def breadcrumbTitle(title: String, section: Option[String] = None)(implicit messages: Messages): String =
+  def breadcrumbTitle(title: String, section: Option[String] = None)(using messages: Messages): String =
     section match {
       case Some(sect) => s"$title - $sect - ${messages("service.name")} - GOV.UK"
       case _          => s"$title - ${messages("service.name")} - GOV.UK"
@@ -50,7 +50,7 @@ object ViewUtils {
         }
     }
 
-  def mapRadioOptionsToRadioItems(field: Field, trackGa: Boolean, inputs: Seq[(RadioOption, String)])(implicit
+  def mapRadioOptionsToRadioItems(field: Field, trackGa: Boolean, inputs: Seq[(RadioOption, String)])(using
     messages: Messages
   ): Seq[RadioItem] =
     inputs.map { input =>

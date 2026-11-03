@@ -18,8 +18,8 @@ package models.core.http
 
 import auditing.RegistrationErrorAuditEvent
 import play.api.Logging
-import play.api.http.Status._
-import play.api.libs.json._
+import play.api.http.Status.*
+import play.api.libs.json.*
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 trait TrustResponse
@@ -28,7 +28,7 @@ final case class RegistrationTRNResponse(trn: String) extends TrustResponse
 
 object RegistrationTRNResponse {
 
-  implicit val formats: OFormat[RegistrationTRNResponse] = Json.format[RegistrationTRNResponse]
+  given formats: OFormat[RegistrationTRNResponse] = Json.format[RegistrationTRNResponse]
 
 }
 
@@ -39,8 +39,8 @@ object TrustResponse extends Logging {
     override def reads(json: JsValue): JsResult[TrustResponse] = json.validate[RegistrationTRNResponse]
 
     override def writes(o: TrustResponse): JsValue = o match {
-      case x: RegistrationTRNResponse     => Json.toJson(x)(RegistrationTRNResponse.formats)
-      case x: RegistrationErrorAuditEvent => Json.toJson(x)(RegistrationErrorAuditEvent.formats)
+      case x: RegistrationTRNResponse     => Json.toJson(x)(using RegistrationTRNResponse.formats)
+      case x: RegistrationErrorAuditEvent => Json.toJson(x)(using RegistrationErrorAuditEvent.formats)
     }
 
   }

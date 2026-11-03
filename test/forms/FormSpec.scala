@@ -16,9 +16,9 @@
 
 package forms
 
+import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.OptionValues
 import play.api.data.{Form, FormError}
 
 trait FormSpec extends AnyWordSpec with OptionValues with Matchers {

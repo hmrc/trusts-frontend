@@ -17,11 +17,11 @@
 package views.register.agents
 
 import play.api.inject.guice.GuiceApplicationBuilder
-
-import java.time.LocalDateTime
 import viewmodels.DraftRegistration
 import views.behaviours.ViewBehaviours
 import views.html.register.agents.AgentOverviewView
+
+import java.time.LocalDateTime
 
 class AgentOverviewViewSpec extends ViewBehaviours {
 

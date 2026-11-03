@@ -21,7 +21,7 @@ import forms.WhatIsTheUTRFormProvider
 import pages.register.WhatIsTheUTRPage
 import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.WhatIsTheUTRView
 
 class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {

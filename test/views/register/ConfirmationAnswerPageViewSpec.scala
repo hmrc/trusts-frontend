@@ -17,7 +17,7 @@
 package views.register
 
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.AccessibilityHelper._
+import utils.AccessibilityHelper.*
 import utils.print.register.PrintUserAnswersHelper
 import views.behaviours.ViewBehaviours
 import views.html.register.ConfirmationAnswerPageView
@@ -35,7 +35,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     "taxable" must {
 
-      implicit val hc: HeaderCarrier = HeaderCarrier()
+      given hc: HeaderCarrier = HeaderCarrier()
 
       val app = applicationBuilder().build()
 
@@ -67,7 +67,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     "non-taxable" must {
 
-      implicit val hc: HeaderCarrier = HeaderCarrier()
+      given hc: HeaderCarrier = HeaderCarrier()
 
       val app = applicationBuilder().build()
 

@@ -16,15 +16,16 @@
 
 package utils
 
+import base.RegistrationSpecBase
 import play.api.Application
 import play.api.i18n.{Lang, Messages}
 import play.api.inject.guice.GuiceApplicationBuilder
-import base.RegistrationSpecBase
+
 import scala.util.matching.Regex
 
 class MessagesSpec extends RegistrationSpecBase {
 
-  override lazy val fakeApplication: Application = new GuiceApplicationBuilder()
+  override def fakeApplication(): Application = new GuiceApplicationBuilder()
     .configure(
       Map("application.langs" -> "en,cy", "features.welsh-language-support" -> true)
     )

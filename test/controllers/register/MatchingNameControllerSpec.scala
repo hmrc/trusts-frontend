@@ -17,7 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
+import controllers.register.routes.*
 import forms.TrustNameFormProvider
 import generators.Generators
 import org.scalatestplus.mockito.MockitoSugar
@@ -25,7 +25,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.MatchingNamePage
 import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.MatchingNameView
 
 class MatchingNameControllerSpec

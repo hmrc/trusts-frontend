@@ -171,14 +171,14 @@ trait ViewSpecBase extends RegistrationSpecBase {
   def assertContainsTextForId(doc: Document, id: String, expectedText: String): Assertion =
     assert(doc.getElementById(id).text() == expectedText, s"\n\nElement $id does not have text $expectedText")
 
-  def viewFor[A](data: Option[UserAnswers])(implicit tag: ClassTag[A]): A = {
+  def viewFor[A](data: Option[UserAnswers])(using tag: ClassTag[A]): A = {
     val application = applicationBuilder(data).build()
     val view        = application.injector.instanceOf[A]
     application.stop()
     view
   }
 
-  def viewForAgent[A](data: Option[UserAnswers])(implicit tag: ClassTag[A]): A = {
+  def viewForAgent[A](data: Option[UserAnswers])(using tag: ClassTag[A]): A = {
     val application = applicationBuilder(data, affinityGroup = AffinityGroup.Agent).build()
     val view        = application.injector.instanceOf[A]
     application.stop()
