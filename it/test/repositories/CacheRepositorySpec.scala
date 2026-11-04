@@ -17,6 +17,7 @@
 package repositories
 
 import models.core.MatchingAndSuitabilityUserAnswers
+import org.mongodb.scala.SingleObservableFuture
 import org.mongodb.scala.bson.BsonDocument
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
