@@ -42,6 +42,21 @@ class UnauthorisedControllerSpec extends RegistrationSpecBase {
 
       application.stop()
     }
+
+    "redirect to Sign Out Confirmation view when user clicks Sign Out button" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      val request = FakeRequest(POST, controllers.register.routes.UnauthorisedController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+
+      redirectLocation(result).value mustEqual routes.SignOutConfirmationController.onPageLoad().url
+
+      application.stop()
+    }
   }
 
 }
