@@ -17,12 +17,12 @@
 package mapping.registration
 
 import base.RegistrationSpecBase
-import models.core.http.{AddressType, Correspondence, Declaration, MatchData, Registration}
+import models.core.http.*
 import models.core.pages.FullName
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.libs.json.Json
-import uk.gov.hmrc.auth.core.AffinityGroup._
+import uk.gov.hmrc.auth.core.AffinityGroup.*
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
 
@@ -37,7 +37,7 @@ class RegistrationMapperSpec extends RegistrationSpecBase {
   private val correspondenceAddress = AddressType("line1", "line2", None, None, Some(postcode), "GB")
   private val utr                   = "1234567890"
 
-  implicit val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
 
   "RegistrationMapper" when {
 
@@ -71,7 +71,8 @@ class RegistrationMapperSpec extends RegistrationSpecBase {
       "agent" must {
         "create registration with some empty agent details" in {
 
-          when(declarationMapper.build(any(), any())(any(), any())).thenReturn(Future.successful(Some(declaration)))
+          when(declarationMapper.build(any(), any())(using any(), any()))
+            .thenReturn(Future.successful(Some(declaration)))
           when(correspondenceMapper.build(any())).thenReturn(correspondence)
           when(matchingMapper.build(any(), any())).thenReturn(Some(matchData))
 
@@ -92,7 +93,8 @@ class RegistrationMapperSpec extends RegistrationSpecBase {
       "organisation" must {
         "create registration with no agent details" in {
 
-          when(declarationMapper.build(any(), any())(any(), any())).thenReturn(Future.successful(Some(declaration)))
+          when(declarationMapper.build(any(), any())(using any(), any()))
+            .thenReturn(Future.successful(Some(declaration)))
           when(correspondenceMapper.build(any())).thenReturn(correspondence)
           when(matchingMapper.build(any(), any())).thenReturn(Some(matchData))
 

@@ -17,8 +17,8 @@
 package base
 
 import config.FrontendAppConfig
-import controllers.actions.register._
-import controllers.actions.{FakeDraftIdRetrievalActionProvider, _}
+import controllers.actions.*
+import controllers.actions.register.*
 import models.core.http.{IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import models.core.{MatchingAndSuitabilityUserAnswers, TrustsFrontendUserAnswers, UserAnswers}
 import models.requests.RegistrationDataRequest
@@ -48,7 +48,7 @@ trait SpecBaseHelpers
   def emptyMatchingAndSuitabilityUserAnswers: MatchingAndSuitabilityUserAnswers =
     TestUserAnswers.emptyMatchingAndSuitabilityUserAnswers
 
-  implicit val registrationRequest: RegistrationDataRequest[_] = RegistrationDataRequest(
+  given registrationRequest: RegistrationDataRequest[_] = RegistrationDataRequest(
     request = fakeRequest,
     internalId = "internalId",
     sessionId = "sessionId",

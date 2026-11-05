@@ -19,11 +19,11 @@ package models.core
 import _root_.pages.register.TrustHaveAUTRPage
 import _root_.pages.register.suitability.TrustTaxableYesNoPage
 import models.MongoDateTimeFormats
-import models.core.UserAnswerImplicits._
+import models.core.UserAnswerImplicits.*
 import models.registration.pages.RegistrationStatus
 import models.registration.pages.RegistrationStatus.NotStarted
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 import queries.Settable
 
 import java.time.LocalDateTime
@@ -41,7 +41,7 @@ final case class UserAnswers(
 
   def isExistingTrust: Boolean = this.get(TrustHaveAUTRPage).contains(true)
 
-  override def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[UserAnswers] =
+  override def set[A](page: Settable[A], value: A)(using writes: Writes[A]): Try[UserAnswers] =
     updatedDataForSet(page, value).flatMap { d =>
       page.cleanup(Some(value), this.copy(data = d))
     }
@@ -68,16 +68,24 @@ object UserAnswers {
     (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
       (__ \ "progress").read[RegistrationStatus] and
-      (__ \ "createdAt").read(MongoDateTimeFormats.localDateTimeRead) and
+      (__ \ "createdAt").read(using MongoDateTimeFormats.localDateTimeRead) and
       (__ \ "internalId").read[String]
-  )(UserAnswers.apply _)
+  )(UserAnswers.apply)
 
   implicit lazy val writes: Writes[UserAnswers] = (
     (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
       (__ \ "progress").write[RegistrationStatus] and
-      (__ \ "createdAt").write(MongoDateTimeFormats.localDateTimeWrite) and
+      (__ \ "createdAt").write(using MongoDateTimeFormats.localDateTimeWrite) and
       (__ \ "internalId").write[String]
-  )(unlift(UserAnswers.unapply))
+  )(userAnswer =>
+    (
+      userAnswer.draftId,
+      userAnswer.data,
+      userAnswer.progress,
+      userAnswer.createdAt,
+      userAnswer.internalAuthId
+    )
+  )
 
 }

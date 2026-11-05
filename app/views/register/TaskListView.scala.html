@@ -15,7 +15,7 @@
  *@
 
 @import config.FrontendAppConfig
-@import controllers.register.routes._
+@import controllers.register.routes.*
 @import viewmodels.Task
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import views.html.components.{Heading, Notification, Warning, Link, TaskList, SubmitButton}
@@ -43,7 +43,7 @@
     affinityGroup: AffinityGroup,
     completedTasks: Int,
     totalTasks: Int
-)(implicit request: Request[_], messages: Messages)
+)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("taskList.title"),

@@ -24,11 +24,11 @@ import viewmodels.AnswerSection
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class PrintUserAnswersHelper @Inject() (draftRegistrationService: DraftRegistrationService)(implicit
+class PrintUserAnswersHelper @Inject() (draftRegistrationService: DraftRegistrationService)(using
   ec: ExecutionContext
 ) {
 
-  def summary(draftId: String)(implicit hc: HeaderCarrier, messages: Messages): Future[List[AnswerSection]] =
+  def summary(draftId: String)(using hc: HeaderCarrier, messages: Messages): Future[List[AnswerSection]] =
 
     draftRegistrationService.getAnswerSections(draftId).map { registrationAnswerSections =>
       val entitySectionsHead = List(

@@ -21,13 +21,13 @@ import models.core.http.{IdentificationType, LeadTrusteeIndType, LeadTrusteeType
 import models.core.pages.FullName
 import models.registration.pages.RegistrationStatus
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.register.suitability.TrustTaxableYesNoPage
 import pages.register.{RegistrationTRNPage, TrustHaveAUTRPage}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.confirmation._
-import org.mockito.Mockito.when
+import views.html.register.confirmation.*
 
 import java.time.LocalDate
 import scala.concurrent.Future
@@ -74,7 +74,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(leadTrusteeInd))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
@@ -90,7 +91,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(using request, messages).toString
 
             content must include(agentUrl)
 
@@ -110,7 +111,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(testLeadTrusteeOrg))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
@@ -126,7 +128,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(using request, messages).toString
 
             content must include(agentUrl)
 
@@ -150,7 +152,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(leadTrusteeInd))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
@@ -166,7 +169,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(using request, messages).toString
 
             content mustNot include(agentUrl)
 
@@ -186,7 +189,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(testLeadTrusteeOrg))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
@@ -202,7 +206,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(using request, messages).toString
 
             content mustNot include(agentUrl)
 
@@ -227,7 +231,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(testLeadTrusteeOrg))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
@@ -243,7 +248,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+              view(fakeDraftId, "xTRN1234678", "Lead Org")(using request, messages).toString
 
             content mustNot include(agentUrl)
 
@@ -264,7 +269,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(testLeadTrusteeOrg))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
@@ -280,7 +286,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             content mustEqual
-              view(fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+              view(fakeDraftId, "xTRN1234678", "Lead Org")(using request, messages).toString
 
             content mustNot include(agentUrl)
 
@@ -307,7 +313,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(leadTrusteeInd))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
@@ -321,7 +328,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(using request, messages).toString
 
             application.stop()
           }
@@ -339,7 +346,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(testLeadTrusteeOrg))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Agent).build()
@@ -353,7 +361,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(using request, messages).toString
 
             application.stop()
           }
@@ -374,7 +382,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(leadTrusteeInd))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(leadTrusteeInd))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
@@ -388,7 +397,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "first name Last Name")(using request, messages).toString
 
             application.stop()
           }
@@ -406,7 +415,8 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
               .success
               .value
 
-            when(registrationsRepository.getLeadTrustee(any())(any())).thenReturn(Future.successful(testLeadTrusteeOrg))
+            when(registrationsRepository.getLeadTrustee(any())(using any()))
+              .thenReturn(Future.successful(testLeadTrusteeOrg))
 
             val application =
               applicationBuilder(userAnswers = Some(userAnswers), affinityGroup = AffinityGroup.Organisation).build()
@@ -420,7 +430,7 @@ class ConfirmationControllerSpec extends RegistrationSpecBase {
             status(result) mustEqual OK
 
             contentAsString(result) mustEqual
-              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(request, messages).toString
+              view(draftId = fakeDraftId, "xTRN1234678", "Lead Org")(using request, messages).toString
 
             application.stop()
           }

@@ -16,11 +16,12 @@
 
 package controllers.actions
 
-import controllers.actions.register._
-import javax.inject.Inject
+import controllers.actions.register.*
 import models.requests.RegistrationDataRequest
 import play.api.libs.json.Reads
 import play.api.mvc.{ActionBuilder, AnyContent}
+
+import javax.inject.Inject
 
 class AgentActionSets @Inject() (
   identify: RegistrationIdentifierAction,
@@ -33,7 +34,7 @@ class AgentActionSets @Inject() (
   def identifiedUserWithData(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identify andThen hasAgentAffinityGroup() andThen getData(draftId) andThen requireData
 
-  def requiredAnswerWithAgent[T](draftId: String, requiredAnswer: RequiredAnswer[T])(implicit
+  def requiredAnswerWithAgent[T](draftId: String, requiredAnswer: RequiredAnswer[T])(using
     reads: Reads[T]
   ): ActionBuilder[RegistrationDataRequest, AnyContent] =
     identifiedUserWithData(draftId) andThen requiredAnswerAction(requiredAnswer)

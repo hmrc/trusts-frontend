@@ -17,7 +17,7 @@
 package services.settlors
 
 import models.settlor.{IncompleteSettlorData, MissingSettlorData, SettlorDataError}
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ import javax.inject.Inject
 // or living individual/business settlors under `living`
 class AnswerSectionSettlorValidationService @Inject() {
 
-  import SettlorValidationHelpers._
+  import SettlorValidationHelpers.*
 
   private val prefix = "answer section"
 

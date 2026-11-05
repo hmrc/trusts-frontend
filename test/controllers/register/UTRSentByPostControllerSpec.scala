@@ -18,7 +18,7 @@ package controllers.register
 
 import base.RegistrationSpecBase
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.UTRSentByPostView
 
 class UTRSentByPostControllerSpec extends RegistrationSpecBase {
@@ -38,7 +38,7 @@ class UTRSentByPostControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(isAgent = false)(request, messages).toString
+        view(isAgent = false)(using request, messages).toString
 
       application.stop()
     }

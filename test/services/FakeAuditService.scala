@@ -17,8 +17,6 @@
 package services
 
 import config.FrontendAppConfig
-
-import javax.inject.Inject
 import models.core.UserAnswers
 import models.core.http.RegistrationTRNResponse
 import models.requests.RegistrationDataRequest
@@ -26,28 +24,29 @@ import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class FakeAuditService @Inject() (auditConnector: AuditConnector, config: FrontendAppConfig)(ec: ExecutionContext)
-    extends AuditService(auditConnector, config)(ec) {
+    extends AuditService(auditConnector, config)(using ec) {
 
-  override def auditRegistrationSubmitted(payload: JsValue, draftId: String, response: RegistrationTRNResponse)(implicit
-    request: RegistrationDataRequest[_],
+  override def auditRegistrationSubmitted(payload: JsValue, draftId: String, response: RegistrationTRNResponse)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit = ()
 
-  override def auditRegistrationAlreadySubmitted(payload: JsValue, draftId: String)(implicit
-    request: RegistrationDataRequest[_],
+  override def auditRegistrationAlreadySubmitted(payload: JsValue, draftId: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit = ()
 
-  override def auditRegistrationSubmissionFailed(payload: JsValue, draftId: String)(implicit
-    request: RegistrationDataRequest[_],
+  override def auditRegistrationSubmissionFailed(payload: JsValue, draftId: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit = ()
 
-  override def auditRegistrationPreparationFailed(userAnswers: UserAnswers, errorReason: String)(implicit
-    request: RegistrationDataRequest[_],
+  override def auditRegistrationPreparationFailed(userAnswers: UserAnswers, errorReason: String)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit = ()
 

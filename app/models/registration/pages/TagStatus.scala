@@ -39,7 +39,7 @@ object TagStatus extends Enumerable.Implicits {
     NoActionNeeded
   )
 
-  implicit val enumerable: Enumerable[TagStatus] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[TagStatus] =
+    Enumerable(values.toSeq.map(v => v.toString -> v)*)
 
 }

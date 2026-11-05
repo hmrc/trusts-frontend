@@ -16,11 +16,11 @@
 
 package connector
 
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import models.TaskStatuses
 import models.registration.pages.TagStatus.Completed
-import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.play.PlaySpec
 import play.api.Application
 import play.api.http.Status
@@ -39,7 +39,7 @@ class TrustsStoreConnectorSpec extends PlaySpec with Matchers with OptionValues 
   implicit lazy val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
   lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(Seq("microservice.services.trusts-store.port" -> server.port(), "auditing.enabled" -> false): _*)
+    .configure(Seq("microservice.services.trusts-store.port" -> server.port(), "auditing.enabled" -> false)*)
     .build()
 
   private lazy val connector = app.injector.instanceOf[TrustsStoreConnector]

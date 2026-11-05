@@ -20,12 +20,12 @@ import com.google.inject.ImplementedBy
 import connector.TrustConnector
 import mapping.registration.RegistrationMapper
 import models.core.UserAnswers
-import models.core.http.TrustResponse._
+import models.core.http.TrustResponse.*
 import models.core.http.{AddressType, Registration, RegistrationTRNResponse, TrustResponse}
 import models.requests.RegistrationDataRequest
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.Logging
-import play.api.libs.json._
+import play.api.libs.json.*
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Session
@@ -42,14 +42,14 @@ class DefaultSubmissionService @Inject() (
 
   override def submit(
     userAnswers: UserAnswers
-  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
+  )(using request: RegistrationDataRequest[?], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] = {
     logger.info(s"[submit][Session ID: ${request.sessionId}] submitting registration")
     getCorrespondenceAddress(userAnswers)
   }
 
   private def getCorrespondenceAddress(
     userAnswers: UserAnswers
-  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] =
+  )(using request: RegistrationDataRequest[?], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] =
     registrationsRepository
       .getCorrespondenceAddress(userAnswers.draftId)
       .flatMap { correspondenceAddress =>
@@ -66,8 +66,8 @@ class DefaultSubmissionService @Inject() (
         UnableToRegister()
       }
 
-  private def getTrustName(userAnswers: UserAnswers, correspondenceAddress: AddressType)(implicit
-    request: RegistrationDataRequest[_],
+  private def getTrustName(userAnswers: UserAnswers, correspondenceAddress: AddressType)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[TrustResponse] =
@@ -86,7 +86,7 @@ class DefaultSubmissionService @Inject() (
     userAnswers: UserAnswers,
     correspondenceAddress: AddressType,
     trustName: String
-  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] =
+  )(using request: RegistrationDataRequest[?], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse] =
     registrationMapper.build(userAnswers, correspondenceAddress, trustName, request.affinityGroup).flatMap {
       case Some(registration) =>
         addDraftRegistrationSections(userAnswers, registration)
@@ -96,8 +96,8 @@ class DefaultSubmissionService @Inject() (
         Future.failed(UnableToRegister())
     }
 
-  private def addDraftRegistrationSections(userAnswers: UserAnswers, registration: Registration)(implicit
-    request: RegistrationDataRequest[_],
+  private def addDraftRegistrationSections(userAnswers: UserAnswers, registration: Registration)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[TrustResponse] =
@@ -115,8 +115,8 @@ class DefaultSubmissionService @Inject() (
         UnableToRegister()
       }
 
-  private def register(draftId: String, fullRegistrationJson: JsValue)(implicit
-    request: RegistrationDataRequest[_],
+  private def register(draftId: String, fullRegistrationJson: JsValue)(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[TrustResponse] =
@@ -137,7 +137,7 @@ class DefaultSubmissionService @Inject() (
     }
 
   private def add5mldData(registrationJson: JsValue, userAnswers: UserAnswers): JsValue = {
-    def putNewValue[T](path: JsPath, value: Option[T])(implicit wts: Writes[T]): Reads[JsObject] =
+    def putNewValue[T](path: JsPath, value: Option[T])(using wts: Writes[T]): Reads[JsObject] =
       value match {
         case Some(v) =>
           __.json.update(path.json.put(Json.toJson(v)))
@@ -173,6 +173,6 @@ trait SubmissionService {
 
   def submit(
     userAnswers: UserAnswers
-  )(implicit request: RegistrationDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
+  )(using request: RegistrationDataRequest[?], hc: HeaderCarrier, ec: ExecutionContext): Future[TrustResponse]
 
 }

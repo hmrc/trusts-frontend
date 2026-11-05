@@ -17,6 +17,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
 @import utils.DateErrorFormatter._
 @import viewmodels.RadioOption
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.errorsummary.{ErrorSummary => GovukErrorSummaryModel}
 
 @this(
     govUkErrorSummary: GovukErrorSummary
@@ -25,7 +26,7 @@
 @(errors: Seq[FormError], radioOptions: Seq[RadioOption] = Nil, isYesNo: Boolean = false)(implicit messages: Messages)
 
 @if(errors.nonEmpty) {
-    @govUkErrorSummary(ErrorSummary(
+    @govUkErrorSummary(GovukErrorSummaryModel(
         errorList = errors
             .map(err => err.copy(key = errorHref(err, radioOptions, isYesNo), args = formatArgs(err.args)))
             .asTextErrorLinks,

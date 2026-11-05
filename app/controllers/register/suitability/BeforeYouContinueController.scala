@@ -23,7 +23,7 @@ import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.register.suitability._
+import views.html.register.suitability.*
 
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -39,13 +39,13 @@ class BeforeYouContinueController @Inject() (
   nonTaxableAgentView: BeforeYouContinueNonTaxAgentView
 ) extends FrontendBaseController with I18nSupport {
 
-  private def routeNonTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (isAgentUser) {
+  private def routeNonTaxable()(using request: MatchingAndSuitabilityDataRequest[?]) = if (isAgentUser) {
     Ok(nonTaxableAgentView())
   } else {
     Ok(nonTaxableView())
   }
 
-  private def routeTaxable()(implicit request: MatchingAndSuitabilityDataRequest[_]) = if (isAgentUser) {
+  private def routeTaxable()(using request: MatchingAndSuitabilityDataRequest[?]) = if (isAgentUser) {
     Ok(taxableAgentView())
   } else {
     Ok(taxableView())
@@ -67,13 +67,13 @@ class BeforeYouContinueController @Inject() (
     Future.successful(Redirect(controllers.register.routes.CreateDraftRegistrationController.create().url))
   }
 
-  private def isTrustTaxable(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
+  private def isTrustTaxable(using request: MatchingAndSuitabilityDataRequest[?]): Boolean =
     request.getPage(TrustTaxableYesNoPage).contains(true)
 
-  private def isExistingTrust(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
+  private def isExistingTrust(using request: MatchingAndSuitabilityDataRequest[?]): Boolean =
     request.getPage(TrustHaveAUTRPage).contains(true)
 
-  private def isAgentUser(implicit request: MatchingAndSuitabilityDataRequest[_]): Boolean =
+  private def isAgentUser(using request: MatchingAndSuitabilityDataRequest[?]): Boolean =
     request.isAgent
 
 }

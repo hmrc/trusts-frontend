@@ -34,8 +34,8 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
 
     val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
+    def applyView(form: Form[?]): HtmlFormat.Appendable =
+      view.apply(form, fakeDraftId, AffinityGroup.Agent)(using fakeRequest, messages)
 
     behave like normalPage(applyView(form), None, messageKeyPrefix)
 
@@ -55,8 +55,8 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
     "render declaration warning for organisation" in {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
-      def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, fakeDraftId, AffinityGroup.Organisation)(fakeRequest, messages)
+      def applyView(form: Form[?]): HtmlFormat.Appendable =
+        view.apply(form, fakeDraftId, AffinityGroup.Organisation)(using fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(
@@ -75,8 +75,8 @@ class DeclarationViewSpec extends QuestionViewBehaviours[Declaration] {
     "render declaration warning for Agent" in {
       val view = viewFor[DeclarationView](Some(emptyUserAnswers))
 
-      def applyView(form: Form[_]): HtmlFormat.Appendable =
-        view.apply(form, fakeDraftId, AffinityGroup.Agent)(fakeRequest, messages)
+      def applyView(form: Form[?]): HtmlFormat.Appendable =
+        view.apply(form, fakeDraftId, AffinityGroup.Agent)(using fakeRequest, messages)
 
       val doc = asDocument(applyView(form))
       assertContainsText(

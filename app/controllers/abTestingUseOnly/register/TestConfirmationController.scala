@@ -32,7 +32,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.abTestingUseOnly.register.confirmation._
+import views.html.abTestingUseOnly.register.confirmation.*
 import views.html.register.confirmation.{existingTrust, newTrust}
 
 import javax.inject.{Inject, Singleton}
@@ -53,7 +53,7 @@ class TestConfirmationController @Inject() (
   existingTaxableAgentView: existingTrust.AgentView,
   errorHandler: ErrorHandler,
   registrationsRepository: RegistrationsRepository
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(draftId: String): Action[AnyContent] = (identify andThen getData(draftId) andThen requireData).async {
@@ -73,7 +73,7 @@ class TestConfirmationController @Inject() (
     userAnswers: UserAnswers,
     methodName: String,
     isGetRequest: Boolean = true
-  )(implicit request: RegistrationDataRequest[AnyContent]): Future[Result] =
+  )(using request: RegistrationDataRequest[AnyContent]): Future[Result] =
     userAnswers.progress match {
       case RegistrationStatus.Complete   =>
         userAnswers.get(RegistrationTRNPage) match {
@@ -91,8 +91,8 @@ class TestConfirmationController @Inject() (
         Future.successful(Redirect(routes.TrustRegisteredOnlineController.onPageLoad()))
     }
 
-  private def renderViewOrRedirect(trn: String, userAnswers: UserAnswers, draftId: String, isGetRequest: Boolean)(
-    implicit request: RegistrationDataRequest[AnyContent]
+  private def renderViewOrRedirect(trn: String, userAnswers: UserAnswers, draftId: String, isGetRequest: Boolean)(using
+    request: RegistrationDataRequest[AnyContent]
   ): Future[Result] = {
     val isAgent = request.isAgent
     registrationsRepository.getLeadTrustee(draftId) flatMap {
@@ -111,7 +111,7 @@ class TestConfirmationController @Inject() (
     trn: String,
     name: String,
     isGetRequest: Boolean
-  )(implicit request: RegistrationDataRequest[AnyContent]): Future[Result] = {
+  )(using request: RegistrationDataRequest[AnyContent]): Future[Result] = {
 
     val utr     = userAnswers.get(TrustHaveAUTRPage)
     val taxable = userAnswers.isTaxable
@@ -134,7 +134,7 @@ class TestConfirmationController @Inject() (
     }
   }
 
-  private def nonTaxableIndividualResult(draftId: String, trn: String, isGetRequest: Boolean)(implicit
+  private def nonTaxableIndividualResult(draftId: String, trn: String, isGetRequest: Boolean)(using
     request: RegistrationDataRequest[AnyContent]
   ): Future[Result] =
     if (isGetRequest) {
@@ -151,7 +151,7 @@ class TestConfirmationController @Inject() (
       Future.successful(Redirect(TestSignOutController.onPageLoad()))
     }
 
-  private def infoLogger(methodName: String, message: String)(implicit
+  private def infoLogger(methodName: String, message: String)(using
     request: RegistrationDataRequest[AnyContent]
   ): Unit = {
     val className = "TestConfirmationController"

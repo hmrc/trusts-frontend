@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import controllers.actions._
+import controllers.actions.*
 import controllers.actions.register.{
   DraftIdRetrievalActionProvider, RegistrationDataRequiredAction, RegistrationIdentifierAction
 }
@@ -41,7 +41,7 @@ class SummaryAnswerPageController @Inject() (
   registrationComplete: TaskListCompleteActionRefiner,
   printUserAnswersHelper: PrintUserAnswersHelper,
   registrationsRepository: RegistrationsRepository
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =

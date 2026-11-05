@@ -16,26 +16,26 @@
 
 package repositories
 
-import java.time.LocalDateTime
-import java.util.concurrent.TimeUnit
 import config.FrontendAppConfig
-import javax.inject.{Inject, Singleton}
 import models.core.MatchingAndSuitabilityUserAnswers
 import org.bson.conversions.Bson
+import org.mongodb.scala.model.*
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Indexes.ascending
-import org.mongodb.scala.model._
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
+import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CacheRepositoryImpl @Inject() (
   val mongo: MongoComponent,
   val config: FrontendAppConfig
-)(implicit val ec: ExecutionContext)
+)(using val ec: ExecutionContext)
     extends PlayMongoRepository[MatchingAndSuitabilityUserAnswers](
       collectionName = "user-answers",
       mongoComponent = mongo,

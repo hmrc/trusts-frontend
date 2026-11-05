@@ -21,7 +21,7 @@ import forms.WhatIsTheUTRFormProvider
 import pages.register.WhatIsTheUTRPage
 import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.WhatIsTheUTRView
 
 class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
@@ -48,7 +48,7 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form)(request, messages).toString
+        view(form)(using request, messages).toString
 
       application.stop()
     }
@@ -68,7 +68,7 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer))(request, messages).toString
+        view(form.fill(validAnswer))(using request, messages).toString
 
       application.stop()
     }
@@ -104,7 +104,7 @@ class WhatIsTheUTRControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm)(request, messages).toString
+        view(boundForm)(using request, messages).toString
 
       application.stop()
     }

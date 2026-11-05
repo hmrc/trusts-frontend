@@ -28,7 +28,7 @@ case class TrustRegistrationSubmissionAuditEvent(
 
 object TrustRegistrationSubmissionAuditEvent {
 
-  implicit val formats: Format[TrustRegistrationSubmissionAuditEvent] =
+  given formats: Format[TrustRegistrationSubmissionAuditEvent] =
     Json.format[TrustRegistrationSubmissionAuditEvent]
 
 }

@@ -19,7 +19,7 @@ package utils.countryOptions
 import base.RegistrationSpecBase
 import com.typesafe.config.ConfigException
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.i18n.{Lang, MessagesApi, MessagesImpl}
+import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.guice.GuiceApplicationBuilder
 import utils.InputOption
 
@@ -37,8 +37,8 @@ class CountryOptionsNonUKSpec extends RegistrationSpecBase with MockitoSugar {
         )
         .build()
 
-      val messagesApi       = app.injector.instanceOf[MessagesApi]
-      implicit val messages = MessagesImpl(lang = Lang(ENGLISH), messagesApi = messagesApi)
+      val messagesApi          = app.injector.instanceOf[MessagesApi]
+      given messages: Messages = MessagesImpl(lang = Lang(ENGLISH), messagesApi = messagesApi)
 
       val countryOption: CountryOptions = application.injector.instanceOf[CountryOptionsNonUK]
       countryOption.options() mustEqual Seq(InputOption("BE", "Belgium"), InputOption("IE", "Ireland"))
@@ -56,8 +56,8 @@ class CountryOptionsNonUKSpec extends RegistrationSpecBase with MockitoSugar {
         )
         .build()
 
-      val messagesApi       = app.injector.instanceOf[MessagesApi]
-      implicit val messages = MessagesImpl(lang = Lang(WELSH), messagesApi = messagesApi)
+      val messagesApi          = app.injector.instanceOf[MessagesApi]
+      given messages: Messages = MessagesImpl(lang = Lang(WELSH), messagesApi = messagesApi)
 
       val countryOption: CountryOptions = application.injector.instanceOf[CountryOptionsNonUK]
       countryOption.options() mustEqual Seq(InputOption("BE", "Gwlad Belg"), InputOption("IE", "Iwerddon"))

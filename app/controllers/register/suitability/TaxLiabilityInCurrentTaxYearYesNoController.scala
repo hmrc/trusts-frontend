@@ -43,7 +43,7 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject() (
   view: TaxLiabilityInCurrentTaxYearYesNoView,
   dateFormatter: DateFormatter,
   localDateService: LocalDateService
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix("suitability.taxLiabilityInCurrentTaxYear")
@@ -61,7 +61,7 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors, currentTaxYearStartAndEnd))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors, currentTaxYearStartAndEnd))),
         value =>
           for {
             answers        <- Future.fromTry(request.userAnswers.set(TaxLiabilityInCurrentTaxYearYesNoPage, value))
@@ -71,7 +71,7 @@ class TaxLiabilityInCurrentTaxYearYesNoController @Inject() (
       )
   }
 
-  private def currentTaxYearStartAndEnd(implicit messages: Messages): (String, String) = {
+  private def currentTaxYearStartAndEnd(using messages: Messages): (String, String) = {
     val currentTaxYear = TaxYear.taxYearFor(localDateService.now())
     (dateFormatter.formatDate(currentTaxYear.starts), dateFormatter.formatDate(currentTaxYear.finishes))
   }

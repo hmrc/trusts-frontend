@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class DeclarationMapper @Inject() (registrationsRepository: RegistrationsRepository) {
 
-  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType)(implicit
+  def build(userAnswers: UserAnswers, leadTrusteeAddress: AddressType)(using
     ec: ExecutionContext,
     hc: HeaderCarrier
   ): Future[Option[Declaration]] = {

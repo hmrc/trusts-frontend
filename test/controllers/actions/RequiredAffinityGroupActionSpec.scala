@@ -17,7 +17,7 @@
 package controllers.actions
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
+import controllers.register.routes.*
 import models.requests.IdentifierRequest
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
@@ -26,12 +26,12 @@ import play.api.http.HeaderNames
 import play.api.mvc.Result
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class RequiredAffinityGroupActionSpec
     extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
-  class Harness[T]() extends RequiredAgentAffinityGroupAction() {
+  class Harness[T] extends RequiredAgentAffinityGroupAction(ExecutionContext.global) {
     def callFilter[A](request: IdentifierRequest[A]): Future[Option[Result]] = filter(request)
   }
 

@@ -21,7 +21,7 @@ import config.FrontendAppConfig
 import controllers.actions.{AffinityGroupIdentifierAction, TrustsAuthorisedFunctions}
 import models.requests.IdentifierRequest
 import play.api.Logging
-import play.api.mvc.{Action, ActionBuilder, AnyContent, BodyParsers, Request, Result}
+import play.api.mvc.*
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -29,13 +29,13 @@ class ConfirmationIdentifierAction @Inject() (
   val parser: BodyParsers.Default,
   trustsAuth: TrustsAuthorisedFunctions,
   config: FrontendAppConfig
-)(implicit override val executionContext: ExecutionContext)
+)(using override val executionContext: ExecutionContext)
     extends ActionBuilder[IdentifierRequest, AnyContent] with Logging {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
     request match {
-      case req: IdentifierRequest[A] =>
-        block(req)
+      case req: IdentifierRequest[?] =>
+        block(req.asInstanceOf[IdentifierRequest[A]])
       case _                         =>
         Future.successful(trustsAuth.redirectToLogin)
     }

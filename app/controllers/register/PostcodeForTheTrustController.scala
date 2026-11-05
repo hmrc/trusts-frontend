@@ -38,7 +38,7 @@ class PostcodeForTheTrustController @Inject() (
   matchingService: MatchingService,
   val controllerComponents: MessagesControllerComponents,
   view: PostcodeForTheTrustView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private val form: Form[String] = formProvider()
@@ -56,7 +56,7 @@ class PostcodeForTheTrustController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(PostcodeForTheTrustPage, value))

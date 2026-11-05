@@ -19,12 +19,12 @@ package navigation.routes
 import controllers.register.suitability.routes
 import models.core.TrustsFrontendUserAnswers
 import pages.Page
-import pages.register.suitability._
+import pages.register.suitability.*
 import play.api.mvc.Call
 
 object SuitabilityRoutes extends Routes {
 
-  def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+  def route(): PartialFunction[Page, TrustsFrontendUserAnswers[?] => Call] = {
     case ExpressTrustYesNoPage                 =>
       ua =>
         ua.get(TrustTaxableYesNoPage) match {
@@ -48,7 +48,7 @@ object SuitabilityRoutes extends Routes {
         )
   }
 
-  private def nonTaxableRoute(answers: TrustsFrontendUserAnswers[_]): Call =
+  private def nonTaxableRoute(answers: TrustsFrontendUserAnswers[?]): Call =
     yesNoNav(
       answers,
       ExpressTrustYesNoPage,

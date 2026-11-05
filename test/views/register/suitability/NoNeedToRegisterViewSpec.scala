@@ -30,7 +30,7 @@ class NoNeedToRegisterViewSpec extends ViewBehaviours {
 
     "agent user" must {
 
-      val applyView = view.apply(isAgent = true)(fakeRequest, messages)
+      val applyView = view.apply(isAgent = true)(using fakeRequest, messages)
 
       behave like normalPage(
         applyView,
@@ -48,7 +48,7 @@ class NoNeedToRegisterViewSpec extends ViewBehaviours {
 
     "non-agent user" must {
 
-      val applyView = view.apply(isAgent = false)(fakeRequest, messages)
+      val applyView = view.apply(isAgent = false)(using fakeRequest, messages)
 
       behave like normalPage(
         applyView,

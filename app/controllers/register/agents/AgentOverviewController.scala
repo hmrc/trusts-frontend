@@ -16,7 +16,7 @@
 
 package controllers.register.agents
 
-import controllers.actions._
+import controllers.actions.*
 import controllers.actions.register.RegistrationIdentifierAction
 import models.core.MatchingAndSuitabilityUserAnswers
 import models.requests.IdentifierRequest
@@ -41,7 +41,7 @@ class AgentOverviewController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: AgentOverviewView,
   taskListNavigator: TaskListNavigator
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   private def actions: ActionBuilder[IdentifierRequest, AnyContent] = identify andThen hasAgentAffinityGroup()

@@ -17,8 +17,8 @@
 package models.core
 
 import models.MongoDateTimeFormats
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 import queries.Settable
 
 import java.time.LocalDateTime
@@ -30,7 +30,7 @@ case class MatchingAndSuitabilityUserAnswers(
   updatedAt: LocalDateTime = LocalDateTime.now
 ) extends TrustsFrontendUserAnswers[MatchingAndSuitabilityUserAnswers] {
 
-  override def set[A](page: Settable[A], value: A)(implicit writes: Writes[A]): Try[MatchingAndSuitabilityUserAnswers] =
+  override def set[A](page: Settable[A], value: A)(using writes: Writes[A]): Try[MatchingAndSuitabilityUserAnswers] =
     updatedDataForSet(page, value).flatMap { d =>
       page.cleanup(Some(value), this.copy(data = d))
     }
@@ -47,13 +47,19 @@ object MatchingAndSuitabilityUserAnswers {
   implicit lazy val reads: Reads[MatchingAndSuitabilityUserAnswers] = (
     (__ \ "internalId").read[String] and
       (__ \ "data").read[JsObject] and
-      (__ \ "updatedAt").read(MongoDateTimeFormats.localDateTimeRead)
-  )(MatchingAndSuitabilityUserAnswers.apply _)
+      (__ \ "updatedAt").read(using MongoDateTimeFormats.localDateTimeRead)
+  )(MatchingAndSuitabilityUserAnswers.apply)
 
   implicit lazy val writes: Writes[MatchingAndSuitabilityUserAnswers] = (
     (__ \ "internalId").write[String] and
       (__ \ "data").write[JsObject] and
-      (__ \ "updatedAt").write(MongoDateTimeFormats.localDateTimeWrite)
-  )(unlift(MatchingAndSuitabilityUserAnswers.unapply))
+      (__ \ "updatedAt").write(using MongoDateTimeFormats.localDateTimeWrite)
+  )(matchingAndSuitabilityUserAnswers =>
+    (
+      matchingAndSuitabilityUserAnswers.internalId,
+      matchingAndSuitabilityUserAnswers.data,
+      matchingAndSuitabilityUserAnswers.updatedAt
+    )
+  )
 
 }

@@ -19,10 +19,10 @@ package controllers.actions
 import base.RegistrationSpecBase
 import controllers.actions.register.RegistrationDataRetrievalActionImpl
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
-import org.mockito.ArgumentMatchers.{eq => eqTo, _}
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
+import org.mockito.Mockito.{verify, when}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.{verify, when}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 
@@ -43,7 +43,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
         val registrationsRepository = mock[RegistrationsRepository]
 
-        when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(None)
+        when(registrationsRepository.getMostRecentDraftId()(using any())).thenReturn(Future(None))
 
         val action = new Harness(registrationsRepository)
 
@@ -65,8 +65,8 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
           val registrationsRepository = mock[RegistrationsRepository]
 
-          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
-          when(registrationsRepository.get(any())(any())) thenReturn Future(Some(emptyUserAnswers))
+          when(registrationsRepository.getMostRecentDraftId()(using any())).thenReturn(Future(Some(fakeDraftId)))
+          when(registrationsRepository.get(any())(using any())).thenReturn(Future(Some(emptyUserAnswers)))
 
           val action = new Harness(registrationsRepository)
 
@@ -78,15 +78,15 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isDefined mustBe true
           }
 
-          verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
+          verify(registrationsRepository).get(eqTo(fakeDraftId))(using any())
         }
 
         "org user" in {
 
           val registrationsRepository = mock[RegistrationsRepository]
 
-          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
-          when(registrationsRepository.get(any())(any())) thenReturn Future(Some(emptyUserAnswers))
+          when(registrationsRepository.getMostRecentDraftId()(using any())).thenReturn(Future(Some(fakeDraftId)))
+          when(registrationsRepository.get(any())(using any())).thenReturn(Future(Some(emptyUserAnswers)))
 
           val action = new Harness(registrationsRepository)
 
@@ -98,7 +98,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isDefined mustBe true
           }
 
-          verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
+          verify(registrationsRepository).get(eqTo(fakeDraftId))(using any())
         }
       }
 
@@ -108,8 +108,8 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
 
           val registrationsRepository = mock[RegistrationsRepository]
 
-          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
-          when(registrationsRepository.get(any())(any())) thenReturn Future(None)
+          when(registrationsRepository.getMostRecentDraftId()(using any())).thenReturn(Future(Some(fakeDraftId)))
+          when(registrationsRepository.get(any())(using any())).thenReturn(Future(None))
 
           val action = new Harness(registrationsRepository)
 
@@ -121,15 +121,15 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isEmpty mustBe true
           }
 
-          verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
+          verify(registrationsRepository).get(eqTo(fakeDraftId))(using any())
         }
 
         "org user" in {
 
           val registrationsRepository = mock[RegistrationsRepository]
 
-          when(registrationsRepository.getMostRecentDraftId()(any())) thenReturn Future(Some(fakeDraftId))
-          when(registrationsRepository.get(any())(any())) thenReturn Future(None)
+          when(registrationsRepository.getMostRecentDraftId()(using any())).thenReturn(Future(Some(fakeDraftId)))
+          when(registrationsRepository.get(any())(using any())).thenReturn(Future(None))
 
           val action = new Harness(registrationsRepository)
 
@@ -141,7 +141,7 @@ class RegistrationDataRetrievalActionSpec extends RegistrationSpecBase with Mock
             result.userAnswers.isEmpty mustBe true
           }
 
-          verify(registrationsRepository).get(eqTo(fakeDraftId))(any())
+          verify(registrationsRepository).get(eqTo(fakeDraftId))(using any())
         }
       }
     }

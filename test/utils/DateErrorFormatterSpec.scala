@@ -31,7 +31,7 @@ class DateErrorFormatterSpec extends RegistrationSpecBase {
 
         val messages: MessagesImpl = MessagesImpl(Lang("en"), messagesApi)
 
-        val result = DateErrorFormatter.formatArgs(args)(messages)
+        val result = DateErrorFormatter.formatArgs(args)(using messages)
 
         result mustEqual Seq("day", "month", "year")
       }
@@ -40,7 +40,7 @@ class DateErrorFormatterSpec extends RegistrationSpecBase {
 
         val messages: MessagesImpl = MessagesImpl(Lang("cy"), messagesApi)
 
-        val result = DateErrorFormatter.formatArgs(args)(messages)
+        val result = DateErrorFormatter.formatArgs(args)(using messages)
 
         result mustEqual Seq("diwrnod", "mis", "blwyddyn")
       }

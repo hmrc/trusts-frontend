@@ -24,8 +24,8 @@ import pages.register.{
   MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage
 }
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.AffinityGroup.*
 import views.html.register.TrustAlreadyRegisteredView
 
 class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
@@ -53,7 +53,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeUtr, isAgent = true)(request, messages).toString
+          view(fakeUtr, isAgent = true)(using request, messages).toString
 
         application.stop()
       }
@@ -71,7 +71,7 @@ class TrustAlreadyRegisteredControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(fakeUtr, isAgent = false)(request, messages).toString
+          view(fakeUtr, isAgent = false)(using request, messages).toString
 
         application.stop()
       }

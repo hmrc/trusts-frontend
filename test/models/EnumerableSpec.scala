@@ -16,11 +16,10 @@
 
 package models
 
-import org.scalatest.{EitherValues, OptionValues}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-
-import play.api.libs.json._
+import org.scalatest.{EitherValues, OptionValues}
+import play.api.libs.json.*
 
 object EnumerableSpec {
 
@@ -32,8 +31,8 @@ object EnumerableSpec {
 
     val values: Set[Foo] = Set(Bar, Baz)
 
-    implicit val fooEnumerable: Enumerable[Foo] =
-      Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    given fooEnumerable: Enumerable[Foo] =
+      Enumerable(values.toSeq.map(v => v.toString -> v)*)
 
   }
 
@@ -41,12 +40,12 @@ object EnumerableSpec {
 
 class EnumerableSpec extends AnyWordSpec with Matchers with EitherValues with OptionValues with Enumerable.Implicits {
 
-  import EnumerableSpec._
+  import EnumerableSpec.*
 
   ".reads" must {
 
-    "be found implicitly" in {
-      implicitly[Reads[Foo]]
+    "be found summon" in {
+      summon[Reads[Foo]]
     }
 
     Foo.values.foreach { value =>
@@ -64,8 +63,8 @@ class EnumerableSpec extends AnyWordSpec with Matchers with EitherValues with Op
 
   ".writes" must {
 
-    "be found implicitly" in {
-      implicitly[Writes[Foo]]
+    "be found summon" in {
+      summon[Writes[Foo]]
     }
 
     Foo.values.foreach { value =>
@@ -77,8 +76,8 @@ class EnumerableSpec extends AnyWordSpec with Matchers with EitherValues with Op
 
   ".formats" must {
 
-    "be found implicitly" in {
-      implicitly[Format[Foo]]
+    "be found summon" in {
+      summon[Format[Foo]]
     }
   }
 

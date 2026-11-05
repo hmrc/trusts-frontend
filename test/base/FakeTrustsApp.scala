@@ -43,7 +43,7 @@ trait FakeTrustsApp extends GuiceOneAppPerSuite {
 
   def trustsAuth: TrustsAuthorisedFunctions = injector.instanceOf[TrustsAuthorisedFunctions]
 
-  implicit val executionContext: ExecutionContextExecutor = global
+  given executionContext: ExecutionContextExecutor = global
 
   implicit def messages: Messages = messagesApi.preferred(fakeRequest)
 

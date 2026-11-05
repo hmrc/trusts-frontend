@@ -20,25 +20,25 @@ import config.FrontendAppConfig
 import controllers.register.routes
 import models.core.TrustsFrontendUserAnswers
 import pages.Page
-import pages.register._
+import pages.register.*
 import play.api.mvc.Call
 
 object MatchingRoutes extends Routes {
 
-  def route(config: FrontendAppConfig): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = {
+  def route(config: FrontendAppConfig): PartialFunction[Page, TrustsFrontendUserAnswers[?] => Call] = {
     case TrustRegisteredOnlinePage => ua => redirectToIdentifierQuestion(ua)
     case TrustHaveAUTRPage         => userAnswers => trustHaveAUTRRoute(userAnswers, config)
     case WhatIsTheUTRPage          => _ => controllers.register.routes.MatchingNameController.onPageLoad()
     case MatchingNamePage          => _ => controllers.register.routes.TrustRegisteredWithUkAddressYesNoController.onPageLoad()
   }
 
-  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[_]): Call =
+  private def redirectToIdentifierQuestion(answers: TrustsFrontendUserAnswers[?]): Call =
     answers.get(TrustRegisteredOnlinePage) match {
       case Some(true) => routes.WhichIdentifierController.onPageLoad()
       case _          => routes.TrustHaveAUTRController.onPageLoad()
     }
 
-  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[_], config: FrontendAppConfig): Call = {
+  private def trustHaveAUTRRoute(answers: TrustsFrontendUserAnswers[?], config: FrontendAppConfig): Call = {
     val condition = (answers.get(TrustRegisteredOnlinePage), answers.get(TrustHaveAUTRPage))
 
     condition match {

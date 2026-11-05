@@ -22,7 +22,7 @@ import org.mockito.Mockito.when
 import pages.register.{RegistrationProgress, RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.inject
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import utils.TestUserAnswers
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.ConfirmationAnswerPageView
@@ -95,7 +95,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase with Fix
       assets = Some(assetsSection)
     )
 
-    when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
+    when(mockCreateDraftRegistrationService.getAnswerSections(any())(using any(), any()))
       .thenReturn(Future.successful(registrationSections))
 
     "return OK and the correct view for a GET when tasklist completed" in {
@@ -118,10 +118,10 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase with Fix
         assetsSection.head
       )
 
-      when(registrationsRepository.getDraftSettlors(any())(any()))
+      when(registrationsRepository.getDraftSettlors(any())(using any()))
         .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
-      when(registrationsRepository.getRegistrationPieces(any())(any()))
+      when(registrationsRepository.getRegistrationPieces(any())(using any()))
         .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
@@ -139,7 +139,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase with Fix
       val trnDateTime   = LocalDateTime.now.format(dateFormatter)
 
       contentAsString(result) mustEqual
-        view(expectedSections, "XNTRN000000001", trnDateTime, isTaxable = true)(request, messages).toString
+        view(expectedSections, "XNTRN000000001", trnDateTime, isTaxable = true)(using request, messages).toString
 
       application.stop()
     }
@@ -151,7 +151,7 @@ class ConfirmationAnswerPageControllerSpec extends RegistrationSpecBase with Fix
 
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))

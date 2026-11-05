@@ -21,7 +21,7 @@ import pages.register.{
   MatchingNamePage, PostcodeForTheTrustPage, TrustRegisteredWithUkAddressYesNoPage, WhatIsTheUTRPage
 }
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
+import play.api.mvc.*
 import repositories.CacheRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.register.TrustAlreadyRegisteredView
@@ -35,7 +35,7 @@ class TrustAlreadyRegisteredController @Inject() (
   actions: StandardActionSets,
   val controllerComponents: MessagesControllerComponents,
   view: TrustAlreadyRegisteredView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private def redirect(): Result = Redirect(routes.WhatIsTheUTRController.onPageLoad())

@@ -27,7 +27,7 @@ class FeatureNotAvailableViewSpec extends ViewBehaviours {
 
     val view = application.injector.instanceOf[FeatureNotAvailableView]
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply()(using fakeRequest, messages)
 
     behave like normalPage(applyView, None, "featureNotAvailable")
   }

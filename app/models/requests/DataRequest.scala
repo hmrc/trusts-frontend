@@ -23,7 +23,7 @@ import play.api.mvc.Request
 
 abstract class DataRequest[A](request: Request[A]) extends AffinityRequest[A](request) {
 
-  val userAnswers: TrustsFrontendUserAnswers[_]
+  val userAnswers: TrustsFrontendUserAnswers[?]
 
-  def getPage[T](page: QuestionPage[T])(implicit rds: Reads[T]): Option[T] = userAnswers.get(page)
+  def getPage[T](page: QuestionPage[T])(using rds: Reads[T]): Option[T] = userAnswers.get(page)
 }

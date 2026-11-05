@@ -17,7 +17,7 @@
 package views.register
 
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.AccessibilityHelper._
+import utils.AccessibilityHelper.*
 import utils.print.register.PrintUserAnswersHelper
 import views.behaviours.ViewBehaviours
 import views.html.register.ConfirmationAnswerPageView
@@ -35,7 +35,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     "taxable" must {
 
-      implicit val hc: HeaderCarrier = HeaderCarrier()
+      given hc: HeaderCarrier = HeaderCarrier()
 
       val app = applicationBuilder().build()
 
@@ -43,7 +43,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       val viewFuture = helper.summary(fakeDraftId).map { sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
-        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = true)(
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = true)(using
           fakeRequest,
           messages
         )
@@ -67,7 +67,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
     "non-taxable" must {
 
-      implicit val hc: HeaderCarrier = HeaderCarrier()
+      given hc: HeaderCarrier = HeaderCarrier()
 
       val app = applicationBuilder().build()
 
@@ -75,7 +75,7 @@ class ConfirmationAnswerPageViewSpec extends ViewBehaviours {
 
       val viewFuture = helper.summary(fakeDraftId).map { sections =>
         val view = viewFor[ConfirmationAnswerPageView](Some(emptyUserAnswers))
-        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = false)(
+        view.apply(sections, formatReferenceNumber(trn), formattedSubmissionTime, isTaxable = false)(using
           fakeRequest,
           messages
         )

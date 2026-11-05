@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.suitability.routes._
+@import controllers.register.suitability.routes.*
 @import views.html.components.{Heading, SubmitButton}
 
 @this(
@@ -24,7 +24,7 @@
     submitButton: SubmitButton
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("suitability.beforeYouContinue.existing.taxable.title"),

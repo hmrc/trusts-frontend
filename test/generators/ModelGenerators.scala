@@ -17,7 +17,7 @@
 package generators
 
 import models.FirstTaxYearAvailable
-import models.core.pages._
+import models.core.pages.*
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 

@@ -18,7 +18,7 @@ package controllers
 
 import base.RegistrationSpecBase
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.FeatureNotAvailableView
 
 class FeatureNotAvailableControllerSpec extends RegistrationSpecBase {
@@ -40,7 +40,7 @@ class FeatureNotAvailableControllerSpec extends RegistrationSpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(request, messages).toString
+        view()(using request, messages).toString
 
       application.stop()
     }

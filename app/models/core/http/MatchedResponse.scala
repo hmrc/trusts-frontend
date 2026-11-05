@@ -17,8 +17,8 @@
 package models.core.http
 
 import play.api.Logging
-import play.api.http.Status._
-import play.api.libs.json._
+import play.api.http.Status.*
+import play.api.libs.json.*
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 trait MatchedResponse
@@ -26,7 +26,7 @@ trait MatchedResponse
 final case class SuccessOrFailureResponse(`match`: Boolean) extends MatchedResponse
 
 object SuccessOrFailureResponse {
-  implicit val formats: Format[SuccessOrFailureResponse] = Json.format[SuccessOrFailureResponse]
+  given formats: Format[SuccessOrFailureResponse] = Json.format[SuccessOrFailureResponse]
 }
 
 object MatchedResponse extends Logging {

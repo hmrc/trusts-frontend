@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.routes._
+@import controllers.register.routes.*
 @import uk.gov.hmrc.auth.core.AffinityGroup
 @import config.FrontendAppConfig
 @import views.html.components.{ErrorSummary, Heading, InputText, SubmitButton}
@@ -29,7 +29,7 @@
     submitButton: SubmitButton
 )
 
-@(form: Form[_], draftId: String, affinityGroup : AffinityGroup)(implicit request: Request[_], messages: Messages)
+@(form: Form[?], draftId: String, affinityGroup : AffinityGroup)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("declaration.title")}",

@@ -19,8 +19,8 @@ package base
 import models.requests.MatchingAndSuitabilityDataRequest
 import models.{FirstTaxYearAvailable, RegistrationSubmission, TaskStatuses}
 import org.mockito.ArgumentMatchers.any
-import org.scalatestplus.mockito.MockitoSugar
 import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.AnyContent
 import play.api.test.Helpers.OK
@@ -45,32 +45,32 @@ trait Mocked extends MockitoSugar {
 
   val mockAuditService: AuditService = mock[AuditService]
 
-  when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(any()))
+  when(mockCreateDraftRegistrationService.create(any[MatchingAndSuitabilityDataRequest[AnyContent]])(using any()))
     .thenReturn(Future.successful(TestUserAnswers.draftId))
 
-  when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
+  when(mockCreateDraftRegistrationService.getAnswerSections(any())(using any(), any()))
     .thenReturn(Future.successful(RegistrationAnswerSections()))
 
   when(cacheRepository.set(any())).thenReturn(Future.successful(true))
 
-  when(registrationsRepository.set(any(), any())(any())).thenReturn(Future.successful(true))
+  when(registrationsRepository.set(any(), any())(using any())).thenReturn(Future.successful(true))
 
-  when(registrationsRepository.getFirstTaxYearAvailable(any())(any()))
+  when(registrationsRepository.getFirstTaxYearAvailable(any())(using any()))
     .thenReturn(Future.successful(Some(FirstTaxYearAvailable(2, earlierYearsToDeclare = false))))
 
-  when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+  when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
     .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
-  when(registrationsRepository.getDraftSettlors(any())(any()))
+  when(registrationsRepository.getDraftSettlors(any())(using any()))
     .thenReturn(Future.successful(Json.parse("{}")))
 
-  when(registrationsRepository.getSettlorsAnswerSections(any())(any()))
+  when(registrationsRepository.getSettlorsAnswerSections(any())(using any()))
     .thenReturn(Future.successful(Seq.empty[RegistrationSubmission.AnswerSection]))
 
-  when(registrationsRepository.getRegistrationPieces(any())(any()))
+  when(registrationsRepository.getRegistrationPieces(any())(using any()))
     .thenReturn(Future.successful(Json.parse("{}").as[JsObject]))
 
-  when(registrationsRepository.setDraftSettlors(any(), any())(any()))
+  when(registrationsRepository.setDraftSettlors(any(), any())(using any()))
     .thenReturn(Future.successful(HttpResponse(OK, "")))
 
 }

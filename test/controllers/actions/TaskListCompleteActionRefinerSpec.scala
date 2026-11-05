@@ -21,17 +21,17 @@ import generators.ModelGenerators
 import models.FirstTaxYearAvailable
 import models.requests.RegistrationDataRequest
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.concurrent.ScalaFutures.whenReady
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.suitability.TrustTaxableYesNoPage
 import pages.register.{RegistrationProgress, TrustHaveAUTRPage}
 import play.api.mvc.Result
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.Enrolments
-import org.mockito.Mockito.when
 
 import scala.concurrent.Future
 
@@ -39,9 +39,7 @@ class TaskListCompleteActionRefinerSpec
     extends RegistrationSpecBase with ScalaCheckPropertyChecks with ModelGenerators {
 
   class Harness(mockRegistrationProgress: RegistrationProgress, mockRegistrationsRepository: RegistrationsRepository)
-      extends TaskListCompleteActionRefinerImpl(
-        mockRegistrationProgress,
-        mockRegistrationsRepository,
+      extends TaskListCompleteActionRefinerImpl(mockRegistrationProgress, mockRegistrationsRepository)(using
         executionContext
       ) {
 
@@ -60,10 +58,10 @@ class TaskListCompleteActionRefinerSpec
             val mockRegistrationProgress: RegistrationProgress       = mock[RegistrationProgress]
             val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
-            when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
+            when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(using any()))
               .thenReturn(Future.successful(firstTaxYearAvailable))
 
-            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
               .thenReturn(Future.successful(true))
 
             val userAnswers = emptyUserAnswers
@@ -98,10 +96,10 @@ class TaskListCompleteActionRefinerSpec
             val mockRegistrationProgress: RegistrationProgress       = mock[RegistrationProgress]
             val mockRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]
 
-            when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(any()))
+            when(mockRegistrationsRepository.getFirstTaxYearAvailable(any())(using any()))
               .thenReturn(Future.successful(firstTaxYearAvailable))
 
-            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+            when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
               .thenReturn(Future.successful(false))
 
             val userAnswers = emptyUserAnswers

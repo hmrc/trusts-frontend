@@ -17,8 +17,8 @@
 package models.core.http
 
 import models.core.pages.FullName
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 
 /**
   * Trust Registration API Schema - definitions models below
@@ -33,29 +33,35 @@ case class Registration(
 )
 
 object Registration {
-  implicit val registrationReads: Format[Registration] = Json.format[Registration]
+  given registrationReads: Format[Registration] = Json.format[Registration]
 }
 
 case class MatchData(utr: String, name: String, postCode: Option[String])
 
 object MatchData {
-  implicit val matchDataFormat: Format[MatchData] = Json.format[MatchData]
+  given matchDataFormat: Format[MatchData] = Json.format[MatchData]
 
   val writes: Writes[MatchData] =
     ((__ \ "utr").write[String] and
       (__ \ "name").write[String] and
-      (__ \ "postcode").writeNullable[String]).apply(unlift(MatchData.unapply))
+      (__ \ "postcode").writeNullable[String]).apply(matchData =>
+      (
+        matchData.utr,
+        matchData.name,
+        matchData.postCode
+      )
+    )
 
 }
 
 case class Correspondence(name: String)
 
 object Correspondence {
-  implicit val correspondenceFormat: Format[Correspondence] = Json.format[Correspondence]
+  given correspondenceFormat: Format[Correspondence] = Json.format[Correspondence]
 }
 
 case class Declaration(name: FullName, address: AddressType)
 
 object Declaration {
-  implicit val declarationFormat: Format[Declaration] = Json.format[Declaration]
+  given declarationFormat: Format[Declaration] = Json.format[Declaration]
 }

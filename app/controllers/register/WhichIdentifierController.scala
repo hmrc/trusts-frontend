@@ -47,7 +47,7 @@ class WhichIdentifierController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => BadRequest(view(formWithErrors)),
+        (formWithErrors: Form[?]) => BadRequest(view(formWithErrors)),
         {
           case WhichIdentifier.UTRIdentifier => Redirect(appConfig.maintainATrustWithUTR)
           case WhichIdentifier.URNIdentifier => Redirect(appConfig.maintainATrustWithURN)

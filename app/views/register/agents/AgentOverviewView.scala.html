@@ -15,7 +15,7 @@
  *@
 
 @import viewmodels.DraftRegistration
-@import controllers.register.agents.routes._
+@import controllers.register.agents.routes.*
 @import config.FrontendAppConfig
 @import views.html.components.{Heading, Notification, Warning, SubmitButton, DraftRegistrationList}
 
@@ -30,7 +30,7 @@
     appConfig: FrontendAppConfig
 )
 
-@(drafts: List[DraftRegistration])(implicit request: Request[_], messages: Messages)
+@(drafts: List[DraftRegistration])(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("agentOverview.title"),

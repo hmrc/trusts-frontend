@@ -16,17 +16,16 @@
 
 package repositories
 
-import java.time.LocalDateTime
 import base.RegistrationSpecBase
 import connector.SubmissionDraftConnector
+import models.*
 import models.RegistrationSubmission.AllAnswerSections
-import models._
 import models.core.UserAnswers
 import models.core.http.{AddressType, IdentificationOrgType, LeadTrusteeOrgType, LeadTrusteeType}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, times, verify, when}
-import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.libs.json.{JsArray, Json}
 import play.api.test.Helpers.OK
 import play.twirl.api.HtmlFormat
@@ -35,6 +34,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.{AnswerRowUtils, DateFormatter}
 import viewmodels.{AnswerRow, AnswerSection, DraftRegistration, RegistrationAnswerSections}
 
+import java.time.LocalDateTime
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
@@ -46,7 +46,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
   private def createRepository(mockConnector: SubmissionDraftConnector) = {
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
-    when(mockDateFormatter.savedUntil(any())(any())).thenReturn("4 February 2012")
+    when(mockDateFormatter.savedUntil(any())(using any())).thenReturn("4 February 2012")
 
     implicit val answerRowUtils: AnswerRowUtils = injector.instanceOf[AnswerRowUtils]
     new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
@@ -69,12 +69,12 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
         val response = SubmissionDraftResponse(LocalDateTime.now, Json.toJson(userAnswers), None)
 
-        when(mockConnector.getDraftMain(any())(any(), any())).thenReturn(Future.successful(Some(response)))
+        when(mockConnector.getDraftMain(any())(using any(), any())).thenReturn(Future.successful(Some(response)))
 
         val result = Await.result(repository.get(fakeDraftId), Duration.Inf)
 
         result mustBe Some(userAnswers)
-        verify(mockConnector).getDraftMain(fakeDraftId)(hc, executionContext)
+        verify(mockConnector).getDraftMain(fakeDraftId)(using hc, executionContext)
       }
     }
 
@@ -99,12 +99,12 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
           )
         )
 
-        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+        when(mockConnector.getCurrentDraftIds()(using any(), any())).thenReturn(Future.successful(drafts))
 
         val result = Await.result(repository.getMostRecentDraftId(), Duration.Inf)
 
         result mustBe Some("draft1")
-        verify(mockConnector).getCurrentDraftIds()(hc, executionContext)
+        verify(mockConnector).getCurrentDraftIds()(using hc, executionContext)
       }
     }
 
@@ -128,9 +128,9 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
           )
         )
 
-        when(mockConnector.getCurrentDraftIds()(any(), any())).thenReturn(Future.successful(drafts))
+        when(mockConnector.getCurrentDraftIds()(using any(), any())).thenReturn(Future.successful(drafts))
 
-        val result = Await.result(repository.listDrafts()(any(), any()), Duration.Inf)
+        val result = Await.result(repository.listDrafts()(using any(), any()), Duration.Inf)
 
         result mustBe List(
           DraftRegistration("draft1", "reference1", "4 February 2012"),
@@ -152,8 +152,8 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
           val repository = createRepository(mockConnector)
 
-          when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
-          when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any()))
+          when(mockConnector.getClientReference(any())(using any(), any())).thenReturn(Future.successful(clientRef))
+          when(mockConnector.setDraftMain(any(), any(), any(), any())(using any(), any()))
             .thenReturn(Future.successful(HttpResponse(OK, "")))
 
           val result = Await.result(repository.set(baseAnswers, AffinityGroup.Agent), Duration.Inf)
@@ -164,7 +164,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
             Json.toJson(baseAnswers),
             inProgress = false,
             Some(clientRef)
-          )(hc, executionContext)
+          )(using hc, executionContext)
         }
       }
 
@@ -175,15 +175,15 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
           val repository = createRepository(mockConnector)
 
-          when(mockConnector.getClientReference(any())(any(), any()))
+          when(mockConnector.getClientReference(any())(using any(), any()))
             .thenReturn(Future.failed(new Throwable("no client ref found")))
-          when(mockConnector.setDraftMain(any(), any(), any(), any())(any(), any()))
+          when(mockConnector.setDraftMain(any(), any(), any(), any())(using any(), any()))
             .thenReturn(Future.successful(HttpResponse(OK, "")))
 
           val result = Await.result(repository.set(baseAnswers, AffinityGroup.Agent), Duration.Inf)
 
           result mustBe true
-          verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, None)(
+          verify(mockConnector).setDraftMain(fakeDraftId, Json.toJson(baseAnswers), inProgress = false, None)(using
             hc,
             executionContext
           )
@@ -212,7 +212,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
           )
         )
 
-        when(mockConnector.getRegistrationPieces(any())(any(), any()))
+        when(mockConnector.getRegistrationPieces(any())(using any(), any()))
           .thenReturn(Future.successful(registrationSectionsData))
 
         val currentRegistrationJson = Json.parse("""
@@ -252,7 +252,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
             |""".stripMargin)
 
         result mustBe expectedCombinedRegistrationJson
-        verify(mockConnector).getRegistrationPieces(fakeDraftId)(hc, executionContext)
+        verify(mockConnector).getRegistrationPieces(fakeDraftId)(using hc, executionContext)
       }
     }
 
@@ -312,7 +312,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
           assets = None
         )
 
-        when(mockConnector.getAnswerSections(any())(any(), any())).thenReturn(Future.successful(answerSections))
+        when(mockConnector.getAnswerSections(any())(using any(), any())).thenReturn(Future.successful(answerSections))
 
         val result = Await.result(repository.getAnswerSections(fakeDraftId), Duration.Inf)
 
@@ -358,7 +358,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
           beneficiaries = expectedBeneficiaries,
           trustees = expectedTrustees
         )
-        verify(mockConnector).getAnswerSections(fakeDraftId)(hc, executionContext)
+        verify(mockConnector).getAnswerSections(fakeDraftId)(using hc, executionContext)
       }
     }
 
@@ -384,13 +384,13 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
           )
         )
 
-        when(mockConnector.getLeadTrustee(any())(any(), any())).thenReturn(Future.successful(leadTrusteeOrg))
+        when(mockConnector.getLeadTrustee(any())(using any(), any())).thenReturn(Future.successful(leadTrusteeOrg))
 
         val result = Await.result(repository.getLeadTrustee(fakeDraftId), Duration.Inf)
 
         result mustBe leadTrusteeOrg
 
-        verify(mockConnector).getLeadTrustee(fakeDraftId)(hc, executionContext)
+        verify(mockConnector).getLeadTrustee(fakeDraftId)(using hc, executionContext)
       }
     }
 
@@ -406,14 +406,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
         val correspondenceAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
-        when(mockConnector.getCorrespondenceAddress(any())(any(), any()))
+        when(mockConnector.getCorrespondenceAddress(any())(using any(), any()))
           .thenReturn(Future.successful(correspondenceAddress))
 
         val result = Await.result(repository.getCorrespondenceAddress(fakeDraftId), Duration.Inf)
 
         result mustBe correspondenceAddress
 
-        verify(mockConnector).getCorrespondenceAddress(fakeDraftId)(hc, executionContext)
+        verify(mockConnector).getCorrespondenceAddress(fakeDraftId)(using hc, executionContext)
       }
     }
 
@@ -428,13 +428,13 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
           val agentAddress = AddressType("line1", "line2", None, None, Some("AA1 1AA"), "GB")
 
-          when(mockConnector.getAgentAddress(any())(any(), any())).thenReturn(Future.successful(agentAddress))
+          when(mockConnector.getAgentAddress(any())(using any(), any())).thenReturn(Future.successful(agentAddress))
 
           val result = Await.result(repository.getAgentAddress(fakeDraftId), Duration.Inf)
 
           result mustBe Some(agentAddress)
 
-          verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+          verify(mockConnector, times(1)).getAgentAddress(any())(using any(), any())
         }
       }
 
@@ -445,14 +445,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
           val repository = createRepository(mockConnector)
 
-          when(mockConnector.getAgentAddress(any())(any(), any()))
+          when(mockConnector.getAgentAddress(any())(using any(), any()))
             .thenReturn(Future.failed(new Throwable("agent address not found")))
 
           val result = Await.result(repository.getAgentAddress(fakeDraftId), Duration.Inf)
 
           result mustBe None
 
-          verify(mockConnector, times(1)).getAgentAddress(any())(any(), any())
+          verify(mockConnector, times(1)).getAgentAddress(any())(using any(), any())
         }
       }
     }
@@ -473,7 +473,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
           result mustBe None
 
-          verify(mockConnector, never()).getClientReference(any())(any(), any())
+          verify(mockConnector, never()).getClientReference(any())(using any(), any())
         }
 
       }
@@ -487,13 +487,13 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
             val repository = createRepository(mockConnector)
 
-            when(mockConnector.getClientReference(any())(any(), any())).thenReturn(Future.successful(clientRef))
+            when(mockConnector.getClientReference(any())(using any(), any())).thenReturn(Future.successful(clientRef))
 
             val result = Await.result(repository.getClientReference(fakeDraftId, AffinityGroup.Agent), Duration.Inf)
 
             result mustBe Some(clientRef)
 
-            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+            verify(mockConnector, times(1)).getClientReference(any())(using any(), any())
           }
         }
 
@@ -504,14 +504,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
             val repository = createRepository(mockConnector)
 
-            when(mockConnector.getClientReference(any())(any(), any()))
+            when(mockConnector.getClientReference(any())(using any(), any()))
               .thenReturn(Future.failed(new Throwable("client ref not found")))
 
             val result = Await.result(repository.getClientReference(fakeDraftId, AffinityGroup.Agent), Duration.Inf)
 
             result mustBe None
 
-            verify(mockConnector, times(1)).getClientReference(any())(any(), any())
+            verify(mockConnector, times(1)).getClientReference(any())(using any(), any())
           }
         }
       }
@@ -528,13 +528,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
         val status: Int = 200
 
-        when(mockConnector.removeDraft(any())(any(), any())).thenReturn(Future.successful(HttpResponse(status, "")))
+        when(mockConnector.removeDraft(any())(using any(), any()))
+          .thenReturn(Future.successful(HttpResponse(status, "")))
 
         val result = Await.result(repository.removeDraft(fakeDraftId), Duration.Inf)
 
         result.status mustBe status
 
-        verify(mockConnector).removeDraft(fakeDraftId)(hc, executionContext)
+        verify(mockConnector).removeDraft(fakeDraftId)(using hc, executionContext)
       }
     }
   }

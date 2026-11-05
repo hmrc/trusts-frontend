@@ -22,7 +22,7 @@ import org.mockito.Mockito.when
 import play.api.i18n.{Lang, MessagesImpl}
 import uk.gov.hmrc.play.language.LanguageUtils
 
-import java.time.{LocalDate => JavaDate, LocalDateTime}
+import java.time.{LocalDate as JavaDate, LocalDateTime}
 
 class DateFormatterSpec extends RegistrationSpecBase {
 
@@ -51,14 +51,14 @@ class DateFormatterSpec extends RegistrationSpecBase {
 
       "in English mode" must {
         "format date in English" in {
-          val result: String = formatter.savedUntil(dateTime)(messages("en"))
+          val result: String = formatter.savedUntil(dateTime)(using messages("en"))
           result mustBe "2 March 1996"
         }
       }
 
       "in Welsh mode" must {
         "format date in Welsh" in {
-          val result: String = formatter.savedUntil(dateTime)(messages("cy"))
+          val result: String = formatter.savedUntil(dateTime)(using messages("cy"))
           result mustBe "2 Mawrth 1996"
         }
       }
@@ -69,7 +69,7 @@ class DateFormatterSpec extends RegistrationSpecBase {
       "in English mode" must {
         "format date in English" in {
 
-          val result: String = formatter.formatDateTime(dateTime)(messages("en"))
+          val result: String = formatter.formatDateTime(dateTime)(using messages("en"))
           result mustBe "3 February 1996"
         }
       }
@@ -77,7 +77,7 @@ class DateFormatterSpec extends RegistrationSpecBase {
       "in Welsh mode" must {
         "format date in Welsh" in {
 
-          val result: String = formatter.formatDateTime(dateTime)(messages("cy"))
+          val result: String = formatter.formatDateTime(dateTime)(using messages("cy"))
           result mustBe "3 Chwefror 1996"
         }
       }
@@ -88,7 +88,7 @@ class DateFormatterSpec extends RegistrationSpecBase {
       "in English mode" must {
         "format date in English" in {
 
-          val result: String = formatter.formatDate(javaDate)(messages("en"))
+          val result: String = formatter.formatDate(javaDate)(using messages("en"))
           result mustBe "3 February 1996"
         }
       }
@@ -96,7 +96,7 @@ class DateFormatterSpec extends RegistrationSpecBase {
       "in Welsh mode" must {
         "format date in Welsh" in {
 
-          val result: String = formatter.formatDate(javaDate)(messages("cy"))
+          val result: String = formatter.formatDate(javaDate)(using messages("cy"))
           result mustBe "3 Chwefror 1996"
         }
       }

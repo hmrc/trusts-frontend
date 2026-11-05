@@ -16,13 +16,13 @@
 
 package controllers.register.agents
 
-import controllers.actions._
+import controllers.actions.*
 import forms.YesNoFormProvider
 import models.requests.RegistrationDataRequest
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
+import play.api.mvc.*
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.http.HeaderCarrier
@@ -40,7 +40,7 @@ class RemoveDraftYesNoController @Inject() (
   yesNoFormProvider: YesNoFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: RemoveDraftYesNoView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   private val prefix: String = "removeDraftYesNo"
@@ -63,7 +63,7 @@ class RemoveDraftYesNoController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) =>
+        (formWithErrors: Form[?]) =>
           clientReferenceNumber(draftId).map {
             case Left(redirect) => redirect
             case Right(crn)     => BadRequest(view(formWithErrors, draftId, crn))
@@ -82,7 +82,7 @@ class RemoveDraftYesNoController @Inject() (
       )
   }
 
-  private def clientReferenceNumber(draftId: String)(implicit hc: HeaderCarrier): Future[Either[Result, String]] =
+  private def clientReferenceNumber(draftId: String)(using hc: HeaderCarrier): Future[Either[Result, String]] =
     registrationsRepository.getClientReference(draftId, AffinityGroup.Agent).map {
       case Some(clientRef) =>
         Right(clientRef)

@@ -23,7 +23,7 @@ import navigation.registration.TaskListNavigator
 import pages.register.RegistrationProgress.taxLiabilityLinkDisplay
 import services.TrustsStoreService
 import uk.gov.hmrc.http.HeaderCarrier
-import viewmodels._
+import viewmodels.*
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -31,9 +31,9 @@ import scala.concurrent.{ExecutionContext, Future}
 class RegistrationProgress @Inject() (
   navigator: TaskListNavigator,
   trustsStoreService: TrustsStoreService
-)(implicit ec: ExecutionContext) {
+)(using ec: ExecutionContext) {
 
-  def items(draftId: String)(implicit hc: HeaderCarrier): Future[List[Task]] =
+  def items(draftId: String)(using hc: HeaderCarrier): Future[List[Task]] =
     trustsStoreService.getTaskStatuses(draftId) map { statuses =>
       val entityTasks: List[Task] = List(
         Task(Link("trustees", navigator.trusteesJourneyUrl(draftId)), statuses.trustees),
@@ -50,7 +50,7 @@ class RegistrationProgress @Inject() (
     firstTaxYearAvailable: Option[FirstTaxYearAvailable],
     isTaxable: Boolean,
     isExistingTrust: Boolean
-  )(implicit hc: HeaderCarrier): Future[List[Task]] =
+  )(using hc: HeaderCarrier): Future[List[Task]] =
     trustsStoreService.getTaskStatuses(draftId) map { statuses =>
       val taxableTasks: List[Task] = if (isTaxable) {
         val assetsTask = Task(Link("assets", navigator.assetsJourneyUrl(draftId)), statuses.assets)
@@ -91,7 +91,7 @@ class RegistrationProgress @Inject() (
     firstTaxYearAvailable: Option[FirstTaxYearAvailable],
     isTaxable: Boolean,
     isExistingTrust: Boolean
-  )(implicit hc: HeaderCarrier): Future[Boolean] =
+  )(using hc: HeaderCarrier): Future[Boolean] =
     trustsStoreService.getTaskStatuses(draftId).map { statuses =>
       statuses.allComplete(taxLiabilityLinkDisplay(firstTaxYearAvailable, isTaxable, isExistingTrust).isEnabled)
     }
@@ -101,7 +101,7 @@ class RegistrationProgress @Inject() (
     firstTaxYearAvailable: Option[FirstTaxYearAvailable],
     isTaxable: Boolean,
     isExistingTrust: Boolean
-  )(implicit hc: HeaderCarrier): Future[(Int, Int)] =
+  )(using hc: HeaderCarrier): Future[(Int, Int)] =
     for {
       statuses           <- trustsStoreService.getTaskStatuses(draftId)
       mainSections       <- items(draftId)

@@ -16,16 +16,18 @@
 
 package controllers.actions.register
 
-import javax.inject.Inject
 import models.registration.pages.RegistrationStatus.Complete
 import models.requests.RegistrationDataRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RequireDraftRegistrationActionRefinerImpl @Inject() (implicit val executionContext: ExecutionContext)
+class RequireDraftRegistrationActionRefinerImpl @Inject() (ec: ExecutionContext)
     extends RequireDraftRegistrationActionRefiner {
+
+  override protected val executionContext: ExecutionContext = ec
 
   override protected def refine[A](
     request: RegistrationDataRequest[A]

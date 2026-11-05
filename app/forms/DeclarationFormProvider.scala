@@ -16,13 +16,13 @@
 
 package forms
 
-import forms.helpers.WhitespaceHelper._
+import forms.helpers.WhitespaceHelper.*
 import forms.mappings.Mappings
-
-import javax.inject.Inject
 import models.core.pages.{Declaration, FullName}
 import play.api.data.Form
 import play.api.data.Forms.{mapping, optional}
+
+import javax.inject.Inject
 
 class DeclarationFormProvider @Inject() extends Mappings {
 
@@ -37,7 +37,7 @@ class DeclarationFormProvider @Inject() extends Mappings {
               firstError(regexp(Validation.emailRegex, "declaration.error.email.invalid"))
             )
         ).transform(emptyToNone, identity[Option[String]])
-      )(Declaration.apply)(Declaration.unapply)
+      )(Declaration.apply)(declaration => Some((declaration.name, declaration.email)))
     )
 
   val fullName = mapping(
@@ -67,6 +67,6 @@ class DeclarationFormProvider @Inject() extends Mappings {
           regexp(Validation.nameRegex, "declaration.error.lastName.invalid")
         )
       )
-  )(FullName.apply)(FullName.unapply)
+  )(FullName.apply)(fullName => Some((fullName.firstName, fullName.middleName, fullName.lastName)))
 
 }

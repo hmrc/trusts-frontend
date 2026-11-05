@@ -31,7 +31,7 @@ class CreateDraftRegistrationController @Inject() (
   navigator: TaskListNavigator,
   draftService: DraftRegistrationService,
   actions: StandardActionSets
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   def create: Action[AnyContent] = actions.identifiedUserMatchingAndSuitabilityData().async { implicit request =>

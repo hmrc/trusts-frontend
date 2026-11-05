@@ -18,8 +18,8 @@ package controllers.register.suitability
 
 import base.RegistrationSpecBase
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup._
+import play.api.test.Helpers.*
+import uk.gov.hmrc.auth.core.AffinityGroup.*
 import views.html.register.suitability.NoNeedToRegisterView
 
 class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
@@ -44,7 +44,7 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(isAgent = true)(request, messages).toString
+          view(isAgent = true)(using request, messages).toString
 
         application.stop()
       }
@@ -64,7 +64,7 @@ class NoNeedToRegisterControllerSpec extends RegistrationSpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(isAgent = false)(request, messages).toString
+          view(isAgent = false)(using request, messages).toString
 
         application.stop()
       }

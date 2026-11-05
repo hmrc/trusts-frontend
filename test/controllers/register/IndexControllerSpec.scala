@@ -17,15 +17,16 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import controllers.register.agents.routes._
+import controllers.register.agents.routes.*
 import models.registration.pages.RegistrationStatus.InProgress
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.register.TrustRegisteredOnlinePage
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup
-import org.mockito.Mockito.{reset, verify, when}
+
 import scala.concurrent.Future
 
 class IndexControllerSpec extends RegistrationSpecBase with BeforeAndAfterEach {
