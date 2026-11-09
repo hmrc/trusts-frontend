@@ -26,9 +26,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 sealed trait RequiredAgentAction extends ActionFilter[IdentifierRequest]
 
-class RequiredAgentAffinityGroupAction @Inject() (ec: ExecutionContext) extends RequiredAgentAction {
-
-  override protected val executionContext: ExecutionContext = ec
+class RequiredAgentAffinityGroupAction @Inject() (override protected val executionContext: ExecutionContext)
+    extends RequiredAgentAction {
 
   override protected def filter[A](request: IdentifierRequest[A]): Future[Option[Result]] =
     request.affinityGroup match {

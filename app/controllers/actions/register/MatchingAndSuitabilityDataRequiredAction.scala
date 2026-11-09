@@ -23,7 +23,7 @@ import play.api.mvc.{ActionRefiner, Result}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class MatchingAndSuitabilityDataRequiredActionImpl @Inject() (ec: ExecutionContext)
+class MatchingAndSuitabilityDataRequiredActionImpl @Inject() ()(using val ec: ExecutionContext)
     extends MatchingAndSuitabilityDataRequiredAction {
 
   override protected val executionContext: ExecutionContext = ec
