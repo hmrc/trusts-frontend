@@ -24,7 +24,7 @@ import play.api.mvc.{ActionRefiner, Result}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RequireDraftRegistrationActionRefinerImpl @Inject() (ec: ExecutionContext)
+class RequireDraftRegistrationActionRefinerImpl @Inject() ()(using ec: ExecutionContext)
     extends RequireDraftRegistrationActionRefiner {
 
   override protected val executionContext: ExecutionContext = ec

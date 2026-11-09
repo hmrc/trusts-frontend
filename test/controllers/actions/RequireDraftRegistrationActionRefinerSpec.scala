@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class RequireDraftRegistrationActionRefinerSpec
     extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
-  class Harness() extends RequireDraftRegistrationActionRefinerImpl(ExecutionContext.global) {
+  class Harness() extends RequireDraftRegistrationActionRefinerImpl()(using ExecutionContext.global) {
 
     def callRefine[A](request: RegistrationDataRequest[A]): Future[Either[Result, RegistrationDataRequest[A]]] = refine(
       request
