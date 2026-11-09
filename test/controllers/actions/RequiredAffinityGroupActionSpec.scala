@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class RequiredAffinityGroupActionSpec
     extends RegistrationSpecBase with MockitoSugar with ScalaFutures with EitherValues {
 
-  class Harness[T] extends RequiredAgentAffinityGroupAction(ExecutionContext.global) {
+  class Harness[T] extends RequiredAgentAffinityGroupAction()(using ExecutionContext.global) {
     def callFilter[A](request: IdentifierRequest[A]): Future[Option[Result]] = filter(request)
   }
 
