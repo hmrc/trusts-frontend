@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.routes._
+@import controllers.register.routes.*
 @import viewmodels.AnswerSection
 @import views.html.components.{Heading, Button, ReturnToTop}
 @import utils.SectionFormatter.formatAnswerSection
@@ -22,14 +22,13 @@
 
 @this(
     mainTemplate: MainTemplate,
-    formHelper: FormWithCSRF,
     govukSummaryList: GovukSummaryList,
     button: Button,
     returnToTop: ReturnToTop,
     heading: Heading
 )
 
-@(answerSections: Seq[AnswerSection], isAgent: Boolean, agentClientRef: String)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[AnswerSection], isAgent: Boolean, agentClientRef: String)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("summaryAnswerPage.title"),

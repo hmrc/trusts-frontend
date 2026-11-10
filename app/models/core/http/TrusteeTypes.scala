@@ -16,10 +16,10 @@
 
 package models.core.http
 
-import java.time.LocalDate
-
 import models.core.pages.FullName
 import play.api.libs.json.{Format, Json}
+
+import java.time.LocalDate
 
 case class LeadTrusteeType(
   leadTrusteeInd: Option[LeadTrusteeIndType] = None,
@@ -27,7 +27,7 @@ case class LeadTrusteeType(
 )
 
 object LeadTrusteeType {
-  implicit val leadTrusteeTypeReads: Format[LeadTrusteeType] = Json.format[LeadTrusteeType]
+  given leadTrusteeTypeReads: Format[LeadTrusteeType] = Json.format[LeadTrusteeType]
 }
 
 case class LeadTrusteeIndType(
@@ -39,7 +39,7 @@ case class LeadTrusteeIndType(
 )
 
 object LeadTrusteeIndType {
-  implicit val leadTrusteeIndTypeFormat: Format[LeadTrusteeIndType] = Json.format[LeadTrusteeIndType]
+  given leadTrusteeIndTypeFormat: Format[LeadTrusteeIndType] = Json.format[LeadTrusteeIndType]
 }
 
 case class LeadTrusteeOrgType(
@@ -50,5 +50,5 @@ case class LeadTrusteeOrgType(
 )
 
 object LeadTrusteeOrgType {
-  implicit val leadTrusteeOrgTypeFormat: Format[LeadTrusteeOrgType] = Json.format[LeadTrusteeOrgType]
+  given leadTrusteeOrgTypeFormat: Format[LeadTrusteeOrgType] = Json.format[LeadTrusteeOrgType]
 }

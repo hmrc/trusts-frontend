@@ -16,7 +16,6 @@
 
 package controllers.actions.register
 
-import javax.inject.Inject
 import models.requests.{IdentifierRequest, OptionalRegistrationDataRequest}
 import play.api.mvc.ActionTransformer
 import repositories.RegistrationsRepository
@@ -24,6 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import utils.Session
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DraftIdDataRetrievalActionProviderImpl @Inject() (
@@ -32,7 +32,7 @@ class DraftIdDataRetrievalActionProviderImpl @Inject() (
 ) extends DraftIdRetrievalActionProvider {
 
   def apply(draftId: String): DraftIdDataRetrievalAction =
-    new DraftIdDataRetrievalAction(draftId, registrationsRepository, executionContext)
+    new DraftIdDataRetrievalAction(draftId, registrationsRepository)(using executionContext)
 
 }
 
@@ -44,12 +44,14 @@ trait DraftIdRetrievalActionProvider {
 
 class DraftIdDataRetrievalAction(
   draftId: String,
-  registrationsRepository: RegistrationsRepository,
-  implicit protected val executionContext: ExecutionContext
-) extends ActionTransformer[IdentifierRequest, OptionalRegistrationDataRequest] {
+  registrationsRepository: RegistrationsRepository
+)(using ec: ExecutionContext)
+    extends ActionTransformer[IdentifierRequest, OptionalRegistrationDataRequest] {
+
+  override protected val executionContext: ExecutionContext = ec
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     registrationsRepository.get(draftId).map { userAnswers =>
       OptionalRegistrationDataRequest(

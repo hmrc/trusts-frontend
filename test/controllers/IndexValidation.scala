@@ -26,7 +26,7 @@ import play.api.Application
 import play.api.http.Writeable
 import play.api.libs.json.Writes
 import play.api.mvc.Request
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.ErrorTemplate
 
 trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks with MockitoSugar with Generators {
@@ -76,7 +76,7 @@ trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks
         messages("global.error.pageNotFound404.title"),
         messages("global.error.pageNotFound404.heading"),
         messages("global.error.pageNotFound404.message")
-      )(fakeRequest, messages)
+      )(using fakeRequest, messages)
       status(result) mustEqual NOT_FOUND
       contentAsString(result) mustEqual applyView.toString
     }

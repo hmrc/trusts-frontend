@@ -17,17 +17,18 @@
 package controllers.register.suitability
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
+import controllers.register.routes.*
 import forms.YesNoFormProvider
 import org.mockito.Mockito.when
-import java.time.LocalDate
 import pages.register.suitability.TaxLiabilityInCurrentTaxYearYesNoPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.LocalDateService
 import views.html.register.suitability.TaxLiabilityInCurrentTaxYearYesNoView
+
+import java.time.LocalDate
 
 class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBase {
 
@@ -58,7 +59,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form, currentTaxYearStartAndEnd)(request, messages).toString
+        view(form, currentTaxYearStartAndEnd)(using request, messages).toString
 
       application.stop()
     }
@@ -83,7 +84,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true), currentTaxYearStartAndEnd)(request, messages).toString
+        view(form.fill(true), currentTaxYearStartAndEnd)(using request, messages).toString
 
       application.stop()
     }
@@ -124,7 +125,7 @@ class TaxLiabilityInCurrentTaxYearYesNoControllerSpec extends RegistrationSpecBa
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, currentTaxYearStartAndEnd)(request, messages).toString
+        view(boundForm, currentTaxYearStartAndEnd)(using request, messages).toString
 
       application.stop()
     }

@@ -16,18 +16,15 @@
 
 package pages.register
 
-import base.Fixtures
-import base.RegistrationSpecBase
-import models.registration.pages.TagStatus._
+import base.{Fixtures, RegistrationSpecBase}
+import models.registration.pages.TagStatus.*
 import models.{FirstTaxYearAvailable, TaskStatuses}
-import org.mockito.ArgumentMatchers.{any, eq => eqTo}
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.{JsObject, JsValue, Json}
-import play.api.test.Helpers.OK
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import viewmodels._
+import uk.gov.hmrc.http.HeaderCarrier
+import viewmodels.*
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -46,13 +43,13 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "all entities marked as complete" must {
         "return true for isTaskListComplete" in {
 
-          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+          when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
             .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
-          when(registrationsRepository.getDraftSettlors(any())(any()))
+          when(registrationsRepository.getDraftSettlors(any())(using any()))
             .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
-          when(registrationsRepository.getRegistrationPieces(any())(any()))
+          when(registrationsRepository.getRegistrationPieces(any())(using any()))
             .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
           val application = applicationBuilder().build()
@@ -76,7 +73,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "any entity marked as incomplete" must {
         "return false for isTaskListComplete" in {
 
-          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+          when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
             .thenReturn(Future.successful(TaskStatuses()))
 
           val application          = applicationBuilder().build()
@@ -164,7 +161,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
       "render trustee, settlor, beneficiary, protector and other individual details" in {
 
-        when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+        when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
           .thenReturn(Future.successful(TaskStatuses()))
 
         val application          = applicationBuilder().build()
@@ -196,7 +193,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
           "trustDetails is not completed" must {
             "render taxLiability as CannotStartYet" in {
 
-              when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+              when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
                 .thenReturn(Future.successful(TaskStatuses()))
 
               val application          = applicationBuilder().build()
@@ -227,7 +224,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
               "taxLiability not started" must {
                 "render taxLiability as NotStarted" in {
 
-                  when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+                  when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
                     .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed)))
 
                   val application          = applicationBuilder().build()
@@ -254,7 +251,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
               "taxLiability started" must {
                 "render taxLiability as InProgress" in {
 
-                  when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+                  when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
                     .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed, taxLiability = InProgress)))
 
                   val application          = applicationBuilder().build()
@@ -282,7 +279,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
             "start date 0 tax years ago" must {
               "render tax liability as NoActionNeeded" in {
 
-                when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+                when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
                   .thenReturn(Future.successful(TaskStatuses(trustDetails = Completed)))
 
                 val application          = applicationBuilder().build()
@@ -310,7 +307,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
         "existing trust" must {
           "not render tax liability" in {
-            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
             val application          = applicationBuilder().build()
@@ -337,7 +334,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
       "non-taxable" must {
         "not render assets or tax liability but must render non-EEA business asset" in {
 
-          when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+          when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
             .thenReturn(Future.successful(TaskStatuses()))
 
           val application          = applicationBuilder().build()
@@ -374,7 +371,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "no tasks are completed" must {
           "return (0,8) for tasks completed when tax liability is enabled" in {
 
-            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
             val application          = applicationBuilder().build()
@@ -395,7 +392,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
 
           "return (0,7) for tasks completed when tax liability is not enabled" in {
 
-            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
             val application          = applicationBuilder().build()
@@ -429,7 +426,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
               assets = Completed
             )
 
-            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
               .thenReturn(Future.successful(completedStatuses))
 
             val application          = applicationBuilder().build()
@@ -452,7 +449,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "all tasks are completed" must {
           "return (8,8) for a fully completed registration" in {
 
-            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
               .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
             val application          = applicationBuilder().build()
@@ -478,7 +475,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "no tasks are completed" must {
           "return (0,7) as tax liability not included" in {
 
-            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
               .thenReturn(Future.successful(TaskStatuses()))
 
             val application          = applicationBuilder().build()
@@ -501,7 +498,7 @@ class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPrope
         "all tasks are complete" must {
           "return (7,7) as tax liability is not included" in {
 
-            when(mockTrustsStoreService.getTaskStatuses(any())(any(), any()))
+            when(mockTrustsStoreService.getTaskStatuses(any())(using any(), any()))
               .thenReturn(Future.successful(TaskStatuses.withAllComplete))
 
             val application          = applicationBuilder().build()

@@ -1,5 +1,4 @@
 import sbt.Setting
-import scoverage.ScoverageKeys
 import scoverage.ScoverageKeys.*
 
 object CodeCoverageSettings {

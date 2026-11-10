@@ -17,7 +17,7 @@
 package controllers.register
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
+import controllers.register.routes.*
 import forms.TrustNameFormProvider
 import generators.Generators
 import org.scalatestplus.mockito.MockitoSugar
@@ -25,7 +25,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.MatchingNamePage
 import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.MatchingNameView
 
 class MatchingNameControllerSpec
@@ -53,7 +53,7 @@ class MatchingNameControllerSpec
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form)(request, messages).toString
+        view(form)(using request, messages).toString
 
       application.stop()
     }
@@ -76,7 +76,7 @@ class MatchingNameControllerSpec
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(validAnswer))(request, messages).toString
+        view(form.fill(validAnswer))(using request, messages).toString
 
       application.stop()
     }
@@ -97,7 +97,7 @@ class MatchingNameControllerSpec
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm)(request, messages).toString
+        view(boundForm)(using request, messages).toString
 
       application.stop()
     }

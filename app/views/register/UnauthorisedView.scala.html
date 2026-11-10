@@ -15,7 +15,7 @@
  *@
 
 @import views.html.components.{Heading, BulletList, SubmitButton}
-@import controllers.register.routes._
+@import controllers.register.routes.*
 
 @this(
     main_template: MainTemplate,
@@ -25,7 +25,7 @@
     submitButton: SubmitButton
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[?], messages: Messages)
 
 @main_template(
     title = messages("unauthorised.title"),

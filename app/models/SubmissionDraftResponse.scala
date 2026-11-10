@@ -16,8 +16,8 @@
 
 package models
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 
 import java.time.LocalDateTime
 
@@ -56,7 +56,7 @@ object RegistrationSubmission {
       (JsPath \ "label").read[String] and
         (JsPath \ "answer").read[String] and
         labelArgReads
-    )(AnswerRow.apply _)
+    )(AnswerRow.apply)
 
     implicit lazy val writes: Writes[AnswerRow] = Json.writes[AnswerRow]
 
@@ -77,7 +77,7 @@ object RegistrationSubmission {
         (JsPath \ "rows").read[Seq[AnswerRow]] and
         (JsPath \ "sectionKey").readNullable[String] and
         (JsPath \ "headingArgs").readWithDefault[Seq[String]](Nil)
-    )(AnswerSection.apply _)
+    )(AnswerSection.apply)
 
     implicit lazy val writes: Writes[AnswerSection] = Json.writes[AnswerSection]
   }

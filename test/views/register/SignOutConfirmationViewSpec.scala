@@ -25,7 +25,7 @@ class SignOutConfirmationViewSpec extends ViewBehaviours {
 
     val view = viewFor[SignOutConfirmationView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply()(using fakeRequest, messages)
 
     behave like normalPage(applyView, None, "sign_out")
   }

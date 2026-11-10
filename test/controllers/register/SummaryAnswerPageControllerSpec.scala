@@ -18,15 +18,15 @@ package controllers.register
 
 import base.{Fixtures, RegistrationSpecBase}
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.register.RegistrationProgress
 import play.api.inject
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.TestUserAnswers
 import viewmodels.{AnswerSection, RegistrationAnswerSections}
 import views.html.register.SummaryAnswerPageView
-import org.mockito.Mockito.when
 
 import scala.concurrent.Future
 
@@ -114,13 +114,13 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase with Fixtures
     assets = Some(assetSections.toList)
   )
 
-  when(mockCreateDraftRegistrationService.getAnswerSections(any())(any(), any()))
+  when(mockCreateDraftRegistrationService.getAnswerSections(any())(using any(), any()))
     .thenReturn(Future.successful(registrationSections))
 
-  when(registrationsRepository.getDraftSettlors(any())(any()))
+  when(registrationsRepository.getDraftSettlors(any())(using any()))
     .thenReturn(Future.successful(validGetDraftSettlorsJson))
 
-  when(registrationsRepository.getRegistrationPieces(any())(any()))
+  when(registrationsRepository.getRegistrationPieces(any())(using any()))
     .thenReturn(Future.successful(jsonReturnedByGetRequestPieces))
 
   "SummaryAnswersController" must {
@@ -143,7 +143,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase with Fixtures
 
     "return OK and the correct view for a GET when tasklist completed for Organisation user" in {
 
-      when(registrationsRepository.getClientReference(any(), any())(any())).thenReturn(Future.successful(None))
+      when(registrationsRepository.getClientReference(any(), any())(using any())).thenReturn(Future.successful(None))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Organisation).build()
 
@@ -156,14 +156,14 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase with Fixtures
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, isAgent = false, agentClientRef = "")(request, messages).toString
+        view(expectedSections, isAgent = false, agentClientRef = "")(using request, messages).toString
 
       application.stop()
     }
 
     "return OK and the correct view for a GET when tasklist completed for Agent user" in {
 
-      when(registrationsRepository.getClientReference(any(), any())(any()))
+      when(registrationsRepository.getClientReference(any(), any())(using any()))
         .thenReturn(Future.successful(Some("agentClientReference")))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), AffinityGroup.Agent).build()
@@ -177,7 +177,10 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase with Fixtures
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(request, messages).toString
+        view(expectedSections, isAgent = true, agentClientRef = "agentClientReference")(using
+          request,
+          messages
+        ).toString
 
       application.stop()
     }
@@ -189,7 +192,7 @@ class SummaryAnswerPageControllerSpec extends RegistrationSpecBase with Fixtures
 
       val mockRegistrationProgress = mock[RegistrationProgress]
 
-      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+      when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
         .thenReturn(Future.successful(false))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))

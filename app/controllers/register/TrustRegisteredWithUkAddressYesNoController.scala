@@ -16,7 +16,7 @@
 
 package controllers.register
 
-import controllers.actions._
+import controllers.actions.*
 import forms.YesNoFormProvider
 import pages.register.TrustRegisteredWithUkAddressYesNoPage
 import play.api.data.Form
@@ -38,7 +38,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject() (
   yesNoFormProvider: YesNoFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: TrustRegisteredWithUkAddressYesNoView
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private val form: Form[Boolean] = yesNoFormProvider.withPrefix("trustRegisteredWithUkAddress")
@@ -56,7 +56,7 @@ class TrustRegisteredWithUkAddressYesNoController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) => Future.successful(BadRequest(view(formWithErrors))),
+        (formWithErrors: Form[?]) => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TrustRegisteredWithUkAddressYesNoPage, value))

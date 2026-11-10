@@ -25,7 +25,7 @@ import java.time.LocalDate
 case class Settlors(settlor: Option[List[Settlor]])
 
 object Settlors {
-  implicit val settlorsFormat: Format[Settlors] = Json.format[Settlors]
+  given settlorsFormat: Format[Settlors] = Json.format[Settlors]
 }
 
 case class Settlor(
@@ -39,5 +39,5 @@ case class Settlor(
 )
 
 object Settlor {
-  implicit val settlorFormat: Format[Settlor] = Json.format[Settlor]
+  given settlorFormat: Format[Settlor] = Json.format[Settlor]
 }

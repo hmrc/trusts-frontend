@@ -16,10 +16,7 @@
 
 package controllers.register
 
-import java.time.LocalDateTime
-
-import controllers.actions._
-import javax.inject.Inject
+import controllers.actions.*
 import models.requests.RegistrationDataRequest
 import pages.register.{RegistrationSubmissionDatePage, RegistrationTRNPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -29,6 +26,8 @@ import utils.DateFormatter
 import utils.print.register.PrintUserAnswersHelper
 import views.html.register.ConfirmationAnswerPageView
 
+import java.time.LocalDateTime
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class ConfirmationAnswerPageController @Inject() (
@@ -39,7 +38,7 @@ class ConfirmationAnswerPageController @Inject() (
   printUserAnswersHelper: PrintUserAnswersHelper,
   dateFormatter: DateFormatter,
   actionSet: StandardActionSets
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
   private def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =

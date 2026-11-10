@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.register.suitability.routes._
+@import controllers.register.suitability.routes.*
 @import views.html.components.{ErrorSummary, Heading, InputYesNo, SubmitButton}
 
 @this(
@@ -26,7 +26,7 @@
     submitButton: SubmitButton
 )
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[?])(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("suitability.expressTrust.title")}",

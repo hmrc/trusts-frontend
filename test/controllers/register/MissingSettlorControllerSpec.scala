@@ -19,7 +19,6 @@ package controllers.register
 import base.RegistrationSpecBase
 import handlers.ErrorHandler
 import models.core.TrustsFrontendUserAnswers
-import models.registration.pages.RegistrationStatus
 import navigation.Navigator
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, when}
@@ -29,7 +28,7 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{RequestHeader, Results}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import views.html.register.MissingSettlorView
 
@@ -48,12 +47,12 @@ class MissingSettlorControllerSpec extends RegistrationSpecBase with BeforeAndAf
 
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress, mockErrorHandler)
-    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
       .thenReturn(Future.successful(true))
   }
 
   override protected def applicationBuilder(
-    userAnswers: Option[TrustsFrontendUserAnswers[_]],
+    userAnswers: Option[TrustsFrontendUserAnswers[?]],
     affinityGroup: AffinityGroup = AffinityGroup.Organisation,
     enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
     navigator: Navigator = fakeNavigator
@@ -81,7 +80,7 @@ class MissingSettlorControllerSpec extends RegistrationSpecBase with BeforeAndAf
       val view    = application.injector.instanceOf[MissingSettlorView]
 
       status(result) mustEqual OK
-      contentAsString(result) mustEqual view(trn)(request, messages).toString
+      contentAsString(result) mustEqual view(trn)(using request, messages).toString
 
       application.stop()
     }

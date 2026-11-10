@@ -17,7 +17,7 @@
 package controllers.register.agents
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
+import controllers.register.routes.*
 import models.core.http.AddressType
 import navigation.registration.TaskListNavigator
 import org.mockito.ArgumentMatchers.any
@@ -25,7 +25,7 @@ import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import play.api.inject.bind
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup
 import viewmodels.DraftRegistration
 import views.html.register.agents.AgentOverviewView
@@ -57,7 +57,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
 
       "return OK and the correct view for a GET" in {
 
-        when(registrationsRepository.listDrafts()(any(), any())).thenReturn(Future.successful(Nil))
+        when(registrationsRepository.listDrafts()(using any(), any())).thenReturn(Future.successful(Nil))
 
         val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
 
@@ -70,7 +70,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(Nil)(request, messages).toString
+          view(Nil)(using request, messages).toString
 
         application.stop()
       }
@@ -99,7 +99,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
 
         val draft = List(DraftRegistration(fakeDraftId, "InternalRef", LocalDateTime.now().toString))
 
-        when(registrationsRepository.listDrafts()(any(), any()))
+        when(registrationsRepository.listDrafts()(using any(), any()))
           .thenReturn(Future.successful(draft))
 
         val application = applicationBuilder(userAnswers = None, AffinityGroup.Agent).build()
@@ -113,7 +113,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(draft)(request, messages).toString
+          view(draft)(using request, messages).toString
 
         application.stop()
       }
@@ -122,7 +122,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
 
         "draft has completed agent details" in {
 
-          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(Some(address)))
+          when(registrationsRepository.getAgentAddress(any())(using any())).thenReturn(Future.successful(Some(address)))
 
           val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), AffinityGroup.Agent)
             .build()
@@ -152,7 +152,7 @@ class AgentOverviewControllerSpec extends RegistrationSpecBase with BeforeAndAft
 
           val request = FakeRequest(GET, routes.AgentOverviewController.continue(fakeDraftId).url)
 
-          when(registrationsRepository.getAgentAddress(any())(any())).thenReturn(Future.successful(None))
+          when(registrationsRepository.getAgentAddress(any())(using any())).thenReturn(Future.successful(None))
           when(mockTaskListNavigator.agentDetailsJourneyUrl(any())).thenReturn(onwardRoute)
 
           val result = route(application, request).value

@@ -19,9 +19,9 @@ package mapping.registration
 import base.SpecBaseHelpers
 import generators.Generators
 import models.core.http.MatchData
+import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.OptionValues
 import pages.register.{PostcodeForTheTrustPage, TrustHaveAUTRPage, WhatIsTheUTRPage}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUserAnswers
@@ -30,8 +30,8 @@ class MatchingMapperSpec extends AnyFreeSpec with Matchers with OptionValues wit
 
   val matchingMapper: MatchingMapper = injector.instanceOf[MatchingMapper]
 
-  val trustName                  = "Trust Name"
-  implicit val hc: HeaderCarrier = HeaderCarrier()
+  val trustName           = "Trust Name"
+  given hc: HeaderCarrier = HeaderCarrier()
 
   "MatchingMapper" - {
 

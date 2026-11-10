@@ -21,7 +21,7 @@ import play.api.i18n.Messages
 import scala.language.implicitConversions
 
 sealed trait Message {
-  def resolve(implicit messages: Messages): String
+  def resolve(using messages: Messages): String
 
   def withArgs(args: Any*): Message
 }
@@ -33,8 +33,8 @@ object Message {
 
   case class Resolvable(key: String, args: Seq[Any]) extends Message {
 
-    override def resolve(implicit messages: Messages): String =
-      messages(key, args: _*)
+    override def resolve(using messages: Messages): String =
+      messages(key, args*)
 
     override def withArgs(args: Any*): Message =
       copy(args = args)
@@ -43,7 +43,7 @@ object Message {
 
   case class Literal(value: String) extends Message {
 
-    override def resolve(implicit messages: Messages): String =
+    override def resolve(using messages: Messages): String =
       value
 
     // should this log a warning?
@@ -52,10 +52,10 @@ object Message {
 
   implicit def literal(string: String): Message = Literal(string)
 
-  implicit def resolve(message: Message)(implicit messages: Messages): String =
+  implicit def resolve(message: Message)(using messages: Messages): String =
     message.resolve
 
-  implicit def resolveOption(message: Option[Message])(implicit messages: Messages): Option[String] =
+  implicit def resolveOption(message: Option[Message])(using messages: Messages): Option[String] =
     message.map(_.resolve)
 
 }

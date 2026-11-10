@@ -16,14 +16,14 @@
 
 package controllers.register
 
-import cats.syntax.all._
-import controllers.actions._
+import cats.syntax.all.*
+import controllers.actions.*
 import controllers.actions.register.RequireDraftRegistrationActionRefiner
 import forms.DeclarationFormProvider
 import models.RegistrationSubmission
 import models.RegistrationSubmission.{DataSet, MappedPiece}
 import models.core.UserAnswers
-import models.core.http.TrustResponse._
+import models.core.http.TrustResponse.*
 import models.core.http.{RegistrationTRNResponse, TrustResponse}
 import models.core.pages.Declaration
 import models.registration.pages.RegistrationStatus
@@ -33,8 +33,8 @@ import pages.register.{DeclarationPage, RegistrationSubmissionDatePage, Registra
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json._
-import play.api.mvc._
+import play.api.libs.json.*
+import play.api.mvc.*
 import repositories.RegistrationsRepository
 import services.settlors.{AnswerSectionSettlorValidationService, RegistrationSettlorValidationService}
 import services.{AuditService, SubmissionService}
@@ -63,7 +63,7 @@ class DeclarationController @Inject() (
   registrationComplete: TaskListCompleteActionRefiner,
   requireDraft: RequireDraftRegistrationActionRefiner,
   standardAction: StandardActionSets
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   private val className                = getClass.getSimpleName
@@ -73,7 +73,7 @@ class DeclarationController @Inject() (
   def actions(draftId: String): ActionBuilder[RegistrationDataRequest, AnyContent] =
     standardAction.identifiedUserWithRegistrationData(draftId) andThen registrationComplete andThen requireDraft
 
-  private def updateSettlorRemoveAliveAtRegistrationField(draftId: String, draftSettlors: JsValue)(implicit
+  private def updateSettlorRemoveAliveAtRegistrationField(draftId: String, draftSettlors: JsValue)(using
     request: RegistrationDataRequest[AnyContent]
   ): Future[Status] =
     for {
@@ -134,12 +134,12 @@ class DeclarationController @Inject() (
   }
 
   def onSubmit(draftId: String): Action[AnyContent] = actions(draftId).async { implicit request =>
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     form
       .bindFromRequest()
       .fold(
-        (formWithErrors: Form[_]) =>
+        (formWithErrors: Form[?]) =>
           Future.successful(BadRequest(view(formWithErrors, draftId, request.affinityGroup))),
         (declaration: Declaration) =>
           (for {
@@ -165,7 +165,7 @@ class DeclarationController @Inject() (
       )
   }
 
-  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String)(implicit
+  private def handleResponse(updatedAnswers: UserAnswers, response: TrustResponse, draftId: String)(using
     hc: HeaderCarrier,
     request: RegistrationDataRequest[AnyContent]
   ): Future[Result] =
@@ -187,7 +187,7 @@ class DeclarationController @Inject() (
     updatedAnswers: UserAnswers,
     trn: RegistrationTRNResponse,
     draftId: String
-  )(implicit
+  )(using
     hc: HeaderCarrier,
     request: RegistrationDataRequest[AnyContent]
   ): Future[Result] = {
@@ -212,7 +212,7 @@ class DeclarationController @Inject() (
     draftId: String,
     registrationPieces: JsObject,
     draftSettlors: JsValue
-  )(implicit request: RegistrationDataRequest[AnyContent]): Result = {
+  )(using request: RegistrationDataRequest[AnyContent]): Result = {
     val allErrors = errors.all
 
     if (SettlorErrors.hasMissingOrIncomplete(errors.registrationErrors)) {
@@ -257,8 +257,8 @@ class DeclarationController @Inject() (
     incorrectInfo: String,
     registrationPieces: JsObject,
     draftSettlors: JsValue
-  )(implicit
-    request: RegistrationDataRequest[_],
+  )(using
+    request: RegistrationDataRequest[?],
     hc: HeaderCarrier
   ): Unit = {
     auditService.auditUserAnswersOnMissingSettlorInfo(request.userAnswers, incorrectInfo)

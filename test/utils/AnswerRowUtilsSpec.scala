@@ -40,7 +40,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -55,7 +55,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -70,7 +70,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -85,7 +85,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -103,7 +103,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -118,7 +118,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -133,7 +133,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -148,7 +148,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -166,7 +166,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -181,7 +181,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -196,7 +196,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -211,7 +211,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -229,7 +229,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -244,7 +244,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -259,7 +259,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -274,7 +274,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -289,7 +289,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
 
@@ -308,7 +308,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -323,7 +323,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -338,7 +338,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -353,7 +353,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -371,7 +371,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -386,7 +386,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -401,7 +401,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -416,7 +416,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -439,7 +439,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
             val messages: MessagesImpl = MessagesImpl(Lang(language), messagesApi)
 
             inputsAndOutputs.foreach { inputAndOutput =>
-              val result = util.reverseEngineerAnswer(inputAndOutput._1)(messages)
+              val result = util.reverseEngineerAnswer(inputAndOutput._1)(using messages)
               result mustEqual inputAndOutput._2
             }
           }
@@ -461,7 +461,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerArg(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -476,7 +476,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerArg(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -491,7 +491,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(ENGLISH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerArg(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -506,7 +506,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           val messages: MessagesImpl = MessagesImpl(Lang(WELSH), messagesApi)
 
           inputsAndOutputs.foreach { inputAndOutput =>
-            val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+            val result = util.reverseEngineerArg(inputAndOutput._1)(using messages)
             result mustEqual inputAndOutput._2
           }
         }
@@ -529,7 +529,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
             val messages: MessagesImpl = MessagesImpl(Lang(language), messagesApi)
 
             inputsAndOutputs.foreach { inputAndOutput =>
-              val result = util.reverseEngineerArg(inputAndOutput._1)(messages)
+              val result = util.reverseEngineerArg(inputAndOutput._1)(using messages)
               result mustEqual inputAndOutput._2
             }
           }
@@ -576,7 +576,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
           )
 
           val section = AnswerSection(headingKey = None, rows = rows, sectionKey = None, headingArgs = Seq.empty)
-          util.rowsWithCorrectTense(section = section)(languageWithPastTense) mustBe rows
+          util.rowsWithCorrectTense(section = section)(using languageWithPastTense) mustBe rows
         }
       )
 
@@ -592,7 +592,7 @@ class AnswerRowUtilsSpec extends RegistrationSpecBase {
 
           val section = AnswerSection(headingKey = None, rows = rows, sectionKey = None, headingArgs = Seq.empty)
 
-          util.rowsWithCorrectTense(section = section)(languageWithPastTense) mustBe Seq(
+          util.rowsWithCorrectTense(section = section)(using languageWithPastTense) mustBe Seq(
             AnswerRow(label = "testPastTense.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty),
             AnswerRow(label = "settlor2.checkYourAnswersLabel", answer = "text", labelArgs = Seq.empty)
           )

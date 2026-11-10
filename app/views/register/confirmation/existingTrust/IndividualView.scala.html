@@ -15,7 +15,7 @@
  *@
 
 @import config.FrontendAppConfig
-@import controllers.register.routes._
+@import controllers.register.routes.*
 @import views.html.components.{RegistrationReceived, Link}
 
 @this(
@@ -25,7 +25,7 @@
     config: FrontendAppConfig
 )
 
-@(draftId: String, refNumber: String, leadTrusteeName: String)(implicit request: Request[_], messages: Messages)
+@(draftId: String, refNumber: String, leadTrusteeName: String)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("confirmation.title"),

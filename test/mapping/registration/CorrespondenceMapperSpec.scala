@@ -18,9 +18,9 @@ package mapping.registration
 
 import base.SpecBaseHelpers
 import generators.Generators
+import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.OptionValues
 
 class CorrespondenceMapperSpec
     extends AnyFreeSpec with Matchers with OptionValues with Generators with SpecBaseHelpers {

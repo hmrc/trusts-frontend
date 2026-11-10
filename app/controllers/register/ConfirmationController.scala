@@ -30,7 +30,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.RegistrationsRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.register.confirmation._
+import views.html.register.confirmation.*
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -49,10 +49,10 @@ class ConfirmationController @Inject() (
   existingTaxableAgentView: existingTrust.AgentView,
   errorHandler: ErrorHandler,
   registrationsRepository: RegistrationsRepository
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
-  private def renderView(trn: String, userAnswers: UserAnswers, draftId: String)(implicit
+  private def renderView(trn: String, userAnswers: UserAnswers, draftId: String)(using
     request: RegistrationDataRequest[AnyContent]
   ): Future[Result] = {
     val isAgent = request.isAgent
@@ -63,7 +63,7 @@ class ConfirmationController @Inject() (
     }
   }
 
-  private def render(userAnswers: UserAnswers, draftId: String, isAgent: Boolean, trn: String, name: String)(implicit
+  private def render(userAnswers: UserAnswers, draftId: String, isAgent: Boolean, trn: String, name: String)(using
     request: RegistrationDataRequest[AnyContent]
   ): Future[Result] = {
 

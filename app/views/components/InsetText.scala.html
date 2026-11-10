@@ -15,12 +15,13 @@
  *@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.insettext.{InsetText => GovukInsetTextModel}
 
 @this(govukInsetText : GovukInsetText)
 
 @(messageKey: String, id: String)(implicit messages: Messages)
 
-@govukInsetText(InsetText(
+@govukInsetText(GovukInsetTextModel(
  id = Some(s"inset-text--$id"),
  content = Text(messages(messageKey))
 ))

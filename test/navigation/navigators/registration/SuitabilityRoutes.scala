@@ -29,9 +29,9 @@ import pages.register.suitability.{
 
 trait SuitabilityRoutes {
 
-  self: ScalaCheckPropertyChecks with Generators with RegistrationSpecBase =>
+  self: ScalaCheckPropertyChecks & Generators & RegistrationSpecBase =>
 
-  def suitabilityRoutes()(implicit navigator: Navigator): Unit = {
+  def suitabilityRoutes()(using navigator: Navigator): Unit = {
 
     "ExpressTrust Page" when {
       "-> YES -> Any tax liability in current tax year?" in

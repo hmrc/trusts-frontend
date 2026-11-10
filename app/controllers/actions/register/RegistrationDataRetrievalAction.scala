@@ -28,13 +28,13 @@ import utils.Session
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationDataRetrievalActionImpl @Inject() (registrationsRepository: RegistrationsRepository)(implicit
+class RegistrationDataRetrievalActionImpl @Inject() (registrationsRepository: RegistrationsRepository)(using
   val executionContext: ExecutionContext
 ) extends RegistrationDataRetrievalAction with Logging {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalRegistrationDataRequest[A]] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     def createdOptionalDataRequest(
       request: IdentifierRequest[A],

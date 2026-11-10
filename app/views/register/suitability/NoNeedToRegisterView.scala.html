@@ -15,7 +15,7 @@
  *@
 
 @import config.FrontendAppConfig
-@import controllers.register.suitability.routes._
+@import controllers.register.suitability.routes.*
 @import views.html.components.{Heading, Link}
 
 @this(
@@ -25,7 +25,7 @@
     config: FrontendAppConfig
 )
 
-@(isAgent: Boolean)(implicit request: Request[_], messages: Messages)
+@(isAgent: Boolean)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("suitability.noNeedToRegister.title"),

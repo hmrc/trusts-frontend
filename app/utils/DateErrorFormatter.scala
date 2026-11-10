@@ -21,7 +21,7 @@ import play.api.i18n.Messages
 
 object DateErrorFormatter {
 
-  def formatArgs(args: Seq[Any])(implicit messages: Messages): Seq[String] = {
+  def formatArgs(args: Seq[Any])(using messages: Messages): Seq[String] = {
     val dateArgs = Seq("day", "month", "year")
     args.map(arg => if (dateArgs.contains(arg)) messages(s"date.$arg").toLowerCase else arg.toString)
   }

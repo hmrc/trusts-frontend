@@ -35,14 +35,13 @@ class AgentViewSpec extends ViewBehaviours {
 
   "non taxable New Trust Agent View" must {
 
-    val applyView = view.apply(fakeDraftId, fakeRef, fakeName)(fakeRequest, messages)
+    val applyView = view.apply(fakeDraftId, fakeRef, fakeName)(using fakeRequest, messages)
 
     behave like confirmationPage(
       applyView,
       prefix,
       formattedFakeRef,
       fakeName,
-      None,
       "p1",
       "subheading1",
       "p2",

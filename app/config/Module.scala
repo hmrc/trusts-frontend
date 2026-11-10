@@ -17,8 +17,8 @@
 package config
 
 import com.google.inject.AbstractModule
-import controllers.actions._
-import controllers.actions.register._
+import controllers.actions.*
+import controllers.actions.register.*
 import repositories.{CacheRepository, CacheRepositoryImpl, DefaultRegistrationsRepository, RegistrationsRepository}
 
 class Module extends AbstractModule {

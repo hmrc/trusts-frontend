@@ -34,8 +34,8 @@ class RemoveDraftYesNoViewSpec extends YesNoViewBehaviours {
 
     val view = viewFor[RemoveDraftYesNoView](Some(emptyUserAnswers))
 
-    def applyView(form: Form[_]): HtmlFormat.Appendable =
-      view.apply(form, fakeDraftId, clientReferenceNumber)(fakeRequest, messages)
+    def applyView(form: Form[?]): HtmlFormat.Appendable =
+      view.apply(form, fakeDraftId, clientReferenceNumber)(using fakeRequest, messages)
 
     behave like dynamicTitlePage(applyView(form), None, messageKeyPrefix, clientReferenceNumber)
 

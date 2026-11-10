@@ -30,7 +30,7 @@ class TestIndividualViewSpec extends ViewBehaviours {
 
     val view = viewFor[TestIndividualView](Some(emptyUserAnswers))
 
-    def applyView(): HtmlFormat.Appendable = view.apply(fakeDraftId, refNumber)(fakeRequest, messages)
+    def applyView(): HtmlFormat.Appendable = view.apply(fakeDraftId, refNumber)(using fakeRequest, messages)
 
     behave like normalPage(applyView(), None, messageKeyPrefix)
 

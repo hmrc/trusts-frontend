@@ -85,7 +85,7 @@ trait Formatters {
         Map(key -> value)
     }
 
-  private[mappings] def currencyFormatter(requiredKey: String, invalidKey: String): Formatter[String] =
+  private[mappings] def currencyFormatter(requiredKey: String): Formatter[String] =
     new Formatter[String] {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
@@ -175,7 +175,7 @@ trait Formatters {
         baseFormatter.unbind(key, value.toString)
     }
 
-  private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String)(implicit
+  private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String)(using
     ev: Enumerable[A]
   ): Formatter[A] =
     new Formatter[A] {

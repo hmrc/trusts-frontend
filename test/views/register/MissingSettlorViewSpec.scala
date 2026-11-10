@@ -29,7 +29,7 @@ class MissingSettlorViewSpec extends ViewBehaviours {
 
     val view = application.injector.instanceOf[MissingSettlorView]
 
-    val applyView = view.apply(trn)(fakeRequest, messages)
+    val applyView = view.apply(trn)(using fakeRequest, messages)
 
     behave like normalPage(
       applyView,

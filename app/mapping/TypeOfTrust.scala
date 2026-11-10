@@ -43,7 +43,7 @@ object TypeOfTrust extends Enumerable.Implicits {
     EmployeeRelated
   )
 
-  implicit val enumerable: Enumerable[TypeOfTrust] =
-    Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[TypeOfTrust] =
+    Enumerable(values.toSeq.map(v => v.toString -> v)*)
 
 }

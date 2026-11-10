@@ -16,7 +16,7 @@
 
 package models.core
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 object UserAnswerImplicits {
 
@@ -49,7 +49,7 @@ object UserAnswerImplicits {
 
         case (first :: second :: rest, oldValue) =>
           Reads
-            .optionNoError(Reads.at[JsValue](JsPath(first :: Nil)))
+            .optionNoError(using Reads.at[JsValue](JsPath(first :: Nil)))
             .reads(oldValue)
             .flatMap { opt =>
               opt
@@ -128,9 +128,9 @@ object UserAnswerImplicits {
         case (first :: second :: rest, oldValue)                                       =>
 
           Reads
-            .optionNoError(Reads.at[JsValue](JsPath(first :: Nil)))
+            .optionNoError(using Reads.at[JsValue](JsPath(first :: Nil)))
             .reads(oldValue)
-            .flatMap { opt: Option[JsValue] =>
+            .flatMap { (opt: Option[JsValue]) =>
               opt
                 .map(JsSuccess(_))
                 .getOrElse {

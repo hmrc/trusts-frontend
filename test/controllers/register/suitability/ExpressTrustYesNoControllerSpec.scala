@@ -27,7 +27,7 @@ import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.{ExpressTrustYesNoPage, TrustTaxableYesNoPage}
 import play.api.data.Form
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.suitability.ExpressTrustYesNoView
 
 import scala.concurrent.Future
@@ -61,7 +61,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form)(request, messages).toString
+        view(form)(using request, messages).toString
 
       application.stop()
     }
@@ -81,7 +81,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form.fill(true))(request, messages).toString
+        view(form.fill(true))(using request, messages).toString
 
       application.stop()
     }
@@ -150,7 +150,7 @@ class ExpressTrustYesNoControllerSpec extends RegistrationSpecBase with BeforeAn
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm)(request, messages).toString
+        view(boundForm)(using request, messages).toString
 
       application.stop()
     }

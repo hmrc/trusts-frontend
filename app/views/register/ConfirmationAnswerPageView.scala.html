@@ -14,9 +14,9 @@
  * limitations under the License.
  *@
 
-@import controllers.register.routes._
+@import controllers.register.routes.*
 @import viewmodels.AnswerSection
-@import utils.AccessibilityHelper._
+@import utils.AccessibilityHelper.*
 @import utils.SectionFormatter.formatAnswerSection
 @import views.html.components.{Heading, Button, Warning, ReturnToTop}
 @import views.html.helper.CSPNonce
@@ -27,11 +27,10 @@
     warning: Warning,
     button: Button,
     returnToTop: ReturnToTop,
-    formHelper: FormWithCSRF,
     govukSummaryList: GovukSummaryList
 )
 
-@(answerSections: Seq[AnswerSection], trn: String, declarationSent: String, isTaxable: Boolean)(implicit request: Request[_], messages: Messages)
+@(answerSections: Seq[AnswerSection], trn: String, declarationSent: String, isTaxable: Boolean)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("confirmationAnswerPage.title"),

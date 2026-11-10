@@ -20,14 +20,14 @@ import models.core.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.TryValues
-import pages._
-import pages.register._
+import pages.*
+import pages.register.*
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
-  import models.core.UserAnswerImplicits._
+  import models.core.UserAnswerImplicits.*
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
     arbitrary[(DeclarationPage.type, JsValue)] ::

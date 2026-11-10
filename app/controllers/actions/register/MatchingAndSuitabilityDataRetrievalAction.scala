@@ -26,7 +26,7 @@ import utils.Session
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class MatchingAndSuitabilityDataRetrievalActionImpl @Inject() (cacheRepository: CacheRepository)(implicit
+class MatchingAndSuitabilityDataRetrievalActionImpl @Inject() (cacheRepository: CacheRepository)(using
   val executionContext: ExecutionContext
 ) extends MatchingAndSuitabilityDataRetrievalAction {
 
@@ -34,7 +34,7 @@ class MatchingAndSuitabilityDataRetrievalActionImpl @Inject() (cacheRepository: 
     request: IdentifierRequest[A]
   ): Future[OptionalMatchingAndSuitabilityDataRequest[A]] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     cacheRepository.get(request.internalId).flatMap { ua =>
       val dataRequest = OptionalMatchingAndSuitabilityDataRequest(

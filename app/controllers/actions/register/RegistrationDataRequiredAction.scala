@@ -23,8 +23,10 @@ import play.api.mvc.{ActionRefiner, Result}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class RegistrationDataRequiredActionImpl @Inject() (implicit val executionContext: ExecutionContext)
+class RegistrationDataRequiredActionImpl @Inject() ()(using val ec: ExecutionContext)
     extends RegistrationDataRequiredAction {
+
+  override protected val executionContext: ExecutionContext = ec
 
   override protected def refine[A](
     request: OptionalRegistrationDataRequest[A]

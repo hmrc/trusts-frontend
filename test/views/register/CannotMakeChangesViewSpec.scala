@@ -25,7 +25,7 @@ class CannotMakeChangesViewSpec extends ViewBehaviours {
 
     val view = viewFor[CannotMakeChangesView](Some(emptyUserAnswers))
 
-    val applyView = view.apply()(fakeRequest, messages)
+    val applyView = view.apply()(using fakeRequest, messages)
 
     behave like normalPage(applyView, None, "cannotMakeChanges", "paragraph1", "paragraph2", "paragraph3")
 

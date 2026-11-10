@@ -16,10 +16,10 @@
 
 package pages.register
 
-import java.time.LocalDateTime
-
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+
+import java.time.LocalDateTime
 
 case object RegistrationSubmissionDatePage extends QuestionPage[LocalDateTime] {
 

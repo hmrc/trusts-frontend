@@ -17,11 +17,11 @@
 package navigation
 
 import base.RegistrationSpecBase
-import controllers.register.routes._
+import controllers.register.routes.*
 import generators.Generators
-import navigation.navigators.registration._
+import navigation.navigators.registration.*
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages._
+import pages.*
 
 class NavigatorSpec
     extends RegistrationSpecBase
@@ -30,7 +30,7 @@ class NavigatorSpec
     with MatchingRoutes
     with SuitabilityRoutes {
 
-  implicit val navigator: Navigator = injector.instanceOf[Navigator]
+  given navigator: Navigator = injector.instanceOf[Navigator]
 
   "Navigator" when {
 

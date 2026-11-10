@@ -36,7 +36,7 @@ class IndexController @Inject() (
   getRegistrationData: RegistrationDataRetrievalAction,
   config: FrontendAppConfig,
   val controllerComponents: MessagesControllerComponents
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getRegistrationData).async { implicit request =>

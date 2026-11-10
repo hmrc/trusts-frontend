@@ -18,7 +18,7 @@ package navigation
 
 import config.FrontendAppConfig
 import models.core.TrustsFrontendUserAnswers
-import pages._
+import pages.*
 import play.api.mvc.Call
 
 class FakeNavigator(config: FrontendAppConfig) extends Navigator(config) {

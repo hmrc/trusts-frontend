@@ -24,7 +24,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.data.Form
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import views.html.register.WhichIdentifierView
 
 class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSugar {
@@ -53,7 +53,7 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(form)(request, messages).toString
+        view(form)(using request, messages).toString
 
       application.stop()
     }
@@ -125,7 +125,7 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm)(request, messages).toString
+        view(boundForm)(using request, messages).toString
 
       application.stop()
     }

@@ -25,12 +25,12 @@ import org.mockito.Mockito.{reset, when}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.register._
+import pages.register.*
 import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.auth.core.{AffinityGroup, Enrolment, Enrolments}
 import utils.DateFormatter
@@ -55,26 +55,26 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
   override def beforeEach(): Unit = {
     reset(mockRegistrationProgress)
 
-    when(mockRegistrationProgress.items(any())(any()))
+    when(mockRegistrationProgress.items(any())(using any()))
       .thenReturn(Future.successful(fakeItems))
 
-    when(mockRegistrationProgress.additionalItems(any(), any(), any(), any())(any()))
+    when(mockRegistrationProgress.additionalItems(any(), any(), any(), any())(using any()))
       .thenReturn(Future.successful(fakeAdditionalItems))
 
-    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(any()))
+    when(mockRegistrationProgress.isTaskListComplete(any(), any(), any(), any())(using any()))
       .thenReturn(Future.successful(true))
 
-    when(mockRegistrationProgress.taskCount(any(), any(), any(), any())(any()))
+    when(mockRegistrationProgress.taskCount(any(), any(), any(), any())(using any()))
       .thenReturn(Future.successful((defaultCompletedTasks, defualtTotalTasks)))
 
     reset(mockDateFormatter)
 
-    when(mockDateFormatter.savedUntil(any())(any()))
+    when(mockDateFormatter.savedUntil(any())(using any()))
       .thenReturn(savedUntil)
   }
 
   override protected def applicationBuilder(
-    userAnswers: Option[TrustsFrontendUserAnswers[_]],
+    userAnswers: Option[TrustsFrontendUserAnswers[?]],
     affinityGroup: AffinityGroup,
     enrolments: Enrolments = Enrolments(Set.empty[Enrolment]),
     navigator: Navigator = fakeNavigator
@@ -168,7 +168,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
               affinityGroup = Organisation,
               completedTasks = defaultCompletedTasks,
               totalTasks = defualtTotalTasks
-            )(request, messages).toString
+            )(using request, messages).toString
 
           application.stop()
         }
@@ -303,7 +303,7 @@ class TaskListControllerSpec extends RegistrationSpecBase with ScalaCheckPropert
               affinityGroup = Organisation,
               completedTasks = defaultCompletedTasks,
               totalTasks = defualtTotalTasks
-            )(request, messages).toString
+            )(using request, messages).toString
 
           application.stop()
         }

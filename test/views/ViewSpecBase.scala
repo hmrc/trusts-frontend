@@ -49,7 +49,7 @@ trait ViewSpecBase extends RegistrationSpecBase {
     assertEqualsValue(
       doc,
       cssSelector,
-      ViewUtils.breadcrumbTitle(messages(expectedMessageKey, args: _*), sectionKey.map(messages(_)))
+      ViewUtils.breadcrumbTitle(messages(expectedMessageKey, args*), sectionKey.map(messages(_)))
     )
 
   def assertEqualsValue(doc: Document, cssSelector: String, expectedValue: String): Assertion = {
@@ -64,7 +64,7 @@ trait ViewSpecBase extends RegistrationSpecBase {
   def assertPageTitleEqualsMessage(doc: Document, expectedMessageKey: String, args: Any*): Assertion = {
     val headers = doc.getElementsByTag("h1")
     headers.size                                 mustBe 1
-    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args: _*).replaceAll("&nbsp;", " ")
+    headers.first.text.replaceAll("\u00a0", " ") mustBe messages(expectedMessageKey, args*).replaceAll("&nbsp;", " ")
   }
 
   def assertPageTitleWithCaptionEqualsMessages(
@@ -171,14 +171,14 @@ trait ViewSpecBase extends RegistrationSpecBase {
   def assertContainsTextForId(doc: Document, id: String, expectedText: String): Assertion =
     assert(doc.getElementById(id).text() == expectedText, s"\n\nElement $id does not have text $expectedText")
 
-  def viewFor[A](data: Option[UserAnswers])(implicit tag: ClassTag[A]): A = {
+  def viewFor[A](data: Option[UserAnswers])(using tag: ClassTag[A]): A = {
     val application = applicationBuilder(data).build()
     val view        = application.injector.instanceOf[A]
     application.stop()
     view
   }
 
-  def viewForAgent[A](data: Option[UserAnswers])(implicit tag: ClassTag[A]): A = {
+  def viewForAgent[A](data: Option[UserAnswers])(using tag: ClassTag[A]): A = {
     val application = applicationBuilder(data, affinityGroup = AffinityGroup.Agent).build()
     val view        = application.injector.instanceOf[A]
     application.stop()

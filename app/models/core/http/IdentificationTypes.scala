@@ -16,26 +16,26 @@
 
 package models.core.http
 
-import java.time.LocalDate
-
 import play.api.libs.json.{Format, Json}
+
+import java.time.LocalDate
 
 case class IdentificationType(nino: Option[String], passport: Option[PassportType], address: Option[AddressType])
 
 object IdentificationType {
-  implicit val identificationTypeFormat: Format[IdentificationType] = Json.format[IdentificationType]
+  given identificationTypeFormat: Format[IdentificationType] = Json.format[IdentificationType]
 }
 
 case class IdentificationOrgType(utr: Option[String], address: Option[AddressType])
 
 object IdentificationOrgType {
-  implicit val trustBeneficiaryIdentificationFormat: Format[IdentificationOrgType] = Json.format[IdentificationOrgType]
+  given trustBeneficiaryIdentificationFormat: Format[IdentificationOrgType] = Json.format[IdentificationOrgType]
 }
 
 case class PassportType(number: String, expirationDate: LocalDate, countryOfIssue: String)
 
 object PassportType {
-  implicit val passportTypeFormat: Format[PassportType] = Json.format[PassportType]
+  given passportTypeFormat: Format[PassportType] = Json.format[PassportType]
 }
 
 case class AddressType(
@@ -51,5 +51,5 @@ case class AddressType(
 }
 
 object AddressType {
-  implicit val addressTypeFormat: Format[AddressType] = Json.format[AddressType]
+  given addressTypeFormat: Format[AddressType] = Json.format[AddressType]
 }

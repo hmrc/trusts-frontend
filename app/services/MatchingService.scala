@@ -18,13 +18,13 @@ package services
 
 import com.google.inject.Inject
 import connector.TrustConnector
-import play.api.mvc.Results.Redirect
-import controllers.register.routes._
+import controllers.register.routes.*
 import models.core.MatchingAndSuitabilityUserAnswers
 import models.core.http.MatchedResponse.AlreadyRegistered
 import models.core.http.{MatchData, MatchedResponse, SuccessOrFailureResponse}
 import models.registration.Matched
 import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
+import play.api.mvc.Results.Redirect
 import play.api.mvc.{Call, Result}
 import repositories.CacheRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -36,7 +36,7 @@ class MatchingService @Inject() (trustConnector: TrustConnector, cacheRepository
 
   private case class MatchingContext(isAgent: Boolean, userAnswers: MatchingAndSuitabilityUserAnswers)
 
-  def matching(userAnswers: MatchingAndSuitabilityUserAnswers, isAgent: Boolean)(implicit
+  def matching(userAnswers: MatchingAndSuitabilityUserAnswers, isAgent: Boolean)(using
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Result] = {
@@ -59,7 +59,7 @@ class MatchingService @Inject() (trustConnector: TrustConnector, cacheRepository
     postcode: Option[String] = userAnswers.get(PostcodeForTheTrustPage)
   } yield MatchData(utr, name, postcode)
 
-  private def attemptMatch(context: MatchingContext, matchData: Option[MatchData])(implicit
+  private def attemptMatch(context: MatchingContext, matchData: Option[MatchData])(using
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Result] = matchData match {
@@ -76,7 +76,7 @@ class MatchingService @Inject() (trustConnector: TrustConnector, cacheRepository
       Future.successful(Redirect(MatchingDownController.onPageLoad()))
   }
 
-  private def successful(context: MatchingContext)(implicit
+  private def successful(context: MatchingContext)(using
     ec: ExecutionContext
   ): PartialFunction[MatchedResponse, Future[Result]] = { case SuccessOrFailureResponse(true) =>
     saveTrustMatchedStatusAndRedirect(
@@ -86,7 +86,7 @@ class MatchingService @Inject() (trustConnector: TrustConnector, cacheRepository
     )
   }
 
-  private def unsuccessful(context: MatchingContext)(implicit
+  private def unsuccessful(context: MatchingContext)(using
     ec: ExecutionContext
   ): PartialFunction[MatchedResponse, Future[Result]] = { case SuccessOrFailureResponse(false) =>
     saveTrustMatchedStatusAndRedirect(context.userAnswers, Matched.Failed, FailedMatchController.onPageLoad())
@@ -94,7 +94,7 @@ class MatchingService @Inject() (trustConnector: TrustConnector, cacheRepository
 
   private def alreadyRegistered(
     context: MatchingContext
-  )(implicit ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = { case AlreadyRegistered =>
+  )(using ec: ExecutionContext): PartialFunction[MatchedResponse, Future[Result]] = { case AlreadyRegistered =>
     saveTrustMatchedStatusAndRedirect(
       context.userAnswers,
       Matched.AlreadyRegistered,
@@ -110,7 +110,7 @@ class MatchingService @Inject() (trustConnector: TrustConnector, cacheRepository
     userAnswers: MatchingAndSuitabilityUserAnswers,
     trustMatchedStatus: Matched,
     redirect: Call
-  )(implicit ec: ExecutionContext): Future[Result] =
+  )(using ec: ExecutionContext): Future[Result] =
     for {
       updatedAnswers <- Future.fromTry(userAnswers.set(ExistingTrustMatched, trustMatchedStatus))
       _              <- cacheRepository.set(updatedAnswers)

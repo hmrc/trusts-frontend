@@ -16,11 +16,12 @@
 
 package views.register
 
-import java.time.LocalDateTime
-import pages.register._
+import pages.register.*
 import utils.TestUserAnswers
 import views.behaviours.ViewBehaviours
 import views.html.register.SummaryAnswerPageView
+
+import java.time.LocalDateTime
 
 class SummaryAnswerPageViewSpec extends ViewBehaviours {
   val index = 0
@@ -37,9 +38,9 @@ class SummaryAnswerPageViewSpec extends ViewBehaviours {
 
     val view = viewFor[SummaryAnswerPageView](Some(userAnswers))
 
-    val applyAgentView = view.apply(Nil, isAgent = true, "agentClientReference")(fakeRequest, messages)
+    val applyAgentView = view.apply(Nil, isAgent = true, "agentClientReference")(using fakeRequest, messages)
 
-    val applyOrganisationView = view.apply(Nil, isAgent = false, "")(fakeRequest, messages)
+    val applyOrganisationView = view.apply(Nil, isAgent = false, "")(using fakeRequest, messages)
 
     val agentDoc = asDocument(applyAgentView)
 

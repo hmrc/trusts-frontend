@@ -29,15 +29,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class TaskListCompleteActionRefinerImpl @Inject() (
   registrationProgress: RegistrationProgress,
-  registrationsRepository: RegistrationsRepository,
-  implicit val executionContext: ExecutionContext
-) extends TaskListCompleteActionRefiner {
+  registrationsRepository: RegistrationsRepository
+)(using val executionContext: ExecutionContext)
+    extends TaskListCompleteActionRefiner {
 
   override protected def refine[A](
     request: RegistrationDataRequest[A]
   ): Future[Either[Result, RegistrationDataRequest[A]]] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     val draftId = request.userAnswers.draftId
 

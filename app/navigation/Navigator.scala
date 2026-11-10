@@ -18,8 +18,8 @@ package navigation
 
 import config.FrontendAppConfig
 import models.core.TrustsFrontendUserAnswers
-import navigation.routes._
-import pages._
+import navigation.routes.*
+import pages.*
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -27,16 +27,16 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class Navigator @Inject() (config: FrontendAppConfig) {
 
-  private def defaultRoute: PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] = { case _ =>
+  private def defaultRoute: PartialFunction[Page, TrustsFrontendUserAnswers[?] => Call] = { case _ =>
     _ => controllers.register.routes.IndexController.onPageLoad()
   }
 
-  protected def route(): PartialFunction[Page, TrustsFrontendUserAnswers[_] => Call] =
+  protected def route(): PartialFunction[Page, TrustsFrontendUserAnswers[?] => Call] =
     MatchingRoutes.route(config) orElse
       SuitabilityRoutes.route() orElse
       defaultRoute
 
-  def nextPage(page: Page): TrustsFrontendUserAnswers[_] => Call =
+  def nextPage(page: Page): TrustsFrontendUserAnswers[?] => Call =
     route()(page)
 
 }

@@ -22,7 +22,7 @@ import play.api.data.{Form, FormError}
 trait IntFieldBehaviours extends FieldBehaviours {
 
   def nonDecimalField(
-    form: Form[_],
+    form: Form[?],
     fieldName: String,
     wholeNumberError: FormError,
     maxLength: Option[Int] = None
@@ -34,7 +34,7 @@ trait IntFieldBehaviours extends FieldBehaviours {
         result.errors shouldEqual Seq(wholeNumberError)
       }
 
-  def intField(form: Form[_], fieldName: String, nonNumericError: FormError, wholeNumberError: FormError): Unit = {
+  def intField(form: Form[?], fieldName: String, nonNumericError: FormError, wholeNumberError: FormError): Unit = {
 
     "not bind non-numeric numbers" in
       forAll(nonNumerics -> "nonNumeric") { nonNumeric =>
@@ -49,28 +49,28 @@ trait IntFieldBehaviours extends FieldBehaviours {
       }
 
     "not bind integers larger than Int.MaxValue" in
-      forAll(intsLargerThanMaxValue -> "massiveInt") { num: BigInt =>
+      forAll(intsLargerThanMaxValue -> "massiveInt") { (num: BigInt) =>
         val result = form.bind(Map(fieldName -> num.toString)).apply(fieldName)
         result.errors shouldEqual Seq(nonNumericError)
       }
 
     "not bind integers smaller than Int.MinValue" in
-      forAll(intsSmallerThanMinValue -> "massivelySmallInt") { num: BigInt =>
+      forAll(intsSmallerThanMinValue -> "massivelySmallInt") { (num: BigInt) =>
         val result = form.bind(Map(fieldName -> num.toString)).apply(fieldName)
         result.errors shouldEqual Seq(nonNumericError)
       }
   }
 
-  def intFieldWithMinimum(form: Form[_], fieldName: String, minimum: Int, expectedError: FormError): Unit =
+  def intFieldWithMinimum(form: Form[?], fieldName: String, minimum: Int, expectedError: FormError): Unit =
 
     s"not bind integers below $minimum" in
-      forAll(intsBelowValue(minimum) -> "intBelowMin") { number: Int =>
+      forAll(intsBelowValue(minimum) -> "intBelowMin") { (number: Int) =>
         val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
         result.errors shouldEqual Seq(expectedError)
       }
 
   def intFieldWithMinimumWithGenerator(
-    form: Form[_],
+    form: Form[?],
     fieldName: String,
     minimum: Int,
     generator: Gen[Int],
@@ -78,12 +78,12 @@ trait IntFieldBehaviours extends FieldBehaviours {
   ): Unit =
 
     s"not bind integers below $minimum" in
-      forAll(generator -> "intBelowMin") { number: Int =>
+      forAll(generator -> "intBelowMin") { (number: Int) =>
         val result = form.bind(Map(fieldName -> number.toString)).apply(fieldName)
         result.errors shouldEqual Seq(expectedError)
       }
 
-  def intFieldWithRange(form: Form[_], fieldName: String, minimum: Int, maximum: Int, expectedError: FormError): Unit =
+  def intFieldWithRange(form: Form[?], fieldName: String, minimum: Int, maximum: Int, expectedError: FormError): Unit =
 
     s"not bind integers outside the range $minimum to $maximum" in
       forAll(intsOutsideRange(minimum, maximum) -> "intOutsideRange") { number =>

@@ -21,9 +21,9 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.register.TrustHaveAUTRPage
 import pages.register.suitability.TrustTaxableYesNoPage
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.AffinityGroup
-import views.html.register.suitability._
+import views.html.register.suitability.*
 
 class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks {
 
@@ -53,7 +53,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(request, messages).toString
+        view()(using request, messages).toString
 
       application.stop()
     }
@@ -80,7 +80,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(request, messages).toString
+        view()(using request, messages).toString
 
       application.stop()
     }
@@ -107,7 +107,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(request, messages).toString
+        view()(using request, messages).toString
 
       application.stop()
     }
@@ -131,7 +131,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(request, messages).toString
+        view()(using request, messages).toString
 
       application.stop()
     }
@@ -155,7 +155,7 @@ class BeforeYouContinueControllerSpec extends RegistrationSpecBase with ScalaChe
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view()(request, messages).toString
+        view()(using request, messages).toString
 
       application.stop()
     }

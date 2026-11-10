@@ -17,13 +17,13 @@
 package controllers.abTestingUseOnly
 
 import base.RegistrationSpecBase
-import org.mockito.ArgumentMatchers.{eq => eqTo, _}
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import org.mockito.ArgumentMatchers.{eq as eqTo, *}
+import org.mockito.Mockito.{never, verify}
 import play.api.inject.bind
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import views.html.abTestingUseOnly.TestSignOutView
-import org.mockito.Mockito.{never, verify}
 
 class TestSignOutControllerSpec extends RegistrationSpecBase {
 
@@ -45,10 +45,10 @@ class TestSignOutControllerSpec extends RegistrationSpecBase {
 
       status(result) mustEqual OK
 
-      contentAsString(result) mustEqual view()(request, messages).toString
+      contentAsString(result) mustEqual view()(using request, messages).toString
 
       verify(mockAuditConnector, never())
-        .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(any(), any())
+        .sendExplicitAudit(eqTo("trusts"), any[Map[String, String]])(using any(), any())
 
       application.stop()
     }

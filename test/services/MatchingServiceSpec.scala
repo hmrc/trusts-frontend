@@ -19,7 +19,7 @@ package services
 import base.RegistrationSpecBase
 import connector.TrustConnector
 import models.core.MatchingAndSuitabilityUserAnswers
-import models.core.http.MatchedResponse._
+import models.core.http.MatchedResponse.*
 import models.core.http.SuccessOrFailureResponse
 import models.registration.Matched
 import org.mockito.ArgumentMatchers
@@ -27,7 +27,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import pages.register.{ExistingTrustMatched, MatchingNamePage, PostcodeForTheTrustPage, WhatIsTheUTRPage}
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -66,7 +66,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
         "redirect to ExpressTrust page" in {
 
-          when(mockConnector.matching(any())(any(), any()))
+          when(mockConnector.matching(any())(using any(), any()))
             .thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
           val result = service.matching(userAnswers, isAgent = true)
@@ -75,7 +75,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
             .onPageLoad()
             .url
 
-          verify(mockConnector).matching(any())(any(), any())
+          verify(mockConnector).matching(any())(using any(), any())
 
           val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
 
@@ -87,7 +87,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
         "redirect to Express trust" in {
 
-          when(mockConnector.matching(any())(any(), any()))
+          when(mockConnector.matching(any())(using any(), any()))
             .thenReturn(Future.successful(SuccessOrFailureResponse(true)))
 
           val result = service.matching(userAnswers, isAgent = false)
@@ -96,7 +96,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
             .onPageLoad()
             .url
 
-          verify(mockConnector).matching(any())(any(), any())
+          verify(mockConnector).matching(any())(using any(), any())
 
           val expectedAnswers = userAnswers.set(ExistingTrustMatched, Matched.Success).success.value
 
@@ -108,7 +108,8 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     "unsuccessful match" must {
       "redirect to FailedMatch" in {
 
-        when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(SuccessOrFailureResponse(false)))
+        when(mockConnector.matching(any())(using any(), any()))
+          .thenReturn(Future.successful(SuccessOrFailureResponse(false)))
 
         val result = service.matching(userAnswers, isAgent = false)
 
@@ -119,7 +120,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     "AlreadyRegistered response" must {
       "redirect to TrustAlreadyRegistered" in {
 
-        when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(AlreadyRegistered))
+        when(mockConnector.matching(any())(using any(), any())).thenReturn(Future.successful(AlreadyRegistered))
 
         val result = service.matching(userAnswers, isAgent = false)
 
@@ -132,7 +133,7 @@ class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
     "InternalServerError response" must {
       "redirect to MatchingDown" in {
 
-        when(mockConnector.matching(any())(any(), any())).thenReturn(Future.successful(InternalServerError))
+        when(mockConnector.matching(any())(using any(), any())).thenReturn(Future.successful(InternalServerError))
 
         val result = service.matching(userAnswers, isAgent = false)
 

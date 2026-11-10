@@ -14,21 +14,19 @@
  * limitations under the License.
  *@
 
-@import config.FrontendAppConfig
 @import controllers.register.routes.SummaryAnswerPageController
 @import controllers.abTestingUseOnly.register.routes.TestConfirmationController
 @import views.html.components.{Heading, SubmitButton, Link}
 
 @this(
     mainTemplate: MainTemplate,
-    config: FrontendAppConfig,
     link: Link,
     heading: Heading,
     formHelper: FormWithCSRF,
     submitButton: SubmitButton
 )
 
-@(draftId: String, refNumber: String)(implicit request: Request[_], messages: Messages)
+@(draftId: String, refNumber: String)(implicit request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("abTestingUseOnly.confirmationPage.title"),
