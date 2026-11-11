@@ -21,7 +21,7 @@
     heading: Heading
 )
 
-@(trn: String)(implicit request: RequestHeader, messages: Messages)
+@(trn: String)(using request: RequestHeader, messages: Messages)
 
 @mainTemplate(
 title = messages("missingSettlorView.title"),

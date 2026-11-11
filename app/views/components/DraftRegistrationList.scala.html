@@ -21,7 +21,7 @@
     draftRegistrationRow: DraftRegistrationRow
 )
 
-@(data: List[DraftRegistration], id: String)(implicit messages: Messages)
+@(data: List[DraftRegistration], id: String)(using messages: Messages)
 
 @if(data.nonEmpty){
 <div class="form-group">

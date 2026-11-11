@@ -104,7 +104,7 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues 
     override def getRegistrationPieces(draftId: String)(using hc: HeaderCarrier): Future[JsObject] =
       Future.successful(Json.parse("{}").as[JsObject])
 
-    override def getDraftSettlors(draftId: String)(implicit hc: HeaderCarrier): Future[JsValue] =
+    override def getDraftSettlors(draftId: String)(using hc: HeaderCarrier): Future[JsValue] =
       Future.successful(Json.parse("{}"))
 
     override def setDraftSettlors(draftId: String, data: JsValue)(using hc: HeaderCarrier): Future[HttpResponse] =
@@ -127,9 +127,9 @@ class SubmissionServiceSpec extends AnyFreeSpec with Matchers with OptionValues 
     stubbedRegistrationsRepository
   )
 
-  implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
+  private given hc: HeaderCarrier = HeaderCarrier()
 
-  implicit private lazy val request: RegistrationDataRequest[?] =
+  private given request: RegistrationDataRequest[?] =
     RegistrationDataRequest(
       fakeRequest,
       "internalId",

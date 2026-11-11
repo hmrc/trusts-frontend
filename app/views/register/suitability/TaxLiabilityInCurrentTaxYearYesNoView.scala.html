@@ -25,7 +25,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[?], currentTaxYearStartAndEnd: (String, String))(implicit request: Request[?], messages: Messages)
+@(form: Form[?], currentTaxYearStartAndEnd: (String, String))(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("suitability.taxLiabilityInCurrentTaxYear.title")}",

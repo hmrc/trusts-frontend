@@ -43,7 +43,7 @@
     affinityGroup: AffinityGroup,
     completedTasks: Int,
     totalTasks: Int
-)(implicit request: Request[?], messages: Messages)
+)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("taskList.title"),

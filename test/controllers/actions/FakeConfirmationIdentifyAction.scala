@@ -29,7 +29,7 @@ class FakeIdentifyForConfirmation @Inject() (affinityGroup: AffinityGroup, confi
   override val parser: BodyParsers.Default,
   trustsAuth: TrustsAuthorisedFunctions,
   enrolments: Enrolments = Enrolments(Set.empty[Enrolment])
-)(implicit override val executionContext: ExecutionContext)
+)(using override val executionContext: ExecutionContext)
     extends ConfirmationIdentifierAction(parser, trustsAuth, config) {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =

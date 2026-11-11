@@ -22,7 +22,7 @@
     hint: Option[String] = None,
     legendClass: Option[String] = None,
     legendAsHeading: Boolean = true
-)(implicit messages: Messages)
+)(using messages: Messages)
 
 @govukRadios(Radios(
     idPrefix = Some("yes-no"),

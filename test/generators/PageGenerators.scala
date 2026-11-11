@@ -22,19 +22,19 @@ import pages.register.*
 
 trait PageGenerators {
 
-  implicit lazy val arbitraryDeclarationPage: Arbitrary[DeclarationPage.type] =
+  given arbitraryDeclarationPage: Arbitrary[DeclarationPage.type] =
     Arbitrary(register.DeclarationPage)
 
-  implicit lazy val arbitraryPostcodeForTheTrustPage: Arbitrary[PostcodeForTheTrustPage.type] =
+  given arbitraryPostcodeForTheTrustPage: Arbitrary[PostcodeForTheTrustPage.type] =
     Arbitrary(PostcodeForTheTrustPage)
 
-  implicit lazy val arbitraryWhatIsTheUTRPage: Arbitrary[WhatIsTheUTRPage.type] =
+  given arbitraryWhatIsTheUTRPage: Arbitrary[WhatIsTheUTRPage.type] =
     Arbitrary(WhatIsTheUTRPage)
 
-  implicit lazy val arbitraryTrustHaveAUTRPage: Arbitrary[TrustHaveAUTRPage.type] =
+  given arbitraryTrustHaveAUTRPage: Arbitrary[TrustHaveAUTRPage.type] =
     Arbitrary(TrustHaveAUTRPage)
 
-  implicit lazy val arbitraryTrustRegisteredOnlinePage: Arbitrary[TrustRegisteredOnlinePage.type] =
+  given arbitraryTrustRegisteredOnlinePage: Arbitrary[TrustRegisteredOnlinePage.type] =
     Arbitrary(TrustRegisteredOnlinePage)
 
 }

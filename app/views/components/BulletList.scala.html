@@ -19,7 +19,7 @@
 @(
  prefix : String,
  keys : Seq[String]
-)(implicit messages: Messages)
+)(using messages: Messages)
 
 <ul class="govuk-list govuk-list--bullet">
  @keys.map { key =>

@@ -14,12 +14,12 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
-@import utils.AccessibilityHelper._
+@import uk.gov.hmrc.govukfrontend.views.html.components.*
+@import utils.AccessibilityHelper.*
 
 @this(govukPanel : GovukPanel)
 
-@(refNumber: String)(implicit messages: Messages)
+@(refNumber: String)(using messages: Messages)
 
 @govukPanel(Panel(
     title = Text(messages("confirmation.heading1")),

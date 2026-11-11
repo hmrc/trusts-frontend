@@ -27,7 +27,7 @@
     config: FrontendAppConfig
 )
 
-@(utr: String, isAgent: Boolean)(implicit request: Request[?], messages: Messages)
+@(utr: String, isAgent: Boolean)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("trustAlreadyRegistered.title"),

@@ -29,7 +29,7 @@
     submitButton: SubmitButton
 )
 
-@(form: Form[?], draftId: String, affinityGroup : AffinityGroup)(implicit request: Request[?], messages: Messages)
+@(form: Form[?], draftId: String, affinityGroup : AffinityGroup)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("declaration.title")}",

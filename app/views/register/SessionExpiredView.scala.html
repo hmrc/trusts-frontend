@@ -25,7 +25,7 @@
         heading: Heading
 )
 
-@()(implicit request: Request[?], messages: Messages)
+@()(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("session_expired.title"),

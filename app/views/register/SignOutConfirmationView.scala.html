@@ -25,7 +25,7 @@
     submitButton: SubmitButton
 )
 
-@()(implicit request: Request[?], messages: Messages)
+@()(using request: Request[?], messages: Messages)
 
 @main_template(
     title = messages("sign_out.title"),

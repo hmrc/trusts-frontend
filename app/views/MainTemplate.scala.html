@@ -15,9 +15,9 @@
  *@
 
 @import config.FrontendAppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.*
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import resources._
+@import resources.*
 
 @this(
         appConfig: FrontendAppConfig,
@@ -35,7 +35,7 @@
         isWelshTranslationAvailable: Boolean = true,
         serviceName: Option[String] = None,
         showBanner: Boolean = false
-)(mainContent: Html)(implicit request: RequestHeader, messages: Messages)
+)(mainContent: Html)(using request: RequestHeader, messages: Messages)
 
 @additionalHead = {
 @if(timeoutEnabled) {

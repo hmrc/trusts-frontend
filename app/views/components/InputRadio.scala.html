@@ -24,7 +24,7 @@
     headingIsLegend: Boolean = false,
     inputs: Seq[RadioItem],
     inline: Boolean = true
-)(implicit messages: Messages)
+)(using messages: Messages)
 
 @govukRadios(Radios(
     idPrefix = Some(field.id),

@@ -31,7 +31,7 @@ object TelephoneNumber extends (String => TelephoneNumber) {
   given writes: Writes[TelephoneNumber] = new SimpleObjectWrites[TelephoneNumber](_.value)
   given reads: Reads[TelephoneNumber]   = new SimpleObjectReads[TelephoneNumber]("value", TelephoneNumber.apply)
 
-  implicit class TelephoneNumberRequirements(tel: String) {
+  extension (tel: String) {
 
     /** Removes instances of (0) in a telephone number
      *
@@ -46,6 +46,7 @@ object TelephoneNumber extends (String => TelephoneNumber) {
      */
     def hasMinimumOfSixDigits: Boolean = {
       def digit: Regex = "[0-9]".r
+
       digit.findAllIn(tel).length >= 6
     }
 

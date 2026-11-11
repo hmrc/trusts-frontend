@@ -16,13 +16,18 @@
 
 package pages
 
+import scala.Conversion
 import scala.language.implicitConversions
 
 trait Page
 
 object Page {
 
-  implicit def toString(page: Page): String =
-    page.toString
+  given pageToString: Conversion[Page, String] with {
+
+    override def apply(page: Page): String =
+      page.toString
+
+  }
 
 }

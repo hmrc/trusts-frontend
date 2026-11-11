@@ -15,13 +15,13 @@
  *@
 
 @import viewmodels.Task
-@import models.registration.pages.TagStatus._
+@import models.registration.pages.TagStatus.*
 
 @this(
     govukTag: GovukTag
 )
 
-@(task: Task)(implicit messages: Messages)
+@(task: Task)(using messages: Messages)
 
 <li class="app-task-list__item" id="task-list__item--@{task.link.text}">
 

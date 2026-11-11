@@ -16,6 +16,6 @@
 
 @this()
 
-@(key: String, param: String)(implicit messages: Messages)
+@(key: String, param: String)(using messages: Messages)
 
 <span class="govuk-caption-l">@messages(key, param)</span>

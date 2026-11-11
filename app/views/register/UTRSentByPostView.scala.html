@@ -25,7 +25,7 @@
     config: FrontendAppConfig
 )
 
-@(isAgent: Boolean)(implicit request: Request[?], messages: Messages)
+@(isAgent: Boolean)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("UTRSentByPost.title"),

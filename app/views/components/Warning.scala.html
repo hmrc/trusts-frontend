@@ -14,11 +14,11 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.*
 
 @this(govukWarningText : GovukWarningText)
 
-@(messageKeyPrefix: String)(implicit messages: Messages)
+@(messageKeyPrefix: String)(using messages: Messages)
 
 @govukWarningText(WarningText(
     iconFallbackText = Some(messages("site.warning")),

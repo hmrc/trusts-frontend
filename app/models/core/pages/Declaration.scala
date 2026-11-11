@@ -22,6 +22,6 @@ case class Declaration(name: FullName, email: Option[String])
 
 object Declaration {
 
-  implicit lazy val formats: OFormat[Declaration] = Json.format[Declaration]
+  given formats: OFormat[Declaration] = Json.format[Declaration]
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits.*
 
 @this(
     govukInput: GovukInput
@@ -31,7 +31,7 @@
     suffix: Option[String] = None,
     autocomplete: Option[String] = None,
     inputMode: Option[String] = None
-)(implicit messages: Messages)
+)(using messages: Messages)
 
 @govukInput(
     Input(

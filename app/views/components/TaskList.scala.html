@@ -22,7 +22,7 @@
 )
 
 
-@(sections: List[Task], additionalSections: List[Task])(implicit messages: Messages)
+@(sections: List[Task], additionalSections: List[Task])(using messages: Messages)
 
 <h2 id="task-list--heading" class="app-task-list__section">@messages("taskList.sections.heading")</h2>
 

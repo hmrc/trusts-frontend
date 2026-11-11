@@ -35,10 +35,10 @@ trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks
     generator: Gen[A],
     createPage: Int => QuestionPage[A],
     requestForIndex: Int => Request[B]
-  )(implicit writes: Writes[A], writeable: Writeable[B]): Unit =
+  )(using writes: Writes[A], writeable: Writeable[B]): Unit =
 
     "return not found if a given index is out of bounds" in {
-      implicit val generatorDrivenConfig: PropertyCheckConfiguration = PropertyCheckConfiguration(
+      given generatorDrivenConfig: PropertyCheckConfiguration = PropertyCheckConfiguration(
         minSuccessful = 2
       )
 
@@ -62,7 +62,7 @@ trait IndexValidation extends RegistrationSpecBase with ScalaCheckPropertyChecks
     answers: List[(A, Int)],
     application: Application,
     requestForIndex: Int => Request[B]
-  )(implicit writeable: Writeable[B]) = {
+  )(using writeable: Writeable[B]) = {
     val gen = for {
       index <- Gen.oneOf(Gen.chooseNum(answers.size + 1, answers.size + 100), Gen.chooseNum(-100, -1))
     } yield index

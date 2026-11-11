@@ -15,11 +15,11 @@
  *@
 
 @import viewmodels.DraftRegistration
-@import controllers.register.agents.routes._
+@import controllers.register.agents.routes.*
 
 @this()
 
-@(data: DraftRegistration)(implicit messages: Messages)
+@(data: DraftRegistration)(using messages: Messages)
 
 <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__value">

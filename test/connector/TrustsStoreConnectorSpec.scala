@@ -35,8 +35,8 @@ import scala.concurrent.duration.Duration
 
 class TrustsStoreConnectorSpec extends PlaySpec with Matchers with OptionValues with WireMockHelper {
 
-  implicit lazy val hc: HeaderCarrier                     = HeaderCarrier()
-  implicit lazy val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
+  given hc: HeaderCarrier                     = HeaderCarrier()
+  given ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
   lazy val app: Application = new GuiceApplicationBuilder()
     .configure(Seq("microservice.services.trusts-store.port" -> server.port(), "auditing.enabled" -> false)*)

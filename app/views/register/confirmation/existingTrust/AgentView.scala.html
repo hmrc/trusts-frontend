@@ -25,7 +25,7 @@
     config: FrontendAppConfig
 )
 
-@(draftId: String, refNumber: String, leadTrusteeName: String)(implicit request: Request[?], messages: Messages)
+@(draftId: String, refNumber: String, leadTrusteeName: String)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("confirmation.title"),

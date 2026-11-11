@@ -20,7 +20,7 @@ import play.api.libs.json.*
 
 object UserAnswerImplicits {
 
-  implicit class RichJsObject(jsObject: JsObject) {
+  extension (jsObject: JsObject) {
 
     def setObject(path: JsPath, value: JsValue): JsResult[JsObject] =
       jsObject.set(path, value).flatMap(_.validate[JsObject])
@@ -30,7 +30,7 @@ object UserAnswerImplicits {
 
   }
 
-  implicit class RichJsValue(jsValue: JsValue) {
+  extension (jsValue: JsValue) {
 
     def set(path: JsPath, value: JsValue): JsResult[JsValue] =
       (path.path, jsValue) match {
@@ -72,61 +72,25 @@ object UserAnswerImplicits {
             }
       }
 
-    private def setIndexNode(node: IdxPathNode, oldValue: JsValue, newValue: JsValue): JsResult[JsValue] = {
-
-      val index = node.idx
-
-      oldValue match {
-        case oldValue: JsArray if index >= 0 && index <= oldValue.value.length =>
-          if (index == oldValue.value.length) {
-            JsSuccess(oldValue.append(newValue))
-          } else {
-            JsSuccess(JsArray(oldValue.value.updated(index, newValue)))
-          }
-        case oldValue: JsArray                                                 =>
-          JsError(s"array index out of bounds: $index, $oldValue")
-        case _                                                                 =>
-          JsError(s"cannot set an index on $oldValue")
-      }
-    }
-
-    private def setKeyNode(node: KeyPathNode, oldValue: JsValue, newValue: JsValue): JsResult[JsValue] = {
-
-      val key = node.key
-
-      oldValue match {
-        case oldValue: JsObject =>
-          JsSuccess(oldValue + (key -> newValue))
-        case _                  =>
-          JsError(s"cannot set a key on $oldValue")
-      }
-    }
-
-    private def removeIndexNode(node: IdxPathNode, valueToRemoveFrom: JsArray): JsResult[JsValue] = {
-      val index: Int = node.idx
-
-      valueToRemoveFrom match {
-        case valueToRemoveFrom: JsArray if index >= 0 && index < valueToRemoveFrom.value.length =>
-          val updatedJsArray = valueToRemoveFrom.value
-            .slice(0, index) ++ valueToRemoveFrom.value.slice(index + 1, valueToRemoveFrom.value.size)
-
-          JsSuccess(JsArray(updatedJsArray))
-        case valueToRemoveFrom: JsArray                                                         => JsError(s"array index out of bounds: $index, $valueToRemoveFrom")
-        case _                                                                                  => JsError(s"cannot set an index on $valueToRemoveFrom")
-      }
-    }
-
     def remove(path: JsPath): JsResult[JsValue] =
-
       (path.path, jsValue) match {
-        case (Nil, _)                                                                  => JsError("path cannot be empty")
-        case ((n: KeyPathNode) :: Nil, value: JsObject) if value.keys.contains(n.key)  => JsSuccess(value - n.key)
+
+        case (Nil, _) =>
+          JsError("path cannot be empty")
+
+        case ((n: KeyPathNode) :: Nil, value: JsObject) if value.keys.contains(n.key) =>
+          JsSuccess(value - n.key)
+
         case ((n: KeyPathNode) :: Nil, value: JsObject) if !value.keys.contains(n.key) =>
           JsError("cannot find value at path")
-        case ((n: IdxPathNode) :: Nil, value: JsArray)                                 => removeIndexNode(n, value)
-        case ((_: KeyPathNode) :: Nil, _)                                              => JsError(s"cannot remove a key on $jsValue")
-        case (first :: second :: rest, oldValue)                                       =>
 
+        case ((n: IdxPathNode) :: Nil, value: JsArray) =>
+          removeIndexNode(n, value)
+
+        case ((_: KeyPathNode) :: Nil, _) =>
+          JsError(s"cannot remove a key on $jsValue")
+
+        case (first :: second :: rest, oldValue) =>
           Reads
             .optionNoError(using Reads.at[JsValue](JsPath(first :: Nil)))
             .reads(oldValue)
@@ -151,6 +115,50 @@ object UserAnswerImplicits {
             }
       }
 
+  }
+
+  private def setIndexNode(node: IdxPathNode, oldValue: JsValue, newValue: JsValue): JsResult[JsValue] = {
+
+    val index = node.idx
+
+    oldValue match {
+      case oldValue: JsArray if index >= 0 && index <= oldValue.value.length =>
+        if (index == oldValue.value.length) {
+          JsSuccess(oldValue.append(newValue))
+        } else {
+          JsSuccess(JsArray(oldValue.value.updated(index, newValue)))
+        }
+      case oldValue: JsArray                                                 =>
+        JsError(s"array index out of bounds: $index, $oldValue")
+      case _                                                                 =>
+        JsError(s"cannot set an index on $oldValue")
+    }
+  }
+
+  private def setKeyNode(node: KeyPathNode, oldValue: JsValue, newValue: JsValue): JsResult[JsValue] = {
+
+    val key = node.key
+
+    oldValue match {
+      case oldValue: JsObject =>
+        JsSuccess(oldValue + (key -> newValue))
+      case _                  =>
+        JsError(s"cannot set a key on $oldValue")
+    }
+  }
+
+  private def removeIndexNode(node: IdxPathNode, valueToRemoveFrom: JsArray): JsResult[JsValue] = {
+    val index: Int = node.idx
+
+    valueToRemoveFrom match {
+      case valueToRemoveFrom: JsArray if index >= 0 && index < valueToRemoveFrom.value.length =>
+        val updatedJsArray = valueToRemoveFrom.value
+          .slice(0, index) ++ valueToRemoveFrom.value.slice(index + 1, valueToRemoveFrom.value.size)
+
+        JsSuccess(JsArray(updatedJsArray))
+      case valueToRemoveFrom: JsArray                                                         => JsError(s"array index out of bounds: $index, $valueToRemoveFrom")
+      case _                                                                                  => JsError(s"cannot set an index on $valueToRemoveFrom")
+    }
   }
 
 }

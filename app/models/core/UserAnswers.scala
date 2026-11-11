@@ -64,7 +64,7 @@ final case class UserAnswers(
 
 object UserAnswers {
 
-  implicit lazy val reads: Reads[UserAnswers] = (
+  given reads: Reads[UserAnswers] = (
     (__ \ "_id").read[String] and
       (__ \ "data").read[JsObject] and
       (__ \ "progress").read[RegistrationStatus] and
@@ -72,7 +72,7 @@ object UserAnswers {
       (__ \ "internalId").read[String]
   )(UserAnswers.apply)
 
-  implicit lazy val writes: Writes[UserAnswers] = (
+  given writes: Writes[UserAnswers] = (
     (__ \ "_id").write[String] and
       (__ \ "data").write[JsObject] and
       (__ \ "progress").write[RegistrationStatus] and

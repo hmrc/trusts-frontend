@@ -34,7 +34,7 @@ object RegistrationTRNResponse {
 
 object TrustResponse extends Logging {
 
-  implicit object RegistrationResponseFormats extends Format[TrustResponse] {
+  given RegistrationResponseFormats: Format[TrustResponse] with {
 
     override def reads(json: JsValue): JsResult[TrustResponse] = json.validate[RegistrationTRNResponse]
 
@@ -50,7 +50,7 @@ object TrustResponse extends Logging {
 
   final case class UnableToRegister() extends Exception with TrustResponse
 
-  implicit lazy val httpReads: HttpReads[TrustResponse] = new HttpReads[TrustResponse] {
+  given httpReads: HttpReads[TrustResponse] = new HttpReads[TrustResponse] {
     override def read(method: String, url: String, response: HttpResponse): TrustResponse = {
       logger.info(s"Response status received from trusts api: ${response.status}")
 
