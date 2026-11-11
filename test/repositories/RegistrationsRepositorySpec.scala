@@ -40,7 +40,7 @@ import scala.concurrent.{Await, Future}
 
 class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers with MockitoSugar {
 
-  implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
+  private given hc: HeaderCarrier = HeaderCarrier()
 
   private val userAnswersDateTime = LocalDateTime.of(2020, 2, 24, 13, 34, 0)
 
@@ -48,14 +48,14 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
     val mockDateFormatter: DateFormatter = mock[DateFormatter]
     when(mockDateFormatter.savedUntil(any())(using any())).thenReturn("4 February 2012")
 
-    implicit val answerRowUtils: AnswerRowUtils = injector.instanceOf[AnswerRowUtils]
+    given answerRowUtils: AnswerRowUtils = injector.instanceOf[AnswerRowUtils]
     new DefaultRegistrationsRepository(mockDateFormatter, mockConnector)
   }
 
   "RegistrationRepository" when {
     "getting user answers" must {
       "read answers from main section" in {
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val userAnswers = models.core.UserAnswers(
           draftId = fakeDraftId,
@@ -80,7 +80,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
     "getting most recent draft id" must {
       "return the first draft's id received from connector" in {
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -195,7 +195,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
       "combine into empty sections" in {
 
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -258,7 +258,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
     "reading answer sections" must {
       "return deserialised answer sections" in {
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -366,7 +366,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
       "read existing lead trustee from connector" in {
 
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -398,7 +398,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
       "read existing correspondence address from connector" in {
 
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 
@@ -520,7 +520,7 @@ class RegistrationsRepositorySpec extends RegistrationSpecBase with Matchers wit
 
     "removing draft" must {
       "get response from connector" in {
-        implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+        given hc: HeaderCarrier = HeaderCarrier()
 
         val mockConnector = mock[SubmissionDraftConnector]
 

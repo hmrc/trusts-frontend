@@ -50,7 +50,7 @@ case class TaskStatuses(
 
 object TaskStatuses {
 
-  implicit lazy val format: Format[TaskStatuses] = Json.format[TaskStatuses]
+  given format: Format[TaskStatuses] = Json.format[TaskStatuses]
 
   val withAllComplete: TaskStatuses = TaskStatuses(
     beneficiaries = Completed,

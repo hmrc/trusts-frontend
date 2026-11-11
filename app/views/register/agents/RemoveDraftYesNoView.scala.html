@@ -25,7 +25,7 @@
     submitButton: SubmitButton,
 )
 
-@(form: Form[?], draftId: String, crn: String)(implicit request: Request[?], messages: Messages)
+@(form: Form[?], draftId: String, crn: String)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("removeDraftYesNo.title")}",

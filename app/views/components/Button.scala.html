@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.govukfrontend.views.html.components.*
 @import uk.gov.hmrc.govukfrontend.views.viewmodels.button.{Button => GovukButtonModel}
 
 @this(govukButton : GovukButton)
@@ -24,7 +24,7 @@ messageKey: String = "site.continue",
 isStartButton: Boolean = false,
 isPrintButton: Boolean = false,
 attributes: Map[String, String] = Map.empty
-)(implicit messages: Messages)
+)(using messages: Messages)
 
 @govukButton(GovukButtonModel(
  isStartButton = isStartButton,

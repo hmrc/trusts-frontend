@@ -38,7 +38,7 @@ import scala.concurrent.duration.Duration
 
 class TrustConnectorSpec extends AnyFreeSpec with Matchers with OptionValues with SpecBaseHelpers with WireMockHelper {
 
-  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
 
   override lazy val app: Application = new GuiceApplicationBuilder()
     .configure(Seq("microservice.services.trusts.port" -> server.port(), "auditing.enabled" -> false)*)

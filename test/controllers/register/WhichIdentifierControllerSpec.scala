@@ -62,7 +62,7 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
+      given request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
         .withFormUrlEncodedBody(("value", "utr"))
 
       val result = route(application, request).value
@@ -79,7 +79,7 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
+      given request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
         .withFormUrlEncodedBody(("value", "urn"))
 
       val result = route(application, request).value
@@ -96,7 +96,7 @@ class WhichIdentifierControllerSpec extends RegistrationSpecBase with MockitoSug
 
       val application = applicationBuilder(userAnswers = Some(emptyMatchingAndSuitabilityUserAnswers)).build()
 
-      implicit val request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
+      given request: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest(POST, onSubmit.url)
         .withFormUrlEncodedBody(("value", "none"))
 
       val result = route(application, request).value

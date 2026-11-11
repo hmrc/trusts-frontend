@@ -30,7 +30,7 @@ trait MatchingRoutes {
 
   self: ScalaCheckPropertyChecks & Generators & RegistrationSpecBase =>
 
-  def matchingRoutes()(implicit navigator: Navigator): Unit = {
+  def matchingRoutes()(using navigator: Navigator): Unit = {
 
     "TrustRegisteredOnline page -> Yes -> TrustHaveAUTR page" in
       forAll(arbitrary[UserAnswers]) { userAnswers =>

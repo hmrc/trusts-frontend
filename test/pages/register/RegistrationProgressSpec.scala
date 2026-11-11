@@ -31,7 +31,7 @@ import scala.concurrent.{Await, Future}
 
 class RegistrationProgressSpec extends RegistrationSpecBase with ScalaCheckPropertyChecks with Fixtures {
 
-  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
 
   def mockFirstTaxYearAvailable(yearsAgo: Int = 4): FirstTaxYearAvailable =
     FirstTaxYearAvailable(yearsAgo, earlierYearsToDeclare = false)

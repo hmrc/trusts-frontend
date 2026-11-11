@@ -34,7 +34,7 @@ import scala.concurrent.Future
 
 class MatchingServiceSpec extends RegistrationSpecBase with BeforeAndAfterEach {
 
-  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
 
   private val mockConnector: TrustConnector = mock[TrustConnector]
 

@@ -45,6 +45,6 @@ trait FakeTrustsApp extends GuiceOneAppPerSuite {
 
   given executionContext: ExecutionContextExecutor = global
 
-  implicit def messages: Messages = messagesApi.preferred(fakeRequest)
+  given messages: Messages = messagesApi.preferred(fakeRequest)
 
 }

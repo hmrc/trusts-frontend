@@ -8,6 +8,7 @@ object CodeCoverageSettings {
     "Reverse.*",
     ".*assets.*",
     ".*Routes.*",
+    ".*\\$anonfun\\$.*",
     ".*standardError.*",
     ".*BuildInfo",
     ".*pages.Page",

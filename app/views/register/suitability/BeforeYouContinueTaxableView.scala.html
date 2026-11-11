@@ -26,7 +26,7 @@
     config: FrontendAppConfig
 )
 
-@()(implicit request: Request[?], messages: Messages)
+@()(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("suitability.beforeYouContinue.taxable.title"),

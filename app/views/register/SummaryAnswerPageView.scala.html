@@ -28,7 +28,7 @@
     heading: Heading
 )
 
-@(answerSections: Seq[AnswerSection], isAgent: Boolean, agentClientRef: String)(implicit request: Request[?], messages: Messages)
+@(answerSections: Seq[AnswerSection], isAgent: Boolean, agentClientRef: String)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("summaryAnswerPage.title"),

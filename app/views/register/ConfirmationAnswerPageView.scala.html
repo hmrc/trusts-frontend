@@ -30,7 +30,7 @@
     govukSummaryList: GovukSummaryList
 )
 
-@(answerSections: Seq[AnswerSection], trn: String, declarationSent: String, isTaxable: Boolean)(implicit request: Request[?], messages: Messages)
+@(answerSections: Seq[AnswerSection], trn: String, declarationSent: String, isTaxable: Boolean)(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("confirmationAnswerPage.title"),

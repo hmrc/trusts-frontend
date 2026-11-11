@@ -44,13 +44,13 @@ case class MatchingAndSuitabilityUserAnswers(
 
 object MatchingAndSuitabilityUserAnswers {
 
-  implicit lazy val reads: Reads[MatchingAndSuitabilityUserAnswers] = (
+  given reads: Reads[MatchingAndSuitabilityUserAnswers] = (
     (__ \ "internalId").read[String] and
       (__ \ "data").read[JsObject] and
       (__ \ "updatedAt").read(using MongoDateTimeFormats.localDateTimeRead)
   )(MatchingAndSuitabilityUserAnswers.apply)
 
-  implicit lazy val writes: Writes[MatchingAndSuitabilityUserAnswers] = (
+  given writes: Writes[MatchingAndSuitabilityUserAnswers] = (
     (__ \ "internalId").write[String] and
       (__ \ "data").write[JsObject] and
       (__ \ "updatedAt").write(using MongoDateTimeFormats.localDateTimeWrite)

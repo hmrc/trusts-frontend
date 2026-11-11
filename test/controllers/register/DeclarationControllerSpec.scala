@@ -54,7 +54,7 @@ class DeclarationControllerSpec extends RegistrationSpecBase with Fixtures with 
 
   val validAnswer: Declaration = Declaration(FullName("First", None, "Last"), Some("email@email.com"))
 
-  implicit val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
 
   val settlorAlertLogStartText = "Trust registered with incorrect settlor information"
 

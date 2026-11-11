@@ -28,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class FakeDraftIdRetrievalActionProvider(dataToReturn: Option[TrustsFrontendUserAnswers[?]])
     extends DraftIdRetrievalActionProvider with MockitoSugar {
 
-  implicit val executionContext: ExecutionContext =
+  given executionContext: ExecutionContext =
     scala.concurrent.ExecutionContext.Implicits.global
 
   val mockedRegistrationsRepository: RegistrationsRepository = mock[RegistrationsRepository]

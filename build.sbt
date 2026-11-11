@@ -13,18 +13,17 @@ lazy val microservice = (project in file("."))
   .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(inConfig(Test)(testSettings))
   .settings(
-    majorVersion := 1,
     name := appName,
-    RoutesKeys.routesImport += "models._",
+    RoutesKeys.routesImport += "models.*",
     TwirlKeys.templateImports ++= Seq(
       "play.twirl.api.HtmlFormat",
-      "play.twirl.api.HtmlFormat._",
-      "uk.gov.hmrc.govukfrontend.views.html.components._",
-      "uk.gov.hmrc.hmrcfrontend.views.html.components._",
-      "uk.gov.hmrc.hmrcfrontend.views.html.helpers._",
-      "views.ViewUtils._",
+      "play.twirl.api.HtmlFormat.*",
+      "uk.gov.hmrc.govukfrontend.views.html.components.*",
+      "uk.gov.hmrc.hmrcfrontend.views.html.components.*",
+      "uk.gov.hmrc.hmrcfrontend.views.html.helpers.*",
+      "views.ViewUtils.*",
       "models.Mode",
-      "controllers.routes._"
+      "controllers.routes.*"
     ),
     PlayKeys.playDefaultPort := 9781,
     CodeCoverageSettings(),

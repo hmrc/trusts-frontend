@@ -30,7 +30,7 @@
     appConfig: FrontendAppConfig
 )
 
-@(drafts: List[DraftRegistration])(implicit request: Request[?], messages: Messages)
+@(drafts: List[DraftRegistration])(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = messages("agentOverview.title"),

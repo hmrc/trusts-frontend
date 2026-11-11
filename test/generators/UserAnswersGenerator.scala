@@ -37,7 +37,7 @@ trait UserAnswersGenerator extends TryValues {
       arbitrary[(TrustRegisteredOnlinePage.type, JsValue)] ::
       Nil
 
-  implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] =
+  given arbitraryUserData: Arbitrary[UserAnswers] =
     Arbitrary {
       for {
         id         <- nonEmptyString

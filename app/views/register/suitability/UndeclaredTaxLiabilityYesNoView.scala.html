@@ -27,7 +27,7 @@
     formHelper: FormWithCSRF
 )
 
-@(form: Form[?])(implicit request: Request[?], messages: Messages)
+@(form: Form[?])(using request: Request[?], messages: Messages)
 
 @mainTemplate(
     title = s"${errorPrefix(form)}${messages("suitability.undeclaredTaxLiability.title")}",

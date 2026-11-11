@@ -50,12 +50,12 @@ object Message {
     override def withArgs(args: Any*): Message = this
   }
 
-  implicit def literal(string: String): Message = Literal(string)
+  given literal: Conversion[String, Message] = Literal(_)
 
-  implicit def resolve(message: Message)(using messages: Messages): String =
-    message.resolve
+  given resolve(using messages: Messages): Conversion[Message, String] =
+    _.resolve(using messages)
 
-  implicit def resolveOption(message: Option[Message])(using messages: Messages): Option[String] =
-    message.map(_.resolve)
+  given resolveOption(using messages: Messages): Conversion[Option[Message], Option[String]] =
+    _.map(_.resolve(using messages))
 
 }
